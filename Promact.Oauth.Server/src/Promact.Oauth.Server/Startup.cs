@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 using Promact.Oauth.Server.Data;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Services;
-  
+   
 namespace Promact.Oauth.Server
 {
     public class Startup
