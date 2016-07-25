@@ -10,6 +10,11 @@ namespace Promact.Oauth.Server.Controllers
     {
         public IActionResult Index()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction(nameof(AccountController.Login), "Account");
+            }
+
             return View();
         }
 
