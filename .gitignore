@@ -255,3 +255,4 @@ node_modules
 /Promact.Oauth.Server/src/Promact.Oauth.Server/wwwroot/app/**/*.js
 /Promact.Oauth.Server/src/Promact.Oauth.Server/wwwroot/app/**/*.js.map
 typings
+_references.js
