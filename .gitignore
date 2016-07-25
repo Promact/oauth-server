@@ -250,3 +250,8 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
+/Promact.Oauth.Server/src/Promact.Oauth.Server/wwwroot/lib
+node_modules
+/Promact.Oauth.Server/src/Promact.Oauth.Server/wwwroot/app/**/*.js
+/Promact.Oauth.Server/src/Promact.Oauth.Server/wwwroot/app/**/*.js.map
+typings
