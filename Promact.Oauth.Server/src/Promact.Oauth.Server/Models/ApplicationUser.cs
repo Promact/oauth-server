@@ -17,5 +17,7 @@ namespace Promact.Oauth.Server.Models
         [Required]
         [StringLength(255)]
         public string LastName { get; set; }
+
+        public virtual ICollection<ProjectUser> ProjectUsers { get; set; }        
     }
 }

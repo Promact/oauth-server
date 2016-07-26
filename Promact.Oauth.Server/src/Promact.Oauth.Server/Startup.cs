@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using Promact.Oauth.Server.Data;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Services;
+using Promact.Oauth.Server.Seed;
 
 namespace Promact.Oauth.Server
 {
@@ -40,12 +41,16 @@ namespace Promact.Oauth.Server
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddDbContext<ApplicationDbContext>(options =>
+            services.AddDbContext<PromactOauthDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddEntityFrameworkStores<PromactOauthDbContext>()
                 .AddDefaultTokenProviders();
+
+            //Register application services
+            services.AddScoped<IEnsureSeedData, EnsureSeedData>();
+
 
             services.AddMvc();
 
@@ -55,7 +60,7 @@ namespace Promact.Oauth.Server
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IEnsureSeedData seeder)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -65,6 +70,9 @@ namespace Promact.Oauth.Server
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
                 app.UseBrowserLink();
+
+                //Call the Seed method in (Seed.EnsureSeedData) to create initial Admin
+                seeder.Seed();
             }
             else
             {
