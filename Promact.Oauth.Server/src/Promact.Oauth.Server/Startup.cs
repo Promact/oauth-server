@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 using Promact.Oauth.Server.Data;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Services;
-
+   
 namespace Promact.Oauth.Server
 {
     public class Startup
@@ -81,6 +81,7 @@ namespace Promact.Oauth.Server
             {
                 routes.MapRoute(
                     name: "default",
+                    //template: "{controller=Account}/{action=Login}");
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
