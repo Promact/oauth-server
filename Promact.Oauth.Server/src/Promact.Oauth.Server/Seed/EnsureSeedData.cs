@@ -21,14 +21,6 @@ namespace Promact.Oauth.Server.Seed
 
         public async void Seed()
         {
-            var user = new ApplicationUser
-            {
-                UserName = "Admin",
-                Email = "admin@123",
-                FirstName = "Admin",
-                LastName = "Admin"
-            };
-
             var roleStore = new RoleStore<IdentityRole>(context);
             if(!context.Roles.Any(role => role.Name == "Admin"))
             {
@@ -37,18 +29,28 @@ namespace Promact.Oauth.Server.Seed
                 await roleStore.CreateAsync(new IdentityRole { Name = "Web Designer" });
                 await roleStore.CreateAsync(new IdentityRole { Name = "Tester" });
             }
-           
-            if(!context.Users.Any(u => u.UserName == user.UserName))
+
+
+            var user = new ApplicationUser
+            {
+                UserName = "admin@promactinfo.com",
+                Email = "admin@promactinfo.com",
+                FirstName = "Admin",
+                LastName = "Admin"
+            };
+            
+
+            //if (!context.Users.Any(u => u.UserName == user.UserName))
+            if (!context.ApplicationUsers.Any(u => u.UserName == user.UserName))
             {
                 var password = new PasswordHasher<ApplicationUser>();
-                var hashed = password.HashPassword(user, "admin@123");
-                user.PasswordHash = hashed;
+                var hashedPassword = password.HashPassword(user, "admin");
+                //user.PasswordHash = hashedPassword;
                 var userStore = new UserStore<ApplicationUser>(context);
                 await userStore.CreateAsync(user);
-
                 //await userStore.AddToRoleAsync(user, "Admin");
             }
-
+            
             await context.SaveChangesAsync();
         }
     }
