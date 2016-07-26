@@ -252,7 +252,7 @@ paket-files/
 *.sln.iml
 
 # Project related
-wwwroot/lib/
-app/**/*.js
-app/**/*.js.map
-typings/
+**/wwwroot/lib/
+**/app/**/*.js
+**/app/**/*.js.map
+**/typings/
