@@ -8,9 +8,25 @@ namespace Promact.Oauth.Server.Controllers
 {
     public class HomeController : Controller
     {
+        //public IActionResult Index()
+        //{
+        //    return View();
+        //}
+
         public IActionResult Index()
         {
-            return View();
+            if(!User.Identity.IsAuthenticated)
+            {
+                return View("Index");
+            }
+            else
+            {
+                if(User.IsInRole("Admin"))
+                {
+                    return View("Admin");
+                }
+                return View("Index");
+            }
         }
 
         public IActionResult About()

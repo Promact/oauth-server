@@ -13,6 +13,8 @@ using Promact.Oauth.Server.Data;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Services;
 using Promact.Oauth.Server.Seed;
+using Promact.Oauth.Server.Repository;
+using Promact.Oauth.Server.Data_Repository;
 
 namespace Promact.Oauth.Server
 {
@@ -50,7 +52,8 @@ namespace Promact.Oauth.Server
 
             //Register application services
             services.AddScoped<IEnsureSeedData, EnsureSeedData>();
-
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped(typeof(IDataRepository<>), typeof(DataRepository<>));
 
             services.AddMvc();
 
@@ -60,7 +63,7 @@ namespace Promact.Oauth.Server
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IEnsureSeedData seeder)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IEnsureSeedData seeder, IServiceProvider serviceProvider)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -72,7 +75,7 @@ namespace Promact.Oauth.Server
                 app.UseBrowserLink();
 
                 //Call the Seed method in (Seed.EnsureSeedData) to create initial Admin
-                seeder.Seed();
+                seeder.Seed(serviceProvider);
             }
             else
             {

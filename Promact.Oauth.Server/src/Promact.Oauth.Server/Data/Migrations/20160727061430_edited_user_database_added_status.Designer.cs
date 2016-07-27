@@ -8,9 +8,10 @@ using Promact.Oauth.Server.Data;
 namespace Promact.Oauth.Server.Data.Migrations
 {
     [DbContext(typeof(PromactOauthDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20160727061430_edited_user_database_added_status")]
+    partial class edited_user_database_added_status
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431")

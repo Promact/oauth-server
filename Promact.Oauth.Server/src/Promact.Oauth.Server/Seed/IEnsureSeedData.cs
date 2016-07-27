@@ -7,6 +7,6 @@ namespace Promact.Oauth.Server.Seed
 {
     public interface IEnsureSeedData
     {
-        void Seed();
+        void Seed(IServiceProvider serviceProvider);
     }
 }
