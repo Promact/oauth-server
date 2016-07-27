@@ -80,8 +80,8 @@ namespace Promact.Oauth.Server.Controllers
                     return View(model);
                 }
             }
-
-            // If we got this far, something failed, redisplay form
+            
+            //If we got this far, something failed, redisplay form
             return View(model);
         }
 

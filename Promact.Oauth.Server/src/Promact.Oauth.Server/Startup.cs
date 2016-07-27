@@ -92,6 +92,7 @@ namespace Promact.Oauth.Server
             {
                 routes.MapRoute(
                     name: "default",
+                    //template: "{controller=Account}/{action=Login}");
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
