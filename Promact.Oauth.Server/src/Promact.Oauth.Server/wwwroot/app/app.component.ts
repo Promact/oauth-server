@@ -2,13 +2,14 @@
 import { Pro } from './Pro';
 import { ProDetailComponent } from './project-detail.component';
 import { ProService } from './project.service';
+import {HttpService} from "./http.service";
 
 @Component({
     selector: 'my-app',
     templateUrl: 'app/project.component.html',
     styleUrls: ['app/project.component.css'],
     directives: [ProDetailComponent],
-    providers: [ProService]
+    providers: [ProService, HttpService]
 })
 
 
@@ -19,7 +20,7 @@ export class AppComponent implements OnInit {
     error: any;
     constructor(private proService: ProService) { }
     getPros() {
-        this.proService.getPros().then((pros) => {
+        this.proService.getPros().subscribe((pros) => {
             this.pros = pros
         }, err => {
 
@@ -31,9 +32,17 @@ export class AppComponent implements OnInit {
     onSelect(pro: Pro) {
         this.selectedPro = pro;
     }
+    addProject(projectName: string) {
+        let project = new Pro();
+        project.name = projectName;
+        this.proService.addProject(project).subscribe(() => {
+            console.log("Test");
+        });
+    }
+    deleteProject(project: Pro) {
     
+    }
 }
-
 
 //import { Component } from "@angular/core";
 //@Component({

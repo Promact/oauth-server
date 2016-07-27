@@ -5,10 +5,11 @@
         [class.selected]="pro === selectedPro"
         (click)="onSelect(pro)">
         <span class="badge">{{pro.id}}</span> {{pro.name}}{{pro.description}}
-        <button class="delete-button" (click)="deleteHero(pro, $event)">Delete</button>
+        <button class="delete-button" (click)="deleteProject(pro)">Delete</button>
     </li>
 </ul>
-<button (click)="addProject()">Add New Project</button>
+<input [(ngModel)]="projectToAdd"/>
+<button (click)="addProject(projectToAdd)">Add New Project</button>
 <div *ngIf="addingProject">
     <my-hero-detail (close)="close($event)"></my-hero-detail>
 </div>
