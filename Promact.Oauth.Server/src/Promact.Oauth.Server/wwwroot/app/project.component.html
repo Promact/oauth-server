@@ -1,0 +1,15 @@
+﻿<h1>{{title}}</h1>
+<h2>My Project</h2>
+<ul class="pros">
+    <li *ngFor="let pro of pros"
+        [class.selected]="pro === selectedPro"
+        (click)="onSelect(pro)">
+        <span class="badge">{{pro.id}}</span> {{pro.name}}{{pro.description}}
+        <button class="delete-button" (click)="deleteHero(pro, $event)">Delete</button>
+    </li>
+</ul>
+<button (click)="addProject()">Add New Project</button>
+<div *ngIf="addingProject">
+    <my-hero-detail (close)="close($event)"></my-hero-detail>
+</div>
+<my-pro-detail [pro]="selectedPro"></my-pro-detail>
