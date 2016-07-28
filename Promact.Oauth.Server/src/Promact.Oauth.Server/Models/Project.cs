@@ -9,5 +9,7 @@ namespace Promact.Oauth.Server.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string description { get; set;}
+        public string callbackUrl { get; set; }
     }
 }

@@ -18,7 +18,10 @@ export class AppComponent implements OnInit {
     pros: Pro[];
     selectedPro: Pro;
     error: any;
-    constructor(private proService: ProService) { }
+    pro: Pro;
+    constructor(private proService: ProService) {
+        this.pro = new Pro();
+    }
     getPros() {
         this.proService.getPros().subscribe((pros) => {
             this.pros = pros
@@ -32,16 +35,23 @@ export class AppComponent implements OnInit {
     onSelect(pro: Pro) {
         this.selectedPro = pro;
     }
-    addProject(projectName: string) {
+    addProject(pro: Pro) {
         let project = new Pro();
-        project.name = projectName;
+        project.name = pro.name;
+        project.description = pro.description;
+        project.callbackUrl = pro.callbackUrl;
+        
         this.proService.addProject(project).subscribe(() => {
             console.log("Test");
         });
     }
-    deleteProject(project: Pro) {
-    
+    deleteProject(id) {
+        
+        this.proService.deleteProject(id).subscribe(() => {
+            console.log("Test");
+        });
     }
+    
 }
 
 //import { Component } from "@angular/core";

@@ -31,7 +31,11 @@ namespace Promact.Oauth.Server.Controllers
             {
                 projectAcs.Add(new ProjectAc
                 {
-                    Name = x.Name
+                    Id=x.Id,
+                    Name = x.Name,
+                    description=x.description,
+                    callbackUrl=x.callbackUrl
+
                 });
             });
             return projectAcs;
@@ -47,14 +51,18 @@ namespace Promact.Oauth.Server.Controllers
         // POST api/values
         [HttpPost]
         [Route("addProject")]
-        public void Post([FromBody]ProjectAc project)
+        public IActionResult Post([FromBody]ProjectAc project)
         {
             //if (_appDbContext.Projects == null) _appDbContext.Projects = new DbSet<Models.Project>();
             _appDbContext.Projects.Add(new Models.Project
             {
-                Name = project.Name
+                Name = project.Name,
+                description = project.description,
+                callbackUrl=project.callbackUrl
+                
             });
             _appDbContext.SaveChanges();
+            return RedirectToAction("Get");
         }
 
         // PUT api/values/5
@@ -67,9 +75,11 @@ namespace Promact.Oauth.Server.Controllers
         // DELETE api/values/5
         [HttpDelete]
         [Route("deleteProject/{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
-            
+            _appDbContext.Projects.Remove(new Models.Project { Id=id});
+            _appDbContext.SaveChanges();
+            return RedirectToAction("Get");
         }
     }
 }

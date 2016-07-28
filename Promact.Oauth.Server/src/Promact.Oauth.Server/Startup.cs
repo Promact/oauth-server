@@ -12,8 +12,6 @@ using Microsoft.Extensions.Logging;
 using Promact.Oauth.Server.Data;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Services;
-using Autofac;
-using Autofac.Framework.DependencyInjection;
 
 namespace Promact.Oauth.Server
 {
@@ -41,11 +39,14 @@ namespace Promact.Oauth.Server
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var builder = new ContainerBuilder();
-            builder.RegisterType<AuthMessageSender>().As<IEmailSender>().InstancePerDependency();
-            builder.RegisterType<AuthMessageSender>().As<ISmsSender>().InstancePerDependency();
-            
+            //var builder = new ContainerBuilder();
+            //builder.RegisterType<AuthMessageSender>().As<IEmailSender>().InstancePerDependency();
+            //builder.RegisterType<AuthMessageSender>().As<ISmsSender>().InstancePerDependency();
+
             // Add framework services.
+
+            
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
