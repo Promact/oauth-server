@@ -38,7 +38,15 @@ namespace Promact.Oauth.Server.Controllers
 
                 });
             });
-            return projectAcs;
+            return new List<ProjectAc>
+            {
+                new ProjectAc {
+                    Name="Huddle"
+                },
+                new ProjectAc {
+                    Name="Whiteboard"
+                }
+            };//projectAcs;
         }
 
         // GET api/values/5

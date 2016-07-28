@@ -1,59 +1,77 @@
-﻿import { Component, OnInit  } from '@angular/core';
-import { Pro } from './Pro';
-import { ProDetailComponent } from './project-detail.component';
-import { ProService } from './project.service';
-import {HttpService} from "./http.service";
-
+﻿import { Component } from '@angular/core';
+import { ROUTER_DIRECTIVES } from '@angular/router';
+import { HttpService}   from './http.service';
 @Component({
     selector: 'my-app',
-    templateUrl: 'app/project.component.html',
-    styleUrls: ['app/project.component.css'],
-    directives: [ProDetailComponent],
-    providers: [ProService, HttpService]
+    template: `
+    <h1>Component Router</h1>
+<nav>
+        <a routerLink="/project" routerLinkActive="active">Projects</a>
+</nav>
+    <router-outlet></router-outlet>
+  `,
+    directives: [ROUTER_DIRECTIVES],
+    providers: [HttpService]
 })
+export class AppComponent { }
+
+//Today
+//import { Component, OnInit  } from '@angular/core';
+//import { Pro } from './Pro';
+//import { ProDetailComponent } from './project-detail.component';
+//import { ProService } from './project.service';
+//import {HttpService} from "./http.service";
+
+//@Component({
+//    selector: 'my-app',
+//    templateUrl: 'app/project.component.html',
+//    styleUrls: ['app/project.component.css'],
+//    directives: [ProDetailComponent],
+//    providers: [ProService, HttpService]
+//})
 
 
-export class AppComponent implements OnInit {
-    title = 'List of Projects';
-    pros: Pro[];
-    selectedPro: Pro;
-    error: any;
-    pro: Pro;
-    constructor(private proService: ProService) {
-        this.pro = new Pro();
-    }
-    getPros() {
-        this.proService.getPros().subscribe((pros) => {
-            this.pros = pros
-        }, err => {
+//export class AppComponent implements OnInit {
+//    title = 'List of Projects';
+//    pros: Pro[];
+//    selectedPro: Pro;
+//    error: any;
+//    pro: Pro;
+//    constructor(private proService: ProService) {
+//        this.pro = new Pro();
+//    }
+//    getPros() {
+//        this.proService.getPros().subscribe((pros) => {
+//            this.pros = pros
+//        }, err => {
 
-        });
-    }
-    ngOnInit() {
-        this.getPros();
-    }
-    onSelect(pro: Pro) {
-        this.selectedPro = pro;
-    }
-    addProject(pro: Pro) {
-        let project = new Pro();
-        project.name = pro.name;
-        project.description = pro.description;
-        project.callbackUrl = pro.callbackUrl;
+//        });
+//    }
+//    ngOnInit() {
+//        this.getPros();
+//    }
+//    onSelect(pro: Pro) {
+//        this.selectedPro = pro;
+//    }
+//    addProject(pro: Pro) {
+//        let project = new Pro();
+//        project.name = pro.name;
+//        project.description = pro.description;
+//        project.callbackUrl = pro.callbackUrl;
         
-        this.proService.addProject(project).subscribe(() => {
-            console.log("Test");
-        });
-    }
-    deleteProject(id) {
+//        this.proService.addProject(project).subscribe(() => {
+//            console.log("Test");
+//        });
+//    }
+//    deleteProject(id) {
         
-        this.proService.deleteProject(id).subscribe(() => {
-            console.log("Test");
-        });
-    }
+//        this.proService.deleteProject(id).subscribe(() => {
+//            console.log("Test");
+//        });
+//    }
     
-}
-
+//}
+//last day
 //import { Component } from "@angular/core";
 //@Component({
 //    selector: "my-app",
