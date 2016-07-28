@@ -14,7 +14,7 @@ import {HttpService} from "./http.service";
 
 
 export class AppComponent implements OnInit {
-    title = 'Tour of Projects';
+    title = 'List of Projects';
     pros: Pro[];
     selectedPro: Pro;
     error: any;
