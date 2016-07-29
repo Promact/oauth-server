@@ -25,5 +25,6 @@ namespace Promact.Oauth.Server.Data
             
         }
         public DbSet<Project> Projects { get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
     }
 }
