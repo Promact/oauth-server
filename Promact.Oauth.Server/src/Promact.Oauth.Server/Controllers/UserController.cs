@@ -10,6 +10,7 @@ using Promact.Oauth.Server.Models.ManageViewModels;
 
 namespace Promact.Oauth.Server.Controllers
 {
+    [Route("api/User")]
     public class UserController : Controller
     {
         private readonly IUserRepository userRepository;
@@ -35,17 +36,17 @@ namespace Promact.Oauth.Server.Controllers
         /// Register Users to the database
         /// </summary>
         /// <param name="user">ApplicationUser Object</param>
-        [HttpPost]
-        [Authorize(Roles = "Admin")]
-        public IActionResult RegisterUser(ApplicationUser user)
-        {
-            if(ModelState.IsValid)
-            {
-                userRepository.AddUser(user);
-            }
+        //[HttpPost]
+        //[Authorize(Roles = "Admin")]
+        //public IActionResult RegisterUser(ApplicationUser user)
+        //{
+        //    if(ModelState.IsValid)
+        //    {
+        //        userRepository.AddUser(user);
+        //    }
 
-            return View(user);
-        }
+        //    return View(user);
+        //}
 
         /// <summary>
         /// Edits the details of an employee
