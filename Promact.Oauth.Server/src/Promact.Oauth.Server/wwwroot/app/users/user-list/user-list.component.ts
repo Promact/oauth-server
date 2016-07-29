@@ -1,22 +1,28 @@
-﻿import {Component, OnInit} from '@angular/core';
-import {RouterConfig} from '@angular/router';
-import {RouteConfig, ROUTER_DIRECTIVES, Router, RouteParams} from "@angular/router-deprecated";
-
-import {UserService} from '../user-service';
+﻿import {Component} from "@angular/core";
+import { UserService }   from '../user.service';
+import {UserModel} from '../user.model';
 
 @Component({
-    selector: '',
-    //templateUrl: './user-list/user-list.html'
-    template: '<h3>user-list-component</h3>'
+    templateUrl: "app/users/user-list/user-list.html"
 })
 
-
 export class UserListComponent {
+    users: Array<UserModel>;
+    user: UserModel;
 
-    constructor(private userService: UserService) { }
+    constructor(private userService: UserService) {
+        this.users = new Array<UserModel>();
+        this.user = new UserModel();
+    }
 
-    ngOnInit()
-    {
-        this.userService.getUsers();
+    getUsers() {
+        this.userService.getUsers().subscribe((users) => {
+            this.users = users
+        }, err => {
+        });
+    }
+      
+    ngOnInit() {
+        this.getUsers();
     }
 }

@@ -42,6 +42,10 @@ namespace Promact.Oauth.Server
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //var builder = new ContainerBuilder();
+            //builder.RegisterType<AuthMessageSender>().As<IEmailSender>().InstancePerDependency();
+            //builder.RegisterType<AuthMessageSender>().As<ISmsSender>().InstancePerDependency();
+
             // Add framework services.
             services.AddDbContext<PromactOauthDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -94,7 +98,7 @@ namespace Promact.Oauth.Server
                     name: "default",
                     //template: "{controller=Account}/{action=Login}");
                     template: "{controller=Home}/{action=Index}/{id?}");
-            });
+            });     
         }
     }
 }
