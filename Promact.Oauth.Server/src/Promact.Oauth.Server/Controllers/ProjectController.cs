@@ -14,8 +14,8 @@ namespace Promact.Oauth.Server.Controllers
     [Route("api/[controller]")]
     public class ProjectController : Controller
     {
-        private readonly ApplicationDbContext _appDbContext;
-        public ProjectController(ApplicationDbContext appContext)
+        private readonly PromactOauthDbContext _appDbContext;
+        public ProjectController(PromactOauthDbContext appContext)
         {
             _appDbContext = appContext;
         }
@@ -33,18 +33,25 @@ namespace Promact.Oauth.Server.Controllers
                 {
                     Id=x.Id,
                     Name = x.Name,
-                    description=x.description,
-                    callbackUrl=x.callbackUrl
+                    SlackChannelName=x.SlackChannelName,
+                    IsActive=x.IsActive
 
                 });
             });
             return new List<ProjectAc>
             {
                 new ProjectAc {
-                    Name="Huddle"
+                    Id=1,
+                    Name="Huddle",
+                    SlackChannelName="test",
+                    IsActive=true
                 },
                 new ProjectAc {
-                    Name="Whiteboard"
+                    Id=2,
+                    Name="Whiteboard",
+                    SlackChannelName="test1",
+                    IsActive=true
+
                 }
             };//projectAcs;
         }
@@ -65,8 +72,8 @@ namespace Promact.Oauth.Server.Controllers
             _appDbContext.Projects.Add(new Models.Project
             {
                 Name = project.Name,
-                description = project.description,
-                callbackUrl=project.callbackUrl
+                SlackChannelName = project.SlackChannelName,
+                IsActive=project.IsActive
                 
             });
             _appDbContext.SaveChanges();

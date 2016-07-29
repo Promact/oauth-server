@@ -8,13 +8,23 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-const core_1 = require("@angular/core");
+const core_1 = require('@angular/core');
+const router_1 = require('@angular/router');
+const http_service_1 = require('./http.service');
 let AppComponent = class AppComponent {
 };
 AppComponent = __decorate([
     core_1.Component({
-        selector: "my-app",
-        template: "<h1>My First Angular 2 App</h1>"
+        selector: 'my-app',
+        template: `
+    <h1>Component Router</h1>
+<nav>
+        <a routerLink="/project" routerLinkActive="active">Projects</a>
+</nav>
+    <router-outlet></router-outlet>
+  `,
+        directives: [router_1.ROUTER_DIRECTIVES],
+        providers: [http_service_1.HttpService]
     }), 
     __metadata('design:paramtypes', [])
 ], AppComponent);

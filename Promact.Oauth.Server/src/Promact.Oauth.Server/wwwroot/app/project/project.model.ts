@@ -1,6 +1,7 @@
 ﻿export class projectModel {
-    id: number;
-    name: string;
-    description: string;
-    callbackUrl: string;
+    Id: number;
+    Name: string;
+    SlackChannelName: string;
+    IsActive: boolean;
+
 }
