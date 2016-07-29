@@ -13,7 +13,7 @@ import {UserListComponent} from './user-list/user-list.component';
     directives: [RouterOutlet]
 })
 
-
+     
     @RouteConfig([
         {
             path: '/',
