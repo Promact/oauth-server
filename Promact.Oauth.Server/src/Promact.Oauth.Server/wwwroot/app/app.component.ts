@@ -1,13 +1,15 @@
 ﻿import { Component } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
 import { HttpService}   from './http.service';
+
 @Component({
     selector: 'my-app',
     template: `
     <h1>Component Router</h1>
-<nav>
+    <nav>
+        <a routerLink="/user" routerLinkActive="active">Users</a>
         <a routerLink="/project" routerLinkActive="active">Projects</a>
-</nav>
+    </nav>
     <router-outlet></router-outlet>
   `,
     directives: [ROUTER_DIRECTIVES],

@@ -14,8 +14,9 @@ export class UserService {
         return this.httpService.get(this.UserUrl + "/users");
     }
 
-    registerUser() {
+    registerUser(newUser) {
+        return this.httpService.post(this.UserUrl + "/add", newUser);
     }
 
-    
+
 }

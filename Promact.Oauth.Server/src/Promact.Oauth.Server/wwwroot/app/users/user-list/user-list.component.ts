@@ -21,7 +21,7 @@ export class UserListComponent {
         }, err => {
         });
     }
-      
+
     ngOnInit() {
         this.getUsers();
     }

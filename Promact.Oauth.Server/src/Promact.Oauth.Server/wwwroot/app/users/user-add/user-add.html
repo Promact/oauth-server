@@ -1,1 +1,43 @@
-﻿lalnalknalknalkn
+﻿<center>
+    <h1>{{title}}</h1>
+    <h2>User Registration</h2>
+
+    <form>
+        <div>
+            <label>First Name:</label>
+            <input type="text" name="firstName" [(ngModel)]="userModel.firstName" />
+        </div>
+        <div><br /></div>
+        <div>
+            <label>Last Name:</label>
+            <input type="text" name="lastName" [(ngModel)]="userModel.lastName" />
+        </div>
+        <div><br /></div>
+        <div>
+            <label>Email:</label>
+            <input type="email" name="email" [(ngModel)]="userModel.email" />
+        </div>
+        <div><br /></div>
+        <div>
+            <label>Role:</label>
+            <!--<input type="text" name="Role" />-->
+            <select [(ngModel)]="userModel.role">
+                <option selected="selected">--Select role--</option>
+                <option>Web Designer</option>
+                <option>Developer</option>
+                <option>Administrator</option>
+                <option>QA Tester</option>
+            </select>
+        </div>
+        <div><br /></div>
+        <div>
+            <label>Status:</label>
+
+        </div>
+
+        <div>
+            <button type="submit" (click)="addUser(pro)">Add</button>
+        </div>
+    </form>
+
+</center>

@@ -18,9 +18,10 @@ AppComponent = __decorate([
         selector: 'my-app',
         template: `
     <h1>Component Router</h1>
-<nav>
+    <nav>
+        <a routerLink="/user" routerLinkActive="active">Users</a>
         <a routerLink="/project" routerLinkActive="active">Projects</a>
-</nav>
+    </nav>
     <router-outlet></router-outlet>
   `,
         directives: [router_1.ROUTER_DIRECTIVES],

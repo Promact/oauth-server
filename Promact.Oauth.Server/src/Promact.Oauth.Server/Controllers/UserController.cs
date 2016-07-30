@@ -10,7 +10,7 @@ using Promact.Oauth.Server.Models.ManageViewModels;
 
 namespace Promact.Oauth.Server.Controllers
 {
-    [Route("api/User")]
+    [Route("api/[controller]")]
     public class UserController : Controller
     {
         private readonly IUserRepository userRepository;
@@ -26,10 +26,10 @@ namespace Promact.Oauth.Server.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Authorize(Roles = "Admin")]
-        public IActionResult AllUsers()
+        [Route("users")]
+        public IEnumerable<ApplicationUser> AllUsers()
         {
-            return View(userRepository.GetAllUsers());
+            return userRepository.GetAllUsers();
         }
 
         /// <summary>

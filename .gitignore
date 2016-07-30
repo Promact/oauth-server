@@ -256,3 +256,4 @@ paket-files/
 **/app/**/*.js
 **/app/**/*.js.map
 **/typings/
+/Promact.Oauth.Server/src/Promact.Oauth.Server/Models/ApplicationClasses/RoleAc.cs
