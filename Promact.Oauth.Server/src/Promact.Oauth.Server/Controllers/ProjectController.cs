@@ -25,19 +25,19 @@ namespace Promact.Oauth.Server.Controllers
         [Route("projects")]
         public IEnumerable<ProjectAc> Get()
         {
-            var projects = _appDbContext.Projects?.ToList();
-            var projectAcs = new List<ProjectAc>();
-            projects?.ForEach(x =>
-            {
-                projectAcs.Add(new ProjectAc
-                {
-                    Id=x.Id,
-                    Name = x.Name,
-                    SlackChannelName=x.SlackChannelName,
-                    IsActive=x.IsActive
+            //var projects = _appDbContext.Projects?.ToList();
+            //var projectAcs = new List<ProjectAc>();
+            //projects?.ForEach(x =>
+            //{
+            //    projectAcs.Add(new ProjectAc
+            //    {
+            //        Id=x.Id,
+            //        Name = x.Name,
+            //        SlackChannelName=x.SlackChannelName,
+            //        IsActive=x.IsActive
 
-                });
-            });
+            //    });
+            //});
             return new List<ProjectAc>
             {
                 new ProjectAc {
