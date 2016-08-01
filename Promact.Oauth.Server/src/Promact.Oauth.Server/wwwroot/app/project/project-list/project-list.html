@@ -1,5 +1,6 @@
 ﻿<h1>{{title}}</h1>
 <h2>My Project</h2>
+<a routerLink="add" routerLinkActive="active">Project Add</a>
 <ul class="pros">
     <li *ngFor="let pro of pros"
         [class.selected]="pro === selectedPro"

@@ -25,35 +25,36 @@ namespace Promact.Oauth.Server.Controllers
         [Route("projects")]
         public IEnumerable<ProjectAc> Get()
         {
-            //var projects = _appDbContext.Projects?.ToList();
-            //var projectAcs = new List<ProjectAc>();
-            //projects?.ForEach(x =>
-            //{
-            //    projectAcs.Add(new ProjectAc
-            //    {
-            //        Id=x.Id,
-            //        Name = x.Name,
-            //        SlackChannelName=x.SlackChannelName,
-            //        IsActive=x.IsActive
-
-            //    });
-            //});
-            return new List<ProjectAc>
+            var projects = _appDbContext.Projects?.ToList();
+            var projectAcs = new List<ProjectAc>();
+            projects?.ForEach(x =>
             {
-                new ProjectAc {
-                    Id=1,
-                    Name="Huddle",
-                    SlackChannelName="test",
-                    IsActive=true
-                },
-                new ProjectAc {
-                    Id=2,
-                    Name="Whiteboard",
-                    SlackChannelName="test1",
-                    IsActive=true
+                projectAcs.Add(new ProjectAc
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    SlackChannelName = x.SlackChannelName,
+                    IsActive = x.IsActive
 
-                }
-            };//projectAcs;
+                });
+            });
+            return projectAcs;
+            //    new List<ProjectAc>
+            //{
+            //    new ProjectAc {
+            //        Id=1,
+            //        Name="Huddle",
+            //        SlackChannelName="test",
+            //        IsActive=true
+            //    },
+            //    new ProjectAc {
+            //        Id=2,
+            //        Name="Whiteboard",
+            //        SlackChannelName="test1",
+            //        IsActive=true
+
+            //    }
+            //};//projectAcs;
         }
 
         // GET api/values/5

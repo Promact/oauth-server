@@ -13,6 +13,7 @@ namespace Promact.Oauth.Server.Data
         public PromactOauthDbContext(DbContextOptions<PromactOauthDbContext> options)
             : base(options)
         {
+            
         }
 
         public DbSet<Apps> Apps { get; set; }

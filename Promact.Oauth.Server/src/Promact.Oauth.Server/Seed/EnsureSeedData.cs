@@ -18,6 +18,7 @@ namespace Promact.Oauth.Server.Seed
         public EnsureSeedData(PromactOauthDbContext _context)
         {
             context = _context;
+            context.Database.EnsureCreated();
         }
 
         public void Seed(IServiceProvider serviceProvider)
@@ -29,6 +30,7 @@ namespace Promact.Oauth.Server.Seed
             if (!roleManager.Roles.Any())
             {
                 List<IdentityRole> roles = new List<IdentityRole>();
+                roles.Add(new IdentityRole { Name = "Admin", NormalizedName = "ADMIN" });
                 roles.Add(new IdentityRole { Name = "Developer", NormalizedName = "DEVELOPER" });
                 roles.Add(new IdentityRole { Name = "Web Designer", NormalizedName = "WEB DESIGNER" });
                 roles.Add(new IdentityRole { Name = "QA Tester", NormalizedName = "QA TESTER" });
@@ -46,13 +48,13 @@ namespace Promact.Oauth.Server.Seed
 
 
             //Add Admin
-            var adminUser = userManager.FindByEmailAsync("admin@promactinfo.com").Result;
+            var adminUser = userManager.FindByEmailAsync("roshni@promactinfo.com").Result;
             if (adminUser == null)
             {
                 var newAdmin = new ApplicationUser()
                 {
-                    UserName = "admin@promactinfo.com",
-                    Email = "admin@promactinfo.com",
+                    UserName = "roshni@promactinfo.com",
+                    Email = "roshni@promactinfo.com",
                     FirstName = "Admin",
                     LastName = "Promact",
                     Status = true

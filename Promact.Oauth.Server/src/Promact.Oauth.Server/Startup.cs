@@ -72,14 +72,14 @@ namespace Promact.Oauth.Server
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
+            //Call the Seed method in (Seed.EnsureSeedData) to create initial Admin
+            seeder.Seed(serviceProvider);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
                 app.UseBrowserLink();
-
-                //Call the Seed method in (Seed.EnsureSeedData) to create initial Admin
-                seeder.Seed(serviceProvider);
             }
             else
             {
@@ -98,7 +98,7 @@ namespace Promact.Oauth.Server
                     name: "default",
                     //template: "{controller=Account}/{action=Login}");
                     template: "{controller=Home}/{action=Index}/{id?}");
-            });     
+            });
         }
     }
 }
