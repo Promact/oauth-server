@@ -17,7 +17,7 @@ export class UserAddComponent {
         this.userModel = new UserModel();
     }
 
-    addUser() {
+    addUser(userModel) {
         this.userService.registerUser(this.userModel).subscribe((users) => {
             //this.users = users
         }, err => {

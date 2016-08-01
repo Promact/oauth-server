@@ -1,7 +1,7 @@
-﻿export class UserModel {
-    id: number;
-    firstname: string;
-    lastname: string;
-    designation: string;
-    status: boolean;
-}
+﻿    export class UserModel {
+        FirstName: string;
+        LastName: string;
+        Status: boolean;
+        Email: string;
+        Designation: string;
+    }

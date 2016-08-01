@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Promact.Oauth.Server.Repository;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Models.ManageViewModels;
+using Microsoft.AspNetCore.Identity;
+using Promact.Oauth.Server.Models.ApplicationClass;
 
 namespace Promact.Oauth.Server.Controllers
 {
@@ -14,10 +16,14 @@ namespace Promact.Oauth.Server.Controllers
     public class UserController : Controller
     {
         private readonly IUserRepository userRepository;
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
 
-        public UserController(IUserRepository _userRepository)
+        public UserController(IUserRepository _userRepository, UserManager<ApplicationUser> _userManager, SignInManager<ApplicationUser> _signInManager)
         {
             userRepository = _userRepository;
+            userManager = _userManager;
+            signInManager = _signInManager;
         }
 
 
@@ -32,21 +38,6 @@ namespace Promact.Oauth.Server.Controllers
             return userRepository.GetAllUsers();
         }
 
-        /// <summary>
-        /// Register Users to the database
-        /// </summary>
-        /// <param name="user">ApplicationUser Object</param>
-        //[HttpPost]
-        //[Authorize(Roles = "Admin")]
-        //public IActionResult RegisterUser(ApplicationUser user)
-        //{
-        //    if(ModelState.IsValid)
-        //    {
-        //        userRepository.AddUser(user);
-        //    }
-
-        //    return View(user);
-        //}
 
         /// <summary>
         /// Edits the details of an employee
@@ -55,6 +46,7 @@ namespace Promact.Oauth.Server.Controllers
         /// <returns></returns>
         [HttpPut]
         [Authorize(Roles = "Admin")]
+        [Route("edit")]
         public IActionResult UpdateUser(ApplicationUser editedUser)
         {
             if(ModelState.IsValid)
@@ -64,6 +56,20 @@ namespace Promact.Oauth.Server.Controllers
             }
             return NotFound();
         }
+
+
+        /// <summary>
+        /// Register Users to the database
+        /// </summary>
+        /// <param name="user">ApplicationUser Object</param>
+        [HttpPost]
+        [Route("add")]
+        public UserModel RegisterUser([FromBody] UserModel newUser)
+        {
+            userRepository.AddUser(newUser);
+            return newUser;
+        }
+
 
     }
 }

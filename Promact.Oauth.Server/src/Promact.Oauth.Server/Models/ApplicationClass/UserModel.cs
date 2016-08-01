@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Promact.Oauth.Server.Models.ApplicationClass
 {
-    public class UserViewModel
+    public class UserModel
     {
         public string FirstName { get; set; }
         

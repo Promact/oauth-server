@@ -5,27 +5,25 @@
     <form>
         <div>
             <label>First Name:</label>
-            <input type="text" name="firstName" [(ngModel)]="userModel.firstName" />
+            <input type="text" name="FirstName" [(ngModel)]="userModel.FirstName" />
         </div>
         <div><br /></div>
         <div>
             <label>Last Name:</label>
-            <input type="text" name="lastName" [(ngModel)]="userModel.lastName" />
+            <input type="text" name="LastName" [(ngModel)]="userModel.LastName" />
         </div>
         <div><br /></div>
         <div>
             <label>Email:</label>
-            <input type="email" name="email" [(ngModel)]="userModel.email" />
+            <input type="email" name="Email" [(ngModel)]="userModel.Email" />
         </div>
         <div><br /></div>
         <div>
             <label>Role:</label>
-            <!--<input type="text" name="Role" />-->
-            <select [(ngModel)]="userModel.role">
-                <option selected="selected">--Select role--</option>
+            <select [(ngModel)]="userModel.Designation">
+                <option selected="selected">--Select Designation--</option>
                 <option>Web Designer</option>
                 <option>Developer</option>
-                <option>Administrator</option>
                 <option>QA Tester</option>
             </select>
         </div>

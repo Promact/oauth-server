@@ -12,9 +12,9 @@ namespace Promact.Oauth.Server.Models
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [DataType(DataType.DateTime)]
+        //[DataType(DataType.DateTime)]
         [Display(Name = "Created By")]
-        public DateTime CreatedBy { get; set; }
+        public int CreatedBy { get; set; }
 
         [Display(Name = "Created Date")]
         [DataType(DataType.DateTime)]
