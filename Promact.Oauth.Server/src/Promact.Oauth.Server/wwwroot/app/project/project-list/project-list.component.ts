@@ -23,7 +23,10 @@ export class ProjectListComponent{
     ngOnInit() {
         this.getPros();
     }
-    editProject(pro: projectModel) {
-        this.router.navigate(['/edit', pro.Id]);
+    editProject(Id) {
+        this.router.navigate(['/project/edit', Id]);
+    }
+    viewProject(Id) {
+        this.router.navigate(['/project/view', Id]);
     }
 }
