@@ -15,6 +15,7 @@ using Promact.Oauth.Server.Services;
 using Promact.Oauth.Server.Seed;
 using Promact.Oauth.Server.Repository;
 using Promact.Oauth.Server.Data_Repository;
+using Promact.Oauth.Server.Repository.ProjectsRepository;
 
 namespace Promact.Oauth.Server
 {
@@ -57,6 +58,7 @@ namespace Promact.Oauth.Server
             //Register application services
             services.AddScoped<IEnsureSeedData, EnsureSeedData>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped(typeof(IDataRepository<>), typeof(DataRepository<>));
 
             services.AddMvc();
@@ -72,14 +74,14 @@ namespace Promact.Oauth.Server
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
+            //Call the Seed method in (Seed.EnsureSeedData) to create initial Admin
+            seeder.Seed(serviceProvider);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
                 app.UseBrowserLink();
-
-                //Call the Seed method in (Seed.EnsureSeedData) to create initial Admin
-                seeder.Seed(serviceProvider);
             }
             else
             {
@@ -98,7 +100,7 @@ namespace Promact.Oauth.Server
                     name: "default",
                     //template: "{controller=Account}/{action=Login}");
                     template: "{controller=Home}/{action=Index}/{id?}");
-            });     
+            });
         }
     }
 }

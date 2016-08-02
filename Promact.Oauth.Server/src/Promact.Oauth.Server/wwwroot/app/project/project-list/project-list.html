@@ -1,5 +1,6 @@
-﻿<h1>{{title}}</h1>
+﻿<!--<h1>{{title}}</h1>
 <h2>My Project</h2>
+<a routerLink="add" routerLinkActive="active">Project Add</a>
 <ul class="pros">
     <li *ngFor="let pro of pros"
         [class.selected]="pro === selectedPro"
@@ -7,16 +8,33 @@
         
         {{pro.name}}
         <button class="delete-button" (click)="deleteProject(pro.id)">Delete</button>
+        <button (click)="editProject(pro)">Edit</button>
     </li>
-</ul>
-<!--<input [(ngModel)]="projectToAdd"/>
-<button (click)="addProject(projectToAdd)">Add New Project</button>-->
-<!--<input [(ngModel)]="pro.id" />-->
-<!--Name :<input [(ngModel)]="pro.name" />
-Description :<input [(ngModel)]="pro.description" />
-CallbackUrl :<input [(ngModel)]="pro.callbackUrl" />
-<button (click)="addProject(pro)">Add New Project</button>
-<div *ngIf="addingProject">
-    <my-hero-detail (close)="close($event)"></my-hero-detail>
-</div>
-<my-pro-detail [pro]="selectedPro"></my-pro-detail>-->
+</ul>-->
+<center>
+    <h1>{{title}}</h1>
+    <h2>Projects</h2>
+    <a routerLink="add" routerLinkActive="active">Project Add</a>
+    <table>
+        <thead>
+            <tr>
+                <th>Project Name</th>
+                <th>Slack Channel Name</th>
+                <th>Is Active</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let pro of pros">
+                <td>{{pro.name}}</td>
+                <td>{{pro.slackChannelName}}</td>
+                <td>{{pro.isActive}}</td>
+                <td><button class="delete-button" (click)="deleteProject(pro.id)">Delete</button></td>
+                <td><button (click)="editProject(pro.id)">Edit</button></td>
+                <td><button (click)="viewProject(pro.id)">View</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+</center>
+
+

@@ -18,6 +18,7 @@ namespace Promact.Oauth.Server.Seed
         public EnsureSeedData(PromactOauthDbContext _context)
         {
             context = _context;
+            context.Database.EnsureCreated();
         }
 
         public void Seed(IServiceProvider serviceProvider)
@@ -45,13 +46,13 @@ namespace Promact.Oauth.Server.Seed
 
 
             //Add Admin
-            var adminUser = userManager.FindByEmailAsync("admin@promactinfo.com").Result;
+            var adminUser = userManager.FindByEmailAsync("roshni@promactinfo.com").Result;
             if (adminUser == null)
             {
                 var newAdmin = new ApplicationUser()
                 {
-                    UserName = "admin@promactinfo.com",
-                    Email = "admin@promactinfo.com",
+                    UserName = "roshni@promactinfo.com",
+                    Email = "roshni@promactinfo.com",
                     FirstName = "Admin",
                     LastName = "Promact",
                     Status = true

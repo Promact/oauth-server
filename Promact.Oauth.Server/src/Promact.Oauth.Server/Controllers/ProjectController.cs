@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Promact.Oauth.Server.Models.ApplicationClasses;
 using Promact.Oauth.Server.Data;
 using Microsoft.EntityFrameworkCore;
+using Promact.Oauth.Server.Repository.ProjectsRepository;
+using Promact.Oauth.Server.Models;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -15,76 +17,87 @@ namespace Promact.Oauth.Server.Controllers
     public class ProjectController : Controller
     {
         private readonly PromactOauthDbContext _appDbContext;
-        public ProjectController(PromactOauthDbContext appContext)
+        private readonly IProjectRepository projectRepository;
+        public ProjectController(PromactOauthDbContext appContext, IProjectRepository _projectRepository)
         {
+            projectRepository = _projectRepository;
             _appDbContext = appContext;
         }
 
         // GET: api/values
         [HttpGet]
         [Route("projects")]
-        public IEnumerable<ProjectAc> Get()
+        public IEnumerable<Project> Get()
         {
-            var projects = _appDbContext.Projects?.ToList();
-            var projectAcs = new List<ProjectAc>();
-            projects?.ForEach(x =>
-            {
-                projectAcs.Add(new ProjectAc
-                {
-                    Id=x.Id,
-                    Name = x.Name,
-                    SlackChannelName=x.SlackChannelName,
-                    IsActive=x.IsActive
+            return projectRepository.GetAllProjects();
+            //var projects = _appDbContext.Projects?.ToList();
+            //var projectAcs = new List<ProjectAc>();
+            //projects?.ForEach(x =>
+            //{
+            //    projectAcs.Add(new ProjectAc
+            //    {
+            //        Id = x.Id,
+            //        Name = x.Name,
+            //        SlackChannelName = x.SlackChannelName,
+            //        IsActive = x.IsActive
 
-                });
-            });
-            return new List<ProjectAc>
-            {
-                new ProjectAc {
-                    Id=1,
-                    Name="Huddle",
-                    SlackChannelName="test",
-                    IsActive=true
-                },
-                new ProjectAc {
-                    Id=2,
-                    Name="Whiteboard",
-                    SlackChannelName="test1",
-                    IsActive=true
+            //    });
+            //});
+            //return projectAcs;
+            //    new List<ProjectAc>
+            //{
+            //    new ProjectAc {
+            //        Id=1,
+            //        Name="Huddle",
+            //        SlackChannelName="test",
+            //        IsActive=true
+            //    },
+            //    new ProjectAc {
+            //        Id=2,
+            //        Name="Whiteboard",
+            //        SlackChannelName="test1",
+            //        IsActive=true
 
-                }
-            };//projectAcs;
+            //    }
+            //};//projectAcs;
         }
 
         // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet]
+        [Route("getProjects/{id}")]
+        public Project Get(int id)
         {
-            return "value";
+            return projectRepository.GetById(id);
+            //return "value";
         }
 
         // POST api/values
         [HttpPost]
         [Route("addProject")]
-        public IActionResult Post([FromBody]ProjectAc project)
+        public Project Post([FromBody]Project project)
         {
             //if (_appDbContext.Projects == null) _appDbContext.Projects = new DbSet<Models.Project>();
-            _appDbContext.Projects.Add(new Models.Project
-            {
-                Name = project.Name,
-                SlackChannelName = project.SlackChannelName,
-                IsActive=project.IsActive
-                
-            });
-            _appDbContext.SaveChanges();
-            return RedirectToAction("Get");
+            //Today
+            //_appDbContext.Projects.Add(new Models.Project
+            //{
+            //    Name = project.Name,
+            //    SlackChannelName = project.SlackChannelName,
+            //    IsActive=project.IsActive
+
+            //});
+            //_appDbContext.SaveChanges();
+            //return RedirectToAction("Get");
+            //End Today
+            projectRepository.AddProject(project);
+            return project;
         }
 
         // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        [HttpPut]
+        [Route("editProject")]
+        public void Put(int id, [FromBody]Project project)
         {
-
+            projectRepository.EditProject(project);
         }
 
         // DELETE api/values/5

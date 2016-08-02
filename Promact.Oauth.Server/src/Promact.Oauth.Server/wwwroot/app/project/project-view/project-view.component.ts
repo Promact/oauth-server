@@ -4,10 +4,10 @@ import {projectModel} from '../project.model'
 import { ROUTER_DIRECTIVES, Router, ActivatedRoute } from '@angular/router';
 
 @Component({
-    templateUrl: "app/project/project-edit/project-edit.html",
+    templateUrl: "app/project/project-view/project-view.html",
     directives: []
 })
-export class ProjectEditComponent implements OnInit, OnDestroy {
+export class ProjectViewComponent implements OnInit, OnDestroy{
     pro: projectModel;
     private sub: any;
     constructor(
@@ -27,12 +27,4 @@ export class ProjectEditComponent implements OnInit, OnDestroy {
         this.sub.unsubscribe();
     }
     gotoProjects() { this.router.navigate(['/project/']); }
-
-    editProject(pro: projectModel) {
-        this.service.editProject(pro).subscribe((pro) => {
-            this.pro = pro
-        }, err => {
-
-        });
-    }
 }

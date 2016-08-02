@@ -1,10 +1,34 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title></title>
-</head>
-<body>
+﻿<!--Name :<input [(ngModel)]="pro.name" />
+SlackChannelName :<input [(ngModel)]="pro.SlackChannelName" />
+IsActive :<input [(ngModel)]="pro.IsActive" />
+<button (click)="addProject(pro)">Add New Project</button>
+<h1>Add Project</h1>-->
 
-</body>
-</html>
+<center>
+    <h1>{{title}}</h1>
+    <h2>Add Project</h2>
+
+    <form>
+        <div>
+            <label>Name:</label>
+            <input type="text" name="Name" [(ngModel)]="pro.name" />
+        </div>
+        <div><br /></div>
+        <div>
+            <label>Slack Channel Name:</label>
+            <input type="text" name="Slack Channel Name" [(ngModel)]="pro.SlackChannelName" />
+        </div>
+        <div><br /></div>
+        <div>
+            <label>IsActive:</label>
+            <input type="text" name="IsActive" [(ngModel)]="pro.IsActive" />
+        </div>
+        <div><br /></div>
+        
+
+        <div>
+            <button type="submit" (click)="addProject(pro)">Add New Project</button>
+        </div>
+    </form>
+
+</center>

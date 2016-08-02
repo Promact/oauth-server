@@ -1,10 +1,53 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title></title>
-</head>
-<body>
+﻿<h1>Edit Projects</h1>
+<center>
+<div *ngIf="pro">
+    <table>
+        <tr>
+            <td>
+                Id:
+            </td>
+            <td>
+                <input type="text" name="Id" [(ngModel)]="pro.id" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Name:
+            </td>
+            <td>
+                <input type="text" name="Name" [(ngModel)]="pro.name" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Slack Channel Name:
+            </td>
+            <td>
+                <input type="text" name="Name" [(ngModel)]="pro.slackChannelName" />
+            </td>
+        </tr>
+        <tr>
 
-</body>
-</html>
+            <td>
+                IsActive:
+            </td>
+            <td>
+                <input type="text" name="Name" [(ngModel)]="pro.isActive" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button (click)="editProject(pro)">Edit</button>
+            </td>
+            <td>
+                <button (click)="gotoProjects()">Back</button>
+            </td>
+        </tr>
+    </table>
+    <p>
+       
+    </p>
+</div>
+</center>
+
+
