@@ -47,5 +47,14 @@ namespace Promact.Oauth.Server.Data_Repository
             promactDbContext.Entry(entity).State = EntityState.Modified;
             promactDbContext.SaveChanges();
         }
+
+        
+        /// <summary>
+        /// Saves the changes of the database context
+        /// </summary>
+        public void Save()
+        {
+            promactDbContext.SaveChanges();
+        }
     }
 }

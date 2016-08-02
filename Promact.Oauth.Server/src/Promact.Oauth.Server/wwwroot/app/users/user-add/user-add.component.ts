@@ -8,7 +8,7 @@ import {UserModel} from '../user.model';
 })
 
 export class UserAddComponent {
-    //users: Array<UserModel>;
+    
     @Input()
     userModel: UserModel;
 
@@ -19,7 +19,7 @@ export class UserAddComponent {
 
     addUser(userModel) {
         this.userService.registerUser(this.userModel).subscribe((users) => {
-            //this.users = users
+            
         }, err => {
         });
     }

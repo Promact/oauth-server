@@ -19,5 +19,11 @@ export class UserService {
         return this.httpService.post(this.UserUrl + "/add", newUser);
     }
 
+    getUserById(userId: string) {
+        return this.httpService.get(this.UserUrl + "/" + userId);
+    }
 
+    editUser(editedUser: UserModel) {
+        return this.httpService.put(this.UserUrl + "/edit", editedUser);
+    }
 }

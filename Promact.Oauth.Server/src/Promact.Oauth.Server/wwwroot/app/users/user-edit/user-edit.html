@@ -1,1 +1,32 @@
-﻿akjnbkajbkajb
+﻿<center>
+    <h1>{{title}}</h1>
+    <h2>User Edit</h2>
+
+    <form>
+        <div>
+            <label>First Name:</label>
+            <input type="text" name="FirstName" [(ngModel)]="user.firstName"/>
+        </div>
+        <div><br /></div>
+        <div>
+            <label>Last Name:</label>
+            <input type="text" name="LastName" [(ngModel)]="user.lastName"/>
+        </div>
+        <div><br /></div>
+        <div>
+            <label>Email:</label>
+            <input type="email" name="Email" [(ngModel)]="user.email"/>
+        </div>
+        <div><br /></div>
+        <div>
+            <label>Status:</label>
+            <input type="radio" name="status" [(ngModel)]="user.status"/>Active  
+            <input type="radio" name="status" [(ngModel)]="user.status"/>Inactive
+        </div>
+        <div>
+            <br/>
+            <button type="submit" (click)="editUser(user)">Update</button>
+        </div>
+    </form>
+
+</center>
