@@ -5,12 +5,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Promact.Oauth.Server.Data;
 
-namespace Promact.Oauth.Server.Data.Migrations
+namespace Promact.Oauth.Server.Migrations
 {
     [DbContext(typeof(PromactOauthDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20160803060820_changesinProjectandUserModels")]
+    partial class changesinProjectandUserModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431")

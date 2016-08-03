@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Promact.Oauth.Server.Models
 {
@@ -21,6 +22,8 @@ namespace Promact.Oauth.Server.Models
         [Required]
         public bool IsActive { get; set; }
 
-        public virtual ICollection<ProjectUser> ProjectUsers { get; set; }        
+        [NotMapped]
+        public virtual ICollection<Project> Projects { get; set; }
+        //public virtual ICollection<ProjectUser> ProjectUsers { get; set; }        
     }
 }
