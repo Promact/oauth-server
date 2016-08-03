@@ -19,7 +19,7 @@ namespace Promact.Oauth.Server.Models
         public string LastName { get; set; }
 
         [Required]
-        public bool Status { get; set; }
+        public bool IsActive { get; set; }
 
         public virtual ICollection<ProjectUser> ProjectUsers { get; set; }        
     }

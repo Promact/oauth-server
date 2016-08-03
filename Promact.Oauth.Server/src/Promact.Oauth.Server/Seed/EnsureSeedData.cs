@@ -55,7 +55,7 @@ namespace Promact.Oauth.Server.Seed
                     Email = "roshni@promactinfo.com",
                     FirstName = "Admin",
                     LastName = "Promact",
-                    Status = true
+                    IsActive = true
                 };
                 userManager.CreateAsync(newAdmin, "Admin@123").Wait();
 

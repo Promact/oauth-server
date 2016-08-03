@@ -2,8 +2,8 @@
     Id: string;
     FirstName: string;
     LastName: string;
-    Status: boolean;
+    IsActive: boolean;
     Email: string;
     Password: string;
-    NormalizedUserName: string;
+    UserName: string;
 }

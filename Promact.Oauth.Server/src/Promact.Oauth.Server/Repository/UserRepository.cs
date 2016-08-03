@@ -35,7 +35,7 @@ namespace Promact.Oauth.Server.Repository
                 LastName = newUser.LastName,
                 Email = newUser.Email,
                 UserName = newUser.Email,
-                Status = newUser.Status
+                IsActive = newUser.IsActive
             };
             userManager.CreateAsync(user, newUser.Password).Wait();
             
@@ -58,7 +58,7 @@ namespace Promact.Oauth.Server.Repository
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     Email = user.Email,
-                    Status = user.Status
+                    IsActive = user.IsActive
                 };
                 userList.Add(list);
             }
@@ -73,16 +73,12 @@ namespace Promact.Oauth.Server.Repository
         /// <param name="editedUser"></param>
         public void UpdateUserDetails(UserModel editedUser)
         {
-            var user = new ApplicationUser
-            {
-                FirstName = editedUser.FirstName,
-                LastName = editedUser.LastName,
-                Email = editedUser.Email,
-                UserName = editedUser.Email,
-                Status = editedUser.Status
-            };
-            //applicationUserDataRepository.Update(user);
-            userManager.UpdateAsync(user).Wait();
+            var user = userManager.FindByIdAsync(editedUser.Id).Result;
+            user.FirstName = editedUser.FirstName;
+            user.LastName = editedUser.LastName;
+            user.Email = editedUser.Email;
+            user.IsActive = editedUser.IsActive;
+            var a = userManager.UpdateAsync(user).Result;
             applicationUserDataRepository.Save();
         }
 
@@ -106,7 +102,7 @@ namespace Promact.Oauth.Server.Repository
                         FirstName = user.FirstName,
                         LastName = user.LastName,
                         Email = user.Email,
-                        Status = user.Status,
+                        IsActive = user.IsActive,
                         UserName = user.UserName
                     };
                     return requiredUser; 
