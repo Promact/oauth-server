@@ -19,7 +19,7 @@ export class ProjectAddComponent {
         }, err => {
 
         });
-    }
+    } 
     ngOnInit() {
         this.pro = new projectModel();
         //this.addProject(this.pro);
