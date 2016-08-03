@@ -13,16 +13,6 @@ export class ProjectAddComponent {
         this.pros = new Array<projectModel>();
         this.pro = new projectModel();
     }
-    //addProject(pro: projectModel) {
-    //    let project = new projectModel();
-    //    project.name = pro.name;
-    //    project.description = pro.description;
-    //    project.callbackUrl = pro.callbackUrl;
-
-    //    this.proService.addProject(project).subscribe(() => {
-    //        console.log("Test");
-    //    });
-
     addProject(pro: projectModel) {
         this.proService.addProject(pro).subscribe((pro) => {
             this.pro = pro
