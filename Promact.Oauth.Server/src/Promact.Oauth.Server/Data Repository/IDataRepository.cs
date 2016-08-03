@@ -10,5 +10,6 @@ namespace Promact.Oauth.Server.Data_Repository
         void Add(T entity);
         IEnumerable<T> List();
         void Update(T entity);
+        void Save();
     }
 }

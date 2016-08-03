@@ -6,6 +6,7 @@ using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Data_Repository;
 using Microsoft.AspNetCore.Identity;
 using Promact.Oauth.Server.Models.ApplicationClass;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Promact.Oauth.Server.Repository
 {
@@ -34,11 +35,9 @@ namespace Promact.Oauth.Server.Repository
                 LastName = newUser.LastName,
                 Email = newUser.Email,
                 UserName = newUser.Email,
-                Status = newUser.Status
+                IsActive = newUser.IsActive
             };
-            userManager.CreateAsync(user, "User@123").Wait();
-            string designation = newUser.Designation.ToString();
-            userManager.AddToRoleAsync(user, designation).Wait();
+            userManager.CreateAsync(user, newUser.Password).Wait();
             
         }
 
@@ -47,9 +46,24 @@ namespace Promact.Oauth.Server.Repository
         /// Gets the list of all users
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<ApplicationUser> GetAllUsers()
+        public IEnumerable<UserModel> GetAllUsers()
         {
-            return applicationUserDataRepository.List().ToList();
+            var users = applicationUserDataRepository.List().ToList();
+            var userList = new List<UserModel>();
+            foreach (var user in users)
+            {
+                var list = new UserModel
+                {
+                    Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    IsActive = user.IsActive
+                };
+                userList.Add(list);
+            }
+            return userList;
+
         }
 
 
@@ -57,12 +71,44 @@ namespace Promact.Oauth.Server.Repository
         /// Edites the details of an user
         /// </summary>
         /// <param name="editedUser"></param>
-        public void UpdateUserDetails(ApplicationUser editedUser)
+        public void UpdateUserDetails(UserModel editedUser)
         {
-            applicationUserDataRepository.Update(editedUser);
+            var user = userManager.FindByIdAsync(editedUser.Id).Result;
+            user.FirstName = editedUser.FirstName;
+            user.LastName = editedUser.LastName;
+            user.Email = editedUser.Email;
+            user.IsActive = editedUser.IsActive;
+            var a = userManager.UpdateAsync(user).Result;
+            applicationUserDataRepository.Save();
         }
 
-
         
+
+        /// <summary>
+        /// Get Specific User By Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public UserModel GetById(string id)
+        {
+            var users = applicationUserDataRepository.List().ToList();
+            foreach (var user in users)
+            {
+                if (user.Id.Equals(id))
+                {
+                    var requiredUser = new UserModel
+                    {
+                        Id = user.Id,
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        Email = user.Email,
+                        IsActive = user.IsActive,
+                        UserName = user.UserName
+                    };
+                    return requiredUser; 
+                }
+            }
+            return null;
+        }
     }
 }

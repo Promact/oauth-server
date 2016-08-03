@@ -12,7 +12,6 @@ namespace Promact.Oauth.Server.Models
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        //[DataType(DataType.DateTime)]
         [Display(Name = "Created By")]
         public int CreatedBy { get; set; }
 

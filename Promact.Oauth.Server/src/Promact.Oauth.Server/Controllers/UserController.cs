@@ -33,7 +33,7 @@ namespace Promact.Oauth.Server.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("users")]
-        public IEnumerable<ApplicationUser> AllUsers()
+        public IEnumerable<UserModel> AllUsers()
         {
             return userRepository.GetAllUsers();
         }
@@ -45,16 +45,15 @@ namespace Promact.Oauth.Server.Controllers
         /// <param name="editedUser"></param>
         /// <returns></returns>
         [HttpPut]
-        [Authorize(Roles = "Admin")]
         [Route("edit")]
-        public IActionResult UpdateUser(ApplicationUser editedUser)
+        public UserModel UpdateUser([FromBody] UserModel editedUser)
         {
             if(ModelState.IsValid)
             {
                 userRepository.UpdateUserDetails(editedUser);
-                return View(editedUser);
+                return editedUser;
             }
-            return NotFound();
+            return null;
         }
 
 
@@ -71,5 +70,16 @@ namespace Promact.Oauth.Server.Controllers
         }
 
 
+        /// <summary>
+        /// Fetches the details of the user by the given id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("{id}")]
+        public UserModel GetUserById(string id)
+        {
+            return userRepository.GetById(id);
+        }
     }
 }

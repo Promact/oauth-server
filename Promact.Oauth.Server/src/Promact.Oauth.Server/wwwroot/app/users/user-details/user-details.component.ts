@@ -1,15 +1,15 @@
-﻿import {Component, Input} from "@angular/core";
-import {ActivatedRoute} from "@angular/router";
+﻿import {Component} from '@angular/core';
 
-import { UserService }   from '../user.service';
 import {UserModel} from '../user.model';
+import {UserService} from '../user.service';
+import { Router, ROUTER_DIRECTIVES, ActivatedRoute }from '@angular/router';
 
 
 @Component({
-    templateUrl: './app/users/user-edit/user-edit.html'
+    templateUrl: './app/users/user-details/user-details.html'
 })
 
-export class UserEditComponent {
+export class UserDetailsComponent {
     user: UserModel;
     id: any;
     errorMessage: string;
@@ -18,7 +18,9 @@ export class UserEditComponent {
         this.user = new UserModel();
     }
 
+
     ngOnInit() {
+
         this.id = this.route.params.subscribe(params => {
             let id = this.route.snapshot.params['id'];
 
@@ -28,14 +30,4 @@ export class UserEditComponent {
                 error => this.errorMessage = <any>error)
         });
     }
-
-
-    editUser(user: UserModel) {
-        this.userService.editUser(user).subscribe((user) => {
-            this.user = user;
-        }, err => {
-        });
-    }
-
 }
-

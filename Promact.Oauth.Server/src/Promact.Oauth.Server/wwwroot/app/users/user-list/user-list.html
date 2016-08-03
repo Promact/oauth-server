@@ -1,14 +1,16 @@
 ﻿<center>
     <h1>{{title}}</h1>
     <h2>Users</h2>
+</center>
 
+
+<center>
     <table>
         <thead>
             <tr>
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Email</th>
-                <th>Role</th>
                 <th>Status</th>
             </tr>
         </thead>
@@ -17,12 +19,12 @@
                 <td>{{user.firstName}}</td>
                 <td>{{user.lastName}}</td>
                 <td>{{user.email}}</td>
-                <td>{{user.roles}}</td>
                 <td>{{user.status}}</td>
-
+                
+                <td> <button (click)="userDetails(user.id)">Details</button> </td>
+                <td> <button (click)="userEdit(user.id)">Edit</button> </td>
+                
             </tr>
         </tbody>
     </table>
-
 </center>
-

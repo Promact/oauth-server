@@ -15,9 +15,15 @@ export class UserService {
     }
 
     registerUser(newUser: UserModel) {
-        newUser.Status = true;
+        newUser.IsActive = true;
         return this.httpService.post(this.UserUrl + "/add", newUser);
     }
 
+    getUserById(userId: string) {
+        return this.httpService.get(this.UserUrl + "/" + userId);
+    }
 
+    editUser(editedUser: UserModel) {
+        return this.httpService.put(this.UserUrl + "/edit", editedUser);
+    }
 }

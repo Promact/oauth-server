@@ -19,22 +19,13 @@
         </div>
         <div><br /></div>
         <div>
-            <label>Role:</label>
-            <select [(ngModel)]="userModel.Designation">
-                <option selected="selected">--Select Designation--</option>
-                <option>Web Designer</option>
-                <option>Developer</option>
-                <option>QA Tester</option>
-            </select>
+            <label>Password:</label>
+            <input type="password" [(ngModel)]="userModel.Password"/>
         </div>
         <div><br /></div>
+        
         <div>
-            <label>Status:</label>
-
-        </div>
-
-        <div>
-            <button type="submit" (click)="addUser(pro)">Add</button>
+            <button type="submit" (click)="addUser(userModel)">Add</button>
         </div>
     </form>
 
