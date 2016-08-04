@@ -50,7 +50,7 @@
                 Select Users:
             </td>
             <td>
-                <label>Select Users:</label>
+                
                 <select name="sel4" #listUser>
                     <option [ngValue]="j" *ngFor="let j of pro.listUsers">{{j.firstName}}</option>
                 </select>
@@ -63,7 +63,7 @@
             </td>
             <td>
                 <select multiple>
-                    <option *ngFor="let ul of pro.ApplicatioUsers">{{ul.firstName}}</option>
+                    <option *ngFor="let ul of pro.applicatioUsers">{{ul.firstName}}</option>
                 </select>
             </td>
         </tr>

@@ -14,11 +14,12 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
     {
         private IDataRepository<Project> projectDataRepository;
         private IDataRepository<ProjectUser> _projectUserDataRepository;
-      
-        public ProjectRepository(IDataRepository<Project> _projectDataRepository,IDataRepository<ProjectUser> projectUserDataRepository)
+        private IDataRepository<ApplicationUser> _userDataRepository;
+        public ProjectRepository(IDataRepository<Project> _projectDataRepository,IDataRepository<ProjectUser> projectUserDataRepository, IDataRepository<ApplicationUser> userDataRepository)
         {
             projectDataRepository = _projectDataRepository;
             _projectUserDataRepository = projectUserDataRepository;
+            _userDataRepository = userDataRepository;
         }
 
         public IEnumerable<Project> GetAllProjects()
@@ -61,22 +62,17 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// <returns></returns>
         public Project GetById(int id)
         {
-            var projects = projectDataRepository.List().ToList();
-            foreach (var project in projects)
+
+            List<ApplicationUser> applicationUserList = new List<ApplicationUser>(); 
+            var projects = projectDataRepository.FirstOrDefault(x => x.Id == id);
+            List<ProjectUser> projectUserList= _projectUserDataRepository.Fetch(y => y.ProjectId == projects.Id).ToList();
+            foreach (ProjectUser pu in projectUserList)
             {
-                if (project.Id.Equals(id))
-                {
-                    var requiredProject = new Project
-                    {
-                        Id = project.Id,
-                        Name = project.Name,
-                        SlackChannelName= project.SlackChannelName,
-                        IsActive= project.IsActive
-                    };
-                    return requiredProject;
-                }
+                var applicationUser = _userDataRepository.FirstOrDefault(z => z.Id == pu.UserId);
+                applicationUserList.Add(applicationUser);
             }
-            return null;
+            projects.ApplicatioUsers = applicationUserList;
+            return projects;
         }
 
         public void EditProject(Project editProject)
