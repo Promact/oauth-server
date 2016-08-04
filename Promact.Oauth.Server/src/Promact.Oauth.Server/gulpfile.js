@@ -58,6 +58,6 @@ gulp.task("min:css", function () {
         .pipe(concat(paths.concatCssDest))
         .pipe(cssmin())
         .pipe(gulp.dest("."));
-});
+}); 
 
 gulp.task("min", ["min:js", "min:css"]);
