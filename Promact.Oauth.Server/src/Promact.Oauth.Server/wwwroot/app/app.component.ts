@@ -9,6 +9,7 @@ import { HttpService}   from './http.service';
     <nav>
         <a routerLink="/user" routerLinkActive="active">Users</a>
         <a routerLink="/project" routerLinkActive="active">Projects</a>
+        <a routerLink="/consumerapp" routerLinkActive="active">Consumer App</a>
     </nav>
     <router-outlet></router-outlet>
   `,
