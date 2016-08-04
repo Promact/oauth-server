@@ -8,4 +8,4 @@ export const consumerRoute: RouterConfig = [{
     //children: [
     //    { path: '', component: ConsumerappListComponent }
     //]
-}];
+}]; 

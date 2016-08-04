@@ -23,7 +23,7 @@ namespace Promact.Oauth.Server.Data_Repository
         /// <param name="entity"></param>
         void Update(T entity);
 
-        /// <summary>
+        /// <summary 
         /// Save changes into the database.
         /// </summary>
         void Save();
