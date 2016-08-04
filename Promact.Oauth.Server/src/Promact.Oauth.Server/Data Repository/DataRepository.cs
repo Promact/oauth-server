@@ -10,27 +10,27 @@ namespace Promact.Oauth.Server.Data_Repository
 {
     public class DataRepository<T> : IDataRepository<T> where T : class
     {
-        private PromactOauthDbContext promactDbContext;
+        private PromactOauthDbContext _promactDbContext;
         private DbSet<T> dbSet;
 
-        public DataRepository(PromactOauthDbContext _promactOAuthDbContext)
+        public DataRepository(PromactOauthDbContext promactOAuthDbContext)
         {
-            promactDbContext = _promactOAuthDbContext;
-            dbSet = promactDbContext.Set<T>();
+            _promactDbContext = promactOAuthDbContext;
+            dbSet = _promactDbContext.Set<T>();
         }
 
         /// <summary>
-        /// Adds new employee
+        /// Adds new entry to the database
         /// </summary>
-        /// <param name="entity"></param>
+        /// <param name="entity">entity</param>
         public void Add(T entity)
         {
             dbSet.Add(entity);
-            promactDbContext.SaveChanges();
+            _promactDbContext.SaveChanges();
         }
 
         /// <summary>
-        /// Gets the list of all users
+        /// Fetches the list of all entries
         /// </summary>
         /// <returns></returns>
         public IEnumerable<T> List()
@@ -40,12 +40,13 @@ namespace Promact.Oauth.Server.Data_Repository
 
 
         /// <summary>
-        /// Edits the user details
+        /// Updates the database with updated details of an entry
         /// </summary>
+        /// <param name="entity">entity</param>
         public void Update(T entity)
         {
-            promactDbContext.Entry(entity).State = EntityState.Modified;
-            promactDbContext.SaveChanges();
+            _promactDbContext.Entry(entity).State = EntityState.Modified;
+            _promactDbContext.SaveChanges();
         }
 
         
@@ -54,7 +55,7 @@ namespace Promact.Oauth.Server.Data_Repository
         /// </summary>
         public void Save()
         {
-            promactDbContext.SaveChanges();
+            _promactDbContext.SaveChanges();
         }
     }
 }

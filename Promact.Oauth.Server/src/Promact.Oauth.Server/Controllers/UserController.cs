@@ -15,71 +15,75 @@ namespace Promact.Oauth.Server.Controllers
     [Route("api/[controller]")]
     public class UserController : Controller
     {
-        private readonly IUserRepository userRepository;
-        private readonly UserManager<ApplicationUser> userManager;
-        private readonly SignInManager<ApplicationUser> signInManager;
-
-        public UserController(IUserRepository _userRepository, UserManager<ApplicationUser> _userManager, SignInManager<ApplicationUser> _signInManager)
+        private readonly IUserRepository _userRepository;
+        
+        public UserController(IUserRepository userRepository)
         {
-            userRepository = _userRepository;
-            userManager = _userManager;
-            signInManager = _signInManager;
+            _userRepository = userRepository;
         }
 
 
-        /// <summary>
-        /// returns the list of all users
-        /// </summary>
-        /// <returns></returns>
+        // Gets the list of all entries of the ApplicationUser Table
+        // Get api/user
         [HttpGet]
         [Route("users")]
-        public IEnumerable<UserAc> AllUsers()
+        public IActionResult AllUsers()
         {
-            return userRepository.GetAllUsers();
+            return Ok(_userRepository.GetAllUsers());
         }
 
 
-        /// <summary>
-        /// Edits the details of an employee
-        /// </summary>
-        /// <param name="editedUser"></param>
-        /// <returns></returns>
-        [HttpPut]
-        [Route("edit")]
-        public UserAc UpdateUser([FromBody] UserAc editedUser)
-        {
-            if(ModelState.IsValid)
-            {
-                userRepository.UpdateUserDetails(editedUser);
-                return editedUser;
-            }
-            return null;
-        }
-
-
-        /// <summary>
-        /// Register Users to the database
-        /// </summary>
-        /// <param name="user">ApplicationUser Object</param>
-        [HttpPost]
-        [Route("add")]
-        public UserAc RegisterUser([FromBody] UserAc newUser)
-        {
-            userRepository.AddUser(newUser);
-            return newUser;
-        }
-
-
-        /// <summary>
-        /// Fetches the details of the user by the given id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        // Gets the details of a particular employee from ApplicationUser Table, by its id
+        // Get api/user/3
         [HttpGet]
         [Route("{id}")]
-        public UserAc GetUserById(string id)
+        public IActionResult GetUserById(string id)
         {
-            return userRepository.GetById(id);
+            var user = _userRepository.GetById(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return Ok(user);
         }
+
+
+
+        // Adds a new user to the ApplicationUser Table
+        // Post api/user/add
+        [HttpPost]
+        [Route("add")]
+        public IActionResult RegisterUser([FromBody] UserAc newUser)
+        {
+            try
+            {
+                if (ModelState.IsValid && newUser.Email.Contains("@promactinfo.com"))
+                {
+                    _userRepository.AddUser(newUser);
+                    return Ok(newUser);
+                }
+                return BadRequest();
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+
+        // Edits the details of an user to the ApplicationUser Table
+        // Put api/user/edit/3
+        [HttpPut]
+        [Route("edit")]
+        public IActionResult UpdateUser([FromBody] UserAc editedUser)
+        {
+            if (ModelState.IsValid)
+            {
+                _userRepository.UpdateUserDetails(editedUser);
+                return Ok(editedUser);
+            }
+            return BadRequest();
+        }
+
     }
 }
