@@ -35,7 +35,7 @@ export class ProjectAddComponent {
         this.sub = this.route.params.subscribe(params => {
             this.proService.getUsers().subscribe(listUsers => {
                 this.pro.listUsers = listUsers;
-                this.pro.ApplicatioUsers = new Array<UserModel>();
+                this.pro.applicatioUsers = new Array<UserModel>();
 
             });
         });
@@ -52,6 +52,6 @@ export class ProjectAddComponent {
         //this.Userlist.push(newObj);
         var obj = this.pro.listUsers.find(x => x.firstName == newObj);
         //this.Userlist.push(obj);
-        this.pro.ApplicatioUsers.push(obj);
+        this.pro.applicatioUsers.push(obj);
     }
 }

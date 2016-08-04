@@ -9,11 +9,20 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
 {
     public interface IProjectRepository
     {
-        int AddProject(Project newProject);
+        /// <summary>
+        /// Adds new project in the database
+        /// </summary>
+        /// <param name="newProject">project that need to be added</param>
+        /// <returns>project id of newly created project</returns>
+        int AddProject(ProjectAc newProject);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="newUserProject"></param>
         void AddUserProject(ProjectUser newUserProject);
-        IEnumerable<Project> GetAllProjects();
-        Project GetById(int id);
-        void EditProject(Project editProject);
+        IEnumerable<ProjectAc> GetAllProjects();
+        ProjectAc GetById(int id);
+        void EditProject(ProjectAc editProject);
         //void UpdateUserDetails(ProjectAc editedProject);
     }
 }

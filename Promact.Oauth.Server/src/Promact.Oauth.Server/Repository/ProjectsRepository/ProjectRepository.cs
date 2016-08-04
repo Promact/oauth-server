@@ -12,23 +12,42 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
 {
     public class ProjectRepository : IProjectRepository
     {
-        private IDataRepository<Project> projectDataRepository;
+        private IDataRepository<Project> _projectDataRepository;
         private IDataRepository<ProjectUser> _projectUserDataRepository;
         private IDataRepository<ApplicationUser> _userDataRepository;
-        public ProjectRepository(IDataRepository<Project> _projectDataRepository,IDataRepository<ProjectUser> projectUserDataRepository, IDataRepository<ApplicationUser> userDataRepository)
+        public ProjectRepository(IDataRepository<Project> projectDataRepository, IDataRepository<ProjectUser> projectUserDataRepository, IDataRepository<ApplicationUser> userDataRepository)
         {
-            projectDataRepository = _projectDataRepository;
+            _projectDataRepository = projectDataRepository;
             _projectUserDataRepository = projectUserDataRepository;
             _userDataRepository = userDataRepository;
         }
 
-        public IEnumerable<Project> GetAllProjects()
+        public IEnumerable<ProjectAc> GetAllProjects()
         {
-            return projectDataRepository.List().ToList();
+            var projects = _projectDataRepository.List().ToList();
+            var projectAcs = new List<ProjectAc>();
+            projects.ForEach(project =>
+            {
+                projectAcs.Add(new ProjectAc
+                {
+                    Id = project.Id,
+                    Name = project.Name,
+                    IsActive = project.IsActive,
+                    SlackChannelName = project.SlackChannelName,
+                    TeamLeaderId = project.TeamLeaderId
+                });
+            });
+            return projectAcs;
         }
-        public int AddProject(Project newProject)
+
+        /// <summary>
+        /// Adds new project in the database
+        /// </summary>
+        /// <param name="newProject">project that need to be added</param>
+        /// <returns>project id of newly created project</returns>
+        public int AddProject(ProjectAc newProject)
         {
-            
+
             try
             {
                 Project project = new Project();
@@ -37,9 +56,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                 project.TeamLeaderId = newProject.TeamLeaderId;
                 project.SlackChannelName = newProject.SlackChannelName;
                 project.CreatedDateTime = DateTime.Now;
-
-                projectDataRepository.Add(project);
-                
+                _projectDataRepository.Add(project);
                 return project.Id;
             }
             catch (Exception ex)
@@ -47,8 +64,6 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
 
                 throw;
             }
-
-            //_projectUserDataRepository.Add(newProject.ApplicatioUsers);
         }
         public void AddUserProject(ProjectUser newProjectUser)
         {
@@ -60,24 +75,57 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Project GetById(int id)
+        public ProjectAc GetById(int id)
         {
 
-            List<ApplicationUser> applicationUserList = new List<ApplicationUser>(); 
-            var projects = projectDataRepository.FirstOrDefault(x => x.Id == id);
-            List<ProjectUser> projectUserList= _projectUserDataRepository.Fetch(y => y.ProjectId == projects.Id).ToList();
+            List<UserAc> applicationUserList = new List<UserAc>();
+            var project = _projectDataRepository.FirstOrDefault(x => x.Id == id);
+            List<ProjectUser> projectUserList = _projectUserDataRepository.Fetch(y => y.ProjectId == project.Id).ToList();
             foreach (ProjectUser pu in projectUserList)
             {
                 var applicationUser = _userDataRepository.FirstOrDefault(z => z.Id == pu.UserId);
-                applicationUserList.Add(applicationUser);
+                applicationUserList.Add(new UserAc
+                {
+                    Id = applicationUser.Id,
+                    FirstName = applicationUser.FirstName
+                });
             }
-            projects.ApplicatioUsers = applicationUserList;
-            return projects;
+            var projectAc = new ProjectAc();
+            projectAc.Id = project.Id;
+            projectAc.SlackChannelName = project.SlackChannelName;
+            projectAc.IsActive = project.IsActive;
+            projectAc.Name = project.Name;
+            projectAc.TeamLeader = new UserAc();
+            projectAc.TeamLeaderId = project.TeamLeaderId;
+            projectAc.TeamLeader.FirstName = _userDataRepository.FirstOrDefault(x => x.Id == project.TeamLeaderId)?.FirstName;
+            projectAc.ApplicatioUsers = applicationUserList;
+            return projectAc;
         }
 
-        public void EditProject(Project editProject)
+        public void EditProject(ProjectAc editProject)
         {
-            projectDataRepository.Update(editProject);
+            var projectId = editProject.Id;
+            var projectInDb = _projectDataRepository.FirstOrDefault(x => x.Id == projectId);
+            projectInDb.IsActive = editProject.IsActive;
+            projectInDb.Name = editProject.Name;
+            projectInDb.TeamLeaderId = editProject.TeamLeaderId;
+            projectInDb.SlackChannelName = editProject.SlackChannelName;
+            projectInDb.UpdatedDateTime = DateTime.UtcNow;
+            _projectDataRepository.Update(projectInDb);
+
+            //Delete old users from project user table
+            _projectUserDataRepository.Delete(x => x.ProjectId == projectId);
+            _projectUserDataRepository.Save();
+
+            editProject.ApplicatioUsers.ForEach(x =>
+            {
+                _projectUserDataRepository.Add(new ProjectUser
+                {
+                    ProjectId = projectInDb.Id,
+                    UpdatedDateTime = DateTime.UtcNow,
+                    UserId=x.Id
+                });
+            });
         }
     }
 }

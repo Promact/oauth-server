@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 
 namespace Promact.Oauth.Server.Data_Repository
 {
@@ -83,5 +82,16 @@ namespace Promact.Oauth.Server.Data_Repository
         /// <returns></returns>
         long GetMaxId();
 
+        /// <summary>
+        ///   Delete the object from database.
+        /// </summary>
+        /// <param name="entity"> Specified a existing object to delete. </param>
+        void Delete(T entity);
+
+        /// <summary>
+        ///   Delete objects from database by specified filter expression.
+        /// </summary>
+        /// <param name="predicate"> </param>
+        void Delete(Expression<Func<T, bool>> predicate);
     }
 }

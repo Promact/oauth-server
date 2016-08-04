@@ -40,8 +40,8 @@
                 TeamLeader:
             </td>
             <td>
-                <select [(ngModel)]="pro.TeamLeaderId" name="sel3">
-                    <option [ngValue]="i.id" *ngFor="let i of pro.listUsers">{{i.firstName}}</option>
+                <select  name="sel3" [(ngModel)]="pro.teamLeaderId">
+                    <option value={{i.id}} *ngFor="let i of pro.listUsers">{{i.firstName}}</option>
                 </select>
             </td>
         </tr>
@@ -68,6 +68,9 @@
             </td>
         </tr>
         <tr>
+            
+                
+            
             <td>
                 <button (click)="editProject(pro)">Edit</button>
             </td>

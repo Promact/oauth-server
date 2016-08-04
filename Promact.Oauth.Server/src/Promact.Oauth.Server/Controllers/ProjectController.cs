@@ -30,7 +30,7 @@ namespace Promact.Oauth.Server.Controllers
         // GET: api/values
         [HttpGet]
         [Route("projects")]
-        public IEnumerable<Project> Get()
+        public IEnumerable<ProjectAc> Get()
         {
             return projectRepository.GetAllProjects();
             //var projects = _appDbContext.Projects?.ToList();
@@ -68,7 +68,7 @@ namespace Promact.Oauth.Server.Controllers
         // GET api/values/5
         [HttpGet]
         [Route("getProjects/{id}")]
-        public Project Get(int id)
+        public ProjectAc Get(int id)
         {
             return projectRepository.GetById(id);
             //return "value";
@@ -77,7 +77,7 @@ namespace Promact.Oauth.Server.Controllers
         // POST api/values
         [HttpPost]
         [Route("addProject")]
-        public Project Post([FromBody]Project project)
+        public ProjectAc Post([FromBody]ProjectAc project)
         {
             //if (_appDbContext.Projects == null) _appDbContext.Projects = new DbSet<Models.Project>();
             //Today
@@ -93,21 +93,20 @@ namespace Promact.Oauth.Server.Controllers
             //End Today
             //project.CreatedBy = Microsoft.;
             int id=projectRepository.AddProject(project);
-            foreach (ApplicationUser applicationUser in project.ApplicatioUsers)
+            foreach (var applicationUser in project.ApplicatioUsers)
             {
                 ProjectUser projectUser = new ProjectUser();
                 projectUser.ProjectId = id;
                 projectUser.UserId = applicationUser.Id;
                 projectRepository.AddUserProject(projectUser);
             }
-            //ProjectRepository.AddUserProject(project,id);
             return project;
         }
 
         // PUT api/values/5
         [HttpPut]
         [Route("editProject")]
-        public void Put(int id, [FromBody]Project project)
+        public void Put(int id, [FromBody]ProjectAc project)
         {
             projectRepository.EditProject(project);
         }
@@ -117,7 +116,7 @@ namespace Promact.Oauth.Server.Controllers
         [Route("deleteProject/{id}")]
         public IActionResult Delete(int id)
         {
-            _appDbContext.Projects.Remove(new Models.Project { Id=id});
+            _appDbContext.Projects.Remove(new Project { Id=id});
             _appDbContext.SaveChanges();
             return RedirectToAction("Get");
         }

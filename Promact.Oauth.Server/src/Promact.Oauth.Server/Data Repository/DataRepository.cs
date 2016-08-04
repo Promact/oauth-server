@@ -153,7 +153,43 @@ namespace Promact.Oauth.Server.Data_Repository
             }
         }
 
-       
+        public void Delete(T entity)
+        {
+            try
+            {
+                if (_promactDbContext.Entry(entity).State == EntityState.Detached)
+                {
+                    _dbSet.Attach(entity);
+                }
+                _dbSet.Remove(entity);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public void Delete(Expression<Func<T, bool>> predicate)
+        {
+            try
+            {
+                var entitiesToDelete = Fetch(predicate);
+                foreach (var entity in entitiesToDelete)
+                {
+                    if (_promactDbContext.Entry(entity).State == EntityState.Detached)
+                    {
+                        _dbSet.Attach(entity);
+                    }
+                    _dbSet.Remove(entity);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+
         #endregion
 
     }

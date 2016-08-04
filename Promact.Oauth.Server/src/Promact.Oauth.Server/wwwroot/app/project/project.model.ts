@@ -5,6 +5,7 @@ export class projectModel {
     SlackChannelName: string;
     IsActive: boolean;
     TeamLeaderId: string;
+    TeamLeader: UserModel;
     listUsers: Array<UserModel>;
-    ApplicatioUsers: Array<UserModel>;
+    applicatioUsers: Array<UserModel>;
 } 

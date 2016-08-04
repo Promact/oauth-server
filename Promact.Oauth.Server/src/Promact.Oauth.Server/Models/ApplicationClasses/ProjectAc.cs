@@ -10,10 +10,8 @@ namespace Promact.Oauth.Server.Models.ApplicationClasses
         public string SlackChannelName { get; set; }
         public bool IsActive { get; set; }
         public string TeamLeaderId { get; set; }
-        public virtual ICollection<UserAc> ApplicatioUsers { get; set; }
-        //public virtual ApplicationUser User { get; set; }
-
-        //public virtual ICollection<ProjectUser> ProjectUsers { get; set; }
+        public UserAc TeamLeader { get; set; }
+        public List<UserAc> ApplicatioUsers { get; set; }
         //public bool Status { get; set; }
 
     }
