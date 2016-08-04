@@ -46,6 +46,7 @@ namespace Promact.Oauth.Server.Seed
 
 
             //Add Admin
+
             var adminUser = userManager.FindByEmailAsync("roshni@promactinfo.com").Result;
             if (adminUser == null)
             {

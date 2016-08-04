@@ -1,4 +1,4 @@
-﻿import {Component, OnInit, OnDestroy} from "@angular/core";
+﻿import {Component, OnInit, OnDestroy, EventEmitter, Output} from "@angular/core";
 import { ProjectService }   from '../project.service';
 import {projectModel} from '../project.model'
 import { ROUTER_DIRECTIVES, Router, ActivatedRoute } from '@angular/router';
@@ -10,6 +10,8 @@ import { ROUTER_DIRECTIVES, Router, ActivatedRoute } from '@angular/router';
 export class ProjectEditComponent implements OnInit, OnDestroy {
     pro: projectModel;
     private sub: any;
+    navigated = false;
+    @Output() close = new EventEmitter();
     constructor(
         private route: ActivatedRoute,
         private router: Router,
@@ -30,9 +32,14 @@ export class ProjectEditComponent implements OnInit, OnDestroy {
 
     editProject(pro: projectModel) {
         this.service.editProject(pro).subscribe((pro) => {
-            this.pro = pro
+            this.pro = pro;
+            this.goBack(pro);
         }, err => {
 
         });
+    }
+    goBack(savedProject: projectModel = null) {
+        this.close.emit(savedProject);
+        if (this.navigated) { window.history.back(); }
     }
 }
