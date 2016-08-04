@@ -8,11 +8,12 @@ using Promact.Oauth.Server.Repository;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Models.ManageViewModels;
 using Microsoft.AspNetCore.Identity;
-using Promact.Oauth.Server.Models.ApplicationClass;
+using Promact.Oauth.Server.Models.ApplicationClasses;
 
 namespace Promact.Oauth.Server.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize(Roles = "Admin")]
     public class UserController : Controller
     {
         private readonly IUserRepository _userRepository;
@@ -23,8 +24,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
 
-        // Gets the list of all entries of the ApplicationUser Table
-        // Get api/user
+        /* Gets the list of all entries of the ApplicationUser Table */
         [HttpGet]
         [Route("users")]
         public IActionResult AllUsers()
@@ -33,8 +33,8 @@ namespace Promact.Oauth.Server.Controllers
         }
 
 
-        // Gets the details of a particular employee from ApplicationUser Table, by its id
-        // Get api/user/3
+        /* Gets the details of a particular employee from ApplicationUser Table, by its id 
+           parameter: integer Id*/
         [HttpGet]
         [Route("{id}")]
         public IActionResult GetUserById(string id)
@@ -49,15 +49,15 @@ namespace Promact.Oauth.Server.Controllers
 
 
 
-        // Adds a new user to the ApplicationUser Table
-        // Post api/user/add
+        /* Adds a new user to the ApplicationUser Table
+         Parameter: UserAc Model */
         [HttpPost]
         [Route("add")]
-        public IActionResult RegisterUser([FromBody] UserModel newUser)
+        public IActionResult RegisterUser([FromBody] UserAc newUser)
         {
             try
             {
-                if (ModelState.IsValid && newUser.Email.Contains("@promactinfo.com"))
+                if (ModelState.IsValid)
                 {
                     _userRepository.AddUser(newUser);
                     return Ok(newUser);
@@ -71,11 +71,11 @@ namespace Promact.Oauth.Server.Controllers
         }
 
 
-        // Edits the details of an user to the ApplicationUser Table
-        // Put api/user/edit/3
+        /* Edits the details of an user to the ApplicationUser Table
+         Parameter: UserAc Model */
         [HttpPut]
         [Route("edit")]
-        public IActionResult UpdateUser([FromBody] UserModel editedUser)
+        public IActionResult UpdateUser([FromBody] UserAc editedUser)
         {
             if (ModelState.IsValid)
             {
@@ -85,5 +85,42 @@ namespace Promact.Oauth.Server.Controllers
             return BadRequest();
         }
 
+
+
+        /* Calls the repository method for changing the password
+           Parameter: PasswordViewModel */
+        [HttpPost]
+        [Route("changepassword")]
+        [AllowAnonymous]
+        public IActionResult ChangePassword([FromBody] ChangePasswordViewModel passwordModel)
+        {
+            if(ModelState.IsValid)
+            {
+                _userRepository.ChangePassword(passwordModel);
+                return Ok();
+            }
+            
+            return BadRequest();
+        }
+
+
+        /* Finds if a user name exists in the database
+          Parameter: string username*/
+        [HttpGet]
+        [Route("findbyusername/{userName}")]
+        public IActionResult FindByUserName(string userName)
+        {
+            return Ok(_userRepository.FindByUserName(userName));
+        }
+
+
+        /* Finds if an email exists in the database
+          Parameter: string email*/
+        [HttpGet]
+        [Route("findbyemail/{email}")]
+        public IActionResult FindByEmail(string email)
+        {
+            return Ok(_userRepository.FindByEmail(email));
+        }
     }
 }

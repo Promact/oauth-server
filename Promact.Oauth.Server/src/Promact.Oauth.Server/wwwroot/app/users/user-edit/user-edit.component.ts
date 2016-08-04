@@ -1,6 +1,5 @@
 ﻿import {Component, Input} from "@angular/core";
 import {Router, ActivatedRoute, ROUTER_DIRECTIVES} from "@angular/router";
-
 import { UserService }   from '../user.service';
 import {UserModel} from '../user.model';
 
@@ -13,6 +12,7 @@ export class UserEditComponent {
     user: UserModel;
     id: any;
     errorMessage: string;
+    isEmailExist: boolean;
 
     constructor(private userService: UserService, private route: ActivatedRoute, private redirectionRoute: Router) {
         this.user = new UserModel();
@@ -41,6 +41,20 @@ export class UserEditComponent {
 
     goBack() {
         this.redirectionRoute.navigate(['/user']);
+    }
+
+
+    checkEmail(email) {
+        this.isEmailExist = false;
+        this.userService.findUserByEmail(email).subscribe((isEmailExist) => {
+            if (isEmailExist) {
+                this.isEmailExist = true;
+            }
+            else {
+                this.isEmailExist = false;
+            }
+        }, err => {
+        });
     }
 
 }
