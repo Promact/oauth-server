@@ -14,7 +14,7 @@ namespace Promact.Oauth.Server.Data_Repository
         /// <param name="entity"></param>
         void Add(T entity);
 
-
+            
         IEnumerable<T> List();
 
         /// <summary>
