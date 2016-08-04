@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Promact.Oauth.Server.Data_Repository
 {
-    public interface IDataRepository<T> 
+    public interface IDataRepository<T>
     {
         /// <summary>
         /// Add the new entity into the datacontext
@@ -14,7 +14,10 @@ namespace Promact.Oauth.Server.Data_Repository
         /// <param name="entity"></param>
         void Add(T entity);
 
-            
+        /// <summary>
+        /// Gets the list of all users
+        /// </summary>
+        /// <returns></returns>
         IEnumerable<T> List();
 
         /// <summary>
@@ -23,7 +26,7 @@ namespace Promact.Oauth.Server.Data_Repository
         /// <param name="entity"></param>
         void Update(T entity);
 
-        /// <summary 
+        /// <summary> 
         /// Save changes into the database.
         /// </summary>
         void Save();
@@ -45,8 +48,8 @@ namespace Promact.Oauth.Server.Data_Repository
         /// </summary>
         /// <param name="predicate"> Specified a filter </param>
         IQueryable<T> Fetch(Expression<Func<T, bool>> predicate);
-        
-  
+
+
         /// <summary>
         ///   Find object by specified expression.
         /// </summary>
@@ -54,7 +57,7 @@ namespace Promact.Oauth.Server.Data_Repository
         T FirstOrDefault(Expression<Func<T, bool>> predicate);
 
         /// <summary>
-        /// 
+        /// Method fetches the first record based on the supplied function.
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
@@ -79,6 +82,6 @@ namespace Promact.Oauth.Server.Data_Repository
         /// </summary>
         /// <returns></returns>
         long GetMaxId();
-        
+
     }
 }
