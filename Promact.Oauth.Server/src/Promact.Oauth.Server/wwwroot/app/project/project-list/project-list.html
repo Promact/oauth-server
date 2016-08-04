@@ -21,6 +21,7 @@
                 <th>Project Name</th>
                 <th>Slack Channel Name</th>
                 <th>Is Active</th>
+                
             </tr>
         </thead>
         <tbody>
@@ -28,6 +29,7 @@
                 <td>{{pro.name}}</td>
                 <td>{{pro.slackChannelName}}</td>
                 <td>{{pro.isActive}}</td>
+                
                 <td><button class="delete-button" (click)="deleteProject(pro.id)">Delete</button></td>
                 <td><button (click)="editProject(pro.id)">Edit</button></td>
                 <td><button (click)="viewProject(pro.id)">View</button></td>

@@ -9,7 +9,8 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
 {
     public interface IProjectRepository
     {
-        void AddProject(Project newProject);
+        int AddProject(Project newProject);
+        void AddUserProject(ProjectUser newUserProject);
         IEnumerable<Project> GetAllProjects();
         Project GetById(int id);
         void EditProject(Project editProject);

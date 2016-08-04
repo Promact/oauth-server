@@ -32,8 +32,8 @@ export class ProjectEditComponent implements OnInit, OnDestroy {
 
     editProject(pro: projectModel) {
         this.service.editProject(pro).subscribe((pro) => {
-            this.pro = pro;
-            this.goBack(pro);
+            this.pro = pro
+            this.router.navigate(['/project/'])
         }, err => {
 
         });

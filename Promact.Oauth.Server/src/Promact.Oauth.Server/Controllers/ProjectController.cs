@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using Promact.Oauth.Server.Repository.ProjectsRepository;
 using Promact.Oauth.Server.Models;
 
+using System.Security.Claims;
+
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Promact.Oauth.Server.Controllers
@@ -18,6 +20,7 @@ namespace Promact.Oauth.Server.Controllers
     {
         private readonly PromactOauthDbContext _appDbContext;
         private readonly IProjectRepository projectRepository;
+
         public ProjectController(PromactOauthDbContext appContext, IProjectRepository _projectRepository)
         {
             projectRepository = _projectRepository;
@@ -88,7 +91,16 @@ namespace Promact.Oauth.Server.Controllers
             //_appDbContext.SaveChanges();
             //return RedirectToAction("Get");
             //End Today
-            projectRepository.AddProject(project);
+            //project.CreatedBy = Microsoft.;
+            int id=projectRepository.AddProject(project);
+            foreach (ApplicationUser applicationUser in project.ApplicatioUsers)
+            {
+                ProjectUser projectUser = new ProjectUser();
+                projectUser.ProjectId = id;
+                projectUser.UserId = applicationUser.Id;
+                projectRepository.AddUserProject(projectUser);
+            }
+            //ProjectRepository.AddUserProject(project,id);
             return project;
         }
 

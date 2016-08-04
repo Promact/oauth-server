@@ -8,7 +8,7 @@ using Promact.Oauth.Server.Repository;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Models.ManageViewModels;
 using Microsoft.AspNetCore.Identity;
-using Promact.Oauth.Server.Models.ApplicationClass;
+using Promact.Oauth.Server.Models.ApplicationClasses;
 
 namespace Promact.Oauth.Server.Controllers
 {
@@ -33,7 +33,7 @@ namespace Promact.Oauth.Server.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("users")]
-        public IEnumerable<UserModel> AllUsers()
+        public IEnumerable<UserAc> AllUsers()
         {
             return userRepository.GetAllUsers();
         }
@@ -46,7 +46,7 @@ namespace Promact.Oauth.Server.Controllers
         /// <returns></returns>
         [HttpPut]
         [Route("edit")]
-        public UserModel UpdateUser([FromBody] UserModel editedUser)
+        public UserAc UpdateUser([FromBody] UserAc editedUser)
         {
             if(ModelState.IsValid)
             {
@@ -63,7 +63,7 @@ namespace Promact.Oauth.Server.Controllers
         /// <param name="user">ApplicationUser Object</param>
         [HttpPost]
         [Route("add")]
-        public UserModel RegisterUser([FromBody] UserModel newUser)
+        public UserAc RegisterUser([FromBody] UserAc newUser)
         {
             userRepository.AddUser(newUser);
             return newUser;
@@ -77,7 +77,7 @@ namespace Promact.Oauth.Server.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("{id}")]
-        public UserModel GetUserById(string id)
+        public UserAc GetUserById(string id)
         {
             return userRepository.GetById(id);
         }

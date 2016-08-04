@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Promact.Oauth.Server.Models;
-using Promact.Oauth.Server.Models.ApplicationClass;
+using Promact.Oauth.Server.Models.ApplicationClasses;
 
 namespace Promact.Oauth.Server.Repository
 {
     public interface IUserRepository
     {
-        void AddUser(UserModel newUser);
+        void AddUser(UserAc newUser);
 
-        UserModel GetById(string id);
+        UserAc GetById(string id);
 
         //void UpdateUserDetails(ApplicationUser editedUser);
-        void UpdateUserDetails(UserModel editedUser);
+        void UpdateUserDetails(UserAc editedUser);
 
-        IEnumerable<UserModel> GetAllUsers();
+        IEnumerable<UserAc> GetAllUsers();
     }
 }

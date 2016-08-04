@@ -21,11 +21,55 @@ IsActive :<input [(ngModel)]="pro.IsActive" />
         <div><br /></div>
         <div>
             <label>IsActive:</label>
-            <input type="text" name="IsActive" [(ngModel)]="pro.IsActive" />
+            <!--<input type="text" name="IsActive" [(ngModel)]="pro.IsActive" />-->
+            <input type="checkbox" name="IsActive" [(ngModel)]="pro.IsActive">
         </div>
         <div><br /></div>
-        
+        <div>
+            <label>TeamLeadr:</label>
+            <select [(ngModel)]="pro.TeamLeaderId" name="sel3">
+                <option [ngValue]="i.id" *ngFor="let i of pro.listUsers">{{i.firstName}}</option>
+            </select>
+        </div>
+        <div>
+            <!--<label>Select Users:</label>
+            <select  (change)="onChangeObj($event.target)" name="sel4">
+                <option *ngFor="let j of pro.listUsers">{{j.firstName}}</option>
+            </select>-->
+           
+            <label>Select Users:</label>
+            <select name="sel4" #listUser>
+                <option [ngValue]="j" *ngFor="let j of pro.listUsers">{{j.firstName}}</option>
+            </select>
+            <button (click)=addUser(listUser.value)>Add</button>
+            
+        </div>
+       
+        <select multiple>
+            <option *ngFor="let ul of pro.ApplicatioUsers">{{ul.firstName}}</option>
+        </select>
+        <!--<ul><li *ngFor="let ul of Userlist">{{ul.firstName}}</li></ul>-->
+           <!--<div>
+               <table>
+                   <tbody  >
+                       <tr>
+                           <td>Name</td>
+                       </tr>
+                       <tr *ngFor="let ul of Userlist">
 
+                           <td>{{ul.firstName}}</td>
+
+                       </tr>
+                   </tbody>
+               </table>
+           </div>-->
+        
+        <!--<h2>Users</h2>
+        <ul class="items">
+                <li *ngFor="let u of pro.listUsers">
+                <span class="badge">{{u.id}}</span> {{u.firstName}}
+            </li>
+        </ul>-->
         <div>
             <button type="submit" (click)="addProject(pro)">Add New Project</button>
         </div>

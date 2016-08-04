@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 using Promact.Oauth.Server.Models;
 
 namespace Promact.Oauth.Server.Repository.ProjectsRepository
@@ -12,25 +13,45 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
     public class ProjectRepository : IProjectRepository
     {
         private IDataRepository<Project> projectDataRepository;
+        private IDataRepository<ProjectUser> _projectUserDataRepository;
       
-        public ProjectRepository(IDataRepository<Project> _projectDataRepository)
+        public ProjectRepository(IDataRepository<Project> _projectDataRepository,IDataRepository<ProjectUser> projectUserDataRepository)
         {
             projectDataRepository = _projectDataRepository;
+            _projectUserDataRepository = projectUserDataRepository;
         }
 
         public IEnumerable<Project> GetAllProjects()
         {
             return projectDataRepository.List().ToList();
         }
-        public void AddProject(Project newProject)
+        public int AddProject(Project newProject)
         {
-            var projectAc = new ProjectAc
+            
+            try
             {
-                Name = newProject.Name,
-            SlackChannelName = newProject.SlackChannelName,
-            IsActive = newProject.IsActive
-            };
-            projectDataRepository.Add(newProject);
+                Project project = new Project();
+                project.IsActive = newProject.IsActive;
+                project.Name = newProject.Name;
+                project.TeamLeaderId = newProject.TeamLeaderId;
+                project.SlackChannelName = newProject.SlackChannelName;
+                project.CreatedDateTime = DateTime.Now;
+
+                projectDataRepository.Add(project);
+                
+                return project.Id;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
+            //_projectUserDataRepository.Add(newProject.ApplicatioUsers);
+        }
+        public void AddUserProject(ProjectUser newProjectUser)
+        {
+            _projectUserDataRepository.Add(newProjectUser);
         }
 
         /// <summary>
