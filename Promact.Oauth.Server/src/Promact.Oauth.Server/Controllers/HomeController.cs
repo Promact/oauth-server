@@ -15,18 +15,11 @@ namespace Promact.Oauth.Server.Controllers
 
         public IActionResult Index()
         {
-            if(!User.Identity.IsAuthenticated)
+            if(User.Identity.IsAuthenticated)
             {
                 return View("Index");
             }
-            else
-            {
-                if(User.IsInRole("Admin"))
-                {
-                    return View("Admin");
-                }
-                return View("Index");
-            }
+            return RedirectToAction("Login", "Account");
         }
 
         public IActionResult About()

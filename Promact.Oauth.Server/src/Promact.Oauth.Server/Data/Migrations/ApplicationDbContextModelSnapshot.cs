@@ -141,6 +141,8 @@ namespace Promact.Oauth.Server.Data.Migrations
                         .IsRequired()
                         .HasAnnotation("MaxLength", 255);
 
+                    b.Property<bool>("IsActive");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasAnnotation("MaxLength", 255);
@@ -161,9 +163,9 @@ namespace Promact.Oauth.Server.Data.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
-                    b.Property<string>("SecurityStamp");
+                    b.Property<int?>("ProjectId");
 
-                    b.Property<bool>("Status");
+                    b.Property<string>("SecurityStamp");
 
                     b.Property<bool>("TwoFactorEnabled");
 
@@ -178,6 +180,8 @@ namespace Promact.Oauth.Server.Data.Migrations
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
                         .HasName("UserNameIndex");
+
+                    b.HasIndex("ProjectId");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -195,7 +199,7 @@ namespace Promact.Oauth.Server.Data.Migrations
                     b.Property<string>("CallbackUrl")
                         .IsRequired();
 
-                    b.Property<DateTime>("CreatedBy");
+                    b.Property<int>("CreatedBy");
 
                     b.Property<DateTime>("CreatedDateTime");
 
@@ -219,7 +223,7 @@ namespace Promact.Oauth.Server.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("CreatedBy");
+                    b.Property<int>("CreatedBy");
 
                     b.Property<DateTime>("CreatedDateTime");
 
@@ -233,13 +237,12 @@ namespace Promact.Oauth.Server.Data.Migrations
                         .IsRequired()
                         .HasAnnotation("MaxLength", 25);
 
+                    b.Property<string>("TeamLeaderId")
+                        .IsRequired();
+
                     b.Property<DateTime>("UpdatedDateTime");
 
-                    b.Property<string>("UserId");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Projects");
                 });
@@ -249,11 +252,11 @@ namespace Promact.Oauth.Server.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("CreatedBy");
+                    b.Property<int>("CreatedBy");
 
                     b.Property<DateTime>("CreatedDateTime");
 
-                    b.Property<int?>("ProjectId");
+                    b.Property<int>("ProjectId");
 
                     b.Property<DateTime>("UpdatedDateTime");
 
@@ -305,21 +308,22 @@ namespace Promact.Oauth.Server.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Promact.Oauth.Server.Models.Project", b =>
+            modelBuilder.Entity("Promact.Oauth.Server.Models.ApplicationUser", b =>
                 {
-                    b.HasOne("Promact.Oauth.Server.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                    b.HasOne("Promact.Oauth.Server.Models.Project")
+                        .WithMany("ApplicatioUsers")
+                        .HasForeignKey("ProjectId");
                 });
 
             modelBuilder.Entity("Promact.Oauth.Server.Models.ProjectUser", b =>
                 {
                     b.HasOne("Promact.Oauth.Server.Models.Project", "Project")
                         .WithMany("ProjectUsers")
-                        .HasForeignKey("ProjectId");
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Promact.Oauth.Server.Models.ApplicationUser", "User")
-                        .WithMany("ProjectUsers")
+                        .WithMany()
                         .HasForeignKey("UserId");
                 });
         }

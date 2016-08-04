@@ -15,6 +15,8 @@ using Promact.Oauth.Server.Services;
 using Promact.Oauth.Server.Seed;
 using Promact.Oauth.Server.Repository;
 using Promact.Oauth.Server.Data_Repository;
+using Promact.Oauth.Server.Repository.ProjectsRepository;
+using Promact.Oauth.Server.Repository.ConsumerAppRepository;
 
 namespace Promact.Oauth.Server
 {
@@ -42,6 +44,10 @@ namespace Promact.Oauth.Server
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //var builder = new ContainerBuilder();
+            //builder.RegisterType<AuthMessageSender>().As<IEmailSender>().InstancePerDependency();
+            //builder.RegisterType<AuthMessageSender>().As<ISmsSender>().InstancePerDependency();
+
             // Add framework services.
             services.AddDbContext<PromactOauthDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -53,6 +59,8 @@ namespace Promact.Oauth.Server
             //Register application services
             services.AddScoped<IEnsureSeedData, EnsureSeedData>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IProjectRepository, ProjectRepository>();
+            services.AddScoped<IConsumerAppReposiotry, ConsumerAppRepository>();
             services.AddScoped(typeof(IDataRepository<>), typeof(DataRepository<>));
 
             services.AddMvc();
@@ -68,14 +76,14 @@ namespace Promact.Oauth.Server
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
+            //Call the Seed method in (Seed.EnsureSeedData) to create initial Admin
+            seeder.Seed(serviceProvider);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
                 app.UseBrowserLink();
-
-                //Call the Seed method in (Seed.EnsureSeedData) to create initial Admin
-                seeder.Seed(serviceProvider);
             }
             else
             {

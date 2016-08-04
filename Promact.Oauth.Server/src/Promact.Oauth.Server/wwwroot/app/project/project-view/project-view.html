@@ -1,0 +1,39 @@
+﻿<hi>Project View</hi>
+<center>
+    <div *ngIf="pro">
+        <table>
+            <tr>
+                <td>
+                    Name:
+                </td>
+                <td>
+                    {{pro.name}}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Slack Channel Name:
+                </td>
+                <td>
+                    {{pro.slackChannelName}}
+                </td>
+            </tr>
+            <tr>
+
+                <td>
+                    IsActive:
+                </td>
+                <td>
+                    {{pro.isActive}}
+                </td>
+            </tr>
+        </table>
+        <p>
+            <button (click)="gotoProjects()">Back</button>
+        </p>
+    </div>
+</center>
+
+
+
+

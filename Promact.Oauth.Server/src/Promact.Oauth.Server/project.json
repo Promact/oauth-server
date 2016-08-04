@@ -2,6 +2,8 @@
   "userSecretsId": "aspnet-Promact.Oauth.Server-e6fc61da-3875-4c22-9458-d7652dbb0dcc",
 
   "dependencies": {
+    "Autofac": "4.0.0-rc3-316",
+    "Autofac.Framework.DependencyInjection":"4.0.0-beta8-157", 
     "Microsoft.NETCore.App": {
       "version": "1.0.0",
       "type": "platform"

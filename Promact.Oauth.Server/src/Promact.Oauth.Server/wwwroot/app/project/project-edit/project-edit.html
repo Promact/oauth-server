@@ -1,0 +1,85 @@
+﻿<h1>Edit Projects</h1>
+<center>
+<div *ngIf="pro">
+    <table>
+        <tr>
+            <td>
+                Id:
+            </td>
+            <td>
+                <input type="text" name="Id" [(ngModel)]="pro.id" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Name:
+            </td>
+            <td>
+                <input type="text" name="Name" [(ngModel)]="pro.name" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Slack Channel Name:
+            </td>
+            <td>
+                <input type="text" name="Name" [(ngModel)]="pro.slackChannelName" />
+            </td>
+        </tr>
+        <tr>
+
+            <td>
+                IsActive:
+            </td>
+            <td>
+                <input type="checkbox" name="IsActive" [(ngModel)]="pro.isActive">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                TeamLeader:
+            </td>
+            <td>
+                <select [(ngModel)]="pro.TeamLeaderId" name="sel3">
+                    <option [ngValue]="i.id" *ngFor="let i of pro.listUsers">{{i.firstName}}</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Select Users:
+            </td>
+            <td>
+                
+                <select name="sel4" #listUser>
+                    <option [ngValue]="j" *ngFor="let j of pro.listUsers">{{j.firstName}}</option>
+                </select>
+                <button (click)=addUser(listUser.value)>Add</button>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                List Of Users:
+            </td>
+            <td>
+                <select multiple>
+                    <option *ngFor="let ul of pro.applicatioUsers">{{ul.firstName}}</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button (click)="editProject(pro)">Edit</button>
+            </td>
+            <td>
+                <button (click)="gotoProjects()">Back</button>
+            </td>
+        </tr>
+    </table>
+    <p>
+       
+    </p>
+</div>
+</center>
+
+
