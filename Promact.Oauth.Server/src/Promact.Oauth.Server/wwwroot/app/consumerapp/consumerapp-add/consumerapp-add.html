@@ -5,6 +5,27 @@
     <title></title>
 </head>
 <body>
-
+    <center>
+        <h1>{{title}}</h1>
+        <h2>List Of Apps</h2>
+        <form>
+            <div>
+                <label>Name:</label>
+                <input type="text" name="Name" [(ngModel)]="consumerModel.Name" maxlength="255" />
+            </div>
+            <div>
+                <label>Description:</label>
+                <textarea name="Description" [(ngModel)]="consumerModel.Description" maxlength="1000"></textarea>
+            </div>
+            <div>
+                <label>Call Back Url:</label>
+                <input type="text" name="Description" [(ngModel)]="consumerModel.CallbackUrl" maxlength="255" />
+            </div>
+            <div>
+                <button type="submit" (click)="submitApps(consumerModel)" >Submit</button>
+                <button type="submit">Cancel</button>
+            </div>
+        </form>
+    </center>
 </body>
 </html> 

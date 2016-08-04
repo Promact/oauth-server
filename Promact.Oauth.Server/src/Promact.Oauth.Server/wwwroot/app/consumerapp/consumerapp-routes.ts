@@ -1,11 +1,11 @@
 ﻿import {provideRouter, RouterConfig} from '@angular/router';
+import {ConsumerAppComponent } from "./consumerapp.component";
 import {ConsumerappListComponent} from "./consumerapp-list/consumerapp-list.component";
-//import {ConsumerappAddComponent} from "./consumerapp-add/consumerapp-add.component.ts";
+import {ConsumerappAddComponent} from "./consumerapp-add/consumerapp-add.component";
 
 export const consumerRoute: RouterConfig = [{
     path: "consumerapp",
-    component: ConsumerappListComponent,
-    //children: [
-    //    { path: '', component: ConsumerappListComponent }
-    //]
+    component: ConsumerAppComponent,
+    children: [{ path: '', component: ConsumerappListComponent },
+        { path: 'add', component: ConsumerappAddComponent }]
 }]; 

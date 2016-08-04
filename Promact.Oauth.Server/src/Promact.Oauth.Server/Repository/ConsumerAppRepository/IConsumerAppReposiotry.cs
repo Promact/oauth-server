@@ -9,8 +9,12 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
 {
     public interface IConsumerAppReposiotry 
     {
-        
-
+        ///// <summary>
+        ///// This method used for added Consumer apps. -An
+        ///// </summary>
+        ///// <param name="aaps"></param>
+        ///// <returns></returns>
+        //int AddedConsumerApps(Apps aaps);
 
     }
 }

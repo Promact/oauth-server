@@ -1,4 +1,4 @@
-﻿export class ConsumerApp
+﻿export class ConsumerAppModel
 {
         Name: string;
         Description: string;
