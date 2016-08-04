@@ -1,4 +1,33 @@
 ﻿<center>
+    <h2><u>User Details</u></h2>
+    <table>
+        <tr>
+            <td><b>First Name: </b></td>
+            <td>{{user.firstName}}</td>
+        </tr>
+        <tr>
+            <td><b>Last Name: </b></td>
+            <td>{{user.lastName}}</td>
+        </tr>
+        <tr>
+            <td><b>Email: </b></td>
+            <td>{{user.email}}</td>
+        </tr>
+        <tr>
+            <td><b>Status: </b></td>
+            <td>{{user.isActive}}</td>
+        </tr>
+    </table>
+
+    <div>
+        <button type="submit" (click)="goBack()">Back</button>
+    </div>
+</center>
+
+
+
+
+<!--<center>
     <h1>{{title}}</h1>
     <h2>Users Details</h2>
 
@@ -16,6 +45,7 @@
     </div>
     <div>
         <label>Status: </label>
-        {{user.IsActive}}
+        {{user.isActive}}
     </div>
-</center>
+</center>-->
+

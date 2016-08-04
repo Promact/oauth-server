@@ -1,10 +1,8 @@
 ﻿<center>
-    <h1>{{title}}</h1>
-    <h2>Users</h2>
-</center>
+    <h2><u>Users</u></h2>
 
+    <a routerLink="add" routerLinkActive="active">Add User</a>
 
-<center>
     <table>
         <thead>
             <tr>
@@ -19,7 +17,7 @@
                 <td>{{user.firstName}}</td>
                 <td>{{user.lastName}}</td>
                 <td>{{user.email}}</td>
-                <td>{{user.status}}</td>
+                <td>{{user.isActive}}</td>
                 
                 <td> <button (click)="userDetails(user.id)">Details</button> </td>
                 <td> <button (click)="userEdit(user.id)">Edit</button> </td>

@@ -1,4 +1,43 @@
 ﻿<center>
+    <h2><u>Register User</u></h2>
+    <form>
+        <table>
+            <tr>
+                <td>
+                    <b>First Name: </b>
+                </td>
+                <td>
+                    <input type="text" name="FirstName" [(ngModel)]="userModel.FirstName" required/>
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>Last Name:</b>
+                </td>
+                <td>
+                    <input type="text" name="LastName" [(ngModel)]="userModel.LastName" required />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>Email: </b>
+                </td>
+                <td>
+                    <input type="email" name="Email" [(ngModel)]="userModel.Email" required>
+                </td>
+            </tr>
+        </table>
+
+        <div>
+            <br />
+            <button type="submit" (click)="addUser(userModel)">Add</button>
+        </div>
+    </form>
+</center>
+
+
+<!--<center>
     <h1>{{title}}</h1>
     <h2>User Registration</h2>
 
@@ -23,10 +62,9 @@
             <input type="password" [(ngModel)]="userModel.Password"/>
         </div>
         <div><br /></div>
-        
+
         <div>
             <button type="submit" (click)="addUser(userModel)">Add</button>
         </div>
     </form>
-
-</center>
+</center>-->

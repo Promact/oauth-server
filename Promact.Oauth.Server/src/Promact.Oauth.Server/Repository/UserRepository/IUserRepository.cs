@@ -10,12 +10,12 @@ namespace Promact.Oauth.Server.Repository
     public interface IUserRepository
     {
         void AddUser(UserModel newUser);
-
+        
         UserModel GetById(string id);
 
-        //void UpdateUserDetails(ApplicationUser editedUser);
         void UpdateUserDetails(UserModel editedUser);
 
         IEnumerable<UserModel> GetAllUsers();
+        
     }
 }
