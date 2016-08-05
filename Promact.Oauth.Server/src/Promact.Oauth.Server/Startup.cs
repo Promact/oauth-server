@@ -17,6 +17,7 @@ using Promact.Oauth.Server.Repository;
 using Promact.Oauth.Server.Data_Repository;
 using Promact.Oauth.Server.Repository.ProjectsRepository;
 using Promact.Oauth.Server.Repository.ConsumerAppRepository;
+using Promact.Oauth.Server.Repository.OAuthRepository;
 
 namespace Promact.Oauth.Server
 {
@@ -62,6 +63,7 @@ namespace Promact.Oauth.Server
             services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<IConsumerAppReposiotry, ConsumerAppRepository>();
             services.AddScoped(typeof(IDataRepository<>), typeof(DataRepository<>));
+            services.AddScoped<IOAuthRepository, OAuthRepository>();
 
             services.AddMvc();
 

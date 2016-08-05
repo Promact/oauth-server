@@ -5,12 +5,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Promact.Oauth.Server.Data;
 
-namespace Promact.Oauth.Server.Data.Migrations
+namespace Promact.Oauth.Server.Migrations
 {
     [DbContext(typeof(PromactOauthDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20160805072731_Intial")]
+    partial class Intial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431")
@@ -220,22 +221,6 @@ namespace Promact.Oauth.Server.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Apps");
-                });
-
-            modelBuilder.Entity("Promact.Oauth.Server.Models.OAuth", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("AccessToken");
-
-                    b.Property<string>("RefreshToken");
-
-                    b.Property<string>("userEmail");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("OAuth");
                 });
 
             modelBuilder.Entity("Promact.Oauth.Server.Models.Project", b =>

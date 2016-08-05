@@ -9,7 +9,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
 {
     public interface IConsumerAppReposiotry 
     {
-        
+        Apps GetAppDetails(string clientId);
 
 
     }

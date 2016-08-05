@@ -16,6 +16,7 @@ namespace Promact.Oauth.Server.Data
             
         }
 
+        public DbSet<OAuth> OAuth { get; set; }
         public DbSet<Apps> Apps { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Project> Projects { get; set; }
@@ -30,7 +31,9 @@ namespace Promact.Oauth.Server.Data
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
-            
+            //builder.Entity<ApplicationUser>().ToTable("ApplicationUsers");
+
+
         }
         
     }
