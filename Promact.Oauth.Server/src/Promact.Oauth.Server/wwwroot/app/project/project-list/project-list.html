@@ -1,35 +1,32 @@
-﻿<!--<h1>{{title}}</h1>
-<h2>My Project</h2>
-<a routerLink="add" routerLinkActive="active">Project Add</a>
-<ul class="pros">
-    <li *ngFor="let pro of pros"
-        [class.selected]="pro === selectedPro"
-        (click)="onSelect(pro)">
-        
-        {{pro.name}}
-        <button class="delete-button" (click)="deleteProject(pro.id)">Delete</button>
-        <button (click)="editProject(pro)">Edit</button>
-    </li>
-</ul>-->
+﻿
 <center>
     <h1>{{title}}</h1>
     <h2>Projects</h2>
-    <a routerLink="add" routerLinkActive="active">Project Add</a>
+    <a routerLink="add" routerLinkActive="active">Add Project</a>
     <table>
         <thead>
             <tr>
                 <th>Project Name</th>
                 <th>Slack Channel Name</th>
                 <th>Is Active</th>
-                
+                <th>TeamLeader Name</th>
+                <th>Created By</th>
+                <th>Created Date</th>
+                <th>Updated By</th>
+                <th>Updated Date</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let pro of pros">
                 <td>{{pro.name}}</td>
                 <td>{{pro.slackChannelName}}</td>
-                <td>{{pro.isActive}}</td>
-                
+                <td *ngIf="pro.isActive">Active</td>
+                <td *ngIf="!pro.isActive">Inactive</td>
+                <td>{{pro.teamLeader.firstName}}</td>
+                <td>{{pro.createdBy}}</td>
+                <td>{{pro.createdDate}}</td>
+                <td>{{pro.updatedBy}}</td>
+                <td>{{pro.updatedDate}}</td>
                 <td><button class="delete-button" (click)="deleteProject(pro.id)">Delete</button></td>
                 <td><button (click)="editProject(pro.id)">Edit</button></td>
                 <td><button (click)="viewProject(pro.id)">View</button></td>

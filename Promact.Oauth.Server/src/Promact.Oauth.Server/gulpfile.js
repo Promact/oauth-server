@@ -34,6 +34,11 @@ gulp.task("copytowwwroot", function () {
       'node_modules/rxjs/**/*.js'
     ]).pipe(gulp.dest('./wwwroot/lib/rxjs'));
 
+    gulp.src([
+        'node_modules/md2/src/components/**/*.js',
+        'node_modules/md2/src/components/**/*.js.map'
+    ]).pipe(gulp.dest('./wwwroot/lib/md2'));
+
 });
 
 gulp.task("clean:js", function (cb) {
@@ -58,6 +63,6 @@ gulp.task("min:css", function () {
         .pipe(concat(paths.concatCssDest))
         .pipe(cssmin())
         .pipe(gulp.dest("."));
-}); 
+});
 
 gulp.task("min", ["min:js", "min:css"]);

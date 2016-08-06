@@ -1,9 +1,9 @@
 ﻿export class UserModel {
-    Id: string;
+    id: string;
     firstName: string;
-    LastName: string;
-    IsActive: boolean;
-    Email: string;
-    Password: string;
-    UserName: string;
+    lastName: string;
+    isActive: boolean;
+    email: string;
+    password: string;
+    userName: string;
 }

@@ -1,30 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Promact.Oauth.Server.Models.ApplicationClasses;
 using Promact.Oauth.Server.Data;
-using Microsoft.EntityFrameworkCore;
 using Promact.Oauth.Server.Repository.ProjectsRepository;
 using Promact.Oauth.Server.Models;
-
-using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using System;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Promact.Oauth.Server.Controllers
 {
+
+    [Authorize]
     [Route("api/[controller]")]
     public class ProjectController : Controller
     {
         private readonly PromactOauthDbContext _appDbContext;
         private readonly IProjectRepository projectRepository;
-
-        public ProjectController(PromactOauthDbContext appContext, IProjectRepository _projectRepository)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public ProjectController(PromactOauthDbContext appContext, IProjectRepository _projectRepository, UserManager<ApplicationUser> userManager)
         {
             projectRepository = _projectRepository;
             _appDbContext = appContext;
+            _userManager = userManager;
         }
 
         // GET: api/values
@@ -33,36 +33,6 @@ namespace Promact.Oauth.Server.Controllers
         public IEnumerable<ProjectAc> Get()
         {
             return projectRepository.GetAllProjects();
-            //var projects = _appDbContext.Projects?.ToList();
-            //var projectAcs = new List<ProjectAc>();
-            //projects?.ForEach(x =>
-            //{
-            //    projectAcs.Add(new ProjectAc
-            //    {
-            //        Id = x.Id,
-            //        Name = x.Name,
-            //        SlackChannelName = x.SlackChannelName,
-            //        IsActive = x.IsActive
-
-            //    });
-            //});
-            //return projectAcs;
-            //    new List<ProjectAc>
-            //{
-            //    new ProjectAc {
-            //        Id=1,
-            //        Name="Huddle",
-            //        SlackChannelName="test",
-            //        IsActive=true
-            //    },
-            //    new ProjectAc {
-            //        Id=2,
-            //        Name="Whiteboard",
-            //        SlackChannelName="test1",
-            //        IsActive=true
-
-            //    }
-            //};//projectAcs;
         }
 
         // GET api/values/5
@@ -79,26 +49,20 @@ namespace Promact.Oauth.Server.Controllers
         [Route("addProject")]
         public ProjectAc Post([FromBody]ProjectAc project)
         {
-            //if (_appDbContext.Projects == null) _appDbContext.Projects = new DbSet<Models.Project>();
-            //Today
-            //_appDbContext.Projects.Add(new Models.Project
-            //{
-            //    Name = project.Name,
-            //    SlackChannelName = project.SlackChannelName,
-            //    IsActive=project.IsActive
-
-            //});
-            //_appDbContext.SaveChanges();
-            //return RedirectToAction("Get");
-            //End Today
-            //project.CreatedBy = Microsoft.;
-            int id=projectRepository.AddProject(project);
-            foreach (var applicationUser in project.ApplicatioUsers)
+            var createdBy = _userManager.GetUserId(User);
+            if (ModelState.IsValid)
             {
-                ProjectUser projectUser = new ProjectUser();
-                projectUser.ProjectId = id;
-                projectUser.UserId = applicationUser.Id;
-                projectRepository.AddUserProject(projectUser);
+                int id = projectRepository.AddProject(project, createdBy);
+                foreach (var applicationUser in project.ApplicationUsers)
+                {
+                    ProjectUser projectUser = new ProjectUser();
+                    projectUser.ProjectId = id;
+                    projectUser.UserId = applicationUser.Id;
+                    projectUser.CreatedBy = createdBy;
+                    projectUser.CreatedDateTime= DateTime.UtcNow;
+                    projectRepository.AddUserProject(projectUser);
+                }
+                return project;
             }
             return project;
         }
@@ -106,9 +70,15 @@ namespace Promact.Oauth.Server.Controllers
         // PUT api/values/5
         [HttpPut]
         [Route("editProject")]
-        public void Put(int id, [FromBody]ProjectAc project)
+        public IActionResult Put(int id, [FromBody]ProjectAc project)
         {
-            projectRepository.EditProject(project);
+            var updatedBy = _userManager.GetUserId(User);
+            if (ModelState.IsValid)
+            {
+                projectRepository.EditProject(project, updatedBy);
+            }
+            else { return BadRequest(); }
+            return Ok(new { });
         }
 
         // DELETE api/values/5
@@ -118,7 +88,7 @@ namespace Promact.Oauth.Server.Controllers
         {
             _appDbContext.Projects.Remove(new Project { Id=id});
             _appDbContext.SaveChanges();
-            return RedirectToAction("Get");
+            return Ok(new { }); 
         }
     }
 }

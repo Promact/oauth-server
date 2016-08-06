@@ -15,7 +15,7 @@ export class UserService {
     }
 
     registerUser(newUser: UserModel) {
-        newUser.IsActive = true;
+        newUser.isActive = true;
         return this.httpService.post(this.UserUrl + "/add", newUser);
     }
 

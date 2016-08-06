@@ -3,14 +3,19 @@ import { ProjectService }   from '../project.service';
 import {projectModel} from '../project.model'
 import {UserModel} from '../../users/user.model';
 import { ROUTER_DIRECTIVES, Router, ActivatedRoute } from '@angular/router';
+
+import {Md2Multiselect } from 'md2/multiselect';
 @Component({
+    selector: 'md2-select',
     templateUrl: "app/project/project-add/project-add.html",
-    directives: [],
-   
+    directives: [Md2Multiselect]
 })
 export class ProjectAddComponent {
-    pros: Array<projectModel>;
 
+    private disabled: boolean = false;
+
+    pros: Array<projectModel>;
+    item: Array<string> = [];
     pro: projectModel;
     private sub: any
     Userlist: Array<UserModel>;
@@ -22,6 +27,10 @@ export class ProjectAddComponent {
         this.pro = new projectModel();
         
     }
+    /**
+     * Project Added in database
+     * @param pro project table information pass
+     */
     addProject(pro: projectModel) {
         this.proService.addProject(pro).subscribe((pro) => {
             this.pro = pro
@@ -30,28 +39,19 @@ export class ProjectAddComponent {
 
         });
     } 
+    /**
+     * getUser Method get User Information
+     */
     ngOnInit() {
         this.pro = new projectModel();
         this.sub = this.route.params.subscribe(params => {
             this.proService.getUsers().subscribe(listUsers => {
                 this.pro.listUsers = listUsers;
-                this.pro.applicatioUsers = new Array<UserModel>();
+                this.pro.applicationUsers = new Array<UserModel>();
 
             });
         });
-        //this.addProject(this.pro);
+       
     }
-
-    //onChangeObj(newObj: UserModel) {
-    //    //console.log(newObj);
-    //    this.Userlist.push(newObj);
-    //    // ... do other stuff here ...
-    //}
-
-    addUser(newObj: string) {
-        //this.Userlist.push(newObj);
-        var obj = this.pro.listUsers.find(x => x.firstName == newObj);
-        //this.Userlist.push(obj);
-        this.pro.applicatioUsers.push(obj);
-    }
+   
 }
