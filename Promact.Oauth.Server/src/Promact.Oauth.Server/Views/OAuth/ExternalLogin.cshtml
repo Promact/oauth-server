@@ -12,7 +12,9 @@
 <div>
     <div>
         <section>
-            <form asp-controller="OAuth" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+            <form asp-controller="OAuth" asp-action="Login" method="post">
+                <input type="hidden" name="RedirectUrl" value="@ViewBag.returnUrl"/>
+                <input type="hidden" name="ClientId" value="@ViewBag.clientId" />
                 <h4>Use a Promact account to log in.</h4>
                 <hr />
                 <div asp-validation-summary="All"></div>

@@ -10,6 +10,6 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
     {
         void Add(OAuth model);
         void Update(OAuth model);
-        OAuth GetDetails(string email);
+        OAuth GetDetails(string email, string clientId);
     }
 }

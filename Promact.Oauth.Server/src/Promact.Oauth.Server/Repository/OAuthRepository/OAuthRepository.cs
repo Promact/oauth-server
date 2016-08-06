@@ -14,19 +14,36 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
         {
             _oAuthDataRepository = oAuthDataRepository;
         }
+
+        /// <summary>
+        /// Method to add OAuth table
+        /// </summary>
+        /// <param name="model"></param>
         public void Add(OAuth model)
         {
             _oAuthDataRepository.Add(model);
             _oAuthDataRepository.Save();
         }
+
+        /// <summary>
+        /// Method to update OAuth table
+        /// </summary>
+        /// <param name="model"></param>
         public void Update(OAuth model)
         {
             _oAuthDataRepository.Update(model);
             _oAuthDataRepository.Save();
         }
-        public OAuth GetDetails(string email)
+
+        /// <summary>
+        /// To get details of a OAuth Access for an email and corresponding to app
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="clientId"></param>
+        /// <returns></returns>
+        public OAuth GetDetails(string email,string clientId)
         {
-            var oAuth = _oAuthDataRepository.FirstOrDefault(x => x.userEmail == email);
+            var oAuth = _oAuthDataRepository.FirstOrDefault(x => x.userEmail == email && x.ClientId == clientId);
             return oAuth;
         }
     }
