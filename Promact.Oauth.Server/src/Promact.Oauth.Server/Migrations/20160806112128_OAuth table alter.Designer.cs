@@ -8,8 +8,8 @@ using Promact.Oauth.Server.Data;
 namespace Promact.Oauth.Server.Migrations
 {
     [DbContext(typeof(PromactOauthDbContext))]
-    [Migration("20160805114127_Added OAuth table")]
-    partial class AddedOAuthtable
+    [Migration("20160806112128_OAuth table alter")]
+    partial class OAuthtablealter
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -229,6 +229,8 @@ namespace Promact.Oauth.Server.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("AccessToken");
+
+                    b.Property<string>("ClientId");
 
                     b.Property<string>("RefreshToken");
 

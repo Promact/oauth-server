@@ -229,6 +229,8 @@ namespace Promact.Oauth.Server.Data.Migrations
 
                     b.Property<string>("AccessToken");
 
+                    b.Property<string>("ClientId");
+
                     b.Property<string>("RefreshToken");
 
                     b.Property<string>("userEmail");
