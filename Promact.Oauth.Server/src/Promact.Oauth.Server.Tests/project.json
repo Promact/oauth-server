@@ -4,6 +4,7 @@
   "dependencies": {
     "xunit": "2.2.0-beta2-build3300",
     "Promact.Oauth.Server": "1.0.0-*",
+    "Microsoft.EntityFrameworkCore.InMemory": "1.0.0",
     "dotnet-test-xunit": "2.2.0-preview2-build1029"
   },
   "frameworks": {
@@ -15,5 +16,10 @@
         }
       }
     }
+  },
+  "publishOptions": {
+    "include": [
+      "appsettings.json"
+    ]
   }
 }
