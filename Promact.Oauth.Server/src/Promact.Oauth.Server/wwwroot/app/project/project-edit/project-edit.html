@@ -12,7 +12,7 @@
                     </td>
                     <td>
                         <input type="text" #Name="ngForm" ngControl="Name" [(ngModel)]="pro.name" required />
-                        <div *ngIf="Name.touched && !Name.valid && Name.errors.required" style="color:red">Required</div>
+                        <div *ngIf="Name.touched && !Name.valid && Name.errors.required" style="color:red">Project Name is required</div>
                     </td>
                 </tr>
                 <tr>
@@ -21,7 +21,7 @@
                     </td>
                     <td>
                         <input type="text" #SlackChannelName="ngForm" [(ngModel)]="pro.slackChannelName" required />
-                        <div *ngIf="SlackChannelName.touched && !SlackChannelName.valid && SlackChannelName.errors.required" style="color:red">Required</div>
+                        <div *ngIf="SlackChannelName.touched && !SlackChannelName.valid && SlackChannelName.errors.required" style="color:red">Project SlackChannel is required</div>
                     </td>
                 </tr>
                 <tr>
@@ -39,7 +39,7 @@
                     </td>
                     <td>
                         <select name="sel3" [(ngModel)]="pro.teamLeaderId">
-                            <option value={{i.id}} *ngFor="let i of pro.listUsers">{{i.firstName}}</option>
+                            <option value={{i.Id}} *ngFor="let i of pro.listUsers">{{i.FirstName}}</option>
                         </select>
                     </td>
                 </tr>
@@ -49,7 +49,7 @@
                     </td>
                     <td>
                         <md2-multiselect *ngIf="pro.applicationUsers && pro.listUsers" [items]="pro.listUsers"
-                                         [item-text]="'firstName'"
+                                         [item-text]="'FirstName'"
                                          [(ngModel)]="pro.applicationUsers"
                                          placeholder="Placeholder Text">
                         </md2-multiselect>
@@ -57,7 +57,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <button (click)="editProject(pro)">Update</button>
+                        <button (click)="editProject(pro)" [disabled]="!(Name.valid && SlackChannelName.valid)">Update</button>
                     </td>
                     <td>
                         <button (click)="gotoProjects()">Back</button>

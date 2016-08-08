@@ -38,11 +38,11 @@ export class ProjectEditComponent implements OnInit {
                     for (let i = 0; i<this.pro.listUsers.length; i++) {
                         for (let j = 0; j < this.pro.applicationUsers.length; j++)
                             {
-                            if (this.pro.listUsers[i].id == this.pro.applicationUsers[j].id) {
-                                this.pro.applicationUsers[j].email = this.pro.listUsers[i].email;
-                                this.pro.applicationUsers[j].isActive = this.pro.listUsers[i].isActive;
-                                this.pro.applicationUsers[j].lastName = this.pro.listUsers[i].lastName;
-                                this.pro.applicationUsers[j].userName = this.pro.listUsers[i].userName
+                            if (this.pro.listUsers[i].Id == this.pro.applicationUsers[j].Id) {
+                                this.pro.applicationUsers[j].Email = this.pro.listUsers[i].Email;
+                                this.pro.applicationUsers[j].IsActive = this.pro.listUsers[i].IsActive;
+                                this.pro.applicationUsers[j].LastName = this.pro.listUsers[i].LastName;
+                                this.pro.applicationUsers[j].UserName = this.pro.listUsers[i].UserName
                             }//break; 
                         }
                     }
