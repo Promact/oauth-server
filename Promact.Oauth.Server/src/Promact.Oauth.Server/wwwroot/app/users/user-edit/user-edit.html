@@ -30,13 +30,7 @@
                     <b>Email: </b>
                 </td>
                 <td>
-                    <input type="email" #Email="ngForm" ngControl="Email" [(ngModel)]="user.email" (blur)="checkEmail(user.email)" required>
-                    <div *ngIf="Email.touched && !Email.valid && !isEmailExist" style="color:red">
-                        Required!
-                    </div>
-                    <div *ngIf="isEmailExist && Email.valid" style="color:red">
-                        This email already exist!
-                    </div>
+                    {{user.email}}
                 </td>
             </tr>
             <tr>
@@ -52,6 +46,7 @@
         <div>
             <br />
             <button type="submit" (click)="editUser(user)" [disabled]="!UserEditForm.valid || isEmailExist">Update</button>
+            <button type="submit" (click)="goBack()">Back</button>
         </div>
     </form>
 </center>

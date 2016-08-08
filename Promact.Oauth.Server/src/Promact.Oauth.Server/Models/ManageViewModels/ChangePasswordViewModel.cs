@@ -22,7 +22,7 @@ namespace Promact.Oauth.Server.Models.ManageViewModels
         [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
-        [Required]
+        //[Required]
         [EmailAddress]
         public string Email { get; set; }
 

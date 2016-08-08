@@ -17,6 +17,7 @@ export class UserService {
 
     registerUser(newUser: UserModel) {
         newUser.IsActive = true;
+        newUser.Email = newUser.Email + "@promactinfo.com";
         return this.httpService.post(this.UserUrl + "/add", newUser);
     }
 

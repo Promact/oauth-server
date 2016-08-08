@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Promact.Oauth.Server.Models.ApplicationClasses;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Promact.Oauth.Server.Models.ManageViewModels;
+using Promact.Oauth.Server.Services;
 
 namespace Promact.Oauth.Server.Repository
 {
@@ -15,34 +16,38 @@ namespace Promact.Oauth.Server.Repository
     {
         private IDataRepository<ApplicationUser> _applicationUserDataRepository;
         private UserManager<ApplicationUser> _userManager;
+        private IEmailSender _emailSender;
 
-        public UserRepository(IDataRepository<ApplicationUser> applicationUserDataRepository, UserManager<ApplicationUser> userManager)
+        public UserRepository(IDataRepository<ApplicationUser> applicationUserDataRepository, UserManager<ApplicationUser> userManager, IEmailSender emailSender)
         {
             _applicationUserDataRepository = applicationUserDataRepository;
             _userManager = userManager;
+            _emailSender = emailSender;
         }
 
 
         /// <summary>
-        /// Registers User
+        /// Creates an entry of the user to the database 
         /// </summary>
         /// <param name="applicationUser">UserAc Application class object</param>
         public void AddUser(UserAc newUser)
         {
+            // Create an ApplicationUser type object from UserAc application class onject
             var user = new ApplicationUser
             {
                 FirstName = newUser.FirstName,
                 LastName = newUser.LastName,
                 Email = newUser.Email,
-                UserName = newUser.UserName,
+                UserName = newUser.Email,
                 IsActive = newUser.IsActive
             };
             _userManager.CreateAsync(user, "User@123").Wait();
+            SendEmail(user);
         }
 
 
         /// <summary>
-        /// Gets the list of all users
+        /// Gets the list of all users in the database
         /// </summary>
         /// <returns>List of all users</returns>
         public IEnumerable<UserAc> GetAllUsers()
@@ -51,6 +56,7 @@ namespace Promact.Oauth.Server.Repository
             var userList = new List<UserAc>();
             foreach (var user in users)
             {
+                // Create a list of UserAc application class object from ApplicationUser type object
                 var list = new UserAc
                 {
                     Id = user.Id,
@@ -63,16 +69,16 @@ namespace Promact.Oauth.Server.Repository
                 userList.Add(list);
             }
             return userList;
-
         }
 
 
         /// <summary>
-        /// Edites the details of an user
+        /// Edits the details of an user of the database
         /// </summary>
         /// <param name="editedUser">UserAc Application class object</param>
         public void UpdateUserDetails(UserAc editedUser)
         {
+            // Fetch the user with particular Id and save the updated data
             var user = _userManager.FindByIdAsync(editedUser.Id).Result;
             user.FirstName = editedUser.FirstName;
             user.LastName = editedUser.LastName;
@@ -85,7 +91,7 @@ namespace Promact.Oauth.Server.Repository
 
 
         /// <summary>
-        /// Get Specific User Details By Id
+        /// Fetches the details of the user with the specified id
         /// </summary>
         /// <param name="id">string id</param>
         /// <returns>UserAc Application class object</returns>
@@ -94,6 +100,7 @@ namespace Promact.Oauth.Server.Repository
             var users = _applicationUserDataRepository.List().ToList();
             foreach (var user in users)
             {
+                //Finds the details of an user with the specified Id
                 if (user.Id.Equals(id))
                 {
                     var requiredUser = new UserAc
@@ -119,22 +126,21 @@ namespace Promact.Oauth.Server.Repository
         public void ChangePassword(ChangePasswordViewModel passwordModel)
         {
             var user = _userManager.FindByEmailAsync(passwordModel.Email).Result;
-            if(user!= null)
+            if (user!= null)
             {
                 _userManager.ChangePasswordAsync(user, passwordModel.OldPassword, passwordModel.NewPassword).Wait();
             }
         }
-
-
+        
         /// <summary>
-        /// Finds if a particular user name exists in the database
+        /// Finds if a particular user exists in the database with the specified user name
         /// </summary>
         /// <param name="userName">string userName</param>
         /// <returns> boolean: true if the user name exists, false if does not exist</returns>
         public bool FindByUserName(string userName)
         {
             var user = _userManager.FindByNameAsync(userName).Result;
-            if(user == null || userName.Equals(user.UserName))
+            if(user == null)
             {
                 return false;
             }
@@ -144,7 +150,7 @@ namespace Promact.Oauth.Server.Repository
 
 
         /// <summary>
-        /// Finds if a particular email exists in the database
+        /// Finds if a particular user exists in the database with the specified email
         /// </summary>
         /// <param name="email"></param>
         /// <returns> boolean: true if the email exists, false if does not exist</returns>
@@ -156,6 +162,21 @@ namespace Promact.Oauth.Server.Repository
                 return false;
             }
             return true;
+        }
+
+
+        /// <summary>
+        /// Calls the SendEmailAsync method of MessageServices class for sending email to the newly registered user
+        /// </summary>
+        /// <param name="user">Object of newly registered User</param>
+        public void SendEmail(ApplicationUser user)
+        {
+            //Create a new message for the email with the required content
+            var message = "Welcome to Promact Infotech Private Limited \n"
+                            + "Email: " + user.Email 
+                            + "\n Password: User@123"
+                            + "\n Link: ";
+            var result = _emailSender.SendEmailAsync(user.Email, "Login Credentials", message);
         }
     }
 }

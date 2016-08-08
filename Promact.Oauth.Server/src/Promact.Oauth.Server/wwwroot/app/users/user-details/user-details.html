@@ -10,16 +10,13 @@
             <td>{{user.lastName}}</td>
         </tr>
         <tr>
-            <td><b>User Name: </b></td>
-            <td>{{user.userName}}</td>
-        </tr>
-        <tr>
             <td><b>Email: </b></td>
             <td>{{user.email}}</td>
         </tr>
         <tr>
             <td><b>Status: </b></td>
-            <td>{{user.isActive}}</td>
+            <td *ngIf="user.isActive">Active</td>
+            <td *ngIf="!user.isActive">Inactive</td>
         </tr>
     </table>
 

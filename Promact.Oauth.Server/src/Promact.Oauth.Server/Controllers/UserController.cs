@@ -17,14 +17,16 @@ namespace Promact.Oauth.Server.Controllers
     public class UserController : Controller
     {
         private readonly IUserRepository _userRepository;
-        
-        public UserController(IUserRepository userRepository)
+        private UserManager<ApplicationUser> _userManager;
+
+        public UserController(IUserRepository userRepository, UserManager<ApplicationUser> userManager)
         {
             _userRepository = userRepository;
+            _userManager = userManager;
         }
 
 
-        /* Gets the list of all entries of the ApplicationUser Table */
+        /* Calls the repository method for fetching the list of all entries of the ApplicationUser Table */
         [HttpGet]
         [Route("users")]
         public IActionResult AllUsers()
@@ -33,8 +35,8 @@ namespace Promact.Oauth.Server.Controllers
         }
 
 
-        /* Gets the details of a particular employee from ApplicationUser Table, by its id 
-           parameter: integer Id*/
+        /* Calls the repository method for fetching the details of a particular employee from ApplicationUser Table, by its id 
+           Parameter: integer Id*/
         [HttpGet]
         [Route("{id}")]
         public IActionResult GetUserById(string id)
@@ -49,8 +51,8 @@ namespace Promact.Oauth.Server.Controllers
 
 
 
-        /* Adds a new user to the ApplicationUser Table
-         Parameter: UserAc Model */
+        /* Calls the repository method for adding a new user to the ApplicationUser Table
+         Parameter: Application class object UserAc */
         [HttpPost]
         [Route("add")]
         public IActionResult RegisterUser([FromBody] UserAc newUser)
@@ -64,15 +66,15 @@ namespace Promact.Oauth.Server.Controllers
                 }
                 return BadRequest();
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return BadRequest();
             }
         }
 
 
-        /* Edits the details of an user to the ApplicationUser Table
-         Parameter: UserAc Model */
+        /* Calls the repository method for updating the details of an user to the ApplicationUser Table
+         Parameter: Application class object UserAc */
         [HttpPut]
         [Route("edit")]
         public IActionResult UpdateUser([FromBody] UserAc editedUser)
@@ -94,17 +96,21 @@ namespace Promact.Oauth.Server.Controllers
         [AllowAnonymous]
         public IActionResult ChangePassword([FromBody] ChangePasswordViewModel passwordModel)
         {
-            if(ModelState.IsValid)
+            var user = _userManager.GetUserAsync(User).Result;
+            if (_userManager.CheckPasswordAsync(user, passwordModel.OldPassword).Result)
             {
-                _userRepository.ChangePassword(passwordModel);
-                return Ok();
+                passwordModel.Email = user.Email;
+                if (ModelState.IsValid)
+                {
+                    _userRepository.ChangePassword(passwordModel);
+                    return Ok(passwordModel);
+                }
             }
-            
             return BadRequest();
         }
 
 
-        /* Finds if a user name exists in the database
+        /* Calls the repository method to find if a user already exists with the specified username, in the database
           Parameter: string username*/
         [HttpGet]
         [Route("findbyusername/{userName}")]
@@ -114,7 +120,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
 
-        /* Finds if an email exists in the database
+        /* Calls the repository method to find if a user already exists with the specified email, in the database
           Parameter: string email*/
         [HttpGet]
         [Route("findbyemail/{email}")]

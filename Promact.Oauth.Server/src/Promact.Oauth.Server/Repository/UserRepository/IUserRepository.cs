@@ -60,5 +60,12 @@ namespace Promact.Oauth.Server.Repository
         /// <param name="email"></param>
         /// <returns> boolean: true if the email exists, false if does not exist</returns>
         bool FindByEmail(string email);
+
+
+        /// <summary>
+        /// Calls the SendEmailAsync method of MessageServices class for sending email to the newly registered user
+        /// </summary>
+        /// <param name="user">Object of newly registered User</param>
+        void SendEmail(ApplicationUser user);
     }
 }

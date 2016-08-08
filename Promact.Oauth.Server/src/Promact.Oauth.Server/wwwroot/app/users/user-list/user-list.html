@@ -1,7 +1,7 @@
 ﻿<center>
     <h2><u>Users</u></h2>
 
-    <a routerLink="add" routerLinkActive="active">Add User</a>
+    <a routerLink="user/add" routerLinkActive="active">Add User</a>
 
     <table>
         <thead>
@@ -17,7 +17,8 @@
                 <td>{{user.firstName}}</td>
                 <td>{{user.lastName}}</td>
                 <td>{{user.email}}</td>
-                <td>{{user.isActive}}</td>
+                <td *ngIf="user.isActive">Active</td>
+                <td *ngIf="!user.isActive">Inactive</td>
                 
                 <td> <button (click)="userDetails(user.id)">Details</button> </td>
                 <td> <button (click)="userEdit(user.id)">Edit</button> </td>

@@ -23,27 +23,15 @@ export class UserAddComponent {
 
     addUser(userModel) {
         this.userService.registerUser(this.userModel).subscribe((users) => {
-            this.redirectionRoute.navigate(['/user']);
-        }, err => {
-        });
-    }
-
-    checkUserName(userName) {
-        this.isUserNameExist = false;
-        this.userService.findUserByUserName(userName).subscribe((isUserNameExist) => {
-            if (isUserNameExist) {
-                this.isUserNameExist = true;
-            }
-            else {
-                this.isUserNameExist = false;
-            }
+            this.redirectionRoute.navigate(['/']);
         }, err => {
         });
     }
 
     checkEmail(email) {
         this.isEmailExist = false;
-        this.userService.findUserByEmail(email).subscribe((isEmailExist) => {
+
+        this.userService.findUserByEmail(email + "@promactinfo.com").subscribe((isEmailExist) => {
             if (isEmailExist) {
                 this.isEmailExist = true;
             }
@@ -54,5 +42,8 @@ export class UserAddComponent {
         });
     }
 
+    goBack() {
+        this.redirectionRoute.navigate(['/']);
+    }
 }
 
