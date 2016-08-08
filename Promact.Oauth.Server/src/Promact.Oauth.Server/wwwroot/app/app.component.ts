@@ -5,7 +5,7 @@ import { HttpService}   from './http.service';
 @Component({
     selector: 'my-app',
     template: `
-    <h1>Component Router</h1>
+    <h1>Oauth Server</h1>
     <nav>
         <a routerLink="/user" routerLinkActive="active">Users</a>
         <a routerLink="/project" routerLinkActive="active">Projects</a>

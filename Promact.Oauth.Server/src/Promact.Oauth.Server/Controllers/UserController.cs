@@ -8,7 +8,7 @@ using Promact.Oauth.Server.Repository;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Models.ManageViewModels;
 using Microsoft.AspNetCore.Identity;
-using Promact.Oauth.Server.Models.ApplicationClass;
+using Promact.Oauth.Server.Models.ApplicationClasses;
 
 namespace Promact.Oauth.Server.Controllers
 {
@@ -53,7 +53,7 @@ namespace Promact.Oauth.Server.Controllers
         // Post api/user/add
         [HttpPost]
         [Route("add")]
-        public IActionResult RegisterUser([FromBody] UserModel newUser)
+        public IActionResult RegisterUser([FromBody] UserAc newUser)
         {
             try
             {
@@ -75,7 +75,7 @@ namespace Promact.Oauth.Server.Controllers
         // Put api/user/edit/3
         [HttpPut]
         [Route("edit")]
-        public IActionResult UpdateUser([FromBody] UserModel editedUser)
+        public IActionResult UpdateUser([FromBody] UserAc editedUser)
         {
             if (ModelState.IsValid)
             {
