@@ -5,6 +5,7 @@ import {consumerRoute} from './consumerapp/consumerapp-routes';
 import {userRoutes} from './users/user.routes';
 import {UserComponent} from './users/user.component';
 
+
 const routes: RouterConfig = [
     ...projectRoutes,
     //{ path: '', component: ProjectComponent },

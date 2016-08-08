@@ -4,8 +4,6 @@ import { ProjectService }   from './project.service';
 
 @Component({
     template: `
-    
-    <p>Project List</p>
     <router-outlet></router-outlet>
 `,
     directives: [ROUTER_DIRECTIVES],

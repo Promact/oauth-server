@@ -5,8 +5,6 @@ import {UserService} from './user.service';
 
 @Component({
     templateUrl: './app/users/user.html',
-    //template: `<p>User List</p>
-    //<router-outlet></router-outlet>`,
     directives: [ROUTER_DIRECTIVES],
     providers: [UserService]
 })

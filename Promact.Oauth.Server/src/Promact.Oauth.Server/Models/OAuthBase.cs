@@ -19,6 +19,9 @@ namespace Promact.Oauth.Server.Models
         [DataType(DataType.DateTime)]
         public DateTime CreatedDateTime { get; set; }
 
+        [Display(Name = "Updated By")]
+        public string UpdatedBy { get; set; }
+
         [Display(Name = "Updated Date")]
         [DataType(DataType.DateTime)]
         public DateTime UpdatedDateTime { get; set; }

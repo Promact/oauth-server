@@ -20,6 +20,13 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         List<Apps> GetListOfApps();
 
         /// <summary>
+        /// This method used for get apps detail by client id. 
+        /// </summary>
+        /// <param name="clientId"></param>
+        /// <returns></returns>
+        Apps GetAppDetails(string clientId);
+
+        /// <summary>
         /// This method used fro get apps object by id. -An
         /// </summary>
         /// <param name="id">pass apps object primarykey</param>

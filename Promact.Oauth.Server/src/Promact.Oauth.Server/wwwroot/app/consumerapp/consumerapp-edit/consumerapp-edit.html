@@ -7,7 +7,7 @@
 <body>
     <center>
         <h1>{{title}}</h1>
-        <h2>Edit New Apps</h2>
+        <h2>Edit Apps</h2>
         <form novalidate #updateConsumerApp="ngForm">
             <div>
                 <label>Auth Id</label>
@@ -35,7 +35,7 @@
 
             <div>
                 <button type="submit" (click)="updateApps(consumerModel)" [disabled]="!(updateConsumerApp.valid)">Update</button>
-                <button type="submit" (click)="cancel()">Cancel</button>
+                <button type="button" (click)="cancel()">Cancel</button>
             </div>
         </form>
     </center>

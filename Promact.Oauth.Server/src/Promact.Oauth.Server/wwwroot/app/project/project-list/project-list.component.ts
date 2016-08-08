@@ -29,4 +29,10 @@ export class ProjectListComponent{
     viewProject(Id) {
         this.router.navigate(['/project/view', Id]);
     }
+    deleteProject(id) {
+        this.proService.deleteProject(id).subscribe(() => {
+            this.getPros();
+            console.log("Test");
+        });
+    }
 }

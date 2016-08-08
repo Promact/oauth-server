@@ -14,7 +14,7 @@ export class UserDetailsComponent {
     id: any;
     errorMessage: string;
 
-    constructor(private userService: UserService, private route: ActivatedRoute) {
+    constructor(private userService: UserService, private route: ActivatedRoute, private redirectRoute: Router) {
         this.user = new UserModel();
     }
 
@@ -29,5 +29,9 @@ export class UserDetailsComponent {
                 user => this.user = user,
                 error => this.errorMessage = <any>error)
         });
+    }
+
+    goBack() {
+        this.redirectRoute.navigate(['/user']);
     }
 }

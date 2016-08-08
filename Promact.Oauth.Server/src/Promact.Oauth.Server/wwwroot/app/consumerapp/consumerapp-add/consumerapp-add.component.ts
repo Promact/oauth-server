@@ -2,21 +2,24 @@
 import {ConsumerAppModel} from '../consumerapp-model';
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 import { ConsumerAppService} from '../consumerapp.service';
+import {Md2Toast} from 'md2/toast';
 
 @Component({
     templateUrl: "app/consumerapp/consumerapp-add/consumerapp-add.html",
-    directives: []
+    directives: [],
+    providers: [Md2Toast]
 })
 export class ConsumerappAddComponent {
     consumerModel: ConsumerAppModel;
-    constructor(private consumerAppService: ConsumerAppService,private router: Router) {
+    constructor(private consumerAppService: ConsumerAppService, private router: Router, private toast: Md2Toast) {
         this.consumerModel = new ConsumerAppModel();
     }
 
     submitApps(consumerModel) {
         this.consumerAppService.addConsumerApps(consumerModel).subscribe((result) => {
             if (result == true) {
-
+                this.toast.show('Consumer Apps is added successfully.');
+                this.cancel();
             }
         }, err => {
 
@@ -24,7 +27,7 @@ export class ConsumerappAddComponent {
     }
 
     cancel() {
-        //this.router.navigate(['/consumerapp/consumerapp']);
+        this.router.navigate(['/consumerapp/']);
     }
 
     ngOnInit() {

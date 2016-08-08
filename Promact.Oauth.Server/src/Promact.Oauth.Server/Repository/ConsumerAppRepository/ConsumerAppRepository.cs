@@ -26,6 +26,23 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
 
         #region "Public Method(s)"
 
+        /// <summary>
+        /// This method used for get apps detail by client id. 
+        /// </summary>
+        /// <param name="clientId"></param>
+        /// <returns></returns>
+        public Apps GetAppDetails(string clientId)
+        {
+            try
+            {
+                return _appsDataRepository.FirstOrDefault(x => x.AuthId == clientId);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
 
         /// <summary>
         /// This method used for added Consumer apps and return primary key. -An

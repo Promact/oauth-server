@@ -5,22 +5,20 @@ using System.Threading.Tasks;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Data_Repository;
 using Microsoft.AspNetCore.Identity;
-using Promact.Oauth.Server.Models.ApplicationClass;
+using Promact.Oauth.Server.Models.ApplicationClasses;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Promact.Oauth.Server.Repository
 {
     public class UserRepository : IUserRepository
     {
-        private IDataRepository<ApplicationUser> applicationUserDataRepository;
-        private UserManager<ApplicationUser> userManager;
-        private SignInManager<ApplicationUser> signInManager;
+        private IDataRepository<ApplicationUser> _applicationUserDataRepository;
+        private UserManager<ApplicationUser> _userManager;
 
-        public UserRepository(IDataRepository<ApplicationUser> _applicationUserDataRepository, UserManager<ApplicationUser> _userManager, SignInManager<ApplicationUser> _signInManager)
+        public UserRepository(IDataRepository<ApplicationUser> applicationUserDataRepository, UserManager<ApplicationUser> userManager)
         {
-            applicationUserDataRepository = _applicationUserDataRepository;
-            userManager = _userManager;
-            signInManager = _signInManager;
+            _applicationUserDataRepository = applicationUserDataRepository;
+            _userManager = userManager;
         }
 
 
@@ -28,17 +26,17 @@ namespace Promact.Oauth.Server.Repository
         /// Registers User
         /// </summary>
         /// <param name="applicationUser"></param>
-        public void AddUser(UserModel newUser)
+        public void AddUser(UserAc newUser)
         {
-            var user = new ApplicationUser {
+            var user = new ApplicationUser
+            {
                 FirstName = newUser.FirstName,
                 LastName = newUser.LastName,
                 Email = newUser.Email,
                 UserName = newUser.Email,
                 IsActive = newUser.IsActive
             };
-            userManager.CreateAsync(user, newUser.Password).Wait();
-            
+            _userManager.CreateAsync(user, "User@123").Wait();
         }
 
 
@@ -46,13 +44,13 @@ namespace Promact.Oauth.Server.Repository
         /// Gets the list of all users
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<UserModel> GetAllUsers()
+        public IEnumerable<UserAc> GetAllUsers()
         {
-            var users = applicationUserDataRepository.List().ToList();
-            var userList = new List<UserModel>();
+            var users = _applicationUserDataRepository.List().ToList();
+            var userList = new List<UserAc>();
             foreach (var user in users)
             {
-                var list = new UserModel
+                var list = new UserAc
                 {
                     Id = user.Id,
                     FirstName = user.FirstName,
@@ -71,32 +69,32 @@ namespace Promact.Oauth.Server.Repository
         /// Edites the details of an user
         /// </summary>
         /// <param name="editedUser"></param>
-        public void UpdateUserDetails(UserModel editedUser)
+        public void UpdateUserDetails(UserAc editedUser)
         {
-            var user = userManager.FindByIdAsync(editedUser.Id).Result;
+            var user = _userManager.FindByIdAsync(editedUser.Id).Result;
             user.FirstName = editedUser.FirstName;
             user.LastName = editedUser.LastName;
             user.Email = editedUser.Email;
             user.IsActive = editedUser.IsActive;
-            var a = userManager.UpdateAsync(user).Result;
-            applicationUserDataRepository.Save();
+            var a = _userManager.UpdateAsync(user).Result;
+            _applicationUserDataRepository.Save();
         }
 
-        
+
 
         /// <summary>
         /// Get Specific User By Id
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public UserModel GetById(string id)
+        public UserAc GetById(string id)
         {
-            var users = applicationUserDataRepository.List().ToList();
+            var users = _applicationUserDataRepository.List().ToList();
             foreach (var user in users)
             {
                 if (user.Id.Equals(id))
                 {
-                    var requiredUser = new UserModel
+                    var requiredUser = new UserAc
                     {
                         Id = user.Id,
                         FirstName = user.FirstName,
@@ -105,10 +103,12 @@ namespace Promact.Oauth.Server.Repository
                         IsActive = user.IsActive,
                         UserName = user.UserName
                     };
-                    return requiredUser; 
+                    return requiredUser;
                 }
             }
             return null;
         }
+
+
     }
 }

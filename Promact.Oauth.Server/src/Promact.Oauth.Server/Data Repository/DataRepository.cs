@@ -43,9 +43,9 @@ namespace Promact.Oauth.Server.Data_Repository
         #region "Public Method(s)"
 
         /// <summary>
-        /// Adds new employee
+        /// Adds new entry to the database
         /// </summary>
-        /// <param name="entity"></param>
+        /// <param name="entity">entity</param>
         public void Add(T entity)
         {
             _dbSet.Add(entity);
@@ -53,7 +53,7 @@ namespace Promact.Oauth.Server.Data_Repository
         }
 
         /// <summary>
-        /// Gets the list of all users
+        /// Fetches the list of all entries
         /// </summary>
         /// <returns></returns>
         public IEnumerable<T> List()
@@ -63,8 +63,9 @@ namespace Promact.Oauth.Server.Data_Repository
 
 
         /// <summary>
-        /// Edits the user details
+        /// Updates the database with updated details of an entry
         /// </summary>
+        /// <param name="entity">entity</param>
         public void Update(T entity)
         {
             _promactDbContext.Entry(entity).State = EntityState.Modified;
@@ -152,7 +153,43 @@ namespace Promact.Oauth.Server.Data_Repository
             }
         }
 
-       
+        public void Delete(T entity)
+        {
+            try
+            {
+                if (_promactDbContext.Entry(entity).State == EntityState.Detached)
+                {
+                    _dbSet.Attach(entity);
+                }
+                _dbSet.Remove(entity);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public void Delete(Expression<Func<T, bool>> predicate)
+        {
+            try
+            {
+                var entitiesToDelete = Fetch(predicate);
+                foreach (var entity in entitiesToDelete)
+                {
+                    if (_promactDbContext.Entry(entity).State == EntityState.Detached)
+                    {
+                        _dbSet.Attach(entity);
+                    }
+                    _dbSet.Remove(entity);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+
         #endregion
 
     }
