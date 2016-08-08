@@ -5,12 +5,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Promact.Oauth.Server.Data;
 
-namespace Promact.Oauth.Server.Data.Migrations
+namespace Promact.Oauth.Server.Migrations
 {
     [DbContext(typeof(PromactOauthDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20160806112128_OAuth table alter")]
+    partial class OAuthtablealter
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431")
@@ -203,7 +204,7 @@ namespace Promact.Oauth.Server.Data.Migrations
                         .IsRequired()
                         .HasAnnotation("MaxLength", 255);
 
-                    b.Property<string>("CreatedBy");
+                    b.Property<int>("CreatedBy");
 
                     b.Property<DateTime>("CreatedDateTime");
 
@@ -214,8 +215,6 @@ namespace Promact.Oauth.Server.Data.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasAnnotation("MaxLength", 255);
-
-                    b.Property<string>("UpdatedBy");
 
                     b.Property<DateTime>("UpdatedDateTime");
 
@@ -247,7 +246,7 @@ namespace Promact.Oauth.Server.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("CreatedBy");
+                    b.Property<int>("CreatedBy");
 
                     b.Property<DateTime>("CreatedDateTime");
 
@@ -261,10 +260,7 @@ namespace Promact.Oauth.Server.Data.Migrations
                         .IsRequired()
                         .HasAnnotation("MaxLength", 25);
 
-                    b.Property<string>("TeamLeaderId")
-                        .IsRequired();
-
-                    b.Property<string>("UpdatedBy");
+                    b.Property<int>("TeamLeaderId");
 
                     b.Property<DateTime>("UpdatedDateTime");
 
@@ -278,23 +274,23 @@ namespace Promact.Oauth.Server.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("CreatedBy");
+                    b.Property<int>("CreatedBy");
 
                     b.Property<DateTime>("CreatedDateTime");
 
                     b.Property<int>("ProjectId");
 
-                    b.Property<string>("UpdatedBy");
-
                     b.Property<DateTime>("UpdatedDateTime");
 
-                    b.Property<string>("UserId");
+                    b.Property<int>("UserId");
+
+                    b.Property<string>("UserId1");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ProjectId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId1");
 
                     b.ToTable("ProjectUsers");
                 });
@@ -339,7 +335,7 @@ namespace Promact.Oauth.Server.Data.Migrations
             modelBuilder.Entity("Promact.Oauth.Server.Models.ApplicationUser", b =>
                 {
                     b.HasOne("Promact.Oauth.Server.Models.Project")
-                        .WithMany("ApplicationUsers")
+                        .WithMany("ApplicatioUsers")
                         .HasForeignKey("ProjectId");
                 });
 
@@ -352,7 +348,7 @@ namespace Promact.Oauth.Server.Data.Migrations
 
                     b.HasOne("Promact.Oauth.Server.Models.ApplicationUser", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId1");
                 });
         }
     }

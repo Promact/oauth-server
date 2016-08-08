@@ -1,5 +1,6 @@
-﻿<hi>Project View</hi>
-<center>
+﻿<center>
+    <h3>Project Details</h3>
+    <br />
     <div *ngIf="pro">
         <table>
             <tr>
@@ -24,7 +25,27 @@
                     IsActive:
                 </td>
                 <td>
-                    {{pro.isActive}}
+                    <input type="checkbox" name="IsActive" [(ngModel)]="pro.isActive" disabled>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    TeamLeader:
+                </td>
+                <td>
+                    <select name="sel3" [(ngModel)]="pro.teamLeaderId" disabled>
+                        <option value={{i.Id}} *ngFor="let i of pro.listUsers">{{i.FirstName}}</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    List Of Users:
+                </td>
+                <td>
+                    <select multiple disabled>
+                        <option *ngFor="let ul of pro.applicationUsers">{{ul.FirstName}}</option>
+                    </select>
                 </td>
             </tr>
         </table>

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Data_Repository;
 using Microsoft.AspNetCore.Identity;
-using Promact.Oauth.Server.Models.ApplicationClass;
+using Promact.Oauth.Server.Models.ApplicationClasses;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Promact.Oauth.Server.Repository
@@ -26,7 +26,7 @@ namespace Promact.Oauth.Server.Repository
         /// Registers User
         /// </summary>
         /// <param name="applicationUser"></param>
-        public void AddUser(UserModel newUser)
+        public void AddUser(UserAc newUser)
         {
             var user = new ApplicationUser
             {
@@ -44,13 +44,13 @@ namespace Promact.Oauth.Server.Repository
         /// Gets the list of all users
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<UserModel> GetAllUsers()
+        public IEnumerable<UserAc> GetAllUsers()
         {
             var users = _applicationUserDataRepository.List().ToList();
-            var userList = new List<UserModel>();
+            var userList = new List<UserAc>();
             foreach (var user in users)
             {
-                var list = new UserModel
+                var list = new UserAc
                 {
                     Id = user.Id,
                     FirstName = user.FirstName,
@@ -69,7 +69,7 @@ namespace Promact.Oauth.Server.Repository
         /// Edites the details of an user
         /// </summary>
         /// <param name="editedUser"></param>
-        public void UpdateUserDetails(UserModel editedUser)
+        public void UpdateUserDetails(UserAc editedUser)
         {
             var user = _userManager.FindByIdAsync(editedUser.Id).Result;
             user.FirstName = editedUser.FirstName;
@@ -87,14 +87,14 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public UserModel GetById(string id)
+        public UserAc GetById(string id)
         {
             var users = _applicationUserDataRepository.List().ToList();
             foreach (var user in users)
             {
                 if (user.Id.Equals(id))
                 {
-                    var requiredUser = new UserModel
+                    var requiredUser = new UserAc
                     {
                         Id = user.Id,
                         FirstName = user.FirstName,

@@ -17,6 +17,8 @@ using Promact.Oauth.Server.Repository;
 using Promact.Oauth.Server.Data_Repository;
 using Promact.Oauth.Server.Repository.ProjectsRepository;
 using Promact.Oauth.Server.Repository.ConsumerAppRepository;
+using Newtonsoft.Json.Serialization;
+using Promact.Oauth.Server.Repository.OAuthRepository;
 
 namespace Promact.Oauth.Server
 {
@@ -62,8 +64,18 @@ namespace Promact.Oauth.Server
             services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<IConsumerAppReposiotry, ConsumerAppRepository>();
             services.AddScoped(typeof(IDataRepository<>), typeof(DataRepository<>));
+            services.AddScoped<IOAuthRepository, OAuthRepository>();
 
             services.AddMvc();
+            //.AddJsonOptions(opt =>
+            //{
+            //    var resolver = opt.SerializerSettings.ContractResolver;
+            //    if (resolver != null)
+            //    {
+            //        var res = resolver as DefaultContractResolver;
+            //        res.NamingStrategy = null;  // <<!-- this removes the camelcasing
+            //    }
+            //});
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();

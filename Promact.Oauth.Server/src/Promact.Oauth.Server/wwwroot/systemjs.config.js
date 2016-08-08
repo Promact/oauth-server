@@ -8,13 +8,47 @@
         'app': 'app', // 'dist',
         '@angular': '/lib/@angular',
         'angular2-in-memory-web-api': '/lib/angular2-in-memory-web-api',
-        'rxjs': '/lib/rxjs'
+        'rxjs': '/lib/rxjs',
+        'md2': '/lib/md2'
     };
     // packages tells the System loader how to load when no filename and/or no extension
     var packages = {
         'app': { main: 'main.js', defaultExtension: 'js' },
         'rxjs': { defaultExtension: 'js' },
         'angular2-in-memory-web-api': { main: 'index.js', defaultExtension: 'js' },
+
+
+        'md2/select': {
+            format: 'cjs',
+            defaultExtension: 'js',
+            main: 'select.js'
+        },
+        'md2/switch': {
+            format: 'cjs',
+            defaultExtension: 'js',
+            main: 'switch.js'
+        },
+        //'md2/multiselect': {
+        //    format: 'cjs',
+        //    defaultExtension: 'js',
+        //    main: 'multiselect.js'
+        //},
+        'md2/multiselect': {
+            format: 'cjs',
+            defaultExtension: 'js',
+            main: 'multiselect.js'
+        },
+        //...
+
+        //--- or ---
+
+        //'md2/all': {
+        //    format: 'cjs',
+        //    defaultExtension: 'js',
+        //    main: 'all.js'
+        //}
+    
+
     };
     var ngPackageNames = [
       'common',

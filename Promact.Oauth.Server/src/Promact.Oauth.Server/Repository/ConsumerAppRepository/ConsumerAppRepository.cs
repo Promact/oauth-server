@@ -26,7 +26,10 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
 
         #region "Public Method(s)"
 
-
+        public Apps GetAppDetails(string clientId)
+        {
+            return _appsDataRepository.FirstOrDefault(x => x.AuthId==clientId);
+        }
 
 
         #endregion

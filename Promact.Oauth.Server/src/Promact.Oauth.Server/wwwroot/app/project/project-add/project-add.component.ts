@@ -1,27 +1,57 @@
 ﻿import {Component} from "@angular/core";
 import { ProjectService }   from '../project.service';
 import {projectModel} from '../project.model'
-import { ROUTER_DIRECTIVES } from '@angular/router';
+import {UserModel} from '../../users/user.model';
+import { ROUTER_DIRECTIVES, Router, ActivatedRoute } from '@angular/router';
+
+import {Md2Multiselect } from 'md2/multiselect';
 @Component({
+    selector: 'md2-select',
     templateUrl: "app/project/project-add/project-add.html",
-    directives: []
+    directives: [Md2Multiselect]
 })
 export class ProjectAddComponent {
+
+    private disabled: boolean = false;
+
     pros: Array<projectModel>;
+    item: Array<string> = [];
     pro: projectModel;
-    constructor(private proService: ProjectService) {
+    private sub: any
+    Userlist: Array<UserModel>;
+    constructor(
+        private route: ActivatedRoute,
+        private router: Router,
+        private proService: ProjectService) {
         this.pros = new Array<projectModel>();
         this.pro = new projectModel();
+        
     }
+    /**
+     * Project Added in database
+     * @param pro project table information pass
+     */
     addProject(pro: projectModel) {
         this.proService.addProject(pro).subscribe((pro) => {
             this.pro = pro
+            this.router.navigate(['/project/'])
         }, err => {
 
         });
     } 
+    /**
+     * getUser Method get User Information
+     */
     ngOnInit() {
         this.pro = new projectModel();
-        //this.addProject(this.pro);
+        this.sub = this.route.params.subscribe(params => {
+            this.proService.getUsers().subscribe(listUsers => {
+                this.pro.listUsers = listUsers;
+                this.pro.applicationUsers = new Array<UserModel>();
+
+            });
+        });
+       
     }
+   
 }
