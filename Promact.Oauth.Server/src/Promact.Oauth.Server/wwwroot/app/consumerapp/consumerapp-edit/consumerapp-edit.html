@@ -7,8 +7,16 @@
 <body>
     <center>
         <h1>{{title}}</h1>
-        <h2>Add New Apps</h2>
-        <form novalidate #addConsumerApp="ngForm">
+        <h2>Edit New Apps</h2>
+        <form novalidate #updateConsumerApp="ngForm">
+            <div>
+                <label>Auth Id</label>
+                <input type="text" [(ngModel)]="consumerModel.AuthId" [disabled]="true" />
+            </div>
+            <div>
+                <label>Auth Secret:</label>
+                <input type="text" [(ngModel)]="consumerModel.AuthSecret" [disabled]="true" />
+            </div>
             <div>
                 <label>Name:</label>
                 <input type="text" #Name="ngForm" ngControl="Name" [(ngModel)]="consumerModel.Name" maxlength="255" required />
@@ -24,8 +32,9 @@
                 <input type="text" #CallBackUrl="ngForm" ngControl="CallBackUrl" [(ngModel)]="consumerModel.CallbackUrl" maxlength="255" required />
                 <div *ngIf="CallBackUrl.touched && !CallBackUrl.valid && CallBackUrl.errors.required" style="color:red">Call Back Url is Required</div>
             </div>
+
             <div>
-                <button type="submit" (click)="submitApps(consumerModel)" [disabled]="!(addConsumerApp.valid)">Submit</button>
+                <button type="submit" (click)="updateApps(consumerModel)" [disabled]="!(updateConsumerApp.valid)">Update</button>
                 <button type="submit" (click)="cancel()">Cancel</button>
             </div>
         </form>

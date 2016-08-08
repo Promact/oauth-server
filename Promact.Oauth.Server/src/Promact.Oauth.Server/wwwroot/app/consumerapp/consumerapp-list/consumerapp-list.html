@@ -15,12 +15,11 @@
                 </div>
                 <table>
                     <tbody>
-                        <tr>
-                            <td>Hiiiiiiiiiiiiiiiiiiiiiiiiiii</td>
+                        <tr *ngFor="let consumerApps of listOfConsumerApps">
+                            <td (click)="editDetails(consumerApps.id)">{{consumerApps.name}}</td>
                         </tr>
                     </tbody>
                 </table>
-
             </div>
         </form>
     </center>

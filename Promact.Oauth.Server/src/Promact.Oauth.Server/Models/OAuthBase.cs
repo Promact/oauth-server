@@ -13,7 +13,7 @@ namespace Promact.Oauth.Server.Models
         public int Id { get; set; }
 
         [Display(Name = "Created By")]
-        public int CreatedBy { get; set; }
+        public string CreatedBy { get; set; }
 
         [Display(Name = "Created Date")]
         [DataType(DataType.DateTime)]
