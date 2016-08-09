@@ -11,15 +11,23 @@ namespace Promact.Oauth.Server.Controllers
     [Route("api/[controller]")]
     public class ConsumerAppController : Controller
     {
-        private readonly IConsumerAppReposiotry _iConsumerAppRepository;
+        #region "Private Variable(s)"
+        private readonly IConsumerAppRepository _iConsumerAppRepository;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public ConsumerAppController(IConsumerAppReposiotry iConsumerAppRepository, UserManager<ApplicationUser> userManager)
+        #endregion
+
+        #region "Constructor"
+        public ConsumerAppController(IConsumerAppRepository iConsumerAppRepository, UserManager<ApplicationUser> userManager)
         {
             _iConsumerAppRepository = iConsumerAppRepository;
             _userManager = userManager;
         }
 
+        #endregion
+
+        #region public Methods
+       
         /// <summary>
         /// This method used for add new consumer app. -An
         /// </summary>
@@ -31,7 +39,7 @@ namespace Promact.Oauth.Server.Controllers
         {
             try
             {
-                Apps newApps = new Apps();
+                ConsumerApps newApps = new ConsumerApps();
                 newApps.CallbackUrl = consumerAppsAc.CallbackUrl;
                 newApps.CreatedDateTime = DateTime.Now;
                 newApps.Description = consumerAppsAc.Description;
@@ -58,7 +66,7 @@ namespace Promact.Oauth.Server.Controllers
         {
             try
             {
-                List<Apps> listOfApps = _iConsumerAppRepository.GetListOfApps();
+                List<ConsumerApps> listOfApps = _iConsumerAppRepository.GetListOfApps();
                 return Ok(listOfApps);
             }
             catch (Exception ex)
@@ -116,5 +124,7 @@ namespace Promact.Oauth.Server.Controllers
                 throw ex;
             }
         }
+      
+        #endregion
     }
 }
