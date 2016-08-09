@@ -110,10 +110,27 @@ namespace Promact.Oauth.Server
 
             app.UseMvc(routes =>
             {
+
                 routes.MapRoute(
-                    name: "default",
-                    //template: "{controller=Account}/{action=Login}");
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                      name: "Login",
+                      template: "Login",
+                      defaults: new { controller = "Account", action = "Login" });
+
+                routes.MapRoute(
+                    name: "LogOff",
+                    template: "LogOff",
+                    defaults: new { controller = "Account", action = "LogOff" });
+
+                routes.MapRoute(
+                        name: "default",
+                         template: "{*.}",
+                     defaults: new { controller = "Home", action = "Index" }
+                     );
+
+                //routes.MapRoute(
+                //    name: "default",
+                //    //template: "{controller=Account}/{action=Login}");
+                //    template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }
