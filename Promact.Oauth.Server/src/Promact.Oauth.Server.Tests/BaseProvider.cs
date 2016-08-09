@@ -28,14 +28,12 @@ namespace Promact.Oauth.Server.Tests
                 .AddEntityFrameworkStores<PromactOauthDbContext>()
                 .AddDefaultTokenProviders();
 
-            //Register application services
             services.AddScoped<IEnsureSeedData, EnsureSeedData>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<IConsumerAppReposiotry, ConsumerAppRepository>();
             services.AddScoped(typeof(IDataRepository<>), typeof(DataRepository<>));
 
-            // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
             services.AddDbContext<PromactOauthDbContext>(options =>

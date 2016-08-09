@@ -24,7 +24,7 @@ namespace Promact.Oauth.Server.Tests
                SlackChannelName=null,
             }, "Ronak");
             
-            //string a = "tari bai no piko";
+            
         }
     }
 }
