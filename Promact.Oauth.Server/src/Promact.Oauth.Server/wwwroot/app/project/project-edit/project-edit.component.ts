@@ -4,10 +4,13 @@ import { ProjectService }   from '../project.service';
 import {projectModel} from '../project.model'
 import {UserModel} from '../../users/user.model';
 import { ROUTER_DIRECTIVES, Router, ActivatedRoute } from '@angular/router';
+import {Md2Toast} from 'md2/toast';
 import {Md2Multiselect } from 'md2/multiselect';
+
 @Component({
     templateUrl: "app/project/project-edit/project-edit.html",
-    directives: [Md2Multiselect]
+    directives: [Md2Multiselect],
+    providers: [Md2Toast]
 })
 export class ProjectEditComponent implements OnInit {
     pro: projectModel;
@@ -18,6 +21,7 @@ export class ProjectEditComponent implements OnInit {
     constructor(
         private route: ActivatedRoute,
         private router: Router,
+        private toast: Md2Toast,
         private service: ProjectService,
         private location: Location) { }
     /**
@@ -68,6 +72,7 @@ export class ProjectEditComponent implements OnInit {
         this.service.editProject(pro).subscribe((pro) => {
             //this.pro = pro
             //this.router.navigate(['/project'])
+            this.toast.show("Project is edited successfully")  
             this.router.navigate(['/project/'])
             //this.location.back();
         }, err => {
