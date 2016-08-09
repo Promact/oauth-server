@@ -1,14 +1,17 @@
 ﻿<center>
     <h2><u>User Edit</u></h2>
 
-    <form>
+    <form novalidate #UserEditForm="ngForm">
         <table>
             <tr>
                 <td>
                     <b>First Name: </b>
                 </td>
                 <td>
-                    <input type="text" name="FirstName" [(ngModel)]="user.firstName" required/>
+                    <input type="text" #FirstName="ngForm" ngControl="FirstName" [(ngModel)]="user.FirstName" required/>
+                    <div *ngIf="FirstName.touched && !FirstName.valid && FirstName.errors.required" style="color:red">
+                        Required!
+                    </div>
                 </td>
             </tr>
             <tr>
@@ -16,7 +19,10 @@
                     <b>Last Name:</b>
                 </td>
                 <td>
-                    <input type="text" name="LastName" [(ngModel)]="user.lastName" required/>
+                    <input type="text" #LastName="ngForm" ngControl="LastName" [(ngModel)]="user.LastName" required/>
+                    <div *ngIf="LastName.touched && !LastName.valid && LastName.errors.required" style="color:red">
+                        Required!
+                    </div>
                 </td>
             </tr>
             <tr>
@@ -24,7 +30,7 @@
                     <b>Email: </b>
                 </td>
                 <td>
-                    <input type="email" name="Email" [(ngModel)]="user.email" required/>
+                    {{user.Email}}
                 </td>
             </tr>
             <tr>
@@ -32,18 +38,15 @@
                     <b>Status: </b>
                 </td>
                 <td>
-                    <select [(ngModel)]="user.isActive" required>
-                        <option value="true">Active</option>
-                        <option value="false">Inactive</option>
-                    </select>
+                    <input type="checkbox" [(ngModel)]="user.IsActive"/>
                 </td>
             </tr>
         </table>
 
         <div>
             <br />
-            <button type="submit" (click)="editUser(user)">Update</button>
-            <button type="submit" (click)="goBack()">Cancel</button>
+            <button type="submit" (click)="editUser(user)" [disabled]="!UserEditForm.valid || isEmailExist">Update</button>
+            <button type="submit" (click)="goBack()">Back</button>
         </div>
     </form>
 </center>
