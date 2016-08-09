@@ -9,7 +9,7 @@ import {Md2Multiselect } from 'md2/multiselect';
     selector: 'md2-select',
     templateUrl: "app/project/project-add/project-add.html",
     directives: [Md2Multiselect],
-    providers: [Md2Toast]
+    providers: [Md2Toast] 
 })
 export class ProjectAddComponent {
 
