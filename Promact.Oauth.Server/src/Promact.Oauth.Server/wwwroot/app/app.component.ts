@@ -1,19 +1,12 @@
 ﻿import { Component } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
 import { HttpService}   from './http.service';
+import {UserService} from './users/user.service';
 
 @Component({
     selector: 'my-app',
-    template: `
-    <h1>Oauth Server</h1>
-    <nav>
-        <a routerLink="/user" routerLinkActive="active">Users</a>
-        <a routerLink="/project" routerLinkActive="active">Projects</a>
-        <a routerLink="/consumerapp" routerLinkActive="active">Consumer App</a>
-    </nav>
-    <router-outlet></router-outlet>
-  `,
+    templateUrl: 'app/index.html',
     directives: [ROUTER_DIRECTIVES],
-    providers: [HttpService]
+    providers: [HttpService, UserService]
 })
 export class AppComponent { }

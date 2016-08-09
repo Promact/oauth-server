@@ -8,7 +8,7 @@ namespace Promact.Oauth.Server.Models.AccountViewModels
 {
     public class LoginViewModel
     {
-        [Required]
+     
         [EmailAddress]
         public string Email { get; set; }
 
