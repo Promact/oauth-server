@@ -3,20 +3,20 @@
     <table>
         <tr>
             <td><b>First Name: </b></td>
-            <td>{{user.firstName}}</td>
+            <td>{{user.FirstName}}</td>
         </tr>
         <tr>
             <td><b>Last Name: </b></td>
-            <td>{{user.lastName}}</td>
+            <td>{{user.LastName}}</td>
         </tr>
         <tr>
             <td><b>Email: </b></td>
-            <td>{{user.email}}</td>
+            <td>{{user.Email}}</td>
         </tr>
         <tr>
             <td><b>Status: </b></td>
-            <td *ngIf="user.isActive">Active</td>
-            <td *ngIf="!user.isActive">Inactive</td>
+            <td *ngIf="user.IsActive">Active</td>
+            <td *ngIf="!user.IsActive">Inactive</td>
         </tr>
     </table>
 

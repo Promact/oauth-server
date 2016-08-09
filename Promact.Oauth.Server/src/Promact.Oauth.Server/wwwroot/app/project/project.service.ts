@@ -6,6 +6,11 @@ import { projectModel } from './project.model';
 export class ProjectService {
     private ProjectUrl = 'api/project';  // URL to web api
     constructor(private httpService: HttpService<projectModel>) { }
+    //list of users
+    getUsers() {
+        return this.httpService.get("api/user" + "/users");
+    }
+    //
     getPros() {
         return this.httpService.get(this.ProjectUrl + "/projects");
     }

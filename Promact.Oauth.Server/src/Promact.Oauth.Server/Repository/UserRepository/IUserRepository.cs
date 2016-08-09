@@ -14,7 +14,7 @@ namespace Promact.Oauth.Server.Repository
         /// Registers User
         /// </summary>
         /// <param name="applicationUser">UserAc Application class object</param>
-        void AddUser(UserAc newUser);
+        void AddUser(UserAc newUser, string createdBy);
 
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace Promact.Oauth.Server.Repository
         /// Edites the details of an user
         /// </summary>
         /// <param name="editedUser">UserAc Application class object</param>
-        void UpdateUserDetails(UserAc editedUser);
+        void UpdateUserDetails(UserAc editedUser, string updatedBy);
 
 
         /// <summary>

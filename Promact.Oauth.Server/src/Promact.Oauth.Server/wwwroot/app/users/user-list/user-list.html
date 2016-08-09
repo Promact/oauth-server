@@ -14,14 +14,14 @@
         </thead>
         <tbody>
             <tr *ngFor="let user of users">
-                <td>{{user.firstName}}</td>
-                <td>{{user.lastName}}</td>
-                <td>{{user.email}}</td>
-                <td *ngIf="user.isActive">Active</td>
-                <td *ngIf="!user.isActive">Inactive</td>
+                <td>{{user.FirstName}}</td>
+                <td>{{user.LastName}}</td>
+                <td>{{user.Email}}</td>
+                <td *ngIf="user.IsActive">Active</td>
+                <td *ngIf="!user.IsActive">Inactive</td>
                 
-                <td> <button (click)="userDetails(user.id)">Details</button> </td>
-                <td> <button (click)="userEdit(user.id)">Edit</button> </td>
+                <td> <button (click)="userDetails(user.Id)">Details</button> </td>
+                <td> <button (click)="userEdit(user.Id)">Edit</button> </td>
                 
             </tr>
         </tbody>

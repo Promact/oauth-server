@@ -30,7 +30,7 @@ namespace Promact.Oauth.Server.Repository
         /// Creates an entry of the user to the database 
         /// </summary>
         /// <param name="applicationUser">UserAc Application class object</param>
-        public void AddUser(UserAc newUser)
+        public void AddUser(UserAc newUser, string createdBy)
         {
             // Create an ApplicationUser type object from UserAc application class onject
             var user = new ApplicationUser
@@ -39,7 +39,9 @@ namespace Promact.Oauth.Server.Repository
                 LastName = newUser.LastName,
                 Email = newUser.Email,
                 UserName = newUser.Email,
-                IsActive = newUser.IsActive
+                IsActive = newUser.IsActive,
+                CreatedBy = createdBy,
+                CreatedDateTime = DateTime.UtcNow
             };
             _userManager.CreateAsync(user, "User@123").Wait();
             SendEmail(user);
@@ -76,7 +78,7 @@ namespace Promact.Oauth.Server.Repository
         /// Edits the details of an user of the database
         /// </summary>
         /// <param name="editedUser">UserAc Application class object</param>
-        public void UpdateUserDetails(UserAc editedUser)
+        public void UpdateUserDetails(UserAc editedUser, string updatedBy)
         {
             // Fetch the user with particular Id and save the updated data
             var user = _userManager.FindByIdAsync(editedUser.Id).Result;
@@ -84,6 +86,8 @@ namespace Promact.Oauth.Server.Repository
             user.LastName = editedUser.LastName;
             user.Email = editedUser.Email;
             user.IsActive = editedUser.IsActive;
+            user.UpdatedBy = updatedBy;
+            user.UpdatedDateTime = DateTime.UtcNow;
             var a = _userManager.UpdateAsync(user).Result;
             _applicationUserDataRepository.Save();
         }

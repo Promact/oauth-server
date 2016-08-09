@@ -6,7 +6,8 @@ import { Router, ROUTER_DIRECTIVES, ActivatedRoute }from '@angular/router';
 
 
 @Component({
-    templateUrl: './app/users/user-details/user-details.html'
+    templateUrl: './app/users/user-details/user-details.html',
+    directives: [ROUTER_DIRECTIVES]
 })
 
 export class UserDetailsComponent {

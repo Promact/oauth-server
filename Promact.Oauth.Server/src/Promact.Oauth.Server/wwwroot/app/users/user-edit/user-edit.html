@@ -8,7 +8,7 @@
                     <b>First Name: </b>
                 </td>
                 <td>
-                    <input type="text" #FirstName="ngForm" ngControl="FirstName" [(ngModel)]="user.firstName" required/>
+                    <input type="text" #FirstName="ngForm" ngControl="FirstName" [(ngModel)]="user.FirstName" required/>
                     <div *ngIf="FirstName.touched && !FirstName.valid && FirstName.errors.required" style="color:red">
                         Required!
                     </div>
@@ -19,7 +19,7 @@
                     <b>Last Name:</b>
                 </td>
                 <td>
-                    <input type="text" #LastName="ngForm" ngControl="LastName" [(ngModel)]="user.lastName" required/>
+                    <input type="text" #LastName="ngForm" ngControl="LastName" [(ngModel)]="user.LastName" required/>
                     <div *ngIf="LastName.touched && !LastName.valid && LastName.errors.required" style="color:red">
                         Required!
                     </div>
@@ -30,7 +30,7 @@
                     <b>Email: </b>
                 </td>
                 <td>
-                    {{user.email}}
+                    {{user.Email}}
                 </td>
             </tr>
             <tr>
@@ -38,7 +38,7 @@
                     <b>Status: </b>
                 </td>
                 <td>
-                    <input type="checkbox" [(ngModel)]="user.isActive"/>
+                    <input type="checkbox" [(ngModel)]="user.IsActive"/>
                 </td>
             </tr>
         </table>

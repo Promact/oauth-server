@@ -57,11 +57,12 @@ namespace Promact.Oauth.Server.Controllers
         [Route("add")]
         public IActionResult RegisterUser([FromBody] UserAc newUser)
         {
+            string createdBy = _userManager.GetUserId(User);
             try
             {
                 if (ModelState.IsValid)
                 {
-                    _userRepository.AddUser(newUser);
+                    _userRepository.AddUser(newUser, createdBy);
                     return Ok(newUser);
                 }
                 return BadRequest();
@@ -79,9 +80,10 @@ namespace Promact.Oauth.Server.Controllers
         [Route("edit")]
         public IActionResult UpdateUser([FromBody] UserAc editedUser)
         {
+            string updatedBy = _userManager.GetUserId(User);
             if (ModelState.IsValid)
             {
-                _userRepository.UpdateUserDetails(editedUser);
+                _userRepository.UpdateUserDetails(editedUser, updatedBy);
                 return Ok(editedUser);
             }
             return BadRequest();
