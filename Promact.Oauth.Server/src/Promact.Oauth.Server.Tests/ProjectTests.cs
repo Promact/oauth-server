@@ -1,4 +1,6 @@
-﻿using Promact.Oauth.Server.Repository.ProjectsRepository;
+﻿using Promact.Oauth.Server.Data;
+using Promact.Oauth.Server.Data_Repository;
+using Promact.Oauth.Server.Repository.ProjectsRepository;
 using Xunit;
 
 namespace Promact.Oauth.Server.Tests
@@ -10,7 +12,7 @@ namespace Promact.Oauth.Server.Tests
         
         public ProjectTests()
         {
-            _projectRepository = new ProjectRepository();
+            
         }
 
         [Fact]

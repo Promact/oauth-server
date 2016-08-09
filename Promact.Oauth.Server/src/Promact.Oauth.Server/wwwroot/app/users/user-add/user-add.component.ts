@@ -5,7 +5,7 @@ import {Router, ROUTER_DIRECTIVES, ActivatedRoute} from '@angular/router';
 
 
 @Component({
-    templateUrl: './app/users/user-add/user-add.html'
+    templateUrl: 'app/users/user-add/user-add.html'
 })
 
 export class UserAddComponent {
@@ -19,7 +19,6 @@ export class UserAddComponent {
     constructor(private userService: UserService, private redirectionRoute: Router, private route: ActivatedRoute) {
         this.userModel = new UserModel();
     }
-
 
     addUser(userModel) {
         this.userService.registerUser(this.userModel).subscribe((users) => {
