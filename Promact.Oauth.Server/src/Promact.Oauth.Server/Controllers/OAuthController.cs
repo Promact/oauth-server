@@ -70,6 +70,7 @@ namespace Promact.Oauth.Server.Controllers
                     {
                         //Getting app details from clientId or AuthId
                         var app = _appRepository.GetAppDetails(content.ClientId);
+                        
                         // Refresh token and app's secret is checking if match then accesstoken will be send
                         if (app.AuthSecret == content.ClientSecret && content.RefreshToken == oAuth.RefreshToken)
                         {
