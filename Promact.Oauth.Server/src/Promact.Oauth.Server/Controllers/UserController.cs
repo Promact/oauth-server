@@ -13,18 +13,20 @@ using Promact.Oauth.Server.Models.ApplicationClasses;
 namespace Promact.Oauth.Server.Controllers
 {
     [Route("api/[controller]")]
-    public class UserController : Controller
+    [Authorize(Roles = "Admin")]
+    public class UserController : BaseController
     {
         private readonly IUserRepository _userRepository;
-        
-        public UserController(IUserRepository userRepository)
+        private UserManager<ApplicationUser> _userManager;
+
+        public UserController(IUserRepository userRepository, UserManager<ApplicationUser> userManager)
         {
             _userRepository = userRepository;
+            _userManager = userManager;
         }
 
 
-        // Gets the list of all entries of the ApplicationUser Table
-        // Get api/user
+        /* Calls the repository method for fetching the list of all entries of the ApplicationUser Table */
         [HttpGet]
         [Route("users")]
         public IActionResult AllUsers()
@@ -33,8 +35,8 @@ namespace Promact.Oauth.Server.Controllers
         }
 
 
-        // Gets the details of a particular employee from ApplicationUser Table, by its id
-        // Get api/user/3
+        /* Calls the repository method for fetching the details of a particular employee from ApplicationUser Table, by its id 
+           Parameter: integer Id*/
         [HttpGet]
         [Route("{id}")]
         public IActionResult GetUserById(string id)
@@ -49,41 +51,84 @@ namespace Promact.Oauth.Server.Controllers
 
 
 
-        // Adds a new user to the ApplicationUser Table
-        // Post api/user/add
+        /* Calls the repository method for adding a new user to the ApplicationUser Table
+         Parameter: Application class object UserAc */
         [HttpPost]
         [Route("add")]
         public IActionResult RegisterUser([FromBody] UserAc newUser)
         {
+            string createdBy = _userManager.GetUserId(User);
             try
             {
-                if (ModelState.IsValid && newUser.Email.Contains("@promactinfo.com"))
+                if (ModelState.IsValid)
                 {
-                    _userRepository.AddUser(newUser);
+                    _userRepository.AddUser(newUser, createdBy);
                     return Ok(newUser);
                 }
                 return BadRequest();
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return BadRequest();
             }
         }
 
 
-        // Edits the details of an user to the ApplicationUser Table
-        // Put api/user/edit/3
+        /* Calls the repository method for updating the details of an user to the ApplicationUser Table
+         Parameter: Application class object UserAc */
         [HttpPut]
         [Route("edit")]
         public IActionResult UpdateUser([FromBody] UserAc editedUser)
         {
+            string updatedBy = _userManager.GetUserId(User);
             if (ModelState.IsValid)
             {
-                _userRepository.UpdateUserDetails(editedUser);
+                _userRepository.UpdateUserDetails(editedUser, updatedBy);
                 return Ok(editedUser);
             }
             return BadRequest();
         }
 
+
+
+        /* Calls the repository method for changing the password
+           Parameter: PasswordViewModel */
+        [HttpPost]
+        [Route("changepassword")]
+        [AllowAnonymous]
+        public IActionResult ChangePassword([FromBody] ChangePasswordViewModel passwordModel)
+        {
+            var user = _userManager.GetUserAsync(User).Result;
+            if (_userManager.CheckPasswordAsync(user, passwordModel.OldPassword).Result)
+            {
+                passwordModel.Email = user.Email;
+                if (ModelState.IsValid)
+                {
+                    _userRepository.ChangePassword(passwordModel);
+                    return Ok(passwordModel);
+                }
+            }
+            return BadRequest();
+        }
+
+
+        /* Calls the repository method to find if a user already exists with the specified username, in the database
+          Parameter: string username*/
+        [HttpGet]
+        [Route("findbyusername/{userName}")]
+        public IActionResult FindByUserName(string userName)
+        {
+            return Ok(_userRepository.FindByUserName(userName));
+        }
+
+
+        /* Calls the repository method to find if a user already exists with the specified email, in the database
+          Parameter: string email*/
+        [HttpGet]
+        [Route("findbyemail/{email}")]
+        public IActionResult FindByEmail(string email)
+        {
+            return Ok(_userRepository.FindByEmail(email));
+        }
     }
 }

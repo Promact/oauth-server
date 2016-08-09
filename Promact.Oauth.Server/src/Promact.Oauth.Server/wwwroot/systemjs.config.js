@@ -28,11 +28,11 @@
             defaultExtension: 'js',
             main: 'switch.js'
         },
-        //'md2/multiselect': {
-        //    format: 'cjs',
-        //    defaultExtension: 'js',
-        //    main: 'multiselect.js'
-        //},
+        'md2/toast': {
+            format: 'cjs',
+            defaultExtension: 'js',
+            main: 'toast.js'
+        },
         'md2/multiselect': {
             format: 'cjs',
             defaultExtension: 'js',

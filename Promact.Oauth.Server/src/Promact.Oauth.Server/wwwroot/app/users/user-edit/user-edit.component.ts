@@ -1,6 +1,5 @@
 ﻿import {Component, Input} from "@angular/core";
 import {Router, ActivatedRoute, ROUTER_DIRECTIVES} from "@angular/router";
-
 import { UserService }   from '../user.service';
 import {UserModel} from '../user.model';
 
@@ -13,6 +12,7 @@ export class UserEditComponent {
     user: UserModel;
     id: any;
     errorMessage: string;
+
 
     constructor(private userService: UserService, private route: ActivatedRoute, private redirectionRoute: Router) {
         this.user = new UserModel();
@@ -33,15 +33,14 @@ export class UserEditComponent {
     editUser(user: UserModel) {
         this.userService.editUser(user).subscribe((user) => {
             this.user = user;
-            this.redirectionRoute.navigate(['/user']);
+            this.redirectionRoute.navigate(['/']);
         }, err => {
         });
     }
 
 
     goBack() {
-        this.redirectionRoute.navigate(['/user']);
+        this.redirectionRoute.navigate(['/']);
     }
-
 }
 
