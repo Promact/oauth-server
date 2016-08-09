@@ -14,7 +14,7 @@ namespace Promact.Oauth.Server.Controllers
 {
     [Route("api/[controller]")]
     [Authorize(Roles = "Admin")]
-    public class UserController : Controller
+    public class UserController : BaseController
     {
         private readonly IUserRepository _userRepository;
         private UserManager<ApplicationUser> _userManager;

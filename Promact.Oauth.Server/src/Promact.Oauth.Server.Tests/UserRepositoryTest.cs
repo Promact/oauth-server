@@ -1,9 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Promact.Oauth.Server.Data;
-using Promact.Oauth.Server.Data_Repository;
-using Promact.Oauth.Server.Models;
-using Promact.Oauth.Server.Models.ApplicationClasses;
 using Promact.Oauth.Server.Repository;
 using System;
 using System.Collections.Generic;
@@ -13,13 +9,21 @@ using Xunit;
 
 namespace Promact.Oauth.Server.Tests
 {
-    public class UserRepositoryTest
+    public class UserRepositoryTest : BaseProvider
     {
         private readonly IUserRepository _userRepository;
 
         public UserRepositoryTest() : base()
         {
-            //_userRepository = 
+            _userRepository = serviceProvider.GetService<IUserRepository>();
+        }
+
+        [Fact]
+        public void GetAllUser()
+        {
+            var users = _userRepository.GetAllUsers();
+
+            Assert.NotEmpty(users);
         }
     }
 }

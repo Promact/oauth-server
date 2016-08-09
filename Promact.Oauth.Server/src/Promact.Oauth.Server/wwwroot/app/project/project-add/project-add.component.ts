@@ -3,12 +3,13 @@ import { ProjectService }   from '../project.service';
 import {projectModel} from '../project.model'
 import {UserModel} from '../../users/user.model';
 import { ROUTER_DIRECTIVES, Router, ActivatedRoute } from '@angular/router';
-
+import {Md2Toast} from 'md2/toast';
 import {Md2Multiselect } from 'md2/multiselect';
 @Component({
     selector: 'md2-select',
     templateUrl: "app/project/project-add/project-add.html",
-    directives: [Md2Multiselect]
+    directives: [Md2Multiselect],
+    providers: [Md2Toast] 
 })
 export class ProjectAddComponent {
 
@@ -22,6 +23,7 @@ export class ProjectAddComponent {
     constructor(
         private route: ActivatedRoute,
         private router: Router,
+        private toast: Md2Toast,
         private proService: ProjectService) {
         this.pros = new Array<projectModel>();
         this.pro = new projectModel();
@@ -33,7 +35,8 @@ export class ProjectAddComponent {
      */
     addProject(pro: projectModel) {
         this.proService.addProject(pro).subscribe((pro) => {
-            this.pro = pro
+            this.pro = pro;
+            this.toast.show("Project is added successfully")    
             this.router.navigate(['/project/'])
         }, err => {
 
