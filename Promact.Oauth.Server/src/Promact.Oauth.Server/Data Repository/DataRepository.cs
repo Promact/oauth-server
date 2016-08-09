@@ -48,8 +48,16 @@ namespace Promact.Oauth.Server.Data_Repository
         /// <param name="entity">entity</param>
         public void Add(T entity)
         {
-            _dbSet.Add(entity);
-            _promactDbContext.SaveChanges();
+            try
+            {
+                _dbSet.Add(entity);
+                _promactDbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
         /// <summary>

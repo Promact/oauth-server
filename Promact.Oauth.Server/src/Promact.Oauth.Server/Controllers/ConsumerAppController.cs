@@ -27,7 +27,7 @@ namespace Promact.Oauth.Server.Controllers
         #endregion
 
         #region public Methods
-       
+
         /// <summary>
         /// This method used for add new consumer app. -An
         /// </summary>
@@ -46,8 +46,10 @@ namespace Promact.Oauth.Server.Controllers
                 newApps.Name = consumerAppsAc.Name;
                 var createdBy = _userManager.GetUserId(User);
                 newApps.CreatedBy = createdBy;
-                _iConsumerAppRepository.AddedConsumerApps(newApps);
-                return Ok(true);
+                if (_iConsumerAppRepository.AddedConsumerApps(newApps) != 0)
+                    return Ok(true);
+                else
+                    return Ok(false);
             }
             catch (Exception ex)
             {
@@ -114,17 +116,19 @@ namespace Promact.Oauth.Server.Controllers
                     oldAppsDetails.CallbackUrl = consumerAppsAc.CallbackUrl;
                     oldAppsDetails.Description = consumerAppsAc.Description;
                     oldAppsDetails.UpdatedDateTime = DateTime.Now;
-                    _iConsumerAppRepository.UpdateConsumerApps(oldAppsDetails);
-                    return Ok(true);
+                    if (_iConsumerAppRepository.UpdateConsumerApps(oldAppsDetails) != 0)
+                        return Ok(true);
+                    else
+                        return Ok(false);
                 }
-                return Ok(false);
+                return Ok();
             }
             catch (Exception ex)
             {
                 throw ex;
             }
         }
-      
+
         #endregion
     }
 }
