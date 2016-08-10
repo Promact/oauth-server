@@ -39,7 +39,7 @@
                     </td>
                     <td>
                         <select name="sel3" [(ngModel)]="pro.teamLeaderId">
-                            <option value={{i.Id}} *ngFor="let i of pro.listUsers">{{i.FirstName}}</option>
+                            <option value={{i.Id}} *ngFor="let i of pro.listUsers">{{i.FirstName}}-{{i.Email}}</option>
                         </select>
                     </td>
                 </tr>
@@ -49,7 +49,7 @@
                     </td>
                     <td>
                         <md2-multiselect *ngIf="pro.applicationUsers && pro.listUsers" [items]="pro.listUsers"
-                                         [item-text]="'FirstName'"
+                                         [item-text]="'UniqueName'"
                                          [(ngModel)]="pro.applicationUsers"
                                          placeholder="Placeholder Text">
                         </md2-multiselect>
