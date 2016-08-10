@@ -61,7 +61,8 @@ namespace Promact.Oauth.Server.Controllers
                     }
                     // Assigning Base Address with redirectUrl
                     client.BaseAddress = new Uri(model.RedirectUrl);
-                    var response = client.GetAsync("?refreshToken=" + oAuth.RefreshToken).Result;
+                    var requestUrl = string.Format("?refreshToken={0}", oAuth.RefreshToken);
+                    var response = client.GetAsync(requestUrl).Result;
                     var responseResult = response.Content.ReadAsStringAsync().Result;
                     // Transforming Json String to object type OAuthApplication
                     var content = JsonConvert.DeserializeObject<OAuthApplication>(responseResult);
@@ -74,7 +75,8 @@ namespace Promact.Oauth.Server.Controllers
                         // Refresh token and app's secret is checking if match then accesstoken will be send
                         if (app.AuthSecret == content.ClientSecret && content.RefreshToken == oAuth.RefreshToken)
                         {
-                            return Redirect(content.ReturnUrl + "?accessToken=" + oAuth.AccessToken + "&email=" + oAuth.userEmail);
+                            var returnUrl = string.Format("{0}?accessToken={1}&email={2}", content.ReturnUrl, oAuth.AccessToken, oAuth.userEmail);
+                            return Redirect(returnUrl);
                         }
                     }
                 }
