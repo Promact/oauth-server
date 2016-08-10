@@ -16,6 +16,7 @@ using Promact.Oauth.Server.Repository.ProjectsRepository;
 using Promact.Oauth.Server.Repository.ConsumerAppRepository;
 using Newtonsoft.Json.Serialization;
 using Promact.Oauth.Server.Repository.OAuthRepository;
+using Promact.Oauth.Server.AutoMapper;
 
 namespace Promact.Oauth.Server
 {
@@ -36,6 +37,8 @@ namespace Promact.Oauth.Server
 
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
+
+            AutoMapperProfileConfiguration.AddAutoMapper();
         }
 
         public IConfigurationRoot Configuration { get; }
