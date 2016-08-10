@@ -24,6 +24,7 @@ export class ConsumerappEditComponent {
                 this.consumerModel.Description = result.description;
                 this.consumerModel.CallbackUrl = result.callbackUrl;
                 this.consumerModel.Id = result.id;
+
                 this.consumerModel.AuthId = result.authId;
                 this.consumerModel.AuthSecret = result.authSecret;
             }
@@ -35,8 +36,13 @@ export class ConsumerappEditComponent {
 
     updateApps(consumerModel) {
         this.consumerAppService.updateConsumerApps(consumerModel).subscribe((result) => {
-            this.toast.show('Consumer Apps is updated successfully.');
-            this.cancel();
+            if (result == true) {
+                this.toast.show('Consumer App is updated successfully.');
+                this.cancel();
+            }
+            else if (result == false) {
+                this.toast.show('Consumer App Name is already exists.');
+            }
         }, err => {
 
         });

@@ -19,11 +19,11 @@ namespace Promact.Oauth.Server.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly IConsumerAppReposiotry _appRepository;
+        private readonly IConsumerAppRepository _appRepository;
         private readonly IOAuthRepository _oAuthRepository;
         HttpClient client;
 
-        public OAuthController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IConsumerAppReposiotry appRepository, IOAuthRepository oAuthRepository)
+        public OAuthController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IConsumerAppRepository appRepository, IOAuthRepository oAuthRepository)
         {
             client = new HttpClient();
             _signInManager = signInManager;
