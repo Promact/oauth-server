@@ -11,14 +11,22 @@ namespace Promact.Oauth.Server.Controllers
     [Route("api/[controller]")]
     public class ConsumerAppController : Controller
     {
-        private readonly IConsumerAppReposiotry _iConsumerAppRepository;
+        #region "Private Variable(s)"
+        private readonly IConsumerAppRepository _iConsumerAppRepository;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public ConsumerAppController(IConsumerAppReposiotry iConsumerAppRepository, UserManager<ApplicationUser> userManager)
+        #endregion
+
+        #region "Constructor"
+        public ConsumerAppController(IConsumerAppRepository iConsumerAppRepository, UserManager<ApplicationUser> userManager)
         {
             _iConsumerAppRepository = iConsumerAppRepository;
             _userManager = userManager;
         }
+
+        #endregion
+
+        #region public Methods
 
         /// <summary>
         /// This method used for add new consumer app. -An
@@ -31,15 +39,17 @@ namespace Promact.Oauth.Server.Controllers
         {
             try
             {
-                Apps newApps = new Apps();
+                ConsumerApps newApps = new ConsumerApps();
                 newApps.CallbackUrl = consumerAppsAc.CallbackUrl;
                 newApps.CreatedDateTime = DateTime.Now;
                 newApps.Description = consumerAppsAc.Description;
                 newApps.Name = consumerAppsAc.Name;
                 var createdBy = _userManager.GetUserId(User);
                 newApps.CreatedBy = createdBy;
-                _iConsumerAppRepository.AddedConsumerApps(newApps);
-                return Ok(true);
+                if (_iConsumerAppRepository.AddedConsumerApps(newApps) != 0)
+                    return Ok(true);
+                else
+                    return Ok(false);
             }
             catch (Exception ex)
             {
@@ -58,7 +68,7 @@ namespace Promact.Oauth.Server.Controllers
         {
             try
             {
-                List<Apps> listOfApps = _iConsumerAppRepository.GetListOfApps();
+                List<ConsumerApps> listOfApps = _iConsumerAppRepository.GetListOfApps();
                 return Ok(listOfApps);
             }
             catch (Exception ex)
@@ -106,15 +116,19 @@ namespace Promact.Oauth.Server.Controllers
                     oldAppsDetails.CallbackUrl = consumerAppsAc.CallbackUrl;
                     oldAppsDetails.Description = consumerAppsAc.Description;
                     oldAppsDetails.UpdatedDateTime = DateTime.Now;
-                    _iConsumerAppRepository.UpdateConsumerApps(oldAppsDetails);
-                    return Ok(true);
+                    if (_iConsumerAppRepository.UpdateConsumerApps(oldAppsDetails) != 0)
+                        return Ok(true);
+                    else
+                        return Ok(false);
                 }
-                return Ok(false);
+                return Ok(oldAppsDetails);
             }
             catch (Exception ex)
             {
                 throw ex;
             }
         }
+
+        #endregion
     }
 }

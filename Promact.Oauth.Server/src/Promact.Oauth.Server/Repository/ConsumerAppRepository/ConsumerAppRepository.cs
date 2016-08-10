@@ -7,17 +7,17 @@ using System.Linq;
 
 namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
 {
-    public class ConsumerAppRepository : IConsumerAppReposiotry
+    public class ConsumerAppRepository : IConsumerAppRepository
     {
         #region "Private Variable(s)"
 
-        private readonly IDataRepository<Apps> _appsDataRepository;
+        private readonly IDataRepository<ConsumerApps> _appsDataRepository;
 
         #endregion
 
 
         #region "Constructor"
-        public ConsumerAppRepository(IDataRepository<Apps> appsDataRepository)
+        public ConsumerAppRepository(IDataRepository<ConsumerApps> appsDataRepository)
         {
             _appsDataRepository = appsDataRepository;
         }
@@ -31,7 +31,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// </summary>
         /// <param name="clientId"></param>
         /// <returns></returns>
-        public Apps GetAppDetails(string clientId)
+        public ConsumerApps GetAppDetails(string clientId)
         {
             try
             {
@@ -49,14 +49,18 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// </summary>
         /// <param name="aapsObject"></param>
         /// <returns></returns>
-        public int AddedConsumerApps(Apps aapsObject)
+        public int AddedConsumerApps(ConsumerApps consumerApps)
         {
             try
             {
-                aapsObject.AuthId = CreatedRandomNumer(true);
-                aapsObject.AuthSecret = CreatedRandomNumer(false);
-                _appsDataRepository.Add(aapsObject);
-                return aapsObject.Id;
+                if (_appsDataRepository.FirstOrDefault(x => x.Name == consumerApps.Name) == null)
+                {
+                    consumerApps.AuthId = CreatedRandomNumer(true);
+                    consumerApps.AuthSecret = CreatedRandomNumer(false);
+                    _appsDataRepository.Add(consumerApps);
+                    return consumerApps.Id;
+                }
+                return 0;
             }
             catch (Exception ex)
             {
@@ -69,7 +73,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// This method used forget list of apps. -An
         /// </summary>
         /// <returns></returns>
-        public List<Apps> GetListOfApps()
+        public List<ConsumerApps> GetListOfApps()
         {
             try
             {
@@ -87,7 +91,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// </summary>
         /// <param name="id">pass apps object primarykey</param>
         /// <returns></returns>
-        public Apps GetAppsObjectById(int id)
+        public ConsumerApps GetAppsObjectById(int id)
         {
             try
             {
@@ -106,12 +110,16 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// </summary>
         /// <param name="apps"></param>
         /// <returns></returns>
-        public int UpdateConsumerApps(Apps consumerApps)
+        public int UpdateConsumerApps(ConsumerApps consumerApps)
         {
             try
             {
-                _appsDataRepository.Update(consumerApps);
-                return consumerApps.Id;
+                if (_appsDataRepository.FirstOrDefault(x => x.Name == consumerApps.Name && x.Id != consumerApps.Id) == null)
+                {
+                    _appsDataRepository.Update(consumerApps);
+                    return consumerApps.Id;
+                }
+                return 0;
             }
             catch (Exception ex)
             {

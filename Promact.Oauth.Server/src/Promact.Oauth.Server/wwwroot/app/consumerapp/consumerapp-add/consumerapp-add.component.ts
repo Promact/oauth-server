@@ -18,9 +18,14 @@ export class ConsumerappAddComponent {
     submitApps(consumerModel) {
         this.consumerAppService.addConsumerApps(consumerModel).subscribe((result) => {
             if (result == true) {
-                this.toast.show('Consumer Apps is added successfully.');
+                this.toast.show('Consumer App is added successfully.');
                 this.cancel();
             }
+            else if (result == false) {
+                this.toast.show('Consumer App Name is already exists.');
+            }
+
+
         }, err => {
 
         });
