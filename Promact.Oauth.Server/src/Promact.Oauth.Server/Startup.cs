@@ -121,16 +121,16 @@ namespace Promact.Oauth.Server
                     template: "LogOff",
                     defaults: new { controller = "Account", action = "LogOff" });
 
-                routes.MapRoute(
-                        name: "default",
-                         template: "{*.}",
-                     defaults: new { controller = "Home", action = "Index" }
-                     );
-
                 //routes.MapRoute(
-                //    name: "default",
-                //    //template: "{controller=Account}/{action=Login}");
-                //    template: "{controller=Home}/{action=Index}/{id?}");
+                //        name: "default",
+                //         template: "{*.}",
+                //     defaults: new { controller = "Home", action = "Index" }
+                //     );
+
+                routes.MapRoute(
+                    name: "default",
+                    //template: "{controller=Account}/{action=Login}");
+                    template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }
