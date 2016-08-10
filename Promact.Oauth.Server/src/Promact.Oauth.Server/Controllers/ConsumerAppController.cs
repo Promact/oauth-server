@@ -121,7 +121,7 @@ namespace Promact.Oauth.Server.Controllers
                     else
                         return Ok(false);
                 }
-                return Ok();
+                return Ok(oldAppsDetails);
             }
             catch (Exception ex)
             {

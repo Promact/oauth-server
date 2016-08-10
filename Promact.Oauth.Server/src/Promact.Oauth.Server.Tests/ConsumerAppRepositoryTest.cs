@@ -38,7 +38,7 @@ namespace Promact.Oauth.Server.Tests
         }
 
         /// <summary>
-        /// This test case used for check consumer name is quniqe duplication not allow. -An
+        /// This test case used for,when add new consumer app check consumer name is quniqe duplication not allow. -An
         /// </summary>
         [Fact]
         public void ConsumerAppNameUnique()
@@ -47,21 +47,9 @@ namespace Promact.Oauth.Server.Tests
             consumerApp.Name = "ABCEDF";
             int id = _iConsumerAppRespository.AddedConsumerApps(consumerApp);
             int newId = _iConsumerAppRespository.AddedConsumerApps(consumerApp);
-            Assert.Same(0, newId);
+            Assert.Equal(0, newId);
         }
-
-        [Fact]
-        public void AddedConsumerAppsWithoutName()
-        {
-            var consumer = GetConsumerAppObject();
-            consumer.Name = null;
-            Assert.Throws(typeof(DbUpdateException), () =>
-            {
-                _iConsumerAppRespository.AddedConsumerApps(consumer);
-            });
-
-        }
-
+        
         /// <summary>
         /// This test case used for check app details fetch by valid client id.-An
         /// </summary>
@@ -118,8 +106,7 @@ namespace Promact.Oauth.Server.Tests
             var getApplication = _iConsumerAppRespository.GetAppsObjectById(2);
             Assert.Null(getApplication);
         }
-
-
+        
 
         /// <summary>
         /// This test case used for check get list of apps. -An 
@@ -147,24 +134,29 @@ namespace Promact.Oauth.Server.Tests
             consumerApp.UpdatedDateTime = DateTime.Now;
             consumerApp.UpdatedBy = "Ankit";
             int newId = _iConsumerAppRespository.UpdateConsumerApps(consumerApp);
-            Assert.NotSame(0, newId);
+            Assert.NotEqual(0, newId);
         }
 
-        //[Fact]
-        //public void CheckConsumerAppNameUnique()
-        //{
-        //    var consumer = GetConsumerAppObject();
-        //    consumer.Name = "Twitter";
-        //    _iConsumerAppRespository.AddedConsumerApps(consumer);
-        //    consumer.Name = "Face Book";
-        //    _iConsumerAppRespository.AddedConsumerApps(consumer);
-        //    var oldConsumerApp =
-        //    int newId = _iConsumerAppRespository.UpdateConsumerApps(consumer);
-        //    Assert.Same(0, newId);
-        //}
+        /// <summary>
+        /// This test case used for, When update consumer app check consumer name is unique duplication not allow. -An
+        /// </summary>
+        [Fact]
+        public void CheckConsumerAppNameUnique()
+        {
+            var consumer = GetConsumerAppObject();
+            consumer.Name = "Twitter";
+            _iConsumerAppRespository.AddedConsumerApps(consumer);
+            var consumerNew = GetConsumerAppObject();
+            consumerNew.Name = "Face Book";
+            int idOfConsumer = _iConsumerAppRespository.AddedConsumerApps(consumerNew);
+            var oldConsumerApp = _iConsumerAppRespository.GetAppsObjectById(idOfConsumer);
+            oldConsumerApp.Name = "Twitter";
+            int newId = _iConsumerAppRespository.UpdateConsumerApps(oldConsumerApp);
+            Assert.Equal(0, newId);
+        }
+        
 
         #endregion
-
 
         #region "Private Method(s)"
 
