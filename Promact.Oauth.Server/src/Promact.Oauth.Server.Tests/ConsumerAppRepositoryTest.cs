@@ -12,13 +12,13 @@ namespace Promact.Oauth.Server.Tests
 {
     public class ConsumerAppRepositoryTest : BaseProvider
     {
-        private readonly IConsumerAppRepository _iConsumerAppRespository;
-        private readonly IDataRepository<ConsumerApps> _iConsumerAppsContext;
+        private readonly IConsumerAppRepository _consumerAppRespository;
+        private readonly IDataRepository<ConsumerApps> _consumerAppsContext;
 
         public ConsumerAppRepositoryTest() : base()
         {
-            _iConsumerAppRespository = serviceProvider.GetService<IConsumerAppRepository>();
-            _iConsumerAppsContext = serviceProvider.GetService<IDataRepository<ConsumerApps>>();
+            _consumerAppRespository = serviceProvider.GetService<IConsumerAppRepository>();
+            _consumerAppsContext = serviceProvider.GetService<IDataRepository<ConsumerApps>>();
 
         }
 
@@ -32,8 +32,8 @@ namespace Promact.Oauth.Server.Tests
         {
             ConsumerApps consumerApp = GetConsumerAppObject();
             consumerApp.Name = "Demo Name";
-            int id = _iConsumerAppRespository.AddedConsumerApps(consumerApp);
-            var consumerApps = _iConsumerAppsContext.FirstOrDefault(x => x.Id == id);
+            int id = _consumerAppRespository.AddedConsumerApps(consumerApp);
+            var consumerApps = _consumerAppsContext.FirstOrDefault(x => x.Id == id);
             Assert.NotNull(consumerApps);
         }
 
@@ -45,8 +45,8 @@ namespace Promact.Oauth.Server.Tests
         {
             ConsumerApps consumerApp = GetConsumerAppObject();
             consumerApp.Name = "ABCEDF";
-            _iConsumerAppRespository.AddedConsumerApps(consumerApp);
-            int newId = _iConsumerAppRespository.AddedConsumerApps(consumerApp);
+            _consumerAppRespository.AddedConsumerApps(consumerApp);
+            int newId = _consumerAppRespository.AddedConsumerApps(consumerApp);
             Assert.Equal(0, newId);
         }
         
@@ -58,9 +58,9 @@ namespace Promact.Oauth.Server.Tests
         {
             ConsumerApps consumerApp = GetConsumerAppObject();
             consumerApp.Name = "Demo2";
-            int id = _iConsumerAppRespository.AddedConsumerApps(consumerApp);
-            var consumerApps = _iConsumerAppsContext.FirstOrDefault(x => x.Id == id);
-            var getApplication = _iConsumerAppRespository.GetAppDetails(consumerApps.AuthId);
+            int id = _consumerAppRespository.AddedConsumerApps(consumerApp);
+            var consumerApps = _consumerAppsContext.FirstOrDefault(x => x.Id == id);
+            var getApplication = _consumerAppRespository.GetAppDetails(consumerApps.AuthId);
             Assert.NotNull(getApplication);
         }
 
@@ -72,8 +72,8 @@ namespace Promact.Oauth.Server.Tests
         {
             ConsumerApps consumerApp = GetConsumerAppObject();
             consumerApp.Name = "Demo3";
-            _iConsumerAppRespository.AddedConsumerApps(consumerApp);
-            var getApplication = _iConsumerAppRespository.GetAppDetails("ABEDNGdeMR1234568F");
+            _consumerAppRespository.AddedConsumerApps(consumerApp);
+            var getApplication = _consumerAppRespository.GetAppDetails("ABEDNGdeMR1234568F");
             Assert.Null(getApplication);
         }
 
@@ -87,8 +87,8 @@ namespace Promact.Oauth.Server.Tests
         {
             ConsumerApps consumerApp = GetConsumerAppObject();
             consumerApp.Name = "Demo4";
-            int id = _iConsumerAppRespository.AddedConsumerApps(consumerApp);
-            var getApplication = _iConsumerAppRespository.GetAppsObjectById(id);
+            int id = _consumerAppRespository.AddedConsumerApps(consumerApp);
+            var getApplication = _consumerAppRespository.GetAppsObjectById(id);
             Assert.NotNull(getApplication);
         }
 
@@ -102,8 +102,8 @@ namespace Promact.Oauth.Server.Tests
         {
             ConsumerApps consumerApp = GetConsumerAppObject();
             consumerApp.Name = "Demo5";
-            _iConsumerAppRespository.AddedConsumerApps(consumerApp);
-            var getApplication = _iConsumerAppRespository.GetAppsObjectById(23213);
+            _consumerAppRespository.AddedConsumerApps(consumerApp);
+            var getApplication = _consumerAppRespository.GetAppsObjectById(23213);
             Assert.Null(getApplication);
         }
         
@@ -116,8 +116,8 @@ namespace Promact.Oauth.Server.Tests
         {
             ConsumerApps consumerApp = GetConsumerAppObject();
             consumerApp.Name = "Demo6";
-            _iConsumerAppRespository.AddedConsumerApps(consumerApp);
-            List<ConsumerApps> listOfApps = _iConsumerAppRespository.GetListOfApps();
+            _consumerAppRespository.AddedConsumerApps(consumerApp);
+            List<ConsumerApps> listOfApps = _consumerAppRespository.GetListOfApps();
             Assert.NotEmpty(listOfApps);
         }
 
@@ -129,11 +129,11 @@ namespace Promact.Oauth.Server.Tests
         {
             ConsumerApps consumerApp = GetConsumerAppObject();
             consumerApp.Name = "Demo for Update";
-           _iConsumerAppRespository.AddedConsumerApps(consumerApp);
+           _consumerAppRespository.AddedConsumerApps(consumerApp);
             consumerApp.Description = "XyzName";
             consumerApp.UpdatedDateTime = DateTime.Now;
             consumerApp.UpdatedBy = "Ankit";
-            int newId = _iConsumerAppRespository.UpdateConsumerApps(consumerApp);
+            int newId = _consumerAppRespository.UpdateConsumerApps(consumerApp);
             Assert.NotEqual(0, newId);
         }
 
@@ -145,13 +145,13 @@ namespace Promact.Oauth.Server.Tests
         {
             var consumer = GetConsumerAppObject();
             consumer.Name = "Twitter";
-            _iConsumerAppRespository.AddedConsumerApps(consumer);
+            _consumerAppRespository.AddedConsumerApps(consumer);
             var consumerNew = GetConsumerAppObject();
             consumerNew.Name = "Face Book";
-            int idOfConsumer = _iConsumerAppRespository.AddedConsumerApps(consumerNew);
-            var oldConsumerApp = _iConsumerAppRespository.GetAppsObjectById(idOfConsumer);
+            int idOfConsumer = _consumerAppRespository.AddedConsumerApps(consumerNew);
+            var oldConsumerApp = _consumerAppRespository.GetAppsObjectById(idOfConsumer);
             oldConsumerApp.Name = "Twitter";
-            int newId = _iConsumerAppRespository.UpdateConsumerApps(oldConsumerApp);
+            int newId = _consumerAppRespository.UpdateConsumerApps(oldConsumerApp);
             Assert.Equal(0, newId);
         }
         
