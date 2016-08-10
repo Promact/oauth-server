@@ -1,7 +1,13 @@
 ﻿
 <nav>
-    Template-1 <br/>
-    <a [routerLink]="['User']" routerLinkActive="active">User</a>
+    <h1>Component Router</h1>
+    <nav>
+        <a routerLink="/" routerLinkActive="active">Users</a>
+        <a routerLink="/project" routerLinkActive="active">Projects</a>
+        <a routerLink="/consumerapp" routerLinkActive="active">Consumer App</a>
+        <a routerLink="/user/changePassword" routerLinkActive="active">Change Password</a>
+    </nav>
+    <router-outlet></router-outlet>
     
 </nav>
 <User></User>

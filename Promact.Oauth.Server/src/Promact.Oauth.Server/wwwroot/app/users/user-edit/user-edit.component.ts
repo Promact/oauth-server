@@ -1,12 +1,12 @@
 ﻿import {Component, Input} from "@angular/core";
 import {Router, ActivatedRoute, ROUTER_DIRECTIVES} from "@angular/router";
-
 import { UserService }   from '../user.service';
 import {UserModel} from '../user.model';
-
+import {Md2Toast} from 'md2/toast';
 
 @Component({
-    templateUrl: './app/users/user-edit/user-edit.html'
+    templateUrl: './app/users/user-edit/user-edit.html',
+    providers: [Md2Toast]
 })
 
 export class UserEditComponent {
@@ -14,7 +14,8 @@ export class UserEditComponent {
     id: any;
     errorMessage: string;
 
-    constructor(private userService: UserService, private route: ActivatedRoute, private redirectionRoute: Router) {
+
+    constructor(private userService: UserService, private route: ActivatedRoute, private redirectionRoute: Router, private toast: Md2Toast) {
         this.user = new UserModel();
     }
 
@@ -31,17 +32,22 @@ export class UserEditComponent {
 
 
     editUser(user: UserModel) {
-        this.userService.editUser(user).subscribe((user) => {
-            this.user = user;
-            this.redirectionRoute.navigate(['/user']);
+        this.userService.editUser(user).subscribe((result) => {
+            if (result == true) {
+                this.toast.show('User updated successfully.');
+                this.redirectionRoute.navigate(['/']);
+            }
+            else if (result == false) {
+                this.toast.show('User Name already exists.');
+            }
+            
         }, err => {
         });
     }
 
 
     goBack() {
-        this.redirectionRoute.navigate(['/user']);
+        this.redirectionRoute.navigate(['/']);
     }
-
 }
 

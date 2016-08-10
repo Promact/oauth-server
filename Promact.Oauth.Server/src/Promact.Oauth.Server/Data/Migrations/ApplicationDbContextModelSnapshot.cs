@@ -132,6 +132,10 @@ namespace Promact.Oauth.Server.Data.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<DateTime>("CreatedDateTime");
+
                     b.Property<string>("Email")
                         .HasAnnotation("MaxLength", 256);
 
@@ -168,6 +172,10 @@ namespace Promact.Oauth.Server.Data.Migrations
                     b.Property<string>("SecurityStamp");
 
                     b.Property<bool>("TwoFactorEnabled");
+
+                    b.Property<string>("UpdatedBy");
+
+                    b.Property<DateTime>("UpdatedDateTime");
 
                     b.Property<string>("UserName")
                         .HasAnnotation("MaxLength", 256);
@@ -222,6 +230,24 @@ namespace Promact.Oauth.Server.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Apps");
+                });
+
+            modelBuilder.Entity("Promact.Oauth.Server.Models.OAuth", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AccessToken");
+
+                    b.Property<string>("ClientId");
+
+                    b.Property<string>("RefreshToken");
+
+                    b.Property<string>("userEmail");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OAuth");
                 });
 
             modelBuilder.Entity("Promact.Oauth.Server.Models.Project", b =>

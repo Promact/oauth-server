@@ -13,19 +13,25 @@ namespace Promact.Oauth.Server.Models.ApplicationClasses
         [JsonProperty("Id")]
         public string Id { get; set; }
 
+        [Required]
+        [StringLength(255)]
         [JsonProperty("FirstName")]
         public string FirstName { get; set; }
 
+        [Required]
+        [StringLength(255)]
         [JsonProperty("LastName")]
         public string LastName { get; set; }
 
         [JsonProperty("IsActive")]
         public bool IsActive { get; set; }
-        //public string Status { get; set; }
 
+        [Required]
+        [EmailAddress]
         [JsonProperty("Email")]
         public string Email { get; set; }
 
+        [StringLength(255)]
         [JsonProperty("Password")]
         public string Password { get; set; }
 

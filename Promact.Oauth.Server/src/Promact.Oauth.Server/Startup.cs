@@ -14,6 +14,8 @@ using Promact.Oauth.Server.Repository;
 using Promact.Oauth.Server.Data_Repository;
 using Promact.Oauth.Server.Repository.ProjectsRepository;
 using Promact.Oauth.Server.Repository.ConsumerAppRepository;
+using Newtonsoft.Json.Serialization;
+using Promact.Oauth.Server.Repository.OAuthRepository;
 
 namespace Promact.Oauth.Server
 {
@@ -57,8 +59,9 @@ namespace Promact.Oauth.Server
             services.AddScoped<IEnsureSeedData, EnsureSeedData>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IProjectRepository, ProjectRepository>();
-            services.AddScoped<IConsumerAppReposiotry, ConsumerAppRepository>();
+            services.AddScoped<IConsumerAppRepository, ConsumerAppRepository>();
             services.AddScoped(typeof(IDataRepository<>), typeof(DataRepository<>));
+            services.AddScoped<IOAuthRepository, OAuthRepository>();
 
             services.AddMvc();
             //.AddJsonOptions(opt =>
@@ -74,6 +77,9 @@ namespace Promact.Oauth.Server
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
+
+            //Register AppSettings class for Email Credentials of the sender
+            services.Configure<AppSettings>(options => Configuration.GetSection("AppSettings").Bind(options));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -104,10 +110,27 @@ namespace Promact.Oauth.Server
 
             app.UseMvc(routes =>
             {
+
                 routes.MapRoute(
-                    name: "default",
-                    //template: "{controller=Account}/{action=Login}");
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                      name: "Login",
+                      template: "Login",
+                      defaults: new { controller = "Account", action = "Login" });
+
+                routes.MapRoute(
+                    name: "LogOff",
+                    template: "LogOff",
+                    defaults: new { controller = "Account", action = "LogOff" });
+
+                routes.MapRoute(
+                        name: "default",
+                         template: "{*.}",
+                     defaults: new { controller = "Home", action = "Index" }
+                     );
+
+                //routes.MapRoute(
+                //    name: "default",
+                //    //template: "{controller=Account}/{action=Login}");
+                //    template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

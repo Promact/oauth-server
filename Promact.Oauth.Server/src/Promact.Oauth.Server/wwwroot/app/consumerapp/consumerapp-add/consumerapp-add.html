@@ -5,6 +5,30 @@
     <title></title>
 </head>
 <body>
-
+    <center>
+        <h1>{{title}}</h1>
+        <h2>Add New Conmsumer App</h2>
+        <form novalidate #addConsumerApp="ngForm">
+            <div>
+                <label>Name:</label>
+                <input type="text" #Name="ngForm" ngControl="Name" [(ngModel)]="consumerModel.Name" maxlength="255" required />
+                <div *ngIf="Name.touched && !Name.valid && Name.errors.required" style="color:red">Name is Required</div>
+            </div>
+            <div>
+                <label>Description:</label>
+                <textarea #Description="ngForm" ngControl="Description" [(ngModel)]="consumerModel.Description" maxlength="1000" required></textarea>
+                <div *ngIf="Description.touched && !Description.valid && Description.errors.required" style="color:red">Description is Required</div>
+            </div>
+            <div>
+                <label>Call Back Url:</label>
+                <input type="text" #CallBackUrl="ngForm" ngControl="CallBackUrl" [(ngModel)]="consumerModel.CallbackUrl" maxlength="255" required />
+                <div *ngIf="CallBackUrl.touched && !CallBackUrl.valid && CallBackUrl.errors.required" style="color:red">Call Back Url is Required</div>
+            </div>
+            <div>
+                <button type="submit" (click)="submitApps(consumerModel)" [disabled]="!(addConsumerApp.valid)">Submit</button>
+                <button type="button" (click)="cancel()">Cancel</button>
+            </div>
+        </form>
+    </center>
 </body>
 </html> 

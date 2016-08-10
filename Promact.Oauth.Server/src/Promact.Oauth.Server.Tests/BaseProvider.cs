@@ -31,7 +31,7 @@ namespace Promact.Oauth.Server.Tests
             services.AddScoped<IEnsureSeedData, EnsureSeedData>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IProjectRepository, ProjectRepository>();
-            services.AddScoped<IConsumerAppReposiotry, ConsumerAppRepository>();
+            services.AddScoped<IConsumerAppRepository, ConsumerAppRepository>();
             services.AddScoped(typeof(IDataRepository<>), typeof(DataRepository<>));
 
             services.AddTransient<IEmailSender, AuthMessageSender>();
