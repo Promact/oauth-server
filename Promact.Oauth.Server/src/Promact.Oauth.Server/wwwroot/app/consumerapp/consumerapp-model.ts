@@ -1,5 +1,6 @@
-﻿export class ConsumerApp
+﻿export class ConsumerAppModel
 {
+        Id: number;
         Name: string;
         Description: string;
         CallbackUrl: string;

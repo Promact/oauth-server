@@ -15,7 +15,7 @@ const routes: RouterConfig = [
     ...projectRoutes,
     //{ path: '', component: ProjectComponent },
     
-    
+    ...consumerRoute,
 ];
 
 export const appRouterProviders = [
