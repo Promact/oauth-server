@@ -11,14 +11,14 @@ namespace Promact.Oauth.Server.Repository
     public interface IUserRepository
     {
         /// <summary>
-        /// Registers User
+        /// This method is used for adding user and return its id
         /// </summary>
         /// <param name="applicationUser">UserAc Application class object</param>
-        void AddUser(UserAc newUser, string createdBy);
+        string AddUser(UserAc newUser, string createdBy);
 
 
         /// <summary>
-        /// Get Specific User Details By Id
+        /// This method used for get user detail by user id 
         /// </summary>
         /// <param name="id">string id</param>
         /// <returns>UserAc Application class object</returns>
@@ -26,28 +26,28 @@ namespace Promact.Oauth.Server.Repository
 
 
         /// <summary>
-        /// Edites the details of an user
+        /// This method used for update user and return its id
         /// </summary>
         /// <param name="editedUser">UserAc Application class object</param>
-        void UpdateUserDetails(UserAc editedUser, string updatedBy);
+        string UpdateUserDetails(UserAc editedUser, string updatedBy);
 
 
         /// <summary>
-        /// Gets the list of all users
+        /// This method used forget list of users
         /// </summary>
         /// <returns>List of all users</returns>
         IEnumerable<UserAc> GetAllUsers();
 
 
         /// <summary>
-        /// Changes the password of a user
+        /// This method is used for changing the password of an user
         /// </summary>
         /// <param name="passwordModel">ChangePasswordViewModel type object</param>
-        void ChangePassword(ChangePasswordViewModel passwordModel);
+        string ChangePassword(ChangePasswordViewModel passwordModel);
 
 
         /// <summary>
-        /// Finds if a particular user name exists in the database
+        /// This method finds if a user already exists with the specified UserName
         /// </summary>
         /// <param name="userName">string userName</param>
         /// <returns> boolean: true if the user name exists, false if does not exist</returns>
@@ -55,7 +55,7 @@ namespace Promact.Oauth.Server.Repository
 
 
         /// <summary>
-        /// Finds if a particular email exists in the database
+        /// This method finds if a user already exists with the specified Email
         /// </summary>
         /// <param name="email"></param>
         /// <returns> boolean: true if the email exists, false if does not exist</returns>
@@ -63,7 +63,7 @@ namespace Promact.Oauth.Server.Repository
 
 
         /// <summary>
-        /// Calls the SendEmailAsync method of MessageServices class for sending email to the newly registered user
+        /// This method is used to send email to the currently added user
         /// </summary>
         /// <param name="user">Object of newly registered User</param>
         void SendEmail(ApplicationUser user);
