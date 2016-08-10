@@ -82,7 +82,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
             catch (Exception ex)
             {
 
-                throw;
+                throw ex;
             }
         }
 

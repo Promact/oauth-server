@@ -45,7 +45,7 @@ namespace Promact.Oauth.Server.Tests
         {
             ConsumerApps consumerApp = GetConsumerAppObject();
             consumerApp.Name = "ABCEDF";
-            int id = _iConsumerAppRespository.AddedConsumerApps(consumerApp);
+            _iConsumerAppRespository.AddedConsumerApps(consumerApp);
             int newId = _iConsumerAppRespository.AddedConsumerApps(consumerApp);
             Assert.Equal(0, newId);
         }
@@ -72,7 +72,7 @@ namespace Promact.Oauth.Server.Tests
         {
             ConsumerApps consumerApp = GetConsumerAppObject();
             consumerApp.Name = "Demo3";
-            int id = _iConsumerAppRespository.AddedConsumerApps(consumerApp);
+            _iConsumerAppRespository.AddedConsumerApps(consumerApp);
             var getApplication = _iConsumerAppRespository.GetAppDetails("ABEDNGdeMR1234568F");
             Assert.Null(getApplication);
         }
@@ -102,8 +102,8 @@ namespace Promact.Oauth.Server.Tests
         {
             ConsumerApps consumerApp = GetConsumerAppObject();
             consumerApp.Name = "Demo5";
-            int id = _iConsumerAppRespository.AddedConsumerApps(consumerApp);
-            var getApplication = _iConsumerAppRespository.GetAppsObjectById(2);
+            _iConsumerAppRespository.AddedConsumerApps(consumerApp);
+            var getApplication = _iConsumerAppRespository.GetAppsObjectById(23213);
             Assert.Null(getApplication);
         }
         
@@ -116,7 +116,7 @@ namespace Promact.Oauth.Server.Tests
         {
             ConsumerApps consumerApp = GetConsumerAppObject();
             consumerApp.Name = "Demo6";
-            int id = _iConsumerAppRespository.AddedConsumerApps(consumerApp);
+            _iConsumerAppRespository.AddedConsumerApps(consumerApp);
             List<ConsumerApps> listOfApps = _iConsumerAppRespository.GetListOfApps();
             Assert.NotEmpty(listOfApps);
         }
@@ -129,7 +129,7 @@ namespace Promact.Oauth.Server.Tests
         {
             ConsumerApps consumerApp = GetConsumerAppObject();
             consumerApp.Name = "Demo for Update";
-            int id = _iConsumerAppRespository.AddedConsumerApps(consumerApp);
+           _iConsumerAppRespository.AddedConsumerApps(consumerApp);
             consumerApp.Description = "XyzName";
             consumerApp.UpdatedDateTime = DateTime.Now;
             consumerApp.UpdatedBy = "Ankit";
