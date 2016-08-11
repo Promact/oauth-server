@@ -29,6 +29,8 @@ namespace Promact.Oauth.Server.Controllers
 
         #region public Methods
 
+
+
         /// <summary>
         /// This method used for add new consumer app. -An
         /// </summary>
@@ -40,10 +42,8 @@ namespace Promact.Oauth.Server.Controllers
         {
             try
             {
-                var newApps = Mapper.Map<ConsumerAppsAc, ConsumerApps>(consumerAppsAc);
-                var createdBy = _userManager.GetUserId(User);
-                newApps.CreatedBy = createdBy;
-                if (_consumerAppRepository.AddedConsumerApps(newApps) != 0)
+                consumerAppsAc.CreatedBy = _userManager.GetUserId(User);
+                if (_consumerAppRepository.AddedConsumerApps(consumerAppsAc) != 0)
                     return Ok(true);
                 else
                     return Ok(false);
@@ -53,6 +53,7 @@ namespace Promact.Oauth.Server.Controllers
                 throw ex;
             }
         }
+
 
 
         /// <summary>

@@ -7,6 +7,7 @@ using Promact.Oauth.Server.Data_Repository;
 using Xunit;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Promact.Oauth.Server.Models.ApplicationClasses;
 
 namespace Promact.Oauth.Server.Tests
 {
@@ -30,7 +31,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact]
         public void AddedConsumerApps()
         {
-            ConsumerApps consumerApp = GetConsumerAppObject();
+            ConsumerAppsAc consumerApp = GetConsumerAppObject();
             consumerApp.Name = "Demo Name";
             int id = _consumerAppRespository.AddedConsumerApps(consumerApp);
             var consumerApps = _consumerAppsContext.FirstOrDefault(x => x.Id == id);
@@ -43,7 +44,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact]
         public void ConsumerAppNameUnique()
         {
-            ConsumerApps consumerApp = GetConsumerAppObject();
+            ConsumerAppsAc consumerApp = GetConsumerAppObject();
             consumerApp.Name = "ABCEDF";
             _consumerAppRespository.AddedConsumerApps(consumerApp);
             int newId = _consumerAppRespository.AddedConsumerApps(consumerApp);
@@ -56,7 +57,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact]
         public void GetAppDetailsByClientId()
         {
-            ConsumerApps consumerApp = GetConsumerAppObject();
+            ConsumerAppsAc consumerApp = GetConsumerAppObject();
             consumerApp.Name = "Demo2";
             int id = _consumerAppRespository.AddedConsumerApps(consumerApp);
             var consumerApps = _consumerAppsContext.FirstOrDefault(x => x.Id == id);
@@ -70,7 +71,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact]
         public void ApplicationDetailsFetchOnlyValidclientId()
         {
-            ConsumerApps consumerApp = GetConsumerAppObject();
+            ConsumerAppsAc consumerApp = GetConsumerAppObject();
             consumerApp.Name = "Demo3";
             _consumerAppRespository.AddedConsumerApps(consumerApp);
             var getApplication = _consumerAppRespository.GetAppDetails("ABEDNGdeMR1234568F");
@@ -85,7 +86,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact]
         public void GetAppsObjectById()
         {
-            ConsumerApps consumerApp = GetConsumerAppObject();
+            ConsumerAppsAc consumerApp = GetConsumerAppObject();
             consumerApp.Name = "Demo4";
             int id = _consumerAppRespository.AddedConsumerApps(consumerApp);
             var getApplication = _consumerAppRespository.GetAppsObjectById(id);
@@ -100,7 +101,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact]
         public void ConsumerAppObjectNotGetByWrongId()
         {
-            ConsumerApps consumerApp = GetConsumerAppObject();
+            ConsumerAppsAc consumerApp = GetConsumerAppObject();
             consumerApp.Name = "Demo5";
             _consumerAppRespository.AddedConsumerApps(consumerApp);
             var getApplication = _consumerAppRespository.GetAppsObjectById(23213);
@@ -114,7 +115,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact]
         public void GetListOfApps()
         {
-            ConsumerApps consumerApp = GetConsumerAppObject();
+            ConsumerAppsAc consumerApp = GetConsumerAppObject();
             consumerApp.Name = "Demo6";
             _consumerAppRespository.AddedConsumerApps(consumerApp);
             List<ConsumerApps> listOfApps = _consumerAppRespository.GetListOfApps();
@@ -127,13 +128,14 @@ namespace Promact.Oauth.Server.Tests
         [Fact]
         public void updateConsumerApps()
         {
-            ConsumerApps consumerApp = GetConsumerAppObject();
+            ConsumerAppsAc consumerApp = GetConsumerAppObject();
             consumerApp.Name = "Demo for Update";
-           _consumerAppRespository.AddedConsumerApps(consumerApp);
-            consumerApp.Description = "XyzName";
-            consumerApp.UpdatedDateTime = DateTime.Now;
-            consumerApp.UpdatedBy = "Ankit";
-            int newId = _consumerAppRespository.UpdateConsumerApps(consumerApp);
+            int id = _consumerAppRespository.AddedConsumerApps(consumerApp);
+            var consumerApps = _consumerAppRespository.GetAppsObjectById(id);
+            consumerApps.Description = "XyzName";
+            consumerApps.UpdatedDateTime = DateTime.Now;
+            consumerApps.UpdatedBy = "Ankit";
+            int newId = _consumerAppRespository.UpdateConsumerApps(consumerApps);
             Assert.NotEqual(0, newId);
         }
 
@@ -164,13 +166,12 @@ namespace Promact.Oauth.Server.Tests
         /// This method used for get valid object with data. -An
         /// </summary>
         /// <returns></returns>
-        private ConsumerApps GetConsumerAppObject()
+        private ConsumerAppsAc GetConsumerAppObject()
         {
-            ConsumerApps comnsumerApp = new ConsumerApps();
+            ConsumerAppsAc comnsumerApp = new ConsumerAppsAc();
             comnsumerApp.CallbackUrl = "https://promact.slack.com/messages/@roshni/";
             comnsumerApp.CreatedBy = "Roshni";
             comnsumerApp.Description = "This App is Demo App, Please don't used";
-            comnsumerApp.CreatedDateTime = DateTime.Now;
             return comnsumerApp;
         }
         #endregion

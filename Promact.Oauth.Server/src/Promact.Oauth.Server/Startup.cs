@@ -17,6 +17,7 @@ using Promact.Oauth.Server.Repository.ConsumerAppRepository;
 using Newtonsoft.Json.Serialization;
 using Promact.Oauth.Server.Repository.OAuthRepository;
 using Promact.Oauth.Server.AutoMapper;
+using AutoMapper;
 
 namespace Promact.Oauth.Server
 {
@@ -38,10 +39,17 @@ namespace Promact.Oauth.Server
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
 
-            AutoMapperProfileConfiguration.AddAutoMapper();
+            
+            _mapperConfiguration = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile(new AutoMapperProfileConfiguration());
+            });
+
         }
 
         public IConfigurationRoot Configuration { get; }
+
+        private MapperConfiguration _mapperConfiguration { get; set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -83,6 +91,9 @@ namespace Promact.Oauth.Server
 
             //Register AppSettings class for Email Credentials of the sender
             services.Configure<AppSettings>(options => Configuration.GetSection("AppSettings").Bind(options));
+
+            //Register Mapper
+            services.AddSingleton<IMapper>(sp => _mapperConfiguration.CreateMapper());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
