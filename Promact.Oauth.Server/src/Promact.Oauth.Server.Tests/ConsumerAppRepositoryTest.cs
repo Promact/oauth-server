@@ -29,7 +29,7 @@ namespace Promact.Oauth.Server.Tests
         /// <summary>
         /// This test case for add Comnsumer Apps. -An
         /// </summary>
-        [Fact]
+        [Fact, Trait("Category", "Required")]
         public void AddConsumerApps()
         {
             ConsumerAppsAc consumerApp = GetConsumerApp();
@@ -42,7 +42,7 @@ namespace Promact.Oauth.Server.Tests
         /// <summary>
         /// This test case used for,when add new consumer app check consumer name is quniqe duplication not allow. -An
         /// </summary>
-        [Fact]
+        [Fact, Trait("Category", "Required")]
         public void ConsumerAppNameUnique()
         {
             ConsumerAppsAc consumerApp = GetConsumerApp();
@@ -51,11 +51,11 @@ namespace Promact.Oauth.Server.Tests
             int newId = _consumerAppRespository.AddConsumerApps(consumerApp);
             Assert.Equal(0, newId);
         }
-        
+
         /// <summary>
         /// This test case used for check app details fetch by valid client id.-An
         /// </summary>
-        [Fact]
+        [Fact, Trait("Category", "Required")]
         public void GetAppDetailsByClientId()
         {
             ConsumerAppsAc consumerApp = GetConsumerApp();
@@ -69,7 +69,7 @@ namespace Promact.Oauth.Server.Tests
         /// <summary>
         /// This test case used for check app details not fetch by Invalid client id.
         /// </summary>
-        [Fact]
+        [Fact, Trait("Category", "Required")]
         public void ApplicationDetailsFetchOnlyValidClientId()
         {
             ConsumerAppsAc consumerApp = GetConsumerApp();
@@ -84,7 +84,7 @@ namespace Promact.Oauth.Server.Tests
         /// This test case used for check consumer app details not fetch by primary key id.-An
         /// </summary>
         /// 
-        [Fact]
+        [Fact, Trait("Category", "Required")]
         public void GetConsumerAppsById()
         {
             ConsumerAppsAc consumerApp = GetConsumerApp();
@@ -99,7 +99,7 @@ namespace Promact.Oauth.Server.Tests
         /// This test case used for check consumer app details not fetch by in valid primary key id. -An
         /// </summary>
         ///  
-        [Fact]
+        [Fact, Trait("Category", "Required")]
         public void ConsumerAppGetByWrongId()
         {
             ConsumerAppsAc consumerApp = GetConsumerApp();
@@ -108,12 +108,12 @@ namespace Promact.Oauth.Server.Tests
             var getApplication = _consumerAppRespository.GetConsumerAppsById(23213);
             Assert.Null(getApplication);
         }
-        
+
 
         /// <summary>
         /// This test case used for check get list of apps. -An 
         /// </summary>
-        [Fact]
+        [Fact, Trait("Category", "Required")]
         public void GetListOfApps()
         {
             ConsumerAppsAc consumerApp = GetConsumerApp();
@@ -126,7 +126,7 @@ namespace Promact.Oauth.Server.Tests
         /// <summary>
         /// This test case used for update consumer app. -An
         /// </summary>
-        [Fact]
+        [Fact, Trait("Category", "Required")]
         public void UpdateConsumerApps()
         {
             ConsumerAppsAc consumerApp = GetConsumerApp();
@@ -143,7 +143,7 @@ namespace Promact.Oauth.Server.Tests
         /// <summary>
         /// This test case used for, When update consumer app check consumer name is unique duplication not allow. -An
         /// </summary>
-        [Fact]
+        [Fact, Trait("Category", "Required")]
         public void CheckConsumerAppNameUnique()
         {
             var consumer = GetConsumerApp();
