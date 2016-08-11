@@ -44,16 +44,12 @@ namespace Promact.Oauth.Server.Repository
         /// <param name="applicationUser">UserAc Application class object</param>
         public string AddUser(UserAc newUser, string createdBy)
         {
-            if (_applicationUserDataRepository.FirstOrDefault(u => u.UserName == newUser.UserName) == null)
-            {
-                var user = _mapperContext.Map<UserAc, ApplicationUser>(newUser);
-                user.UserName = user.Email;
-                user.CreatedBy = createdBy;
-                user.CreatedDateTime = DateTime.UtcNow;
-                _userManager.CreateAsync(user, "User@123").Wait();
-                return user.Id;
-            }
-            return null;
+            var user = _mapperContext.Map<UserAc, ApplicationUser>(newUser);
+            user.UserName = user.Email;
+            user.CreatedBy = createdBy;
+            user.CreatedDateTime = DateTime.UtcNow;
+            _userManager.CreateAsync(user, "User@123").Wait();
+            return user.Id;
         }
 
 
@@ -103,20 +99,20 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="id">string id</param>
         /// <returns>UserAc Application class object</returns>
-        //public UserAc GetById(string id)
-        //{
-        //    try
-        //    {
-        //        var user = _applicationUserDataRepository.FirstOrDefault(u => u.Id == id);
-        //        var requiredUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
-        //        return requiredUser;
-        //    }
-        //    catch (Exception exception)
-        //    {
-        //        throw exception;
-        //    }
+        public UserAc GetById(string id)
+        {
+            try
+            {
+                var user = _applicationUserDataRepository.FirstOrDefault(u => u.Id == id);
+                var requiredUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
+                return requiredUser;
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
 
-        //}
+        }
 
 
         /// <summary>
