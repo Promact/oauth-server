@@ -17,8 +17,7 @@ namespace Promact.Oauth.Server.Data
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<ProjectUser> ProjectUsers { get; set; }
-        //public DbSet<OAuthBase> OAuthBase { get; set; }
-
+        
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

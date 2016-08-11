@@ -16,9 +16,9 @@ namespace Promact.Oauth.Server.Repository
     {
         #region "Private Variable(s)"
 
-        private IDataRepository<ApplicationUser> _applicationUserDataRepository;
-        private UserManager<ApplicationUser> _userManager;
-        private IEmailSender _emailSender;
+        private readonly IDataRepository<ApplicationUser> _applicationUserDataRepository;
+        private readonly  UserManager<ApplicationUser> _userManager;
+        private readonly IEmailSender _emailSender;
 
         #endregion
 
@@ -53,7 +53,7 @@ namespace Promact.Oauth.Server.Repository
                 CreatedDateTime = DateTime.UtcNow
             };
             _userManager.CreateAsync(user, "User@123").Wait();
-            //SendEmail(user);
+            SendEmail(user);
             return user.Id;
         }
 
@@ -97,7 +97,7 @@ namespace Promact.Oauth.Server.Repository
             user.IsActive = editedUser.IsActive;
             user.UpdatedBy = updatedBy;
             user.UpdatedDateTime = DateTime.UtcNow;
-            var a = _userManager.UpdateAsync(user).Result;
+            _userManager.UpdateAsync(user).Wait();
             _applicationUserDataRepository.Save();
 
             return user.Id;
@@ -192,7 +192,7 @@ namespace Promact.Oauth.Server.Repository
                             + "Email: " + user.Email 
                             + "\n Password: User@123"
                             + "\n Link: ";
-            var result = _emailSender.SendEmailAsync(user.Email, "Login Credentials", message);
+            _emailSender.SendEmailAsync(user.Email, "Login Credentials", message);
         }
 
         #endregion
