@@ -10,6 +10,6 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
     public interface IOAuthRepository
     {
         OAuth OAuthClientChecking(string email, string clientId);
-        OAuthApplication GetAppDetailsFromClient(string redirectUrl, string refreshToken);
+        Task<OAuthApplication> GetAppDetailsFromClient(string redirectUrl, string refreshToken);
     }
 }

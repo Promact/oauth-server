@@ -21,11 +21,9 @@ namespace Promact.Oauth.Server.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IConsumerAppRepository _appRepository;
         private readonly IOAuthRepository _oAuthRepository;
-        HttpClient client;
 
         public OAuthController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IConsumerAppRepository appRepository, IOAuthRepository oAuthRepository)
         {
-            client = new HttpClient();
             _signInManager = signInManager;
             _userManager = userManager;
             _appRepository = appRepository;
@@ -49,7 +47,7 @@ namespace Promact.Oauth.Server.Controllers
                 if (result.Succeeded)
                 {
                     var oAuth = _oAuthRepository.OAuthClientChecking(model.Email, model.ClientId);
-                    var clientResponse = _oAuthRepository.GetAppDetailsFromClient(model.RedirectUrl, oAuth.RefreshToken);
+                    var clientResponse = await _oAuthRepository.GetAppDetailsFromClient(model.RedirectUrl, oAuth.RefreshToken);
                     // Checking whether request client is equal to response client
                     if (model.ClientId == clientResponse.ClientId)
                     {
@@ -85,7 +83,7 @@ namespace Promact.Oauth.Server.Controllers
             {
                 var user = await _userManager.FindByNameAsync(User.Identity.Name);
                 var oAuth = _oAuthRepository.OAuthClientChecking(user.Email,clientId);
-                var clientResponse = _oAuthRepository.GetAppDetailsFromClient(result.CallbackUrl, oAuth.RefreshToken);
+                var clientResponse = await _oAuthRepository.GetAppDetailsFromClient(result.CallbackUrl, oAuth.RefreshToken);
                 var returnUrl = string.Format("{0}?accessToken={1}&email={2}",clientResponse.ReturnUrl, oAuth.AccessToken, oAuth.userEmail);
                 return Redirect(returnUrl);
             }
