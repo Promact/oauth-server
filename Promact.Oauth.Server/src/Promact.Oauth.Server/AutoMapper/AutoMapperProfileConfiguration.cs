@@ -14,6 +14,9 @@ namespace Promact.Oauth.Server.AutoMapper
         protected override void Configure()
         {
             CreateMap<ConsumerAppsAc, ConsumerApps>();
+            CreateMap<ProjectAc, Project>();
+            CreateMap<Project, ProjectAc> ();
+            CreateMap<UserAc, ApplicationUser>();
         }
     }
 }

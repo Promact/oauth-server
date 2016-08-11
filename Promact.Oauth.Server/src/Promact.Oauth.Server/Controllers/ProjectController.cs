@@ -101,14 +101,6 @@ namespace Promact.Oauth.Server.Controllers
            return Ok(project);
         }
 
-        // DELETE api/values/5
-        [HttpDelete]
-        [Route("deleteProject/{id}")]
-        public IActionResult Delete(int id)
-        {
-            _appDbContext.Projects.Remove(new Project { Id=id});
-            _appDbContext.SaveChanges();
-            return Ok(new { }); 
-        }
+        
     }
 }
