@@ -34,7 +34,7 @@
                 </td>
                 <td>
                     <select name="sel3" [(ngModel)]="pro.teamLeaderId" disabled>
-                        <option value={{i.Id}} *ngFor="let i of pro.listUsers">{{i.FirstName}}</option>
+                        <option value={{i.Id}} *ngFor="let i of pro.listUsers">{{i.FirstName}}-{{i.Email}}</option>
                     </select>
                 </td>
             </tr>
@@ -44,7 +44,7 @@
                 </td>
                 <td>
                     <select multiple disabled>
-                        <option *ngFor="let ul of pro.applicationUsers">{{ul.FirstName}}</option>
+                        <option *ngFor="let ul of pro.applicationUsers">{{ul.FirstName}}-{{ul.Email}}</option>
                     </select>
                 </td>
             </tr>

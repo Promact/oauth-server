@@ -35,13 +35,25 @@ export class ProjectAddComponent {
      */
     addProject(pro: projectModel) {
         this.proService.addProject(pro).subscribe((pro) => {
-            this.pro = pro;
-            this.toast.show("Project is added successfully")    
-            this.router.navigate(['/project/'])
+            if (pro.name == null && pro.slackChannelName == null) {
+                this.toast.show("Project and slackChannelName already exists");
+            }
+            else if (pro.name != null && pro.slackChannelName == null) {
+                this.toast.show("slackChannelName already exists");
+            }
+            else if (pro.name == null && pro.slackChannelName != null) {
+                this.toast.show("Project already exists");
+            }
+            else {
+                this.toast.show("Project Successfully Added.");
+                this.router.navigate(['/project/'])
+            }
         }, err => {
 
         });
     } 
+
+   
     /**
      * getUser Method get User Information
      */

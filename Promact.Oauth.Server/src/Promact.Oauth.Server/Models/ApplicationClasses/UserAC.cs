@@ -10,6 +10,11 @@ namespace Promact.Oauth.Server.Models.ApplicationClasses
 {
     public class UserAc
     {
+        public UserAc()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
+
         [JsonProperty("Id")]
         public string Id { get; set; }
 
@@ -37,5 +42,8 @@ namespace Promact.Oauth.Server.Models.ApplicationClasses
 
         [JsonProperty("UserName")]
         public string UserName { get; set; }
+
+        [JsonProperty("UniqueName")]
+        public string UniqueName { get { return FirstName + "-" + Email; } }
     }
 }

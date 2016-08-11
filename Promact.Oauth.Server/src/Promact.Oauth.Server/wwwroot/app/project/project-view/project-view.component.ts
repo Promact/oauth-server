@@ -29,6 +29,17 @@ export class ProjectViewComponent implements OnInit {
                     this.pro.listUsers = listUsers;
                     if (!this.pro.applicationUsers)
                         this.pro.applicationUsers = new Array<UserModel>();
+                    for (let i = 0; i < this.pro.listUsers.length; i++) {
+                        for (let j = 0; j < this.pro.applicationUsers.length; j++) {
+                            if (this.pro.listUsers[i].Id == this.pro.applicationUsers[j].Id) {
+                                this.pro.applicationUsers[j].Email = this.pro.listUsers[i].Email;
+                                this.pro.applicationUsers[j].IsActive = this.pro.listUsers[i].IsActive;
+                                this.pro.applicationUsers[j].LastName = this.pro.listUsers[i].LastName;
+                                this.pro.applicationUsers[j].UserName = this.pro.listUsers[i].UserName;
+                                this.pro.applicationUsers[j].UniqueName = this.pro.listUsers[i].UniqueName;
+                            }//break; 
+                        }
+                    }
                 })
             });
         });

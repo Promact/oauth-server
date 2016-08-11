@@ -7,6 +7,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
 {
     public interface IProjectRepository
     {
+       
         /// <summary>
         /// Adds new project in the database
         /// </summary>
@@ -39,6 +40,20 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// </summary>
         /// <param name="editProject"></param>Updated information in editProject Parmeter
         void EditProject(ProjectAc editProject,string updatedBy);
-        
+
+        /// <summary>
+        /// Check Project and SlackChannelName is already exists or not 
+        /// </summary>
+        /// <param name="project"></param> pass the project parameter
+        /// <returns>projectAc object</returns>
+        ProjectAc checkDuplicate(ProjectAc project);
+
+        /// <summary>
+        /// Check Project and SlackChannelName is already exists or not 
+        /// </summary>
+        /// <param name="project"></param> pass the project parameter
+        /// <returns>projectAc object</returns>
+        ProjectAc checkDuplicateFromEditProject(ProjectAc project);
+
     }
 }

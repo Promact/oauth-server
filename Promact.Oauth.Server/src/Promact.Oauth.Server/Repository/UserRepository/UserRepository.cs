@@ -9,6 +9,7 @@ using Promact.Oauth.Server.Models.ApplicationClasses;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Promact.Oauth.Server.Models.ManageViewModels;
 using Promact.Oauth.Server.Services;
+using AutoMapper;
 
 namespace Promact.Oauth.Server.Repository
 {
@@ -16,19 +17,21 @@ namespace Promact.Oauth.Server.Repository
     {
         #region "Private Variable(s)"
 
-        private IDataRepository<ApplicationUser> _applicationUserDataRepository;
-        private UserManager<ApplicationUser> _userManager;
-        private IEmailSender _emailSender;
+        private readonly IDataRepository<ApplicationUser> _applicationUserDataRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IEmailSender _emailSender;
+        private readonly IMapper _mapperContext;
 
         #endregion
 
         #region "Constructor"
 
-        public UserRepository(IDataRepository<ApplicationUser> applicationUserDataRepository, UserManager<ApplicationUser> userManager, IEmailSender emailSender)
+        public UserRepository(IDataRepository<ApplicationUser> applicationUserDataRepository, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IMapper mapperContext)
         {
             _applicationUserDataRepository = applicationUserDataRepository;
             _userManager = userManager;
             _emailSender = emailSender;
+            _mapperContext = mapperContext;
         }
 
         #endregion
@@ -41,19 +44,11 @@ namespace Promact.Oauth.Server.Repository
         /// <param name="applicationUser">UserAc Application class object</param>
         public string AddUser(UserAc newUser, string createdBy)
         {
-            // Create an ApplicationUser type object from UserAc application class onject
-            var user = new ApplicationUser
-            {
-                FirstName = newUser.FirstName,
-                LastName = newUser.LastName,
-                Email = newUser.Email,
-                UserName = newUser.Email,
-                IsActive = newUser.IsActive,
-                CreatedBy = createdBy,
-                CreatedDateTime = DateTime.UtcNow
-            };
+            var user = _mapperContext.Map<UserAc, ApplicationUser>(newUser);
+            user.UserName = user.Email;
+            user.CreatedBy = createdBy;
+            user.CreatedDateTime = DateTime.UtcNow;
             _userManager.CreateAsync(user, "User@123").Wait();
-            //SendEmail(user);
             return user.Id;
         }
 
@@ -68,16 +63,9 @@ namespace Promact.Oauth.Server.Repository
             var userList = new List<UserAc>();
             foreach (var user in users)
             {
-                var list = new UserAc
-                {
-                    Id = user.Id,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    Email = user.Email,
-                    IsActive = user.IsActive,
-                    UserName = user.UserName
-                };
-                userList.Add(list);
+                var listItem = _mapperContext.Map<ApplicationUser, UserAc>(user);
+
+                userList.Add(listItem);
             }
             return userList;
         }
@@ -89,15 +77,16 @@ namespace Promact.Oauth.Server.Repository
         /// <param name="editedUser">UserAc Application class object</param>
         public string UpdateUserDetails(UserAc editedUser, string updatedBy)
         {
-            // Fetch the user with particular Id and save the updated data
             var user = _userManager.FindByIdAsync(editedUser.Id).Result;
+
             user.FirstName = editedUser.FirstName;
             user.LastName = editedUser.LastName;
             user.Email = editedUser.Email;
             user.IsActive = editedUser.IsActive;
             user.UpdatedBy = updatedBy;
             user.UpdatedDateTime = DateTime.UtcNow;
-            var a = _userManager.UpdateAsync(user).Result;
+
+            _userManager.UpdateAsync(user).Wait();
             _applicationUserDataRepository.Save();
 
             return user.Id;
@@ -115,22 +104,14 @@ namespace Promact.Oauth.Server.Repository
             try
             {
                 var user = _applicationUserDataRepository.FirstOrDefault(u => u.Id == id);
-                var requiredUser = new UserAc
-                {
-                    Id = user.Id,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    Email = user.Email,
-                    IsActive = user.IsActive,
-                    UserName = user.UserName
-                };
+                var requiredUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
                 return requiredUser;
             }
-            catch (Exception excaption)
+            catch (Exception exception)
             {
-                throw excaption;
+                throw exception;
             }
-            
+
         }
 
 
@@ -141,7 +122,7 @@ namespace Promact.Oauth.Server.Repository
         public string ChangePassword(ChangePasswordViewModel passwordModel)
         {
             var user = _userManager.FindByEmailAsync(passwordModel.Email).Result;
-            if (user!= null)
+            if (user != null)
             {
                 _userManager.ChangePasswordAsync(user, passwordModel.OldPassword, passwordModel.NewPassword).Wait();
             }
@@ -156,7 +137,7 @@ namespace Promact.Oauth.Server.Repository
         public bool FindByUserName(string userName)
         {
             var user = _userManager.FindByNameAsync(userName).Result;
-            if(user == null)
+            if (user == null)
             {
                 return false;
             }
@@ -173,7 +154,7 @@ namespace Promact.Oauth.Server.Repository
         public bool FindByEmail(string email)
         {
             var user = _userManager.FindByEmailAsync(email).Result;
-            if(user == null)
+            if (user == null)
             {
                 return false;
             }
@@ -189,10 +170,10 @@ namespace Promact.Oauth.Server.Repository
         {
             //Create a new message for the email with the required content
             var message = "Welcome to Promact Infotech Private Limited \n"
-                            + "Email: " + user.Email 
+                            + "Email: " + user.Email
                             + "\n Password: User@123"
                             + "\n Link: ";
-            var result = _emailSender.SendEmailAsync(user.Email, "Login Credentials", message);
+            _emailSender.SendEmailAsync(user.Email, "Login Credentials", message);
         }
 
         #endregion
