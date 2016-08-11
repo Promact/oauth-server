@@ -6,12 +6,15 @@ using Promact.Oauth.Server.Data_Repository;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Repository;
 using Promact.Oauth.Server.Repository.ConsumerAppRepository;
+using Promact.Oauth.Server.Repository.HttpClientRepository;
+using Promact.Oauth.Server.Repository.OAuthRepository;
 using Promact.Oauth.Server.Repository.ProjectsRepository;
 using Promact.Oauth.Server.Seed;
 using Promact.Oauth.Server.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Promact.Oauth.Server.Tests
@@ -32,6 +35,9 @@ namespace Promact.Oauth.Server.Tests
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<IConsumerAppRepository, ConsumerAppRepository>();
+            services.AddScoped<IOAuthRepository, OAuthRepository>();
+            services.AddScoped<HttpClient>();
+            services.AddScoped<IHttpClientRepository, HttpClientRepository>();
             services.AddScoped(typeof(IDataRepository<>), typeof(DataRepository<>));
 
             services.AddTransient<IEmailSender, AuthMessageSender>();
