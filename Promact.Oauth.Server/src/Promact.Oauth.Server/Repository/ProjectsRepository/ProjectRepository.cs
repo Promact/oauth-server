@@ -42,13 +42,13 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                 var CreatedBy = _userDataRepository.FirstOrDefault(x => x.Id == project.CreatedBy)?.FirstName;
                 var UpdatedBy = _userDataRepository.FirstOrDefault(x => x.Id == project.UpdatedBy)?.FirstName;
                 string UpdatedDate;
-                if (project.UpdatedDateTime.ToLocalTime().ToString("dd'/'MM'/'yyyy HH:mm:ss") == "01/01/0001 05:30:00")
+                if (project.UpdatedDateTime==null)
                 {
                     UpdatedDate = "";
                 }
                 else
                 {
-                    UpdatedDate = project.UpdatedDateTime.ToLocalTime().ToString("dd'/'MM'/'yyyy HH:mm");
+                    UpdatedDate = project.UpdatedDateTime.ToString();
                 }
                 projectAcs.Add(new ProjectAc
                 {
@@ -60,7 +60,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                     TeamLeader = teamLeader,
                     CreatedBy= CreatedBy,
                     CreatedDate=project.CreatedDateTime.ToLocalTime().ToString("dd'/'MM'/'yyyy HH:mm"),
-                    UpdatedBy=UpdatedBy,//01/01/0001 05:30:00
+                    UpdatedBy=UpdatedBy,
                     UpdatedDate= UpdatedDate
                 });
                 
@@ -83,6 +83,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             project.SlackChannelName = newProject.SlackChannelName;
             project.CreatedDateTime = DateTime.UtcNow;
             project.CreatedBy = createdBy;
+            
             _projectDataRepository.Add(project);
             return project.Id;
         }
