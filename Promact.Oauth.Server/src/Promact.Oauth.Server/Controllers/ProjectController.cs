@@ -46,7 +46,6 @@ namespace Promact.Oauth.Server.Controllers
         public ProjectAc Get(int id)
         {
             return _projectRepository.GetById(id);
-            //return "value";
         }
 
         // POST api/values
@@ -73,7 +72,6 @@ namespace Promact.Oauth.Server.Controllers
                     return Ok(project);
                 }
                 else
-                    //project = null;
                 { return Ok(project); }
             }
             return Ok(false);
@@ -85,7 +83,6 @@ namespace Promact.Oauth.Server.Controllers
         [Route("editProject")]
         public IActionResult Put(int id, [FromBody]ProjectAc project)
         {
-            //project.TeamLeader = _userRepository.GetById(project.TeamLeaderId);
             var updatedBy = _userManager.GetUserId(User);
             try
             {
@@ -101,19 +98,9 @@ namespace Promact.Oauth.Server.Controllers
             }
             catch(Exception ex)
             { }
-            
-           // else { return BadRequest(); }
-            return Ok(project);
+           return Ok(project);
         }
 
-        // DELETE api/values/5
-        [HttpDelete]
-        [Route("deleteProject/{id}")]
-        public IActionResult Delete(int id)
-        {
-            _appDbContext.Projects.Remove(new Project { Id=id});
-            _appDbContext.SaveChanges();
-            return Ok(new { }); 
-        }
+        
     }
 }

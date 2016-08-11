@@ -30,77 +30,119 @@ namespace Promact.Oauth.Server.Tests
             _dataRepositoryUser = serviceProvider.GetService<IDataRepository<ApplicationUser>>();
             _userRepository = serviceProvider.GetService<IUserRepository>();
         }
-        ProjectAc projectac = new ProjectAc()
-        {
-            Name = "slack",
-            SlackChannelName = "SlackChannelName",
-            IsActive = true,
-            TeamLeader = new UserAc { FirstName = "Roshni" },
-            TeamLeaderId = "0ddef180-2c61-41de-84f0-be7397c1f5f3",
-            CreatedBy = "Roshni",
-            CreatedDate = DateTime.Now.ToString()
-        };
-        ProjectUser projectUser = new ProjectUser()
-        {
-            ProjectId = 1,
-            Project = new Project { Name = "Slack" },
-            UserId = "1",
-            User = new ApplicationUser { FirstName = "Ronak" }
-        };
-        UserAc user = new UserAc()
-        {
-            Id = "1",
-            FirstName = "Ronak"
-        };
-        UserAc user1 = new UserAc()
-        {
-            Id = "2",
-            FirstName = "Ronit"
-        };
-        UserAc user2 = new UserAc()
-        {
-            Id = "3",
-            FirstName = "Raj"
-        };
+        
+       
+      
 
 
 
-        [Fact]
+        [Fact, Trait("Category", "A")]
         public void AddProject()
         {
+            ProjectAc projectac = new ProjectAc()
+            {
+                Name = "slack",
+                SlackChannelName = "SlackChannelName",
+                IsActive = true,
+                TeamLeader = new UserAc { FirstName = "Roshni" },
+                TeamLeaderId = "1",
+                CreatedBy = "Roshni",
+                CreatedDate = DateTime.Now.ToString()
+            };
             var id = _projectRepository.AddProject(projectac, "Ronak");
             var project = _dataRepository.FirstOrDefault(x => x.Id==id);
             Assert.NotNull(project);
         }
 
-        [Fact]
+        [Fact, Trait("Category", "A")]
         public void AddUserProject()
         {
+            ProjectUser projectUser = new ProjectUser()
+            {
+                ProjectId = 1,
+                Project = new Project { Name = "Slack" },
+                UserId = "1",
+                User = new ApplicationUser { FirstName = "Roshni" }
+            };
             _projectRepository.AddUserProject(projectUser);
             var ProjectUser = _dataRepositoryProjectUser.Fetch(x => x.ProjectId == 1);
             Assert.NotNull(ProjectUser);
         }
 
-        [Fact]
+        [Fact, Trait("Category", "A")]
         public void GetById()
         {
-            var id = _projectRepository.AddProject(projectac, "Ronak");
-            _projectRepository.AddUserProject(projectUser);
-            _projectRepository.AddUserProject(new ProjectUser
+            ProjectAc projectac = null;
+            projectac = new ProjectAc()
+            {
+                Name = "slack",
+                SlackChannelName = "SlackChannelName",
+                IsActive = true,
+                TeamLeader = new UserAc { FirstName = "Admin" ,LastName="Admin",Email="test@yahoo.com" },
+                TeamLeaderId = "1",
+                CreatedBy = "Roshni",
+                CreatedDate = DateTime.Now.ToString()
+            };
+            ProjectUser projectUser = new ProjectUser()
             {
                 ProjectId = 1,
                 Project = new Project { Name = "Slack" },
-                UserId = "2",
-                User = new ApplicationUser { FirstName = "Ronit" }
-            });
+                UserId = "1",
+                User = new ApplicationUser { FirstName = "Admin" }
+            };
+            UserAc user = new UserAc()
+            {
+                
+                FirstName = "Admin1",
+                LastName="test1",
+                Email= "test131@yahoo.com"
+            };
+            var TId=_userRepository.AddUser(user, "Ronak");
+            projectac.TeamLeaderId = TId;
+            var id = _projectRepository.AddProject(projectac, "Ronak");
+            
+            _projectRepository.AddUserProject(projectUser);
+         
             ProjectAc Pc = _projectRepository.GetById(id);
             Assert.NotNull(Pc);
         }
 
-        
-        [Fact]
+
+        [Fact, Trait("Category", "A")]
         public void EditProject()
         {
+            ProjectAc projectac = new ProjectAc()
+            {
+                Name = "slack",
+                SlackChannelName = "SlackChannelName",
+                IsActive = true,
+                TeamLeader = new UserAc { FirstName = "Roshni" },
+                TeamLeaderId = "1",
+                CreatedBy = "Roshni",
+                CreatedDate = DateTime.Now.ToString()
+            };
+            ProjectUser projectUser = new ProjectUser()
+            {
+                ProjectId = 1,
+                Project = new Project { Name = "Slack" },
+                UserId = "1",
+                User = new ApplicationUser { FirstName = "Roshni" }
+            };
+            UserAc user = new UserAc()
+            {
+                Id = "1",
+                FirstName = "Roshni"
+            };
+            UserAc user1 = new UserAc()
+            {
+                Id = "2",
+                FirstName = "Ronit"
+            };
+            UserAc user2 = new UserAc()
+            {
+                Id = "3",
+                FirstName = "Raj"
+            };
             _userRepository.AddUser(user,"Ronak");
             _userRepository.AddUser(user1,"Ronak");
             _userRepository.AddUser(user2,"Ronak");
@@ -125,7 +167,7 @@ namespace Promact.Oauth.Server.Tests
                 SlackChannelName = "SlackChannelNameEdit",
                 IsActive = true,
                 TeamLeader = new UserAc { FirstName = "Roshni" },
-                TeamLeaderId = "0ddef180-2c61-41de-84f0-be7397c1f5f3",
+                TeamLeaderId = "1",
                 CreatedBy = "Roshni",
                 CreatedDate = DateTime.Now.ToString(),
                 ApplicationUsers = userlist
@@ -139,17 +181,37 @@ namespace Promact.Oauth.Server.Tests
             Assert.NotNull(project);
         }
 
-        [Fact]
+        [Fact, Trait("Category", "A")]
         public void checkDuplicateNegative()
         {
-             _projectRepository.AddProject(projectac, "Ronak");
+            ProjectAc projectac = new ProjectAc()
+            {
+                Name = "slack",
+                SlackChannelName = "SlackChannelName",
+                IsActive = true,
+                TeamLeader = new UserAc { FirstName = "Roshni" },
+                TeamLeaderId = "1",
+                CreatedBy = "Roshni",
+                CreatedDate = DateTime.Now.ToString()
+            };
+            _projectRepository.AddProject(projectac, "Ronak");
            var project =_projectRepository.checkDuplicate(projectac);
             Assert.Null(project.Name);
         }
 
-        [Fact]
+        [Fact, Trait("Category", "A")]
         public void checkDuplicatePositive()
         {
+            ProjectAc projectac = new ProjectAc()
+            {
+                Name = "slack",
+                SlackChannelName = "SlackChannelName",
+                IsActive = true,
+                TeamLeader = new UserAc { FirstName = "Roshni" },
+                TeamLeaderId = "1",
+                CreatedBy = "Roshni",
+                CreatedDate = DateTime.Now.ToString()
+            };
             _projectRepository.AddProject(projectac, "Ronak");
             List<UserAc> userlist = new List<UserAc>();
             userlist.Add(new UserAc { Id = "2", FirstName = "Ronit" });
@@ -161,35 +223,47 @@ namespace Promact.Oauth.Server.Tests
                 SlackChannelName = "SlackChannelNameEdit",
                 IsActive = true,
                 TeamLeader = new UserAc { FirstName = "Roshni" },
-                TeamLeaderId = "0ddef180-2c61-41de-84f0-be7397c1f5f3",
+                TeamLeaderId = "1",
                 CreatedBy = "Roshni",
                 CreatedDate = DateTime.Now.ToString(),
                 ApplicationUsers = userlist
             };
             var project = _projectRepository.checkDuplicate(projectac2);
-            Assert.NotNull(project.Name);
+            Assert.Null(project.Name);
         }
 
-        [Fact]
+        [Fact, Trait("Category", "A")]
         public void GetAllProject()
         {
-            _projectRepository.AddProject(projectac, "Ronak");
-            List<UserAc> userlist = new List<UserAc>();
-            userlist.Add(new UserAc { Id = "2", FirstName = "Ronit" });
-            userlist.Add(new UserAc { Id = "3", FirstName = "Raj" });
-            ProjectAc projectac2 = new ProjectAc()
+            ProjectAc projectac = new ProjectAc()
             {
-                Id = 2,
-                Name = "slackEdit",
-                SlackChannelName = "SlackChannelNameEdit",
+                Name = "slack",
+                SlackChannelName = "SlackChannelName",
                 IsActive = true,
-                TeamLeader = new UserAc { FirstName = "Roshni" },
-                TeamLeaderId = "0ddef180-2c61-41de-84f0-be7397c1f5f3",
+                TeamLeader = new UserAc { FirstName = "Admin", LastName = "Admin", Email = "test@yahoo.com" },
+                TeamLeaderId = "1",
                 CreatedBy = "Roshni",
-                CreatedDate = DateTime.Now.ToString(),
-                ApplicationUsers = userlist
+                CreatedDate = DateTime.Now.ToString()
             };
-            _projectRepository.AddProject(projectac2, "Ronak");
+            ProjectUser projectUser = new ProjectUser()
+            {
+                ProjectId = 1,
+                Project = new Project { Name = "Slack" },
+                UserId = "1",
+                User = new ApplicationUser { FirstName = "Admin" }
+            };
+            UserAc user = new UserAc()
+            {
+
+                FirstName = "Admin",
+                LastName = "test",
+                Email = "test13@yahoo.com"
+            };
+            var TId = _userRepository.AddUser(user, "Ronak");
+            projectac.TeamLeaderId = TId;
+            var id = _projectRepository.AddProject(projectac, "Ronak");
+
+            _projectRepository.AddUserProject(projectUser);
             IEnumerable<ProjectAc> p = _projectRepository.GetAllProjects();
             Assert.NotNull(p);
         }

@@ -23,7 +23,7 @@ namespace Promact.Oauth.Server.Models.ApplicationClasses
         public string UpdatedDate { get; set; }
         public UserAc TeamLeader { get; set; }
         public List<UserAc> ApplicationUsers { get; set; }
-        //public bool Status { get; set; }
+       
 
     }
 }
