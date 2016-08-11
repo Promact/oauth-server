@@ -19,7 +19,7 @@ namespace Promact.Oauth.Server.Controllers
         #region "Private Variable(s)"
         
         private readonly IUserRepository _userRepository;
-        private UserManager<ApplicationUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         #endregion
 
@@ -80,7 +80,7 @@ namespace Promact.Oauth.Server.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    string id = _userRepository.AddUser(newUser, createdBy);
+                    _userRepository.AddUser(newUser, createdBy);
                     return Ok(true);
                 }
                 return Ok(false);

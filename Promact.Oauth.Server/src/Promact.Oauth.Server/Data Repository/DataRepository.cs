@@ -13,8 +13,8 @@ namespace Promact.Oauth.Server.Data_Repository
     {
         #region "Private Member(s)"
 
-        private PromactOauthDbContext _promactDbContext;
-        private DbSet<T> _dbSet;
+        private readonly PromactOauthDbContext _promactDbContext;
+        private readonly DbSet<T> _dbSet;
 
         #endregion
 
