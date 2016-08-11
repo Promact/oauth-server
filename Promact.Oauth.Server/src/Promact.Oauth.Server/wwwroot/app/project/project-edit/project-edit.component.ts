@@ -46,7 +46,8 @@ export class ProjectEditComponent implements OnInit {
                                 this.pro.applicationUsers[j].Email = this.pro.listUsers[i].Email;
                                 this.pro.applicationUsers[j].IsActive = this.pro.listUsers[i].IsActive;
                                 this.pro.applicationUsers[j].LastName = this.pro.listUsers[i].LastName;
-                                this.pro.applicationUsers[j].UserName = this.pro.listUsers[i].UserName
+                                this.pro.applicationUsers[j].UserName = this.pro.listUsers[i].UserName;
+                                this.pro.applicationUsers[j].UniqueName = this.pro.listUsers[i].UniqueName;
                             }//break; 
                         }
                     }
@@ -70,17 +71,25 @@ export class ProjectEditComponent implements OnInit {
      */
     editProject(pro: projectModel) {
         this.service.editProject(pro).subscribe((pro) => {
-            //this.pro = pro
-            //this.router.navigate(['/project'])
-            this.toast.show("Project is edited successfully")  
-            this.router.navigate(['/project/'])
-            //this.location.back();
+            if (pro.name == null && pro.slackChannelName == null) {
+                this.toast.show("Project and slackChannelName already exists");
+            }
+            else if (pro.name != null && pro.slackChannelName == null) {
+                this.toast.show("slackChannelName already exists");
+            }
+            else if (pro.name == null && pro.slackChannelName != null) {
+                this.toast.show("Project already exists");
+            }
+            else {
+                this.toast.show("Project Successfully Added.");
+                this.router.navigate(['/project/'])
+            }
+           
+            
         }, err => {
 
         });
     }
     
-    deleteSelectedUser(newObj: string) {
-        
-    }
+    
 }

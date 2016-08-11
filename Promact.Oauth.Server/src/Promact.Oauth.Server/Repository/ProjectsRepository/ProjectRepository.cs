@@ -22,6 +22,8 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             _projectUserDataRepository = projectUserDataRepository;
             _userDataRepository = userDataRepository;
         }
+
+       
         /// <summary>
         /// Get All Projects list from the database
         /// </summary>
@@ -72,24 +74,15 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// <returns>project id of newly created project</returns>
         public int AddProject(ProjectAc newProject,string createdBy)
         {
-            
-            try
-            {
-                Project project = new Project();
-                project.IsActive = newProject.IsActive;
-                project.Name = newProject.Name;
-                project.TeamLeaderId = newProject.TeamLeaderId;
-                project.SlackChannelName = newProject.SlackChannelName;
-                project.CreatedDateTime = DateTime.UtcNow;
-                project.CreatedBy = createdBy;
-                _projectDataRepository.Add(project);
-                return project.Id;
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
+            Project project = new Project();
+            project.IsActive = newProject.IsActive;
+            project.Name = newProject.Name;
+            project.TeamLeaderId = newProject.TeamLeaderId;
+            project.SlackChannelName = newProject.SlackChannelName;
+            project.CreatedDateTime = DateTime.UtcNow;
+            project.CreatedBy = createdBy;
+            _projectDataRepository.Add(project);
+            return project.Id;
         }
 
         /// <summary>
@@ -169,5 +162,45 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                 });
             });
         }
+
+        /// <summary>
+        /// Check Project and SlackChannelName is already exists or not 
+        /// </summary>
+        /// <param name="project"></param> pass the project parameter
+        /// <returns>projectAc object</returns>
+        public ProjectAc checkDuplicateFromEditProject(ProjectAc project)
+        {
+            var projectName = _projectDataRepository.FirstOrDefault(x => x.Id != project.Id && x.Name == project.Name);
+            var sName = _projectDataRepository.FirstOrDefault(x => x.Id != project.Id && x.SlackChannelName == project.SlackChannelName);
+            if (projectName == null && sName == null)
+            { return project; }
+            else if (projectName != null && sName == null)
+            { project.Name = null; return project; }
+            else if (projectName == null && sName != null)
+            { project.SlackChannelName = null; return project; }
+            else
+            { project.Name = null; project.SlackChannelName = null; return project; }
+
+        }
+
+        /// <summary>
+        /// Check Project and SlackChannelName is already exists or not 
+        /// </summary>
+        /// <param name="project"></param> pass the project parameter
+        /// <returns>projectAc object</returns>
+        public ProjectAc checkDuplicate(ProjectAc project)
+        {
+            var projectName = _projectDataRepository.FirstOrDefault(x => x.Name == project.Name);
+            var sName = _projectDataRepository.FirstOrDefault(x => x.SlackChannelName == project.SlackChannelName);
+            if (projectName == null && sName == null)
+            { return project; }
+            else if (projectName != null && sName == null)
+            { project.Name = null; return project; }
+            else if (projectName == null && sName != null)
+            { project.SlackChannelName = null; return project; }
+            else
+            { project.Name = null; project.SlackChannelName = null; return project; }
+        }
+
     }
 }

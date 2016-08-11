@@ -2,14 +2,16 @@
 import { ProjectService }   from '../project.service';
 import {projectModel} from '../project.model'
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
+import {Md2Toast} from 'md2/toast';
 @Component({
     templateUrl: "app/project/project-list/project-list.html",
-    directives: [ROUTER_DIRECTIVES]
+    directives: [ROUTER_DIRECTIVES],
+    providers: [Md2Toast] 
 })
 export class ProjectListComponent{
     pros: Array<projectModel>;
     pro: projectModel;
-    constructor(private router: Router,private proService: ProjectService) {
+    constructor(private router: Router, private proService: ProjectService, private toast: Md2Toast) {
         this.pros = new Array<projectModel>();
         this.pro = new projectModel();
     }
@@ -31,6 +33,7 @@ export class ProjectListComponent{
     }
     deleteProject(id) {
         this.proService.deleteProject(id).subscribe(() => {
+            this.toast.show("Project is deleted successfully")    
             this.getPros();
             console.log("Test");
         });

@@ -35,6 +35,8 @@ namespace Promact.Oauth.Server.Controllers
             return projectRepository.GetAllProjects();
         }
 
+        
+
         // GET api/values/5
         [HttpGet]
         [Route("getProjects/{id}")]
@@ -47,24 +49,32 @@ namespace Promact.Oauth.Server.Controllers
         // POST api/values
         [HttpPost]
         [Route("addProject")]
-        public ProjectAc Post([FromBody]ProjectAc project)
+        public IActionResult Post([FromBody]ProjectAc project)
         {
             var createdBy = _userManager.GetUserId(User);
             if (ModelState.IsValid)
             {
-                int id = projectRepository.AddProject(project, createdBy);
-                foreach (var applicationUser in project.ApplicationUsers)
+                ProjectAc p =projectRepository.checkDuplicate(project);
+                if (p.Name != null && p.SlackChannelName != null)
                 {
-                    ProjectUser projectUser = new ProjectUser();
-                    projectUser.ProjectId = id;
-                    projectUser.UserId = applicationUser.Id;
-                    projectUser.CreatedBy = createdBy;
-                    projectUser.CreatedDateTime= DateTime.UtcNow;
-                    projectRepository.AddUserProject(projectUser);
+                    int id = projectRepository.AddProject(project, createdBy);
+                    foreach (var applicationUser in project.ApplicationUsers)
+                    {
+                        ProjectUser projectUser = new ProjectUser();
+                        projectUser.ProjectId = id;
+                        projectUser.UserId = applicationUser.Id;
+                        projectUser.CreatedBy = createdBy;
+                        projectUser.CreatedDateTime = DateTime.UtcNow;
+                        projectRepository.AddUserProject(projectUser);
+                    }
+                    return Ok(project);
                 }
-                return project;
+                else
+                    //project = null;
+                { return Ok(project); }
             }
-            return project;
+            return Ok(false);
+            
         }
 
         // PUT api/values/5
@@ -75,10 +85,15 @@ namespace Promact.Oauth.Server.Controllers
             var updatedBy = _userManager.GetUserId(User);
             if (ModelState.IsValid)
             {
-                projectRepository.EditProject(project, updatedBy);
+                ProjectAc p = projectRepository.checkDuplicateFromEditProject(project);
+                if (p.Name != null && p.SlackChannelName != null)
+                {
+                    projectRepository.EditProject(project, updatedBy);
+                }
+                else { return Ok(project); }
             }
             else { return BadRequest(); }
-            return Ok(new { });
+            return Ok(project);
         }
 
         // DELETE api/values/5

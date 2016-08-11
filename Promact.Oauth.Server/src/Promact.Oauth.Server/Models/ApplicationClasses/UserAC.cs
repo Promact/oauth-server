@@ -37,5 +37,8 @@ namespace Promact.Oauth.Server.Models.ApplicationClasses
 
         [JsonProperty("UserName")]
         public string UserName { get; set; }
+
+        [JsonProperty("UniqueName")]
+        public string UniqueName { get { return FirstName + "-" + Email; }  } 
     }
 }
