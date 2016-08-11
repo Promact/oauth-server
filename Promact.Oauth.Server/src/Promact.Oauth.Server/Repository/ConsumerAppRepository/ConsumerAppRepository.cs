@@ -1,5 +1,7 @@
-﻿using Promact.Oauth.Server.Data_Repository;
+﻿using AutoMapper;
+using Promact.Oauth.Server.Data_Repository;
 using Promact.Oauth.Server.Models;
+using Promact.Oauth.Server.Models.ApplicationClasses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,14 +14,16 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         #region "Private Variable(s)"
 
         private readonly IDataRepository<ConsumerApps> _appsDataRepository;
+        private readonly IMapper _mapperContext;
 
         #endregion
 
 
         #region "Constructor"
-        public ConsumerAppRepository(IDataRepository<ConsumerApps> appsDataRepository)
+        public ConsumerAppRepository(IDataRepository<ConsumerApps> appsDataRepository, IMapper mapperContext)
         {
             _appsDataRepository = appsDataRepository;
+            _mapperContext = mapperContext;
         }
 
         #endregion
@@ -49,16 +53,17 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// </summary>
         /// <param name="aapsObject"></param>
         /// <returns></returns>
-        public int AddedConsumerApps(ConsumerApps consumerApps)
+        public int AddedConsumerApps(ConsumerAppsAc consumerApps)
         {
             try
             {
                 if (_appsDataRepository.FirstOrDefault(x => x.Name == consumerApps.Name) == null)
                 {
-                    consumerApps.AuthId = CreatedRandomNumer(true);
-                    consumerApps.AuthSecret = CreatedRandomNumer(false);
-                    _appsDataRepository.Add(consumerApps);
-                    return consumerApps.Id;
+                    var consumerAppObject = _mapperContext.Map<ConsumerAppsAc, ConsumerApps>(consumerApps);
+                    consumerAppObject.AuthId = CreatedRandomNumer(true);
+                    consumerAppObject.AuthSecret = CreatedRandomNumer(false);
+                    _appsDataRepository.Add(consumerAppObject);
+                    return consumerAppObject.Id;
                 }
                 return 0;
             }
@@ -68,6 +73,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
             }
 
         }
+
 
         /// <summary>
         /// This method used forget list of apps. -An

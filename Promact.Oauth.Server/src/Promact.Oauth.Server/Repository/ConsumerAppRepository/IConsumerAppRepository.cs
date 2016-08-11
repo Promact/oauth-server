@@ -1,4 +1,5 @@
 ﻿using Promact.Oauth.Server.Models;
+using Promact.Oauth.Server.Models.ApplicationClasses;
 using System.Collections.Generic;
 
 
@@ -11,7 +12,8 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// </summary>
         /// <param name="aaps"></param>
         /// <returns></returns>
-        int AddedConsumerApps(ConsumerApps aaps);
+        int AddedConsumerApps(ConsumerAppsAc aaps);
+
 
         /// <summary>
         /// This method used forget list of apps. -An

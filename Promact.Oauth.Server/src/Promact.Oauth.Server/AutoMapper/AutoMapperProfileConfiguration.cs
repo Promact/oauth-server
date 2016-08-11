@@ -8,24 +8,12 @@ using System.Threading.Tasks;
 
 namespace Promact.Oauth.Server.AutoMapper
 {
-    public class AutoMapperProfileConfiguration
+    public class AutoMapperProfileConfiguration : Profile
     {
 
-        public static void AddAutoMapper()
+        protected override void Configure()
         {
-            Mapper.Initialize(cfg => {
-                cfg.CreateMap<ConsumerAppsAc, ConsumerApps>();
-            });
-
-            Mapper.Initialize(user =>
-            {
-                user.CreateMap<UserAc, ApplicationUser>().ReverseMap();
-            });
-
-            //Mapper.Initialize(user =>
-            //{
-            //    user.CreateMap<ApplicationUser, UserAc>();
-            //});
+            CreateMap<ConsumerAppsAc, ConsumerApps>();
         }
     }
 }
