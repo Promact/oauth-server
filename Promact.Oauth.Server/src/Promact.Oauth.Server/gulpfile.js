@@ -31,6 +31,11 @@ gulp.task("copytowwwroot", function () {
     ]).pipe(gulp.dest('./wwwroot/lib/@angular'));
 
     gulp.src([
+    'node_modules/@angular2-material/**/*.js'
+    ]).pipe(gulp.dest('./wwwroot/lib/@angular2-material'));
+
+
+    gulp.src([
       'node_modules/rxjs/**/*.js'
     ]).pipe(gulp.dest('./wwwroot/lib/rxjs'));
 

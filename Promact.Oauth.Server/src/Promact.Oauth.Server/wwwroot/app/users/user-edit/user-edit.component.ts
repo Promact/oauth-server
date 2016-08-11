@@ -1,12 +1,14 @@
 ﻿import {Component, Input} from "@angular/core";
 import {Router, ActivatedRoute, ROUTER_DIRECTIVES} from "@angular/router";
+import {MD_INPUT_DIRECTIVES} from '@angular2-material/input/input';
 
 import { UserService }   from '../user.service';
 import {UserModel} from '../user.model';
 
 
 @Component({
-    templateUrl: './app/users/user-edit/user-edit.html'
+    templateUrl: './app/users/user-edit/user-edit.html',
+    directives: [MD_INPUT_DIRECTIVES],
 })
 
 export class UserEditComponent {
@@ -33,14 +35,14 @@ export class UserEditComponent {
     editUser(user: UserModel) {
         this.userService.editUser(user).subscribe((user) => {
             this.user = user;
-            this.redirectionRoute.navigate(['/user']);
+            this.redirectionRoute.navigate(['/']);
         }, err => {
         });
     }
 
 
     goBack() {
-        this.redirectionRoute.navigate(['/user']);
+        this.redirectionRoute.navigate(['/']);
     }
 
 }

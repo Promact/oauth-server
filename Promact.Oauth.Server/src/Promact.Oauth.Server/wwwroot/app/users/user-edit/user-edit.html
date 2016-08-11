@@ -2,43 +2,29 @@
     <h2><u>User Edit</u></h2>
 
     <form>
-        <table>
-            <tr>
-                <td>
-                    <b>First Name: </b>
-                </td>
-                <td>
-                    <input type="text" name="FirstName" [(ngModel)]="user.firstName" required/>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <b>Last Name:</b>
-                </td>
-                <td>
+      
+       
+                    First Name: 
+               
+                    <md-input type="text" name="FirstName" [(ngModel)]="user.firstName" required></md-input>
+          
+           
+                    Last Name:
+              
                     <input type="text" name="LastName" [(ngModel)]="user.lastName" required/>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <b>Email: </b>
-                </td>
-                <td>
+          
+       
+                    Email: 
+        
                     <input type="email" name="Email" [(ngModel)]="user.email" required/>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <b>Status: </b>
-                </td>
-                <td>
+         
+                   Status: 
+                
                     <select [(ngModel)]="user.isActive" required>
                         <option value="true">Active</option>
                         <option value="false">Inactive</option>
                     </select>
-                </td>
-            </tr>
-        </table>
+       
 
         <div>
             <br />

@@ -257,3 +257,7 @@ paket-files/
 **/app/**/*.js.map
 **/typings/
 /Promact.Oauth.Server/src/Promact.Oauth.Server/Models/ApplicationClasses/RoleAc.cs
+/Promact.Oauth.Server/src/Promact.Oauth.Server/npm-debug.log.3813878531
+/Promact.Oauth.Server/src/Promact.Oauth.Server/npm-debug.log.3236858268
+/Promact.Oauth.Server/src/Promact.Oauth.Server/npm-debug.log.1776287812
+/Promact.Oauth.Server/npm-debug.log.1774916365
