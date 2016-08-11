@@ -9,6 +9,7 @@ using Promact.Oauth.Server.Models.ApplicationClasses;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Promact.Oauth.Server.Models.ManageViewModels;
 using Promact.Oauth.Server.Services;
+using AutoMapper;
 
 namespace Promact.Oauth.Server.Repository
 {
@@ -17,7 +18,7 @@ namespace Promact.Oauth.Server.Repository
         #region "Private Variable(s)"
 
         private readonly IDataRepository<ApplicationUser> _applicationUserDataRepository;
-        private readonly  UserManager<ApplicationUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IEmailSender _emailSender;
 
         #endregion
@@ -41,7 +42,6 @@ namespace Promact.Oauth.Server.Repository
         /// <param name="applicationUser">UserAc Application class object</param>
         public string AddUser(UserAc newUser, string createdBy)
         {
-            // Create an ApplicationUser type object from UserAc application class onject
             var user = new ApplicationUser
             {
                 FirstName = newUser.FirstName,
@@ -52,8 +52,8 @@ namespace Promact.Oauth.Server.Repository
                 CreatedBy = createdBy,
                 CreatedDateTime = DateTime.UtcNow
             };
+
             _userManager.CreateAsync(user, "User@123").Wait();
-            SendEmail(user);
             return user.Id;
         }
 
@@ -68,7 +68,7 @@ namespace Promact.Oauth.Server.Repository
             var userList = new List<UserAc>();
             foreach (var user in users)
             {
-                var list = new UserAc
+                var listItem = new UserAc
                 {
                     Id = user.Id,
                     FirstName = user.FirstName,
@@ -77,7 +77,9 @@ namespace Promact.Oauth.Server.Repository
                     IsActive = user.IsActive,
                     UserName = user.UserName
                 };
-                userList.Add(list);
+
+
+                userList.Add(listItem);
             }
             return userList;
         }
@@ -91,12 +93,18 @@ namespace Promact.Oauth.Server.Repository
         {
             // Fetch the user with particular Id and save the updated data
             var user = _userManager.FindByIdAsync(editedUser.Id).Result;
-            user.FirstName = editedUser.FirstName;
-            user.LastName = editedUser.LastName;
-            user.Email = editedUser.Email;
-            user.IsActive = editedUser.IsActive;
+
+            //user.FirstName = editedUser.FirstName;
+            //user.LastName = editedUser.LastName;
+            //user.Email = editedUser.Email;
+            //user.IsActive = editedUser.IsActive;
+            //user.UpdatedBy = updatedBy;
+            //user.UpdatedDateTime = DateTime.UtcNow;
+
+            user = Mapper.Map<UserAc, ApplicationUser>(editedUser);
             user.UpdatedBy = updatedBy;
             user.UpdatedDateTime = DateTime.UtcNow;
+
             _userManager.UpdateAsync(user).Wait();
             _applicationUserDataRepository.Save();
 
@@ -115,22 +123,25 @@ namespace Promact.Oauth.Server.Repository
             try
             {
                 var user = _applicationUserDataRepository.FirstOrDefault(u => u.Id == id);
-                var requiredUser = new UserAc
-                {
-                    Id = user.Id,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    Email = user.Email,
-                    IsActive = user.IsActive,
-                    UserName = user.UserName
-                };
+                //var requiredUser = new UserAc
+                //{
+                //    Id = user.Id,
+                //    FirstName = user.FirstName,
+                //    LastName = user.LastName,
+                //    Email = user.Email,
+                //    IsActive = user.IsActive,
+                //    UserName = user.UserName
+                //};
+
+                var requiredUser = Mapper.Map<ApplicationUser, UserAc>(user);
+
                 return requiredUser;
             }
             catch (Exception excaption)
             {
                 throw excaption;
             }
-            
+
         }
 
 
@@ -141,7 +152,7 @@ namespace Promact.Oauth.Server.Repository
         public string ChangePassword(ChangePasswordViewModel passwordModel)
         {
             var user = _userManager.FindByEmailAsync(passwordModel.Email).Result;
-            if (user!= null)
+            if (user != null)
             {
                 _userManager.ChangePasswordAsync(user, passwordModel.OldPassword, passwordModel.NewPassword).Wait();
             }
@@ -156,7 +167,7 @@ namespace Promact.Oauth.Server.Repository
         public bool FindByUserName(string userName)
         {
             var user = _userManager.FindByNameAsync(userName).Result;
-            if(user == null)
+            if (user == null)
             {
                 return false;
             }
@@ -173,7 +184,7 @@ namespace Promact.Oauth.Server.Repository
         public bool FindByEmail(string email)
         {
             var user = _userManager.FindByEmailAsync(email).Result;
-            if(user == null)
+            if (user == null)
             {
                 return false;
             }
@@ -189,7 +200,7 @@ namespace Promact.Oauth.Server.Repository
         {
             //Create a new message for the email with the required content
             var message = "Welcome to Promact Infotech Private Limited \n"
-                            + "Email: " + user.Email 
+                            + "Email: " + user.Email
                             + "\n Password: User@123"
                             + "\n Link: ";
             _emailSender.SendEmailAsync(user.Email, "Login Credentials", message);
