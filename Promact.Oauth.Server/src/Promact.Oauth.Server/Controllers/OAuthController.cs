@@ -77,9 +77,18 @@ namespace Promact.Oauth.Server.Controllers
         /// </summary>
         /// <param name="clientId"></param>
         /// <returns></returns>
-        public IActionResult ExternalLogin(string clientId)
+        public async Task<IActionResult> ExternalLogin(string clientId)
         {
             var result = _appRepository.GetAppDetails(clientId);
+            //await _signInManager.SignOutAsync();
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
+                var oAuth = _oAuthRepository.OAuthClientChecking(user.Email,clientId);
+                var clientResponse = _oAuthRepository.GetAppDetailsFromClient(result.CallbackUrl, oAuth.RefreshToken);
+                var returnUrl = string.Format("{0}?accessToken={1}&email={2}",clientResponse.ReturnUrl, oAuth.AccessToken, oAuth.userEmail);
+                return Redirect(returnUrl);
+            }
             if (result != null)
             {
                 // RedirectUrl is assign to ViewBag and on client side it will bind with OAuthLogin data
