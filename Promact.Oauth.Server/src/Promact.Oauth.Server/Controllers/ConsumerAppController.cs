@@ -5,6 +5,7 @@ using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Models.ApplicationClasses;
 using Promact.Oauth.Server.Repository.ConsumerAppRepository;
 using Microsoft.AspNetCore.Identity;
+using AutoMapper;
 
 namespace Promact.Oauth.Server.Controllers
 {
@@ -39,11 +40,7 @@ namespace Promact.Oauth.Server.Controllers
         {
             try
             {
-                ConsumerApps newApps = new ConsumerApps();
-                newApps.CallbackUrl = consumerAppsAc.CallbackUrl;
-                newApps.CreatedDateTime = DateTime.Now;
-                newApps.Description = consumerAppsAc.Description;
-                newApps.Name = consumerAppsAc.Name;
+                var newApps = Mapper.Map<ConsumerAppsAc, ConsumerApps>(consumerAppsAc);
                 var createdBy = _userManager.GetUserId(User);
                 newApps.CreatedBy = createdBy;
                 if (_consumerAppRepository.AddedConsumerApps(newApps) != 0)
