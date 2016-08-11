@@ -16,6 +16,16 @@ namespace Promact.Oauth.Server.AutoMapper
             Mapper.Initialize(cfg => {
                 cfg.CreateMap<ConsumerAppsAc, ConsumerApps>();
             });
+
+            Mapper.Initialize(user =>
+            {
+                user.CreateMap<UserAc, ApplicationUser>().ReverseMap();
+            });
+
+            //Mapper.Initialize(user =>
+            //{
+            //    user.CreateMap<ApplicationUser, UserAc>();
+            //});
         }
     }
 }
