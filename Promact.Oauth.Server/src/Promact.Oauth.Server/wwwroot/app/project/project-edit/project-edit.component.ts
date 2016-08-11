@@ -70,7 +70,7 @@ export class ProjectEditComponent implements OnInit {
      * @param pro project that need update.
      */
     editProject(pro: projectModel) {
-        this.service.editProject(pro).subscribe((pro) => {
+           this.service.editProject(pro).subscribe((pro) => {
             if (pro.name == null && pro.slackChannelName == null) {
                 this.toast.show("Project and slackChannelName already exists");
             }

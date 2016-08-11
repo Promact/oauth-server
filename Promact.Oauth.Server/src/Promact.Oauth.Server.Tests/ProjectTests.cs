@@ -101,9 +101,9 @@ namespace Promact.Oauth.Server.Tests
         [Fact]
         public void EditProject()
         {
-            _userRepository.AddUser(user);
-            _userRepository.AddUser(user1);
-            _userRepository.AddUser(user2);
+            _userRepository.AddUser(user,"Ronak");
+            _userRepository.AddUser(user1,"Ronak");
+            _userRepository.AddUser(user2,"Ronak");
             var id = _projectRepository.AddProject(projectac, "Ronak");
             _projectRepository.AddUserProject(projectUser);
             ProjectUser projectUser2 = new ProjectUser()

@@ -35,8 +35,10 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
            
             projects.ForEach(project =>
             {
-                var TeamLeaderNm = new UserAc();
-                TeamLeaderNm.FirstName =_userDataRepository.FirstOrDefault(x => x.Id == project.TeamLeaderId)?.FirstName;
+                var teamLeader = new UserAc();
+                teamLeader.FirstName =_userDataRepository.FirstOrDefault(x => x.Id == project.TeamLeaderId)?.FirstName;
+                teamLeader.LastName = _userDataRepository.FirstOrDefault(x => x.Id == project.TeamLeaderId)?.LastName;
+                teamLeader.Email = _userDataRepository.FirstOrDefault(x => x.Id == project.TeamLeaderId)?.Email;
                 var CreatedBy = _userDataRepository.FirstOrDefault(x => x.Id == project.CreatedBy)?.FirstName;
                 var UpdatedBy = _userDataRepository.FirstOrDefault(x => x.Id == project.UpdatedBy)?.FirstName;
                 string UpdatedDate;
@@ -55,7 +57,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                     IsActive = project.IsActive,
                     SlackChannelName = project.SlackChannelName,
                     TeamLeaderId = project.TeamLeaderId,
-                    TeamLeader = TeamLeaderNm,
+                    TeamLeader = teamLeader,
                     CreatedBy= CreatedBy,
                     CreatedDate=project.CreatedDateTime.ToLocalTime().ToString("dd'/'MM'/'yyyy HH:mm"),
                     UpdatedBy=UpdatedBy,//01/01/0001 05:30:00
@@ -122,7 +124,8 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             projectAc.Name = project.Name;
             projectAc.TeamLeader = new UserAc();
             projectAc.TeamLeaderId = project.TeamLeaderId;
-            projectAc.TeamLeader.FirstName = _userDataRepository.FirstOrDefault(x => x.Id == project.TeamLeaderId)?.FirstName;
+            var a=_userDataRepository.FirstOrDefault(x => x.Id == project.TeamLeaderId);
+            projectAc.TeamLeader = new UserAc { FirstName = a.FirstName, LastName = a.LastName, Email = a.Email };
             projectAc.ApplicationUsers = applicationUserList;
             return projectAc;
         }

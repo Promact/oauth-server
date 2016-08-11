@@ -7,6 +7,7 @@ using Promact.Oauth.Server.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using System;
+using Promact.Oauth.Server.Repository;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -18,13 +19,15 @@ namespace Promact.Oauth.Server.Controllers
     public class ProjectController : Controller
     {
         private readonly PromactOauthDbContext _appDbContext;
-        private readonly IProjectRepository projectRepository;
+        private readonly IProjectRepository _projectRepository;
         private readonly UserManager<ApplicationUser> _userManager;
-        public ProjectController(PromactOauthDbContext appContext, IProjectRepository _projectRepository, UserManager<ApplicationUser> userManager)
+        private readonly IUserRepository _userRepository;
+        public ProjectController(PromactOauthDbContext appContext, IProjectRepository projectRepository, UserManager<ApplicationUser> userManager ,IUserRepository userRepository)
         {
-            projectRepository = _projectRepository;
+            _projectRepository = projectRepository;
             _appDbContext = appContext;
             _userManager = userManager;
+            _userRepository = userRepository;
         }
 
         // GET: api/values
@@ -32,7 +35,7 @@ namespace Promact.Oauth.Server.Controllers
         [Route("projects")]
         public IEnumerable<ProjectAc> Get()
         {
-            return projectRepository.GetAllProjects();
+            return _projectRepository.GetAllProjects();
         }
 
         
@@ -42,7 +45,7 @@ namespace Promact.Oauth.Server.Controllers
         [Route("getProjects/{id}")]
         public ProjectAc Get(int id)
         {
-            return projectRepository.GetById(id);
+            return _projectRepository.GetById(id);
             //return "value";
         }
 
@@ -54,10 +57,10 @@ namespace Promact.Oauth.Server.Controllers
             var createdBy = _userManager.GetUserId(User);
             if (ModelState.IsValid)
             {
-                ProjectAc p =projectRepository.checkDuplicate(project);
+                ProjectAc p =_projectRepository.checkDuplicate(project);
                 if (p.Name != null && p.SlackChannelName != null)
                 {
-                    int id = projectRepository.AddProject(project, createdBy);
+                    int id = _projectRepository.AddProject(project, createdBy);
                     foreach (var applicationUser in project.ApplicationUsers)
                     {
                         ProjectUser projectUser = new ProjectUser();
@@ -65,7 +68,7 @@ namespace Promact.Oauth.Server.Controllers
                         projectUser.UserId = applicationUser.Id;
                         projectUser.CreatedBy = createdBy;
                         projectUser.CreatedDateTime = DateTime.UtcNow;
-                        projectRepository.AddUserProject(projectUser);
+                        _projectRepository.AddUserProject(projectUser);
                     }
                     return Ok(project);
                 }
@@ -82,17 +85,24 @@ namespace Promact.Oauth.Server.Controllers
         [Route("editProject")]
         public IActionResult Put(int id, [FromBody]ProjectAc project)
         {
+            //project.TeamLeader = _userRepository.GetById(project.TeamLeaderId);
             var updatedBy = _userManager.GetUserId(User);
-            if (ModelState.IsValid)
+            try
             {
-                ProjectAc p = projectRepository.checkDuplicateFromEditProject(project);
-                if (p.Name != null && p.SlackChannelName != null)
+                if (ModelState.IsValid)
                 {
-                    projectRepository.EditProject(project, updatedBy);
+                    ProjectAc p = _projectRepository.checkDuplicateFromEditProject(project);
+                    if (p.Name != null && p.SlackChannelName != null)
+                    {
+                        _projectRepository.EditProject(project, updatedBy);
+                    }
+                    else { return Ok(project); }
                 }
-                else { return Ok(project); }
             }
-            else { return BadRequest(); }
+            catch(Exception ex)
+            { }
+            
+           // else { return BadRequest(); }
             return Ok(project);
         }
 
