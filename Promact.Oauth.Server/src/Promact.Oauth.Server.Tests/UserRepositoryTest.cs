@@ -19,12 +19,23 @@ namespace Promact.Oauth.Server.Tests
         private readonly IUserRepository _userRepository;
         private readonly IDataRepository<ApplicationUser> _dataRepository;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly UserAc _testUser;
 
         public UserRepositoryTest() : base()
         {
             _userRepository = serviceProvider.GetService<IUserRepository>();
             _dataRepository = serviceProvider.GetService<IDataRepository<ApplicationUser>>();
             _userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
+
+            _testUser = new UserAc()
+            {
+                Email = "testUser@promactinfo.com",
+                FirstName = "First name",
+                LastName = "Last name",
+                IsActive = true,
+                Password = "User@123",
+                UserName = "testUser@pronactinfo.com"
+            };
         }
 
         #region Test Case
@@ -35,7 +46,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public void GetAllUser()
         {
-            _userRepository.AddUser(testUser, "Rajdeep");
+            _userRepository.AddUser(_testUser, "Rajdeep");
             var users = _userRepository.GetAllUsers();
             Assert.NotNull(users);
         }
@@ -43,24 +54,24 @@ namespace Promact.Oauth.Server.Tests
         /// <summary>
         /// This test case gets the user by its id
         /// </summary>
-        //[Fact, Trait("Category", "Required")]
-        //public void GetUserById()
-        //{
+        [Fact, Trait("Category", "Required")]
+        public void GetUserById()
+        {
 
-        //    UserAc user = new UserAc()
-        //    {
-        //        Email = "testUser@promactinfo.com",
-        //        FirstName = "First namefgs",
-        //        LastName = "Last namegfdsgs",
-        //        IsActive = true,
-        //        Password = "User@123fgs",
-        //        UserName = "testUser@pronactinfgsdfo.com"
-        //    };
-        //    var id = _userRepository.AddUser(user, "Rajdeep");
-        //    var testUser = _userRepository.GetById(id);
+            UserAc user = new UserAc()
+            {
+                Email = "testUser2@promactinfo.com",
+                FirstName = "First name 2",
+                LastName = "Last name 2",
+                IsActive = true,
+                Password = "User@123",
+                UserName = "testUser2@promactinfo.com"
+            };
+            var id = _userRepository.AddUser(user, "Rajdeep");
+            var testUser = _userRepository.GetById(id);
 
-        //    Assert.NotNull(testUser);
-        //}
+            Assert.NotNull(testUser);
+        }
 
 
         /// <summary>
@@ -69,7 +80,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public void FindByEmail()
         {
-            _userRepository.AddUser(testUser, "Rajdeep");
+            _userRepository.AddUser(_testUser, "Rajdeep");
             var exists = _userRepository.FindByEmail("testUser@promactinfo.com");
 
             Assert.Equal(true, exists);
@@ -81,7 +92,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public void FindByUserName()
         {
-            _userRepository.AddUser(testUser, "Rajdeep");
+            _userRepository.AddUser(_testUser, "Rajdeep");
             var exists = _userRepository.FindByUserName("testUser@promactinfo.com");
 
             Assert.Equal(true, exists);
@@ -93,7 +104,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public void AddUser()
         {
-            string id = _userRepository.AddUser(testUser, "Rajdeep");
+            string id = _userRepository.AddUser(_testUser, "Rajdeep");
             var user = _dataRepository.FirstOrDefault(u => u.Id == id);
             Assert.NotNull(user);
         }
@@ -104,7 +115,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public void UpdateUser()
         {
-            _userRepository.AddUser(testUser, "Rajdeep");
+            _userRepository.AddUser(_testUser, "Rajdeep");
             var user = _dataRepository.FirstOrDefault(u => u.Email == "testUser@promactinfo.com");
 
             string id = _userRepository.UpdateUserDetails(new UserAc
@@ -123,7 +134,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public void ChangePassword()
         {
-            _userRepository.AddUser(testUser, "Rajdeep");
+            _userRepository.AddUser(_testUser, "Rajdeep");
             var user = _dataRepository.FirstOrDefault(u => u.Email == "testUser@promactinfo.com");
 
             var password = _userRepository.ChangePassword(new ChangePasswordViewModel
@@ -144,18 +155,18 @@ namespace Promact.Oauth.Server.Tests
 
 
 
-        #region "Test User"
+        //#region "Test User"
 
-        UserAc testUser = new UserAc()
-        {
-            Email = "testUser@promactinfo.com",
-            FirstName = "First name",
-            LastName = "Last name",
-            IsActive = true,
-            Password = "User@123",
-            UserName = "testUser@pronactinfo.com"
-        };
+        //UserAc testUser = new UserAc()
+        //{
+        //    Email = "testUser@promactinfo.com",
+        //    FirstName = "First name",
+        //    LastName = "Last name",
+        //    IsActive = true,
+        //    Password = "User@123",
+        //    UserName = "testUser@pronactinfo.com"
+        //};
 
-        #endregion
+        //#endregion
     }
 }
