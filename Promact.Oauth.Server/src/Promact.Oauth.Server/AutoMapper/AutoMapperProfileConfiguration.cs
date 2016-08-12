@@ -16,7 +16,7 @@ namespace Promact.Oauth.Server.AutoMapper
             CreateMap<ConsumerAppsAc, ConsumerApps>();
             CreateMap<ProjectAc, Project>();
             CreateMap<Project, ProjectAc> ();
-            CreateMap<UserAc, ApplicationUser>();
+            CreateMap<UserAc, ApplicationUser>().ReverseMap();
         }
     }
 }

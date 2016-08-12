@@ -20,16 +20,18 @@ namespace Promact.Oauth.Server.Repository
         private readonly IDataRepository<ApplicationUser> _applicationUserDataRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IEmailSender _emailSender;
+        private readonly IMapper _mapperContext;
 
         #endregion
 
         #region "Constructor"
 
-        public UserRepository(IDataRepository<ApplicationUser> applicationUserDataRepository, UserManager<ApplicationUser> userManager, IEmailSender emailSender)
+        public UserRepository(IDataRepository<ApplicationUser> applicationUserDataRepository, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IMapper mapperContext)
         {
             _applicationUserDataRepository = applicationUserDataRepository;
             _userManager = userManager;
             _emailSender = emailSender;
+            _mapperContext = mapperContext;
         }
 
         #endregion
@@ -42,17 +44,10 @@ namespace Promact.Oauth.Server.Repository
         /// <param name="applicationUser">UserAc Application class object</param>
         public string AddUser(UserAc newUser, string createdBy)
         {
-            var user = new ApplicationUser
-            {
-                FirstName = newUser.FirstName,
-                LastName = newUser.LastName,
-                Email = newUser.Email,
-                UserName = newUser.Email,
-                IsActive = newUser.IsActive,
-                CreatedBy = createdBy,
-                CreatedDateTime = DateTime.UtcNow
-            };
-
+            var user = _mapperContext.Map<UserAc, ApplicationUser>(newUser);
+            user.UserName = user.Email;
+            user.CreatedBy = createdBy;
+            user.CreatedDateTime = DateTime.UtcNow;
             _userManager.CreateAsync(user, "User@123").Wait();
             return user.Id;
         }
@@ -68,16 +63,7 @@ namespace Promact.Oauth.Server.Repository
             var userList = new List<UserAc>();
             foreach (var user in users)
             {
-                var listItem = new UserAc
-                {
-                    Id = user.Id,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    Email = user.Email,
-                    IsActive = user.IsActive,
-                    UserName = user.UserName
-                };
-
+                var listItem = _mapperContext.Map<ApplicationUser, UserAc>(user);
 
                 userList.Add(listItem);
             }
@@ -91,17 +77,12 @@ namespace Promact.Oauth.Server.Repository
         /// <param name="editedUser">UserAc Application class object</param>
         public string UpdateUserDetails(UserAc editedUser, string updatedBy)
         {
-            // Fetch the user with particular Id and save the updated data
             var user = _userManager.FindByIdAsync(editedUser.Id).Result;
 
-            //user.FirstName = editedUser.FirstName;
-            //user.LastName = editedUser.LastName;
-            //user.Email = editedUser.Email;
-            //user.IsActive = editedUser.IsActive;
-            //user.UpdatedBy = updatedBy;
-            //user.UpdatedDateTime = DateTime.UtcNow;
-
-            user = Mapper.Map<UserAc, ApplicationUser>(editedUser);
+            user.FirstName = editedUser.FirstName;
+            user.LastName = editedUser.LastName;
+            user.Email = editedUser.Email;
+            user.IsActive = editedUser.IsActive;
             user.UpdatedBy = updatedBy;
             user.UpdatedDateTime = DateTime.UtcNow;
 
@@ -123,23 +104,12 @@ namespace Promact.Oauth.Server.Repository
             try
             {
                 var user = _applicationUserDataRepository.FirstOrDefault(u => u.Id == id);
-                //var requiredUser = new UserAc
-                //{
-                //    Id = user.Id,
-                //    FirstName = user.FirstName,
-                //    LastName = user.LastName,
-                //    Email = user.Email,
-                //    IsActive = user.IsActive,
-                //    UserName = user.UserName
-                //};
-
-                var requiredUser = Mapper.Map<ApplicationUser, UserAc>(user);
-
+                var requiredUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
                 return requiredUser;
             }
-            catch (Exception excaption)
+            catch (Exception exception)
             {
-                throw excaption;
+                throw exception;
             }
 
         }
