@@ -144,9 +144,9 @@ namespace Promact.Oauth.Server.Tests
 
 
 
-        #region "Test User"
+        #region "Private user object Test User"
 
-        UserAc testUser = new UserAc()
+        private UserAc testUser = new UserAc()
         {
             Email = "testUser@promactinfo.com",
             FirstName = "First name",
