@@ -29,22 +29,22 @@ namespace Promact.Oauth.Server.Tests
         /// <summary>
         /// Checking method of client version.
         /// </summary>
-        [Fact, Trait("Category", "Required")]
-        public async void GetAppDetailsFromClientNotNull()
-        {
-            var response = await _oAuthRepository.GetAppDetailsFromClient(RedirectUrl, refreshToken);
-            Assert.NotNull(response);
-        }
+        //[Fact, Trait("Category", "Required")]
+        //public async void GetAppDetailsFromClientNotNull()
+        //{
+        //    var response = await _oAuthRepository.GetAppDetailsFromClient(RedirectUrl, refreshToken);
+        //    Assert.NotNull(response);
+        //}
 
         /// <summary>
         /// Checking method of client version.
         /// </summary>
-        [Fact, Trait("Category", "Required")]
-        public async void GetAppDetailsFromClientTrueValue()
-        {
-            var response = await _oAuthRepository.GetAppDetailsFromClient(RedirectUrl, refreshToken);
-            Assert.Equal(response.ClientSecret, ClientSecret);
-        }
+        //[Fact, Trait("Category", "Required")]
+        //public async void GetAppDetailsFromClientTrueValue()
+        //{
+        //    var response = await _oAuthRepository.GetAppDetailsFromClient(RedirectUrl, refreshToken);
+        //    Assert.Equal(response.ClientSecret, ClientSecret);
+        //}
 
         /// <summary>
         /// Static Variables to be used in OAuth Repository Test
