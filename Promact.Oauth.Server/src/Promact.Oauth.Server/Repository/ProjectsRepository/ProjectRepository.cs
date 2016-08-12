@@ -15,9 +15,9 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
     public class ProjectRepository : IProjectRepository
     {
         #region "Private Variable(s)"
-        private IDataRepository<Project> _projectDataRepository;
-        private IDataRepository<ProjectUser> _projectUserDataRepository;
-        private IDataRepository<ApplicationUser> _userDataRepository;
+        private readonly IDataRepository<Project> _projectDataRepository;
+        private readonly IDataRepository<ProjectUser> _projectUserDataRepository;
+        private readonly IDataRepository<ApplicationUser> _userDataRepository;
         private readonly IMapper _mapperContext;
         #endregion
 
@@ -42,8 +42,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
            
             projects.ForEach(project =>
             {
-                var teamLeaders = new ApplicationUser();
-                teamLeaders = _userDataRepository.FirstOrDefault(x => x.Id == project.TeamLeaderId);
+                var teamLeaders = _userDataRepository.FirstOrDefault(x => x.Id == project.TeamLeaderId);
                 var teamLeader = new UserAc();
                 teamLeader.FirstName = teamLeaders.FirstName;
                 teamLeader.LastName = teamLeaders.LastName;
@@ -138,7 +137,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             projectInDb.UpdatedBy = updatedBy;
             _projectDataRepository.Update(projectInDb);
 
-            var CreatedBy = _userDataRepository.FirstOrDefault(x => x.Id == editProject.CreatedBy)?.FirstName;
+            
             //Delete old users from project user table
             _projectUserDataRepository.Delete(x => x.ProjectId == projectId);
             _projectUserDataRepository.Save();
