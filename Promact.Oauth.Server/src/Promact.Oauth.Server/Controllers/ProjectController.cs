@@ -84,8 +84,7 @@ namespace Promact.Oauth.Server.Controllers
         public IActionResult Put(int id, [FromBody]ProjectAc project)
         {
             var updatedBy = _userManager.GetUserId(User);
-            try
-            {
+           
                 if (ModelState.IsValid)
                 {
                     ProjectAc p = _projectRepository.checkDuplicateFromEditProject(project);
@@ -95,9 +94,7 @@ namespace Promact.Oauth.Server.Controllers
                     }
                     else { return Ok(project); }
                 }
-            }
-            catch(Exception ex)
-            { }
+          
            return Ok(project);
         }
 
