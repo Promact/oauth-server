@@ -9,6 +9,7 @@ using System;
 using Promact.Oauth.Server.Models;
 using System.Collections.Generic;
 using Promact.Oauth.Server.Repository;
+using System.Globalization;
 
 namespace Promact.Oauth.Server.Tests
 {
@@ -78,8 +79,8 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "A")]
         public void GetById()
         {
-            ProjectAc projectac = null;
-            projectac = new ProjectAc()
+             
+            ProjectAc projectac = new ProjectAc()
             {
                 Name = "slack",
                 SlackChannelName = "SlackChannelName",
@@ -87,7 +88,7 @@ namespace Promact.Oauth.Server.Tests
                 TeamLeader = new UserAc { FirstName = "Admin" ,LastName="Admin",Email="test@yahoo.com" },
                 TeamLeaderId = "1",
                 CreatedBy = "Roshni",
-                CreatedDate = DateTime.Now.ToString()
+                CreatedDate = DateTime.Now.ToString(CultureInfo.InvariantCulture)
             };
             ProjectUser projectUser = new ProjectUser()
             {
@@ -127,7 +128,7 @@ namespace Promact.Oauth.Server.Tests
                 TeamLeader = new UserAc { FirstName = "Roshni" },
                 TeamLeaderId = "1",
                 CreatedBy = "Roshni",
-                CreatedDate = DateTime.Now.ToString()
+                CreatedDate = DateTime.Now.ToString(CultureInfo.InvariantCulture)
             };
             ProjectUser projectUser = new ProjectUser()
             {
@@ -156,13 +157,7 @@ namespace Promact.Oauth.Server.Tests
             _userRepository.AddUser(userThird, "Ronak");
             var id = _projectRepository.AddProject(projectac, "Ronak");
             _projectRepository.AddUserProject(projectUser);
-            ProjectUser projectUserSecound = new ProjectUser()
-            {
-                ProjectId = 1,
-                Project = new Project { Name = "Slack" },
-                UserId = "2",
-                User = new ApplicationUser { FirstName = "Ronit" }
-            };
+            
 
 
             List<UserAc> userlist = new List<UserAc>();
@@ -177,15 +172,12 @@ namespace Promact.Oauth.Server.Tests
                 TeamLeader = new UserAc { FirstName = "Roshni" },
                 TeamLeaderId = "1",
                 CreatedBy = "Roshni",
-                CreatedDate = DateTime.Now.ToString(),
+                CreatedDate = DateTime.Now.ToString(CultureInfo.InvariantCulture),
                 ApplicationUsers = userlist
             };
-
-           
-
             _projectRepository.EditProject(projectacSecound, "Ronak");
             var project = _dataRepository.Fetch(x => x.Id == 1);
-            var ProjectUser = _dataRepositoryProjectUser.Fetch(x => x.ProjectId == 1);
+            _dataRepositoryProjectUser.Fetch(x => x.ProjectId == 1);
             Assert.NotNull(project);
         }
         /// <summary>
@@ -202,7 +194,7 @@ namespace Promact.Oauth.Server.Tests
                 TeamLeader = new UserAc { FirstName = "Roshni" },
                 TeamLeaderId = "1",
                 CreatedBy = "Roshni",
-                CreatedDate = DateTime.Now.ToString()
+                CreatedDate = DateTime.Now.ToString(CultureInfo.InvariantCulture)
             };
             _projectRepository.AddProject(projectac, "Ronak");
            var project =_projectRepository.checkDuplicate(projectac);
@@ -220,7 +212,7 @@ namespace Promact.Oauth.Server.Tests
                 TeamLeader = new UserAc { FirstName = "Roshni" },
                 TeamLeaderId = "1",
                 CreatedBy = "Roshni",
-                CreatedDate = DateTime.Now.ToString()
+                CreatedDate = DateTime.Now.ToString(CultureInfo.InvariantCulture)
             };
             _projectRepository.AddProject(projectac, "Ronak");
             List<UserAc> userlist = new List<UserAc>();
@@ -235,7 +227,7 @@ namespace Promact.Oauth.Server.Tests
                 TeamLeader = new UserAc { FirstName = "Roshni" },
                 TeamLeaderId = "1",
                 CreatedBy = "Roshni",
-                CreatedDate = DateTime.Now.ToString(),
+                CreatedDate = DateTime.Now.ToString(CultureInfo.InvariantCulture),
                 ApplicationUsers = userlist
             };
             var project = _projectRepository.checkDuplicate(projectac2);
@@ -263,7 +255,7 @@ namespace Promact.Oauth.Server.Tests
                 TeamLeader = new UserAc { FirstName = "Admin", LastName = "test", Email = "test13@yahoo.com" },
                 TeamLeaderId = TId,
                 CreatedBy = "Roshni",
-                CreatedDate = DateTime.Now.ToString()
+                CreatedDate = DateTime.Now.ToString(CultureInfo.InvariantCulture)
             };
             ProjectUser projectUser = new ProjectUser()
             {
