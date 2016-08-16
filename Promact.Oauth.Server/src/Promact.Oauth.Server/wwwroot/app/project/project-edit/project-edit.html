@@ -1,18 +1,17 @@
 ﻿
-
 <center>
-    <form novalidate #addProjectform="ngForm">
+    <form>
         <div *ngIf="pro">
             <h3>Edit Project</h3>
             <br />
             <table>
-               <tr>
+                <tr>
                     <td>
                         Name:
                     </td>
                     <td>
-                        <input type="text" #Name="ngForm" ngControl="Name" [(ngModel)]="pro.name" required />
-                        <div *ngIf="Name.touched && !Name.valid && Name.errors.required" style="color:red">Project Name is required</div>
+                        <input type="text" name="name" [(ngModel)]="pro.name" required />
+                        <!--<div *ngIf="Name.touched && !Name.valid && Name.errors.required" style="color:red">Project Name is required</div>-->
                     </td>
                 </tr>
                 <tr>
@@ -20,12 +19,11 @@
                         Slack Channel Name:
                     </td>
                     <td>
-                        <input type="text" #SlackChannelName="ngForm" [(ngModel)]="pro.slackChannelName" required />
-                        <div *ngIf="SlackChannelName.touched && !SlackChannelName.valid && SlackChannelName.errors.required" style="color:red">Project SlackChannel is required</div>
+                        <input type="text" name="slackChannelName" [(ngModel)]="pro.slackChannelName" required />
+                        <!--<div *ngIf="SlackChannelName.touched && !SlackChannelName.valid && SlackChannelName.errors.required" style="color:red">Project SlackChannel is required</div>-->
                     </td>
                 </tr>
                 <tr>
-
                     <td>
                         IsActive:
                     </td>
@@ -57,7 +55,8 @@
                 </tr>
                 <tr>
                     <td>
-                        <button (click)="editProject(pro)" [disabled]="!(Name.valid && SlackChannelName.valid)">Update</button>
+                        <button (click)="editProject(pro)">Update</button>
+                        <!--<button (click)="editProject(pro)" [disabled]="!(Name.valid && SlackChannelName.valid)">Update</button>-->
                     </td>
                     <td>
                         <button (click)="gotoProjects()">Back</button>
@@ -65,10 +64,8 @@
                 </tr>
             </table>
             <p>
-
             </p>
         </div>
-        </form>
+    </form>
 </center>
-
 
