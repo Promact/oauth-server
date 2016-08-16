@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System;
 
 namespace Promact.Oauth.Server.Models
 {
@@ -24,6 +22,20 @@ namespace Promact.Oauth.Server.Models
 
         [NotMapped]
         public virtual ICollection<Project> Projects { get; set; }
-        //public virtual ICollection<ProjectUser> ProjectUsers { get; set; }        
+
+
+        [Display(Name = "Created By")]
+        public string CreatedBy { get; set; }
+
+        [Display(Name = "Created Date")]
+        [DataType(DataType.DateTime)]
+        public DateTime CreatedDateTime { get; set; }
+
+        [Display(Name = "Updated By")]
+        public string UpdatedBy { get; set; }
+
+        [Display(Name = "Updated Date")]
+        [DataType(DataType.DateTime)]
+        public DateTime UpdatedDateTime { get; set; }
     }
 }

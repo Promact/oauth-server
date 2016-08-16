@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Promact.Oauth.Server.Models
 {
-    public class Apps : OAuthBase
+    public class ConsumerApps : OAuthBase
     {
         [Required]
         [StringLength(255)]
@@ -18,13 +18,16 @@ namespace Promact.Oauth.Server.Models
         public string Description { get; set; }
 
         [Required]
+        [StringLength(255)]
         [Url]
         public string CallbackUrl { get; set; }
 
         [Required]
-        public int AuthId { get; set; }
+        [StringLength(15)]
+        public string AuthId { get; set; }
 
         [Required]
+        [StringLength(30)]
         public string AuthSecret { get; set; }
 
     }

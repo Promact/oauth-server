@@ -8,8 +8,8 @@ using Promact.Oauth.Server.Data;
 namespace Promact.Oauth.Server.Migrations
 {
     [DbContext(typeof(PromactOauthDbContext))]
-    [Migration("20160801121731_ini")]
-    partial class ini
+    [Migration("20160810062213_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -133,6 +133,10 @@ namespace Promact.Oauth.Server.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<DateTime>("CreatedDateTime");
+
                     b.Property<string>("Email")
                         .HasAnnotation("MaxLength", 256);
 
@@ -141,6 +145,8 @@ namespace Promact.Oauth.Server.Migrations
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasAnnotation("MaxLength", 255);
+
+                    b.Property<bool>("IsActive");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -162,11 +168,15 @@ namespace Promact.Oauth.Server.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
+                    b.Property<int?>("ProjectId");
+
                     b.Property<string>("SecurityStamp");
 
-                    b.Property<bool>("Status");
-
                     b.Property<bool>("TwoFactorEnabled");
+
+                    b.Property<string>("UpdatedBy");
+
+                    b.Property<DateTime>("UpdatedDateTime");
 
                     b.Property<string>("UserName")
                         .HasAnnotation("MaxLength", 256);
@@ -180,6 +190,8 @@ namespace Promact.Oauth.Server.Migrations
                         .IsUnique()
                         .HasName("UserNameIndex");
 
+                    b.HasIndex("ProjectId");
+
                     b.ToTable("AspNetUsers");
                 });
 
@@ -188,15 +200,19 @@ namespace Promact.Oauth.Server.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("AuthId");
+                    b.Property<string>("AuthId")
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 15);
 
                     b.Property<string>("AuthSecret")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 30);
 
                     b.Property<string>("CallbackUrl")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 255);
 
-                    b.Property<int>("CreatedBy");
+                    b.Property<string>("CreatedBy");
 
                     b.Property<DateTime>("CreatedDateTime");
 
@@ -208,6 +224,8 @@ namespace Promact.Oauth.Server.Migrations
                         .IsRequired()
                         .HasAnnotation("MaxLength", 255);
 
+                    b.Property<string>("UpdatedBy");
+
                     b.Property<DateTime>("UpdatedDateTime");
 
                     b.HasKey("Id");
@@ -215,12 +233,30 @@ namespace Promact.Oauth.Server.Migrations
                     b.ToTable("Apps");
                 });
 
+            modelBuilder.Entity("Promact.Oauth.Server.Models.OAuth", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AccessToken");
+
+                    b.Property<string>("ClientId");
+
+                    b.Property<string>("RefreshToken");
+
+                    b.Property<string>("userEmail");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OAuth");
+                });
+
             modelBuilder.Entity("Promact.Oauth.Server.Models.Project", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("CreatedBy");
+                    b.Property<string>("CreatedBy");
 
                     b.Property<DateTime>("CreatedDateTime");
 
@@ -234,13 +270,14 @@ namespace Promact.Oauth.Server.Migrations
                         .IsRequired()
                         .HasAnnotation("MaxLength", 25);
 
+                    b.Property<string>("TeamLeaderId")
+                        .IsRequired();
+
+                    b.Property<string>("UpdatedBy");
+
                     b.Property<DateTime>("UpdatedDateTime");
 
-                    b.Property<string>("UserId");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Projects");
                 });
@@ -250,23 +287,23 @@ namespace Promact.Oauth.Server.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("CreatedBy");
+                    b.Property<string>("CreatedBy");
 
                     b.Property<DateTime>("CreatedDateTime");
 
                     b.Property<int>("ProjectId");
 
+                    b.Property<string>("UpdatedBy");
+
                     b.Property<DateTime>("UpdatedDateTime");
 
-                    b.Property<int>("UserId");
-
-                    b.Property<string>("UserId1");
+                    b.Property<string>("UserId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ProjectId");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("UserId");
 
                     b.ToTable("ProjectUsers");
                 });
@@ -308,11 +345,11 @@ namespace Promact.Oauth.Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Promact.Oauth.Server.Models.Project", b =>
+            modelBuilder.Entity("Promact.Oauth.Server.Models.ApplicationUser", b =>
                 {
-                    b.HasOne("Promact.Oauth.Server.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                    b.HasOne("Promact.Oauth.Server.Models.Project")
+                        .WithMany("ApplicationUsers")
+                        .HasForeignKey("ProjectId");
                 });
 
             modelBuilder.Entity("Promact.Oauth.Server.Models.ProjectUser", b =>
@@ -323,8 +360,8 @@ namespace Promact.Oauth.Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Promact.Oauth.Server.Models.ApplicationUser", "User")
-                        .WithMany("ProjectUsers")
-                        .HasForeignKey("UserId1");
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
         }
     }

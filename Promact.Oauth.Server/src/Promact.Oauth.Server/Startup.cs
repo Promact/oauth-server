@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -16,6 +13,11 @@ using Promact.Oauth.Server.Seed;
 using Promact.Oauth.Server.Repository;
 using Promact.Oauth.Server.Data_Repository;
 using Promact.Oauth.Server.Repository.ProjectsRepository;
+using Promact.Oauth.Server.Repository.ConsumerAppRepository;
+using Newtonsoft.Json.Serialization;
+using Promact.Oauth.Server.Repository.OAuthRepository;
+using Promact.Oauth.Server.AutoMapper;
+using AutoMapper;
 
 namespace Promact.Oauth.Server
 {
@@ -36,9 +38,18 @@ namespace Promact.Oauth.Server
 
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
+
+            
+            _mapperConfiguration = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile(new AutoMapperProfileConfiguration());
+            });
+
         }
 
         public IConfigurationRoot Configuration { get; }
+
+        private MapperConfiguration _mapperConfiguration { get; set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -59,13 +70,30 @@ namespace Promact.Oauth.Server
             services.AddScoped<IEnsureSeedData, EnsureSeedData>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IProjectRepository, ProjectRepository>();
+            services.AddScoped<IConsumerAppRepository, ConsumerAppRepository>();
             services.AddScoped(typeof(IDataRepository<>), typeof(DataRepository<>));
+            services.AddScoped<IOAuthRepository, OAuthRepository>();
 
             services.AddMvc();
+            //.AddJsonOptions(opt =>
+            //{
+            //    var resolver = opt.SerializerSettings.ContractResolver;
+            //    if (resolver != null)
+            //    {
+            //        var res = resolver as DefaultContractResolver;
+            //        res.NamingStrategy = null;  // <<!-- this removes the camelcasing
+            //    }
+            //});
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
+
+            //Register AppSettings class for Email Credentials of the sender
+            services.Configure<AppSettings>(options => Configuration.GetSection("AppSettings").Bind(options));
+
+            //Register Mapper
+            services.AddSingleton<IMapper>(sp => _mapperConfiguration.CreateMapper());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -96,6 +124,23 @@ namespace Promact.Oauth.Server
 
             app.UseMvc(routes =>
             {
+
+                routes.MapRoute(
+                      name: "Login",
+                      template: "Login",
+                      defaults: new { controller = "Account", action = "Login" });
+
+                routes.MapRoute(
+                    name: "LogOff",
+                    template: "LogOff",
+                    defaults: new { controller = "Account", action = "LogOff" });
+
+                //routes.MapRoute(
+                //        name: "default",
+                //         template: "{*.}",
+                //     defaults: new { controller = "Home", action = "Index" }
+                //     );
+
                 routes.MapRoute(
                     name: "default",
                     //template: "{controller=Account}/{action=Login}");

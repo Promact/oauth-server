@@ -8,23 +8,37 @@ using Promact.Oauth.Server.Repository;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Models.ManageViewModels;
 using Microsoft.AspNetCore.Identity;
-using Promact.Oauth.Server.Models.ApplicationClass;
+using Promact.Oauth.Server.Models.ApplicationClasses;
 
 namespace Promact.Oauth.Server.Controllers
 {
     [Route("api/[controller]")]
-    public class UserController : Controller
+    [Authorize(Roles = "Admin")]
+    public class UserController : BaseController
     {
-        private readonly IUserRepository _userRepository;
+        #region "Private Variable(s)"
         
-        public UserController(IUserRepository userRepository)
+        private readonly IUserRepository _userRepository;
+        private UserManager<ApplicationUser> _userManager;
+
+        #endregion
+
+        #region "Constructor"
+
+        public UserController(IUserRepository userRepository, UserManager<ApplicationUser> userManager)
         {
             _userRepository = userRepository;
+            _userManager = userManager;
         }
 
+        #endregion
 
-        // Gets the list of all entries of the ApplicationUser Table
-        // Get api/user
+        #region public Methods
+
+        /// <summary>
+        /// This method is used for getting the list of all users
+        /// </summary>
+        /// <returns>User list</returns>
         [HttpGet]
         [Route("users")]
         public IActionResult AllUsers()
@@ -33,8 +47,11 @@ namespace Promact.Oauth.Server.Controllers
         }
 
 
-        // Gets the details of a particular employee from ApplicationUser Table, by its id
-        // Get api/user/3
+        /// <summary>
+        /// This method is used to get particular user's details by his/her id
+        /// </summary>
+        /// <param name="id">String id</param>
+        /// <returns>UserAc Application class user</returns>
         [HttpGet]
         [Route("{id}")]
         public IActionResult GetUserById(string id)
@@ -49,41 +66,103 @@ namespace Promact.Oauth.Server.Controllers
 
 
 
-        // Adds a new user to the ApplicationUser Table
-        // Post api/user/add
+        /// <summary>
+        /// This method is used to add new user
+        /// </summary>
+        /// <param name="newUser">UserAc application class user</param>
+        /// <returns></returns>
         [HttpPost]
         [Route("add")]
-        public IActionResult RegisterUser([FromBody] UserModel newUser)
+        public IActionResult RegisterUser([FromBody] UserAc newUser)
         {
+            string createdBy = _userManager.GetUserId(User);
             try
             {
-                if (ModelState.IsValid && newUser.Email.Contains("@promactinfo.com"))
+                if (ModelState.IsValid)
                 {
-                    _userRepository.AddUser(newUser);
-                    return Ok(newUser);
+                    string id = _userRepository.AddUser(newUser, createdBy);
+                    return Ok(true);
                 }
-                return BadRequest();
+                return Ok(false);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return BadRequest();
+                throw e;
             }
         }
 
 
-        // Edits the details of an user to the ApplicationUser Table
-        // Put api/user/edit/3
+        /// <summary>
+        /// This method is used to edit the details of an existing user
+        /// </summary>
+        /// <param name="editedUser">UserAc application class user</param>
+        /// <returns></returns>
         [HttpPut]
         [Route("edit")]
-        public IActionResult UpdateUser([FromBody] UserModel editedUser)
+        public IActionResult UpdateUser([FromBody] UserAc editedUser)
         {
+            string updatedBy = _userManager.GetUserId(User);
             if (ModelState.IsValid)
             {
-                _userRepository.UpdateUserDetails(editedUser);
-                return Ok(editedUser);
+                _userRepository.UpdateUserDetails(editedUser, updatedBy);
+                return Ok(true);
             }
-            return BadRequest();
+            return Ok(false);
         }
 
+
+
+        /// <summary>
+        /// This method is used to change the password of a particular user
+        /// </summary>
+        /// <param name="passwordModel">ChangePassWordModel object</param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("changepassword")]
+        [AllowAnonymous]
+        public IActionResult ChangePassword([FromBody] ChangePasswordViewModel passwordModel)
+        {
+            var user = _userManager.GetUserAsync(User).Result;
+            if (_userManager.CheckPasswordAsync(user, passwordModel.OldPassword).Result)
+            {
+                passwordModel.Email = user.Email;
+                if (ModelState.IsValid)
+                {
+                    _userRepository.ChangePassword(passwordModel);
+                    return Ok(true);
+                    
+                }
+            }
+            return Ok(false);
+            
+        }
+
+
+        /// <summary>
+        /// This method is used to check if a user already exists in the database with the given userName
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("findbyusername/{userName}")]
+        public IActionResult FindByUserName(string userName)
+        {
+            return Ok(_userRepository.FindByUserName(userName));
+        }
+
+
+        /// <summary>
+        /// This method is used to check if a user already exists in the database with the given email
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("findbyemail/{email}")]
+        public IActionResult FindByEmail(string email)
+        {
+            return Ok(_userRepository.FindByEmail(email));
+        }
+
+        #endregion
     }
 }

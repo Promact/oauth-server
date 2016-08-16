@@ -8,6 +8,8 @@
         'app': 'app', // 'dist',
         '@angular': '/lib/@angular',
         'angular2-in-memory-web-api': '/lib/angular2-in-memory-web-api',
+        'rxjs': '/lib/rxjs',
+        'md2': '/lib/md2'
         '@angular2-material' : '/lib/@angular2-material',
         'rxjs': '/lib/rxjs'
     };
@@ -15,6 +17,40 @@
     var packages = {
         'app': { main: 'main.js', defaultExtension: 'js' },
         'rxjs': { defaultExtension: 'js' },
+        'angular2-in-memory-web-api': { main: 'index.js', defaultExtension: 'js' },
+
+
+        'md2/select': {
+            format: 'cjs',
+            defaultExtension: 'js',
+            main: 'select.js'
+        },
+        'md2/switch': {
+            format: 'cjs',
+            defaultExtension: 'js',
+            main: 'switch.js'
+        },
+        'md2/toast': {
+            format: 'cjs',
+            defaultExtension: 'js',
+            main: 'toast.js'
+        },
+        'md2/multiselect': {
+            format: 'cjs',
+            defaultExtension: 'js',
+            main: 'multiselect.js'
+        },
+        //...
+
+        //--- or ---
+
+        //'md2/all': {
+        //    format: 'cjs',
+        //    defaultExtension: 'js',
+        //    main: 'all.js'
+        //}
+    
+
         'angular2-in-memory-web-api': { main: 'index.js', defaultExtension: 'js' }
     };
     var ngPackageNames = [
