@@ -4,7 +4,8 @@ import { Router, ROUTER_DIRECTIVES}from '@angular/router';
 import {UserService} from './user.service';
 
 @Component({
-    templateUrl: './app/users/user.html',
+    template: `
+    <router-outlet></router-outlet>`,
     directives: [ROUTER_DIRECTIVES],
     providers: [UserService]
 })

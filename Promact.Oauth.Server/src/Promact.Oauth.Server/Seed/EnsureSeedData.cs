@@ -14,7 +14,7 @@ namespace Promact.Oauth.Server.Seed
 {
     public class EnsureSeedData : IEnsureSeedData
     {
-        private PromactOauthDbContext context;
+        private readonly PromactOauthDbContext context;
         public EnsureSeedData(PromactOauthDbContext _context)
         {
             context = _context;

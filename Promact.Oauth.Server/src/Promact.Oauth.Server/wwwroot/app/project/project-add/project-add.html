@@ -7,28 +7,63 @@ IsActive :<input [(ngModel)]="pro.IsActive" />
 <center>
     <h1>{{title}}</h1>
     <h2>Add Project</h2>
-
     <form>
-        <div>
-            <label>Name:</label>
-            <input type="text" name="Name" [(ngModel)]="pro.name" />
-        </div>
-        <div><br /></div>
-        <div>
-            <label>Slack Channel Name:</label>
-            <input type="text" name="Slack Channel Name" [(ngModel)]="pro.SlackChannelName" />
-        </div>
-        <div><br /></div>
-        <div>
-            <label>IsActive:</label>
-            <input type="text" name="IsActive" [(ngModel)]="pro.IsActive" />
-        </div>
-        <div><br /></div>
-        
+        <table>
+            <tr>
+                <td>
+                    Name:
+                </td>
+                <td>
+                    <input type="text" name="name" [(ngModel)]="pro.name" required />
+                    <!--<div *ngIf="Name.touched && !Name.valid && Name.errors.required" style="color:red">Project Name is required</div>-->
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Slack Channel Name :
+                </td>
+                <td>
+                    <input type="text" name="SlackChannelName" [(ngModel)]="pro.SlackChannelName" required />
+                    <!--<div *ngIf="SlackChannelName.touched && !SlackChannelName.valid && SlackChannelName.errors.required" style="color:red">Project SlackChannel is required</div>-->
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    IsActive:
+                </td>
+                <td>
+                    <input type="checkbox" name="IsActive" [(ngModel)]="pro.IsActive">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    TeamLeadr:
+                </td>
+                <td>
+                    <select [(ngModel)]="pro.TeamLeaderId" name="sel3">
+                        <option [ngValue]="i.Id" *ngFor="let i of pro.listUsers">{{i.FirstName}}-{{i.Email}}</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Select Users:
+                </td>
+                <td>
+                    <md2-multiselect [items]="pro.listUsers"
+                                     item-text="UniqueName"
+                                     [(ngModel)]="pro.applicationUsers"
+                                     placeholder="Placeholder Text">
+                    </md2-multiselect>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button type="submit" (click)="addProject(pro)">Add New Project</button>
+                    <!--<button type="submit" (click)="addProject(pro)" [disabled]="!(Name.valid && SlackChannelName.valid)">Add New Project</button>-->
+                </td>
+            </tr>
+        </table>
 
-        <div>
-            <button type="submit" (click)="addProject(pro)">Add New Project</button>
-        </div>
     </form>
-
 </center>

@@ -11,7 +11,7 @@ import {Md2Toast} from 'md2/toast';
 })
 export class ConsumerappAddComponent {
     consumerModel: ConsumerAppModel;
-    constructor(private consumerAppService: ConsumerAppService, private router: Router, private toast: Md2Toast) {
+    constructor(private consumerAppService: ConsumerAppService, private router: Router ,private toast: Md2Toast) {
         this.consumerModel = new ConsumerAppModel();
     }
 
@@ -19,7 +19,7 @@ export class ConsumerappAddComponent {
         this.consumerAppService.addConsumerApps(consumerModel).subscribe((result) => {
             if (result == true) {
                 this.toast.show('Consumer App is added successfully.');
-                this.cancel();
+                //this.cancel();
             }
             else if (result == false) {
                 this.toast.show('Consumer App Name is already exists.');
