@@ -5,11 +5,15 @@ var gulp = require("gulp"),
     rimraf = require("rimraf"),
     concat = require("gulp-concat"),
     cssmin = require("gulp-cssmin"),
-    uglify = require("gulp-uglify");
+    uglify = require("gulp-uglify"),
+    Server = require('karma').Server;
 
 var paths = {
     webroot: "./wwwroot/"
 };
+
+
+//var Server = require('karma').Server;
 
 paths.js = paths.webroot + "js/**/*.js";
 paths.minJs = paths.webroot + "js/**/*.min.js";
@@ -66,3 +70,30 @@ gulp.task("min:css", function () {
 });
 
 gulp.task("min", ["min:js", "min:css"]);
+
+//// Run test once and exit
+//gulp.task('test', function (done) {
+//    new Server({
+//        configFile: __dirname + '/karma.conf.js',
+//        singleRun: true
+//    }, done).start();
+//});
+
+//Runs karma test
+gulp.task('test', function (done) {
+    new Server({
+        configFile: __dirname + '/karma.conf.js',
+        singleRun: true,
+    }, function () { done(); }).start();
+});
+
+//Generates coverage reports in coverage folder
+gulp.task('coverage', function () {
+    return gulp.src('coverage/coverage-final.json')
+    .pipe(remapIstanbul({
+        reports: {
+            'html': 'coverage'
+        }
+    }))
+    .pipe(gulp.dest('./coverage'));
+});

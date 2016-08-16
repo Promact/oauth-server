@@ -2,12 +2,17 @@
   "name": "PromactOauthServer",
   "version": "1.0.0",
   "scripts": {
+    "build": "rm -rf dist && tsc -p src",
+    "pretest": "npm run build",
+    "test": "karma start karma.conf.js",
+    "citest": "karma start karma.conf.ci.js",
     "start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" ",
     "lite": "lite-server",
     "postinstall": "typings install",
     "tsc": "tsc",
     "tsc:w": "tsc -w",
     "typings": "typings"
+
   },
   "license": "ISC",
   "dependencies": {
@@ -39,6 +44,20 @@
     "concurrently": "^2.0.0",
     "lite-server": "^2.2.0",
     "typescript": "^1.8.10",
-    "typings": "^1.0.4"
+    "typings": "^1.0.4",
+    "gulp-shell": "0.5.2",
+    "jasmine": "2.4.1",
+    "jasmine-core": "2.4.1",
+    "karma": "1.2.0",
+    "karma-coverage": "1.0.0",
+    "karma-chrome-launcher": "1.0.1",
+    "karma-html-detailed-reporter": "1.1.8",
+    "karma-phantomjs-launcher": "1.0.1",
+    "karma-jasmine": "1.0.2",
+    "phantomjs": "2.1.7",
+    "remap-istanbul": "0.6.4",
+    "systemjs-builder": "0.15.16",
+    "gulp-typescript": "2.13.6",
+    "karma-cli": "1.0.1"
   }
 }
