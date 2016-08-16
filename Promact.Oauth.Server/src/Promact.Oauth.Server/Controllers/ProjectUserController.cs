@@ -23,22 +23,22 @@ namespace Promact.Oauth.Server.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("userDetails/{userFirstname}")]
-        public IActionResult UserDetialByFirstName(string userFirstname)
+        public IActionResult UserDetialByFirstName(string userFirstName)
         {
-            var user = _userRepository.UserDetialByFirstName(userFirstname);
+            var user = _userRepository.UserDetialByFirstName(userFirstName);
             return Ok(user);
         }
 
         /// <summary>
-        /// Method is used to get list of teamLeader for an employee
+        /// Method is used to get list of teamLeader for an employee first name
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("teamLeaderDetails/{userId}")]
-        public IActionResult TeamLeaderByUserId(string userId)
+        [Route("teamLeaderDetails/{userFirstName}")]
+        public IActionResult TeamLeaderByUserId(string userFirstName)
         {
-            var user = _userRepository.TeamLeaderByUserId(userId);
+            var user = _userRepository.TeamLeaderByUserId(userFirstName);
             return Ok(user);
         }
 
