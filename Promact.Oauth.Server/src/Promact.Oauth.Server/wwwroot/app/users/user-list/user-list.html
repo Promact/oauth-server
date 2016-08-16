@@ -1,10 +1,16 @@
 ﻿<section class="user-list">
     <div class="card-title-block">
         <div class="title in_block">
-            <h3>Users</h3>
+            <h3 class="in_block">Users</h3>
+                
+
+            <div class="fl-right">
+                <a routerLink="user/add" routerLinkActive="active" class="add-link">Add User</a>
+            </div>
+
+        </div>
         </div>
 
-    <a  routerLink="user/add" routerLinkActive="active">Add User</a>
 
     <table class="table-bordered">
         <thead>
@@ -24,10 +30,11 @@
                 <td *ngIf="user.IsActive">Active</td>
                 <td *ngIf="!user.IsActive">Inactive</td>
                 
-                <td> <button (click)="userDetails(user.Id)">Details</button> </td>
-                <td> <button (click)="userEdit(user.Id)">Edit</button> </td>
+                <td> <button md-raised-button class="btn-green custom-btn mr-5" (click)="userDetails(user.Id)">Details</button> <button class="custom-btn" md-raised-button (click)="userEdit(user.Id)">Edit</button> </td>
+               
                 
             </tr>
         </tbody>
     </table>
+      
 </section>

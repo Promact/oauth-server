@@ -14,7 +14,7 @@ const routes: RouterConfig = [
 
     ...projectRoutes,
     //{ path: '', component: ProjectComponent },
-    
+
     ...consumerRoute,
 ];
 

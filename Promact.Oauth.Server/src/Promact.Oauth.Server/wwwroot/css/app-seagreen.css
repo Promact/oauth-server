@@ -8,8 +8,6 @@ body{padding:0;margin:0;font-family: sans-serif;}
 .auth-container .auth-header {text-align: center;border-bottom: 1px solid #1ab394;}
 .auth-container .auth-title {color: #97A4B1;padding: 20px;line-height: 30px;font-size: 26px;font-weight: 600;margin: 0;}
 .card {background-color: #fff;box-shadow: 1px 1px 5px rgba(126, 142, 159, 0.1);margin-bottom: 10px;border-radius: 0;border:none;}
-.card-title-block{    padding-bottom: 0;margin-bottom: 20px;}
-.card-title-block h3{font-size:18px !important;color: #4f5f6f;margin:0;}
 .custom-btn{min-width: 83px !important;line-height: 33px !important;}
 .form-group{margin-bottom:15px;}
 .login-form input{font-size:18px;padding:10px 10px 5px 5px;width:300px;border:none;border-bottom:1px solid #757575;}
@@ -34,22 +32,17 @@ md-sidenav li a.active {background-color: #1ab394 !important;color: #ffffff !imp
 
 table{width:100%;max-width:100%;border-collapse: collapse;border-spacing: 0;width: 100%;display: table;}
 .table-bordered{border:1px solid #ddd;}
-    .table-bordered > thead > tr > th {
-        border: 1px solid #ddd;
-        padding: 8px;
-    line-height: 1.42857143;text-align:left;
-
-    }
-    .table-bordered >tbody>tr>td{
-            padding: 8px;
-    line-height: 1.42857143;
-    vertical-align: top;
-        border: 1px solid #ddd;
-    }
+.table-bordered > thead > tr > th {border: 1px solid #ddd;padding: 8px;line-height: 1.42857143;text-align:left;}
+.table-bordered >tbody>tr>td{padding: 8px;line-height: 1.42857143;vertical-align: top;border: 1px solid #ddd;}
 .content-menu{background-color:#f0f3f6;}
-.user-list a.add-link{    float: right;
-    font-size: 18px;
-    color: #4f5f6f;
-    text-decoration: none;}
+
+.user-list .card-title-block , .user-list .title{width:100%;}
+.user-list a.add-link{float: right;font-size: 18px;color: #4f5f6f;text-decoration: none;}
+.card-title-block{padding-bottom: 0;margin-bottom: 20px;}
+.card-title-block h3{font-size:18px !important;color: #4f5f6f;margin:0;}
+
+.user-details p{margin:0;}
+.user-details label{font-weight:bold;display:inline-block;width: 100px;text-align: right;margin-right: 10px;font-size: 14px;}
+
 
 
