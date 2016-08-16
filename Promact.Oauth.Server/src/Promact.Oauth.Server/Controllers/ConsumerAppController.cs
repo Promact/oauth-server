@@ -43,7 +43,7 @@ namespace Promact.Oauth.Server.Controllers
             try
             {
                 consumerAppsAc.CreatedBy = _userManager.GetUserId(User);
-                if (_consumerAppRepository.AddedConsumerApps(consumerAppsAc) != 0)
+                if (_consumerAppRepository.AddConsumerApps(consumerAppsAc) != 0)
                     return Ok(true);
                 else
                     return Ok(false);
@@ -87,7 +87,7 @@ namespace Promact.Oauth.Server.Controllers
         {
             try
             {
-                var consumerApps = _consumerAppRepository.GetAppsObjectById(id);
+                var consumerApps = _consumerAppRepository.GetConsumerAppsById(id);
                 return Ok(consumerApps);
             }
             catch (Exception ex)
@@ -107,7 +107,7 @@ namespace Promact.Oauth.Server.Controllers
         {
             try
             {
-                var oldAppsDetails = _consumerAppRepository.GetAppsObjectById(consumerAppsAc.Id);
+                var oldAppsDetails = _consumerAppRepository.GetConsumerAppsById(consumerAppsAc.Id);
                 if (oldAppsDetails != null)
                 {
                     oldAppsDetails.Name = consumerAppsAc.Name;

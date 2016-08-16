@@ -155,18 +155,6 @@ namespace Promact.Oauth.Server.Tests
 
 
 
-        //#region "Test User"
-
-        //UserAc testUser = new UserAc()
-        //{
-        //    Email = "testUser@promactinfo.com",
-        //    FirstName = "First name",
-        //    LastName = "Last name",
-        //    IsActive = true,
-        //    Password = "User@123",
-        //    UserName = "testUser@pronactinfo.com"
-        //};
-
-        //#endregion
+        
     }
 }

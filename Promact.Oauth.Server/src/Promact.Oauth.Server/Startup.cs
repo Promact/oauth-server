@@ -16,6 +16,8 @@ using Promact.Oauth.Server.Repository.ProjectsRepository;
 using Promact.Oauth.Server.Repository.ConsumerAppRepository;
 using Newtonsoft.Json.Serialization;
 using Promact.Oauth.Server.Repository.OAuthRepository;
+using Promact.Oauth.Server.Repository.HttpClientRepository;
+using System.Net.Http;
 using Promact.Oauth.Server.AutoMapper;
 using AutoMapper;
 
@@ -73,6 +75,8 @@ namespace Promact.Oauth.Server
             services.AddScoped<IConsumerAppRepository, ConsumerAppRepository>();
             services.AddScoped(typeof(IDataRepository<>), typeof(DataRepository<>));
             services.AddScoped<IOAuthRepository, OAuthRepository>();
+            services.AddScoped<HttpClient>();
+            services.AddScoped<IHttpClientRepository, HttpClientRepository>();
 
             services.AddMvc();
             //.AddJsonOptions(opt =>

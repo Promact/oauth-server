@@ -53,7 +53,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// </summary>
         /// <param name="aapsObject"></param>
         /// <returns></returns>
-        public int AddedConsumerApps(ConsumerAppsAc consumerApps)
+        public int AddConsumerApps(ConsumerAppsAc consumerApps)
         {
             try
             {
@@ -97,7 +97,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// </summary>
         /// <param name="id">pass apps object primarykey</param>
         /// <returns></returns>
-        public ConsumerApps GetAppsObjectById(int id)
+        public ConsumerApps GetConsumerAppsById(int id)
         {
             try
             {
