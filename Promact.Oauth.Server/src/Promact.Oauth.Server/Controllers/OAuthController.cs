@@ -78,7 +78,6 @@ namespace Promact.Oauth.Server.Controllers
         public async Task<IActionResult> ExternalLogin(string clientId)
         {
             var result = _appRepository.GetAppDetails(clientId);
-            //await _signInManager.SignOutAsync();
             if (User.Identity.IsAuthenticated)
             {
                 var user = await _userManager.FindByNameAsync(User.Identity.Name);

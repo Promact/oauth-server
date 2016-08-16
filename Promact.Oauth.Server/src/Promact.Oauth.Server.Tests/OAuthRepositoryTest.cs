@@ -27,32 +27,9 @@ namespace Promact.Oauth.Server.Tests
         }
 
         /// <summary>
-        /// Checking method of client version.
-        /// </summary>
-        [Fact, Trait("Category", "Required")]
-        public async void GetAppDetailsFromClientNotNull()
-        {
-            var response = await _oAuthRepository.GetAppDetailsFromClient(RedirectUrl, refreshToken);
-            Assert.NotNull(response);
-        }
-
-        /// <summary>
-        /// Checking method of client version.
-        /// </summary>
-        [Fact, Trait("Category", "Required")]
-        public async void GetAppDetailsFromClientTrueValue()
-        {
-            var response = await _oAuthRepository.GetAppDetailsFromClient(RedirectUrl, refreshToken);
-            Assert.Equal(response.ClientSecret, ClientSecret);
-        }
-
-        /// <summary>
         /// Static Variables to be used in OAuth Repository Test
         /// </summary>
         private static string Email = "siddhartha@promactinfo.com";
         private static string ClientId = "dsfargazdfvfhfghkf";
-        private static string RedirectUrl = "http://localhost:28182/oAuth/RefreshToken";
-        private static string refreshToken = "adfjghefjakjdasdfsfhdjl";
-        private static string ClientSecret = "q5UgIlqpRiFNkh8yK2i7SblNnqGEHZ";
     }
 }
