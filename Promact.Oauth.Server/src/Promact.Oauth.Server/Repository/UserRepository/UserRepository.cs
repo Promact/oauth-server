@@ -51,7 +51,7 @@ namespace Promact.Oauth.Server.Repository
 
             _userManager.CreateAsync(user, "User@123").Wait();
             
-            SendEmail(user);
+            //SendEmail(user);
             return user.Id;
         }
 
