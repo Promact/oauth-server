@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Promact.Oauth.Server.Models.ManageViewModels;
 using Promact.Oauth.Server.Services;
 using AutoMapper;
+using Promact.Oauth.Server.Repository.ProjectsRepository;
 
 namespace Promact.Oauth.Server.Repository
 {
@@ -21,17 +22,21 @@ namespace Promact.Oauth.Server.Repository
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IEmailSender _emailSender;
         private readonly IMapper _mapperContext;
+        private readonly IDataRepository<ProjectUser> _projectUserRepository;
+        private readonly IProjectRepository _projectRepository;
 
         #endregion
 
         #region "Constructor"
 
-        public UserRepository(IDataRepository<ApplicationUser> applicationUserDataRepository, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IMapper mapperContext)
+        public UserRepository(IDataRepository<ApplicationUser> applicationUserDataRepository, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IMapper mapperContext,IDataRepository<ProjectUser> projectUserRepository, IProjectRepository projectRepository)
         {
             _applicationUserDataRepository = applicationUserDataRepository;
             _userManager = userManager;
             _emailSender = emailSender;
             _mapperContext = mapperContext;
+            _projectUserRepository = projectUserRepository;
+            _projectRepository = projectRepository;
         }
 
         #endregion
@@ -177,6 +182,52 @@ namespace Promact.Oauth.Server.Repository
                             + "\n Password: User@123"
                             + "\n Link: ";
             _emailSender.SendEmailAsync(user.Email, "Login Credentials", message);
+        }
+
+        public ApplicationUser UserDetialByFirstName(string firstname)
+        {
+            var user = _userManager.Users.FirstOrDefault(x => x.FirstName == firstname);
+            var newUser = new ApplicationUser
+            {
+                Id = user.Id,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName
+            };
+            return newUser;
+        }
+        public List<ApplicationUser> TeamLeaderByUserId(string userId)
+        {
+            var projects = _projectUserRepository.Fetch(x => x.UserId == userId);
+            List<ApplicationUser> teamLeaders = new List<ApplicationUser>();
+            foreach (var project in projects)
+            {
+                var teamLeaderId = _projectRepository.GetById(project.Id).TeamLeaderId;
+                var user = _userManager.Users.FirstOrDefault(x => x.Id == teamLeaderId);
+                var newUser = new ApplicationUser
+                {
+                    UserName = user.UserName,
+                    Email = user.Email
+                };
+                teamLeaders.Add(newUser);
+            }
+            return teamLeaders;
+        }
+
+        public async Task<List<ApplicationUser>> ManagementByUserId()
+        {
+            var management = await _userManager.GetUsersInRoleAsync("Admin");
+            List<ApplicationUser> managementUser = new List<ApplicationUser>();
+            foreach (var user in management)
+            {
+                var newUser = new ApplicationUser
+                {
+                    FirstName = user.FirstName,
+                    Email = user.Email
+                };
+                managementUser.Add(newUser);
+            }
+            return managementUser;
         }
 
         #endregion
