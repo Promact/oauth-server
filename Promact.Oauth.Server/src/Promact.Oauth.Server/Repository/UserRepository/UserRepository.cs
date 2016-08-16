@@ -48,7 +48,10 @@ namespace Promact.Oauth.Server.Repository
             user.UserName = user.Email;
             user.CreatedBy = createdBy;
             user.CreatedDateTime = DateTime.UtcNow;
+
             _userManager.CreateAsync(user, "User@123").Wait();
+            
+            //SendEmail(user);
             return user.Id;
         }
 

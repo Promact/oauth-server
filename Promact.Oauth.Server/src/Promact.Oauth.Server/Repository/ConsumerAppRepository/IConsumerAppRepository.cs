@@ -12,7 +12,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// </summary>
         /// <param name="aaps"></param>
         /// <returns></returns>
-        int AddedConsumerApps(ConsumerAppsAc aaps);
+        int AddConsumerApps(ConsumerAppsAc aaps);
 
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// </summary>
         /// <param name="id">pass apps object primarykey</param>
         /// <returns></returns>
-        ConsumerApps GetAppsObjectById(int id);
+        ConsumerApps GetConsumerAppsById(int id);
 
         /// <summary>
         /// This method used for update consumer apps and return primary key. -An
