@@ -1,17 +1,14 @@
 ﻿<center>
     <h2><u>User Edit</u></h2>
 
-    <form novalidate #UserEditForm="ngForm">
+    <form>
         <table>
             <tr>
                 <td>
                     <b>First Name: </b>
                 </td>
                 <td>
-                    <input type="text" #FirstName="ngForm" ngControl="FirstName" [(ngModel)]="user.FirstName" required/>
-                    <div *ngIf="FirstName.touched && !FirstName.valid && FirstName.errors.required" style="color:red">
-                        Required!
-                    </div>
+                    <input type="text" name="FirstName" [(ngModel)]="user.FirstName" required/>
                 </td>
             </tr>
             <tr>
@@ -19,10 +16,7 @@
                     <b>Last Name:</b>
                 </td>
                 <td>
-                    <input type="text" #LastName="ngForm" ngControl="LastName" [(ngModel)]="user.LastName" required/>
-                    <div *ngIf="LastName.touched && !LastName.valid && LastName.errors.required" style="color:red">
-                        Required!
-                    </div>
+                    <input type="text" name="LastName" [(ngModel)]="user.LastName" required/>
                 </td>
             </tr>
             <tr>
@@ -38,14 +32,14 @@
                     <b>Status: </b>
                 </td>
                 <td>
-                    <input type="checkbox" [(ngModel)]="user.IsActive"/>
+                    <input type="checkbox" name="IsActive" [(ngModel)]="user.IsActive"/>
                 </td>
             </tr>
         </table>
 
         <div>
             <br />
-            <button type="submit" (click)="editUser(user)" [disabled]="!UserEditForm.valid || isEmailExist">Update</button>
+            <button type="submit" (click)="editUser(user)">Update</button>
             <button type="submit" (click)="goBack()">Back</button>
         </div>
     </form>
@@ -85,6 +79,58 @@
         </div>
     </form>
 
+</center>-->
+
+
+<!--<center>
+    <h2><u>User Edit</u></h2>
+    <form novalidate #UserEditForm="ngForm">
+        <table>
+            <tr>
+                <td>
+                    <b>First Name: </b>
+                </td>
+                <td>
+                    <input type="text" #FirstName="ngForm" ngControl="FirstName" [(ngModel)]="user.FirstName" required />
+                    <div *ngIf="FirstName.touched && !FirstName.valid && FirstName.errors.required" style="color:red">
+                        Required!
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>Last Name:</b>
+                </td>
+                <td>
+                    <input type="text" #LastName="ngForm" ngControl="LastName" [(ngModel)]="user.LastName" required />
+                    <div *ngIf="LastName.touched && !LastName.valid && LastName.errors.required" style="color:red">
+                        Required!
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>Email: </b>
+                </td>
+                <td>
+                    {{user.Email}}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>Status: </b>
+                </td>
+                <td>
+                    <input type="checkbox" [(ngModel)]="user.IsActive" />
+                </td>
+            </tr>
+        </table>
+        <div>
+            <br />
+            <button type="submit" (click)="editUser(user)" [disabled]="!UserEditForm.valid || isEmailExist">Update</button>
+            <button type="submit" (click)="goBack()">Back</button>
+        </div>
+    </form>
 </center>-->
 
 

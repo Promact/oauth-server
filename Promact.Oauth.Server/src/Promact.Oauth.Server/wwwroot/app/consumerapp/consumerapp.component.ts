@@ -4,9 +4,7 @@ import { ConsumerAppService }   from './consumerapp.service';
 
 @Component({
     template: `
-    <p>Consumer App List</p>
-    <router-outlet></router-outlet>
-`,
+    <router-outlet></router-outlet>`,
     directives: [ROUTER_DIRECTIVES],
     providers: [ConsumerAppService]
 

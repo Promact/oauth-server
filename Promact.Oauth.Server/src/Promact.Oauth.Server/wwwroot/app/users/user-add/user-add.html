@@ -1,16 +1,16 @@
 ﻿<center>
     <h2><u>Register User</u></h2>
-    <form novalidate #UserAddForm="ngForm">
+    <form>
         <table>
             <tr>
                 <td>
                     <b>First Name: </b>
                 </td>
                 <td>
-                    <input type="text" #FirstName="ngForm" ngControl="FirstName" [(ngModel)]="userModel.FirstName" required/>
-                    <div *ngIf="FirstName.touched && !FirstName.valid && FirstName.errors.required" style="color:red">
+                    <input type="text" name="FirstName" [(ngModel)]="userModel.FirstName" required/>
+                    <!--<div *ngIf="FirstName.touched && !FirstName.valid && FirstName.errors.required" style="color:red">
                         Required!
-                    </div>
+                    </div>-->
                 </td>
             </tr>
             <tr>
@@ -18,10 +18,10 @@
                     <b>Last Name:</b>
                 </td>
                 <td>
-                    <input type="text" #LastName="ngForm" ngControl="LastName" [(ngModel)]="userModel.LastName" required />
-                    <div *ngIf="LastName.touched && !LastName.valid && LastName.errors.required" style="color:red">
+                    <input type="text" name="LastName" [(ngModel)]="userModel.LastName" required />
+                    <!--<div *ngIf="LastName.touched && !LastName.valid && LastName.errors.required" style="color:red">
                          Required!
-                    </div>
+                    </div>-->
                 </td>
             </tr>
             <tr>
@@ -29,57 +29,73 @@
                     <b>Email: </b>
                 </td>
                 <td>
-                    <input type="email" #Email="ngForm" ngControl="Email" [(ngModel)]="userModel.Email" 
+                    <input type="email" name="Email" [(ngModel)]="userModel.Email" 
                            (blur)="checkEmail(userModel.Email)" required> 
                     @promactinfo.com
-
-                    <div *ngIf="Email.touched && !Email.valid && !isEmailExist" style="color:red">
+                    <!--<div *ngIf="Email.touched && !Email.valid && !isEmailExist" style="color:red">
                         Required!
                     </div>
                     <div *ngIf="isEmailExist" style="color:red">
                         This email already exist!
-                    </div>
+                    </div>-->
                 </td>
             </tr>
         </table>
 
         <div>
             <br />
-            <button type="submit" (click)="addUser(userModel)" [disabled]="!UserAddForm.valid || isEmailExist">Add</button>
+            <button type="submit" (click)="addUser(userModel)">Add</button>
             <button type="submit" (click)="goBack()">Back</button>
         </div>
     </form>
 </center>
 
 
-<!--<center>
-    <h1>{{title}}</h1>
-    <h2>User Registration</h2>
+<!--<form novalidate #UserAddForm="ngForm">
+    <table>
+        <tr>
+            <td>
+                <b>First Name: </b>
+            </td>
+            <td>
+                <input type="text" #FirstName="ngForm" ngControl="FirstName" [(ngModel)]="userModel.FirstName" required />
+                <div *ngIf="FirstName.touched && !FirstName.valid && FirstName.errors.required" style="color:red">
+                    Required!
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b>Last Name:</b>
+            </td>
+            <td>
+                <input type="text" #LastName="ngForm" ngControl="LastName" [(ngModel)]="userModel.LastName" required />
+                <div *ngIf="LastName.touched && !LastName.valid && LastName.errors.required" style="color:red">
+                    Required!
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b>Email: </b>
+            </td>
+            <td>
+                <input type="email" #Email="ngForm" ngControl="Email" [(ngModel)]="userModel.Email"
+                       (blur)="checkEmail(userModel.Email)" required>
+                @promactinfo.com
 
-    <form>
-        <div>
-            <label>First Name:</label>
-            <input type="text" name="FirstName" [(ngModel)]="userModel.FirstName" />
-        </div>
-        <div><br /></div>
-        <div>
-            <label>Last Name:</label>
-            <input type="text" name="LastName" [(ngModel)]="userModel.LastName" />
-        </div>
-        <div><br /></div>
-        <div>
-            <label>Email:</label>
-            <input type="email" name="Email" [(ngModel)]="userModel.Email" />
-        </div>
-        <div><br /></div>
-        <div>
-            <label>Password:</label>
-            <input type="password" [(ngModel)]="userModel.Password"/>
-        </div>
-        <div><br /></div>
-
-        <div>
-            <button type="submit" (click)="addUser(userModel)">Add</button>
-        </div>
-    </form>
-</center>-->
+                <div *ngIf="Email.touched && !Email.valid && !isEmailExist" style="color:red">
+                    Required!
+                </div>
+                <div *ngIf="isEmailExist" style="color:red">
+                    This email already exist!
+                </div>
+            </td>
+        </tr>
+    </table>
+    <div>
+        <br />
+        <button type="submit" (click)="addUser(userModel)" [disabled]="!UserAddForm.valid || isEmailExist">Add</button>
+        <button type="submit" (click)="goBack()">Back</button>
+    </div>
+</form>-->

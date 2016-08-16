@@ -8,33 +8,34 @@
     <center>
         <h1>{{title}}</h1>
         <h2>Edit Consumer App</h2>
-        <form novalidate #updateConsumerApp="ngForm">
+        <button type="button" (click)="cancel()">Cancel</button>
+        <form>
             <div>
                 <label>Auth Id</label>
-                <input type="text" [(ngModel)]="consumerModel.AuthId" [disabled]="true" />
+                <input type="text" [(ngModel)]="consumerModel.AuthId" [disabled]="true" name="AuthId" />
             </div>
             <div>
                 <label>Auth Secret:</label>
-                <input type="text" [(ngModel)]="consumerModel.AuthSecret" [disabled]="true" />
+                <input type="text" [(ngModel)]="consumerModel.AuthSecret" [disabled]="true" name="AuthSecret"/>
             </div>
             <div>
                 <label>Name:</label>
-                <input type="text" #Name="ngForm" ngControl="Name" [(ngModel)]="consumerModel.Name" maxlength="255" required />
-                <div *ngIf="Name.touched && !Name.valid && Name.errors.required" style="color:red">Name is Required</div>
+                <input type="text" name="Name" [(ngModel)]="consumerModel.Name" maxlength="255" required />
+                <!--<div *ngIf="Name.touched && !Name.valid && Name.errors.required" style="color:red">Name is Required</div>-->
             </div>
             <div>
                 <label>Description:</label>
-                <textarea #Description="ngForm" ngControl="Description" [(ngModel)]="consumerModel.Description" maxlength="1000" required></textarea>
-                <div *ngIf="Description.touched && !Description.valid && Description.errors.required" style="color:red">Description is Required</div>
+                <textarea name="Description"  [(ngModel)]="consumerModel.Description" maxlength="1000" required></textarea>
+                <!--<div *ngIf="Description.touched && !Description.valid && Description.errors.required" style="color:red">Description is Required</div>-->
             </div>
             <div>
                 <label>Call Back Url:</label>
-                <input type="text" #CallBackUrl="ngForm" ngControl="CallBackUrl" [(ngModel)]="consumerModel.CallbackUrl" maxlength="255" required />
-                <div *ngIf="CallBackUrl.touched && !CallBackUrl.valid && CallBackUrl.errors.required" style="color:red">Call Back Url is Required</div>
+                <input type="text" name="CallbackUrl" [(ngModel)]="consumerModel.CallbackUrl" maxlength="255" required />
+                <!--<div *ngIf="CallBackUrl.touched && !CallBackUrl.valid && CallBackUrl.errors.required" style="color:red">Call Back Url is Required</div>-->
             </div>
 
             <div>
-                <button type="submit" (click)="updateApps(consumerModel)" [disabled]="!(updateConsumerApp.valid)">Update</button>
+                <button type="submit" (click)="updateApps(consumerModel)">Update</button>
                 <button type="button" (click)="cancel()">Cancel</button>
             </div>
         </form>

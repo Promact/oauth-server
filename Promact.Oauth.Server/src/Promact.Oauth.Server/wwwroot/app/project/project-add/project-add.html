@@ -1,16 +1,15 @@
 ﻿<center>
     <h1>{{title}}</h1>
     <h2>Add Project</h2>
-
-    <form novalidate #addProjectform="ngForm">
+    <form>
         <table>
             <tr>
                 <td>
                     Name:
                 </td>
                 <td>
-                    <input type="text" #Name="ngForm" ngControl="Name" [(ngModel)]="pro.name" required />
-                    <div *ngIf="Name.touched && !Name.valid && Name.errors.required" style="color:red">Project Name is required</div>
+                    <input type="text" name="name" [(ngModel)]="pro.name" required />
+                    <!--<div *ngIf="Name.touched && !Name.valid && Name.errors.required" style="color:red">Project Name is required</div>-->
                 </td>
             </tr>
             <tr>
@@ -18,8 +17,8 @@
                     Slack Channel Name :
                 </td>
                 <td>
-                    <input type="text" #SlackChannelName="ngForm" [(ngModel)]="pro.SlackChannelName" required />
-                    <div *ngIf="SlackChannelName.touched && !SlackChannelName.valid && SlackChannelName.errors.required" style="color:red">Project SlackChannel is required</div>
+                    <input type="text" name="SlackChannelName" [(ngModel)]="pro.SlackChannelName" required />
+                    <!--<div *ngIf="SlackChannelName.touched && !SlackChannelName.valid && SlackChannelName.errors.required" style="color:red">Project SlackChannel is required</div>-->
                 </td>
             </tr>
             <tr>
@@ -54,12 +53,11 @@
             </tr>
             <tr>
                 <td colspan="2">
-                 
-                    <button type="submit" (click)="addProject(pro)" [disabled]="!(Name.valid && SlackChannelName.valid)">Add New Project</button>
+                    <button type="submit" (click)="addProject(pro)">Add New Project</button>
+                    <!--<button type="submit" (click)="addProject(pro)" [disabled]="!(Name.valid && SlackChannelName.valid)">Add New Project</button>-->
                 </td>
             </tr>
         </table>
-        
-    </form>
 
+    </form>
 </center>
