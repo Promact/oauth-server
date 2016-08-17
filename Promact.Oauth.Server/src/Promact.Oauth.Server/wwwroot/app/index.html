@@ -1,6 +1,16 @@
 ﻿
+<nav>
+    <h1>Component Router</h1>
+    <nav>
+        <a routerLink="/user" routerLinkActive="active">Users</a>
+        <a routerLink="/project" routerLinkActive="active">Projects</a>
+        <a routerLink="/consumerapp" routerLinkActive="active">Consumer App</a>
+        <a routerLink="/user/changePassword" routerLinkActive="active">Change Password</a>
+    </nav>
+    <router-outlet></router-outlet>
+</nav>
 
-<div class="main-wrapper">
+<!--<div class="main-wrapper">
     <div>
 
         <md-toolbar color="primary">
@@ -10,30 +20,25 @@
         </md-toolbar>
         <md-sidenav-layout class="main md2-layout-row md2-layout-fill flex">
             <!--Main Navigation-->
-            <md-sidenav #start class="main-nav md2-layout-column" [opened]="true" (open)="mybutton.focus()" mode="side">
-                
+<!--<md-sidenav #start class="main-nav md2-layout-column" [opened]="true" (open)="mybutton.focus()" mode="side">
+    <ul>
+        <li>
+            <a routerLink="/user" routerLinkActive="active" ><i class="fa fa-users" aria-hidden="true"></i>Users</a>
+        </li>
+        <li>
+            <a routerLink="/project" routerLinkActive="active"><i class="fa fa-file-text" aria-hidden="true"></i>Projects</a>
+        </li>
+        <li>
+            <a routerLink="/consumerapp" routerLinkActive="active">Consumer App</a>
+        </li>
 
-                <ul>
-                    <li>
-                        <a routerLink="/user" routerLinkActive="active" ><i class="fa fa-users" aria-hidden="true"></i>Users</a>
-                    </li>
-                    <li>
-                        <a routerLink="/project" routerLinkActive="active"><i class="fa fa-file-text" aria-hidden="true"></i>Projects</a>
-                    </li>
-                    <li>
-                        <a routerLink="/consumerapp" routerLinkActive="active">Consumer App</a>
-                    </li>
-
-                    <li>
-                        <a routerLink="/user/changePassword" routerLinkActive="active">Change Password</a>
-                    </li>
-                </ul>
-            </md-sidenav>
-            <!--Main Content Area-->
-            <div class="md-whiteframe-4dp card"><router-outlet></router-outlet></div>
+        <li>
+            <a routerLink="/user/changePassword" routerLinkActive="active">Change Password</a>
+        </li>
+    </ul>
+</md-sidenav>-->
+<!--Main Content Area-->
+<!--<div class="md-whiteframe-4dp card"><router-outlet></router-outlet></div>
         </md-sidenav-layout>
-
     </div>
-</div>
-
-
+</div>-->
