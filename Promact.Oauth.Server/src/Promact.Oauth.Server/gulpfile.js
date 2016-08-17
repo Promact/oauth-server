@@ -5,7 +5,13 @@ var gulp = require("gulp"),
     rimraf = require("rimraf"),
     concat = require("gulp-concat"),
     cssmin = require("gulp-cssmin"),
-    uglify = require("gulp-uglify");
+    uglify = require("gulp-uglify"),
+    sysBuilder = require('systemjs-builder'),
+     sourcemaps = require('gulp-sourcemaps'),
+    tsc = require('gulp-typescript'),
+    tsProject = tsc.createProject('./wwwroot/tsconfig.json');
+
+
 
 var paths = {
     webroot: "./wwwroot/"
@@ -17,6 +23,7 @@ paths.css = paths.webroot + "css/**/*.css";
 paths.minCss = paths.webroot + "css/**/*.min.css";
 paths.concatJsDest = paths.webroot + "js/site.min.js";
 paths.concatCssDest = paths.webroot + "css/site.min.css";
+paths.systemConfig = paths.webroot + "systemjs.config.js";
 
 gulp.task("copytowwwroot", function () {
     gulp.src([
@@ -44,6 +51,35 @@ gulp.task("copytowwwroot", function () {
         'node_modules/md2/src/components/**/*.js.map'
     ]).pipe(gulp.dest('./wwwroot/lib/md2'));
 
+});
+
+gulp.task('compile', function () {
+    var tsResult = gulp.src('src/**/*.ts')
+        .pipe(sourcemaps.init())
+        .pipe(tsc(tsProject));
+
+    return tsResult.js
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest('.'));
+});
+
+gulp.task('bundle',['compile'], function (done) {
+    var builder = new sysBuilder('./wwwroot', paths.systemConfig);
+
+    return builder.buildStatic('app', './bundle.min.js', { runtime: false })
+      .then(function () {
+          //return del(['build/**/*.js', '!build/lib/**/*.js', '!build/bundle.min.js']);
+          done();
+      }).catch(function (err) {
+          console.error('systemjs-builder Bundling failed' + paths.systemConfig + err);
+      });
+});
+
+gulp.task('bundle:min', ['bundle'], function () {
+    return gulp
+      .src('build/bundle.min.js')
+      .pipe(uglify())
+      .pipe(gulp.dest('build'));
 });
 
 gulp.task("clean:js", function (cb) {

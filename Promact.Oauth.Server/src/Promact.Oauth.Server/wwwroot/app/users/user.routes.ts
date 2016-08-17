@@ -11,7 +11,7 @@ export const userRoutes: RouterConfig = [{
     path: "user",
     component: UserComponent,
     children: [
-        //{ path: '', component: UserListComponent },
+        { path: '', component: UserListComponent },
         { path: 'add', component: UserAddComponent },
         { path: 'edit/:id', component: UserEditComponent },
         { path: 'details/:id', component: UserDetailsComponent },

@@ -5,7 +5,7 @@ using Promact.Oauth.Server.Models.ApplicationClasses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Threading.Tasks;
 
 namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
 {
@@ -35,7 +35,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// </summary>
         /// <param name="clientId"></param>
         /// <returns></returns>
-        public ConsumerApps GetAppDetails(string clientId)
+        public async Task<ConsumerApps> GetAppDetails(string clientId)
         {
             try
             {
@@ -53,7 +53,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// </summary>
         /// <param name="aapsObject"></param>
         /// <returns></returns>
-        public int AddConsumerApps(ConsumerAppsAc consumerApps)
+        public async Task<int> AddConsumerApps(ConsumerAppsAc consumerApps)
         {
             try
             {
@@ -62,6 +62,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
                     var consumerAppObject = _mapperContext.Map<ConsumerAppsAc, ConsumerApps>(consumerApps);
                     consumerAppObject.AuthId = CreatedRandomNumer(true);
                     consumerAppObject.AuthSecret = CreatedRandomNumer(false);
+                    consumerAppObject.CreatedDateTime = DateTime.Now;
                     _appsDataRepository.Add(consumerAppObject);
                     return consumerAppObject.Id;
                 }
@@ -79,7 +80,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// This method used forget list of apps. -An
         /// </summary>
         /// <returns></returns>
-        public List<ConsumerApps> GetListOfApps()
+        public async Task<List<ConsumerApps>> GetListOfApps()
         {
             try
             {
@@ -97,7 +98,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// </summary>
         /// <param name="id">pass apps object primarykey</param>
         /// <returns></returns>
-        public ConsumerApps GetConsumerAppsById(int id)
+        public async Task<ConsumerApps> GetConsumerAppsById(int id)
         {
             try
             {
@@ -116,7 +117,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// </summary>
         /// <param name="apps"></param>
         /// <returns></returns>
-        public int UpdateConsumerApps(ConsumerApps consumerApps)
+        public async Task<int> UpdateConsumerApps(ConsumerApps consumerApps)
         {
             try
             {

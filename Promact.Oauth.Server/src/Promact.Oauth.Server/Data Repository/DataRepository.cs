@@ -47,7 +47,7 @@ namespace Promact.Oauth.Server.Data_Repository
         /// </summary>
         /// <param name="entity">entity</param>
         public void Add(T entity)
-        {
+        { 
             try
             {
                 _dbSet.Add(entity);
