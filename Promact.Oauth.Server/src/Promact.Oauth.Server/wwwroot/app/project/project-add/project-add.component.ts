@@ -85,4 +85,8 @@ export class ProjectAddComponent {
 
     }
 
+    gotoProjects() {
+        this.router.navigate(['/project/']);
+    }
+
 }

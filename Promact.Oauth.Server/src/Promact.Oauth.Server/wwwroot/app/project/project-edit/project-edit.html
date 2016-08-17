@@ -10,8 +10,8 @@
                         Name:
                     </td>
                     <td>
-                        <input type="text" name="name" [(ngModel)]="pro.name" required />
-                        <!--<div *ngIf="Name.touched && !Name.valid && Name.errors.required" style="color:red">Project Name is required</div>-->
+                        <input type="text" name="name" [(ngModel)]="pro.name" maxlength="255" required #name="ngModel" />
+                        <div [hidden]="!(name.touched && !name.valid && name.errors.required)" style="color:red">Name is required</div>
                     </td>
                 </tr>
                 <tr>
@@ -19,8 +19,8 @@
                         Slack Channel Name:
                     </td>
                     <td>
-                        <input type="text" name="slackChannelName" [(ngModel)]="pro.slackChannelName" required />
-                        <!--<div *ngIf="SlackChannelName.touched && !SlackChannelName.valid && SlackChannelName.errors.required" style="color:red">Project SlackChannel is required</div>-->
+                        <input type="text" name="SlackChannelName" [(ngModel)]="pro.slackChannelName" maxlength="255" required #SlackChannelName="ngModel" />
+                        <div [hidden]="!(SlackChannelName.touched && !SlackChannelName.valid && SlackChannelName.errors.required)" style="color:red">Slack Channel Name is required</div>
                     </td>
                 </tr>
                 <tr>
