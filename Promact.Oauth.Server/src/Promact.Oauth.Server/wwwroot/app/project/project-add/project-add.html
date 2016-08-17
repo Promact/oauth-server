@@ -5,7 +5,6 @@ IsActive :<input [(ngModel)]="pro.IsActive" />
 <h1>Add Project</h1>-->
 
 <center>
-    <h1>{{title}}</h1>
     <h2>Add Project</h2>
     <form>
         <table>
@@ -14,7 +13,7 @@ IsActive :<input [(ngModel)]="pro.IsActive" />
                     Name:
                 </td>
                 <td>
-                    <input type="text" name="name" [(ngModel)]="pro.name" required />
+                    <input type="text" name="name" [(ngModel)]="pro.name" maxlength="255" required />
                     <!--<div *ngIf="Name.touched && !Name.valid && Name.errors.required" style="color:red">Project Name is required</div>-->
                 </td>
             </tr>
@@ -23,7 +22,7 @@ IsActive :<input [(ngModel)]="pro.IsActive" />
                     Slack Channel Name :
                 </td>
                 <td>
-                    <input type="text" name="SlackChannelName" [(ngModel)]="pro.SlackChannelName" required />
+                    <input type="text" name="SlackChannelName" [(ngModel)]="pro.SlackChannelName" maxlength="255" required />
                     <!--<div *ngIf="SlackChannelName.touched && !SlackChannelName.valid && SlackChannelName.errors.required" style="color:red">Project SlackChannel is required</div>-->
                 </td>
             </tr>
@@ -50,11 +49,11 @@ IsActive :<input [(ngModel)]="pro.IsActive" />
                     Select Users:
                 </td>
                 <td>
-                    <md2-multiselect [items]="pro.listUsers"
-                                     item-text="UniqueName"
+                    <!--<md2-multiselect [items]="pro.listUsers"
+                                      item-text="UniqueName"
                                      [(ngModel)]="pro.applicationUsers"
                                      placeholder="Placeholder Text">
-                    </md2-multiselect>
+                    </md2-multiselect>-->
                 </td>
             </tr>
             <tr>

@@ -196,15 +196,16 @@ namespace Promact.Oauth.Server.Repository
             };
             return newUser;
         }
-        public List<ApplicationUser> TeamLeaderByUserId(string userFirstName)
+        public async Task<List<ApplicationUser>> TeamLeaderByUserId(string userFirstName)
         {
             var user = _userManager.Users.FirstOrDefault(x => x.FirstName == userFirstName);
             var projects = _projectUserRepository.Fetch(x => x.UserId == user.Id);
             List<ApplicationUser> teamLeaders = new List<ApplicationUser>();
             foreach (var project in projects)
             {
-                var teamLeaderId = _projectRepository.GetById(project.Id).TeamLeaderId;
-                user = _userManager.Users.FirstOrDefault(x => x.Id == teamLeaderId);
+                var teamLeaderId = await _projectRepository.GetById(project.Id);
+                var teamLeader = teamLeaderId.TeamLeaderId;
+                user = _userManager.Users.FirstOrDefault(x => x.Id == teamLeader);
                 var newUser = new ApplicationUser
                 {
                     UserName = user.UserName,
