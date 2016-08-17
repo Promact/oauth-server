@@ -17,7 +17,7 @@ import {MockRouter} from '../../shared/mocks/mock.router';
 
 //import {MockActivatedRoute} from '../../shared/mocks/mock.activatedroute';
 
-describe("Project Add Test", () => {
+describe("Project Edit Test", () => {
     let projectEditComponent: ProjectEditComponent;
     let projeptService: ProjectService;
 
