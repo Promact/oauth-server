@@ -1,53 +1,48 @@
 ﻿
 
 <div class="main-wrapper">
+    <md-sidenav-layout class="demo-sidenav-layout">
+        <!--Main Navigation-->
 
+        <md-sidenav #start mode="side" opened="true">
 
-       
-        <md-sidenav-layout class="demo-sidenav-layout">
-            <!--Main Navigation-->
+            <div class="brand">Promact Oauth</div>
 
-            <md-sidenav  #start mode="side" opened="true">
+            <ul>
+                <li>
+                    <a routerLink="/user" routerLinkActive="active"><i class="fa fa-users" aria-hidden="true"></i>Users</a>
+                </li>
+                <li>
+                    <a routerLink="/project" routerLinkActive="active"><i class="fa fa-file-text" aria-hidden="true"></i>Projects</a>
+                </li>
+                <li>
+                    <a routerLink="/consumerapp" routerLinkActive="active">Consumer App</a>
+                </li>
 
-                <div class="brand">Promact Oauth</div>
+                <li>
+                    <a routerLink="/user/changePassword" routerLinkActive="active">Change Password</a>
+                </li>
+            </ul>
+        </md-sidenav>
 
-                <ul>
-                    <li>
-                        <a routerLink="/user" routerLinkActive="active"><i class="fa fa-users" aria-hidden="true"></i>Users</a>
-                    </li>
-                    <li>
-                        <a routerLink="/project" routerLinkActive="active"><i class="fa fa-file-text" aria-hidden="true"></i>Projects</a>
-                    </li>
-                    <li>
-                        <a routerLink="/consumerapp" routerLinkActive="active">Consumer App</a>
-                    </li>
-
-                    <li>
-                        <a routerLink="/user/changePassword" routerLinkActive="active">Change Password</a>
-                    </li>
-                </ul>
-            </md-sidenav>
-           
-            <md-content>
-                <div class="demo-sidenav-content">
-                    <md-toolbar>
-                        <div class="logout-link">
-                            <a href="" class="fl-right">LOGOUT</a>
-                        </div>
-                    </md-toolbar>
-                    <div class="p-15">
-                        <router-outlet></router-outlet>
+        <md-content>
+            <div class="demo-sidenav-content">
+                <md-toolbar>
+                    <div class="logout-link">
+                        <a href="" class="fl-right">LOGOUT</a>
                     </div>
+                </md-toolbar>
+                <div class="p-15">
+                    <router-outlet></router-outlet>
                 </div>
-                
-            </md-content>
-        </md-sidenav-layout>
-        
-              
-         
-            <!--Main Content Area-->
-         
-      
+            </div>
+
+        </md-content>
+    </md-sidenav-layout>
+
+
+
+    <!--Main Content Area-->
 
 </div>
 
