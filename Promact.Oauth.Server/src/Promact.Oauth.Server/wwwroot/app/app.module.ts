@@ -1,5 +1,10 @@
 ﻿import { NgModule } from '@angular/core';
 import { BrowserModule  } from '@angular/platform-browser';
+import { MdButtonModule } from '@angular2-material/button';
+import { MdToolbarModule } from '@angular2-material/toolbar';
+import {MdInputModule} from '@angular2-material/input';
+import {MdSidenavModule} from '@angular2-material/sidenav';
+import {MdCheckboxModule} from '@angular2-material/checkbox';
 // Imports for loading & configuring the in-memory web api
 import { HttpModule, XHRBackend } from '@angular/http';
 import { AppComponent } from './app.component';
@@ -33,6 +38,12 @@ import {UserService} from './users/user.service';
         HttpModule,
         FormsModule,
         routing,
+        MdButtonModule, 
+        MdToolbarModule,
+        MdSidenavModule,
+        MdInputModule,
+        MdCheckboxModule
+
     ],
     bootstrap: [AppComponent],
     providers: [HttpService, ConsumerAppService, ProjectService, UserService

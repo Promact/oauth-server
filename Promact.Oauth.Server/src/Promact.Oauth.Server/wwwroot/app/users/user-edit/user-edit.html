@@ -3,90 +3,82 @@
         <div class="title in_block">
             <h3>User Edit</h3>
         </div>
+        <div class="fl-right">
+            <md-button type="submit" class="btn-back" (click)="goBack()"> <i class="material-icons">arrow_back</i>Back</md-button>
+        </div>
+    </div>
+    <form>
+
+        <div class="form-group">
+
+            
+
+            <md-input placeholder="First name" class="demo-full-width"  name="FirstName" [(ngModel)]="user.FirstName" required></md-input>
         </div>
 
-    <form>
-        <table>
-            <tr>
-                <td>
-                    <b>First Name: </b>
-                </td>
-                <td>
-                    <input type="text" name="FirstName" [(ngModel)]="user.FirstName" required/>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <b>Last Name:</b>
-                </td>
-                <td>
-                    <input type="text" name="LastName" [(ngModel)]="user.LastName" required/>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <b>Email: </b>
-                </td>
-                <td>
-                    {{user.Email}}
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <b>Status: </b>
-                </td>
-                <td>
-                    <input type="checkbox" name="IsActive" [(ngModel)]="user.IsActive"/>
-                </td>
-            </tr>
-        </table>
+
+        <div class="form-group">
+         
+
+            <md-input placeholder="Last name" class="demo-full-width"  name="LastName" [(ngModel)]="user.LastName" required ></md-input>
+        </div>
+        <div class="form-group">
+
+            <label>Email: </label>
+
+            {{user.Email}}
+
+        </div>
+
+
+        <div class="form-group">
+            <label>Status:</label>
+
+            <md-checkbox name="IsActive" [(ngModel)]="user.IsActive" id="chckbox"></md-checkbox>
+
+        </div>
 
         <div>
-            <br />
-            <button type="submit" (click)="editUser(user)">Update</button>
-            <button type="submit" (click)="goBack()">Back</button>
+            
+            <button md-raised-button type="submit" (click)="editUser(user)" class="btn-green">Update</button>
+         
         </div>
     </form>
-</center>
+</div>
+<!--<center>
+    <h1>{{title}}</h1>
+    <h2>User Edit</h2>
 
-
+    <form>
+        <div>
+            <label>First Name:</label>
+            <input type="text" name="FirstName" [(ngModel)]="user.firstName"/>
         </div>
-        <!--<center>
-            <h1>{{title}}</h1>
-            <h2>User Edit</h2>
+        <div><br /></div>
+        <div>
+            <label>Last Name:</label>
+            <input type="text" name="LastName" [(ngModel)]="user.lastName"/>
+        </div>
+        <div><br /></div>
+        <div>
+            <label>Email:</label>
+            <input type="email" name="Email" [(ngModel)]="user.email"/>
+        </div>
+        <div><br /></div>
+        <div>
+            <label>Status:</label>
+            <select [(ngModel)]="user.isActive">
+                <option value="true">Active</option>
+                <option value="false">Inactive</option>
+            </select>
+        </div>
+        <div>
+            <br/>
+            <button type="submit" (click)="editUser(user)">Update</button>
+        </div>
+    </form>
 
-            <form>
-                <div>
-                    <label>First Name:</label>
-                    <input type="text" name="FirstName" [(ngModel)]="user.firstName"/>
-                </div>
-                <div><br /></div>
-                <div>
-                    <label>Last Name:</label>
-                    <input type="text" name="LastName" [(ngModel)]="user.lastName"/>
-                </div>
-                <div><br /></div>
-                <div>
-                    <label>Email:</label>
-                    <input type="email" name="Email" [(ngModel)]="user.email"/>
-                </div>
-                <div><br /></div>
-                <div>
-                    <label>Status:</label>
-                    <select [(ngModel)]="user.isActive">
-                        <option value="true">Active</option>
-                        <option value="false">Inactive</option>
-                    </select>
-                </div>
-                <div>
-                    <br/>
-                    <button type="submit" (click)="editUser(user)">Update</button>
-                </div>
-            </form>
-
-        </center>-->
-
-
+</center>-->
 <!--<center>
     <h2><u>User Edit</u></h2>
     <form novalidate #UserEditForm="ngForm">
@@ -137,6 +129,3 @@
         </div>
     </form>
 </center>-->
-
-
-

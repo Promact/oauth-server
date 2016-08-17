@@ -1,17 +1,30 @@
 ﻿import {Component} from "@angular/core";
 import { ProjectService }   from '../project.service';
 import {projectModel} from '../project.model'
-import { ROUTER_DIRECTIVES } from '@angular/router';
+import {UserModel} from '../../users/user.model';
+import { ROUTER_DIRECTIVES, Router, ActivatedRoute } from '@angular/router';
+import {Md2Toast} from 'md2/toast';
+import {Md2Multiselect } from 'md2/multiselect';
 @Component({
     templateUrl: "app/project/project-add/project-add.html",
     directives: []
 })
 export class ProjectAddComponent {
+    private disabled: boolean = false;
+
     pros: Array<projectModel>;
+    item: Array<string> = [];
     pro: projectModel;
-    constructor(private proService: ProjectService) {
+    private sub: any
+    Userlist: Array<UserModel>;
+    constructor(
+        private route: ActivatedRoute,
+        private router: Router,
+        private toast: Md2Toast,
+        private proService: ProjectService) {
         this.pros = new Array<projectModel>();
         this.pro = new projectModel();
+
     }
     addProject(pro: projectModel) {
         this.proService.addProject(pro).subscribe((pro) => {
