@@ -62,10 +62,12 @@
       'router-deprecated',
       'upgrade',
     ];
+
     // Individual files (~300 requests):
     function packIndex(pkgName) {
         packages['@angular/' + pkgName] = { main: 'index.js', defaultExtension: 'js' };
     }
+
     // Bundled (~40 requests):
     function packUmd(pkgName) {
         packages['@angular/' + pkgName] = { main: '/bundles/' + pkgName + '.umd.js', defaultExtension: 'js' };
@@ -74,9 +76,25 @@
     var setPackageConfig = System.packageWithIndex ? packIndex : packUmd;
     // Add package entries for angular packages
     ngPackageNames.forEach(setPackageConfig);
+
     var config = {
         map: map,
         packages: packages
     };
+
+    //// add package entries for angular packages in the form '@angular/common': { main: 'index.js', defaultExtension: 'js' }
+    //ngPackageNames.forEach(function (pkgName) {
+    //    packages[pkgName] = { main: 'index.js', defaultExtension: 'js' };
+    //});
+
+    //var config = {
+    //    map: map,
+    //    packages: packages
+    //};
+
+    //// filterSystemConfig - index.html's chance to modify config before we register it.
+    //if (global.filterSystemConfig) {
+    //    global.filterSystemConfig(config);
+    //}
     System.config(config);
 })(this);
