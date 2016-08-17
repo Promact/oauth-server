@@ -8,6 +8,7 @@ using Xunit;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Promact.Oauth.Server.Models.ApplicationClasses;
+using System.Threading.Tasks;
 
 namespace Promact.Oauth.Server.Tests
 {
@@ -34,8 +35,8 @@ namespace Promact.Oauth.Server.Tests
         {
             ConsumerAppsAc consumerApp = GetConsumerApp();
             consumerApp.Name = "Demo Name";
-            int id = _consumerAppRespository.AddConsumerApps(consumerApp);
-            var consumerApps = _consumerAppsContext.FirstOrDefault(x => x.Id == id);
+            Task<int> id = _consumerAppRespository.AddConsumerApps(consumerApp);
+            var consumerApps = _consumerAppsContext.FirstOrDefault(x => x.Id == id.Result);
             Assert.NotNull(consumerApps);
         }
 
@@ -48,8 +49,8 @@ namespace Promact.Oauth.Server.Tests
             ConsumerAppsAc consumerApp = GetConsumerApp();
             consumerApp.Name = "ABCEDF";
             _consumerAppRespository.AddConsumerApps(consumerApp);
-            int newId = _consumerAppRespository.AddConsumerApps(consumerApp);
-            Assert.Equal(0, newId);
+            Task<int>  newId = _consumerAppRespository.AddConsumerApps(consumerApp);
+            Assert.Equal(0, newId.Result);
         }
 
         /// <summary>
@@ -60,8 +61,8 @@ namespace Promact.Oauth.Server.Tests
         {
             ConsumerAppsAc consumerApp = GetConsumerApp();
             consumerApp.Name = "Demo2";
-            int id = _consumerAppRespository.AddConsumerApps(consumerApp);
-            var consumerApps = _consumerAppsContext.FirstOrDefault(x => x.Id == id);
+            Task<int> id = _consumerAppRespository.AddConsumerApps(consumerApp);
+            var consumerApps = _consumerAppsContext.FirstOrDefault(x => x.Id == id.Result);
             var getApplication = _consumerAppRespository.GetAppDetails(consumerApps.AuthId);
             Assert.NotNull(getApplication);
         }
@@ -75,8 +76,8 @@ namespace Promact.Oauth.Server.Tests
             ConsumerAppsAc consumerApp = GetConsumerApp();
             consumerApp.Name = "Demo3";
             _consumerAppRespository.AddConsumerApps(consumerApp);
-            var getApplication = _consumerAppRespository.GetAppDetails("ABEDNGdeMR1234568F");
-            Assert.Null(getApplication);
+            Task<ConsumerApps> getApplication = _consumerAppRespository.GetAppDetails("ABEDNGdeMR1234568F");
+            Assert.Null(getApplication.Result);
         }
 
 
@@ -89,9 +90,9 @@ namespace Promact.Oauth.Server.Tests
         {
             ConsumerAppsAc consumerApp = GetConsumerApp();
             consumerApp.Name = "Demo4";
-            int id = _consumerAppRespository.AddConsumerApps(consumerApp);
-            var getApplication = _consumerAppRespository.GetConsumerAppsById(id);
-            Assert.NotNull(getApplication);
+            Task<int> id = _consumerAppRespository.AddConsumerApps(consumerApp);
+            Task<ConsumerApps> getApplication = _consumerAppRespository.GetConsumerAppsById(id.Result);
+            Assert.NotNull(getApplication.Result);
         }
 
 
@@ -105,8 +106,8 @@ namespace Promact.Oauth.Server.Tests
             ConsumerAppsAc consumerApp = GetConsumerApp();
             consumerApp.Name = "Demo5";
             _consumerAppRespository.AddConsumerApps(consumerApp);
-            var getApplication = _consumerAppRespository.GetConsumerAppsById(23213);
-            Assert.Null(getApplication);
+            Task<ConsumerApps> getApplication = _consumerAppRespository.GetConsumerAppsById(23213);
+            Assert.Null(getApplication.Result);
         }
 
 
@@ -119,8 +120,8 @@ namespace Promact.Oauth.Server.Tests
             ConsumerAppsAc consumerApp = GetConsumerApp();
             consumerApp.Name = "Demo6";
             _consumerAppRespository.AddConsumerApps(consumerApp);
-            List<ConsumerApps> listOfApps = _consumerAppRespository.GetListOfApps();
-            Assert.NotEmpty(listOfApps);
+            Task<List<ConsumerApps>> listOfApps = _consumerAppRespository.GetListOfApps();
+            Assert.NotEmpty(listOfApps.Result);
         }
 
         /// <summary>
@@ -131,13 +132,13 @@ namespace Promact.Oauth.Server.Tests
         {
             ConsumerAppsAc consumerApp = GetConsumerApp();
             consumerApp.Name = "Demo for Update";
-            int id = _consumerAppRespository.AddConsumerApps(consumerApp);
-            var consumerApps = _consumerAppRespository.GetConsumerAppsById(id);
-            consumerApps.Description = "XyzName";
-            consumerApps.UpdatedDateTime = DateTime.Now;
-            consumerApps.UpdatedBy = "Ankit";
-            int newId = _consumerAppRespository.UpdateConsumerApps(consumerApps);
-            Assert.NotEqual(0, newId);
+            Task<int> id = _consumerAppRespository.AddConsumerApps(consumerApp);
+            Task<ConsumerApps> consumerApps = _consumerAppRespository.GetConsumerAppsById(id.Result);
+            consumerApps.Result.Description = "XyzName";
+            consumerApps.Result.UpdatedDateTime = DateTime.Now;
+            consumerApps.Result.UpdatedBy = "Ankit";
+            Task<int> newId = _consumerAppRespository.UpdateConsumerApps(consumerApps.Result);
+            Assert.NotEqual(0, newId.Result);
         }
 
         /// <summary>
@@ -151,11 +152,11 @@ namespace Promact.Oauth.Server.Tests
             _consumerAppRespository.AddConsumerApps(consumer);
             var consumerNew = GetConsumerApp();
             consumerNew.Name = "Face Book";
-            int idOfConsumer = _consumerAppRespository.AddConsumerApps(consumerNew);
-            var oldConsumerApp = _consumerAppRespository.GetConsumerAppsById(idOfConsumer);
-            oldConsumerApp.Name = "Twitter";
-            int newId = _consumerAppRespository.UpdateConsumerApps(oldConsumerApp);
-            Assert.Equal(0, newId);
+            Task<int> idOfConsumer = _consumerAppRespository.AddConsumerApps(consumerNew);
+            Task<ConsumerApps> oldConsumerApp = _consumerAppRespository.GetConsumerAppsById(idOfConsumer.Result);
+            oldConsumerApp.Result.Name = "Twitter";
+            Task<int> newId = _consumerAppRespository.UpdateConsumerApps(oldConsumerApp.Result);
+            Assert.Equal(0, newId.Result);
         }
         
 
