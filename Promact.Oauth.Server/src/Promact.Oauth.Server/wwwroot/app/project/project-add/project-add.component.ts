@@ -1,7 +1,10 @@
 ﻿import {Component} from "@angular/core";
 import { ProjectService }   from '../project.service';
 import {projectModel} from '../project.model'
-import { ROUTER_DIRECTIVES } from '@angular/router';
+import { ROUTER_DIRECTIVES, Router} from '@angular/router';
+import {Md2Toast} from 'md2/toast';
+
+
 @Component({
     templateUrl: "app/project/project-add/project-add.html",
     directives: []
@@ -9,7 +12,7 @@ import { ROUTER_DIRECTIVES } from '@angular/router';
 export class ProjectAddComponent {
     pros: Array<projectModel>;
     pro: projectModel;
-    constructor(private proService: ProjectService) {
+    constructor(private proService: ProjectService, private toast: Md2Toast, private router: Router) {
         this.pros = new Array<projectModel>();
         this.pro = new projectModel();
     }
