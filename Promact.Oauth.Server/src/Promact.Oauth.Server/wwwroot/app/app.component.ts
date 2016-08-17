@@ -9,4 +9,4 @@ import {UserService} from './users/user.service';
     directives: [ROUTER_DIRECTIVES],
     providers: [HttpService, UserService]
 })
-export class AppComponent {  }
+export class AppComponent {   }
