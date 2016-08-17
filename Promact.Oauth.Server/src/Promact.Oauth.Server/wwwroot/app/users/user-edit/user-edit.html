@@ -1,6 +1,94 @@
-﻿<center>
-    <h2><u>User Edit</u></h2>
+﻿<div class="user-edit">
+    <div class="card-title-block">
+        <div class="title in_block">
+            <h3>User Edit</h3>
+        </div>
+        </div>
 
+    <form>
+        <table>
+            <tr>
+                <td>
+                    <b>First Name: </b>
+                </td>
+                <td>
+                    <input type="text" name="FirstName" [(ngModel)]="user.FirstName" required/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>Last Name:</b>
+                </td>
+                <td>
+                    <input type="text" name="LastName" [(ngModel)]="user.LastName" required/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>Email: </b>
+                </td>
+                <td>
+                    {{user.Email}}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>Status: </b>
+                </td>
+                <td>
+                    <input type="checkbox" name="IsActive" [(ngModel)]="user.IsActive"/>
+                </td>
+            </tr>
+        </table>
+
+        <div>
+            <br />
+            <button type="submit" (click)="editUser(user)">Update</button>
+            <button type="submit" (click)="goBack()">Back</button>
+        </div>
+    </form>
+</center>
+
+
+        </div>
+        <!--<center>
+            <h1>{{title}}</h1>
+            <h2>User Edit</h2>
+
+            <form>
+                <div>
+                    <label>First Name:</label>
+                    <input type="text" name="FirstName" [(ngModel)]="user.firstName"/>
+                </div>
+                <div><br /></div>
+                <div>
+                    <label>Last Name:</label>
+                    <input type="text" name="LastName" [(ngModel)]="user.lastName"/>
+                </div>
+                <div><br /></div>
+                <div>
+                    <label>Email:</label>
+                    <input type="email" name="Email" [(ngModel)]="user.email"/>
+                </div>
+                <div><br /></div>
+                <div>
+                    <label>Status:</label>
+                    <select [(ngModel)]="user.isActive">
+                        <option value="true">Active</option>
+                        <option value="false">Inactive</option>
+                    </select>
+                </div>
+                <div>
+                    <br/>
+                    <button type="submit" (click)="editUser(user)">Update</button>
+                </div>
+            </form>
+
+        </center>-->
+
+
+<!--<center>
+    <h2><u>User Edit</u></h2>
     <form novalidate #UserEditForm="ngForm">
         <table>
             <tr>
@@ -8,7 +96,7 @@
                     <b>First Name: </b>
                 </td>
                 <td>
-                    <input type="text" #FirstName="ngForm" ngControl="FirstName" [(ngModel)]="user.FirstName" required/>
+                    <input type="text" #FirstName="ngForm" ngControl="FirstName" [(ngModel)]="user.FirstName" required />
                     <div *ngIf="FirstName.touched && !FirstName.valid && FirstName.errors.required" style="color:red">
                         Required!
                     </div>
@@ -19,7 +107,7 @@
                     <b>Last Name:</b>
                 </td>
                 <td>
-                    <input type="text" #LastName="ngForm" ngControl="LastName" [(ngModel)]="user.LastName" required/>
+                    <input type="text" #LastName="ngForm" ngControl="LastName" [(ngModel)]="user.LastName" required />
                     <div *ngIf="LastName.touched && !LastName.valid && LastName.errors.required" style="color:red">
                         Required!
                     </div>
@@ -38,53 +126,16 @@
                     <b>Status: </b>
                 </td>
                 <td>
-                    <input type="checkbox" [(ngModel)]="user.IsActive"/>
+                    <input type="checkbox" [(ngModel)]="user.IsActive" />
                 </td>
             </tr>
         </table>
-
         <div>
             <br />
             <button type="submit" (click)="editUser(user)" [disabled]="!UserEditForm.valid || isEmailExist">Update</button>
             <button type="submit" (click)="goBack()">Back</button>
         </div>
     </form>
-</center>
-
-
-<!--<center>
-    <h1>{{title}}</h1>
-    <h2>User Edit</h2>
-
-    <form>
-        <div>
-            <label>First Name:</label>
-            <input type="text" name="FirstName" [(ngModel)]="user.firstName"/>
-        </div>
-        <div><br /></div>
-        <div>
-            <label>Last Name:</label>
-            <input type="text" name="LastName" [(ngModel)]="user.lastName"/>
-        </div>
-        <div><br /></div>
-        <div>
-            <label>Email:</label>
-            <input type="email" name="Email" [(ngModel)]="user.email"/>
-        </div>
-        <div><br /></div>
-        <div>
-            <label>Status:</label>
-            <select [(ngModel)]="user.isActive">
-                <option value="true">Active</option>
-                <option value="false">Inactive</option>
-            </select>
-        </div>
-        <div>
-            <br/>
-            <button type="submit" (click)="editUser(user)">Update</button>
-        </div>
-    </form>
-
 </center>-->
 
 

@@ -1,15 +1,25 @@
-﻿<center>
-    <h2><u>Users</u></h2>
+﻿<section class="user-list">
+    <div class="card-title-block">
+        <div class="title in_block">
+            <h3 class="in_block">Users</h3>
+                
 
-    <a routerLink="user/add" routerLinkActive="active">Add User</a>
+            <div class="fl-right">
+                <a routerLink="user/add" routerLinkActive="active" class="add-link">Add User</a>
+            </div>
 
-    <table>
+        </div>
+        </div>
+
+
+    <table class="table-bordered">
         <thead>
             <tr>
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Email</th>
                 <th>Status</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -20,10 +30,11 @@
                 <td *ngIf="user.IsActive">Active</td>
                 <td *ngIf="!user.IsActive">Inactive</td>
                 
-                <td> <button (click)="userDetails(user.Id)">Details</button> </td>
-                <td> <button (click)="userEdit(user.Id)">Edit</button> </td>
+                <td> <button md-raised-button class="btn-green custom-btn mr-5" (click)="userDetails(user.Id)">Details</button> <button class="custom-btn" md-raised-button (click)="userEdit(user.Id)">Edit</button> </td>
+               
                 
             </tr>
         </tbody>
     </table>
-</center>
+      
+</section>
