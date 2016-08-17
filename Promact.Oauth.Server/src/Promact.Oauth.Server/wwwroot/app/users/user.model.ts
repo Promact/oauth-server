@@ -6,4 +6,5 @@
     Email: string;
     Password: string;
     UserName: string;
+    UniqueName: string;
 }

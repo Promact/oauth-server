@@ -2,6 +2,8 @@
 using Promact.Oauth.Server.Data_Repository;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Models.ApplicationClasses;
+using Promact.Oauth.Server.Repository.ConsumerAppRepository;
+using Promact.Oauth.Server.Repository.HttpClientRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,12 +15,14 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
     public class OAuthRepository:IOAuthRepository
     {
         private readonly IDataRepository<OAuth> _oAuthDataRepository;
-        HttpClient client;
+        private readonly IHttpClientRepository _httpClientRepository;
+        private readonly IConsumerAppRepository _appRepository;
 
-        public OAuthRepository(IDataRepository<OAuth> oAuthDataRepository)
+        public OAuthRepository(IDataRepository<OAuth> oAuthDataRepository, IHttpClientRepository httpClientRepository,IConsumerAppRepository appRepository)
         {
-            client = new HttpClient();
             _oAuthDataRepository = oAuthDataRepository;
+            _httpClientRepository = httpClientRepository;
+            _appRepository = appRepository;
         }
 
         /// <summary>
@@ -47,7 +51,8 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
         {
             //checking whether with this app email is register or not if  not new OAuth will be created.
             var oAuth = GetDetails(email, clientId);
-            if (oAuth == null)
+            var app = _appRepository.GetAppDetails(clientId);
+            if (oAuth == null && app!=null)
             {
                 oAuth = new OAuth();
                 oAuth.RefreshToken = Guid.NewGuid().ToString();
@@ -59,12 +64,11 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
             return oAuth;
         }
 
-        public OAuthApplication GetAppDetailsFromClient(string redirectUrl, string refreshToken)
+        public async Task<OAuthApplication> GetAppDetailsFromClient(string redirectUrl, string refreshToken)
         {
             // Assigning Base Address with redirectUrl
-            client.BaseAddress = new Uri(redirectUrl);
             var requestUrl = string.Format("?refreshToken={0}", refreshToken);
-            var response = client.GetAsync(requestUrl).Result;
+            var response = await _httpClientRepository.GetAsync(redirectUrl, requestUrl);
             var responseResult = response.Content.ReadAsStringAsync().Result;
             // Transforming Json String to object type OAuthApplication
             var content = JsonConvert.DeserializeObject<OAuthApplication>(responseResult);

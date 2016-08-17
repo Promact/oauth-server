@@ -1,11 +1,15 @@
-﻿import {Component, Input} from "@angular/core";
+﻿import {Component} from "@angular/core";
 import {Router, ActivatedRoute, ROUTER_DIRECTIVES} from "@angular/router";
+
+
+
 import { UserService }   from '../user.service';
 import {UserModel} from '../user.model';
 import {Md2Toast} from 'md2/toast';
 
 @Component({
     templateUrl: './app/users/user-edit/user-edit.html',
+
     providers: [Md2Toast]
 })
 

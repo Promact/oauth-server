@@ -20,11 +20,11 @@ namespace Promact.Oauth.Server.Models
 
         [Required]
         public bool IsActive { get; set; }
+
         [Required]
         public string TeamLeaderId { get; set; }
 
         public virtual ICollection<ApplicationUser> ApplicationUsers { get; set; }
-        //public virtual ApplicationUser User { get; set; }
 
         public virtual ICollection<ProjectUser> ProjectUsers { get; set; }
 

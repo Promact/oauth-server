@@ -8,20 +8,29 @@ using System.Security.Claims;
 
 using Promact.Oauth.Server.Models;
 using Microsoft.AspNetCore.Http;
+using AutoMapper;
 
 namespace Promact.Oauth.Server.Repository.ProjectsRepository
 {
     public class ProjectRepository : IProjectRepository
     {
-        private IDataRepository<Project> _projectDataRepository;
-        private IDataRepository<ProjectUser> _projectUserDataRepository;
-        private IDataRepository<ApplicationUser> _userDataRepository;
-        public ProjectRepository(IDataRepository<Project> projectDataRepository, IDataRepository<ProjectUser> projectUserDataRepository, IDataRepository<ApplicationUser> userDataRepository)
+        #region "Private Variable(s)"
+        private readonly IDataRepository<Project> _projectDataRepository;
+        private readonly IDataRepository<ProjectUser> _projectUserDataRepository;
+        private readonly IDataRepository<ApplicationUser> _userDataRepository;
+        private readonly IMapper _mapperContext;
+        #endregion
+
+        #region "Constructor"
+        public ProjectRepository(IDataRepository<Project> projectDataRepository, IDataRepository<ProjectUser> projectUserDataRepository, IDataRepository<ApplicationUser> userDataRepository, IMapper mapperContext)
         {
             _projectDataRepository = projectDataRepository;
             _projectUserDataRepository = projectUserDataRepository;
             _userDataRepository = userDataRepository;
+            _mapperContext = mapperContext;
         }
+        #endregion
+
         /// <summary>
         /// Get All Projects list from the database
         /// </summary>
@@ -33,33 +42,26 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
            
             projects.ForEach(project =>
             {
-                var TeamLeaderNm = new UserAc();
-                TeamLeaderNm.FirstName =_userDataRepository.FirstOrDefault(x => x.Id == project.TeamLeaderId)?.FirstName;
+                var teamLeaders = _userDataRepository.FirstOrDefault(x => x.Id == project.TeamLeaderId);
+                var teamLeader = new UserAc();
+                teamLeader.FirstName = teamLeaders.FirstName;
+                teamLeader.LastName = teamLeaders.LastName;
+                teamLeader.Email = teamLeaders.Email;
                 var CreatedBy = _userDataRepository.FirstOrDefault(x => x.Id == project.CreatedBy)?.FirstName;
                 var UpdatedBy = _userDataRepository.FirstOrDefault(x => x.Id == project.UpdatedBy)?.FirstName;
                 string UpdatedDate;
-                if (project.UpdatedDateTime.ToLocalTime().ToString("dd'/'MM'/'yyyy HH:mm:ss") == "01/01/0001 05:30:00")
-                {
-                    UpdatedDate = "";
-                }
+                if (project.UpdatedDateTime==null)
+                {UpdatedDate = "";}
                 else
-                {
-                    UpdatedDate = project.UpdatedDateTime.ToLocalTime().ToString("dd'/'MM'/'yyyy HH:mm");
-                }
-                projectAcs.Add(new ProjectAc
-                {
-                    Id = project.Id,
-                    Name = project.Name,
-                    IsActive = project.IsActive,
-                    SlackChannelName = project.SlackChannelName,
-                    TeamLeaderId = project.TeamLeaderId,
-                    TeamLeader = TeamLeaderNm,
-                    CreatedBy= CreatedBy,
-                    CreatedDate=project.CreatedDateTime.ToLocalTime().ToString("dd'/'MM'/'yyyy HH:mm"),
-                    UpdatedBy=UpdatedBy,//01/01/0001 05:30:00
-                    UpdatedDate= UpdatedDate
-                });
-                
+                {UpdatedDate = project.UpdatedDateTime.ToString();}
+                var projectObject = _mapperContext.Map<Project, ProjectAc>(project);
+                projectObject.TeamLeader = teamLeader;
+                projectObject.CreatedBy = CreatedBy;
+                projectObject.CreatedDate = project.CreatedDateTime.ToLocalTime().ToString("dd'/'MM'/'yyyy HH:mm");
+                projectObject.UpdatedBy = UpdatedBy;
+                projectObject.UpdatedDate = UpdatedDate;
+                projectAcs.Add(projectObject);
+
             });
             return projectAcs;
         }
@@ -72,24 +74,13 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// <returns>project id of newly created project</returns>
         public int AddProject(ProjectAc newProject,string createdBy)
         {
+            var projectObject = _mapperContext.Map<ProjectAc, Project>(newProject);
+            projectObject.CreatedDateTime = DateTime.UtcNow;
+            projectObject.CreatedBy = createdBy;
+            projectObject.ApplicationUsers = null;
             
-            try
-            {
-                Project project = new Project();
-                project.IsActive = newProject.IsActive;
-                project.Name = newProject.Name;
-                project.TeamLeaderId = newProject.TeamLeaderId;
-                project.SlackChannelName = newProject.SlackChannelName;
-                project.CreatedDateTime = DateTime.UtcNow;
-                project.CreatedBy = createdBy;
-                _projectDataRepository.Add(project);
-                return project.Id;
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
+            _projectDataRepository.Add(projectObject);
+            return projectObject.Id;
         }
 
         /// <summary>
@@ -109,7 +100,6 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// 
         public ProjectAc GetById(int id)
         {
-
             List<UserAc> applicationUserList = new List<UserAc>();
             var project = _projectDataRepository.FirstOrDefault(x => x.Id == id);
             List<ProjectUser> projectUserList = _projectUserDataRepository.Fetch(y => y.ProjectId == project.Id).ToList();
@@ -122,16 +112,12 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                     FirstName = applicationUser.FirstName
                 });
             }
-            var projectAc = new ProjectAc();
-            projectAc.Id = project.Id;
-            projectAc.SlackChannelName = project.SlackChannelName;
-            projectAc.IsActive = project.IsActive;
-            projectAc.Name = project.Name;
-            projectAc.TeamLeader = new UserAc();
-            projectAc.TeamLeaderId = project.TeamLeaderId;
-            projectAc.TeamLeader.FirstName = _userDataRepository.FirstOrDefault(x => x.Id == project.TeamLeaderId)?.FirstName;
-            projectAc.ApplicationUsers = applicationUserList;
-            return projectAc;
+
+            var projectObject = _mapperContext.Map<Project, ProjectAc>(project);
+            var a=_userDataRepository.FirstOrDefault(x => x.Id == project.TeamLeaderId);
+            projectObject.TeamLeader = new UserAc { FirstName = a.FirstName, LastName = a.LastName, Email = a.Email };
+            projectObject.ApplicationUsers = applicationUserList;
+            return projectObject;
         }
       
         /// <summary>
@@ -151,7 +137,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             projectInDb.UpdatedBy = updatedBy;
             _projectDataRepository.Update(projectInDb);
 
-            var CreatedBy = _userDataRepository.FirstOrDefault(x => x.Id == editProject.CreatedBy)?.FirstName;
+            
             //Delete old users from project user table
             _projectUserDataRepository.Delete(x => x.ProjectId == projectId);
             _projectUserDataRepository.Save();
@@ -169,5 +155,45 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                 });
             });
         }
+
+        /// <summary>
+        /// Check Project and SlackChannelName is already exists or not 
+        /// </summary>
+        /// <param name="project"></param> pass the project parameter
+        /// <returns>projectAc object</returns>
+        public ProjectAc checkDuplicateFromEditProject(ProjectAc project)
+        {
+            var projectName = _projectDataRepository.FirstOrDefault(x => x.Id != project.Id && x.Name == project.Name);
+            var sName = _projectDataRepository.FirstOrDefault(x => x.Id != project.Id && x.SlackChannelName == project.SlackChannelName);
+            if (projectName == null && sName == null)
+            { return project; }
+            else if (projectName != null && sName == null)
+            { project.Name = null; return project; }
+            else if (projectName == null && sName != null)
+            { project.SlackChannelName = null; return project; }
+            else
+            { project.Name = null; project.SlackChannelName = null; return project; }
+
+        }
+
+        /// <summary>
+        /// Check Project and SlackChannelName is already exists or not 
+        /// </summary>
+        /// <param name="project"></param> pass the project parameter
+        /// <returns>projectAc object</returns>
+        public ProjectAc checkDuplicate(ProjectAc project)
+        {
+            var projectName = _projectDataRepository.FirstOrDefault(x => x.Name == project.Name);
+            var sName = _projectDataRepository.FirstOrDefault(x => x.SlackChannelName == project.SlackChannelName);
+            if (projectName == null && sName == null)
+            { return project; }
+            else if (projectName != null && sName == null)
+            { project.Name = null; return project; }
+            else if (projectName == null && sName != null)
+            { project.SlackChannelName = null; return project; }
+            else
+            { project.Name = null; project.SlackChannelName = null; return project; }
+        }
+
     }
 }

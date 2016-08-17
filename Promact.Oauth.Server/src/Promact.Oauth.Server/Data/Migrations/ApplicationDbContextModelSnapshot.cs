@@ -194,7 +194,7 @@ namespace Promact.Oauth.Server.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("Promact.Oauth.Server.Models.Apps", b =>
+            modelBuilder.Entity("Promact.Oauth.Server.Models.ConsumerApps", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -229,7 +229,7 @@ namespace Promact.Oauth.Server.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Apps");
+                    b.ToTable("ConsumerApps");
                 });
 
             modelBuilder.Entity("Promact.Oauth.Server.Models.OAuth", b =>

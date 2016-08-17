@@ -67,5 +67,27 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="user">Object of newly registered User</param>
         void SendEmail(ApplicationUser user);
+
+        /// <summary>
+        /// Method is used to Get User details by firstname
+        /// </summary>
+        /// <param name="firstname"></param>
+        /// <returns></returns>
+        ApplicationUser UserDetialByFirstName(string firstname);
+
+        /// <summary>
+        /// Method is used to get team leader's list
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        List<ApplicationUser> TeamLeaderByUserId(string userId);
+
+        /// <summary>
+        /// Method to get list of management people
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        Task<List<ApplicationUser>> ManagementByUserId();
+
     }
 }

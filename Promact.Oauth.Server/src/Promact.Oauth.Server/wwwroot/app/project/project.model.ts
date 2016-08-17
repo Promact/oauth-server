@@ -9,6 +9,7 @@ export class projectModel {
     CreatedDate: string;
     UpdatedBy: string;
     UpdatedDate: string;
+    UniqueName: String;
     TeamLeader: UserModel;
     listUsers: Array<UserModel>;
     applicationUsers: Array<UserModel>;

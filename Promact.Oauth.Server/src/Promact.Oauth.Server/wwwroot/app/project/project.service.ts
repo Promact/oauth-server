@@ -6,6 +6,11 @@ import { projectModel } from './project.model';
 export class ProjectService {
     private ProjectUrl = 'api/project';  // URL to web api
     constructor(private httpService: HttpService<projectModel>) { }
+    //check duplicate
+    checkDuplicate(project: projectModel) {
+        return this.httpService.post(this.ProjectUrl + "/checkDuplicate", project);
+    }
+
     //list of users
     getUsers() {
         return this.httpService.get("api/user" + "/users");

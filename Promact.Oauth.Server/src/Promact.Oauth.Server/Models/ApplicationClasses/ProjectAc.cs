@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Promact.Oauth.Server.Models.ApplicationClasses
 {
@@ -7,8 +8,13 @@ namespace Promact.Oauth.Server.Models.ApplicationClasses
     {
         
         public int Id { get; set; }
+        [Required]
+        [StringLength(255)]
         public string Name { get; set; }
+        [Required]
+        [StringLength(25)]
         public string SlackChannelName { get; set; }
+
         public bool IsActive { get; set; }
         public string TeamLeaderId { get; set; }
         public string CreatedBy { get; set;}
@@ -17,7 +23,7 @@ namespace Promact.Oauth.Server.Models.ApplicationClasses
         public string UpdatedDate { get; set; }
         public UserAc TeamLeader { get; set; }
         public List<UserAc> ApplicationUsers { get; set; }
-        //public bool Status { get; set; }
+       
 
     }
 }
