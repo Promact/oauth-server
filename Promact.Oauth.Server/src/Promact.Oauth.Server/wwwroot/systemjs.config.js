@@ -122,5 +122,20 @@
         map: map,
         packages: packages
     };
+
+    //// add package entries for angular packages in the form '@angular/common': { main: 'index.js', defaultExtension: 'js' }
+    //ngPackageNames.forEach(function (pkgName) {
+    //    packages[pkgName] = { main: 'index.js', defaultExtension: 'js' };
+    //});
+
+    //var config = {
+    //    map: map,
+    //    packages: packages
+    //};
+
+    //// filterSystemConfig - index.html's chance to modify config before we register it.
+    //if (global.filterSystemConfig) {
+    //    global.filterSystemConfig(config);
+    //}
     System.config(config);
 })(this);

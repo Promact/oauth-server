@@ -8,49 +8,27 @@
     <center>
         <h1>{{title}}</h1>
         <h2>Add New Consumer App</h2>
-        <form>
+        <form  #consumerAppForm="ngForm">
             <div>
                 <label>Name:</label>
-                <input type="text" name="consumerName" [(ngModel)]="consumerModel.Name" maxlength="255" required />
-                <!--<div [hidden]="ConsumerName.valid || ConsumerName.pristine" style="color:red">Name is required</div>-->
-                <!--<div *ngIf="ConsumerName.touched && !ConsumerName.valid && ConsumerName.errors.required" style="color:red">Name is Required</div>-->
+                <input type="text" name="consumerName" [(ngModel)]="consumerModel.Name" maxlength="255" required #consumerName="ngModel" />
+                <div [hidden]="!(consumerName.touched && !consumerName.valid && consumerName.errors.required)" style="color:red">Name is required</div>
             </div>
             <div>
                 <label>Description:</label>
-                <textarea   name="consumerDescription" [(ngModel)]="consumerModel.Description" maxlength="1000" required></textarea>
-                <!--<div *ngIf="Description.touched && !Description.valid && Description.errors.required" style="color:red">Description is Required</div>-->
+                <textarea name="consumerDescription" [(ngModel)]="consumerModel.Description" maxlength="1000" required #consumerDescription="ngModel"></textarea>
+                <div [hidden]="!(consumerDescription.touched && !consumerDescription.valid && consumerDescription.errors.required)" style="color:red">Description is required</div>
             </div>
             <div>
                 <label>Call Back Url:</label>
-                <input type="text"  name="consumerCallBackUrl" [(ngModel)]="consumerModel.CallbackUrl" maxlength="255" required />
-                <!--<div *ngIf="CallBackUrl.touched && !CallBackUrl.valid && CallBackUrl.errors.required" style="color:red">Call Back Url is Required</div>-->
+                <input type="text" name="consumerCallBackUrl" [(ngModel)]="consumerModel.CallbackUrl" maxlength="255" required #consumerCallBackUrl="ngModel"/>
+                <div [hidden]="!(consumerCallBackUrl.touched && !consumerCallBackUrl.valid && consumerCallBackUrl.errors.required)" style="color:red">Call Back Url is required</div>
             </div>
             <div>
-                <button type="submit" (click)="submitApps(consumerModel)">Submit</button>
+                <button type="submit" (click)="submitApps(consumerModel)" [disabled]="!consumerAppForm.form.valid">Submit</button>
                 <button type="button" (click)="cancel()">Cancel</button>
             </div>
         </form>
-        <!--<form novalidate #addConsumerApp="ngForm">
-            <div>
-                <label>Name:</label>
-                <input type="text" #Name="ngForm" ngControl="Name" [(ngModel)]="consumerModel.Name" maxlength="255" required />
-                <div *ngIf="Name.touched && !Name.valid && Name.errors.required" style="color:red">Name is Required</div>
-            </div>
-            <div>
-                <label>Description:</label>
-                <textarea #Description="ngForm" ngControl="Description" [(ngModel)]="consumerModel.Description" maxlength="1000" required></textarea>
-                <div *ngIf="Description.touched && !Description.valid && Description.errors.required" style="color:red">Description is Required</div>
-            </div>
-            <div>
-                <label>Call Back Url:</label>
-                <input type="text" #CallBackUrl="ngForm" ngControl="CallBackUrl" [(ngModel)]="consumerModel.CallbackUrl" maxlength="255" required />
-                <div *ngIf="CallBackUrl.touched && !CallBackUrl.valid && CallBackUrl.errors.required" style="color:red">Call Back Url is Required</div>
-            </div>
-            <div>
-                <button type="submit" (click)="submitApps(consumerModel)" [disabled]="!(addConsumerApp.valid)">Submit</button>
-                <button type="button" (click)="cancel()">Cancel</button>
-            </div>
-        </form>-->
     </center>
 </body>
 </html> 

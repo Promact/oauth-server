@@ -6,6 +6,7 @@ using Promact.Oauth.Server.Models.ApplicationClasses;
 using Promact.Oauth.Server.Repository.ConsumerAppRepository;
 using Microsoft.AspNetCore.Identity;
 using AutoMapper;
+using System.Threading.Tasks;
 
 namespace Promact.Oauth.Server.Controllers
 {
@@ -38,12 +39,12 @@ namespace Promact.Oauth.Server.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("addConsumer")]
-        public IActionResult AddConsumerApp([FromBody]ConsumerAppsAc consumerAppsAc)
+        public async Task<IActionResult> AddConsumerApp([FromBody]ConsumerAppsAc consumerAppsAc)
         {
             try
             {
                 consumerAppsAc.CreatedBy = _userManager.GetUserId(User);
-                if (_consumerAppRepository.AddConsumerApps(consumerAppsAc) != 0)
+                if (await _consumerAppRepository.AddConsumerApps(consumerAppsAc) != 0)
                     return Ok(true);
                 else
                     return Ok(false);
@@ -62,11 +63,11 @@ namespace Promact.Oauth.Server.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("getConsumerApps")]
-        public IActionResult GetConsumerApps()
+        public async Task<IActionResult> GetConsumerApps()
         {
             try
             {
-                List<ConsumerApps> listOfApps = _consumerAppRepository.GetListOfApps();
+                List<ConsumerApps> listOfApps = await _consumerAppRepository.GetListOfApps();
                 return Ok(listOfApps);
             }
             catch (Exception ex)
@@ -83,11 +84,11 @@ namespace Promact.Oauth.Server.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("getConsumerById/{id}")]
-        public IActionResult GetConsumerById(int id)
+        public async Task<IActionResult> GetConsumerById(int id)
         {
             try
             {
-                var consumerApps = _consumerAppRepository.GetConsumerAppsById(id);
+                var consumerApps = await _consumerAppRepository.GetConsumerAppsById(id);
                 return Ok(consumerApps);
             }
             catch (Exception ex)
@@ -103,18 +104,18 @@ namespace Promact.Oauth.Server.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("updateConsumer")]
-        public IActionResult UpdateConsumerApps([FromBody]ConsumerAppsAc consumerAppsAc)
+        public async Task<IActionResult> UpdateConsumerApps([FromBody]ConsumerAppsAc consumerAppsAc)
         {
             try
             {
-                var oldAppsDetails = _consumerAppRepository.GetConsumerAppsById(consumerAppsAc.Id);
+                var oldAppsDetails = await _consumerAppRepository.GetConsumerAppsById(consumerAppsAc.Id);
                 if (oldAppsDetails != null)
                 {
                     oldAppsDetails.Name = consumerAppsAc.Name;
                     oldAppsDetails.CallbackUrl = consumerAppsAc.CallbackUrl;
                     oldAppsDetails.Description = consumerAppsAc.Description;
                     oldAppsDetails.UpdatedDateTime = DateTime.Now;
-                    if (_consumerAppRepository.UpdateConsumerApps(oldAppsDetails) != 0)
+                    if (await _consumerAppRepository.UpdateConsumerApps(oldAppsDetails) != 0)
                         return Ok(true);
                     else
                         return Ok(false);

@@ -36,8 +36,36 @@ export class ProjectAddComponent {
     addProject(pro: projectModel) {
         this.proService.addProject(pro).subscribe((pro) => {
             this.pro = pro;
-            this.toast.show("Project is added successfully")
-            this.router.navigate(['/project/'])
+            if (pro.name == null && pro.slackChannelName == null) {
+                this.toast.show("Project and slackChannelName already exists");
+                this.proService.getUsers().subscribe(listUsers => {
+                    this.pro.listUsers = listUsers;
+                    this.pro.applicationUsers = new Array<UserModel>();
+
+                });
+            }
+            else if (pro.name != null && pro.slackChannelName == null) {
+                this.toast.show("slackChannelName already exists");
+                this.proService.getUsers().subscribe(listUsers => {
+                    this.pro.listUsers = listUsers;
+                    this.pro.applicationUsers = new Array<UserModel>();
+
+                });
+
+            }
+            else if (pro.name == null && pro.slackChannelName != null) {
+                this.toast.show("Project already exists");
+                this.proService.getUsers().subscribe(listUsers => {
+                    this.pro.listUsers = listUsers;
+                    this.pro.applicationUsers = new Array<UserModel>();
+
+                });
+            }
+            else {
+                this.toast.show("Project Successfully Added.");
+                this.router.navigate(['/project/'])
+            }
+
         }, err => {
 
         });
@@ -50,8 +78,7 @@ export class ProjectAddComponent {
         this.sub = this.route.params.subscribe(params => {
             this.proService.getUsers().subscribe(listUsers => {
                 this.pro.listUsers = listUsers;
-                if (!this.pro.applicationUsers)
-                    this.pro.applicationUsers = new Array<UserModel>();
+                this.pro.applicationUsers = new Array<UserModel>();
 
             });
         });
