@@ -11,8 +11,6 @@ var gulp = require("gulp"),
     tsc = require('gulp-typescript'),
     tsProject = tsc.createProject('./wwwroot/tsconfig.json');
 
-
-
 var paths = {
     webroot: "./wwwroot/"
 };

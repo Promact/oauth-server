@@ -65,6 +65,7 @@
       'router-deprecated',
       'upgrade',
     ];
+
     var mdPackages = [
       'button',
       'toolbar'
