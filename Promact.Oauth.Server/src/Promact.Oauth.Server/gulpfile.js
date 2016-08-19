@@ -7,12 +7,10 @@ var gulp = require("gulp"),
     cssmin = require("gulp-cssmin"),
     uglify = require("gulp-uglify"),
     sysBuilder = require('systemjs-builder'),
-     sourcemaps = require('gulp-sourcemaps'),
+    sourcemaps = require('gulp-sourcemaps'),
     tsc = require('gulp-typescript'),
     tsProject = tsc.createProject('./wwwroot/tsconfig.json'),
     Server = require('karma').Server;
-
-
 
 var paths = {
     webroot: "./wwwroot/"
@@ -57,33 +55,26 @@ gulp.task("copytowwwroot", function () {
 
 });
 
-gulp.task('compile', function () {
-    var tsResult = gulp.src('src/**/*.ts')
-        .pipe(sourcemaps.init())
-        .pipe(tsc(tsProject));
 
-    return tsResult.js
-        .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest('.'));
-});
+gulp.task('bundle', function (done) {
+    var builder = new sysBuilder('./wwwroot', './wwwroot/systemjs.config.js');
 
-gulp.task('bundle',['compile'], function (done) {
-    var builder = new sysBuilder('./wwwroot', paths.systemConfig);
+    builder
+     .buildStatic('app', './wwwroot/bundle.js', {
+      runtime: false
+  }).then(function () {
+      done();
+  })
 
-    return builder.buildStatic('app', './bundle.min.js', { runtime: false })
-      .then(function () {
-          //return del(['build/**/*.js', '!build/lib/**/*.js', '!build/bundle.min.js']);
-          done();
-      }).catch(function (err) {
-          console.error('systemjs-builder Bundling failed' + paths.systemConfig + err);
-      });
-});
 
-gulp.task('bundle:min', ['bundle'], function () {
-    return gulp
-      .src('build/bundle.min.js')
-      .pipe(uglify())
-      .pipe(gulp.dest('build'));
+    //builder.
+    //return builder.buildStatic('./wwwroot', './bundle.min.js', { runtime: false })
+    //  .then(function () {
+    //      //return del(['build/**/*.js', '!build/lib/**/*.js', '!build/bundle.min.js']);
+    //      done();
+    //  }).catch(function (err) {
+    //      console.error('systemjs-builder Bundling failed' + paths.systemConfig + err);
+    //  });
 });
 
 gulp.task("clean:js", function (cb) {

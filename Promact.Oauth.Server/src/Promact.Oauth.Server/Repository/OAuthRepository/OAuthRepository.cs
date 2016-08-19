@@ -74,5 +74,18 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
             var content = JsonConvert.DeserializeObject<OAuthApplication>(responseResult);
             return content;
         }
+
+        public bool GetDetailsClientByAccessToken(string accessToken)
+        {
+            var value = _oAuthDataRepository.FirstOrDefault(x => x.AccessToken == accessToken);
+            if (value != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

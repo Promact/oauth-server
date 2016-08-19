@@ -6,12 +6,11 @@
     // map tells the System loader where to look for things
     var map = {
         'app': 'app', // 'dist',
-        '@angular': '/lib/@angular',
-        'angular2-in-memory-web-api': '/lib/angular2-in-memory-web-api',
-        'rxjs': '/lib/rxjs',
-        'md2': '/lib/md2',
-        '@angular2-material' : '/lib/@angular2-material'
-       
+        '@angular': 'lib/@angular',
+        'angular2-in-memory-web-api': 'lib/angular2-in-memory-web-api',
+        'rxjs': 'lib/rxjs',
+        'md2': 'lib/md2',
+        '@angular2-material' : 'lib/@angular2-material'
     };
     // packages tells the System loader how to load when no filename and/or no extension
     var packages = {
@@ -40,6 +39,60 @@
             defaultExtension: 'js',
             main: 'multiselect.js'
         },
+
+        '@angular2-material/core': {
+            format: 'cjs',
+            defaultExtension: 'js',
+            main: 'core.js'
+        },
+
+        '@angular2-material/button': {
+            format: 'cjs',
+            defaultExtension: 'js',
+            main: 'button.js'
+        },
+
+        '@angular2-material/toolbar': {
+            format: 'cjs',
+            defaultExtension: 'js',
+            main: 'toolbar.js'
+        },
+
+        '@angular2-material/sidenav': {
+            format: 'cjs',
+            defaultExtension: 'js',
+            main: 'sidenav.js'
+        },
+
+        '@angular2-material/input': {
+            format: 'cjs',
+            defaultExtension: 'js',
+            main: 'input.js'
+        },
+
+        '@angular2-material/card': {
+            format: 'cjs',
+            defaultExtension: 'js',
+            main: 'card.js'
+        },
+        '@angular2-material/checkbox': {
+            format: 'cjs',
+            defaultExtension: 'js',
+            main: 'checkbox.js'
+        },
+        '@angular2-material/progress-bar': {
+            format: 'cjs',
+            defaultExtension: 'js',
+            main: 'progress-bar.js'
+        },
+
+        '@angular2-material/progress-circle': {
+            format: 'cjs',
+            defaultExtension: 'js',
+            main: 'progress-circle.js'
+        },
+
+
         //...
 
         //--- or ---
@@ -49,9 +102,8 @@
         //    defaultExtension: 'js',
         //    main: 'all.js'
         //}
-    
 
-        'angular2-in-memory-web-api': { main: 'index.js', defaultExtension: 'js' }
+
     };
     var ngPackageNames = [
       'common',
@@ -65,12 +117,13 @@
       'router-deprecated',
       'upgrade',
     ];
+
     var mdPackages = [
       'button',
       'toolbar'
-     
+
     ];
-    
+
     // Individual files (~300 requests):
     function packIndex(pkgName) {
         packages['@angular/' + pkgName] = { main: 'index.js', defaultExtension: 'js' };
@@ -84,58 +137,13 @@
     // Most environments should use UMD; some (Karma) need the individual index files
     var setPackageConfig = System.packageWithIndex ? packIndex : packUmd;
     // Add package entries for angular packages
-   
+
     ngPackageNames.forEach(setPackageConfig);
-
-
-    packages['@angular2-material/core'] = {
-        format: 'cjs',
-        defaultExtension: 'js',
-        main: 'core.js'
-    };
-    
-    packages['@angular2-material/button'] = {
-        format: 'cjs',
-        defaultExtension: 'js',
-        main: 'button.js'
-    };
-
-    packages['@angular2-material/toolbar'] = {
-        format: 'cjs',
-        defaultExtension: 'js',
-        main: 'toolbar.js'
-    };
-
-    packages['@angular2-material/sidenav'] = {
-        format: 'cjs',
-        defaultExtension: 'js',
-        main: 'sidenav.js'
-    }
-
-    packages['@angular2-material/input'] = {
-        format: 'cjs',
-        defaultExtension: 'js',
-        main: 'input.js'
-    }
 
     var config = {
         map: map,
         packages: packages
     };
 
-    //// add package entries for angular packages in the form '@angular/common': { main: 'index.js', defaultExtension: 'js' }
-    //ngPackageNames.forEach(function (pkgName) {
-    //    packages[pkgName] = { main: 'index.js', defaultExtension: 'js' };
-    //});
-
-    //var config = {
-    //    map: map,
-    //    packages: packages
-    //};
-
-    //// filterSystemConfig - index.html's chance to modify config before we register it.
-    //if (global.filterSystemConfig) {
-    //    global.filterSystemConfig(config);
-    //}
     System.config(config);
 })(this);
