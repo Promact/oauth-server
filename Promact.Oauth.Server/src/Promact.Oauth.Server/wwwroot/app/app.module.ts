@@ -29,7 +29,6 @@ import {HttpService} from "./http.service";
 import { ConsumerAppService }   from "./consumerapp/consumerapp.service";
 import {ProjectService} from "./project/project.service";
 import {UserService} from "./users/user.service";
-import { Observable } from "rxjs/Rx";
 
 
 @NgModule({
@@ -43,7 +42,6 @@ import { Observable } from "rxjs/Rx";
         MdToolbarModule,
         MdSidenavModule,
         MdInputModule,
-        Observable,
         MdCheckboxModule
 
     ],

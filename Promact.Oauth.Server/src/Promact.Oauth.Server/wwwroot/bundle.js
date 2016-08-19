@@ -18021,15 +18021,12 @@ $__System.registerDynamic("14", ["3"], true, function($__require, exports, modul
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function")
       return Reflect.metadata(k, v);
   };
-  var core_1 = $__require('3');
-  var AppComponent = (function() {
-    function AppComponent() {}
-    AppComponent = __decorate([core_1.Component({
-      selector: 'my-app',
-      templateUrl: "app/index.html"
-    }), __metadata('design:paramtypes', [])], AppComponent);
-    return AppComponent;
-  }());
+  const core_1 = $__require('3');
+  let AppComponent = class AppComponent {};
+  AppComponent = __decorate([core_1.Component({
+    selector: 'my-app',
+    templateUrl: "app/index.html"
+  }), __metadata('design:paramtypes', [])], AppComponent);
   exports.AppComponent = AppComponent;
   return module.exports;
 });
@@ -18040,10 +18037,10 @@ $__System.registerDynamic("15", ["16", "17", "18", "19"], true, function($__requ
   var define,
       global = this || self,
       GLOBAL = global;
-  var consumerapp_component_1 = $__require('16');
-  var consumerapp_list_component_1 = $__require('17');
-  var consumerapp_add_component_1 = $__require('18');
-  var consumer_edit_component_1 = $__require('19');
+  const consumerapp_component_1 = $__require('16');
+  const consumerapp_list_component_1 = $__require('17');
+  const consumerapp_add_component_1 = $__require('18');
+  const consumer_edit_component_1 = $__require('19');
   exports.consumerRoute = [{
     path: "consumerapp",
     component: consumerapp_component_1.ConsumerAppComponent,
@@ -18067,12 +18064,12 @@ $__System.registerDynamic("1a", ["1b", "1c", "1d", "1e", "1f", "20"], true, func
   var define,
       global = this || self,
       GLOBAL = global;
-  var user_component_1 = $__require('1b');
-  var user_list_component_1 = $__require('1c');
-  var user_add_component_1 = $__require('1d');
-  var user_edit_component_1 = $__require('1e');
-  var user_details_component_1 = $__require('1f');
-  var user_change_password_component_1 = $__require('20');
+  const user_component_1 = $__require('1b');
+  const user_list_component_1 = $__require('1c');
+  const user_add_component_1 = $__require('1d');
+  const user_edit_component_1 = $__require('1e');
+  const user_details_component_1 = $__require('1f');
+  const user_change_password_component_1 = $__require('20');
   exports.userRoutes = [{
     path: "user",
     component: user_component_1.UserComponent,
@@ -18102,11 +18099,11 @@ $__System.registerDynamic("21", ["22", "23", "24", "25", "26"], true, function($
   var define,
       global = this || self,
       GLOBAL = global;
-  var project_component_1 = $__require('22');
-  var project_list_component_1 = $__require('23');
-  var project_add_component_1 = $__require('24');
-  var project_edit_component_1 = $__require('25');
-  var project_view_component_1 = $__require('26');
+  const project_component_1 = $__require('22');
+  const project_list_component_1 = $__require('23');
+  const project_add_component_1 = $__require('24');
+  const project_edit_component_1 = $__require('25');
+  const project_view_component_1 = $__require('26');
   exports.projectRoutes = [{
     path: "project",
     component: project_component_1.ProjectComponent,
@@ -18133,23 +18130,23 @@ $__System.registerDynamic("27", ["15", "1a", "21", "28", "16", "22", "1b"], true
   var define,
       global = this || self,
       GLOBAL = global;
-  var consumerapp_routes_1 = $__require('15');
-  var user_routes_1 = $__require('1a');
-  var project_routes_1 = $__require('21');
-  var router_1 = $__require('28');
-  var consumerapp_component_1 = $__require('16');
-  var project_component_1 = $__require('22');
-  var user_component_1 = $__require('1b');
-  var appRoutes = consumerapp_routes_1.consumerRoute.concat([{
+  const consumerapp_routes_1 = $__require('15');
+  const user_routes_1 = $__require('1a');
+  const project_routes_1 = $__require('21');
+  const router_1 = $__require('28');
+  const consumerapp_component_1 = $__require('16');
+  const project_component_1 = $__require('22');
+  const user_component_1 = $__require('1b');
+  const appRoutes = [...consumerapp_routes_1.consumerRoute, {
     path: '',
     component: consumerapp_component_1.ConsumerAppComponent
-  }], project_routes_1.projectRoutes, [{
+  }, ...project_routes_1.projectRoutes, {
     path: 'project',
     component: project_component_1.ProjectComponent
-  }], user_routes_1.userRoutes, [{
+  }, ...user_routes_1.userRoutes, {
     path: 'user',
     component: user_component_1.UserComponent
-  }]);
+  }];
   exports.routing = router_1.RouterModule.forRoot(appRoutes);
   return module.exports;
 });
@@ -18176,18 +18173,16 @@ $__System.registerDynamic("16", ["3", "28", "29"], true, function($__require, ex
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function")
       return Reflect.metadata(k, v);
   };
-  var core_1 = $__require('3');
-  var router_1 = $__require('28');
-  var consumerapp_service_1 = $__require('29');
-  var ConsumerAppComponent = (function() {
-    function ConsumerAppComponent() {}
-    ConsumerAppComponent = __decorate([core_1.Component({
-      template: "\n    <router-outlet></router-outlet>",
-      directives: [router_1.ROUTER_DIRECTIVES],
-      providers: [consumerapp_service_1.ConsumerAppService]
-    }), __metadata('design:paramtypes', [])], ConsumerAppComponent);
-    return ConsumerAppComponent;
-  }());
+  const core_1 = $__require('3');
+  const router_1 = $__require('28');
+  const consumerapp_service_1 = $__require('29');
+  let ConsumerAppComponent = class ConsumerAppComponent {};
+  ConsumerAppComponent = __decorate([core_1.Component({
+    template: `
+    <router-outlet></router-outlet>`,
+    directives: [router_1.ROUTER_DIRECTIVES],
+    providers: [consumerapp_service_1.ConsumerAppService]
+  }), __metadata('design:paramtypes', [])], ConsumerAppComponent);
   exports.ConsumerAppComponent = ConsumerAppComponent;
   return module.exports;
 });
@@ -18214,36 +18209,34 @@ $__System.registerDynamic("17", ["3", "28", "29"], true, function($__require, ex
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function")
       return Reflect.metadata(k, v);
   };
-  var core_1 = $__require('3');
-  var router_1 = $__require('28');
-  var consumerapp_service_1 = $__require('29');
-  var ConsumerappListComponent = (function() {
-    function ConsumerappListComponent(router, consumerAppService) {
+  const core_1 = $__require('3');
+  const router_1 = $__require('28');
+  const consumerapp_service_1 = $__require('29');
+  let ConsumerappListComponent = class ConsumerappListComponent {
+    constructor(router, consumerAppService) {
       this.router = router;
       this.consumerAppService = consumerAppService;
     }
-    ConsumerappListComponent.prototype.getConsumerApps = function() {
-      var _this = this;
-      this.consumerAppService.getConsumerApps().subscribe(function(result) {
+    getConsumerApps() {
+      this.consumerAppService.getConsumerApps().subscribe((result) => {
         if (result.length > 0)
-          _this.listOfConsumerApps = result;
-      }, function(err) {});
-    };
-    ConsumerappListComponent.prototype.ngOnInit = function() {
+          this.listOfConsumerApps = result;
+      }, (err) => {});
+    }
+    ngOnInit() {
       this.getConsumerApps();
-    };
-    ConsumerappListComponent.prototype.editDetails = function(consumerId) {
+    }
+    editDetails(consumerId) {
       this.router.navigate(['/consumerapp/edit', consumerId]);
-    };
-    ConsumerappListComponent.prototype.addNewApp = function() {
+    }
+    addNewApp() {
       this.router.navigate(['/consumerapp/add']);
-    };
-    ConsumerappListComponent = __decorate([core_1.Component({
-      templateUrl: "app/consumerapp/consumerapp-list/consumerapp-list.html",
-      directives: []
-    }), __metadata('design:paramtypes', [router_1.Router, consumerapp_service_1.ConsumerAppService])], ConsumerappListComponent);
-    return ConsumerappListComponent;
-  }());
+    }
+  };
+  ConsumerappListComponent = __decorate([core_1.Component({
+    templateUrl: "app/consumerapp/consumerapp-list/consumerapp-list.html",
+    directives: []
+  }), __metadata('design:paramtypes', [router_1.Router, consumerapp_service_1.ConsumerAppService])], ConsumerappListComponent);
   exports.ConsumerappListComponent = ConsumerappListComponent;
   return module.exports;
 });
@@ -18270,42 +18263,40 @@ $__System.registerDynamic("18", ["3", "2a", "28", "29", "2b"], true, function($_
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function")
       return Reflect.metadata(k, v);
   };
-  var core_1 = $__require('3');
-  var consumerapp_model_1 = $__require('2a');
-  var router_1 = $__require('28');
-  var consumerapp_service_1 = $__require('29');
-  var toast_1 = $__require('2b');
-  var ConsumerappAddComponent = (function() {
-    function ConsumerappAddComponent(consumerAppService, router, toast) {
+  const core_1 = $__require('3');
+  const consumerapp_model_1 = $__require('2a');
+  const router_1 = $__require('28');
+  const consumerapp_service_1 = $__require('29');
+  const toast_1 = $__require('2b');
+  let ConsumerappAddComponent = class ConsumerappAddComponent {
+    constructor(consumerAppService, router, toast) {
       this.consumerAppService = consumerAppService;
       this.router = router;
       this.toast = toast;
       this.consumerModel = new consumerapp_model_1.ConsumerAppModel();
     }
-    ConsumerappAddComponent.prototype.submitApps = function(consumerModel) {
-      var _this = this;
-      this.consumerAppService.addConsumerApps(consumerModel).subscribe(function(result) {
+    submitApps(consumerModel) {
+      this.consumerAppService.addConsumerApps(consumerModel).subscribe((result) => {
         if (result == true) {
-          _this.toast.show('Consumer App is added successfully.');
-          _this.cancel();
+          this.toast.show('Consumer App is added successfully.');
+          this.cancel();
         } else if (result == false) {
-          _this.toast.show('Consumer App Name is already exists.');
+          this.toast.show('Consumer App Name is already exists.');
         }
-      }, function(err) {});
-    };
-    ConsumerappAddComponent.prototype.cancel = function() {
+      }, (err) => {});
+    }
+    cancel() {
       this.router.navigate(['/consumerapp/']);
-    };
-    ConsumerappAddComponent.prototype.ngOnInit = function() {
+    }
+    ngOnInit() {
       this.consumerModel = new consumerapp_model_1.ConsumerAppModel();
-    };
-    ConsumerappAddComponent = __decorate([core_1.Component({
-      templateUrl: "app/consumerapp/consumerapp-add/consumerapp-add.html",
-      directives: [],
-      providers: [toast_1.Md2Toast]
-    }), __metadata('design:paramtypes', [consumerapp_service_1.ConsumerAppService, router_1.Router, toast_1.Md2Toast])], ConsumerappAddComponent);
-    return ConsumerappAddComponent;
-  }());
+    }
+  };
+  ConsumerappAddComponent = __decorate([core_1.Component({
+    templateUrl: "app/consumerapp/consumerapp-add/consumerapp-add.html",
+    directives: [],
+    providers: [toast_1.Md2Toast]
+  }), __metadata('design:paramtypes', [consumerapp_service_1.ConsumerAppService, router_1.Router, toast_1.Md2Toast])], ConsumerappAddComponent);
   exports.ConsumerappAddComponent = ConsumerappAddComponent;
   return module.exports;
 });
@@ -18316,10 +18307,7 @@ $__System.registerDynamic("2a", [], true, function($__require, exports, module) 
   var define,
       global = this || self,
       GLOBAL = global;
-  var ConsumerAppModel = (function() {
-    function ConsumerAppModel() {}
-    return ConsumerAppModel;
-  }());
+  class ConsumerAppModel {}
   exports.ConsumerAppModel = ConsumerAppModel;
   return module.exports;
 });
@@ -18346,54 +18334,51 @@ $__System.registerDynamic("19", ["3", "2a", "28", "29", "2b"], true, function($_
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function")
       return Reflect.metadata(k, v);
   };
-  var core_1 = $__require('3');
-  var consumerapp_model_1 = $__require('2a');
-  var router_1 = $__require('28');
-  var consumerapp_service_1 = $__require('29');
-  var toast_1 = $__require('2b');
-  var ConsumerappEditComponent = (function() {
-    function ConsumerappEditComponent(router, consumerAppService, route, toast) {
+  const core_1 = $__require('3');
+  const consumerapp_model_1 = $__require('2a');
+  const router_1 = $__require('28');
+  const consumerapp_service_1 = $__require('29');
+  const toast_1 = $__require('2b');
+  let ConsumerappEditComponent = class ConsumerappEditComponent {
+    constructor(router, consumerAppService, route, toast) {
       this.router = router;
       this.consumerAppService = consumerAppService;
       this.route = route;
       this.toast = toast;
       this.consumerModel = new consumerapp_model_1.ConsumerAppModel();
     }
-    ConsumerappEditComponent.prototype.ngOnInit = function() {
-      var _this = this;
-      this.route.params.subscribe(function(params) {
-        var id = +params['id'];
-        _this.consumerAppService.getConsumerAppById(id).subscribe(function(result) {
-          _this.consumerModel.Name = result.name;
-          _this.consumerModel.Description = result.description;
-          _this.consumerModel.CallbackUrl = result.callbackUrl;
-          _this.consumerModel.Id = result.id;
-          _this.consumerModel.AuthId = result.authId;
-          _this.consumerModel.AuthSecret = result.authSecret;
-        }, function(err) {});
+    ngOnInit() {
+      this.route.params.subscribe((params) => {
+        let id = +params['id'];
+        this.consumerAppService.getConsumerAppById(id).subscribe((result) => {
+          this.consumerModel.Name = result.name;
+          this.consumerModel.Description = result.description;
+          this.consumerModel.CallbackUrl = result.callbackUrl;
+          this.consumerModel.Id = result.id;
+          this.consumerModel.AuthId = result.authId;
+          this.consumerModel.AuthSecret = result.authSecret;
+        }, (err) => {});
       });
-    };
-    ConsumerappEditComponent.prototype.updateApps = function(consumerModel) {
-      var _this = this;
-      this.consumerAppService.updateConsumerApps(consumerModel).subscribe(function(result) {
+    }
+    updateApps(consumerModel) {
+      this.consumerAppService.updateConsumerApps(consumerModel).subscribe((result) => {
         if (result == true) {
-          _this.toast.show('Consumer App is updated successfully.');
-          _this.cancel();
+          this.toast.show('Consumer App is updated successfully.');
+          this.cancel();
         } else if (result == false) {
-          _this.toast.show('Consumer App Name is already exists.');
+          this.toast.show('Consumer App Name is already exists.');
         }
-      }, function(err) {});
-    };
-    ConsumerappEditComponent.prototype.cancel = function() {
+      }, (err) => {});
+    }
+    cancel() {
       this.router.navigate(['/consumerapp/']);
-    };
-    ConsumerappEditComponent = __decorate([core_1.Component({
-      templateUrl: "app/consumerapp/consumerapp-edit/consumerapp-edit.html",
-      directives: [],
-      providers: [toast_1.Md2Toast]
-    }), __metadata('design:paramtypes', [router_1.Router, consumerapp_service_1.ConsumerAppService, router_1.ActivatedRoute, toast_1.Md2Toast])], ConsumerappEditComponent);
-    return ConsumerappEditComponent;
-  }());
+    }
+  };
+  ConsumerappEditComponent = __decorate([core_1.Component({
+    templateUrl: "app/consumerapp/consumerapp-edit/consumerapp-edit.html",
+    directives: [],
+    providers: [toast_1.Md2Toast]
+  }), __metadata('design:paramtypes', [router_1.Router, consumerapp_service_1.ConsumerAppService, router_1.ActivatedRoute, toast_1.Md2Toast])], ConsumerappEditComponent);
   exports.ConsumerappEditComponent = ConsumerappEditComponent;
   return module.exports;
 });
@@ -18420,18 +18405,17 @@ $__System.registerDynamic("22", ["3", "28", "2c"], true, function($__require, ex
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function")
       return Reflect.metadata(k, v);
   };
-  var core_1 = $__require('3');
-  var router_1 = $__require('28');
-  var project_service_1 = $__require('2c');
-  var ProjectComponent = (function() {
-    function ProjectComponent() {}
-    ProjectComponent = __decorate([core_1.Component({
-      template: "\n    <router-outlet></router-outlet>\n",
-      directives: [router_1.ROUTER_DIRECTIVES],
-      providers: [project_service_1.ProjectService]
-    }), __metadata('design:paramtypes', [])], ProjectComponent);
-    return ProjectComponent;
-  }());
+  const core_1 = $__require('3');
+  const router_1 = $__require('28');
+  const project_service_1 = $__require('2c');
+  let ProjectComponent = class ProjectComponent {};
+  ProjectComponent = __decorate([core_1.Component({
+    template: `
+    <router-outlet></router-outlet>
+`,
+    directives: [router_1.ROUTER_DIRECTIVES],
+    providers: [project_service_1.ProjectService]
+  }), __metadata('design:paramtypes', [])], ProjectComponent);
   exports.ProjectComponent = ProjectComponent;
   return module.exports;
 });
@@ -18458,126 +18442,44 @@ $__System.registerDynamic("23", ["3", "2c", "2d", "28", "2b"], true, function($_
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function")
       return Reflect.metadata(k, v);
   };
-  var core_1 = $__require('3');
-  var project_service_1 = $__require('2c');
-  var project_model_1 = $__require('2d');
-  var router_1 = $__require('28');
-  var toast_1 = $__require('2b');
-  var ProjectListComponent = (function() {
-    function ProjectListComponent(router, proService, toast) {
+  const core_1 = $__require('3');
+  const project_service_1 = $__require('2c');
+  const project_model_1 = $__require('2d');
+  const router_1 = $__require('28');
+  const toast_1 = $__require('2b');
+  let ProjectListComponent = class ProjectListComponent {
+    constructor(router, proService, toast) {
       this.router = router;
       this.proService = proService;
       this.toast = toast;
       this.pros = new Array();
       this.pro = new project_model_1.projectModel();
     }
-    ProjectListComponent.prototype.getPros = function() {
-      var _this = this;
-      this.proService.getPros().subscribe(function(pros) {
-        _this.pros = pros;
-      }, function(err) {});
-    };
-    ProjectListComponent.prototype.ngOnInit = function() {
+    getPros() {
+      this.proService.getPros().subscribe((pros) => {
+        this.pros = pros;
+      }, (err) => {});
+    }
+    ngOnInit() {
       this.getPros();
-    };
-    ProjectListComponent.prototype.editProject = function(Id) {
+    }
+    editProject(Id) {
       this.router.navigate(['/project/edit', Id]);
-    };
-    ProjectListComponent.prototype.viewProject = function(Id) {
+    }
+    viewProject(Id) {
       this.router.navigate(['/project/view', Id]);
-    };
-    ProjectListComponent = __decorate([core_1.Component({
-      templateUrl: "app/project/project-list/project-list.html",
-      directives: [router_1.ROUTER_DIRECTIVES],
-      providers: [toast_1.Md2Toast]
-    }), __metadata('design:paramtypes', [router_1.Router, project_service_1.ProjectService, toast_1.Md2Toast])], ProjectListComponent);
-    return ProjectListComponent;
-  }());
+    }
+  };
+  ProjectListComponent = __decorate([core_1.Component({
+    templateUrl: "app/project/project-list/project-list.html",
+    directives: [router_1.ROUTER_DIRECTIVES],
+    providers: [toast_1.Md2Toast]
+  }), __metadata('design:paramtypes', [router_1.Router, project_service_1.ProjectService, toast_1.Md2Toast])], ProjectListComponent);
   exports.ProjectListComponent = ProjectListComponent;
   return module.exports;
 });
 
-$__System.registerDynamic("24", ["3", "2c", "2d", "28", "2b"], true, function($__require, exports, module) {
-  "use strict";
-  ;
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var __decorate = (this && this.__decorate) || function(decorators, target, key, desc) {
-    var c = arguments.length,
-        r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
-        d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function")
-      r = Reflect.decorate(decorators, target, key, desc);
-    else
-      for (var i = decorators.length - 1; i >= 0; i--)
-        if (d = decorators[i])
-          r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-  };
-  var __metadata = (this && this.__metadata) || function(k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function")
-      return Reflect.metadata(k, v);
-  };
-  var core_1 = $__require('3');
-  var project_service_1 = $__require('2c');
-  var project_model_1 = $__require('2d');
-  var router_1 = $__require('28');
-  var toast_1 = $__require('2b');
-  var ProjectAddComponent = (function() {
-    function ProjectAddComponent(route, router, toast, proService) {
-      this.route = route;
-      this.router = router;
-      this.toast = toast;
-      this.proService = proService;
-      this.disabled = false;
-      this.item = [];
-      this.pros = new Array();
-      this.pro = new project_model_1.projectModel();
-    }
-    ProjectAddComponent.prototype.addProject = function(pro) {
-      var _this = this;
-      this.proService.addProject(pro).subscribe(function(pro) {
-        if (pro.name == null && pro.slackChannelName == null) {
-          _this.toast.show("Project and slackChannelName already exists");
-        } else if (pro.name != null && pro.slackChannelName == null) {
-          _this.toast.show("slackChannelName already exists");
-        } else if (pro.name == null && pro.slackChannelName != null) {
-          _this.toast.show("Project already exists");
-        } else {
-          _this.toast.show("Project Successfully Added.");
-          _this.router.navigate(['/project/']);
-        }
-      }, function(err) {});
-    };
-    ProjectAddComponent.prototype.ngOnInit = function() {
-      this.pro = new project_model_1.projectModel();
-    };
-    ProjectAddComponent = __decorate([core_1.Component({
-      templateUrl: "app/project/project-add/project-add.html",
-      directives: []
-    }), __metadata('design:paramtypes', [router_1.ActivatedRoute, router_1.Router, toast_1.Md2Toast, project_service_1.ProjectService])], ProjectAddComponent);
-    return ProjectAddComponent;
-  }());
-  exports.ProjectAddComponent = ProjectAddComponent;
-  return module.exports;
-});
-
-$__System.registerDynamic("2d", [], true, function($__require, exports, module) {
-  "use strict";
-  ;
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var projectModel = (function() {
-    function projectModel() {}
-    return projectModel;
-  }());
-  exports.projectModel = projectModel;
-  return module.exports;
-});
-
-$__System.registerDynamic("2e", ["3", "9"], true, function($__require, exports, module) {
+$__System.registerDynamic("24", ["3", "2c", "2d", "28", "2b", "2e"], true, function($__require, exports, module) {
   "use strict";
   ;
   var define,
@@ -18600,9 +18502,109 @@ $__System.registerDynamic("2e", ["3", "9"], true, function($__require, exports, 
       return Reflect.metadata(k, v);
   };
   const core_1 = $__require('3');
-  const common_1 = $__require('9');
-  class Option {
-    constructor(source, textKey, valueKey) {
+  const project_service_1 = $__require('2c');
+  const project_model_1 = $__require('2d');
+  const router_1 = $__require('28');
+  const toast_1 = $__require('2b');
+  const multiselect_1 = $__require('2e');
+  let ProjectAddComponent = class ProjectAddComponent {
+    constructor(route, router, toast, proService) {
+      this.route = route;
+      this.router = router;
+      this.toast = toast;
+      this.proService = proService;
+      this.disabled = false;
+      this.item = [];
+      this.pros = new Array();
+      this.pro = new project_model_1.projectModel();
+    }
+    addProject(pro) {
+      this.proService.addProject(pro).subscribe((pro) => {
+        this.pro = pro;
+        if (pro.name == null && pro.slackChannelName == null) {
+          this.toast.show("Project and slackChannelName already exists");
+          this.proService.getUsers().subscribe((listUsers) => {
+            this.pro.listUsers = listUsers;
+            this.pro.applicationUsers = new Array();
+          });
+        } else if (pro.name != null && pro.slackChannelName == null) {
+          this.toast.show("slackChannelName already exists");
+          this.proService.getUsers().subscribe((listUsers) => {
+            this.pro.listUsers = listUsers;
+            this.pro.applicationUsers = new Array();
+          });
+        } else if (pro.name == null && pro.slackChannelName != null) {
+          this.toast.show("Project already exists");
+          this.proService.getUsers().subscribe((listUsers) => {
+            this.pro.listUsers = listUsers;
+            this.pro.applicationUsers = new Array();
+          });
+        } else {
+          this.toast.show("Project Successfully Added.");
+          this.router.navigate(['/project/']);
+        }
+      }, (err) => {});
+    }
+    ngOnInit() {
+      this.pro = new project_model_1.projectModel();
+      this.sub = this.route.params.subscribe((params) => {
+        this.proService.getUsers().subscribe((listUsers) => {
+          this.pro.listUsers = listUsers;
+          this.pro.applicationUsers = new Array();
+        });
+      });
+    }
+    gotoProjects() {
+      this.router.navigate(['/project/']);
+    }
+  };
+  ProjectAddComponent = __decorate([core_1.Component({
+    selector: 'md2-select',
+    templateUrl: "app/project/project-add/project-add.html",
+    directives: [multiselect_1.Md2Multiselect],
+    providers: [toast_1.Md2Toast]
+  }), __metadata('design:paramtypes', [router_1.ActivatedRoute, router_1.Router, toast_1.Md2Toast, project_service_1.ProjectService])], ProjectAddComponent);
+  exports.ProjectAddComponent = ProjectAddComponent;
+  return module.exports;
+});
+
+$__System.registerDynamic("2d", [], true, function($__require, exports, module) {
+  "use strict";
+  ;
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  class projectModel {}
+  exports.projectModel = projectModel;
+  return module.exports;
+});
+
+$__System.registerDynamic("2e", ["3", "d"], true, function($__require, exports, module) {
+  "use strict";
+  ;
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var __decorate = (this && this.__decorate) || function(decorators, target, key, desc) {
+    var c = arguments.length,
+        r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
+        d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function")
+      r = Reflect.decorate(decorators, target, key, desc);
+    else
+      for (var i = decorators.length - 1; i >= 0; i--)
+        if (d = decorators[i])
+          r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+  };
+  var __metadata = (this && this.__metadata) || function(k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function")
+      return Reflect.metadata(k, v);
+  };
+  var core_1 = $__require('3');
+  var forms_1 = $__require('d');
+  var Option = (function() {
+    function Option(source, textKey, valueKey) {
       if (typeof source === 'string') {
         this.text = this.value = source;
       }
@@ -18611,15 +18613,18 @@ $__System.registerDynamic("2e", ["3", "9"], true, function($__require, exports, 
         this.value = valueKey ? source[valueKey] : source;
       }
     }
-  }
-  const noop = () => {};
-  let nextId = 0;
-  const MD2_MULTISELECT_CONTROL_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
-    useExisting: core_1.forwardRef(() => Md2Multiselect),
+    return Option;
+  }());
+  var noop = function() {};
+  var nextId = 0;
+  var MD2_MULTISELECT_CONTROL_VALUE_ACCESSOR = new core_1.Provider(forms_1.NG_VALUE_ACCESSOR, {
+    useExisting: core_1.forwardRef(function() {
+      return Md2Multiselect;
+    }),
     multi: true
   });
-  let Md2Multiselect = class Md2Multiselect {
-    constructor(element) {
+  var Md2Multiselect = (function() {
+    function Md2Multiselect(element) {
       this.element = element;
       this.change = new core_1.EventEmitter();
       this._value = '';
@@ -18638,28 +18643,43 @@ $__System.registerDynamic("2e", ["3", "9"], true, function($__require, exports, 
       this.textKey = 'text';
       this.valueKey = null;
     }
-    ngAfterContentInit() {
+    Md2Multiselect.prototype.ngAfterContentInit = function() {
       this._isInitialized = true;
-    }
-    set options(value) {
-      this._options = value;
-    }
-    get value() {
-      return this._value;
-    }
-    set value(value) {
-      this.setValue(value);
-    }
-    setValue(value) {
+    };
+    Object.defineProperty(Md2Multiselect.prototype, "options", {
+      set: function(value) {
+        this._options = value;
+      },
+      enumerable: true,
+      configurable: true
+    });
+    Object.defineProperty(Md2Multiselect.prototype, "value", {
+      get: function() {
+        return this._value;
+      },
+      set: function(value) {
+        this.setValue(value);
+      },
+      enumerable: true,
+      configurable: true
+    });
+    Md2Multiselect.prototype.setValue = function(value) {
+      var _this = this;
       if (value !== this._value) {
         this._value = value;
         this.items = [];
         if (value && value.length && typeof value === 'object' && Array.isArray(value)) {
-          for (let i = 0; i < value.length; i++) {
-            let selItm = this._options.find((itm) => this.equals(this.valueKey ? itm[this.valueKey] : itm, value[i]));
+          var _loop_1 = function(i) {
+            var selItm = this_1._options.find(function(itm) {
+              return _this.equals(_this.valueKey ? itm[_this.valueKey] : itm, value[i]);
+            });
             if (selItm) {
-              this.items.push(new Option(selItm, this.textKey, this.valueKey));
+              this_1.items.push(new Option(selItm, this_1.textKey, this_1.valueKey));
             }
+          };
+          var this_1 = this;
+          for (var i = 0; i < value.length; i++) {
+            _loop_1(i);
           }
         }
         if (this._isInitialized) {
@@ -18667,15 +18687,18 @@ $__System.registerDynamic("2e", ["3", "9"], true, function($__require, exports, 
           this.change.emit(this._value);
         }
       }
-    }
-    equals(o1, o2) {
-      if (o1 === o2)
+    };
+    Md2Multiselect.prototype.equals = function(o1, o2) {
+      if (o1 === o2) {
         return true;
-      if (o1 === null || o2 === null)
+      }
+      if (o1 === null || o2 === null) {
         return false;
-      if (o1 !== o1 && o2 !== o2)
+      }
+      if (o1 !== o1 && o2 !== o2) {
         return true;
-      let t1 = typeof o1,
+      }
+      var t1 = typeof o1,
           t2 = typeof o2,
           length,
           key,
@@ -18683,50 +18706,60 @@ $__System.registerDynamic("2e", ["3", "9"], true, function($__require, exports, 
       if (t1 === t2 && t1 === 'object') {
         keySet = Object.create(null);
         for (key in o1) {
-          if (!this.equals(o1[key], o2[key]))
+          if (!this.equals(o1[key], o2[key])) {
             return false;
+          }
           keySet[key] = true;
         }
         for (key in o2) {
-          if (!(key in keySet) && key.charAt(0) !== '$' && o2[key])
+          if (!(key in keySet) && key.charAt(0) !== '$' && o2[key]) {
             return false;
+          }
         }
         return true;
       }
       return false;
-    }
-    get isMenuVisible() {
-      return (this.isFocused && this.list && this.list.length) ? true : false;
-    }
-    updateScroll() {
-      if (this.focusedOption < 0)
+    };
+    Object.defineProperty(Md2Multiselect.prototype, "isMenuVisible", {
+      get: function() {
+        return (this.isFocused && this.list && this.list.length) ? true : false;
+      },
+      enumerable: true,
+      configurable: true
+    });
+    Md2Multiselect.prototype.updateScroll = function() {
+      if (this.focusedOption < 0) {
         return;
-      let menuContainer = this.element.nativeElement.querySelector('.md2-multiselect-menu');
-      if (!menuContainer)
+      }
+      var menuContainer = this.element.nativeElement.querySelector('.md2-multiselect-menu');
+      if (!menuContainer) {
         return;
-      let choices = menuContainer.querySelectorAll('.md2-option');
-      if (choices.length < 1)
+      }
+      var choices = menuContainer.querySelectorAll('.md2-option');
+      if (choices.length < 1) {
         return;
-      let highlighted = choices[this.focusedOption];
-      if (!highlighted)
+      }
+      var highlighted = choices[this.focusedOption];
+      if (!highlighted) {
         return;
-      let top = highlighted.offsetTop + highlighted.clientHeight - menuContainer.scrollTop;
-      let height = menuContainer.offsetHeight;
+      }
+      var top = highlighted.offsetTop + highlighted.clientHeight - menuContainer.scrollTop;
+      var height = menuContainer.offsetHeight;
       if (top > height) {
         menuContainer.scrollTop += top - height;
       } else if (top < highlighted.clientHeight) {
         menuContainer.scrollTop -= highlighted.clientHeight - top;
       }
-    }
-    onClick(event) {
+    };
+    Md2Multiselect.prototype.onClick = function(event) {
       if (this.disabled) {
         event.stopPropagation();
         event.preventDefault();
         return;
       }
       this.updateOptions();
-    }
-    onKeyDown(event) {
+    };
+    Md2Multiselect.prototype.onKeyDown = function(event) {
       if (this.disabled) {
         return;
       }
@@ -18774,112 +18807,92 @@ $__System.registerDynamic("2e", ["3", "9"], true, function($__require, exports, 
         event.preventDefault();
         return;
       }
-    }
-    onFocus() {
+    };
+    Md2Multiselect.prototype.onFocus = function() {
       this.isFocused = true;
       this.focusedOption = 0;
-    }
-    onBlur() {
+    };
+    Md2Multiselect.prototype.onBlur = function() {
       this.isFocused = false;
-    }
-    isActive(index) {
-      return this.items.map((i) => i.text).indexOf(this.list[index].text) < 0 ? false : true;
-    }
-    toggleOption(event, index) {
+    };
+    Md2Multiselect.prototype.isActive = function(index) {
+      return this.items.map(function(i) {
+        return i.text;
+      }).indexOf(this.list[index].text) < 0 ? false : true;
+    };
+    Md2Multiselect.prototype.toggleOption = function(event, index) {
+      var _this = this;
       event.preventDefault();
       event.stopPropagation();
-      let ind = this.items.map((i) => i.text).indexOf(this.list[index].text);
+      var ind = this.items.map(function(i) {
+        return i.text;
+      }).indexOf(this.list[index].text);
       if (ind < 0) {
         this.items.push(this.list[index]);
-        this.items = this.items.sort((a, b) => {
-          return this.list.findIndex((i) => i.text === a.text) - this.list.findIndex((i) => i.text === b.text);
+        this.items = this.items.sort(function(a, b) {
+          return _this.list.findIndex(function(i) {
+            return i.text === a.text;
+          }) - _this.list.findIndex(function(i) {
+            return i.text === b.text;
+          });
         });
       } else {
         this.items.splice(ind, 1);
       }
       this._value = new Array();
-      for (let i = 0; i < this.items.length; i++) {
+      for (var i = 0; i < this.items.length; i++) {
         this._value.push(this.items[i].value);
       }
       this._onChangeCallback(this._value);
       this.change.emit(this._value);
-    }
-    updateOptions() {
-      this.list = this._options.map((item) => new Option(item, this.textKey, this.valueKey));
+    };
+    Md2Multiselect.prototype.updateOptions = function() {
+      var _this = this;
+      this.list = this._options.map(function(item) {
+        return new Option(item, _this.textKey, _this.valueKey);
+      });
       if (this.list.length > 0) {
         this.onFocus();
       }
-    }
-    writeValue(value) {
+    };
+    Md2Multiselect.prototype.writeValue = function(value) {
       this.setValue(value);
-    }
-    registerOnChange(fn) {
+    };
+    Md2Multiselect.prototype.registerOnChange = function(fn) {
       this._onChangeCallback = fn;
-    }
-    registerOnTouched(fn) {
+    };
+    Md2Multiselect.prototype.registerOnTouched = function(fn) {
       this._onTouchedCallback = fn;
-    }
-  };
-  __decorate([core_1.Output(), __metadata('design:type', core_1.EventEmitter)], Md2Multiselect.prototype, "change", void 0);
-  __decorate([core_1.Input(), __metadata('design:type', String)], Md2Multiselect.prototype, "id", void 0);
-  __decorate([core_1.Input(), __metadata('design:type', Boolean)], Md2Multiselect.prototype, "disabled", void 0);
-  __decorate([core_1.Input(), __metadata('design:type', Number)], Md2Multiselect.prototype, "tabindex", void 0);
-  __decorate([core_1.Input(), __metadata('design:type', String)], Md2Multiselect.prototype, "placeholder", void 0);
-  __decorate([core_1.Input('item-text'), __metadata('design:type', String)], Md2Multiselect.prototype, "textKey", void 0);
-  __decorate([core_1.Input('item-value'), __metadata('design:type', String)], Md2Multiselect.prototype, "valueKey", void 0);
-  __decorate([core_1.Input('items'), __metadata('design:type', Array), __metadata('design:paramtypes', [Array])], Md2Multiselect.prototype, "options", null);
-  __decorate([core_1.Input(), __metadata('design:type', Object)], Md2Multiselect.prototype, "value", null);
-  __decorate([core_1.HostListener('click', ['$event']), __metadata('design:type', Function), __metadata('design:paramtypes', [MouseEvent]), __metadata('design:returntype', void 0)], Md2Multiselect.prototype, "onClick", null);
-  __decorate([core_1.HostListener('keydown', ['$event']), __metadata('design:type', Function), __metadata('design:paramtypes', [KeyboardEvent]), __metadata('design:returntype', void 0)], Md2Multiselect.prototype, "onKeyDown", null);
-  __decorate([core_1.HostListener('blur'), __metadata('design:type', Function), __metadata('design:paramtypes', []), __metadata('design:returntype', void 0)], Md2Multiselect.prototype, "onBlur", null);
-  Md2Multiselect = __decorate([core_1.Component({
-    selector: 'md2-multiselect',
-    template: `
-    <div class="md2-multiselect-container">
-      <span *ngIf="items.length < 1" class="md2-multiselect-placeholder">{{placeholder}}</span>
-      <div class="md2-multiselect-value">
-        <div *ngFor="let v of items; let last = last" class="md2-multiselect-value-item">
-          <span class="md2-multiselect-text">{{v.text}}</span><span *ngIf="!last">,&nbsp;</span>
-        </div>
-      </div>
-      <em class="md2-multiselect-icon"></em>
-    </div>
-    <ul *ngIf="isMenuVisible" class="md2-multiselect-menu">
-      <li class="md2-option" *ngFor="let l of list; let i = index;" [class.active]="isActive(i)" [class.focus]="focusedOption === i" (click)="toggleOption($event, i)">
-        <div class="md2-option-icon"></div>
-        <div class="md2-option-text" [innerHtml]="l.text"></div>
-      </li>
-    </ul>
-  `,
-    styles: [`
-    .md2-multiselect { position: relative; display: block; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
-    .md2-multiselect:focus { outline: none; }
-    .md2-multiselect .md2-multiselect-container { position: relative; display: block; width: 100%; padding: 2px 20px 1px 0; border-bottom: 1px solid rgba(0, 0, 0, 0.38); -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; min-width: 64px; min-height: 26px; max-height: 90px; overflow-y: auto; cursor: pointer; }
-    .md2-multiselect:focus .md2-multiselect-container { padding-bottom: 0; border-bottom: 2px solid #106cc8; }
-    .md2-multiselect.md2-multiselect-disabled .md2-multiselect-container { color: rgba(0,0,0,0.38); }
-    .md2-multiselect.md2-multiselect-disabled:focus .md2-multiselect-container { padding-bottom: 1px; border-bottom: 1px solid rgba(0, 0, 0, 0.38); }
-    .md2-multiselect .md2-multiselect-container > span:not(.md2-multiselect-icon) { display: block; max-width: 100%; -ms-text-overflow: ellipsis; -o-text-overflow: ellipsis; text-overflow: ellipsis; overflow: hidden; }
-    .md2-multiselect .md2-multiselect-container .md2-multiselect-icon { position: absolute; top: 50%; right: 0; display: block; width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 6px solid rgba(0, 0, 0, 0.60); margin: -3px 4px 0; }
-    .md2-multiselect .md2-multiselect-container .md2-multiselect-placeholder { color: rgba(0, 0, 0, 0.38); }
-    .md2-multiselect .md2-multiselect-menu { position: absolute; left: 0; top: 0; display: block; z-index: 10; width: 100%; margin: 0; padding: 8px 0; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12); max-height: 256px; min-height: 48px; overflow-y: auto; -moz-transform: scale(1); -ms-transform: scale(1); -o-transform: scale(1); -webkit-transform: scale(1); transform: scale(1); background: #fff; }
-    .md2-multiselect .md2-multiselect-menu .md2-option { position: relative; display: block; cursor: pointer; width: auto; -moz-transition: background 0.15s linear; -o-transition: background 0.15s linear; -webkit-transition: background 0.15s linear; transition: background 0.15s linear; padding: 0 16px 0 40px; height: 48px; line-height: 48px; }
-    .md2-multiselect .md2-multiselect-menu .md2-option.active { color: #106cc8; }
-    .md2-multiselect .md2-multiselect-menu .md2-option:hover, .md2-multiselect .md2-multiselect-menu .md2-option.focus { background: #eeeeee; }
-    .md2-multiselect .md2-multiselect-menu .md2-option .md2-option-text { width: auto; white-space: nowrap; overflow: hidden; -ms-text-overflow: ellipsis; -o-text-overflow: ellipsis; text-overflow: ellipsis; font-size: 16px; }
-    .md2-multiselect .md2-option .md2-option-icon { position: absolute; top: 14px; left: 12px; width: 16px; height: 16px; border: 2px solid rgba(0,0,0,0.54); border-radius: 2px; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; -moz-transition: 240ms; -o-transition: 240ms; -webkit-transition: 240ms; transition: 240ms; }
-    .md2-multiselect .md2-option.active .md2-option-icon { -moz-transform: rotate(-45deg); -ms-transform: rotate(-45deg); -o-transform: rotate(-45deg); -webkit-transform: rotate(-45deg); transform: rotate(-45deg); height: 8px; top: 17px; border-color: #106cc8; border-top-style: none; border-right-style: none; }
-  `],
-    host: {
-      'role': 'select',
-      '[id]': 'id',
-      '[class.md2-multiselect]': 'true',
-      '[class.md2-multiselect-disabled]': 'disabled',
-      '[tabindex]': 'disabled ? -1 : tabindex',
-      '[attr.aria-disabled]': 'disabled'
-    },
-    providers: [MD2_MULTISELECT_CONTROL_VALUE_ACCESSOR],
-    encapsulation: core_1.ViewEncapsulation.None
-  }), __metadata('design:paramtypes', [core_1.ElementRef])], Md2Multiselect);
+    };
+    __decorate([core_1.Output(), __metadata('design:type', core_1.EventEmitter)], Md2Multiselect.prototype, "change", void 0);
+    __decorate([core_1.Input(), __metadata('design:type', String)], Md2Multiselect.prototype, "id", void 0);
+    __decorate([core_1.Input(), __metadata('design:type', Boolean)], Md2Multiselect.prototype, "disabled", void 0);
+    __decorate([core_1.Input(), __metadata('design:type', Number)], Md2Multiselect.prototype, "tabindex", void 0);
+    __decorate([core_1.Input(), __metadata('design:type', String)], Md2Multiselect.prototype, "placeholder", void 0);
+    __decorate([core_1.Input('item-text'), __metadata('design:type', String)], Md2Multiselect.prototype, "textKey", void 0);
+    __decorate([core_1.Input('item-value'), __metadata('design:type', String)], Md2Multiselect.prototype, "valueKey", void 0);
+    __decorate([core_1.Input('items'), __metadata('design:type', Array), __metadata('design:paramtypes', [Array])], Md2Multiselect.prototype, "options", null);
+    __decorate([core_1.Input(), __metadata('design:type', Object)], Md2Multiselect.prototype, "value", null);
+    __decorate([core_1.HostListener('click', ['$event']), __metadata('design:type', Function), __metadata('design:paramtypes', [MouseEvent]), __metadata('design:returntype', void 0)], Md2Multiselect.prototype, "onClick", null);
+    __decorate([core_1.HostListener('keydown', ['$event']), __metadata('design:type', Function), __metadata('design:paramtypes', [KeyboardEvent]), __metadata('design:returntype', void 0)], Md2Multiselect.prototype, "onKeyDown", null);
+    __decorate([core_1.HostListener('blur'), __metadata('design:type', Function), __metadata('design:paramtypes', []), __metadata('design:returntype', void 0)], Md2Multiselect.prototype, "onBlur", null);
+    Md2Multiselect = __decorate([core_1.Component({
+      selector: 'md2-multiselect',
+      template: "\n    <div class=\"md2-multiselect-container\">\n      <span *ngIf=\"items.length < 1\" class=\"md2-multiselect-placeholder\">{{placeholder}}</span>\n      <div class=\"md2-multiselect-value\">\n        <div *ngFor=\"let v of items; let last = last\" class=\"md2-multiselect-value-item\">\n          <span class=\"md2-multiselect-text\">{{v.text}}</span><span *ngIf=\"!last\">,&nbsp;</span>\n        </div>\n      </div>\n      <em class=\"md2-multiselect-icon\"></em>\n    </div>\n    <ul *ngIf=\"isMenuVisible\" class=\"md2-multiselect-menu\">\n      <li class=\"md2-option\" *ngFor=\"let l of list; let i = index;\" [class.active]=\"isActive(i)\" [class.focus]=\"focusedOption === i\" (click)=\"toggleOption($event, i)\">\n        <div class=\"md2-option-icon\"></div>\n        <div class=\"md2-option-text\" [innerHtml]=\"l.text\"></div>\n      </li>\n    </ul>\n  ",
+      styles: ["\n    .md2-multiselect { position: relative; display: block; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }\n    .md2-multiselect:focus { outline: none; }\n    .md2-multiselect .md2-multiselect-container { position: relative; display: block; width: 100%; padding: 2px 20px 1px 0; border-bottom: 1px solid rgba(0, 0, 0, 0.38); -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; min-width: 64px; min-height: 26px; max-height: 90px; overflow-y: auto; cursor: pointer; }\n    .md2-multiselect:focus .md2-multiselect-container { padding-bottom: 0; border-bottom: 2px solid #106cc8; }\n    .md2-multiselect.md2-multiselect-disabled .md2-multiselect-container { color: rgba(0,0,0,0.38); }\n    .md2-multiselect.md2-multiselect-disabled:focus .md2-multiselect-container { padding-bottom: 1px; border-bottom: 1px solid rgba(0, 0, 0, 0.38); }\n    .md2-multiselect .md2-multiselect-container > span:not(.md2-multiselect-icon) { display: block; max-width: 100%; -ms-text-overflow: ellipsis; -o-text-overflow: ellipsis; text-overflow: ellipsis; overflow: hidden; }\n    .md2-multiselect .md2-multiselect-container .md2-multiselect-icon { position: absolute; top: 50%; right: 0; display: block; width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 6px solid rgba(0, 0, 0, 0.60); margin: -3px 4px 0; }\n    .md2-multiselect .md2-multiselect-container .md2-multiselect-placeholder { color: rgba(0, 0, 0, 0.38); }\n    .md2-multiselect .md2-multiselect-menu { position: absolute; left: 0; top: 0; display: block; z-index: 10; width: 100%; margin: 0; padding: 8px 0; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12); max-height: 256px; min-height: 48px; overflow-y: auto; -moz-transform: scale(1); -ms-transform: scale(1); -o-transform: scale(1); -webkit-transform: scale(1); transform: scale(1); background: #fff; }\n    .md2-multiselect .md2-multiselect-menu .md2-option { position: relative; display: block; cursor: pointer; width: auto; -moz-transition: background 0.15s linear; -o-transition: background 0.15s linear; -webkit-transition: background 0.15s linear; transition: background 0.15s linear; padding: 0 16px 0 40px; height: 48px; line-height: 48px; }\n    .md2-multiselect .md2-multiselect-menu .md2-option.active { color: #106cc8; }\n    .md2-multiselect .md2-multiselect-menu .md2-option:hover, .md2-multiselect .md2-multiselect-menu .md2-option.focus { background: #eeeeee; }\n    .md2-multiselect .md2-multiselect-menu .md2-option .md2-option-text { width: auto; white-space: nowrap; overflow: hidden; -ms-text-overflow: ellipsis; -o-text-overflow: ellipsis; text-overflow: ellipsis; font-size: 16px; }\n    .md2-multiselect .md2-option .md2-option-icon { position: absolute; top: 14px; left: 12px; width: 16px; height: 16px; border: 2px solid rgba(0,0,0,0.54); border-radius: 2px; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; -moz-transition: 240ms; -o-transition: 240ms; -webkit-transition: 240ms; transition: 240ms; }\n    .md2-multiselect .md2-option.active .md2-option-icon { -moz-transform: rotate(-45deg); -ms-transform: rotate(-45deg); -o-transform: rotate(-45deg); -webkit-transform: rotate(-45deg); transform: rotate(-45deg); height: 8px; top: 17px; border-color: #106cc8; border-top-style: none; border-right-style: none; }\n  "],
+      host: {
+        'role': 'select',
+        '[id]': 'id',
+        '[class.md2-multiselect]': 'true',
+        '[class.md2-multiselect-disabled]': 'disabled',
+        '[tabindex]': 'disabled ? -1 : tabindex',
+        '[attr.aria-disabled]': 'disabled'
+      },
+      providers: [MD2_MULTISELECT_CONTROL_VALUE_ACCESSOR],
+      encapsulation: core_1.ViewEncapsulation.None
+    }), __metadata('design:paramtypes', [core_1.ElementRef])], Md2Multiselect);
+    return Md2Multiselect;
+  }());
   exports.Md2Multiselect = Md2Multiselect;
   return module.exports;
 });
@@ -18906,15 +18919,15 @@ $__System.registerDynamic("25", ["3", "9", "2c", "2d", "28", "2b", "2e"], true, 
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function")
       return Reflect.metadata(k, v);
   };
-  var core_1 = $__require('3');
-  var common_1 = $__require('9');
-  var project_service_1 = $__require('2c');
-  var project_model_1 = $__require('2d');
-  var router_1 = $__require('28');
-  var toast_1 = $__require('2b');
-  var multiselect_1 = $__require('2e');
-  var ProjectEditComponent = (function() {
-    function ProjectEditComponent(route, router, toast, service, location) {
+  const core_1 = $__require('3');
+  const common_1 = $__require('9');
+  const project_service_1 = $__require('2c');
+  const project_model_1 = $__require('2d');
+  const router_1 = $__require('28');
+  const toast_1 = $__require('2b');
+  const multiselect_1 = $__require('2e');
+  let ProjectEditComponent = class ProjectEditComponent {
+    constructor(route, router, toast, service, location) {
       this.route = route;
       this.router = router;
       this.toast = toast;
@@ -18922,60 +18935,57 @@ $__System.registerDynamic("25", ["3", "9", "2c", "2d", "28", "2b", "2e"], true, 
       this.location = location;
       this.close = new core_1.EventEmitter();
     }
-    ProjectEditComponent.prototype.ngOnInit = function() {
-      var _this = this;
+    ngOnInit() {
       this.pro = new project_model_1.projectModel();
       this.pro.listUsers = new Array();
       this.pro.applicationUsers = new Array();
-      this.route.params.subscribe(function(params) {
-        var id = +params['id'];
-        _this.service.getProject(id).subscribe(function(pro) {
-          _this.pro = pro;
-          _this.service.getUsers().subscribe(function(listUsers) {
-            _this.pro.listUsers = listUsers;
-            if (!_this.pro.applicationUsers)
-              _this.pro.applicationUsers = new Array();
-            for (var i = 0; i < _this.pro.listUsers.length; i++) {
-              for (var j = 0; j < _this.pro.applicationUsers.length; j++) {
-                if (_this.pro.listUsers[i].Id == _this.pro.applicationUsers[j].Id) {
-                  _this.pro.applicationUsers[j].Email = _this.pro.listUsers[i].Email;
-                  _this.pro.applicationUsers[j].IsActive = _this.pro.listUsers[i].IsActive;
-                  _this.pro.applicationUsers[j].LastName = _this.pro.listUsers[i].LastName;
-                  _this.pro.applicationUsers[j].UserName = _this.pro.listUsers[i].UserName;
-                  _this.pro.applicationUsers[j].UniqueName = _this.pro.listUsers[i].UniqueName;
+      this.route.params.subscribe((params) => {
+        let id = +params['id'];
+        this.service.getProject(id).subscribe((pro) => {
+          this.pro = pro;
+          this.service.getUsers().subscribe((listUsers) => {
+            this.pro.listUsers = listUsers;
+            if (!this.pro.applicationUsers)
+              this.pro.applicationUsers = new Array();
+            for (let i = 0; i < this.pro.listUsers.length; i++) {
+              for (let j = 0; j < this.pro.applicationUsers.length; j++) {
+                if (this.pro.listUsers[i].Id == this.pro.applicationUsers[j].Id) {
+                  this.pro.applicationUsers[j].Email = this.pro.listUsers[i].Email;
+                  this.pro.applicationUsers[j].IsActive = this.pro.listUsers[i].IsActive;
+                  this.pro.applicationUsers[j].LastName = this.pro.listUsers[i].LastName;
+                  this.pro.applicationUsers[j].UserName = this.pro.listUsers[i].UserName;
+                  this.pro.applicationUsers[j].UniqueName = this.pro.listUsers[i].UniqueName;
                 }
               }
             }
           });
         });
       });
-    };
-    ProjectEditComponent.prototype.gotoProjects = function() {
+    }
+    gotoProjects() {
       this.location.back();
-    };
-    ProjectEditComponent.prototype.editProject = function(pro) {
-      var _this = this;
-      this.service.editProject(pro).subscribe(function(pro) {
+    }
+    editProject(pro) {
+      this.service.editProject(pro).subscribe((pro) => {
         if (pro.name == null && pro.slackChannelName == null) {
-          _this.toast.show("Project and slackChannelName already exists");
+          this.toast.show("Project and slackChannelName already exists");
         } else if (pro.name != null && pro.slackChannelName == null) {
-          _this.toast.show("slackChannelName already exists");
+          this.toast.show("slackChannelName already exists");
         } else if (pro.name == null && pro.slackChannelName != null) {
-          _this.toast.show("Project already exists");
+          this.toast.show("Project already exists");
         } else {
-          _this.toast.show("Project Successfully Added.");
-          _this.router.navigate(['/project/']);
+          this.toast.show("Project Successfully Added.");
+          this.router.navigate(['/project/']);
         }
-      }, function(err) {});
-    };
-    __decorate([core_1.Output(), __metadata('design:type', Object)], ProjectEditComponent.prototype, "close", void 0);
-    ProjectEditComponent = __decorate([core_1.Component({
-      templateUrl: "app/project/project-edit/project-edit.html",
-      directives: [multiselect_1.Md2Multiselect],
-      providers: [toast_1.Md2Toast]
-    }), __metadata('design:paramtypes', [router_1.ActivatedRoute, router_1.Router, toast_1.Md2Toast, project_service_1.ProjectService, common_1.Location])], ProjectEditComponent);
-    return ProjectEditComponent;
-  }());
+      }, (err) => {});
+    }
+  };
+  __decorate([core_1.Output(), __metadata('design:type', Object)], ProjectEditComponent.prototype, "close", void 0);
+  ProjectEditComponent = __decorate([core_1.Component({
+    templateUrl: "app/project/project-edit/project-edit.html",
+    directives: [multiselect_1.Md2Multiselect],
+    providers: [toast_1.Md2Toast]
+  }), __metadata('design:paramtypes', [router_1.ActivatedRoute, router_1.Router, toast_1.Md2Toast, project_service_1.ProjectService, common_1.Location])], ProjectEditComponent);
   exports.ProjectEditComponent = ProjectEditComponent;
   return module.exports;
 });
@@ -19002,51 +19012,49 @@ $__System.registerDynamic("26", ["3", "2c", "28", "9"], true, function($__requir
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function")
       return Reflect.metadata(k, v);
   };
-  var core_1 = $__require('3');
-  var project_service_1 = $__require('2c');
-  var router_1 = $__require('28');
-  var common_1 = $__require('9');
-  var ProjectViewComponent = (function() {
-    function ProjectViewComponent(route, router, service, location) {
+  const core_1 = $__require('3');
+  const project_service_1 = $__require('2c');
+  const router_1 = $__require('28');
+  const common_1 = $__require('9');
+  let ProjectViewComponent = class ProjectViewComponent {
+    constructor(route, router, service, location) {
       this.route = route;
       this.router = router;
       this.service = service;
       this.location = location;
     }
-    ProjectViewComponent.prototype.ngOnInit = function() {
-      var _this = this;
-      this.route.params.subscribe(function(params) {
-        var id = +params['id'];
-        _this.service.getProject(id).subscribe(function(pro) {
-          _this.pro = pro;
-          _this.service.getUsers().subscribe(function(listUsers) {
-            _this.pro.listUsers = listUsers;
-            if (!_this.pro.applicationUsers)
-              _this.pro.applicationUsers = new Array();
-            for (var i = 0; i < _this.pro.listUsers.length; i++) {
-              for (var j = 0; j < _this.pro.applicationUsers.length; j++) {
-                if (_this.pro.listUsers[i].Id == _this.pro.applicationUsers[j].Id) {
-                  _this.pro.applicationUsers[j].Email = _this.pro.listUsers[i].Email;
-                  _this.pro.applicationUsers[j].IsActive = _this.pro.listUsers[i].IsActive;
-                  _this.pro.applicationUsers[j].LastName = _this.pro.listUsers[i].LastName;
-                  _this.pro.applicationUsers[j].UserName = _this.pro.listUsers[i].UserName;
-                  _this.pro.applicationUsers[j].UniqueName = _this.pro.listUsers[i].UniqueName;
+    ngOnInit() {
+      this.route.params.subscribe((params) => {
+        let id = +params['id'];
+        this.service.getProject(id).subscribe((pro) => {
+          this.pro = pro;
+          this.service.getUsers().subscribe((listUsers) => {
+            this.pro.listUsers = listUsers;
+            if (!this.pro.applicationUsers)
+              this.pro.applicationUsers = new Array();
+            for (let i = 0; i < this.pro.listUsers.length; i++) {
+              for (let j = 0; j < this.pro.applicationUsers.length; j++) {
+                if (this.pro.listUsers[i].Id == this.pro.applicationUsers[j].Id) {
+                  this.pro.applicationUsers[j].Email = this.pro.listUsers[i].Email;
+                  this.pro.applicationUsers[j].IsActive = this.pro.listUsers[i].IsActive;
+                  this.pro.applicationUsers[j].LastName = this.pro.listUsers[i].LastName;
+                  this.pro.applicationUsers[j].UserName = this.pro.listUsers[i].UserName;
+                  this.pro.applicationUsers[j].UniqueName = this.pro.listUsers[i].UniqueName;
                 }
               }
             }
           });
         });
       });
-    };
-    ProjectViewComponent.prototype.gotoProjects = function() {
+    }
+    gotoProjects() {
       this.location.back();
-    };
-    ProjectViewComponent = __decorate([core_1.Component({
-      templateUrl: "app/project/project-view/project-view.html",
-      directives: []
-    }), __metadata('design:paramtypes', [router_1.ActivatedRoute, router_1.Router, project_service_1.ProjectService, common_1.Location])], ProjectViewComponent);
-    return ProjectViewComponent;
-  }());
+    }
+  };
+  ProjectViewComponent = __decorate([core_1.Component({
+    templateUrl: "app/project/project-view/project-view.html",
+    directives: []
+  }), __metadata('design:paramtypes', [router_1.ActivatedRoute, router_1.Router, project_service_1.ProjectService, common_1.Location])], ProjectViewComponent);
   exports.ProjectViewComponent = ProjectViewComponent;
   return module.exports;
 });
@@ -19073,18 +19081,16 @@ $__System.registerDynamic("1b", ["3", "28", "2f"], true, function($__require, ex
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function")
       return Reflect.metadata(k, v);
   };
-  var core_1 = $__require('3');
-  var router_1 = $__require('28');
-  var user_service_1 = $__require('2f');
-  var UserComponent = (function() {
-    function UserComponent() {}
-    UserComponent = __decorate([core_1.Component({
-      template: "\n    <router-outlet></router-outlet>",
-      directives: [router_1.ROUTER_DIRECTIVES],
-      providers: [user_service_1.UserService]
-    }), __metadata('design:paramtypes', [])], UserComponent);
-    return UserComponent;
-  }());
+  const core_1 = $__require('3');
+  const router_1 = $__require('28');
+  const user_service_1 = $__require('2f');
+  let UserComponent = class UserComponent {};
+  UserComponent = __decorate([core_1.Component({
+    template: `
+    <router-outlet></router-outlet>`,
+    directives: [router_1.ROUTER_DIRECTIVES],
+    providers: [user_service_1.UserService]
+  }), __metadata('design:paramtypes', [])], UserComponent);
   exports.UserComponent = UserComponent;
   return module.exports;
 });
@@ -19111,38 +19117,36 @@ $__System.registerDynamic("1c", ["3", "28", "2f", "30"], true, function($__requi
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function")
       return Reflect.metadata(k, v);
   };
-  var core_1 = $__require('3');
-  var router_1 = $__require('28');
-  var user_service_1 = $__require('2f');
-  var user_model_1 = $__require('30');
-  var UserListComponent = (function() {
-    function UserListComponent(userService, router) {
+  const core_1 = $__require('3');
+  const router_1 = $__require('28');
+  const user_service_1 = $__require('2f');
+  const user_model_1 = $__require('30');
+  let UserListComponent = class UserListComponent {
+    constructor(userService, router) {
       this.userService = userService;
       this.router = router;
       this.users = new Array();
       this.user = new user_model_1.UserModel();
     }
-    UserListComponent.prototype.getUsers = function() {
-      var _this = this;
-      this.userService.getUsers().subscribe(function(users) {
-        _this.users = users;
-      }, function(err) {});
-    };
-    UserListComponent.prototype.userDetails = function(id) {
+    getUsers() {
+      this.userService.getUsers().subscribe((users) => {
+        this.users = users;
+      }, (err) => {});
+    }
+    userDetails(id) {
       this.router.navigate(['/user/details', id]);
-    };
-    UserListComponent.prototype.userEdit = function(id) {
+    }
+    userEdit(id) {
       this.router.navigate(['/user/edit', id]);
-    };
-    UserListComponent.prototype.ngOnInit = function() {
+    }
+    ngOnInit() {
       this.getUsers();
-    };
-    UserListComponent = __decorate([core_1.Component({
-      templateUrl: "app/users/user-list/user-list.html",
-      directives: [router_1.ROUTER_DIRECTIVES]
-    }), __metadata('design:paramtypes', [user_service_1.UserService, router_1.Router])], UserListComponent);
-    return UserListComponent;
-  }());
+    }
+  };
+  UserListComponent = __decorate([core_1.Component({
+    templateUrl: "app/users/user-list/user-list.html",
+    directives: [router_1.ROUTER_DIRECTIVES]
+  }), __metadata('design:paramtypes', [user_service_1.UserService, router_1.Router])], UserListComponent);
   exports.UserListComponent = UserListComponent;
   return module.exports;
 });
@@ -19169,51 +19173,48 @@ $__System.registerDynamic("1d", ["3", "2f", "30", "28", "2b"], true, function($_
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function")
       return Reflect.metadata(k, v);
   };
-  var core_1 = $__require('3');
-  var user_service_1 = $__require('2f');
-  var user_model_1 = $__require('30');
-  var router_1 = $__require('28');
-  var toast_1 = $__require('2b');
-  var UserAddComponent = (function() {
-    function UserAddComponent(userService, redirectionRoute, route, toast) {
+  const core_1 = $__require('3');
+  const user_service_1 = $__require('2f');
+  const user_model_1 = $__require('30');
+  const router_1 = $__require('28');
+  const toast_1 = $__require('2b');
+  let UserAddComponent = class UserAddComponent {
+    constructor(userService, redirectionRoute, route, toast) {
       this.userService = userService;
       this.redirectionRoute = redirectionRoute;
       this.route = route;
       this.toast = toast;
       this.userModel = new user_model_1.UserModel();
     }
-    UserAddComponent.prototype.addUser = function(userModel) {
-      var _this = this;
-      this.userService.registerUser(this.userModel).subscribe(function(result) {
+    addUser(userModel) {
+      this.userService.registerUser(this.userModel).subscribe((result) => {
         if (result == true) {
-          _this.toast.show('User added successfully.');
-          _this.redirectionRoute.navigate(['/']);
+          this.toast.show('User added successfully.');
+          this.redirectionRoute.navigate(['/']);
         } else if (result == false) {
-          _this.toast.show('User Name already exists.');
+          this.toast.show('User Name already exists.');
         }
-      }, function(err) {});
-    };
-    UserAddComponent.prototype.checkEmail = function(email) {
-      var _this = this;
+      }, (err) => {});
+    }
+    checkEmail(email) {
       this.isEmailExist = false;
-      this.userService.findUserByEmail(email + "@promactinfo.com").subscribe(function(isEmailExist) {
+      this.userService.findUserByEmail(email + "@promactinfo.com").subscribe((isEmailExist) => {
         if (isEmailExist) {
-          _this.isEmailExist = true;
+          this.isEmailExist = true;
         } else {
-          _this.isEmailExist = false;
+          this.isEmailExist = false;
         }
-      }, function(err) {});
-    };
-    UserAddComponent.prototype.goBack = function() {
+      }, (err) => {});
+    }
+    goBack() {
       this.redirectionRoute.navigate(['/']);
-    };
-    __decorate([core_1.Input(), __metadata('design:type', user_model_1.UserModel)], UserAddComponent.prototype, "userModel", void 0);
-    UserAddComponent = __decorate([core_1.Component({
-      templateUrl: 'app/users/user-add/user-add.html',
-      providers: [toast_1.Md2Toast]
-    }), __metadata('design:paramtypes', [user_service_1.UserService, router_1.Router, router_1.ActivatedRoute, toast_1.Md2Toast])], UserAddComponent);
-    return UserAddComponent;
-  }());
+    }
+  };
+  __decorate([core_1.Input(), __metadata('design:type', user_model_1.UserModel)], UserAddComponent.prototype, "userModel", void 0);
+  UserAddComponent = __decorate([core_1.Component({
+    templateUrl: 'app/users/user-add/user-add.html',
+    providers: [toast_1.Md2Toast]
+  }), __metadata('design:paramtypes', [user_service_1.UserService, router_1.Router, router_1.ActivatedRoute, toast_1.Md2Toast])], UserAddComponent);
   exports.UserAddComponent = UserAddComponent;
   return module.exports;
 });
@@ -19240,50 +19241,43 @@ $__System.registerDynamic("1e", ["3", "28", "2f", "30", "2b"], true, function($_
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function")
       return Reflect.metadata(k, v);
   };
-  var core_1 = $__require('3');
-  var router_1 = $__require('28');
-  var user_service_1 = $__require('2f');
-  var user_model_1 = $__require('30');
-  var toast_1 = $__require('2b');
-  var UserEditComponent = (function() {
-    function UserEditComponent(userService, route, redirectionRoute, toast) {
+  const core_1 = $__require('3');
+  const router_1 = $__require('28');
+  const user_service_1 = $__require('2f');
+  const user_model_1 = $__require('30');
+  const toast_1 = $__require('2b');
+  let UserEditComponent = class UserEditComponent {
+    constructor(userService, route, redirectionRoute, toast) {
       this.userService = userService;
       this.route = route;
       this.redirectionRoute = redirectionRoute;
       this.toast = toast;
       this.user = new user_model_1.UserModel();
     }
-    UserEditComponent.prototype.ngOnInit = function() {
-      var _this = this;
-      this.id = this.route.params.subscribe(function(params) {
-        var id = _this.route.snapshot.params['id'];
-        _this.userService.getUserById(id).subscribe(function(user) {
-          return _this.user = user;
-        }, function(error) {
-          return _this.errorMessage = error;
-        });
+    ngOnInit() {
+      this.id = this.route.params.subscribe((params) => {
+        let id = this.route.snapshot.params['id'];
+        this.userService.getUserById(id).subscribe((user) => this.user = user, (error) => this.errorMessage = error);
       });
-    };
-    UserEditComponent.prototype.editUser = function(user) {
-      var _this = this;
-      this.userService.editUser(user).subscribe(function(result) {
+    }
+    editUser(user) {
+      this.userService.editUser(user).subscribe((result) => {
         if (result == true) {
-          _this.toast.show('User updated successfully.');
-          _this.redirectionRoute.navigate(['/']);
+          this.toast.show('User updated successfully.');
+          this.redirectionRoute.navigate(['/']);
         } else if (result == false) {
-          _this.toast.show('User Name already exists.');
+          this.toast.show('User Name already exists.');
         }
-      }, function(err) {});
-    };
-    UserEditComponent.prototype.goBack = function() {
+      }, (err) => {});
+    }
+    goBack() {
       this.redirectionRoute.navigate(['/']);
-    };
-    UserEditComponent = __decorate([core_1.Component({
-      templateUrl: './app/users/user-edit/user-edit.html',
-      providers: [toast_1.Md2Toast]
-    }), __metadata('design:paramtypes', [user_service_1.UserService, router_1.ActivatedRoute, router_1.Router, toast_1.Md2Toast])], UserEditComponent);
-    return UserEditComponent;
-  }());
+    }
+  };
+  UserEditComponent = __decorate([core_1.Component({
+    templateUrl: './app/users/user-edit/user-edit.html',
+    providers: [toast_1.Md2Toast]
+  }), __metadata('design:paramtypes', [user_service_1.UserService, router_1.ActivatedRoute, router_1.Router, toast_1.Md2Toast])], UserEditComponent);
   exports.UserEditComponent = UserEditComponent;
   return module.exports;
 });
@@ -19294,10 +19288,7 @@ $__System.registerDynamic("30", [], true, function($__require, exports, module) 
   var define,
       global = this || self,
       GLOBAL = global;
-  var UserModel = (function() {
-    function UserModel() {}
-    return UserModel;
-  }());
+  class UserModel {}
   exports.UserModel = UserModel;
   return module.exports;
 });
@@ -19324,37 +19315,31 @@ $__System.registerDynamic("1f", ["3", "30", "2f", "28"], true, function($__requi
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function")
       return Reflect.metadata(k, v);
   };
-  var core_1 = $__require('3');
-  var user_model_1 = $__require('30');
-  var user_service_1 = $__require('2f');
-  var router_1 = $__require('28');
-  var UserDetailsComponent = (function() {
-    function UserDetailsComponent(userService, route, redirectRoute) {
+  const core_1 = $__require('3');
+  const user_model_1 = $__require('30');
+  const user_service_1 = $__require('2f');
+  const router_1 = $__require('28');
+  let UserDetailsComponent = class UserDetailsComponent {
+    constructor(userService, route, redirectRoute) {
       this.userService = userService;
       this.route = route;
       this.redirectRoute = redirectRoute;
       this.user = new user_model_1.UserModel();
     }
-    UserDetailsComponent.prototype.ngOnInit = function() {
-      var _this = this;
-      this.id = this.route.params.subscribe(function(params) {
-        var id = _this.route.snapshot.params['id'];
-        _this.userService.getUserById(id).subscribe(function(user) {
-          return _this.user = user;
-        }, function(error) {
-          return _this.errorMessage = error;
-        });
+    ngOnInit() {
+      this.id = this.route.params.subscribe((params) => {
+        let id = this.route.snapshot.params['id'];
+        this.userService.getUserById(id).subscribe((user) => this.user = user, (error) => this.errorMessage = error);
       });
-    };
-    UserDetailsComponent.prototype.goBack = function() {
+    }
+    goBack() {
       this.redirectRoute.navigate(['/']);
-    };
-    UserDetailsComponent = __decorate([core_1.Component({
-      templateUrl: './app/users/user-details/user-details.html',
-      directives: [router_1.ROUTER_DIRECTIVES]
-    }), __metadata('design:paramtypes', [user_service_1.UserService, router_1.ActivatedRoute, router_1.Router])], UserDetailsComponent);
-    return UserDetailsComponent;
-  }());
+    }
+  };
+  UserDetailsComponent = __decorate([core_1.Component({
+    templateUrl: './app/users/user-details/user-details.html',
+    directives: [router_1.ROUTER_DIRECTIVES]
+  }), __metadata('design:paramtypes', [user_service_1.UserService, router_1.ActivatedRoute, router_1.Router])], UserDetailsComponent);
   exports.UserDetailsComponent = UserDetailsComponent;
   return module.exports;
 });
@@ -19365,10 +19350,7 @@ $__System.registerDynamic("31", [], true, function($__require, exports, module) 
   var define,
       global = this || self,
       GLOBAL = global;
-  var PasswordModel = (function() {
-    function PasswordModel() {}
-    return PasswordModel;
-  }());
+  class PasswordModel {}
   exports.PasswordModel = PasswordModel;
   return module.exports;
 });
@@ -27091,43 +27073,34 @@ $__System.registerDynamic("4d", ["3"], true, function($__require, exports, modul
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function")
       return Reflect.metadata(k, v);
   };
-  const core_1 = $__require('3');
-  let Md2ToastComponent = class Md2ToastComponent {
-    constructor() {
+  var core_1 = $__require('3');
+  var Md2ToastComponent = (function() {
+    function Md2ToastComponent() {
       this.toasts = [];
       this.maxShown = 5;
     }
-    add(toast) {
+    Md2ToastComponent.prototype.add = function(toast) {
       this.toasts.push(toast);
       if (this.toasts.length > this.maxShown) {
         this.toasts.splice(0, (this.toasts.length - this.maxShown));
       }
-    }
-    remove(toastId) {
-      this.toasts = this.toasts.filter((toast) => {
+    };
+    Md2ToastComponent.prototype.remove = function(toastId) {
+      this.toasts = this.toasts.filter(function(toast) {
         return toast.id !== toastId;
       });
-    }
-    isToast() {
+    };
+    Md2ToastComponent.prototype.isToast = function() {
       return this.toasts.length > 0;
-    }
-  };
-  Md2ToastComponent = __decorate([core_1.Component({
-    selector: 'md2-toast',
-    template: `
-    <div class="md2-toast-wrapper">
-      <div *ngFor="let toast of toasts" class="md2-toast" (click)="remove(toast.id)">
-        <div class="md2-toast-message">{{toast.message}}</div>
-      </div>
-    </div>
-  `,
-    styles: [`
-    .md2-toast-wrapper { position: fixed; top: 0; right: 0; z-index: 1050; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; cursor: default; overflow: hidden; min-width: 304px; padding: 8px; -moz-transition: all .4s cubic-bezier(.25,.8,.25,1); -o-transition: all .4s cubic-bezier(.25,.8,.25,1); -webkit-transition: all .4s cubic-bezier(.25,.8,.25,1); transition: all .4s cubic-bezier(.25,.8,.25,1); -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
-    .md2-toast { position: relative; padding: 14px 24px; margin-bottom: 5px; display: block; background-color: #323232; color: #fafafa; box-shadow: 0 2px 5px 0 rgba(0,0,0,.26); border-radius: 2px; font-size: 14px; overflow: hidden; -ms-word-wrap: break-word; word-wrap: break-word; -moz-transition: all .4s cubic-bezier(.25,.8,.25,1); -o-transition: all .4s cubic-bezier(.25,.8,.25,1); -webkit-transition: all .4s cubic-bezier(.25,.8,.25,1); transition: all .4s cubic-bezier(.25,.8,.25,1); }
-    .md2-toast-message { display: block; }
-  `],
-    encapsulation: core_1.ViewEncapsulation.None
-  }), __metadata('design:paramtypes', [])], Md2ToastComponent);
+    };
+    Md2ToastComponent = __decorate([core_1.Component({
+      selector: 'md2-toast',
+      template: "\n    <div class=\"md2-toast-wrapper\">\n      <div *ngFor=\"let toast of toasts\" class=\"md2-toast\" (click)=\"remove(toast.id)\">\n        <div class=\"md2-toast-message\">{{toast.message}}</div>\n      </div>\n    </div>\n  ",
+      styles: ["\n    .md2-toast-wrapper { position: fixed; top: 0; right: 0; z-index: 1050; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; cursor: default; overflow: hidden; min-width: 304px; padding: 8px; -moz-transition: all .4s cubic-bezier(.25,.8,.25,1); -o-transition: all .4s cubic-bezier(.25,.8,.25,1); -webkit-transition: all .4s cubic-bezier(.25,.8,.25,1); transition: all .4s cubic-bezier(.25,.8,.25,1); -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }\n    .md2-toast { position: relative; padding: 14px 24px; margin-bottom: 5px; display: block; background-color: #323232; color: #fafafa; box-shadow: 0 2px 5px 0 rgba(0,0,0,.26); border-radius: 2px; font-size: 14px; overflow: hidden; -ms-word-wrap: break-word; word-wrap: break-word; -moz-transition: all .4s cubic-bezier(.25,.8,.25,1); -o-transition: all .4s cubic-bezier(.25,.8,.25,1); -webkit-transition: all .4s cubic-bezier(.25,.8,.25,1); transition: all .4s cubic-bezier(.25,.8,.25,1); }\n    .md2-toast-message { display: block; }\n  "],
+      encapsulation: core_1.ViewEncapsulation.None
+    }), __metadata('design:paramtypes', [])], Md2ToastComponent);
+    return Md2ToastComponent;
+  }());
   exports.Md2ToastComponent = Md2ToastComponent;
   return module.exports;
 });
@@ -27154,18 +27127,19 @@ $__System.registerDynamic("2b", ["3", "4c", "4d"], true, function($__require, ex
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function")
       return Reflect.metadata(k, v);
   };
-  const core_1 = $__require('3');
-  const view_container_ref_1 = $__require('4c');
-  const toast_component_1 = $__require('4d');
-  let Md2Toast = class Md2Toast {
-    constructor(loader, appRef) {
+  var core_1 = $__require('3');
+  var view_container_ref_1 = $__require('4c');
+  var toast_component_1 = $__require('4d');
+  var Md2Toast = (function() {
+    function Md2Toast(loader, appRef) {
       this.loader = loader;
       this.appRef = appRef;
       this.hideDelay = 3000;
       this.index = 0;
     }
-    show(toastObj) {
-      let toast;
+    Md2Toast.prototype.show = function(toastObj) {
+      var _this = this;
+      var toast;
       if (typeof toastObj === 'string') {
         toast = new Toast(toastObj);
       } else if (typeof toastObj === 'object') {
@@ -27174,48 +27148,51 @@ $__System.registerDynamic("2b", ["3", "4c", "4d"], true, function($__require, ex
       }
       if (toast) {
         if (!this.container) {
-          let appElement = new view_container_ref_1.ViewContainerRef_(this.appRef['_rootComponents'][0]._hostElement);
-          let bindings = core_1.ReflectiveInjector.resolve([]);
-          this.loader.loadNextToLocation(toast_component_1.Md2ToastComponent, appElement, bindings).then((ref) => {
-            this.container = ref;
-            this.setupToast(toast);
+          var appElement = new view_container_ref_1.ViewContainerRef_(this.appRef['_rootComponents'][0]._hostElement);
+          var bindings = core_1.ReflectiveInjector.resolve([]);
+          this.loader.loadNextToLocation(toast_component_1.Md2ToastComponent, appElement, bindings).then(function(ref) {
+            _this.container = ref;
+            _this.setupToast(toast);
           });
         } else {
           this.setupToast(toast);
         }
       }
-    }
-    startTimeout(toastId) {
-      setTimeout(() => {
-        this.clear(toastId);
+    };
+    Md2Toast.prototype.startTimeout = function(toastId) {
+      var _this = this;
+      setTimeout(function() {
+        _this.clear(toastId);
       }, this.hideDelay);
-    }
-    setupToast(toast) {
+    };
+    Md2Toast.prototype.setupToast = function(toast) {
       toast.id = ++this.index;
       this.container.instance.add(toast);
       this.startTimeout(toast.id);
-    }
-    clear(toastId) {
+    };
+    Md2Toast.prototype.clear = function(toastId) {
       if (this.container) {
-        let instance = this.container.instance;
+        var instance = this.container.instance;
         instance.remove(toastId);
         if (!instance.isToast()) {
           this.hide();
         }
       }
-    }
-    hide() {
+    };
+    Md2Toast.prototype.hide = function() {
       this.container.destroy();
       this.container = null;
-    }
-  };
-  Md2Toast = __decorate([core_1.Injectable(), __metadata('design:paramtypes', [core_1.DynamicComponentLoader, core_1.ApplicationRef])], Md2Toast);
+    };
+    Md2Toast = __decorate([core_1.Injectable(), __metadata('design:paramtypes', [core_1.DynamicComponentLoader, core_1.ApplicationRef])], Md2Toast);
+    return Md2Toast;
+  }());
   exports.Md2Toast = Md2Toast;
-  class Toast {
-    constructor(message) {
+  var Toast = (function() {
+    function Toast(message) {
       this.message = message;
     }
-  }
+    return Toast;
+  }());
   exports.Toast = Toast;
   return module.exports;
 });
@@ -27242,57 +27219,55 @@ $__System.registerDynamic("20", ["3", "2f", "31", "d", "28", "2b"], true, functi
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function")
       return Reflect.metadata(k, v);
   };
-  var core_1 = $__require('3');
-  var user_service_1 = $__require('2f');
-  var user_password_model_1 = $__require('31');
-  var forms_1 = $__require('d');
-  var router_1 = $__require('28');
-  var toast_1 = $__require('2b');
-  var ChangePasswordComponent = (function() {
-    function ChangePasswordComponent(userService, redirectionRoute, route, toast) {
+  const core_1 = $__require('3');
+  const user_service_1 = $__require('2f');
+  const user_password_model_1 = $__require('31');
+  const forms_1 = $__require('d');
+  const router_1 = $__require('28');
+  const toast_1 = $__require('2b');
+  let ChangePasswordComponent = class ChangePasswordComponent {
+    constructor(userService, redirectionRoute, route, toast) {
       this.userService = userService;
       this.redirectionRoute = redirectionRoute;
       this.route = route;
       this.toast = toast;
       this.passwordModel = new user_password_model_1.PasswordModel();
     }
-    ChangePasswordComponent.prototype.changePassword = function(passwordModel) {
-      var _this = this;
-      this.userService.changePassword(this.passwordModel).subscribe(function(result) {
+    changePassword(passwordModel) {
+      this.userService.changePassword(this.passwordModel).subscribe((result) => {
         if (result == true) {
-          _this.toast.show('Password changed successfully');
-          _this.redirectionRoute.navigate(['/']);
+          this.toast.show('Password changed successfully');
+          this.redirectionRoute.navigate(['/']);
         } else if (result == false) {
-          _this.toast.show('Wrong password');
+          this.toast.show('Wrong password');
         }
-      }, function(err) {});
-    };
-    ChangePasswordComponent.prototype.matchPassword = function(confirmPassword, newPassword) {
+      }, (err) => {});
+    }
+    matchPassword(confirmPassword, newPassword) {
       if (confirmPassword == newPassword) {
         this.isNotMatch = false;
       } else {
         this.isNotMatch = true;
       }
-    };
-    ChangePasswordComponent.prototype.newPasswordIsSame = function(newPassword, oldPassword, confirmPassword) {
+    }
+    newPasswordIsSame(newPassword, oldPassword, confirmPassword) {
       this.matchPassword(confirmPassword, newPassword);
       if (newPassword == oldPassword && (oldPassword != "" && newPassword != undefined)) {
         this.isSame = true;
       } else {
         this.isSame = false;
       }
-    };
-    ChangePasswordComponent.prototype.goBack = function() {
+    }
+    goBack() {
       this.redirectionRoute.navigate(['/']);
-    };
-    __decorate([core_1.Input(), __metadata('design:type', user_password_model_1.PasswordModel)], ChangePasswordComponent.prototype, "passwordModel", void 0);
-    ChangePasswordComponent = __decorate([core_1.Component({
-      templateUrl: './app/users/user-change-password/user-change-password.html',
-      directives: [forms_1.FORM_DIRECTIVES],
-      providers: [toast_1.Md2Toast]
-    }), __metadata('design:paramtypes', [user_service_1.UserService, router_1.Router, router_1.ActivatedRoute, toast_1.Md2Toast])], ChangePasswordComponent);
-    return ChangePasswordComponent;
-  }());
+    }
+  };
+  __decorate([core_1.Input(), __metadata('design:type', user_password_model_1.PasswordModel)], ChangePasswordComponent.prototype, "passwordModel", void 0);
+  ChangePasswordComponent = __decorate([core_1.Component({
+    templateUrl: './app/users/user-change-password/user-change-password.html',
+    directives: [forms_1.FORM_DIRECTIVES],
+    providers: [toast_1.Md2Toast]
+  }), __metadata('design:paramtypes', [user_service_1.UserService, router_1.Router, router_1.ActivatedRoute, toast_1.Md2Toast])], ChangePasswordComponent);
   exports.ChangePasswordComponent = ChangePasswordComponent;
   return module.exports;
 });
@@ -27319,29 +27294,28 @@ $__System.registerDynamic("29", ["3", "4e", "43"], true, function($__require, ex
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function")
       return Reflect.metadata(k, v);
   };
-  var core_1 = $__require('3');
-  var http_service_1 = $__require('4e');
+  const core_1 = $__require('3');
+  const http_service_1 = $__require('4e');
   $__require('43');
-  var ConsumerAppService = (function() {
-    function ConsumerAppService(httpService) {
+  let ConsumerAppService = class ConsumerAppService {
+    constructor(httpService) {
       this.httpService = httpService;
       this.consumerAppUrl = 'api/consumerapp';
     }
-    ConsumerAppService.prototype.addConsumerApps = function(consumerAppsAc) {
+    addConsumerApps(consumerAppsAc) {
       return this.httpService.post(this.consumerAppUrl + "/addConsumer", consumerAppsAc);
-    };
-    ConsumerAppService.prototype.getConsumerApps = function() {
+    }
+    getConsumerApps() {
       return this.httpService.get(this.consumerAppUrl + "/getConsumerApps");
-    };
-    ConsumerAppService.prototype.getConsumerAppById = function(id) {
+    }
+    getConsumerAppById(id) {
       return this.httpService.get(this.consumerAppUrl + "/getConsumerById/" + id);
-    };
-    ConsumerAppService.prototype.updateConsumerApps = function(consumerAppsAc) {
+    }
+    updateConsumerApps(consumerAppsAc) {
       return this.httpService.post(this.consumerAppUrl + "/updateConsumer", consumerAppsAc);
-    };
-    ConsumerAppService = __decorate([core_1.Injectable(), __metadata('design:paramtypes', [http_service_1.HttpService])], ConsumerAppService);
-    return ConsumerAppService;
-  }());
+    }
+  };
+  ConsumerAppService = __decorate([core_1.Injectable(), __metadata('design:paramtypes', [http_service_1.HttpService])], ConsumerAppService);
   exports.ConsumerAppService = ConsumerAppService;
   return module.exports;
 });
@@ -27368,38 +27342,37 @@ $__System.registerDynamic("2c", ["3", "4e", "43"], true, function($__require, ex
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function")
       return Reflect.metadata(k, v);
   };
-  var core_1 = $__require('3');
-  var http_service_1 = $__require('4e');
+  const core_1 = $__require('3');
+  const http_service_1 = $__require('4e');
   $__require('43');
-  var ProjectService = (function() {
-    function ProjectService(httpService) {
+  let ProjectService = class ProjectService {
+    constructor(httpService) {
       this.httpService = httpService;
       this.ProjectUrl = 'api/project';
     }
-    ProjectService.prototype.checkDuplicate = function(project) {
+    checkDuplicate(project) {
       return this.httpService.post(this.ProjectUrl + "/checkDuplicate", project);
-    };
-    ProjectService.prototype.getUsers = function() {
+    }
+    getUsers() {
       return this.httpService.get("api/user" + "/users");
-    };
-    ProjectService.prototype.getPros = function() {
+    }
+    getPros() {
       return this.httpService.get(this.ProjectUrl + "/projects");
-    };
-    ProjectService.prototype.getProject = function(id) {
+    }
+    getProject(id) {
       return this.httpService.get(this.ProjectUrl + "/getProjects/" + id);
-    };
-    ProjectService.prototype.addProject = function(project) {
+    }
+    addProject(project) {
       return this.httpService.post(this.ProjectUrl + "/addProject", project);
-    };
-    ProjectService.prototype.deleteProject = function(projectId) {
+    }
+    deleteProject(projectId) {
       return this.httpService.delete(this.ProjectUrl + "/deleteProject/" + projectId);
-    };
-    ProjectService.prototype.editProject = function(project) {
+    }
+    editProject(project) {
       return this.httpService.put(this.ProjectUrl + "/editProject/", project);
-    };
-    ProjectService = __decorate([core_1.Injectable(), __metadata('design:paramtypes', [http_service_1.HttpService])], ProjectService);
-    return ProjectService;
-  }());
+    }
+  };
+  ProjectService = __decorate([core_1.Injectable(), __metadata('design:paramtypes', [http_service_1.HttpService])], ProjectService);
   exports.ProjectService = ProjectService;
   return module.exports;
 });
@@ -56773,7 +56746,7 @@ $__System.registerDynamic("14b", ["32", "f", "55", "58", "59", "5d", "62", "65",
   return module.exports;
 });
 
-$__System.registerDynamic("4e", ["4f", "3", "f", "14b"], true, function($__require, exports, module) {
+$__System.registerDynamic("4e", ["4f", "3", "f", "35", "3d", "14b"], true, function($__require, exports, module) {
   "use strict";
   ;
   var define,
@@ -56795,42 +56768,36 @@ $__System.registerDynamic("4e", ["4f", "3", "f", "14b"], true, function($__requi
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function")
       return Reflect.metadata(k, v);
   };
-  var http_1 = $__require('4f');
-  var core_1 = $__require('3');
-  var Observable_1 = $__require('f');
+  const http_1 = $__require('4f');
+  const core_1 = $__require('3');
+  const Observable_1 = $__require('f');
+  $__require('35');
+  $__require('3d');
   $__require('14b');
-  var HttpService = (function() {
-    function HttpService(http) {
+  let HttpService = class HttpService {
+    constructor(http) {
       this.http = http;
     }
-    HttpService.prototype.get = function(url) {
-      return this.intercept(this.http.get(url).map(function(res) {
-        return res.json();
-      }));
-    };
-    HttpService.prototype.post = function(url, body) {
-      var jsonBody = JSON.stringify(body);
-      var headers = new http_1.Headers({'Content-Type': 'application/json; charset=utf-8'});
-      var options = new http_1.RequestOptions({headers: headers});
-      return this.intercept(this.http.post(url, jsonBody, options).map(function(res) {
-        return res.json();
-      }));
-    };
-    HttpService.prototype.put = function(url, body) {
-      var jsonBody = JSON.stringify(body);
-      var headers = new http_1.Headers({'Content-Type': 'application/json; charset=utf-8'});
-      var options = new http_1.RequestOptions({headers: headers});
-      return this.intercept(this.http.put(url, jsonBody, options).map(function(res) {
-        return res.json();
-      }));
-    };
-    HttpService.prototype.delete = function(url) {
-      return this.intercept(this.http.delete(url).map(function(res) {
-        return res.json();
-      }));
-    };
-    HttpService.prototype.intercept = function(observable) {
-      return observable.catch(function(err, source) {
+    get(url) {
+      return this.intercept(this.http.get(url).map((res) => res.json()));
+    }
+    post(url, body) {
+      let jsonBody = JSON.stringify(body);
+      let headers = new http_1.Headers({'Content-Type': 'application/json; charset=utf-8'});
+      let options = new http_1.RequestOptions({headers: headers});
+      return this.intercept(this.http.post(url, jsonBody, options).map((res) => res.json()));
+    }
+    put(url, body) {
+      let jsonBody = JSON.stringify(body);
+      let headers = new http_1.Headers({'Content-Type': 'application/json; charset=utf-8'});
+      let options = new http_1.RequestOptions({headers: headers});
+      return this.intercept(this.http.put(url, jsonBody, options).map((res) => res.json()));
+    }
+    delete(url) {
+      return this.intercept(this.http.delete(url).map((res) => res.json()));
+    }
+    intercept(observable) {
+      return observable.catch((err, source) => {
         if (err.status === 401) {
           location.href = "/Login";
         } else if (err.status === 500) {
@@ -56839,10 +56806,9 @@ $__System.registerDynamic("4e", ["4f", "3", "f", "14b"], true, function($__requi
           return Observable_1.Observable.throw(err);
         }
       });
-    };
-    HttpService = __decorate([core_1.Injectable(), __metadata('design:paramtypes', [http_1.Http])], HttpService);
-    return HttpService;
-  }());
+    }
+  };
+  HttpService = __decorate([core_1.Injectable(), __metadata('design:paramtypes', [http_1.Http])], HttpService);
   exports.HttpService = HttpService;
   return module.exports;
 });
@@ -57498,41 +57464,40 @@ $__System.registerDynamic("2f", ["3", "4e", "43"], true, function($__require, ex
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function")
       return Reflect.metadata(k, v);
   };
-  var core_1 = $__require('3');
-  var http_service_1 = $__require('4e');
+  const core_1 = $__require('3');
+  const http_service_1 = $__require('4e');
   $__require('43');
-  var UserService = (function() {
-    function UserService(httpService, httpServiceForPassword) {
+  let UserService = class UserService {
+    constructor(httpService, httpServiceForPassword) {
       this.httpService = httpService;
       this.httpServiceForPassword = httpServiceForPassword;
       this.UserUrl = 'api/user';
     }
-    UserService.prototype.getUsers = function() {
+    getUsers() {
       return this.httpService.get(this.UserUrl + "/users");
-    };
-    UserService.prototype.registerUser = function(newUser) {
+    }
+    registerUser(newUser) {
       newUser.IsActive = true;
       newUser.Email = newUser.Email + "@promactinfo.com";
       return this.httpService.post(this.UserUrl + "/add", newUser);
-    };
-    UserService.prototype.getUserById = function(userId) {
+    }
+    getUserById(userId) {
       return this.httpService.get(this.UserUrl + "/" + userId);
-    };
-    UserService.prototype.editUser = function(editedUser) {
+    }
+    editUser(editedUser) {
       return this.httpService.put(this.UserUrl + "/edit", editedUser);
-    };
-    UserService.prototype.changePassword = function(newPassword) {
+    }
+    changePassword(newPassword) {
       return this.httpServiceForPassword.post(this.UserUrl + "/changePassword", newPassword);
-    };
-    UserService.prototype.findUserByUserName = function(userName) {
+    }
+    findUserByUserName(userName) {
       return this.httpService.get(this.UserUrl + "/findbyusername/" + userName);
-    };
-    UserService.prototype.findUserByEmail = function(email) {
+    }
+    findUserByEmail(email) {
       return this.httpService.get(this.UserUrl + "/findbyemail/" + email);
-    };
-    UserService = __decorate([core_1.Injectable(), __metadata('design:paramtypes', [http_service_1.HttpService, http_service_1.HttpService])], UserService);
-    return UserService;
-  }());
+    }
+  };
+  UserService = __decorate([core_1.Injectable(), __metadata('design:paramtypes', [http_service_1.HttpService, http_service_1.HttpService])], UserService);
   exports.UserService = UserService;
   return module.exports;
 });
@@ -57559,46 +57524,43 @@ $__System.registerDynamic("14f", ["3", "5", "8", "b", "c", "12", "13", "4f", "14
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function")
       return Reflect.metadata(k, v);
   };
-  var core_1 = $__require('3');
-  var platform_browser_1 = $__require('5');
-  var button_1 = $__require('8');
-  var toolbar_1 = $__require('b');
-  var input_1 = $__require('c');
-  var sidenav_1 = $__require('12');
-  var checkbox_1 = $__require('13');
-  var http_1 = $__require('4f');
-  var app_component_1 = $__require('14');
-  var forms_1 = $__require('d');
-  var app_routes_1 = $__require('27');
-  var consumerapp_component_1 = $__require('16');
-  var consumerapp_list_component_1 = $__require('17');
-  var consumerapp_add_component_1 = $__require('18');
-  var consumer_edit_component_1 = $__require('19');
-  var project_component_1 = $__require('22');
-  var project_list_component_1 = $__require('23');
-  var project_add_component_1 = $__require('24');
-  var project_edit_component_1 = $__require('25');
-  var project_view_component_1 = $__require('26');
-  var user_component_1 = $__require('1b');
-  var user_list_component_1 = $__require('1c');
-  var user_add_component_1 = $__require('1d');
-  var user_edit_component_1 = $__require('1e');
-  var user_details_component_1 = $__require('1f');
-  var user_change_password_component_1 = $__require('20');
-  var http_service_1 = $__require('4e');
-  var consumerapp_service_1 = $__require('29');
-  var project_service_1 = $__require('2c');
-  var user_service_1 = $__require('2f');
-  var AppModule = (function() {
-    function AppModule() {}
-    AppModule = __decorate([core_1.NgModule({
-      declarations: [app_component_1.AppComponent, consumerapp_component_1.ConsumerAppComponent, consumerapp_list_component_1.ConsumerappListComponent, consumerapp_add_component_1.ConsumerappAddComponent, consumer_edit_component_1.ConsumerappEditComponent, project_component_1.ProjectComponent, project_list_component_1.ProjectListComponent, project_add_component_1.ProjectAddComponent, project_edit_component_1.ProjectEditComponent, project_view_component_1.ProjectViewComponent, user_component_1.UserComponent, user_list_component_1.UserListComponent, user_add_component_1.UserAddComponent, user_edit_component_1.UserEditComponent, user_details_component_1.UserDetailsComponent, user_change_password_component_1.ChangePasswordComponent],
-      imports: [platform_browser_1.BrowserModule, http_1.HttpModule, forms_1.FormsModule, app_routes_1.routing, button_1.MdButtonModule, toolbar_1.MdToolbarModule, sidenav_1.MdSidenavModule, input_1.MdInputModule, checkbox_1.MdCheckboxModule],
-      bootstrap: [app_component_1.AppComponent],
-      providers: [http_service_1.HttpService, consumerapp_service_1.ConsumerAppService, project_service_1.ProjectService, user_service_1.UserService]
-    }), __metadata('design:paramtypes', [])], AppModule);
-    return AppModule;
-  }());
+  const core_1 = $__require('3');
+  const platform_browser_1 = $__require('5');
+  const button_1 = $__require('8');
+  const toolbar_1 = $__require('b');
+  const input_1 = $__require('c');
+  const sidenav_1 = $__require('12');
+  const checkbox_1 = $__require('13');
+  const http_1 = $__require('4f');
+  const app_component_1 = $__require('14');
+  const forms_1 = $__require('d');
+  const app_routes_1 = $__require('27');
+  const consumerapp_component_1 = $__require('16');
+  const consumerapp_list_component_1 = $__require('17');
+  const consumerapp_add_component_1 = $__require('18');
+  const consumer_edit_component_1 = $__require('19');
+  const project_component_1 = $__require('22');
+  const project_list_component_1 = $__require('23');
+  const project_add_component_1 = $__require('24');
+  const project_edit_component_1 = $__require('25');
+  const project_view_component_1 = $__require('26');
+  const user_component_1 = $__require('1b');
+  const user_list_component_1 = $__require('1c');
+  const user_add_component_1 = $__require('1d');
+  const user_edit_component_1 = $__require('1e');
+  const user_details_component_1 = $__require('1f');
+  const user_change_password_component_1 = $__require('20');
+  const http_service_1 = $__require('4e');
+  const consumerapp_service_1 = $__require('29');
+  const project_service_1 = $__require('2c');
+  const user_service_1 = $__require('2f');
+  let AppModule = class AppModule {};
+  AppModule = __decorate([core_1.NgModule({
+    declarations: [app_component_1.AppComponent, consumerapp_component_1.ConsumerAppComponent, consumerapp_list_component_1.ConsumerappListComponent, consumerapp_add_component_1.ConsumerappAddComponent, consumer_edit_component_1.ConsumerappEditComponent, project_component_1.ProjectComponent, project_list_component_1.ProjectListComponent, project_add_component_1.ProjectAddComponent, project_edit_component_1.ProjectEditComponent, project_view_component_1.ProjectViewComponent, user_component_1.UserComponent, user_list_component_1.UserListComponent, user_add_component_1.UserAddComponent, user_edit_component_1.UserEditComponent, user_details_component_1.UserDetailsComponent, user_change_password_component_1.ChangePasswordComponent],
+    imports: [platform_browser_1.BrowserModule, http_1.HttpModule, forms_1.FormsModule, app_routes_1.routing, button_1.MdButtonModule, toolbar_1.MdToolbarModule, sidenav_1.MdSidenavModule, input_1.MdInputModule, checkbox_1.MdCheckboxModule],
+    bootstrap: [app_component_1.AppComponent],
+    providers: [http_service_1.HttpService, consumerapp_service_1.ConsumerAppService, project_service_1.ProjectService, user_service_1.UserService]
+  }), __metadata('design:paramtypes', [])], AppModule);
   exports.AppModule = AppModule;
   return module.exports;
 });
@@ -57609,10 +57571,10 @@ $__System.registerDynamic("1", ["3", "4", "14f"], true, function($__require, exp
   var define,
       global = this || self,
       GLOBAL = global;
-  var core_1 = $__require('3');
+  const core_1 = $__require('3');
   core_1.enableProdMode();
-  var platform_browser_dynamic_1 = $__require('4');
-  var app_module_1 = $__require('14f');
+  const platform_browser_dynamic_1 = $__require('4');
+  const app_module_1 = $__require('14f');
   platform_browser_dynamic_1.platformBrowserDynamic().bootstrapModule(app_module_1.AppModule);
   return module.exports;
 });

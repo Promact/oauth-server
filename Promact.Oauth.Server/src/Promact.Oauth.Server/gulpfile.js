@@ -62,16 +62,7 @@ gulp.task('bundle', function (done) {
   }).then(function () {
       done();
   })
-
-
-    //builder.
-    //return builder.buildStatic('./wwwroot', './bundle.min.js', { runtime: false })
-    //  .then(function () {
-    //      //return del(['build/**/*.js', '!build/lib/**/*.js', '!build/bundle.min.js']);
-    //      done();
-    //  }).catch(function (err) {
-    //      console.error('systemjs-builder Bundling failed' + paths.systemConfig + err);
-    //  });
+   
 });
 
 gulp.task("clean:js", function (cb) {
