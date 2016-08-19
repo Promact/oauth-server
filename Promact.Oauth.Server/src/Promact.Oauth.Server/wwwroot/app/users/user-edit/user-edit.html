@@ -10,38 +10,40 @@
     <form>
 
         <div class="form-group">
-
-            
-
-            <md-input placeholder="First name" class="demo-full-width"  name="FirstName" [(ngModel)]="user.FirstName" required></md-input>
+            <div class="half-width">
+                <md-input placeholder="First name" class="full-width" name="FirstName" [(ngModel)]="user.FirstName" required></md-input>
+            </div>
         </div>
 
 
         <div class="form-group">
-         
 
-            <md-input placeholder="Last name" class="demo-full-width"  name="LastName" [(ngModel)]="user.LastName" required ></md-input>
+            <div class="half-width">
+                <md-input placeholder="Last name" class="full-width" name="LastName" [(ngModel)]="user.LastName" required></md-input>
+            </div>
         </div>
+
         <div class="form-group">
 
-            <label>Email: </label>
 
+
+          <label class="lb-label">Email:</label>
             {{user.Email}}
 
         </div>
 
 
         <div class="form-group">
-            <label>Status:</label>
+            <label class="lb-label">Status:</label>
 
             <md-checkbox name="IsActive" [(ngModel)]="user.IsActive" id="chckbox"></md-checkbox>
 
         </div>
 
         <div>
-            
+
             <button md-raised-button type="submit" (click)="editUser(user)" class="btn-green">Update</button>
-         
+
         </div>
     </form>
 </div>
