@@ -9,8 +9,7 @@ var gulp = require("gulp"),
     sysBuilder = require('systemjs-builder'),
      sourcemaps = require('gulp-sourcemaps'),
     tsc = require('gulp-typescript'),
-    tsProject = tsc.createProject('./wwwroot/tsconfig.json');
-    uglify = require("gulp-uglify"),
+    tsProject = tsc.createProject('./wwwroot/tsconfig.json'),
     Server = require('karma').Server;
 
 
