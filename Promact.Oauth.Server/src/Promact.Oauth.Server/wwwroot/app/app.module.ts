@@ -29,9 +29,8 @@ import {HttpService} from "./http.service";
 import { ConsumerAppService }   from "./consumerapp/consumerapp.service";
 import {ProjectService} from "./project/project.service";
 import {UserService} from "./users/user.service";
-import "rxjs/add/operator/map";
-import "rxjs/add/operator/catch";
-import "rxjs/Rx";
+import { Observable } from "rxjs/Rx";
+
 
 @NgModule({
     declarations: [AppComponent, ConsumerAppComponent, ConsumerappListComponent, ConsumerappAddComponent, ConsumerappEditComponent, ProjectComponent, ProjectListComponent, ProjectAddComponent, ProjectEditComponent, ProjectViewComponent, UserComponent, UserListComponent, UserAddComponent, UserEditComponent, UserDetailsComponent, ChangePasswordComponent],
@@ -44,6 +43,7 @@ import "rxjs/Rx";
         MdToolbarModule,
         MdSidenavModule,
         MdInputModule,
+        Observable,
         MdCheckboxModule
 
     ],
