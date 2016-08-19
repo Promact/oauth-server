@@ -2,10 +2,8 @@
     <div class="card-title-block">
         <div class="title in_block">
             <h3 class="in_block">Users</h3>
-                
-
             <div class="fl-right">
-                <a routerLink="add" routerLinkActive="active" class="add-link">Add User</a>
+                <a routerLink="user/add" routerLinkActive="active" class="add-link"><i class="material-icons">add</i>Add User</a>
             </div>
 
         </div>
@@ -30,7 +28,8 @@
                 <td *ngIf="user.IsActive">Active</td>
                 <td *ngIf="!user.IsActive">Inactive</td>
                 
-                <td> <button md-raised-button class="btn-green custom-btn mr-5" (click)="userDetails(user.Id)">Details</button> <button class="custom-btn" md-raised-button (click)="userEdit(user.Id)">Edit</button> </td>
+                
+                <td> <button  md-raised-button class="btn-green custom-btn mr-5" (click)="userDetails(user.Id)">Details</button> <button   md-raised-button class="custom-btn"  (click)="userEdit(user.Id)">Edit</button> </td>
                
                 
             </tr>

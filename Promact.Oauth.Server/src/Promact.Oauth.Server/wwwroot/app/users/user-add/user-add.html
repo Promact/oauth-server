@@ -1,54 +1,52 @@
-﻿<center>
-    <h2><u>Register User</u></h2>
+﻿
+<div class="card-title-block">
+    <div class="title in_block">
+        <h3>Register User</h3>
+    </div>
+    <div class="fl-right">
+        <md-button type="submit" class="btn-back" (click)="goBack()"> <i class="material-icons">arrow_back</i>Back</md-button>
+    </div>
+</div>
     <form>
-        <table>
-            <tr>
-                <td>
-                    <b>First Name: </b>
-                </td>
-                <td>
-                    <input type="text" name="FirstName" [(ngModel)]="userModel.FirstName" required/>
-                    <!--<div *ngIf="FirstName.touched && !FirstName.valid && FirstName.errors.required" style="color:red">
-                        Required!
-                    </div>-->
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <b>Last Name:</b>
-                </td>
-                <td>
-                    <input type="text" name="LastName" [(ngModel)]="userModel.LastName" required />
-                    <!--<div *ngIf="LastName.touched && !LastName.valid && LastName.errors.required" style="color:red">
-                         Required!
-                    </div>-->
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <b>Email: </b>
-                </td>
-                <td>
-                    <input type="email" name="Email" [(ngModel)]="userModel.Email" 
-                           (blur)="checkEmail(userModel.Email)" required> 
-                    @promactinfo.com
-                    <!--<div *ngIf="Email.touched && !Email.valid && !isEmailExist" style="color:red">
-                        Required!
-                    </div>
-                    <div *ngIf="isEmailExist" style="color:red">
-                        This email already exist!
-                    </div>-->
-                </td>
-            </tr>
-        </table>
 
-        <div>
-            <br />
-            <button type="submit" (click)="addUser(userModel)">Add</button>
-            <button type="submit" (click)="goBack()">Back</button>
+        <div class="form-group">
+
+
+            <md-input placeholder="First Name" type="text" name="FirstName" [(ngModel)]="userModel.FirstName" required ></md-input>
+
         </div>
-    </form>-->
-</center>
+
+        <div class="form-group">
+
+
+            <md-input type="text" placeholder="Last Name" name="LastName" [(ngModel)]="userModel.LastName" required></md-input>
+            <!--<div *ngIf="LastName.touched && !LastName.valid && LastName.errors.required" style="color:red">
+                 Required!
+            </div>-->
+        </div>
+
+        <div class="form-group">
+
+       
+
+            <md-input type="email"  placeholder="email" name="Email" [(ngModel)]="userModel.Email"
+                   (blur)="checkEmail(userModel.Email)" required></md-input>
+            @promactinfo.com
+            </div>
+            <!--<div *ngIf="Email.touched && !Email.valid && !isEmailExist" style="color:red">
+            Required!
+        </div>
+        <div *ngIf="isEmailExist" style="color:red">
+            This email already exist!
+        </div>-->
+         
+            <div>
+               
+                <button md-raised-button class="btn-green" type="submit" (click)="addUser(userModel)">Add</button>
+                
+            </div>
+</form>
+
 
 
 <!--<form novalidate #UserAddForm="ngForm">
