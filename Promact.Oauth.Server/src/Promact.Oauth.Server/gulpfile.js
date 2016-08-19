@@ -7,9 +7,6 @@ var gulp = require("gulp"),
     cssmin = require("gulp-cssmin"),
     uglify = require("gulp-uglify"),
     sysBuilder = require('systemjs-builder'),
-    sourcemaps = require('gulp-sourcemaps'),
-    tsc = require('gulp-typescript'),
-    tsProject = tsc.createProject('./wwwroot/tsconfig.json'),
     Server = require('karma').Server;
 
 var paths = {
