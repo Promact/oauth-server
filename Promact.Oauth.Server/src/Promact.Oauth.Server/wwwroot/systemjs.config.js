@@ -11,7 +11,6 @@
         'rxjs': 'lib/rxjs',
         'md2': 'lib/md2',
         '@angular2-material' : 'lib/@angular2-material'
-       
     };
     // packages tells the System loader how to load when no filename and/or no extension
     var packages = {
