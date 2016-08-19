@@ -9,13 +9,15 @@ var gulp = require("gulp"),
     sysBuilder = require('systemjs-builder'),
     sourcemaps = require('gulp-sourcemaps'),
     tsc = require('gulp-typescript'),
-    tsProject = tsc.createProject('./wwwroot/tsconfig.json');
-
-
+    tsProject = tsc.createProject('./wwwroot/tsconfig.json'),
+    Server = require('karma').Server;
 
 var paths = {
     webroot: "./wwwroot/"
 };
+
+
+//var Server = require('karma').Server;
 
 paths.js = paths.webroot + "js/**/*.js";
 paths.minJs = paths.webroot + "js/**/*.min.js";
@@ -53,33 +55,26 @@ gulp.task("copytowwwroot", function () {
 
 });
 
-gulp.task('compile', function () {
-    var tsResult = gulp.src('src/**/*.ts')
-        .pipe(sourcemaps.init())
-        .pipe(tsc(tsProject));
 
-    return tsResult.js
-        .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest('.'));
-});
+gulp.task('bundle', function (done) {
+    var builder = new sysBuilder('./wwwroot', './wwwroot/systemjs.config.js');
 
-gulp.task('bundle',['compile'], function (done) {
-    var builder = new sysBuilder('./wwwroot', paths.systemConfig);
+    builder
+     .buildStatic('app', './wwwroot/bundle.js', {
+      runtime: false
+  }).then(function () {
+      done();
+  })
 
-    return builder.buildStatic('app', './bundle.min.js', { runtime: false })
-      .then(function () {
-          //return del(['build/**/*.js', '!build/lib/**/*.js', '!build/bundle.min.js']);
-          done();
-      }).catch(function (err) {
-          console.error('systemjs-builder Bundling failed' + paths.systemConfig + err);
-      });
-});
 
-gulp.task('bundle:min', ['bundle'], function () {
-    return gulp
-      .src('build/bundle.min.js')
-      .pipe(uglify())
-      .pipe(gulp.dest('build'));
+    //builder.
+    //return builder.buildStatic('./wwwroot', './bundle.min.js', { runtime: false })
+    //  .then(function () {
+    //      //return del(['build/**/*.js', '!build/lib/**/*.js', '!build/bundle.min.js']);
+    //      done();
+    //  }).catch(function (err) {
+    //      console.error('systemjs-builder Bundling failed' + paths.systemConfig + err);
+    //  });
 });
 
 gulp.task("clean:js", function (cb) {
@@ -107,3 +102,30 @@ gulp.task("min:css", function () {
 });
 
 gulp.task("min", ["min:js", "min:css"]);
+
+//// Run test once and exit
+//gulp.task('test', function (done) {
+//    new Server({
+//        configFile: __dirname + '/karma.conf.js',
+//        singleRun: true
+//    }, done).start();
+//});
+
+//Runs karma test
+gulp.task('test', function (done) {
+    new Server({
+        configFile: __dirname + '/karma.conf.js',
+        singleRun: true,
+    }, function () { done(); }).start();
+});
+
+//Generates coverage reports in coverage folder
+gulp.task('coverage', function () {
+    return gulp.src('coverage/coverage-final.json')
+    .pipe(remapIstanbul({
+        reports: {
+            'html': 'coverage'
+        }
+    }))
+    .pipe(gulp.dest('./coverage'));
+});

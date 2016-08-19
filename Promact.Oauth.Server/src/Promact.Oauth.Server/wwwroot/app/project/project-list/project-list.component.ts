@@ -3,6 +3,7 @@ import { ProjectService }   from '../project.service';
 import {projectModel} from '../project.model'
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 import {Md2Toast} from 'md2/toast';
+
 @Component({
     templateUrl: "app/project/project-list/project-list.html",
     directives: [ROUTER_DIRECTIVES],

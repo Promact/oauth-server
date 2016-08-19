@@ -1,6 +1,5 @@
 ﻿import {Component} from "@angular/core";
 import { Router, ROUTER_DIRECTIVES} from '@angular/router';
-
 import { UserService }   from '../user.service';
 import {UserModel} from '../user.model';
 
