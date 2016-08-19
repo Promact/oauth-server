@@ -11,5 +11,6 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
     {
         OAuth OAuthClientChecking(string email, string clientId);
         Task<OAuthApplication> GetAppDetailsFromClient(string redirectUrl, string refreshToken);
+        bool GetDetailsClientByAccessToken(string accessToken);
     }
 }
