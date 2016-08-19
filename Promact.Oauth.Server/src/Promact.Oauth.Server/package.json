@@ -48,8 +48,6 @@
     "gulp": "3.9.1",
     "gulp-concat": "2.6.0",
     "gulp-cssmin": "0.1.7",
-    "gulp-sourcemaps": "^1.6.0",
-    "gulp-typescript": "^2.13.6",
     "gulp-uglify": "1.4.2",
     "lite-server": "^2.2.0",
     "rimraf": "2.5.3",
@@ -67,8 +65,6 @@
     "karma-jasmine": "1.0.2",
     "phantomjs": "2.1.7",
     "remap-istanbul": "0.6.4",
-    "systemjs-builder": "0.15.16",
-    "gulp-typescript": "2.13.6",
     "karma-cli": "1.0.1"
   }
 }
