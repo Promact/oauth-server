@@ -6,11 +6,13 @@ import {Routes, RouterModule } from '@angular/router';
 import {ConsumerAppComponent} from './consumerapp/consumerapp.component';
 import {ProjectComponent} from "./project/project.component";
 import {UserComponent} from './users/user.component';
+import { LoginComponent } from './login.component';
 
 const appRoutes: Routes = [
 
+    { path: '', component: LoginComponent },
     ...consumerRoute,
-    { path: '', component: ConsumerAppComponent },
+    { path: 'consumerapp', component: ConsumerAppComponent },
     ...projectRoutes,
     { path: 'project', component: ProjectComponent },
     ...userRoutes,

@@ -29,10 +29,14 @@ import {HttpService} from "./http.service";
 import { ConsumerAppService }   from "./consumerapp/consumerapp.service";
 import {ProjectService} from "./project/project.service";
 import {UserService} from "./users/user.service";
+import { LoginService } from "./login.service";
+import { LoginComponent } from './login.component';
+import { UserEmployeeDetailComponent } from './users/user-employee/user-employee-details.component';
+
 
 
 @NgModule({
-    declarations: [AppComponent, ConsumerAppComponent, ConsumerappListComponent, ConsumerappAddComponent, ConsumerappEditComponent, ProjectComponent, ProjectListComponent, ProjectAddComponent, ProjectEditComponent, ProjectViewComponent, UserComponent, UserListComponent, UserAddComponent, UserEditComponent, UserDetailsComponent, ChangePasswordComponent],
+    declarations: [AppComponent, ConsumerAppComponent, ConsumerappListComponent, ConsumerappAddComponent, ConsumerappEditComponent, ProjectComponent, ProjectListComponent, ProjectAddComponent, ProjectEditComponent, ProjectViewComponent, UserComponent, UserListComponent, UserAddComponent, UserEditComponent, UserDetailsComponent, ChangePasswordComponent, LoginComponent, UserEmployeeDetailComponent],
     imports: [
         BrowserModule,
         HttpModule,
@@ -46,7 +50,7 @@ import {UserService} from "./users/user.service";
 
     ],
     bootstrap: [AppComponent],
-    providers: [HttpService, ConsumerAppService, ProjectService, UserService
+    providers: [HttpService, ConsumerAppService, ProjectService, UserService, LoginService
     ],
 })
 export class AppModule { } 

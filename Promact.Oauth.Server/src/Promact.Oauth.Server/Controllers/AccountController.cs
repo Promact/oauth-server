@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Models.AccountViewModels;
 using Promact.Oauth.Server.Services;
+using Promact.Oauth.Server.Models.ApplicationClasses;
 
 namespace Promact.Oauth.Server.Controllers
 {
@@ -300,16 +301,6 @@ namespace Promact.Oauth.Server.Controllers
             return code == null ? View("Error") : View();
         }
 
-        [HttpGet]
-        //[AllowAnonymous]
-        public async Task<IActionResult> Roles(string code = null)
-        {
-            var userName = User.Identity.Name;
-            var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            var role = _userManager.IsInRoleAsync(user,"Admin");
-            return Ok(role);
-        }
-
         //
         // POST: /Account/ResetPassword
         [HttpPost]
@@ -443,6 +434,28 @@ namespace Promact.Oauth.Server.Controllers
             {
                 ModelState.AddModelError(string.Empty, "Invalid code.");
                 return View(model);
+            }
+        }
+
+        /// <summary>
+        /// Method to check & get the role of current user
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> IsInRole()
+        {
+            LoginAsync user = new LoginAsync();
+            var newUser = await _userManager.FindByNameAsync(User.Identity.Name);
+            user.UserId = newUser.Id;
+            if (User.IsInRole("Admin"))
+            {
+                user.Role = "Admin";
+                return Ok(user);
+            }
+            else
+            {
+                user.Role = "Employee";
+                return Ok(user);
             }
         }
 

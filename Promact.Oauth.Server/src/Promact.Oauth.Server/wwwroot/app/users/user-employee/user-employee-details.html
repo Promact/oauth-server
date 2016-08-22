@@ -1,0 +1,24 @@
+﻿<div class="user-details">
+    <div class="card-title-block">
+        <div class="title in_block">
+            <h3>User Details</h3>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>First Name: </label>
+        <p class="in_block">{{user.FirstName}}</p>
+    </div>
+    <div class="form-group">
+        <label>Last Name:</label>
+        <p class="in_block">{{user.LastName}}</p>
+    </div>
+    <div class="form-group">
+        <label>Email: </label>
+        <p class="in_block">{{user.Email}}</p>
+    </div>
+    <div class="form-group">
+        <label>Status</label>
+        <p class="in_block" *ngIf="user.IsActive">Active</p>
+        <p class="in_block" *ngIf="!user.IsActive">Inactive</p>
+    </div>
+</div>
