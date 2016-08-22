@@ -45,6 +45,10 @@ System.config({
             main: 'index.js',
             defaultExtension: 'js'
         },
+        '@angular/forms': {
+            main: 'index.js',
+            defaultExtension: 'js'
+        },
         '@angular/common': {
             main: 'index.js',
             defaultExtension: 'js'
@@ -252,5 +256,3 @@ Promise.all([
           return System.import(moduleName);
       }));
 }).then(__karma__.start, __karma__.error);
-
-
