@@ -128,8 +128,8 @@ namespace Promact.Oauth.Server.Controllers
 
         //
         // POST: /Account/LogOff
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> LogOff()
         {
             await _signInManager.SignOutAsync();
@@ -298,6 +298,16 @@ namespace Promact.Oauth.Server.Controllers
         public IActionResult ResetPassword(string code = null)
         {
             return code == null ? View("Error") : View();
+        }
+
+        [HttpGet]
+        //[AllowAnonymous]
+        public async Task<IActionResult> Roles(string code = null)
+        {
+            var userName = User.Identity.Name;
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            var role = _userManager.IsInRoleAsync(user,"Admin");
+            return Ok(role);
         }
 
         //
