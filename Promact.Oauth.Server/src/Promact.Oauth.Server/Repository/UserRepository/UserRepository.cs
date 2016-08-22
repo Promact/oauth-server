@@ -184,6 +184,11 @@ namespace Promact.Oauth.Server.Repository
             _emailSender.SendEmailAsync(user.Email, "Login Credentials", message);
         }
 
+        /// <summary>
+        /// Method to get user details by user first name
+        /// </summary>
+        /// <param name="firstname"></param>
+        /// <returns>user details</returns>
         public ApplicationUser UserDetialByFirstName(string firstname)
         {
             var user = _userManager.Users.FirstOrDefault(x => x.FirstName == firstname);
@@ -196,6 +201,12 @@ namespace Promact.Oauth.Server.Repository
             };
             return newUser;
         }
+
+        /// <summary>
+        /// Method to get team leader's details by user firstname
+        /// </summary>
+        /// <param name="userFirstName"></param>
+        /// <returns>list of team leader</returns>
         public async Task<List<ApplicationUser>> TeamLeaderByUserId(string userFirstName)
         {
             var user = _userManager.Users.FirstOrDefault(x => x.FirstName == userFirstName);
@@ -216,6 +227,10 @@ namespace Promact.Oauth.Server.Repository
             return teamLeaders;
         }
 
+        /// <summary>
+        /// Method to get management people details
+        /// </summary>
+        /// <returns>list of management</returns>
         public async Task<List<ApplicationUser>> ManagementByUserId()
         {
             var management = await _userManager.GetUsersInRoleAsync("Admin");
