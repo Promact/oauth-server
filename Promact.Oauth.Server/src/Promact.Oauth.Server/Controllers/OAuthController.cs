@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Promact.Oauth.Server.Controllers
 {
-    public class OAuthController : Controller
+    public class OAuthController : BaseController
     {  
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
