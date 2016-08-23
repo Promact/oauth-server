@@ -16,10 +16,12 @@ export class AppComponent {
         this.loginService.getRoleAsync().subscribe((result) => {
             this.user = result;
             if (this.user.role = "Admin") {
-                this.router.navigate(['/admin']);
+                console.log("admin");
+                this.router.navigate(['admin']);
             }
             else {
-                this.router.navigate(['user/employee/' + this.user.userId]);
+                console.log("User");
+                this.router.navigate(['employee/' + this.user.userId]);
             }
         }, err => {
         });
@@ -27,6 +29,5 @@ export class AppComponent {
 
     ngOnInit() {
         this.getRole();
-     
     }
 }

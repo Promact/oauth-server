@@ -21,4 +21,5 @@
         <p class="in_block" *ngIf="user.IsActive">Active</p>
         <p class="in_block" *ngIf="!user.IsActive">Inactive</p>
     </div>
+    <div><button md-raised-button class="custom-btn" (click)="userEdit(user.Id)">Edit</button></div>
 </div>

@@ -15,20 +15,11 @@ namespace Promact.Oauth.Server.Controllers
         {
             _userManager = userManager;
         }
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            var role = await _userManager.IsInRoleAsync(user, "Admin");
             if (User.Identity.IsAuthenticated)
             {
-                if (role == true)
-                {
-                    return View("Index");
-                }
-                else
-                {
-                    return View("UserIndex");
-                }
+                return View("Index");
             }
             return RedirectToAction("Login", "Account");
         }
