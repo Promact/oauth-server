@@ -1,7 +1,6 @@
 ﻿import { Component } from '@angular/core';
 import { LoginService } from './login.service';
 import { Router, ROUTER_DIRECTIVES} from '@angular/router';
-import { LoginModel } from './LoginModel';
 
 
 @Component({
@@ -17,7 +16,7 @@ export class AppComponent {
         this.loginService.getRoleAsync().subscribe((result) => {
             this.user = result;
             if (this.user.role = "Admin") {
-                this.router.navigate(['/']);
+                this.router.navigate(['/admin']);
             }
             else {
                 this.router.navigate(['user/employee/' + this.user.userId]);
@@ -27,7 +26,6 @@ export class AppComponent {
     }
 
     ngOnInit() {
-        console.log("afkjsadkfjnasklnf");
         this.getRole();
      
     }

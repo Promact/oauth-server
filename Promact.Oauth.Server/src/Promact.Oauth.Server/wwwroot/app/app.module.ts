@@ -32,11 +32,12 @@ import {UserService} from "./users/user.service";
 import { LoginService } from "./login.service";
 import { LoginComponent } from './login.component';
 import { UserEmployeeDetailComponent } from './users/user-employee/user-employee-details.component';
+import { AdminComponent } from './Admin/admin.component';
 
 
 
 @NgModule({
-    declarations: [AppComponent, ConsumerAppComponent, ConsumerappListComponent, ConsumerappAddComponent, ConsumerappEditComponent, ProjectComponent, ProjectListComponent, ProjectAddComponent, ProjectEditComponent, ProjectViewComponent, UserComponent, UserListComponent, UserAddComponent, UserEditComponent, UserDetailsComponent, ChangePasswordComponent, LoginComponent, UserEmployeeDetailComponent],
+    declarations: [AppComponent, ConsumerAppComponent, ConsumerappListComponent, ConsumerappAddComponent, ConsumerappEditComponent, ProjectComponent, ProjectListComponent, ProjectAddComponent, ProjectEditComponent, ProjectViewComponent, UserComponent, UserListComponent, UserAddComponent, UserEditComponent, UserDetailsComponent, ChangePasswordComponent, LoginComponent, UserEmployeeDetailComponent, AdminComponent],
     imports: [
         BrowserModule,
         HttpModule,
