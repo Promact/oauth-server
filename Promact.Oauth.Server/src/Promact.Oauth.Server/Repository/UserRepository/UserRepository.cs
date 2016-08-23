@@ -55,7 +55,7 @@ namespace Promact.Oauth.Server.Repository
             user.CreatedDateTime = DateTime.UtcNow;
 
             _userManager.CreateAsync(user, "User@123").Wait();
-            
+            _userManager.AddToRoleAsync(user, "Employee").Wait();
             //SendEmail(user);
             return user.Id;
         }

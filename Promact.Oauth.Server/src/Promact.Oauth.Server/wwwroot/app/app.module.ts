@@ -30,7 +30,6 @@ import { ConsumerAppService }   from "./consumerapp/consumerapp.service";
 import {ProjectService} from "./project/project.service";
 import {UserService} from "./users/user.service";
 import { LoginService } from "./login.service";
-import { UserEmployeeDetailComponent } from './users/user-employee/user-employee-details.component';
 import { AdminComponent } from './Admin/admin.component';
 import { EmployeeComponent } from './Employee/employee.component';
 import { EmployeeEditComponent } from './Employee/employee-edit.component';
@@ -38,7 +37,7 @@ import { EmployeeEditComponent } from './Employee/employee-edit.component';
 
 
 @NgModule({
-    declarations: [AppComponent, ConsumerAppComponent, ConsumerappListComponent, ConsumerappAddComponent, ConsumerappEditComponent, ProjectComponent, ProjectListComponent, ProjectAddComponent, ProjectEditComponent, ProjectViewComponent, UserComponent, UserListComponent, UserAddComponent, UserEditComponent, UserDetailsComponent, ChangePasswordComponent, UserEmployeeDetailComponent, AdminComponent, EmployeeComponent, EmployeeEditComponent],
+    declarations: [AppComponent, ConsumerAppComponent, ConsumerappListComponent, ConsumerappAddComponent, ConsumerappEditComponent, ProjectComponent, ProjectListComponent, ProjectAddComponent, ProjectEditComponent, ProjectViewComponent, UserComponent, UserListComponent, UserAddComponent, UserEditComponent, UserDetailsComponent, ChangePasswordComponent, AdminComponent, EmployeeComponent, EmployeeEditComponent],
     imports: [
         BrowserModule,
         HttpModule,
