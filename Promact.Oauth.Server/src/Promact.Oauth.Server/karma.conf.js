@@ -30,12 +30,18 @@ module.exports = function(config) {
       { pattern: 'node_modules/md2/**/*.js', included: false, watched: true },
       { pattern: 'node_modules/md2/**/*.js.map', included: false, watched: true },
       { pattern: 'node_modules/lodash/*.js', included: false, watched: true },
+
       { pattern: 'wwwroot/app/**/*.js', included: false, watched: true },
-      { pattern: 'wwwroot/app/**/*.js.map', included: false, watched: true },
+      //{ pattern: 'wwwroot/app/**/*.js.map', included: false, watched: true },
       { pattern: 'wwwroot/app/**/*.html', included: false, watched: true },
       { pattern: 'wwwroot/app/users/User.model.js', included: false, watched: true },
       { pattern: 'wwwroot/app/project/project-list/Project-list.Component.js', included: false, watched: true },
-      { pattern: 'wwwroot/app/project/project-list/Project-list.Component.js.map', included: false, watched: true }
+      //{ pattern: 'wwwroot/app/project/project-list/Project-list.Component.js.map', included: false, watched: true },
+      { pattern: 'wwwroot/app/users/user-list/user-list.Component.js', included: false, watched: true },
+      { pattern: 'wwwroot/app/users/user-list/user-list.Component.js.map', included: false, watched: true },
+      // paths to support debugging with source maps in dev tools
+      { pattern: 'wwwroot/app/**/*.ts', included: false, watched: false },
+      { pattern: 'wwwroot/app/**/*.js.map', included: false, watched: false }
     ],
 
 

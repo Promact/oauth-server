@@ -25,7 +25,7 @@ export class UserAddComponent {
         this.userService.registerUser(this.userModel).subscribe((result) => {
             if (result == true) {
                 this.toast.show('User added successfully.');
-                this.redirectionRoute.navigate(['/']);
+                this.redirectionRoute.navigate(['/user/']);
             }
             else if (result == false) {
                 this.toast.show('User Name already exists.');
@@ -49,7 +49,7 @@ export class UserAddComponent {
     }
 
     goBack() {
-        this.redirectionRoute.navigate(['/']);
+        this.redirectionRoute.navigate(['/user/']);
     }
 }
 

@@ -8,3 +8,9 @@
 //        this.params = Observable.of({ id: "5" });
 //    }
 //}
+import { Injectable } from '@angular/core';
+
+@Injectable()
+export class MockActivatedRoute  {
+    subscribe() { return true; }
+}

@@ -34,7 +34,7 @@ namespace Promact.Oauth.Server.Controllers
         // GET: api/values
         [HttpGet]
         [Route("projects")]
-        public async Task<IEnumerable<ProjectAc>> Get()
+        public async Task<IEnumerable<ProjectAc>> projects()
         {
             return await _projectRepository.GetAllProjects();
         }
@@ -44,7 +44,7 @@ namespace Promact.Oauth.Server.Controllers
         // GET api/values/5
         [HttpGet]
         [Route("getProjects/{id}")]
-        public async Task<ProjectAc> Get(int id)
+        public async Task<ProjectAc> getProjects(int id)
         {
             return await _projectRepository.GetById(id);
         }
@@ -52,7 +52,7 @@ namespace Promact.Oauth.Server.Controllers
         // POST api/values
         [HttpPost]
         [Route("addProject")]
-        public async Task<IActionResult> Post([FromBody]ProjectAc project)
+        public async Task<IActionResult> addProject([FromBody]ProjectAc project)
         {
             var createdBy = _userManager.GetUserId(User);
             if (ModelState.IsValid)
@@ -82,7 +82,7 @@ namespace Promact.Oauth.Server.Controllers
         // PUT api/values/5
         [HttpPut]
         [Route("editProject")]
-        public async Task<IActionResult> Put(int id, [FromBody]ProjectAc project)
+        public async Task<IActionResult> editProject(int id, [FromBody]ProjectAc project)
         {
             var updatedBy = _userManager.GetUserId(User);
            

@@ -11,7 +11,9 @@
 
         <div class="form-group">
             <div class="half-width">
-                <md-input placeholder="First name" class="full-width" name="FirstName" [(ngModel)]="user.FirstName" required></md-input>
+                <!--<md-input placeholder="First name" class="full-width" name="FirstName" [(ngModel)]="user.FirstName" required></md-input>-->
+                <md-input placeholder="First Name" class="full-width" type="text" name="FirstName" [(ngModel)]="user.FirstName" maxlength="255" required #FirstName="ngModel"></md-input>
+                <div [hidden]="!(FirstName.touched && !FirstName.valid && FirstName.errors.required)" class="error">First Name is required</div>
             </div>
         </div>
 
@@ -19,7 +21,9 @@
         <div class="form-group">
 
             <div class="half-width">
-                <md-input placeholder="Last name" class="full-width" name="LastName" [(ngModel)]="user.LastName" required></md-input>
+                <!--<md-input placeholder="Last name" class="full-width" name="LastName" [(ngModel)]="user.LastName" required></md-input>-->
+                <md-input placeholder="Last Name" class="full-width" type="text" name="LastName" [(ngModel)]="user.LastName" maxlength="255" required #LastName="ngModel"></md-input>
+                <div [hidden]="!(LastName.touched && !LastName.valid && LastName.errors.required)" class="error">Last Name is required</div>
             </div>
         </div>
 
