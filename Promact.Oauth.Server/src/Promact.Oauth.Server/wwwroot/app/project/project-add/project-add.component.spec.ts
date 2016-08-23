@@ -6,7 +6,8 @@ import {ProjectAddComponent} from "../project-add/project-add.component";
 import { DeprecatedFormsModule } from '@angular/common';
 import {ProjectService} from "../project.service";
 import {UserModel} from '../../users/user.model';
-import { ROUTER_DIRECTIVES, Router, ActivatedRoute} from '@angular/router';
+import { ROUTER_DIRECTIVES, Router} from '@angular/router';
+import { ActivatedRoute} from '@angular/router';
 import {Md2Toast} from 'md2/toast';
 import {MockToast} from "../../shared/mocks/mock.toast";
 import {Md2Multiselect } from 'md2/multiselect';
@@ -14,19 +15,21 @@ import {TestConnection} from "../../shared/mocks/test.connection";
 import {MockProjectService} from "../../shared/mocks/project/mock.project.service";
 import {MockBaseService} from '../../shared/mocks/mock.base';
 import {MockRouter} from '../../shared/mocks/mock.router';
+import {Observable} from 'rxjs/Observable';
 //import {MockActivatedRoute} from '../../shared/mocks/mock.activatedroute';
 
 
 describe('Project Add Test', () => {
     let projectAddComponent: ProjectAddComponent;
     class MockRouter { }
-    class MockActivatedRoute { }
-    //class MockActivatedRoute extends ActivatedRoute {
-    //    constructor() {
-    //        super(null, null, null);
-    //        this.params = Observable({});
-    //    }
-    //}
+    //class MockActivatedRoute { }
+    class MockActivatedRoute extends ActivatedRoute {
+        constructor() {
+            super();
+            this.params = Observable.of({ });
+        }
+    }
+    //class MockActivatedRoute { params.subscribe() { } } 
     beforeEach(() => {
         TestBed.configureTestingModule({
             providers: [
@@ -47,15 +50,16 @@ describe('Project Add Test', () => {
         projectAddComponent = new ProjectAddComponent(route, router, toast, projectService);
     }));
 
-    //it("should get default page for Project", () => {
-    //    projectAddComponent.ngOnInit();
-    //    expect(projectAddComponent.Userlist.length).toEqual(1);
-    //});
+    it("should get default page for Project", () => {
+        projectAddComponent.ngOnInit();
+        expect(projectAddComponent.Userlist).not.toBeNull();
+    });
+
      /**
      * should check Project name and Slack Channel Name before add
      */
     it("should check project name before add", inject([projectModel], (projectModel: projectModel) => {
-        let expectedProjectName = "Test Project";
+        let expectedProjectName = "Tests Projects";
         projectModel.Name = expectedProjectName;
         let expectedSlackChannelName = "Test Slack Name";
         projectModel.SlackChannelName = expectedSlackChannelName;

@@ -22,7 +22,8 @@ describe("Project List Test", () => {
                 provide(TestConnection, { useClass: TestConnection }),
                 provide(ProjectService, { useClass: MockProjectService }),
                 provide(Md2Toast, { useClass: MockToast }),
-                provide(MockBaseService, { useClass: MockBaseService})
+                provide(MockBaseService, { useClass: MockBaseService }),
+
             ]
         });
 

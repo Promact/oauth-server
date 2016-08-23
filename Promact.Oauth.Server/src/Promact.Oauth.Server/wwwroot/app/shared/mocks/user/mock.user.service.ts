@@ -1,8 +1,8 @@
 ﻿import {TestConnection} from "../test.connection";
 import {Injectable} from '@angular/core';
 import {ResponseOptions, Response} from "@angular/http";
-import {projectModel} from "../../../project/project.model";
 import {UserModel} from "../../../users/User.model";
+import {PasswordModel} from "../../../users/user-password.model";
 import {Md2Toast} from 'md2/toast';
 import {Subject} from 'rxjs/Rx';
 import {MockBaseService} from '../mock.base';
@@ -46,17 +46,23 @@ export class MockUserService {
         return connection;
     }
 
-    //changePassword(newPassword: PasswordModel) {
-    //    return this.mockBaseService.post(this.UserUrl + "/changePassword", newPassword);
-    //}
+    changePassword(newPassword: PasswordModel) {
+        let result = true;
+        let connection = this.mockBaseService.getMockResponse(this.UserUrl, result);
+        return connection;
+        //return this.mockBaseService.post(this.UserUrl + "/changePassword", newPassword);
+    }
 
     //findUserByUserName(userName: string) {
+
     //    return this.mockBaseService.get(this.UserUrl + "/findbyusername/" + userName);
     //}
 
-    //findUserByEmail(email: string) {
-    //    return this.mockBaseService.get(this.UserUrl + "/findbyemail/" + email);
-    //}
+    findUserByEmail(email: string) {
+        let isEmailExist = true;
+        let connection = this.mockBaseService.getMockResponse(this.UserUrl, isEmailExist);
+        return connection;
+    }
 
 
     
