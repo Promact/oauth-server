@@ -13,7 +13,6 @@ using Promact.Oauth.Server.Models.ApplicationClasses;
 namespace Promact.Oauth.Server.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize(Roles = "Admin")]
     public class UserController : BaseController
     {
         #region "Private Variable(s)"
@@ -41,6 +40,7 @@ namespace Promact.Oauth.Server.Controllers
         /// <returns>User list</returns>
         [HttpGet]
         [Route("users")]
+        [Authorize(Roles = "Admin")]
         public IActionResult AllUsers()
         {
             return Ok(_userRepository.GetAllUsers());
@@ -54,6 +54,7 @@ namespace Promact.Oauth.Server.Controllers
         /// <returns>UserAc Application class user</returns>
         [HttpGet]
         [Route("{id}")]
+        [Authorize(Roles = "Admin,Employee")]
         public IActionResult GetUserById(string id)
         {
             var user = _userRepository.GetById(id);
@@ -73,6 +74,7 @@ namespace Promact.Oauth.Server.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("add")]
+        [Authorize(Roles = "Admin")]
         public IActionResult RegisterUser([FromBody] UserAc newUser)
         {
             string createdBy = _userManager.GetUserId(User);
@@ -99,6 +101,7 @@ namespace Promact.Oauth.Server.Controllers
         /// <returns></returns>
         [HttpPut]
         [Route("edit")]
+        [Authorize(Roles = "Admin,Employee")]
         public IActionResult UpdateUser([FromBody] UserAc editedUser)
         {
             string updatedBy = _userManager.GetUserId(User);
@@ -120,6 +123,7 @@ namespace Promact.Oauth.Server.Controllers
         [HttpPost]
         [Route("changepassword")]
         [AllowAnonymous]
+        [Authorize(Roles = "Admin,Employee")]
         public IActionResult ChangePassword([FromBody] ChangePasswordViewModel passwordModel)
         {
             var user = _userManager.GetUserAsync(User).Result;
@@ -145,6 +149,7 @@ namespace Promact.Oauth.Server.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("findbyusername/{userName}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult FindByUserName(string userName)
         {
             return Ok(_userRepository.FindByUserName(userName));
@@ -158,6 +163,7 @@ namespace Promact.Oauth.Server.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("findbyemail/{email}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult FindByEmail(string email)
         {
             return Ok(_userRepository.FindByEmail(email));

@@ -15,7 +15,7 @@ export class AppComponent {
     getRole() {
         this.loginService.getRoleAsync().subscribe((result) => {
             this.user = result;
-            if (this.user.role = "Admin") {
+            if (this.user.role === "Admin") {
                 console.log("admin");
                 this.router.navigate(['admin']);
             }
