@@ -17,7 +17,7 @@ export class AppComponent {
             this.user = result;
             if (this.user.role === "Admin") {
                 console.log("admin");
-                this.router.navigate(['admin']);
+                this.router.navigate(['admin/']);
             }
             else {
                 console.log("User");
