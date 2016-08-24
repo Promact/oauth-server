@@ -55,5 +55,19 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// <returns>projectAc object</returns>
         ProjectAc checkDuplicateFromEditProject(ProjectAc project);
 
+        /// <summary>
+        /// Fetches the project details of the given GroupName
+        /// </summary>
+        /// <param name="GroupName"></param>
+        /// <returns>object of ProjectAc</returns>
+        ProjectAc GetProjectByGroupName(string GroupName);
+
+        /// <summary>
+        /// This method is used to fetch list of users/employees of the given group name. - JJ
+        /// </summary>
+        /// <param name="GroupName"></param>
+            /// <returns>object of UserAc</returns>
+        List<UserAc> GetProjectUserByGroupName(string GroupName);
+
     }
 }

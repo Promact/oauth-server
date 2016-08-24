@@ -14,7 +14,7 @@ using Promact.Oauth.Server.Repository;
 namespace Promact.Oauth.Server.Controllers
 {
 
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     public class ProjectController : Controller
     {
@@ -22,7 +22,7 @@ namespace Promact.Oauth.Server.Controllers
         private readonly IProjectRepository _projectRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUserRepository _userRepository;
-        public ProjectController(PromactOauthDbContext appContext, IProjectRepository projectRepository, UserManager<ApplicationUser> userManager ,IUserRepository userRepository)
+        public ProjectController(PromactOauthDbContext appContext, IProjectRepository projectRepository, UserManager<ApplicationUser> userManager, IUserRepository userRepository)
         {
             _projectRepository = projectRepository;
             _appDbContext = appContext;
@@ -38,7 +38,7 @@ namespace Promact.Oauth.Server.Controllers
             return _projectRepository.GetAllProjects();
         }
 
-        
+
 
         // GET api/values/5
         [HttpGet]
@@ -56,7 +56,7 @@ namespace Promact.Oauth.Server.Controllers
             var createdBy = _userManager.GetUserId(User);
             if (ModelState.IsValid)
             {
-                ProjectAc p =_projectRepository.checkDuplicate(project);
+                ProjectAc p = _projectRepository.checkDuplicate(project);
                 if (p.Name != null && p.SlackChannelName != null)
                 {
                     int id = _projectRepository.AddProject(project, createdBy);
@@ -75,7 +75,7 @@ namespace Promact.Oauth.Server.Controllers
                 { return Ok(project); }
             }
             return Ok(false);
-            
+
         }
 
         // PUT api/values/5
@@ -84,20 +84,34 @@ namespace Promact.Oauth.Server.Controllers
         public IActionResult Put(int id, [FromBody]ProjectAc project)
         {
             var updatedBy = _userManager.GetUserId(User);
-           
-                if (ModelState.IsValid)
+
+            if (ModelState.IsValid)
+            {
+                ProjectAc p = _projectRepository.checkDuplicateFromEditProject(project);
+                if (p.Name != null && p.SlackChannelName != null)
                 {
-                    ProjectAc p = _projectRepository.checkDuplicateFromEditProject(project);
-                    if (p.Name != null && p.SlackChannelName != null)
-                    {
-                        _projectRepository.EditProject(project, updatedBy);
-                    }
-                    else { return Ok(project); }
+                    _projectRepository.EditProject(project, updatedBy);
                 }
-          
-           return Ok(project);
+                else { return Ok(project); }
+            }
+
+            return Ok(project);
         }
 
-        
+        // GET api/values/name
+        [HttpGet]
+        [Route("fetchProject/{name}")]
+        public ProjectAc Fetch(string name)
+        {
+            return _projectRepository.GetProjectByGroupName(name);
+        }
+
+        // GET api/values/name
+        [HttpGet]
+        [Route("fetchProjectUsers/{name}")]
+        public List<UserAc> FetchUsers(string groupName)
+        {
+            return _projectRepository.GetProjectUserByGroupName(groupName);
+        }
     }
 }

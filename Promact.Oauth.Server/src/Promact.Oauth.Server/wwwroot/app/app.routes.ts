@@ -32,7 +32,7 @@ const appRoutes: Routes = [
     { path: 'project', component: ProjectListComponent },
     { path: 'project/add', component: ProjectAddComponent },
     { path: 'project/edit/:id', component: ProjectEditComponent },
-    { path: 'project/view/:id', component: ProjectViewComponent }
+    { path: 'project/view/:id', component: ProjectViewComponent },
 
     { path: '', component: UserComponent },
     { path: 'user', component: UserListComponent },

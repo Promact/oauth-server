@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Promact.Oauth.Server.Repository;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Models.ManageViewModels;
@@ -13,7 +10,7 @@ using Promact.Oauth.Server.Models.ApplicationClasses;
 namespace Promact.Oauth.Server.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize(Roles = "Admin")]
+   // [Authorize(Roles = "Admin")]
     public class UserController : BaseController
     {
         #region "Private Variable(s)"
@@ -150,6 +147,18 @@ namespace Promact.Oauth.Server.Controllers
             return Ok(_userRepository.FindByUserName(userName));
         }
 
+
+        /// <summary>
+        /// This method is used to check if a user already exists in the database with the given userName
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("fetchbyusername/{userName}")]
+        public IActionResult FetchByUserName(string userName)
+        {
+            return Ok(_userRepository.GetUserDetail(userName));
+        }
 
         /// <summary>
         /// This method is used to check if a user already exists in the database with the given email
