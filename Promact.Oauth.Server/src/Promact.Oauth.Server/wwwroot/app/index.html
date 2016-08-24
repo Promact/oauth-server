@@ -10,17 +10,17 @@
 
             <ul>
                 <li>
-                    <a routerLink="/user" routerLinkActive="active"><i class="fa fa-users" aria-hidden="true"></i>Users</a>
+                    <a routerLink="user" routerLinkActive="active"><i class="fa fa-users" aria-hidden="true"></i>Users</a>
                 </li>
                 <li>
-                    <a routerLink="/project" routerLinkActive="active"><i class="fa fa-file-text" aria-hidden="true"></i>Projects</a>
+                    <a routerLink="project" routerLinkActive="active"><i class="fa fa-file-text" aria-hidden="true"></i>Projects</a>
                 </li>
                 <li>
-                    <a routerLink="/consumerapp" routerLinkActive="active">Consumer App</a>
+                    <a routerLink="consumerapp" routerLinkActive="active">Consumer App</a>
                 </li>
 
                 <li>
-                    <a routerLink="/user/changePassword" routerLinkActive="active">Change Password</a>
+                    <a routerLink="user/changePassword" routerLinkActive="active">Change Password</a>
                 </li>
             </ul>
         </md-sidenav>
@@ -29,8 +29,8 @@
                 <md-toolbar>
                  
                     <div class="logout-link">
-                        <button id="menu-button"  (click)="start.toggle()"><i class="material-icons">menu</i></button>  
-                        <a href="" class="fl-right">LOGOUT</a>
+                        <button id="menu-button" (click)="start.toggle()"><i class="material-icons">menu</i></button>  
+                        <a href="/LogOff" class="fl-right">LOGOUT</a>
                     </div>
                 </md-toolbar>
                 <div class="p-25">

@@ -26,7 +26,7 @@ export class ChangePasswordComponent {
         this.userService.changePassword(this.passwordModel).subscribe((result) => {
             if (result == true) {
                 this.toast.show('Password changed successfully');
-                this.redirectionRoute.navigate(['/']);
+                this.redirectionRoute.navigate(['admin/user']);
             }
             else if (result == false) {
                 this.toast.show('Wrong password');                
@@ -57,6 +57,6 @@ export class ChangePasswordComponent {
     }
 
     goBack() {
-        this.redirectionRoute.navigate(['/']);
+        this.redirectionRoute.navigate(['admin/user']);
     }
 }

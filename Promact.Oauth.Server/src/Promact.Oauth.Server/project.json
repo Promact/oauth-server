@@ -46,7 +46,8 @@
     "System.Net.Mail": "1.0.0-rtm-00002",
     "MailKit": "1.4.1",
     "MimeKit": "1.4.1",
-    "AutoMapper": "5.0.2"
+    "AutoMapper": "5.0.2",
+    "System.Collections": "4.0.11"
   },
 
   "tools": {

@@ -1,17 +1,14 @@
-﻿import {Component} from "@angular/core";
-
-import {UserModel} from '../user.model';
-import {UserService} from '../user.service';
+﻿import { Component, OnInit }   from '@angular/core';
+import {UserModel} from '../users/user.model';
+import {UserService} from '../users/user.service';
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute }from '@angular/router';
 
-
 @Component({
-    templateUrl: './app/users/user-details/user-details.html',
-    directives: [ROUTER_DIRECTIVES],
-   
+    templateUrl: "app/Employee/UserIndex.html",
+    directives: [ROUTER_DIRECTIVES]
 })
 
-export class UserDetailsComponent {
+export class EmployeeComponent {
     user: UserModel;
     id: any;
     errorMessage: string;
@@ -19,8 +16,6 @@ export class UserDetailsComponent {
     constructor(private userService: UserService, private route: ActivatedRoute, private redirectRoute: Router) {
         this.user = new UserModel();
     }
-
-
     ngOnInit() {
 
         this.id = this.route.params.subscribe(params => {
@@ -32,8 +27,7 @@ export class UserDetailsComponent {
                 error => this.errorMessage = <any>error)
         });
     }
-
-    goBack() {
-        this.redirectRoute.navigate(['admin/user']);
+    userEdit(id) {
+        this.redirectRoute.navigate(['employee/edit', id]);
     }
 }
