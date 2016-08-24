@@ -7,9 +7,6 @@ var gulp = require("gulp"),
     cssmin = require("gulp-cssmin"),
     uglify = require("gulp-uglify"),
     sysBuilder = require('systemjs-builder'),
-    sourcemaps = require('gulp-sourcemaps'),
-    tsc = require('gulp-typescript'),
-    tsProject = tsc.createProject('./wwwroot/tsconfig.json'),
     Server = require('karma').Server;
 
 var paths = {
@@ -65,16 +62,6 @@ gulp.task('bundle', function (done) {
   }).then(function () {
       done();
   })
-
-
-    //builder.
-    //return builder.buildStatic('./wwwroot', './bundle.min.js', { runtime: false })
-    //  .then(function () {
-    //      //return del(['build/**/*.js', '!build/lib/**/*.js', '!build/bundle.min.js']);
-    //      done();
-    //  }).catch(function (err) {
-    //      console.error('systemjs-builder Bundling failed' + paths.systemConfig + err);
-    //  });
 });
 
 gulp.task("clean:js", function (cb) {
