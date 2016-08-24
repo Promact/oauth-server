@@ -62,6 +62,7 @@ gulp.task('bundle', function (done) {
   }).then(function () {
       done();
   })
+   
 });
 
 gulp.task("clean:js", function (cb) {
