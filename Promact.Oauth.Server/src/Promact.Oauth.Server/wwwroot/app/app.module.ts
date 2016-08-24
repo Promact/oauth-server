@@ -29,10 +29,12 @@ import {HttpService} from "./http.service";
 import { ConsumerAppService }   from "./consumerapp/consumerapp.service";
 import {ProjectService} from "./project/project.service";
 import {UserService} from "./users/user.service";
+import {MdSelect} from "./select/select";
+
 
 
 @NgModule({
-    declarations: [AppComponent, ConsumerAppComponent, ConsumerappListComponent, ConsumerappAddComponent, ConsumerappEditComponent, ProjectComponent, ProjectListComponent, ProjectAddComponent, ProjectEditComponent, ProjectViewComponent, UserComponent, UserListComponent, UserAddComponent, UserEditComponent, UserDetailsComponent, ChangePasswordComponent],
+    declarations: [AppComponent, ConsumerAppComponent, ConsumerappListComponent, ConsumerappAddComponent, ConsumerappEditComponent, ProjectComponent, ProjectListComponent, ProjectAddComponent, ProjectEditComponent, ProjectViewComponent, UserComponent, UserListComponent, UserAddComponent, UserEditComponent, UserDetailsComponent, ChangePasswordComponent, MdSelect],
     imports: [
         BrowserModule,
         HttpModule,
@@ -42,10 +44,11 @@ import {UserService} from "./users/user.service";
         MdToolbarModule,
         MdSidenavModule,
         MdInputModule,
-        MdCheckboxModule
+        MdCheckboxModule, 
+        
 
     ],
-    bootstrap: [AppComponent],
+    bootstrap: [AppComponent ],
     providers: [HttpService, ConsumerAppService, ProjectService, UserService
     ],
 })
