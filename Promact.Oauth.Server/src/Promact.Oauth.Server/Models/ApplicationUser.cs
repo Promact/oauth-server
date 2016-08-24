@@ -20,6 +20,11 @@ namespace Promact.Oauth.Server.Models
         [Required]
         public bool IsActive { get; set; }
 
+
+        public int NumberOfCasualLeave { get; set;}
+
+        public int NumberOfSickLeave { get; set;}
+
         [NotMapped]
         public virtual ICollection<Project> Projects { get; set; }
 

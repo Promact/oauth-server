@@ -36,6 +36,22 @@
 
         </div>
 
+        <div class="form-group">
+
+            <div class="half-width">
+                <!--<md-input placeholder="Last name" class="full-width" name="LastName" [(ngModel)]="user.LastName" required></md-input>-->
+                <md-input placeholder="Number Of Casual Leave" class="full-width" type="text" name="NumberOfCasualLeave" [(ngModel)]="user.NumberOfCasualLeave" maxlength="255"  #NumberOfCasualLeave="ngModel"></md-input>
+                <!--<div [hidden]="!(NumberOfCasualLeave.touched && !NumberOfCasualLeave.valid && NumberOfCasualLeave.errors.required)" class="error">Number Of Casual Leave</div>-->
+            </div>
+        </div>
+        <div class="form-group">
+
+            <div class="half-width">
+                <!--<md-input placeholder="Last name" class="full-width" name="LastName" [(ngModel)]="user.LastName" required></md-input>-->
+                <md-input placeholder="Number Of Sick Leave" class="full-width" type="text" name="NumberOfSickLeave" [(ngModel)]="user.NumberOfSickLeave" maxlength="255"  #NumberOfSickLeave="ngModel"></md-input>
+                <!--<div [hidden]="!(NumberOfSeekLeave.touched && !NumberOfSeekLeave.valid && NumberOfSeekLeave.errors.required)" class="error">Last Name is required</div>-->
+            </div>
+        </div>
 
         <div class="form-group">
             <label class="lb-label">Status:</label>

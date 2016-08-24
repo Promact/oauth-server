@@ -93,7 +93,8 @@ namespace Promact.Oauth.Server.Repository
             user.IsActive = editedUser.IsActive;
             user.UpdatedBy = updatedBy;
             user.UpdatedDateTime = DateTime.UtcNow;
-
+            user.NumberOfCasualLeave = editedUser.NumberOfCasualLeave;
+            user.NumberOfSickLeave = editedUser.NumberOfSickLeave;
             _userManager.UpdateAsync(user).Wait();
             _applicationUserDataRepository.Save();
 

@@ -48,6 +48,8 @@ export class ProjectEditComponent implements OnInit {
                                 this.pro.applicationUsers[j].LastName = this.pro.listUsers[i].LastName;
                                 this.pro.applicationUsers[j].UserName = this.pro.listUsers[i].UserName;
                                 this.pro.applicationUsers[j].UniqueName = this.pro.listUsers[i].UniqueName;
+                                this.pro.applicationUsers[j].NumberOfCasualLeave = this.pro.listUsers[i].NumberOfCasualLeave;
+                                this.pro.applicationUsers[j].NumberOfSickLeave = this.pro.listUsers[i].NumberOfSickLeave;
                             }//break; 
                         }
                     }

@@ -36,13 +36,20 @@
             @promactinfo.com
             <div [hidden]="!(email.touched && !email.valid && email.errors.required)" class="error">Email is required</div>
             </div>
-            <!--<div *ngIf="Email.touched && !Email.valid && !isEmailExist" style="color:red">
-            Required!
+
+        <div class="form-group">
+
+            <md-input placeholder="Number Of Casual Leave" type="text"  name="NumberOfCasualLeave" [(ngModel)]="userModel.NumberOfCasualLeave" #NumberOfCasualLeave="ngModel" min="0" max="15" required></md-input>
+            
+
         </div>
-        <div *ngIf="isEmailExist" style="color:red">
-            This email already exist!
-        </div>-->
-         
+
+        <div class="form-group">
+
+            <md-input placeholder="Number Of Sick Leave" type="text" name="NumberOfSickLeave" [(ngModel)]="userModel.NumberOfSickLeave" maxlength="255" #NumberOfSickLeave="ngModel"></md-input>
+            
+        </div>
+            
             <div>
                
                 <button md-raised-button class="btn-green" type="submit" (click)="addUser(userModel)">Add</button>
