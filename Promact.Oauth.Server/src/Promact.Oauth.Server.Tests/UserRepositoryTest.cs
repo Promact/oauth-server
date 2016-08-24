@@ -150,11 +150,42 @@ namespace Promact.Oauth.Server.Tests
             Assert.Equal(true, passwordMatch);
         }
 
+        /// <summary>
+        /// Test case use for getting user details by its first name
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public void UserDetialByFirstName()
+        {
+            string id = _userRepository.AddUser(_testUser, "Siddhartha");
+            var user = _userRepository.UserDetialByFirstName("First name");
+            Assert.Equal(user.Email,_testUser.Email);
+        }
 
+        /// <summary>
+        /// Test case use for getting team leader's details by users first name
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task TeamLeaderByUserId()
+        {
+            string id = _userRepository.AddUser(_testUser, "Siddhartha");
+            var user = await _userRepository.TeamLeaderByUserId("First name");
+            Assert.Equal(0, user.Count);
+        }
+
+        /// <summary>
+        /// Test case use for getting management's details by users first name
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task ManagementByUserId()
+        {
+            string id = _userRepository.AddUser(_testUser, "Siddhartha");
+            var user = await _userRepository.ManagementByUserId();
+            Assert.Equal(0, user.Count);
+        }
         #endregion
 
 
 
-        
+
     }
 }

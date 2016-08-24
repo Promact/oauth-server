@@ -1,27 +1,23 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title></title>
-</head>
-<body>
-    <center>
-        <h1>{{title}}</h1>
-        <h2>List Of Consumer Apps</h2>
-        <form>
-            <div>
-                <div>
-                  <button (click)="addNewApp()" type="button">Add New App</button>
-                </div>
-                <table>
-                    <tbody>
-                        <tr *ngFor="let consumerApps of listOfConsumerApps">
-                            <td (click)="editDetails(consumerApps.id)">{{consumerApps.name}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </form>
-    </center>
-</body>
-</html>
+﻿<div class="consumer-app">
+    <div class="card-title-block">
+        <div class="title in_block items">
+            <h3>List Of Consumer Apps</h3>
+        </div>
+        <div class="items text-right">
+            <button md-raised-button class="btn-green custom-btn" (click)="addNewApp()"> <i class="material-icons m-0">add</i>Add a New App</button>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+
+
+ 
+        <div>
+         
+           
+                    <ul *ngFor="let consumerApps of listOfConsumerApps">
+                        <li (click)="editDetails(consumerApps.id)">{{consumerApps.name}}</li>
+                    </ul>
+             
+        </div>
+
+    </div>

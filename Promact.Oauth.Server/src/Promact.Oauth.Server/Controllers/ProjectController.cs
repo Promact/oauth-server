@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using System;
 using Promact.Oauth.Server.Repository;
+using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -33,9 +34,9 @@ namespace Promact.Oauth.Server.Controllers
         // GET: api/values
         [HttpGet]
         [Route("projects")]
-        public IEnumerable<ProjectAc> Get()
+        public async Task<IEnumerable<ProjectAc>> Get()
         {
-            return _projectRepository.GetAllProjects();
+            return await _projectRepository.GetAllProjects();
         }
 
 
@@ -43,15 +44,15 @@ namespace Promact.Oauth.Server.Controllers
         // GET api/values/5
         [HttpGet]
         [Route("getProjects/{id}")]
-        public ProjectAc Get(int id)
+        public async Task<ProjectAc> Get(int id)
         {
-            return _projectRepository.GetById(id);
+            return await _projectRepository.GetById(id);
         }
 
         // POST api/values
         [HttpPost]
         [Route("addProject")]
-        public IActionResult Post([FromBody]ProjectAc project)
+        public async Task<IActionResult> Post([FromBody]ProjectAc project)
         {
             var createdBy = _userManager.GetUserId(User);
             if (ModelState.IsValid)
@@ -59,7 +60,7 @@ namespace Promact.Oauth.Server.Controllers
                 ProjectAc p = _projectRepository.checkDuplicate(project);
                 if (p.Name != null && p.SlackChannelName != null)
                 {
-                    int id = _projectRepository.AddProject(project, createdBy);
+                    int id =await _projectRepository.AddProject(project, createdBy);
                     foreach (var applicationUser in project.ApplicationUsers)
                     {
                         ProjectUser projectUser = new ProjectUser();
@@ -67,7 +68,7 @@ namespace Promact.Oauth.Server.Controllers
                         projectUser.UserId = applicationUser.Id;
                         projectUser.CreatedBy = createdBy;
                         projectUser.CreatedDateTime = DateTime.UtcNow;
-                        _projectRepository.AddUserProject(projectUser);
+                         _projectRepository.AddUserProject(projectUser);
                     }
                     return Ok(project);
                 }
@@ -81,21 +82,21 @@ namespace Promact.Oauth.Server.Controllers
         // PUT api/values/5
         [HttpPut]
         [Route("editProject")]
-        public IActionResult Put(int id, [FromBody]ProjectAc project)
+        public async Task<IActionResult> Put(int id, [FromBody]ProjectAc project)
         {
             var updatedBy = _userManager.GetUserId(User);
-
-            if (ModelState.IsValid)
-            {
-                ProjectAc p = _projectRepository.checkDuplicateFromEditProject(project);
-                if (p.Name != null && p.SlackChannelName != null)
+           
+                if (ModelState.IsValid)
                 {
-                    _projectRepository.EditProject(project, updatedBy);
+                    ProjectAc p = _projectRepository.checkDuplicateFromEditProject(project);
+                    if (p.Name != null && p.SlackChannelName != null)
+                    {
+                       await _projectRepository.EditProject(project, updatedBy);
+                    }
+                    else { return Ok(project); }
                 }
-                else { return Ok(project); }
-            }
-
-            return Ok(project);
+          
+           return Ok(project);
         }
 
         // GET api/values/name

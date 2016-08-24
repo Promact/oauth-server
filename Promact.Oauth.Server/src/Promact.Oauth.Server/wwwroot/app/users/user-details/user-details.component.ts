@@ -1,4 +1,4 @@
-﻿import {Component} from '@angular/core';
+﻿import {Component} from "@angular/core";
 
 import {UserModel} from '../user.model';
 import {UserService} from '../user.service';
@@ -7,7 +7,8 @@ import { Router, ROUTER_DIRECTIVES, ActivatedRoute }from '@angular/router';
 
 @Component({
     templateUrl: './app/users/user-details/user-details.html',
-    directives: [ROUTER_DIRECTIVES]
+    directives: [ROUTER_DIRECTIVES],
+   
 })
 
 export class UserDetailsComponent {
@@ -33,6 +34,6 @@ export class UserDetailsComponent {
     }
 
     goBack() {
-        this.redirectRoute.navigate(['/']);
+        this.redirectRoute.navigate(['admin/user']);
     }
 }

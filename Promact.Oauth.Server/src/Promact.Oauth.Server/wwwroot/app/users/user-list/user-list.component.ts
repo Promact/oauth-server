@@ -1,13 +1,11 @@
 ﻿import {Component} from "@angular/core";
-import { MdButton, MdAnchor } from '@angular2-material/button';
 import { Router, ROUTER_DIRECTIVES} from '@angular/router';
-
 import { UserService }   from '../user.service';
 import {UserModel} from '../user.model';
 
 @Component({
     templateUrl: "app/users/user-list/user-list.html",
-    directives: [ROUTER_DIRECTIVES, MdButton]
+    directives: [ROUTER_DIRECTIVES]
 })
 
 export class UserListComponent {
@@ -29,11 +27,11 @@ export class UserListComponent {
     }
 
     userDetails(id){
-        this.router.navigate(['/user/details', id]);
+        this.router.navigate(['admin/user/details', id]);
     }
 
     userEdit(id) {
-        this.router.navigate(['/user/edit', id]);
+        this.router.navigate(['admin/user/edit', id]);
     }
 
     ngOnInit() {

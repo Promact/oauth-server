@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Promact.Oauth.Server.Models;
 using AutoMapper;
+using System.Threading.Tasks;
 
 namespace Promact.Oauth.Server.Repository.ProjectsRepository
 {
@@ -31,7 +32,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// Get All Projects list from the database
         /// </summary>
         /// <returns></returns>List of Projects
-        public IEnumerable<ProjectAc> GetAllProjects()
+        public async Task<IEnumerable<ProjectAc>> GetAllProjects()
         {
             var projects = _projectDataRepository.List().ToList();
             var projectAcs = new List<ProjectAc>();
@@ -68,7 +69,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// <param name="newProject">project that need to be added</param>
         /// <param name="createdBy">Login User Id</param>
         /// <returns>project id of newly created project</returns>
-        public int AddProject(ProjectAc newProject, string createdBy)
+        public async Task<int>  AddProject(ProjectAc newProject,string createdBy)
         {
             var projectObject = _mapperContext.Map<ProjectAc, Project>(newProject);
             projectObject.CreatedDateTime = DateTime.UtcNow;
@@ -94,7 +95,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// <param name="id"></param>Project id that need to be featch the Project and list of users
         /// <returns></returns>Project and User/Users infromation 
         /// 
-        public ProjectAc GetById(int id)
+        public async Task<ProjectAc> GetById(int id)
         {
             List<UserAc> applicationUserList = new List<UserAc>();
             var project = _projectDataRepository.FirstOrDefault(x => x.Id == id);
@@ -121,7 +122,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// </summary>
         /// <param name="editProject"></param>Updated information in editProject Parmeter
         /// <param name="updatedBy"></param>Login User Id
-        public void EditProject(ProjectAc editProject, string updatedBy)
+        public async Task<int> EditProject(ProjectAc editProject,string updatedBy)
         {
             var projectId = editProject.Id;
             var projectInDb = _projectDataRepository.FirstOrDefault(x => x.Id == projectId);
@@ -150,6 +151,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                     UserId = x.Id
                 });
             });
+            return editProject.Id;
         }
 
         /// <summary>

@@ -82,7 +82,7 @@ export class ProjectEditComponent implements OnInit {
             }
             else {
                 this.toast.show("Project Successfully Added.");
-                this.router.navigate(['/project/'])
+                this.router.navigate(['admin/project/'])
             }
            
             

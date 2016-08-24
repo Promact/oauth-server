@@ -5,11 +5,16 @@ var gulp = require("gulp"),
     rimraf = require("rimraf"),
     concat = require("gulp-concat"),
     cssmin = require("gulp-cssmin"),
-    uglify = require("gulp-uglify");
+    uglify = require("gulp-uglify"),
+    sysBuilder = require('systemjs-builder'),
+    Server = require('karma').Server;
 
 var paths = {
     webroot: "./wwwroot/"
 };
+
+
+//var Server = require('karma').Server;
 
 paths.js = paths.webroot + "js/**/*.js";
 paths.minJs = paths.webroot + "js/**/*.min.js";
@@ -17,6 +22,7 @@ paths.css = paths.webroot + "css/**/*.css";
 paths.minCss = paths.webroot + "css/**/*.min.css";
 paths.concatJsDest = paths.webroot + "js/site.min.js";
 paths.concatCssDest = paths.webroot + "css/site.min.css";
+paths.systemConfig = paths.webroot + "systemjs.config.js";
 
 gulp.task("copytowwwroot", function () {
     gulp.src([
@@ -46,6 +52,19 @@ gulp.task("copytowwwroot", function () {
 
 });
 
+
+gulp.task('bundle', function (done) {
+    var builder = new sysBuilder('./wwwroot', './wwwroot/systemjs.config.js');
+
+    builder
+     .buildStatic('app', './wwwroot/bundle.js', {
+      runtime: false
+  }).then(function () {
+      done();
+  })
+   
+});
+
 gulp.task("clean:js", function (cb) {
     rimraf(paths.concatJsDest, cb);
 });
@@ -71,3 +90,30 @@ gulp.task("min:css", function () {
 });
 
 gulp.task("min", ["min:js", "min:css"]);
+
+//// Run test once and exit
+//gulp.task('test', function (done) {
+//    new Server({
+//        configFile: __dirname + '/karma.conf.js',
+//        singleRun: true
+//    }, done).start();
+//});
+
+//Runs karma test
+gulp.task('test', function (done) {
+    new Server({
+        configFile: __dirname + '/karma.conf.js',
+        singleRun: true,
+    }, function () { done(); }).start();
+});
+
+//Generates coverage reports in coverage folder
+gulp.task('coverage', function () {
+    return gulp.src('coverage/coverage-final.json')
+    .pipe(remapIstanbul({
+        reports: {
+            'html': 'coverage'
+        }
+    }))
+    .pipe(gulp.dest('./coverage'));
+});

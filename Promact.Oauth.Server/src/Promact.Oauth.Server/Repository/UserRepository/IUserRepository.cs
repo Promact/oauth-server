@@ -80,7 +80,7 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        List<ApplicationUser> TeamLeaderByUserId(string userId);
+        Task<List<ApplicationUser>> TeamLeaderByUserId(string userId);
 
         /// <summary>
         /// Method to get list of management people

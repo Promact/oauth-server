@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Promact.Oauth.Server.Controllers
 {
-    public class OAuthController : Controller
+    public class OAuthController : BaseController
     {  
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -52,7 +52,7 @@ namespace Promact.Oauth.Server.Controllers
                     if (model.ClientId == clientResponse.ClientId)
                     {
                         //Getting app details from clientId or AuthId
-                        var app = _appRepository.GetAppDetails(clientResponse.ClientId);
+                        var app = await  _appRepository.GetAppDetails(clientResponse.ClientId);
                         // Refresh token and app's secret is checking if match then accesstoken will be send
                         if (app.AuthSecret == clientResponse.ClientSecret && clientResponse.RefreshToken == oAuth.RefreshToken)
                         {
@@ -77,7 +77,7 @@ namespace Promact.Oauth.Server.Controllers
         /// <returns></returns>
         public async Task<IActionResult> ExternalLogin(string clientId)
         {
-            var result = _appRepository.GetAppDetails(clientId);
+            var result = await _appRepository.GetAppDetails(clientId);
             if (User.Identity.IsAuthenticated)
             {
                 var user = await _userManager.FindByNameAsync(User.Identity.Name);

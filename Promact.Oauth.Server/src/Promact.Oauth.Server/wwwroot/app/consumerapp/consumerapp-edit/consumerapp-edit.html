@@ -1,44 +1,46 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title></title>
-</head>
-<body>
-    <center>
-        <h1>{{title}}</h1>
-        <h2>Edit Consumer App</h2>
-        <button type="button" (click)="cancel()">Cancel</button>
-        <form>
-            <div>
-                <label>Auth Id</label>
-                <input type="text" [(ngModel)]="consumerModel.AuthId" [disabled]="true" name="AuthId" />
-            </div>
-            <div>
-                <label>Auth Secret:</label>
-                <input type="text" [(ngModel)]="consumerModel.AuthSecret" [disabled]="true" name="AuthSecret"/>
-            </div>
-            <div>
-                <label>Name:</label>
-                <input type="text" name="Name" [(ngModel)]="consumerModel.Name" maxlength="255" required />
-                <!--<div *ngIf="Name.touched && !Name.valid && Name.errors.required" style="color:red">Name is Required</div>-->
-            </div>
-            <div>
-                <label>Description:</label>
-                <textarea name="Description"  [(ngModel)]="consumerModel.Description" maxlength="1000" required></textarea>
-                <!--<div *ngIf="Description.touched && !Description.valid && Description.errors.required" style="color:red">Description is Required</div>-->
-            </div>
-            <div>
-                <label>Call Back Url:</label>
-                <input type="text" name="CallbackUrl" [(ngModel)]="consumerModel.CallbackUrl" maxlength="255" required />
-                <!--<div *ngIf="CallBackUrl.touched && !CallBackUrl.valid && CallBackUrl.errors.required" style="color:red">Call Back Url is Required</div>-->
+﻿<div class="consumer-edit">
+
+    <div class="card-title-block">
+        <div class="title in_block items">
+            <h3>Edit Consumer app</h3>
+        </div>
+
+    </div>
+    <form #consumerappEditForm="ngForm">
+
+        <div class="form-group d-flex">
+            <div class="half-width mr-25">
+                <md-input class="full-width" placeholder="Auth Id" [(ngModel)]="consumerModel.AuthId" [disabled]="true" name="AuthId"></md-input>
             </div>
 
-            <div>
-                <button type="submit" (click)="updateApps(consumerModel)">Update</button>
-                <button type="button" (click)="cancel()">Cancel</button>
+            <div class="half-width">
+                <md-input class="full-width" placeholder="Auth Secret" [(ngModel)]="consumerModel.AuthSecret" [disabled]="true" name="AuthSecret"></md-input>
             </div>
-        </form>
-    </center>
-</body>
-</html> 
+
+        </div>
+
+
+        <div class="form-group d-flex">
+            <div class="half-width mr-25">
+                <md-input class="full-width" name="name" placeholder="name" [(ngModel)]="consumerModel.Name" maxlength="255" required #name="ngModel"></md-input>
+                <div [hidden]="!(name.touched && !name.valid && name.errors.required)" class="error">Name is required</div>
+
+            </div>
+            <div class="half-width ">
+                <md-input class="full-width" placeholder="Call Back Url" type="text" name="callbackUrl" [(ngModel)]="consumerModel.CallbackUrl" maxlength="255" required #callbackUrl="ngModel"></md-input>
+                <div [hidden]="!(callbackUrl.touched && !callbackUrl.valid && callbackUrl.errors.required)" class="error">Call Back Url is required</div>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <md-input class="full-width" placeholder="Description" name="description" [(ngModel)]="consumerModel.Description" maxlength="1000" required #description="ngModel"></md-input>
+            <div [hidden]="!(description.touched && !description.valid && description.errors.required)" class="error">Description is required</div>
+        </div>
+
+        <div class="form-group" id="group-btn">
+            <button md-raised-button class="btn-green mr-15"  type="submit" (click)="updateApps(consumerModel)" [disabled]="!consumerappEditForm.form.valid">Update</button>
+            <button  md-raised-button (click)="cancel()">Cancel</button>
+        </div>
+    </form>
+</div>

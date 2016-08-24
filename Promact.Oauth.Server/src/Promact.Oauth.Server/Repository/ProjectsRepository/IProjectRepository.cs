@@ -1,7 +1,7 @@
 ﻿using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Models.ApplicationClasses;
 using System.Collections.Generic;
-
+using System.Threading.Tasks;
 
 namespace Promact.Oauth.Server.Repository.ProjectsRepository
 {
@@ -14,7 +14,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// <param name="newProject">project that need to be added</param>
         /// <param name="createdBy">Login User Id</param>
         /// <returns>project id of newly created project</returns>
-        int AddProject(ProjectAc newProject,string createdBy);
+        Task<int> AddProject(ProjectAc newProject,string createdBy);
 
         /// <summary>
         /// Adds UserId and ProjectId in UserProject table
@@ -26,20 +26,20 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// Get All Projects list from the database
         /// </summary>
         /// <returns></returns>List of Projects
-        IEnumerable<ProjectAc> GetAllProjects();
+        Task<IEnumerable<ProjectAc>> GetAllProjects();
 
         /// <summary>
         /// Get the single project and list of users related project Id from the database(project and ProjectUser Table)
         /// </summary>
         /// <param name="id"></param>Project id that need to be featch the Project and list of users
         /// <returns></returns>Project and User/Users infromation 
-        ProjectAc GetById(int id);
+        Task<ProjectAc> GetById(int id);
 
         /// <summary>
         /// Update Project information and User list information In Project table and Project User Table
         /// </summary>
         /// <param name="editProject"></param>Updated information in editProject Parmeter
-        void EditProject(ProjectAc editProject,string updatedBy);
+        Task<int> EditProject(ProjectAc editProject,string updatedBy);
 
         /// <summary>
         /// Check Project and SlackChannelName is already exists or not 

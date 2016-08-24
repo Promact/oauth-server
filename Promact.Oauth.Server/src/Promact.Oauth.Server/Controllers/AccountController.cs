@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Models.AccountViewModels;
 using Promact.Oauth.Server.Services;
+using Promact.Oauth.Server.Models.ApplicationClasses;
 
 namespace Promact.Oauth.Server.Controllers
 {
@@ -128,8 +129,8 @@ namespace Promact.Oauth.Server.Controllers
 
         //
         // POST: /Account/LogOff
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> LogOff()
         {
             await _signInManager.SignOutAsync();
@@ -433,6 +434,28 @@ namespace Promact.Oauth.Server.Controllers
             {
                 ModelState.AddModelError(string.Empty, "Invalid code.");
                 return View(model);
+            }
+        }
+
+        /// <summary>
+        /// Method to check & get the role of current user
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> IsInRole()
+        {
+            LoginAsync user = new LoginAsync();
+            var newUser = await _userManager.FindByNameAsync(User.Identity.Name);
+            user.UserId = newUser.Id;
+            if (User.IsInRole("Admin"))
+            {
+                user.Role = "Admin";
+                return Ok(user);
+            }
+            else
+            {
+                user.Role = "Employee";
+                return Ok(user);
             }
         }
 
