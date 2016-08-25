@@ -52,21 +52,20 @@ namespace Promact.Oauth.Server.Tests
             User = new ApplicationUser { FirstName = "Roshni" }
         };
         /// <summary>
-        /// Add New Project
+        /// This test case to add a new project
         /// </summary>
 
-        [Fact, Trait("Category", "A")]
+        [Fact, Trait("Category", "Required")]
         public void AddProject()
         {
             Task<int> id = _projectRepository.AddProject(projectac, "Ronak");
-            //int projectId = Convert.ToInt32(id);
             var project = _dataRepository.FirstOrDefault(x => x.Id== id.Result);
             Assert.NotNull(project);
         }
         /// <summary>
-        /// Add User and Project in User Project Table
+        /// This test case for the add user and project in userproject table
         /// </summary>
-        [Fact, Trait("Category", "A")]
+        [Fact, Trait("Category", "Required")]
         public void AddUserProject()
         {
            
@@ -75,9 +74,9 @@ namespace Promact.Oauth.Server.Tests
             Assert.NotNull(ProjectUser);
         }
         /// <summary>
-        /// get project using Id
+        /// This test case for gets project By Id
         /// </summary>
-        [Fact, Trait("Category", "A")]
+        [Fact, Trait("Category", "Required")]
         public void GetById()
         {
             UserAc user = new UserAc()
@@ -90,17 +89,15 @@ namespace Promact.Oauth.Server.Tests
             var TId=_userRepository.AddUser(user, "Ronak");
             projectac.TeamLeaderId = TId;
             Task<int> id =  _projectRepository.AddProject(projectac, "Ronak");
-            //int projectId = Convert.ToInt32(id);
             _projectRepository.AddUserProject(projectUser);
-         
             Task<ProjectAc> Pc = _projectRepository.GetById(id.Result);
             Assert.NotNull(Pc);
         }
 
         /// <summary>
-        /// Edit Project 
+        /// This test case edit project 
         /// </summary>
-        [Fact, Trait("Category", "A")]
+        [Fact, Trait("Category", "Required")]
         public void EditProject()
         {
             UserAc user = new UserAc()
@@ -113,9 +110,7 @@ namespace Promact.Oauth.Server.Tests
             _userRepository.AddUser(userSecound, "Ronak");
             _userRepository.AddUser(userThird, "Ronak");
             Task<int> id = _projectRepository.AddProject(projectac, "Ronak");
-            //int projectId = Convert.ToInt32(id);
             _projectRepository.AddUserProject(projectUser);
-            
             List<UserAc> userlist = new List<UserAc>();
             userlist.Add(new UserAc { Id = "2", FirstName = "Ronit" });
             userlist.Add(new UserAc { Id = "3", FirstName = "Raj" });
@@ -137,17 +132,19 @@ namespace Promact.Oauth.Server.Tests
             Assert.NotNull(project);
         }
         /// <summary>
-        /// Check Duplicate Project
+        /// This test case for the check duplicate project
         /// </summary>
-        [Fact, Trait("Category", "A")]
+        [Fact, Trait("Category", "Required")]
         public void checkDuplicateNegative()
         {
             _projectRepository.AddProject(projectac, "Ronak");
            var project =_projectRepository.checkDuplicate(projectac);
             Assert.Null(project.Name);
         }
-
-        [Fact, Trait("Category", "A")]
+        /// <summary>
+        /// This test case for the check duplicate project
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
         public void checkDuplicatePositive()
         {
             
@@ -172,9 +169,9 @@ namespace Promact.Oauth.Server.Tests
             Assert.Null(project.Name);
         }
         /// <summary>
-        /// Get All Projects
+        /// This test case for the get all projects
         /// </summary>
-        [Fact, Trait("Category", "A")]
+        [Fact, Trait("Category", "Required")]
         public void GetAllProject()
         {
             UserAc user = new UserAc()

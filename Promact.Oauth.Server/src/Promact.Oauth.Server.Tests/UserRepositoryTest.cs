@@ -34,7 +34,8 @@ namespace Promact.Oauth.Server.Tests
                 LastName = "Last name",
                 IsActive = true,
                 Password = "User@123",
-                UserName = "testUser@pronactinfo.com"
+                UserName = "testUser@pronactinfo.com",
+                SlackUserName="test"
             };
         }
 
@@ -65,7 +66,8 @@ namespace Promact.Oauth.Server.Tests
                 LastName = "Last name 2",
                 IsActive = true,
                 Password = "User@123",
-                UserName = "testUser2@promactinfo.com"
+                UserName = "testUser2@promactinfo.com",
+                SlackUserName="test"
             };
             var id = _userRepository.AddUser(user, "Rajdeep");
             var testUser = _userRepository.GetById(id);

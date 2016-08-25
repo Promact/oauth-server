@@ -20,6 +20,7 @@
                 <th>Status</th>
                 <th>Number Of CL</th>
                 <th>Number Of SL</th>
+                <th>SlackUserName</th>
             </tr>
         </thead>
         <tbody>
@@ -29,9 +30,9 @@
                 <td>{{user.Email}}</td>
                 <td *ngIf="user.IsActive">Active</td>
                 <td *ngIf="!user.IsActive">Inactive</td>
-                <td>{{user.NumberOfCasualLeave}}/15</td>
-                <td>{{user.NumberOfSickLeave}}/15</td>
-                
+                <td>{{user.NumberOfCasualLeave}}</td>
+                <td>{{user.NumberOfSickLeave}}</td>
+                <td>{{user.SlackUserName}}</td>
                 <td> <button  md-raised-button class="btn-green custom-btn mr-5" (click)="userDetails(user.Id)">Details</button> <button   md-raised-button class="custom-btn"  (click)="userEdit(user.Id)">Edit</button> </td>
                
                 

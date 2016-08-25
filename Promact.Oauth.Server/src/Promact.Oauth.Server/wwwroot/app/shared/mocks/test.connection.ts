@@ -1,4 +1,5 @@
-﻿import {MockBackend, MockConnection} from "@angular/http/testing";
+﻿
+import {MockBackend, MockConnection} from "@angular/http/testing";
 import {ReflectiveInjector, bind} from "@angular/core";
 import {Http, HTTP_BINDINGS, XHRBackend} from "@angular/http";
 import { Injectable } from '@angular/core';

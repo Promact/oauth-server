@@ -9,4 +9,6 @@
     UniqueName: string;
     NumberOfCasualLeave: number;
     NumberOfSickLeave: number;
+    JoiningDate: Date;
+    SlackUserName: string;
 }

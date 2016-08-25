@@ -12,49 +12,28 @@
         <div class="form-group">
             <md-input placeholder="First Name"  class="full-width" type="text" name="FirstName" [(ngModel)]="userModel.FirstName" maxlength="255" required #FirstName="ngModel"></md-input>
             <div [hidden]="!(FirstName.touched && !FirstName.valid && FirstName.errors.required)" class="error">First Name is required</div>
-
-            <!--<md-input placeholder="First Name" type="text" name="FirstName" [(ngModel)]="userModel.FirstName" required ></md-input>-->
-
         </div>
-
         <div class="form-group">
-
             <md-input placeholder="Last Name" type="text" name="LastName" [(ngModel)]="userModel.LastName" maxlength="255" required #LastName="ngModel"></md-input>
             <div [hidden]="!(LastName.touched && !LastName.valid && LastName.errors.required)" class="error">Last Name is required</div>
-            <!--<md-input type="text" placeholder="Last Name" name="LastName" [(ngModel)]="userModel.LastName" required></md-input>-->
-            <!--<div *ngIf="LastName.touched && !LastName.valid && LastName.errors.required" style="color:red">
-                 Required!
-            </div>-->
         </div>
 
         <div class="form-group">
-
-       
-
             <md-input type="email"  placeholder="email" name="Email" [(ngModel)]="userModel.Email"
                    (blur)="checkEmail(userModel.Email)" required  #email="ngModel"></md-input>
             @promactinfo.com
             <div [hidden]="!(email.touched && !email.valid && email.errors.required)" class="error">Email is required</div>
-            </div>
-
-        <div class="form-group">
-
-            <md-input placeholder="Number Of Casual Leave" type="text"  name="NumberOfCasualLeave" [(ngModel)]="userModel.NumberOfCasualLeave" #NumberOfCasualLeave="ngModel" min="0" max="15" required></md-input>
-            
-
         </div>
-
         <div class="form-group">
-
-            <md-input placeholder="Number Of Sick Leave" type="text" name="NumberOfSickLeave" [(ngModel)]="userModel.NumberOfSickLeave" maxlength="255" #NumberOfSickLeave="ngModel"></md-input>
-            
+            <md-input placeholder="SlackUserName" type="text" name="SlackUserName" [(ngModel)]="userModel.SlackUserName" maxlength="255" required #SlackUserName="ngModel"></md-input>
+            <div [hidden]="!(SlackUserName.touched && !SlackUserName.valid && SlackUserName.errors.required)" class="error">Slack User Name is required</div>
         </div>
-            
-            <div>
-               
-                <button md-raised-button class="btn-green" type="submit" (click)="addUser(userModel)">Add</button>
-                
-            </div>
+        <div class="form-group">
+            <input type="date" name="JoiningDate" [(ngModel)]="userModel.JoiningDate" placeholder="Enter joining date" #JoiningDate="ngModel"/>
+        </div>
+        <div>
+            <button md-raised-button class="btn-green" type="submit" (click)="addUser(userModel)">Add</button>
+        </div>
 </form>
 
 

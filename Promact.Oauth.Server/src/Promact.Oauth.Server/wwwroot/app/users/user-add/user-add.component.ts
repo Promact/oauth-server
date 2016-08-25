@@ -22,6 +22,7 @@ export class UserAddComponent {
     }
 
     addUser(userModel) {
+        userModel.JoiningDate = new Date(userModel.JoiningDate);
         this.userService.registerUser(this.userModel).subscribe((result) => {
             if (result == true) {
                 this.toast.show('User added successfully.');

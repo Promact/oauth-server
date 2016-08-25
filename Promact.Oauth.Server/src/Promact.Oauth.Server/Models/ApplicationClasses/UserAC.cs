@@ -32,10 +32,16 @@ namespace Promact.Oauth.Server.Models.ApplicationClasses
         public bool IsActive { get; set; }
 
         [JsonProperty("NumberOfCasualLeave")]
-        public int NumberOfCasualLeave { get; set; }
+        public double NumberOfCasualLeave { get; set; }
 
         [JsonProperty("NumberOfSickLeave")]
-        public int NumberOfSickLeave { get; set;}
+        public double NumberOfSickLeave { get; set;}
+
+        [JsonProperty("JoiningDate")]
+        public DateTime JoiningDate { get; set; }
+
+        [JsonProperty("SlackUserName")]
+        public string SlackUserName { get; set; }
 
         [Required]
         [EmailAddress]

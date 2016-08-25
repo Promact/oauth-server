@@ -49,17 +49,75 @@ namespace Promact.Oauth.Server.Repository
         /// <param name="applicationUser">UserAc Application class object</param>
         public string AddUser(UserAc newUser, string createdBy)
         {
+            LeaveCalculator LC = new LeaveCalculator();
+            LC = CalculateAllowedLeaves(Convert.ToDateTime(newUser.JoiningDate));
+            newUser.NumberOfCasualLeave = LC.CasualLeave;
+            newUser.NumberOfSickLeave = LC.SickLeave;
             var user = _mapperContext.Map<UserAc, ApplicationUser>(newUser);
             user.UserName = user.Email;
             user.CreatedBy = createdBy;
             user.CreatedDateTime = DateTime.UtcNow;
-
+            
             _userManager.CreateAsync(user, "User@123").Wait();
             
             //SendEmail(user);
             return user.Id;
         }
+    
+        /// <summary>
+        /// Calculat casual leava and sick leave for the date of joining
+        /// </summary>
+        /// <param name="dateTime"></param>
+        /// <returns></returns>
+        public LeaveCalculator CalculateAllowedLeaves(DateTime dateTime)
+        {
+            double casualAllowed = 0;
+            double sickAllowed = 0;
+            var day = dateTime.Day;
+            var month = dateTime.Month;
+            var year = dateTime.Year;
+            double casualAllow = 14;
+            double sickAllow = 7;
+            if (year - DateTime.Now.Year > 365)
+            {
+                month = 4;
+                day = 1;
+            }
+            if (month >= 4)
+            {
+                if (day <= 15)
+                {
+                    casualAllowed = (casualAllow / 12) * (12 - (month - 4));
+                    sickAllowed = (sickAllow / 12) * (12 - (month - 4));
+                }
+                else
+                {
+                    casualAllowed = (casualAllow / 12) * (12 - (month - 3));
+                    sickAllowed = (sickAllow / 12) * (12 - (month - 3));
+                }
+            }
+            else
+            {
+                if (day <= 15)
+                {
+                    casualAllowed = (casualAllow / 12) * (12 - (month + 8));
+                    sickAllowed = (sickAllow / 12) * (12 - (month + 8));
+                }
+                else
+                {
+                    casualAllowed = (casualAllow / 12) * (12 - (month + 9));
+                    sickAllowed = (sickAllow / 12) * (12 - (month + 9));
+                }
+            }
+            LeaveCalculator calculate = new LeaveCalculator
+            {
+                CasualLeave = Convert.ToInt32(casualAllowed),
+                SickLeave = Convert.ToInt32(sickAllowed)
+            };
+            return calculate;
+        }
 
+    
 
         /// <summary>
         /// This method is used for getting the list of all users

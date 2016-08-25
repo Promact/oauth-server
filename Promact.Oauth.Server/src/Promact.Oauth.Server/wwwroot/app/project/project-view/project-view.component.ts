@@ -39,7 +39,9 @@ export class ProjectViewComponent implements OnInit {
                                 this.pro.applicationUsers[j].UniqueName = this.pro.listUsers[i].UniqueName;
                                 this.pro.applicationUsers[j].NumberOfCasualLeave = this.pro.listUsers[i].NumberOfCasualLeave;
                                 this.pro.applicationUsers[j].NumberOfSickLeave = this.pro.listUsers[i].NumberOfSickLeave;
-                            }//break; 
+                                this.pro.applicationUsers[j].JoiningDate = this.pro.listUsers[i].JoiningDate;
+                                this.pro.applicationUsers[j].SlackUserName = this.pro.listUsers[i].SlackUserName;
+                            }
                         }
                     }
                 })
@@ -48,6 +50,6 @@ export class ProjectViewComponent implements OnInit {
     }
 
     gotoProjects() {
-        this.location.back();//this.router.navigate(['/project/']); }
+        this.location.back();
     }
 }

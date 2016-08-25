@@ -21,9 +21,16 @@ namespace Promact.Oauth.Server.Models
         public bool IsActive { get; set; }
 
 
-        public int NumberOfCasualLeave { get; set;}
+        public double NumberOfCasualLeave { get; set; }
 
-        public int NumberOfSickLeave { get; set;}
+        public double NumberOfSickLeave { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime JoiningDate {get;set;}
+
+        [Required]
+        [StringLength(255)]
+        public string SlackUserName { get; set; }
 
         [NotMapped]
         public virtual ICollection<Project> Projects { get; set; }
