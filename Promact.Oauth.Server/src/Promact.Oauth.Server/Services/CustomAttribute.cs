@@ -12,10 +12,6 @@ namespace Promact.Oauth.Server.Services
     public class CustomAttribute : ActionFilterAttribute
     {
         private readonly IOAuthRepository _oAuthRepository;
-        public CustomAttribute()
-        {
-
-        }
         public CustomAttribute(IOAuthRepository oAuthRepository)
         {
             _oAuthRepository = oAuthRepository;
@@ -24,8 +20,7 @@ namespace Promact.Oauth.Server.Services
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             var token = filterContext.HttpContext.Request.Headers["Authorization"].ToString();
-            var accessToken = token.Split(' ');
-            var data = _oAuthRepository.GetDetailsClientByAccessToken(accessToken[1]);
+            var data = _oAuthRepository.GetDetailsClientByAccessToken(token);
             if (data == false)
             {
                 base.OnActionExecuting(filterContext);

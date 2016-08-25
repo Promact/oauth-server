@@ -39,7 +39,7 @@ export class UserEditComponent {
         this.userService.editUser(user).subscribe((result) => {
             if (result == true) {
                 this.toast.show('User updated successfully.');
-                this.redirectionRoute.navigate(['/']);
+                this.redirectionRoute.navigate(['admin/user']);
             }
             else if (result == false) {
                 this.toast.show('User Name already exists.');
@@ -51,7 +51,7 @@ export class UserEditComponent {
 
 
     goBack() {
-        this.redirectionRoute.navigate(['/']);
+        this.redirectionRoute.navigate(['admin/user']);
     }
 }
 
