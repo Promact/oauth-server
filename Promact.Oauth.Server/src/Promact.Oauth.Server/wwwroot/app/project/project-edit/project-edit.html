@@ -34,15 +34,16 @@
 
         <div class="form-group">
             <label class="lb-label">TeamLeader:</label>
-         
+            <div class="half-width">
 
-            <md-select >
-                <md-option value="1">select</md-option>
-            </md-select>
+                <md-select [(ngModel)]="pro.teamLeaderId" placeholder="select">
+                    <md-option [value]="i.Id" *ngFor="let i of pro.listUsers">{{i.FirstName}}-{{i.Email}}</md-option>
+                </md-select>
+            </div>
                 <!--<select name="sel3" [(ngModel)]="pro.teamLeaderId">
-                    <option value={{i.Id}} *ngFor="let i of pro.listUsers">{{i.FirstName}}-{{i.Email}}</option>
-                </select>-->
-</div>
+            <option value={{i.Id}} *ngFor="let i of pro.listUsers">{{i.FirstName}}-{{i.Email}}</option>
+        </select>-->
+            </div>
 
         <!--<tr>
             <td>
