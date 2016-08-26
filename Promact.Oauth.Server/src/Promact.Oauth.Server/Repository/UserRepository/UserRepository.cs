@@ -272,6 +272,22 @@ namespace Promact.Oauth.Server.Repository
             return managementUser;
         }
 
+        public ApplicationUser UserDetailById(string employeeId)
+        {
+            var user = _userManager.Users.FirstOrDefault(x => x.Id == employeeId);
+            if (user != null)
+            {
+                var newUser = new ApplicationUser
+                {
+                    Id = user.Id,
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName
+                };
+                return newUser;
+            }
+            return null;
+        }
         #endregion
     }
 }

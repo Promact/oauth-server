@@ -96,5 +96,12 @@ namespace Promact.Oauth.Server.Repository
         /// <returns>object of UserAc</returns>
         UserAc GetUserDetail(string UserName);
 
+        /// <summary>
+        /// Method is used to Get User details by Id
+        /// </summary>
+        /// <param name="employeeId"></param>
+        /// <returns></returns>
+        ApplicationUser UserDetailById(string employeeId);
+
     }
 }
