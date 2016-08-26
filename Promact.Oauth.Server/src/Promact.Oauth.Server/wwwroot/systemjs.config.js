@@ -19,11 +19,11 @@
         'angular2-in-memory-web-api': { main: 'index.js', defaultExtension: 'js' },
 
 
-        'md2/select': {
-            format: 'cjs',
-            defaultExtension: 'js',
-            main: 'select.js'
-        },
+        //'md2/select': {
+        //    format: 'cjs',
+        //    defaultExtension: 'js',
+        //    main: 'select.js'
+        //},
         'md2/switch': {
             format: 'cjs',
             defaultExtension: 'js',

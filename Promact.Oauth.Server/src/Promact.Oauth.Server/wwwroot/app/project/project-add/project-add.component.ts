@@ -63,7 +63,7 @@ export class ProjectAddComponent {
             }
             else {
                 this.toast.show("Project Successfully Added.");
-                this.router.navigate(['/project/'])
+                this.router.navigate(['admin/project/'])
             }
 
         }, err => {
@@ -86,7 +86,7 @@ export class ProjectAddComponent {
     }
 
     gotoProjects() {
-        this.router.navigate(['/project/']);
+        this.router.navigate(['admin/project/']);
     }
 
 }

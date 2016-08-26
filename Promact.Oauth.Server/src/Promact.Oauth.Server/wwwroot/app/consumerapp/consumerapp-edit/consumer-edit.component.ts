@@ -3,6 +3,8 @@ import {ConsumerAppModel} from '../consumerapp-model';
 import { ROUTER_DIRECTIVES, Router, ActivatedRoute } from '@angular/router';
 import { ConsumerAppService} from '../consumerapp.service';
 import {Md2Toast} from 'md2/toast';
+import {Location} from "@angular/common";
+
 
 @Component({
     templateUrl: "app/consumerapp/consumerapp-edit/consumerapp-edit.html",
@@ -12,7 +14,7 @@ import {Md2Toast} from 'md2/toast';
 export class ConsumerappEditComponent {
     consumerModel: ConsumerAppModel;
     private sub: any;
-    constructor(private router: Router, private consumerAppService: ConsumerAppService, private route: ActivatedRoute, private toast: Md2Toast) {
+    constructor(private router: Router, private consumerAppService: ConsumerAppService, private route: ActivatedRoute, private toast: Md2Toast, private location: Location) {
         this.consumerModel = new ConsumerAppModel();
     }
 
@@ -49,6 +51,7 @@ export class ConsumerappEditComponent {
     }
 
     cancel() {
-        this.router.navigate(['/consumerapp/']);
+        this.location.back();
+        //this.router.navigate(['admin/consumerapp']);
     }
 }

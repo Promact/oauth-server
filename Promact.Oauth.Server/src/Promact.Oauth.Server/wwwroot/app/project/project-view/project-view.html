@@ -1,60 +1,66 @@
-﻿<center>
-    <h3>Project Details</h3>
-    <br />
-    <div *ngIf="pro">
-        <table>
-            <tr>
-                <td>
-                    Name:
-                </td>
-                <td>
-                    {{pro.name}}
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Slack Channel Name:
-                </td>
-                <td>
-                    {{pro.slackChannelName}}
-                </td>
-            </tr>
-            <tr>
+﻿<div class="project-edit">
+    <div class="card-title-block d-flex">
+        <div class="title items">
+            <h3>Edit Project</h3>
+        </div>
+        <div class="text-right items">
+            <button md-raised-button type="submit" class="btn-back btn-green" (click)="gotoProjects()"> <i class="material-icons">arrow_back</i>Back</button>
+        </div>
 
-                <td>
-                    IsActive:
-                </td>
-                <td>
-                    <input type="checkbox" name="IsActive" [(ngModel)]="pro.isActive" disabled>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    TeamLeader:
-                </td>
-                <td>
-                    <select name="sel3" [(ngModel)]="pro.teamLeaderId" disabled>
-                        <option value={{i.Id}} *ngFor="let i of pro.listUsers">{{i.FirstName}}-{{i.Email}}</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    List Of Users:
-                </td>
-                <td>
-                    <select multiple disabled>
-                        <option *ngFor="let ul of pro.applicationUsers">{{ul.FirstName}}-{{ul.Email}}</option>
-                    </select>
-                </td>
-            </tr>
-        </table>
-        <p>
-            <button (click)="gotoProjects()">Back</button>
-        </p>
     </div>
-</center>
+    <div *ngIf="pro">
 
+
+        <div class="form-group">
+            <label>Name:</label>
+
+            {{pro.name}}
+        </div>
+
+
+        <div class="form-group">
+            <label>
+                Slack Channel Name:
+            </label>
+
+            {{pro.slackChannelName}}
+        </div>
+
+
+        <div class="form-group">
+
+
+            <label>
+                IsActive:</label>
+
+                <md-checkbox type="checkbox" id="chckbox" name="IsActive" [(ngModel)]="pro.isActive" disabled></md-checkbox>
+
+</div>
+
+        <div class="form-group">
+
+            <label>TeamLeader:</label>
+
+            <select name="sel3" [(ngModel)]="pro.teamLeaderId" disabled>
+                <option value={{i.Id}} *ngFor="let i of pro.listUsers">{{i.FirstName}}-{{i.Email}}</option>
+            </select>
+        </div>
+
+
+        <div class="form-group">
+
+            <label>List Of Users:</label>
+
+            <select multiple disabled>
+                <option *ngFor="let ul of pro.applicationUsers">{{ul.FirstName}}-{{ul.Email}}</option>
+            </select>
+        </div>
+
+
+
+    </div>
+
+</div>
 
 
 

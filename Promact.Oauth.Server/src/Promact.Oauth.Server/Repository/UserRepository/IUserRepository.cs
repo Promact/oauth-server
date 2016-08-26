@@ -89,5 +89,12 @@ namespace Promact.Oauth.Server.Repository
         /// <returns></returns>
         Task<List<ApplicationUser>> ManagementByUserId();
 
+        /// <summary>
+        /// Used to fetch the userdetail by given UserName 
+        /// </summary>
+        /// <param name="UserName"></param>
+        /// <returns>object of UserAc</returns>
+        UserAc GetUserDetail(string UserName);
+
     }
 }

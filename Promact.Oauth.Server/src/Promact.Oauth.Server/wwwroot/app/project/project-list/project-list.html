@@ -1,8 +1,15 @@
-﻿
-    <h1>{{title}}</h1>
-    <h2>Projects</h2>
-    <a routerLink="add" routerLinkActive="active">Add Project</a>
-    <table>
+﻿<div class="project-list">
+    <div class="card-title-block d-flex">
+        <div class="title items">
+            <h3>Projects</h3>
+        </div>
+        <div class="items text-right">
+            <button md-raised-button routerLink="add" class="add-link btn-green"><i class="material-icons">add</i>Add Project</button>
+        </div>
+    </div>
+
+
+    <table class="table-bordered">
         <thead>
             <tr>
                 <th>Project Name</th>
@@ -13,6 +20,7 @@
                 <th>Created Date</th>
                 <th>Updated By</th>
                 <th>Updated Date</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -26,10 +34,12 @@
                 <td>{{pro.createdDate}}</td>
                 <td>{{pro.updatedBy}}</td>
                 <td>{{pro.updatedDate}}</td>
-                <td><button (click)="editProject(pro.id)">Edit</button></td>
-                <td><button (click)="viewProject(pro.id)">View</button></td>
+                <td><button md-raised-button class="btn-green custom-btn mr-5" (click)="editProject(pro.id)">Edit</button>
+                    <button md-raised-button class="custom-btn" (click)="viewProject(pro.id)">View</button></td>
+                
             </tr>
         </tbody>
     </table>
 
 
+</div>

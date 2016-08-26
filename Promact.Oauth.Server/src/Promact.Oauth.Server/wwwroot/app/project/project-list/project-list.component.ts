@@ -27,10 +27,10 @@ export class ProjectListComponent{
         this.getPros();
     }
     editProject(Id) {
-        this.router.navigate(['/project/edit', Id]);
+        this.router.navigate(['admin/project/edit', Id]);
     }
     viewProject(Id) {
-        this.router.navigate(['/project/view', Id]);
+        this.router.navigate(['admin/project/view', Id]);
     }
     
 }

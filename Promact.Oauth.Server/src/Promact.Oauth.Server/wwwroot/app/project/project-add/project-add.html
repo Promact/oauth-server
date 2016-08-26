@@ -1,62 +1,52 @@
-﻿<center>
-    <h2>Add Project</h2>
-    <form #projectAdd="ngForm">
-        <table>
-            <tr>
-                <td>
-                    Name:
-                </td>
-                <td>
-                    <input type="text" name="name" [(ngModel)]="pro.name" maxlength="255" required #name="ngModel" />
-                    <div [hidden]="!(name.touched && !name.valid && name.errors.required)" style="color:red">Name is required</div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Slack Channel Name :
-                </td>
-                <td>
-                    <input type="text" name="SlackChannelName" [(ngModel)]="pro.SlackChannelName" maxlength="255" required #SlackChannelName="ngModel" />
-                    <div [hidden]="!(SlackChannelName.touched && !SlackChannelName.valid && SlackChannelName.errors.required)" style="color:red">Slack Channel Name is required</div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    IsActive:
-                </td>
-                <td>
-                    <input type="checkbox" name="IsActive" [(ngModel)]="pro.IsActive">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    TeamLeadr:
-                </td>
-                <td>
-                    <select [(ngModel)]="pro.TeamLeaderId" name="sel3">
-                        <option [ngValue]="i.Id" *ngFor="let i of pro.listUsers">{{i.FirstName}}-{{i.Email}}</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Select Users:
-                </td>
-                <td>
-                    <!--<md2-multiselect [items]="pro.listUsers"
-                                      item-text="UniqueName"
-                                     [(ngModel)]="pro.applicationUsers"
-                                     placeholder="Placeholder Text">
-                    </md2-multiselect>-->
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <button type="submit" (click)="addProject(pro)">Add New Project</button>
-                    <button (click)="gotoProjects()">Back</button>
-                </td>
-            </tr>
-        </table>
+﻿<div class="card-title-block d-flex">
+    <div class="title">
+        <h3 class="in_block">Users</h3>
+    </div>
 
-    </form>
-</center>
+</div>
+<form #projectAdd="ngForm">
+
+    <div class="form-group">
+        <div class="half-width">
+            <md-input class="full-width" placeholder="Name" type="text" name="name" [(ngModel)]="pro.name" maxlength="255" required #name="ngModel" ></md-input>
+            <div [hidden]="!(name.touched && !name.valid && name.errors.required)" style="color:red">Name is required</div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="half-width">
+            <md-input type="text" class="full-width" placeholder="Slack Channel Name" name="SlackChannelName" [(ngModel)]="pro.SlackChannelName" maxlength="255" required #SlackChannelName="ngModel"></md-input>
+            <div [hidden]="!(SlackChannelName.touched && !SlackChannelName.valid && SlackChannelName.errors.required)" style="color:red">Slack Channel Name is required</div>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <label>Status</label>
+            <md-checkbox type="checkbox" name="IsActive" [(ngModel)]="pro.IsActive"></md-checkbox>
+    </div>
+
+
+
+    <label>
+        TeamLeadr:</label>
+
+        <select [(ngModel)]="pro.TeamLeaderId" name="sel3">
+            <option [ngValue]="i.Id" *ngFor="let i of pro.listUsers">{{i.FirstName}}-{{i.Email}}</option>
+        </select>
+
+     
+            Select Users:
+     
+            <!--<md2-multiselect [items]="pro.listUsers"
+                              item-text="UniqueName"
+                             [(ngModel)]="pro.applicationUsers"
+                             placeholder="Placeholder Text">
+            </md2-multiselect>-->
+   
+                <button type="submit" (click)="addProject(pro)">Add New Project</button>
+                <button (click)="gotoProjects()">Back</button>
+            
+      
+
+</form>
