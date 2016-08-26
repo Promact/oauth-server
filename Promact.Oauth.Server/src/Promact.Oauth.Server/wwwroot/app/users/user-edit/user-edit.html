@@ -43,6 +43,11 @@
             <label class="lb-label">Sick Leave:</label>
             {{user.NumberOfSickLeave}}
         </div>
+
+         <div class="form-group">
+            <label class="lb-label">Date of Joining:</label>
+            {{user.JoiningDate |date:"dd/MM/yyyy"}}
+        </div>
         <div class="form-group">
             <label class="lb-label">Status:</label>
             <md-checkbox name="IsActive" [(ngModel)]="user.IsActive" id="chckbox"></md-checkbox>

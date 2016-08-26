@@ -40,4 +40,10 @@ export class UserService {
     findUserByEmail(email: string) {
         return this.httpService.get(this.UserUrl + "/findbyemail/" + email);
     }
+    findUserBySlackUserName(slackUserName: string) {
+        return this.httpService.get(this.UserUrl + "/findUserBySlackUserName/" + slackUserName);
+    }
+
+
+
 }

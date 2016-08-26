@@ -11,6 +11,7 @@ using Promact.Oauth.Server.Models.ManageViewModels;
 using Promact.Oauth.Server.Services;
 using AutoMapper;
 using Promact.Oauth.Server.Repository.ProjectsRepository;
+using Microsoft.EntityFrameworkCore;
 
 namespace Promact.Oauth.Server.Repository
 {
@@ -83,6 +84,12 @@ namespace Promact.Oauth.Server.Repository
                 month = 4;
                 day = 1;
             }
+            double totalDays = (DateTime.Now- Convert.ToDateTime(dateTime)).TotalDays;
+            if (totalDays > 365)
+            {
+                month = 4;
+                day = 1;
+            }
             if (month >= 4)
             {
                 if (day <= 15)
@@ -123,9 +130,9 @@ namespace Promact.Oauth.Server.Repository
         /// This method is used for getting the list of all users
         /// </summary>
         /// <returns>List of all users</returns>
-        public IEnumerable<UserAc> GetAllUsers()
+        public async Task<IEnumerable<UserAc>> GetAllUsers()
         {
-            var users = _applicationUserDataRepository.List().ToList();
+            var users = await _applicationUserDataRepository.GetAll().ToListAsync();
             var userList = new List<UserAc>();
             foreach (var user in users)
             {
@@ -143,20 +150,26 @@ namespace Promact.Oauth.Server.Repository
         /// <param name="editedUser">UserAc Application class object</param>
         public string UpdateUserDetails(UserAc editedUser, string updatedBy)
         {
-            var user = _userManager.FindByIdAsync(editedUser.Id).Result;
+            var slackUserName = _applicationUserDataRepository.FirstOrDefault(x => x.Id != editedUser.Id && x.SlackUserName == editedUser.SlackUserName);
+            if (slackUserName == null)
+            {
+                var user = _userManager.FindByIdAsync(editedUser.Id).Result;
 
-            user.FirstName = editedUser.FirstName;
-            user.LastName = editedUser.LastName;
-            user.Email = editedUser.Email;
-            user.IsActive = editedUser.IsActive;
-            user.UpdatedBy = updatedBy;
-            user.UpdatedDateTime = DateTime.UtcNow;
-            user.NumberOfCasualLeave = editedUser.NumberOfCasualLeave;
-            user.NumberOfSickLeave = editedUser.NumberOfSickLeave;
-            _userManager.UpdateAsync(user).Wait();
-            _applicationUserDataRepository.Save();
+                user.FirstName = editedUser.FirstName;
+                user.LastName = editedUser.LastName;
+                user.Email = editedUser.Email;
+                user.IsActive = editedUser.IsActive;
+                user.UpdatedBy = updatedBy;
+                user.UpdatedDateTime = DateTime.UtcNow;
+                user.NumberOfCasualLeave = editedUser.NumberOfCasualLeave;
+                user.NumberOfSickLeave = editedUser.NumberOfSickLeave;
+                user.SlackUserName = editedUser.SlackUserName;
+                _userManager.UpdateAsync(user).Wait();
+                _applicationUserDataRepository.Save();
 
-            return user.Id;
+                return user.Id;
+            }
+            else { return ""; }
         }
 
 
@@ -166,11 +179,11 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="id">string id</param>
         /// <returns>UserAc Application class object</returns>
-        public UserAc GetById(string id)
+        public async Task<UserAc> GetById(string id)
         {
             try
             {
-                var user = _applicationUserDataRepository.FirstOrDefault(u => u.Id == id);
+                var user =await _applicationUserDataRepository.FirstOrDefaultAsync(u => u.Id == id);
                 var requiredUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
                 return requiredUser;
             }
@@ -229,6 +242,18 @@ namespace Promact.Oauth.Server.Repository
         }
 
 
+        public bool FindUserBySlackUserName(string slackUserName)
+        {
+            var user =  _applicationUserDataRepository.FirstOrDefault(x=>x.SlackUserName==slackUserName);
+            if (user != null)
+            {
+                if (user.SlackUserName == slackUserName)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
         /// <summary>
         /// This method is used to send email to the currently added user
         /// </summary>

@@ -25,11 +25,12 @@
             <div [hidden]="!(email.touched && !email.valid && email.errors.required)" class="error">Email is required</div>
         </div>
         <div class="form-group">
-            <md-input placeholder="SlackUserName" type="text" name="SlackUserName" [(ngModel)]="userModel.SlackUserName" maxlength="255" required #SlackUserName="ngModel"></md-input>
+            <md-input placeholder="SlackUserName" type="text" name="SlackUserName" [(ngModel)]="userModel.SlackUserName" maxlength="255" required #SlackUserName="ngModel"  (blur)="checkSlackUserName(userModel.SlackUserName)"></md-input>
             <div [hidden]="!(SlackUserName.touched && !SlackUserName.valid && SlackUserName.errors.required)" class="error">Slack User Name is required</div>
         </div>
         <div class="form-group">
-            <input type="date" name="JoiningDate" [(ngModel)]="userModel.JoiningDate" placeholder="Enter joining date" #JoiningDate="ngModel"/>
+            <input type="date" name="JoiningDate" [(ngModel)]="userModel.JoiningDate" placeholder="Enter joining date" required #JoiningDate="ngModel"/>
+            <div [hidden]="!(JoiningDate.touched && !JoiningDate.valid && JoiningDate.errors.required)" class="error">Joining Date is required</div>
         </div>
         <div>
             <button md-raised-button class="btn-green" type="submit" (click)="addUser(userModel)">Add</button>

@@ -35,7 +35,8 @@ namespace Promact.Oauth.Server.Tests
                 IsActive = true,
                 Password = "User@123",
                 UserName = "testUser@pronactinfo.com",
-                SlackUserName="test"
+                SlackUserName = "test",
+                JoiningDate = DateTime.Now
             };
         }
 
@@ -48,7 +49,7 @@ namespace Promact.Oauth.Server.Tests
         public void GetAllUser()
         {
             _userRepository.AddUser(_testUser, "Rajdeep");
-            var users = _userRepository.GetAllUsers();
+            Task<IEnumerable<UserAc>> users = _userRepository.GetAllUsers();
             Assert.NotNull(users);
         }
 
@@ -70,7 +71,7 @@ namespace Promact.Oauth.Server.Tests
                 SlackUserName="test"
             };
             var id = _userRepository.AddUser(user, "Rajdeep");
-            var testUser = _userRepository.GetById(id);
+            Task<UserAc> testUser = _userRepository.GetById(id);
 
             Assert.NotNull(testUser);
         }
@@ -123,7 +124,8 @@ namespace Promact.Oauth.Server.Tests
             string id = _userRepository.UpdateUserDetails(new UserAc
             {
                 Id = user.Id,
-                FirstName = "Updated User"
+                FirstName = "Updated User",
+                SlackUserName= "Updated test"
             }, "Rajdeep");
 
             var editedUser = _dataRepository.FirstOrDefault(u => u.Id == id);

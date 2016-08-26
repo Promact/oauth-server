@@ -17,7 +17,7 @@ export class UserEditComponent {
     user: UserModel;
     id: any;
     errorMessage: string;
-
+    isSlackUserNameExist: boolean;
 
     constructor(private userService: UserService, private route: ActivatedRoute, private redirectionRoute: Router, private toast: Md2Toast) {
         this.user = new UserModel();
@@ -36,18 +36,36 @@ export class UserEditComponent {
 
 
     editUser(user: UserModel) {
+        //if (this.isSlackUserNameExist == true) {
         this.userService.editUser(user).subscribe((result) => {
             if (result == true) {
                 this.toast.show('User updated successfully.');
                 this.redirectionRoute.navigate(['/user/']);
             }
             else if (result == false) {
-                this.toast.show('User Name already exists.');
+                this.toast.show('User Name or Slack User Name already exists.');
             }
             
         }, err => {
-        });
+                });
+        //}
+        //else {
+        //    this.toast.show('Slack User Name  already exists.');
+        //}
     }
+
+    //checkSlackUserName(slackUserName) {
+    //    this.isSlackUserNameExist = false;
+    //    this.userService.findUserBySlackUserName(slackUserName).subscribe((isSlackUserNameExist) => {
+    //        if (isSlackUserNameExist) {
+    //            this.isSlackUserNameExist = true;
+    //        }
+    //        else {
+    //            this.isSlackUserNameExist = false;
+    //        }
+    //    }, err => {
+    //    });
+    //}
 
 
     goBack() {

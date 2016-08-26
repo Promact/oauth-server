@@ -85,7 +85,7 @@ export class ProjectEditComponent implements OnInit {
                 this.toast.show("Project already exists");
             }
             else {
-                this.toast.show("Project Successfully Added.");
+                this.toast.show("Project Successfully Updated.");
                 this.router.navigate(['/project/'])
             }
            

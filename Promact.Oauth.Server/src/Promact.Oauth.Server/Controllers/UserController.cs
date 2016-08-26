@@ -41,9 +41,9 @@ namespace Promact.Oauth.Server.Controllers
         /// <returns>User list</returns>
         [HttpGet]
         [Route("users")]
-        public IActionResult AllUsers()
+        public async Task<IActionResult> AllUsers()
         {
-            return Ok(_userRepository.GetAllUsers());
+            return Ok(await _userRepository.GetAllUsers());
         }
 
 
@@ -54,9 +54,9 @@ namespace Promact.Oauth.Server.Controllers
         /// <returns>UserAc Application class user</returns>
         [HttpGet]
         [Route("{id}")]
-        public IActionResult GetUserById(string id)
+        public async Task<IActionResult> GetUserById(string id)
         {
-            var user = _userRepository.GetById(id);
+            var user =await _userRepository.GetById(id);
             if (user == null)
             {
                 return NotFound();
@@ -104,8 +104,10 @@ namespace Promact.Oauth.Server.Controllers
             string updatedBy = _userManager.GetUserId(User);
             if (ModelState.IsValid)
             {
-                _userRepository.UpdateUserDetails(editedUser, updatedBy);
-                return Ok(true);
+                string id=_userRepository.UpdateUserDetails(editedUser, updatedBy);
+                if (id != "")
+                { return Ok(true); }
+                else { return Ok(false); }
             }
             return Ok(false);
         }
@@ -163,6 +165,13 @@ namespace Promact.Oauth.Server.Controllers
             return Ok(_userRepository.FindByEmail(email));
         }
 
+
+        [HttpGet]
+        [Route("findUserBySlackUserName/{slackUserName}")]
+        public IActionResult FindUserBySlackUserName(string slackUserName)
+        {
+            return Ok(_userRepository.FindUserBySlackUserName(slackUserName));
+        }
         #endregion
     }
 }

@@ -13,7 +13,7 @@ export class UserAddComponent {
 
     isEmailExist: boolean;
     isUserNameExist: boolean;
-
+    isSlackUserNameExist: boolean;
     @Input()
     userModel: UserModel;
 
@@ -23,16 +23,26 @@ export class UserAddComponent {
 
     addUser(userModel) {
         userModel.JoiningDate = new Date(userModel.JoiningDate);
-        this.userService.registerUser(this.userModel).subscribe((result) => {
-            if (result == true) {
-                this.toast.show('User added successfully.');
-                this.redirectionRoute.navigate(['/user/']);
+        if (this.isSlackUserNameExist == true) {
+            if (this.isEmailExist == false) {
+                this.userService.registerUser(this.userModel).subscribe((result) => {
+                    if (result == true) {
+                        this.toast.show('User added successfully.');
+                        this.redirectionRoute.navigate(['/user/']);
+                    }
+                    else if (result == false) {
+                        this.toast.show('User Name already exists.');
+                    }
+                }, err => {
+                });
             }
-            else if (result == false) {
-                this.toast.show('User Name already exists.');
+            else {
+                this.toast.show('Email Address already exists.');
             }
-        }, err => {
-        });
+        }
+        else {
+            this.toast.show('Slack User Name  already exists.');
+        }
     }
 
     checkEmail(email) {
@@ -44,6 +54,21 @@ export class UserAddComponent {
             }
             else {
                 this.isEmailExist = false;
+
+            }
+        }, err => {
+        });
+    }
+
+    checkSlackUserName(slackUserName)
+    {
+        this.isSlackUserNameExist = false;
+        this.userService.findUserBySlackUserName(slackUserName).subscribe((isSlackUserNameExist) => {
+            if (isSlackUserNameExist) {
+                this.isSlackUserNameExist = true;
+            }
+            else {
+                this.isSlackUserNameExist = false;
             }
         }, err => {
         });
