@@ -33,6 +33,7 @@ import { LoginService } from "./login.service";
 import { AdminComponent } from './Admin/admin.component';
 import { EmployeeComponent } from './Employee/employee.component';
 import { EmployeeEditComponent } from './Employee/employee-edit.component';
+import { MdSelect } from './select/select';
 
 
 
