@@ -31,25 +31,31 @@
 
 
             <label>
-                IsActive:</label>
+                IsActive:
+            </label>
 
-                <md-checkbox type="checkbox" id="chckbox" name="IsActive" [(ngModel)]="pro.isActive" disabled></md-checkbox>
+            <md-checkbox type="checkbox" id="chckbox" name="IsActive" [(ngModel)]="pro.isActive" disabled></md-checkbox>
 
-</div>
+        </div>
 
         <div class="form-group">
-
             <label>TeamLeader:</label>
-
-            <select name="sel3" [(ngModel)]="pro.teamLeaderId" disabled>
-                <option value={{i.Id}} *ngFor="let i of pro.listUsers">{{i.FirstName}}-{{i.Email}}</option>
-            </select>
+            <div class="half-width">
+                <md-select [(ngModel)]="pro.teamLeaderId" disabled>
+                    <md-option [value]="i.Id" *ngFor="let i of pro.listUsers">{{i.FirstName}}-{{i.Email}}</md-option>
+                </md-select>
+            </div>
         </div>
 
 
         <div class="form-group">
 
             <label>List Of Users:</label>
+
+
+            <md-select disabled>
+                <md-option [value]="i.Id" *ngFor="let ul of pro.applicationUsers">{{ul.FirstName}}-{{ul.Email}}</md-option>
+            </md-select>
 
             <select multiple disabled>
                 <option *ngFor="let ul of pro.applicationUsers">{{ul.FirstName}}-{{ul.Email}}</option>

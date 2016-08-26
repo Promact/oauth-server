@@ -70,7 +70,7 @@ export class MdOptionChange {
     md-select { position: relative; display: block; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; -moz-backface-visibility: hidden; -webkit-backface-visibility: hidden; backface-visibility: hidden; }
     md-select:focus { outline: none; }
     md-select .md-select-container { display: flex; width: 100%; align-items: center; padding: 2px 0 1px; border-bottom: 1px solid rgba(0, 0, 0, 0.38); position: relative; -moz-box-sizing: content-box; -webkit-box-sizing: content-box; box-sizing: content-box; min-width: 64px; min-height: 26px; flex-grow: 1; cursor: pointer; }
-    md-select:focus .md-select-container { padding-bottom: 0; border-bottom: 2px solid #106cc8; }
+    md-select:focus .md-select-container { padding-bottom: 0; border-bottom: 2px solid #4bcf99; }
     md-select.md-select-disabled .md-select-container { color: rgba(0,0,0,0.38); }
     md-select.md-select-disabled:focus .md-select-container { padding-bottom: 1px; border-bottom: 1px solid rgba(0, 0, 0, 0.38); }
     md-select .md-select-container > span:not(.md-select-icon) { max-width: 100%; -ms-flex: 1 1 auto; -webkit-flex: 1 1 auto; flex: 1 1 auto; -ms-text-overflow: ellipsis; -o-text-overflow: ellipsis; text-overflow: ellipsis; overflow: hidden; }
@@ -240,6 +240,7 @@ export class MdSelect implements AfterContentInit, AfterContentChecked, ControlV
             e.stopPropagation();
             e.preventDefault();
             return;
+            
         }
         if (this.isOpenable) {
             if (!this.isMenuVisible) {
@@ -321,6 +322,8 @@ export class MdSelect implements AfterContentInit, AfterContentChecked, ControlV
         setTimeout(() => {
             this.isOpenable = true;
         }, 200);
+        
+  
     }
 
     touch() {
@@ -371,7 +374,7 @@ export class MdSelect implements AfterContentInit, AfterContentChecked, ControlV
     template: '<div class="md-option-text"><ng-content></ng-content></div>',
     styles: [`
     md-option { cursor: pointer; position: relative; display: block; align-items: center; width: auto; -moz-transition: background 0.15s linear; -o-transition: background 0.15s linear; -webkit-transition: background 0.15s linear; transition: background 0.15s linear; padding: 0 16px; height: 48px; line-height: 48px; }
-    md-option.md-option-selected { color: #106cc8; }
+    md-option.md-option-selected { color: #4bcf99; }
     md-option:hover, md-option.md-option-focused { background: #eeeeee; }
     md-option.md-option-disabled, md-option.md-option-disabled:hover { color: rgba(189,189,189,0.87); cursor: default; background: transparent; }
     md-option .md-option-text { width: auto; white-space: nowrap; overflow: hidden; -ms-text-overflow: ellipsis; -o-text-overflow: ellipsis; text-overflow: ellipsis; font-size: 16px; }
