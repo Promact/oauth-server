@@ -98,6 +98,23 @@ namespace Promact.Oauth.Server.Data_Repository
         }
 
         /// <summary>
+        /// Updates the database with updated details of an entry
+        /// </summary>
+        /// <param name="entity"></param>
+        public void UpdateAsync(T entity)
+        {
+            try
+            {
+                _promactDbContext.Entry(entity).State = EntityState.Modified;
+                //_promactDbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        /// <summary>
         /// Saves the changes of the database context
         /// </summary>
         public void Save()

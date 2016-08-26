@@ -138,12 +138,12 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             projectInDb.SlackChannelName = editProject.SlackChannelName;
             projectInDb.UpdatedDateTime = DateTime.UtcNow;
             projectInDb.UpdatedBy = updatedBy;
-            _projectDataRepository.Update(projectInDb);
-
+            _projectDataRepository.UpdateAsync(projectInDb);
+            await _projectDataRepository.SaveChangesAsync();
             
             //Delete old users from project user table
             _projectUserDataRepository.Delete(x => x.ProjectId == projectId);
-            _projectUserDataRepository.Save();
+            await _projectUserDataRepository.SaveChangesAsync();
 
             editProject.ApplicationUsers.ForEach(x =>
             {

@@ -13,6 +13,10 @@ namespace Promact.Oauth.Server.Data_Repository
         /// </summary>
         /// <param name="entity"></param>
         void Add(T entity);
+        /// <summary>
+        /// Add the new entity into the datacontext
+        /// </summary>
+        /// <param name="entity"></param>
         void AddAsync(T entity);
         /// <summary>
         /// Gets the list of all users
@@ -25,6 +29,12 @@ namespace Promact.Oauth.Server.Data_Repository
         /// </summary>
         /// <param name="entity"></param>
         void Update(T entity);
+
+        /// <summary>
+        /// Update the entity into the datacontext.
+        /// </summary>
+        /// <param name="entity"></param>
+        void UpdateAsync(T entity);
 
         /// <summary> 
         /// Save changes into the database.
