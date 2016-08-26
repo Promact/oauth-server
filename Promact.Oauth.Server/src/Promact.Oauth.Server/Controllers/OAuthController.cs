@@ -56,7 +56,8 @@ namespace Promact.Oauth.Server.Controllers
                         // Refresh token and app's secret is checking if match then accesstoken will be send
                         if (app.AuthSecret == clientResponse.ClientSecret && clientResponse.RefreshToken == oAuth.RefreshToken)
                         {
-                            var returnUrl = string.Format("{0}?accessToken={1}&email={2}", clientResponse.ReturnUrl, oAuth.AccessToken, oAuth.userEmail);
+                            var user = await _userManager.FindByEmailAsync(oAuth.userEmail);
+                            var returnUrl = string.Format("{0}?accessToken={1}&email={2}&slackUserName={3}", clientResponse.ReturnUrl, oAuth.AccessToken, oAuth.userEmail, user.SlackUserName);
                             return Redirect(returnUrl);
                         }
                     }
