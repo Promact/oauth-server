@@ -1,71 +1,69 @@
-﻿
-<center>
-    <form>
-        <div *ngIf="pro">
+﻿<div class="project-edit">
+    <div class="card-title-block d-flex">
+        <div class="title items">
             <h3>Edit Project</h3>
-            <br />
-            <table>
-                <tr>
-                    <td>
-                        Name:
-                    </td>
-                    <td>
-                        <input type="text" name="name" [(ngModel)]="pro.name" maxlength="255" required #name="ngModel" />
-                        <div [hidden]="!(name.touched && !name.valid && name.errors.required)" style="color:red">Name is required</div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Slack Channel Name:
-                    </td>
-                    <td>
-                        <input type="text" name="SlackChannelName" [(ngModel)]="pro.slackChannelName" maxlength="255" required #SlackChannelName="ngModel" />
-                        <div [hidden]="!(SlackChannelName.touched && !SlackChannelName.valid && SlackChannelName.errors.required)" style="color:red">Slack Channel Name is required</div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        IsActive:
-                    </td>
-                    <td>
-                        <input type="checkbox" name="IsActive" [(ngModel)]="pro.isActive">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        TeamLeader:
-                    </td>
-                    <td>
-                        <select name="sel3" [(ngModel)]="pro.teamLeaderId">
-                            <option value={{i.Id}} *ngFor="let i of pro.listUsers">{{i.FirstName}}-{{i.Email}}</option>
-                        </select>
-                    </td>
-                </tr>
-                <!--<tr>
-                    <td>
-                        List Of Users:
-                    </td>
-                    <td>
-                        <md2-multiselect *ngIf="pro.applicationUsers && pro.listUsers" [items]="pro.listUsers"
-                                         [item-text]="'UniqueName'"
-                                         [(ngModel)]="pro.applicationUsers"
-                                         placeholder="Placeholder Text">
-                        </md2-multiselect>
-                    </td>
-                </tr>-->
-                <tr>
-                    <td>
-                        <button (click)="editProject(pro)">Update</button>
-                        <!--<button (click)="editProject(pro)" [disabled]="!(Name.valid && SlackChannelName.valid)">Update</button>-->
-                    </td>
-                    <td>
-                        <button (click)="gotoProjects()">Back</button>
-                    </td>
-                </tr>
-            </table>
-            <p>
-            </p>
         </div>
-    </form>
-</center>
+        <div class="text-right items">
+            <button md-raised-button type="submit" class="btn-back btn-green"  (click)="gotoProjects()"> <i class="material-icons">arrow_back</i>Back</button>
+        </div>
 
+    </div>
+    <div *ngIf="pro">
+
+
+        <div class="form-group">
+            <div class="half-width">
+                <md-input type="text" class="full-width" placeholder="Name" name="name" [(ngModel)]="pro.name" maxlength="255" required #name="ngModel"></md-input>
+                <div [hidden]="!(name.touched && !name.valid && name.errors.required)" style="color:red">Name is required</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="half-width">
+                <md-input type="text" class="full-width" placeholder="Slack Channel Name" name="SlackChannelName" [(ngModel)]="pro.slackChannelName" maxlength="255" required #SlackChannelName="ngModel"></md-input>
+                <div [hidden]="!(SlackChannelName.touched && !SlackChannelName.valid && SlackChannelName.errors.required)" style="color:red">Slack Channel Name is required</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="lb-label">IsActive:</label>
+
+            <md-checkbox type="checkbox" id="chckbox" name="IsActive" [(ngModel)]="pro.isActive"></md-checkbox>
+        </div>
+
+
+        <div class="form-group">
+            <label class="lb-label">TeamLeader:</label>
+            <div class="half-width">
+
+                <md-select [(ngModel)]="pro.teamLeaderId" placeholder="select">
+                    <md-option [value]="i.Id" *ngFor="let i of pro.listUsers">{{i.FirstName}}-{{i.Email}}</md-option>
+                </md-select>
+            </div>
+                <!--<select name="sel3" [(ngModel)]="pro.teamLeaderId">
+            <option value={{i.Id}} *ngFor="let i of pro.listUsers">{{i.FirstName}}-{{i.Email}}</option>
+        </select>-->
+            </div>
+
+        <!--<tr>
+            <td>
+                List Of Users:
+            </td>
+            <td>
+                <md2-multiselect *ngIf="pro.applicationUsers && pro.listUsers" [items]="pro.listUsers"
+                                 [item-text]="'UniqueName'"
+                                 [(ngModel)]="pro.applicationUsers"
+                                 placeholder="Placeholder Text">
+                </md2-multiselect>
+            </td>
+        </tr>-->
+
+
+        <div class="form-group">
+            <button md-raised-button class="btn-green" (click)="editProject(pro)">Update</button>
+            <!--<button (click)="editProject(pro)" [disabled]="!(Name.valid && SlackChannelName.valid)">Update</button>-->
+
+        </div>
+
+    </div>
+</div>

@@ -33,11 +33,14 @@ import { LoginService } from "./login.service";
 import { AdminComponent } from './Admin/admin.component';
 import { EmployeeComponent } from './Employee/employee.component';
 import { EmployeeEditComponent } from './Employee/employee-edit.component';
+import {MdSelect, MdOption, MdSelectDispatcher} from './select/select';
+import {MdMultiselect} from './multiselect/multiselect';
 
 
 
 @NgModule({
-    declarations: [AppComponent, ConsumerAppComponent, ConsumerappListComponent, ConsumerappAddComponent, ConsumerappEditComponent, ProjectComponent, ProjectListComponent, ProjectAddComponent, ProjectEditComponent, ProjectViewComponent, UserComponent, UserListComponent, UserAddComponent, UserEditComponent, UserDetailsComponent, ChangePasswordComponent, AdminComponent, EmployeeComponent, EmployeeEditComponent],
+    declarations: [AppComponent, ConsumerAppComponent, ConsumerappListComponent, ConsumerappAddComponent, ConsumerappEditComponent, ProjectComponent, ProjectListComponent, ProjectAddComponent, ProjectEditComponent, ProjectViewComponent, UserComponent, UserListComponent, UserAddComponent, UserEditComponent, UserDetailsComponent, ChangePasswordComponent, AdminComponent, EmployeeComponent, EmployeeEditComponent, MdSelect, MdOption, MdMultiselect],
+
     imports: [
         BrowserModule,
         HttpModule,
@@ -47,11 +50,12 @@ import { EmployeeEditComponent } from './Employee/employee-edit.component';
         MdToolbarModule,
         MdSidenavModule,
         MdInputModule,
-        MdCheckboxModule
+        MdCheckboxModule, 
+        
 
     ],
     bootstrap: [AppComponent],
-    providers: [HttpService, ConsumerAppService, ProjectService, UserService, LoginService
+    providers: [HttpService, ConsumerAppService, ProjectService, UserService, LoginService, MdSelectDispatcher
     ],
 })
 export class AppModule { } 
