@@ -24,19 +24,19 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let pro of pros">
-                    <td>{{pro.name}}</td>
-                    <td>{{pro.slackChannelName}}</td>
-                    <td *ngIf="pro.isActive">Active</td>
-                    <td *ngIf="!pro.isActive">Inactive</td>
-                    <td>{{pro.teamLeader.FirstName}}</td>
-                    <td>{{pro.createdBy}}</td>
-                    <td>{{pro.createdDate}}</td>
-                    <td>{{pro.updatedBy}}</td>
-                    <td>{{pro.updatedDate}}</td>
+                <tr *ngFor="let project of projects">
+                    <td>{{project.name}}</td>
+                    <td>{{project.slackChannelName}}</td>
+                    <td *ngIf="project.isActive">Active</td>
+                    <td *ngIf="!project.isActive">Inactive</td>
+                    <td>{{project.teamLeader.FirstName}}</td>
+                    <td>{{project.createdBy}}</td>
+                    <td>{{project.createdDate}}</td>
+                    <td>{{project.updatedBy}}</td>
+                    <td>{{project.updatedDate}}</td>
                     <td>
-                        <button md-raised-button class="btn-green custom-btn mr-5" (click)="editProject(pro.id)">Edit</button>
-                        <button md-raised-button class="custom-btn" (click)="viewProject(pro.id)">View</button>
+                        <button md-raised-button class="btn-green custom-btn mr-5" (click)="editProject(project.id)">Edit</button>
+                        <button md-raised-button class="custom-btn" (click)="viewProject(project.id)">View</button>
                     </td>
 
                 </tr>

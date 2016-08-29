@@ -33,8 +33,4 @@ export class ProjectService {
     {
         return this.httpService.put(this.ProjectUrl + "/editProject/", project);
     }
-    //deleteProject(id) {
-    //    return this.httpService.delete("api/project/deleteProject/id");
-    //}
-
 }

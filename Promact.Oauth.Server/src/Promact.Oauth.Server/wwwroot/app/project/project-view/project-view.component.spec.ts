@@ -53,7 +53,7 @@ describe("Project View Test", () => {
     it("should get default page for Project", () => {
         projectViewComponent.ngOnInit();
         expect(projectViewComponent.Userlist).not.toBeNull();
-        expect(projectViewComponent.pro).not.toBeNull();
+        expect(projectViewComponent.project).not.toBeNull();
     });
     
 
