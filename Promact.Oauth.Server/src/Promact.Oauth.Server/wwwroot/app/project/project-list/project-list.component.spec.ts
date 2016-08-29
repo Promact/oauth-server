@@ -37,12 +37,10 @@ describe("Project List Test", () => {
     it("should be defined", () => {
         expect(projectListComponent).toBeDefined();
     });
-     /**
-     * get list of Projects
-     */
+     
     it("should get list of Project on initialization", () => {
         projectListComponent.ngOnInit();
-        expect(projectListComponent.pros.length).toEqual(1);
+        expect(projectListComponent.projects.length).toEqual(1);
     });
 
     

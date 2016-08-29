@@ -51,7 +51,7 @@ describe("Project Edit Test", () => {
     it("should get default page for Project", () => {
         projectEditComponent.ngOnInit();
         expect(projectEditComponent.Userlist).not.toBeNull();
-        expect(projectEditComponent.pro).not.toBeNull();
+        expect(projectEditComponent.project).not.toBeNull();
     });
    
     it("should check Project name and Slack Channel Name before update", inject([projectModel], (projectModel: projectModel) => {

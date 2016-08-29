@@ -15,13 +15,11 @@ import {MockProjectService} from "../../shared/mocks/project/mock.project.servic
 import {MockBaseService} from '../../shared/mocks/mock.base';
 import {MockRouter} from '../../shared/mocks/mock.router';
 import {Observable} from 'rxjs/Observable';
-//import {MockActivatedRoute} from '../../shared/mocks/mock.activatedroute';
 declare var describe, it, beforeEach, expect;
 
 describe('Project Add Test', () => {
     let projectAddComponent: ProjectAddComponent;
     class MockRouter { }
-    //class MockActivatedRoute { }
     class MockActivatedRoute extends ActivatedRoute {
         constructor() {
             super();
@@ -65,8 +63,6 @@ describe('Project Add Test', () => {
         projectAddComponent.addProject(projectModel);
         expect(projectModel.Name).toBe(expectedProjectName);
     }));
-
-   
 });    
 
 
