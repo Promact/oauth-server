@@ -34,6 +34,9 @@ describe("Project List Test", () => {
         //projectListComponent = new ProjectListComponent(router, proService, toast);
     }));
 
+    it("should be defined", () => {
+        expect(projectListComponent).toBeDefined();
+    });
      /**
      * get list of Projects
      */

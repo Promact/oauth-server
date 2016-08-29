@@ -23,8 +23,8 @@ describe("Project Edit Test", () => {
     //class MockActivatedRoute extends ActivatedRoute {
     //    constructor() {
     //        super();
-    //        this.params = Observable.of({ id: "1"});
-    //        this.snapshot = Observable.of({ id: "1" });
+    //        //this.params = Observable.of({ id: "1"});
+    //        this.snapshot.params = Observable.of({ id: "1" });
     //    }
     //}
     class MockLocation { }
@@ -45,7 +45,9 @@ describe("Project Edit Test", () => {
     beforeEach(inject([UserService, ActivatedRoute, Router, Md2Toast], (userService: UserService, route: ActivatedRoute, router: Router, toast: Md2Toast) => {
         //userEditComponent = new UserEditComponent(userService,route, router, toast);
     }));
-
+    it("should be defined", () => {
+        expect(userEditComponent).toBeDefined();
+    });
     //it("should get default page for User", () => {
     //    userEditComponent.ngOnInit();
     //    expect(userEditComponent.user).not.toBeNull();
