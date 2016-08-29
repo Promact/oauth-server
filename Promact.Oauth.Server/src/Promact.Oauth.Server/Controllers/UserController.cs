@@ -164,9 +164,9 @@ namespace Promact.Oauth.Server.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("fetchbyusername/{userName}")]
-        public IActionResult FetchByUserName(string userName)
+        public UserAc FetchByUserName(string userName)
         {
-            return Ok(_userRepository.GetUserDetail(userName));
+            return _userRepository.GetUserDetail(userName);
         }
 
         /// <summary>
