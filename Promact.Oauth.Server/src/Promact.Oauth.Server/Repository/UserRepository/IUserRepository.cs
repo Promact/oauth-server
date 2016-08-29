@@ -22,7 +22,7 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="id">string id</param>
         /// <returns>UserAc Application class object</returns>
-        UserAc GetById(string id);
+        Task<UserAc> GetById(string id);
 
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace Promact.Oauth.Server.Repository
         /// This method used forget list of users
         /// </summary>
         /// <returns>List of all users</returns>
-        IEnumerable<UserAc> GetAllUsers();
+        Task<IEnumerable<UserAc>> GetAllUsers();
 
 
         /// <summary>
@@ -61,6 +61,7 @@ namespace Promact.Oauth.Server.Repository
         /// <returns> boolean: true if the email exists, false if does not exist</returns>
         bool FindByEmail(string email);
 
+        bool FindUserBySlackUserName(string slackUserName);
 
         /// <summary>
         /// This method is used to send email to the currently added user
@@ -88,6 +89,20 @@ namespace Promact.Oauth.Server.Repository
         /// <param name="userId"></param>
         /// <returns></returns>
         Task<List<ApplicationUser>> ManagementByUserId();
+
+        /// <summary>
+        /// Used to fetch the userdetail by given UserName 
+        /// </summary>
+        /// <param name="UserName"></param>
+        /// <returns>object of UserAc</returns>
+        UserAc GetUserDetail(string UserName);
+
+        /// <summary>
+        /// Method is used to Get User details by Id
+        /// </summary>
+        /// <param name="employeeId"></param>
+        /// <returns></returns>
+        ApplicationUser UserDetailById(string employeeId);
 
     }
 }

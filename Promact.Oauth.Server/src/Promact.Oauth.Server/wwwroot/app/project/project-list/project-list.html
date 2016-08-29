@@ -1,35 +1,47 @@
-﻿
-    <h1>{{title}}</h1>
-    <h2>Projects</h2>
-    <a routerLink="add" routerLinkActive="active">Add Project</a>
-    <table>
-        <thead>
-            <tr>
-                <th>Project Name</th>
-                <th>Slack Channel Name</th>
-                <th>Is Active</th>
-                <th>TeamLeader Name</th>
-                <th>Created By</th>
-                <th>Created Date</th>
-                <th>Updated By</th>
-                <th>Updated Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let pro of pros">
-                <td>{{pro.name}}</td>
-                <td>{{pro.slackChannelName}}</td>
-                <td *ngIf="pro.isActive">Active</td>
-                <td *ngIf="!pro.isActive">Inactive</td>
-                <td>{{pro.teamLeader.FirstName}}</td>
-                <td>{{pro.createdBy}}</td>
-                <td>{{pro.createdDate}}</td>
-                <td>{{pro.updatedBy}}</td>
-                <td>{{pro.updatedDate}}</td>
-                <td><button (click)="editProject(pro.id)">Edit</button></td>
-                <td><button (click)="viewProject(pro.id)">View</button></td>
-            </tr>
-        </tbody>
-    </table>
+﻿<div class="project-list">
+    <div class="card-title-block d-flex">
+        <div class="title items">
+            <h3>Projects</h3>
+        </div>
+        <div class="items text-right">
+            <button md-raised-button routerLink="add" class="add-link btn-green"><i class="material-icons">add</i>Add Project</button>
+        </div>
+    </div>
 
+    <div class="table-sm">
+        <table class="table-bordered">
+            <thead>
+                <tr>
+                    <th>Project Name</th>
+                    <th>Slack Channel Name</th>
+                    <th>Is Active</th>
+                    <th>TeamLeader Name</th>
+                    <th>Created By</th>
+                    <th>Created Date</th>
+                    <th>Updated By</th>
+                    <th>Updated Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let pro of pros">
+                    <td>{{pro.name}}</td>
+                    <td>{{pro.slackChannelName}}</td>
+                    <td *ngIf="pro.isActive">Active</td>
+                    <td *ngIf="!pro.isActive">Inactive</td>
+                    <td>{{pro.teamLeader.FirstName}}</td>
+                    <td>{{pro.createdBy}}</td>
+                    <td>{{pro.createdDate}}</td>
+                    <td>{{pro.updatedBy}}</td>
+                    <td>{{pro.updatedDate}}</td>
+                    <td>
+                        <button md-raised-button class="btn-green custom-btn mr-5" (click)="editProject(pro.id)">Edit</button>
+                        <button md-raised-button class="custom-btn" (click)="viewProject(pro.id)">View</button>
+                    </td>
 
+                </tr>
+            </tbody>
+        </table>
+
+        </div>
+    </div>

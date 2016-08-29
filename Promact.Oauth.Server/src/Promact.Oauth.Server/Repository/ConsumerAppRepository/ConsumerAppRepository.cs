@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
 {
@@ -39,7 +40,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         {
             try
             {
-                return _appsDataRepository.FirstOrDefault(x => x.AuthId == clientId);
+                return await _appsDataRepository.FirstOrDefaultAsync(x => x.AuthId == clientId);
             }
             catch (Exception ex)
             {
@@ -63,7 +64,8 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
                     consumerAppObject.AuthId = CreatedRandomNumer(true);
                     consumerAppObject.AuthSecret = CreatedRandomNumer(false);
                     consumerAppObject.CreatedDateTime = DateTime.Now;
-                    _appsDataRepository.Add(consumerAppObject);
+                     _appsDataRepository.AddAsync(consumerAppObject);
+                    await _appsDataRepository.SaveChangesAsync();
                     return consumerAppObject.Id;
                 }
                 return 0;
@@ -84,7 +86,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         {
             try
             {
-                return _appsDataRepository.GetAll().ToList();
+                return await _appsDataRepository.GetAll().ToListAsync();
             }
             catch (Exception ex)
             {
@@ -102,7 +104,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         {
             try
             {
-                return _appsDataRepository.FirstOrDefault(x => x.Id == id);
+                return await _appsDataRepository.FirstOrDefaultAsync(x => x.Id == id);
             }
             catch (Exception ex)
             {
@@ -123,7 +125,8 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
             {
                 if (_appsDataRepository.FirstOrDefault(x => x.Name == consumerApps.Name && x.Id != consumerApps.Id) == null)
                 {
-                    _appsDataRepository.Update(consumerApps);
+                    _appsDataRepository.UpdateAsync(consumerApps);
+                    await _appsDataRepository.SaveChangesAsync();
                     return consumerApps.Id;
                 }
                 return 0;

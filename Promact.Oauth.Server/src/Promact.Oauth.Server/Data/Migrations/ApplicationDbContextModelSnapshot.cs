@@ -161,6 +161,10 @@ namespace Promact.Oauth.Server.Data.Migrations
                     b.Property<string>("NormalizedUserName")
                         .HasAnnotation("MaxLength", 256);
 
+                    b.Property<int>("NumberOfCasualLeave");
+
+                    b.Property<int>("NumberOfSeekLeave");
+
                     b.Property<string>("PasswordHash");
 
                     b.Property<string>("PhoneNumber");
@@ -225,7 +229,7 @@ namespace Promact.Oauth.Server.Data.Migrations
 
                     b.Property<string>("UpdatedBy");
 
-                    b.Property<DateTime>("UpdatedDateTime");
+                    b.Property<DateTime?>("UpdatedDateTime");
 
                     b.HasKey("Id");
 
@@ -274,7 +278,7 @@ namespace Promact.Oauth.Server.Data.Migrations
 
                     b.Property<string>("UpdatedBy");
 
-                    b.Property<DateTime>("UpdatedDateTime");
+                    b.Property<DateTime?>("UpdatedDateTime");
 
                     b.HasKey("Id");
 
@@ -294,7 +298,7 @@ namespace Promact.Oauth.Server.Data.Migrations
 
                     b.Property<string>("UpdatedBy");
 
-                    b.Property<DateTime>("UpdatedDateTime");
+                    b.Property<DateTime?>("UpdatedDateTime");
 
                     b.Property<string>("UserId");
 

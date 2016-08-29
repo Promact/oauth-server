@@ -61,6 +61,24 @@ namespace Promact.Oauth.Server.Data_Repository
         }
 
         /// <summary>
+        /// Add new entry to the database using Async
+        /// </summary>
+        /// <param name="entity"></param>
+        public void AddAsync(T entity)
+        {
+            try
+            {
+                _dbSet.Add(entity);
+                //_promactDbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        /// <summary>
         /// Fetches the list of all entries
         /// </summary>
         /// <returns></returns>
@@ -68,7 +86,6 @@ namespace Promact.Oauth.Server.Data_Repository
         {
             return _dbSet.AsEnumerable();
         }
-
 
         /// <summary>
         /// Updates the database with updated details of an entry
@@ -81,13 +98,40 @@ namespace Promact.Oauth.Server.Data_Repository
         }
 
         /// <summary>
+        /// Updates the database with updated details of an entry
+        /// </summary>
+        /// <param name="entity"></param>
+        public void UpdateAsync(T entity)
+        {
+            try
+            {
+                _promactDbContext.Entry(entity).State = EntityState.Modified;
+                //_promactDbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        /// <summary>
         /// Saves the changes of the database context
         /// </summary>
         public void Save()
         {
             _promactDbContext.SaveChanges();
         }
-        
+        /// <summary>
+        /// Saves the changes of the database using Async
+        /// </summary>
+        /// <returns></returns>
+        public async Task<int> SaveChangesAsync()
+        {
+            try
+            {return await _promactDbContext.SaveChangesAsync();}
+            catch (Exception)
+            {throw;}
+        }
         /// <summary>
         /// Method attaches the entity from the context
         /// </summary>
@@ -196,6 +240,26 @@ namespace Promact.Oauth.Server.Data_Repository
                 throw;
             }
         }
+
+
+        /// <summary>
+        /// Method fetches the first or default item from the datacontext based on the the supplied function.
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate)
+        {
+            try
+            {
+                return await _dbSet.FirstOrDefaultAsync(predicate);
+
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
 
 
         #endregion

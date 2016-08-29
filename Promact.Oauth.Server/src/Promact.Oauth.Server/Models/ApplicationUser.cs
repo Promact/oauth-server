@@ -20,6 +20,18 @@ namespace Promact.Oauth.Server.Models
         [Required]
         public bool IsActive { get; set; }
 
+
+        public double NumberOfCasualLeave { get; set; }
+
+        public double NumberOfSickLeave { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime JoiningDate {get;set;}
+
+        [Required]
+        [StringLength(255)]
+        public string SlackUserName { get; set; }
+
         [NotMapped]
         public virtual ICollection<Project> Projects { get; set; }
 
@@ -37,5 +49,7 @@ namespace Promact.Oauth.Server.Models
         [Display(Name = "Updated Date")]
         [DataType(DataType.DateTime)]
         public DateTime UpdatedDateTime { get; set; }
+
+        
     }
 }

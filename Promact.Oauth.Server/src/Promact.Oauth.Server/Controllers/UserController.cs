@@ -1,19 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Promact.Oauth.Server.Repository;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Models.ManageViewModels;
 using Microsoft.AspNetCore.Identity;
 using Promact.Oauth.Server.Models.ApplicationClasses;
+using System.Threading.Tasks;
 
 namespace Promact.Oauth.Server.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize(Roles = "Admin")]
+   // [Authorize(Roles = "Admin")]
     public class UserController : BaseController
     {
         #region "Private Variable(s)"
@@ -41,9 +39,10 @@ namespace Promact.Oauth.Server.Controllers
         /// <returns>User list</returns>
         [HttpGet]
         [Route("users")]
-        public IActionResult AllUsers()
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> AllUsers()
         {
-            return Ok(_userRepository.GetAllUsers());
+            return Ok(await _userRepository.GetAllUsers());
         }
 
 
@@ -54,9 +53,10 @@ namespace Promact.Oauth.Server.Controllers
         /// <returns>UserAc Application class user</returns>
         [HttpGet]
         [Route("{id}")]
-        public IActionResult GetUserById(string id)
+        [Authorize(Roles = "Admin,Employee")]
+        public async Task<IActionResult> GetUserById(string id)
         {
-            var user = _userRepository.GetById(id);
+            var user =await _userRepository.GetById(id);
             if (user == null)
             {
                 return NotFound();
@@ -73,6 +73,7 @@ namespace Promact.Oauth.Server.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("add")]
+        [Authorize(Roles = "Admin")]
         public IActionResult RegisterUser([FromBody] UserAc newUser)
         {
             string createdBy = _userManager.GetUserId(User);
@@ -99,13 +100,16 @@ namespace Promact.Oauth.Server.Controllers
         /// <returns></returns>
         [HttpPut]
         [Route("edit")]
+        [Authorize(Roles = "Admin,Employee")]
         public IActionResult UpdateUser([FromBody] UserAc editedUser)
         {
             string updatedBy = _userManager.GetUserId(User);
             if (ModelState.IsValid)
             {
-                _userRepository.UpdateUserDetails(editedUser, updatedBy);
-                return Ok(true);
+                string id=_userRepository.UpdateUserDetails(editedUser, updatedBy);
+                if (id != "")
+                { return Ok(true); }
+                else { return Ok(false); }
             }
             return Ok(false);
         }
@@ -120,6 +124,7 @@ namespace Promact.Oauth.Server.Controllers
         [HttpPost]
         [Route("changepassword")]
         [AllowAnonymous]
+        [Authorize(Roles = "Admin,Employee")]
         public IActionResult ChangePassword([FromBody] ChangePasswordViewModel passwordModel)
         {
             var user = _userManager.GetUserAsync(User).Result;
@@ -145,11 +150,24 @@ namespace Promact.Oauth.Server.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("findbyusername/{userName}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult FindByUserName(string userName)
         {
             return Ok(_userRepository.FindByUserName(userName));
         }
 
+
+        /// <summary>
+        /// This method is used to check if a user already exists in the database with the given userName
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("fetchbyusername/{userName}")]
+        public IActionResult FetchByUserName(string userName)
+        {
+            return Ok(_userRepository.GetUserDetail(userName));
+        }
 
         /// <summary>
         /// This method is used to check if a user already exists in the database with the given email
@@ -158,11 +176,19 @@ namespace Promact.Oauth.Server.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("findbyemail/{email}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult FindByEmail(string email)
         {
             return Ok(_userRepository.FindByEmail(email));
         }
 
+
+        [HttpGet]
+        [Route("findUserBySlackUserName/{slackUserName}")]
+        public IActionResult FindUserBySlackUserName(string slackUserName)
+        {
+            return Ok(_userRepository.FindUserBySlackUserName(slackUserName));
+        }
         #endregion
     }
 }

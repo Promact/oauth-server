@@ -17,9 +17,11 @@ export class MockProjectService {
     
     getPros() {
         let mockProject = new MockProject();
+        let mockProjectList = new Array<MockProject>();
         mockProject.Name = "slack";
         mockProject.SlackChannelName = "slack.test";
-        let connection = this.mockBaseService.getMockResponse(this.projectUrl, mockProject);
+        mockProjectList.push(mockProject);
+        let connection = this.mockBaseService.getMockResponse(this.projectUrl, mockProjectList);
         return connection;
     }
     addProject(projectModel: projectModel)

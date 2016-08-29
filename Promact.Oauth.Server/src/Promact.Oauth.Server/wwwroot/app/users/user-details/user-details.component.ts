@@ -34,6 +34,6 @@ export class UserDetailsComponent {
     }
 
     goBack() {
-        this.redirectRoute.navigate(['/']);
+        this.redirectRoute.navigate(['admin/user']);
     }
 }

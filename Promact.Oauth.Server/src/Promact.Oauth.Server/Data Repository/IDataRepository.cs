@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Promact.Oauth.Server.Data_Repository
 {
@@ -12,7 +13,11 @@ namespace Promact.Oauth.Server.Data_Repository
         /// </summary>
         /// <param name="entity"></param>
         void Add(T entity);
-
+        /// <summary>
+        /// Add the new entity into the datacontext
+        /// </summary>
+        /// <param name="entity"></param>
+        void AddAsync(T entity);
         /// <summary>
         /// Gets the list of all users
         /// </summary>
@@ -25,11 +30,22 @@ namespace Promact.Oauth.Server.Data_Repository
         /// <param name="entity"></param>
         void Update(T entity);
 
+        /// <summary>
+        /// Update the entity into the datacontext.
+        /// </summary>
+        /// <param name="entity"></param>
+        void UpdateAsync(T entity);
+
         /// <summary> 
         /// Save changes into the database.
         /// </summary>
         void Save();
 
+        /// <summary>
+        /// Save changes into the database.
+        /// </summary>
+        /// <returns></returns>
+        Task<int> SaveChangesAsync();
         /// <summary>
         /// Property gets the Entity count.
         /// </summary>
@@ -93,5 +109,12 @@ namespace Promact.Oauth.Server.Data_Repository
         /// </summary>
         /// <param name="predicate"> </param>
         void Delete(Expression<Func<T, bool>> predicate);
+
+        /// <summary>
+        ///  Find object by specified expression.
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate);
     }
 }

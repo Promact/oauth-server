@@ -5,6 +5,7 @@ import { ConsumerAppService} from '../consumerapp.service';
 import {Md2Toast} from 'md2/toast';
 import {Location} from "@angular/common";
 
+
 @Component({
     templateUrl: "app/consumerapp/consumerapp-edit/consumerapp-edit.html",
     directives: [],
@@ -51,6 +52,6 @@ export class ConsumerappEditComponent {
 
     cancel() {
         this.location.back();
-        //this.router.navigate(['/consumerapp/']);
+        //this.router.navigate(['admin/consumerapp']);
     }
 }

@@ -27,11 +27,11 @@ export class UserListComponent {
     }
 
     userDetails(id){
-        this.router.navigate(['/user/details', id]);
+        this.router.navigate(['admin/user/details', id]);
     }
 
     userEdit(id) {
-        this.router.navigate(['/user/edit', id]);
+        this.router.navigate(['admin/user/edit', id]);
     }
 
     ngOnInit() {

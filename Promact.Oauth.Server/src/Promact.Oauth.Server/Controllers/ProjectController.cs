@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace Promact.Oauth.Server.Controllers
 {
 
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     public class ProjectController : Controller
     {
@@ -23,7 +23,7 @@ namespace Promact.Oauth.Server.Controllers
         private readonly IProjectRepository _projectRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUserRepository _userRepository;
-        public ProjectController(PromactOauthDbContext appContext, IProjectRepository projectRepository, UserManager<ApplicationUser> userManager ,IUserRepository userRepository)
+        public ProjectController(PromactOauthDbContext appContext, IProjectRepository projectRepository, UserManager<ApplicationUser> userManager, IUserRepository userRepository)
         {
             _projectRepository = projectRepository;
             _appDbContext = appContext;
@@ -34,17 +34,17 @@ namespace Promact.Oauth.Server.Controllers
         // GET: api/values
         [HttpGet]
         [Route("projects")]
-        public async Task<IEnumerable<ProjectAc>> Get()
+        public async Task<IEnumerable<ProjectAc>> projects()
         {
             return await _projectRepository.GetAllProjects();
         }
 
-        
+
 
         // GET api/values/5
         [HttpGet]
         [Route("getProjects/{id}")]
-        public async Task<ProjectAc> Get(int id)
+        public async Task<ProjectAc> getProjects(int id)
         {
             return await _projectRepository.GetById(id);
         }
@@ -52,12 +52,12 @@ namespace Promact.Oauth.Server.Controllers
         // POST api/values
         [HttpPost]
         [Route("addProject")]
-        public async Task<IActionResult> Post([FromBody]ProjectAc project)
+        public async Task<IActionResult> addProject([FromBody]ProjectAc project)
         {
             var createdBy = _userManager.GetUserId(User);
             if (ModelState.IsValid)
             {
-                ProjectAc p =_projectRepository.checkDuplicate(project);
+                ProjectAc p = _projectRepository.checkDuplicate(project);
                 if (p.Name != null && p.SlackChannelName != null)
                 {
                     int id =await _projectRepository.AddProject(project, createdBy);
@@ -76,13 +76,13 @@ namespace Promact.Oauth.Server.Controllers
                 { return Ok(project); }
             }
             return Ok(false);
-            
+
         }
 
         // PUT api/values/5
         [HttpPut]
         [Route("editProject")]
-        public async Task<IActionResult> Put(int id, [FromBody]ProjectAc project)
+        public async Task<IActionResult> editProject(int id, [FromBody]ProjectAc project)
         {
             var updatedBy = _userManager.GetUserId(User);
            
@@ -99,6 +99,20 @@ namespace Promact.Oauth.Server.Controllers
            return Ok(project);
         }
 
-        
+        // GET api/values/name
+        [HttpGet]
+        [Route("fetchProject/{name}")]
+        public ProjectAc Fetch(string name)
+        {
+            return _projectRepository.GetProjectByGroupName(name);
+        }
+
+        // GET api/values/name
+        [HttpGet]
+        [Route("fetchProjectUsers/{name}")]
+        public List<UserAc> FetchUsers(string groupName)
+        {
+            return _projectRepository.GetProjectUserByGroupName(groupName);
+        }
     }
 }

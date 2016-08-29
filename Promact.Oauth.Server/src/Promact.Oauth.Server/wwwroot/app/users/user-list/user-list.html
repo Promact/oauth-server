@@ -4,7 +4,7 @@
             <h3 class="in_block">Users</h3>
             </div>
             <div class="items text-right">
-                <button md-raised-button   routerLink="user/add"  routerLinkActive="active" class="add-link btn-green"><i class="material-icons">add</i>Add User</button>
+                <button md-raised-button   routerLink="add"  routerLinkActive="active" class="add-link btn-green"><i class="material-icons">add</i>Add User</button>
             </div>
 
         </div>
@@ -18,7 +18,10 @@
                 <th>Last Name</th>
                 <th>Email</th>
                 <th>Status</th>
-                <th>Action</th>
+                <th>SlackUserName</th>
+                <th>Number Of CL</th>
+                <th>Number Of SL</th>
+                <th>Date Of Joining</th>
             </tr>
         </thead>
         <tbody>
@@ -28,8 +31,10 @@
                 <td>{{user.Email}}</td>
                 <td *ngIf="user.IsActive">Active</td>
                 <td *ngIf="!user.IsActive">Inactive</td>
-                
-                
+                <td>{{user.SlackUserName}}</td>
+                <td>{{user.NumberOfCasualLeave}}</td>
+                <td>{{user.NumberOfSickLeave}}</td>
+                <td>{{user.JoiningDate |date:"dd/MM/yyyy"}}</td>
                 <td> <button  md-raised-button class="btn-green custom-btn mr-5" (click)="userDetails(user.Id)">Details</button> <button   md-raised-button class="custom-btn"  (click)="userEdit(user.Id)">Edit</button> </td>
                
                 
