@@ -9,7 +9,7 @@ import {Location} from "@angular/common";
     directives: []
 })
 export class ProjectViewComponent implements OnInit {
-    pro: projectModel;
+    project: projectModel;
     private sub: any;
     Userlist: Array<UserModel>;
     constructor(
@@ -23,24 +23,24 @@ export class ProjectViewComponent implements OnInit {
     ngOnInit() {
         this.route.params.subscribe(params => {
             let id = +params['id']; // (+) converts string 'id' to a number
-            this.service.getProject(id).subscribe(pro => {
-                this.pro = pro;
-                this.service.getUsers().subscribe(listUsers => {
-                    this.pro.listUsers = listUsers;
-                    if (!this.pro.applicationUsers)
-                        this.pro.applicationUsers = new Array<UserModel>();
-                    for (let i = 0; i < this.pro.listUsers.length; i++) {
-                        for (let j = 0; j < this.pro.applicationUsers.length; j++) {
-                            if (this.pro.listUsers[i].Id == this.pro.applicationUsers[j].Id) {
-                                this.pro.applicationUsers[j].Email = this.pro.listUsers[i].Email;
-                                this.pro.applicationUsers[j].IsActive = this.pro.listUsers[i].IsActive;
-                                this.pro.applicationUsers[j].LastName = this.pro.listUsers[i].LastName;
-                                this.pro.applicationUsers[j].UserName = this.pro.listUsers[i].UserName;
-                                this.pro.applicationUsers[j].UniqueName = this.pro.listUsers[i].UniqueName;
-                                this.pro.applicationUsers[j].NumberOfCasualLeave = this.pro.listUsers[i].NumberOfCasualLeave;
-                                this.pro.applicationUsers[j].NumberOfSickLeave = this.pro.listUsers[i].NumberOfSickLeave;
-                                this.pro.applicationUsers[j].JoiningDate = this.pro.listUsers[i].JoiningDate;
-                                this.pro.applicationUsers[j].SlackUserName = this.pro.listUsers[i].SlackUserName;
+            this.service.getProject(id).subscribe(project => {
+                this.project = project;
+                this.service.getUsers().subscribe(ListUsers => {
+                    this.project.ListUsers = ListUsers;
+                    if (!this.project.ApplicationUsers)
+                        this.project.ApplicationUsers = new Array<UserModel>();
+                    for (let i = 0; i < this.project.ListUsers.length; i++) {
+                        for (let j = 0; j < this.project.ApplicationUsers.length; j++) {
+                            if (this.project.ListUsers[i].Id == this.project.ApplicationUsers[j].Id) {
+                                this.project.ApplicationUsers[j].Email = this.project.ListUsers[i].Email;
+                                this.project.ApplicationUsers[j].IsActive = this.project.ListUsers[i].IsActive;
+                                this.project.ApplicationUsers[j].LastName = this.project.ListUsers[i].LastName;
+                                this.project.ApplicationUsers[j].UserName = this.project.ListUsers[i].UserName;
+                                this.project.ApplicationUsers[j].UniqueName = this.project.ListUsers[i].UniqueName;
+                                this.project.ApplicationUsers[j].NumberOfCasualLeave = this.project.ListUsers[i].NumberOfCasualLeave;
+                                this.project.ApplicationUsers[j].NumberOfSickLeave = this.project.ListUsers[i].NumberOfSickLeave;
+                                this.project.ApplicationUsers[j].JoiningDate = this.project.ListUsers[i].JoiningDate;
+                                this.project.ApplicationUsers[j].SlackUserName = this.project.ListUsers[i].SlackUserName;
                             }
                         }
                     }

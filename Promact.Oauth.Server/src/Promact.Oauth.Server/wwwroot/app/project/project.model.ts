@@ -11,6 +11,6 @@ export class projectModel {
     UpdatedDate: string;
     UniqueName: String;
     TeamLeader: UserModel;
-    listUsers: Array<UserModel>;
-    applicationUsers: Array<UserModel>;
+    ListUsers: Array<UserModel>;
+    ApplicationUsers: Array<UserModel>;
 } 

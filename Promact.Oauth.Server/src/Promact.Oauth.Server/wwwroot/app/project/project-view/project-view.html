@@ -8,13 +8,13 @@
         </div>
 
     </div>
-    <div *ngIf="pro">
+    <div *ngIf="project">
 
 
         <div class="form-group">
             <label>Name:</label>
 
-            {{pro.name}}
+            {{project.name}}
         </div>
 
 
@@ -23,7 +23,7 @@
                 Slack Channel Name:
             </label>
 
-            {{pro.slackChannelName}}
+            {{project.slackChannelName}}
         </div>
 
 
@@ -34,15 +34,15 @@
                 IsActive:
             </label>
 
-            <md-checkbox type="checkbox" id="chckbox" name="IsActive" [(ngModel)]="pro.isActive" disabled></md-checkbox>
+            <md-checkbox type="checkbox" id="chckbox" name="IsActive" [(ngModel)]="project.isActive" disabled></md-checkbox>
 
         </div>
 
         <div class="form-group">
             <label>TeamLeader:</label>
             <div class="half-width">
-                <md-select [(ngModel)]="pro.teamLeaderId" disabled>
-                    <md-option [value]="i.Id" *ngFor="let i of pro.listUsers">{{i.FirstName}}-{{i.Email}}</md-option>
+                <md-select [(ngModel)]="project.teamLeaderId" disabled>
+                    <md-option [value]="i.Id" *ngFor="let i of project.ListUsers">{{i.FirstName}}-{{i.Email}}</md-option>
                 </md-select>
             </div>
         </div>
@@ -56,9 +56,9 @@
             <!--<md-select disabled>
                 <md-option [value]="i.Id" *ngFor="let ul of pro.applicationUsers">{{ul.FirstName}}-{{ul.Email}}</md-option>
             </md-select>-->
-            <md-multiselect *ngIf="pro.applicationUsers && pro.listUsers" [items]="pro.listUsers"
+            <md-multiselect *ngIf="project.ApplicationUsers && project.listUsers" [items]="project.ListUsers"
                                          [item-text]="'UniqueName'"
-                                         [(ngModel)]="pro.applicationUsers"
+                                         [(ngModel)]="project.ApplicationUsers"
                                          placeholder="Placeholder Text">
             </md-multiselect>
 

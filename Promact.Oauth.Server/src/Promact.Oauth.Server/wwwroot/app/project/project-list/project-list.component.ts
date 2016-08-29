@@ -10,15 +10,15 @@ import {Md2Toast} from 'md2/toast';
     providers: [Md2Toast] 
 })
 export class ProjectListComponent{
-    pros: Array<projectModel>;
-    pro: projectModel;
+    projects: Array<projectModel>;
+    project: projectModel;
     constructor(private router: Router, private proService: ProjectService, private toast: Md2Toast) {
-        this.pros = new Array<projectModel>();
-        this.pro = new projectModel();
+        this.projects = new Array<projectModel>();
+        this.project = new projectModel();
     }
     getPros() {
-        this.proService.getPros().subscribe((pros) => {
-            this.pros = pros
+        this.proService.getPros().subscribe((projects) => {
+            this.projects = projects
         }, err => {
 
         });

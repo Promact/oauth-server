@@ -8,19 +8,19 @@
         </div>
 
     </div>
-    <div *ngIf="pro">
+    <div *ngIf="project">
 
 
         <div class="form-group">
             <div class="half-width">
-                <md-input type="text" class="full-width" placeholder="Name" name="name" [(ngModel)]="pro.name" maxlength="255" required #name="ngModel"></md-input>
+                <md-input type="text" class="full-width" placeholder="Name" name="name" [(ngModel)]="project.name" maxlength="255" required #name="ngModel"></md-input>
                 <div [hidden]="!(name.touched && !name.valid && name.errors.required)" style="color:red">Name is required</div>
             </div>
         </div>
 
         <div class="form-group">
             <div class="half-width">
-                <md-input type="text" class="full-width" placeholder="Slack Channel Name" name="SlackChannelName" [(ngModel)]="pro.slackChannelName" maxlength="255" required #SlackChannelName="ngModel"></md-input>
+                <md-input type="text" class="full-width" placeholder="Slack Channel Name" name="SlackChannelName" [(ngModel)]="project.slackChannelName" maxlength="255" required #SlackChannelName="ngModel"></md-input>
                 <div [hidden]="!(SlackChannelName.touched && !SlackChannelName.valid && SlackChannelName.errors.required)" style="color:red">Slack Channel Name is required</div>
             </div>
         </div>
@@ -28,7 +28,7 @@
         <div class="form-group">
             <label class="lb-label">IsActive:</label>
 
-            <md-checkbox type="checkbox" id="chckbox" name="IsActive" [(ngModel)]="pro.isActive"></md-checkbox>
+            <md-checkbox type="checkbox" id="chckbox" name="IsActive" [(ngModel)]="project.isActive"></md-checkbox>
         </div>
 
 
@@ -36,8 +36,8 @@
             <label class="lb-label">TeamLeader:</label>
             <div class="half-width">
 
-                <md-select [(ngModel)]="pro.teamLeaderId" placeholder="select">
-                    <md-option [value]="i.Id" *ngFor="let i of pro.listUsers">{{i.FirstName}}-{{i.Email}}</md-option>
+                <md-select [(ngModel)]="project.teamLeaderId" placeholder="select">
+                    <md-option [value]="i.Id" *ngFor="let i of project.ListUsers">{{i.FirstName}}-{{i.Email}}</md-option>
                 </md-select>
             </div>
                 <!--<select name="sel3" [(ngModel)]="pro.teamLeaderId">
@@ -60,9 +60,7 @@
 
 
         <div class="form-group">
-            <button md-raised-button class="btn-green" (click)="editProject(pro)">Update</button>
-            <!--<button (click)="editProject(pro)" [disabled]="!(Name.valid && SlackChannelName.valid)">Update</button>-->
-
+            <button md-raised-button class="btn-green" (click)="editProject(project)">Update</button>
         </div>
 
     </div>

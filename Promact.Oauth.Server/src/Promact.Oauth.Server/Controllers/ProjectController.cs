@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace Promact.Oauth.Server.Controllers
 {
 
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     public class ProjectController : Controller
     {
