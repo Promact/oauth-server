@@ -30,7 +30,7 @@ namespace Promact.Oauth.Server.Repository
 
         #region "Constructor"
 
-        public UserRepository(IDataRepository<ApplicationUser> applicationUserDataRepository, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IMapper mapperContext,IDataRepository<ProjectUser> projectUserRepository, IProjectRepository projectRepository)
+        public UserRepository(IDataRepository<ApplicationUser> applicationUserDataRepository, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IMapper mapperContext, IDataRepository<ProjectUser> projectUserRepository, IProjectRepository projectRepository)
         {
             _applicationUserDataRepository = applicationUserDataRepository;
             _userManager = userManager;
@@ -60,7 +60,7 @@ namespace Promact.Oauth.Server.Repository
             user.CreatedDateTime = DateTime.UtcNow;
             
             _userManager.CreateAsync(user, "User@123").Wait();
-            
+            _userManager.AddToRoleAsync(user, "Employee").Wait();
             //SendEmail(user);
             return user.Id;
         }
@@ -224,7 +224,32 @@ namespace Promact.Oauth.Server.Repository
             return true;
         }
 
-
+        /// <summary>
+        /// Used to fetch the userdetail by given UserName 
+        /// </summary>
+        /// <param name="UserName"></param>
+        /// <returns>object of UserAc</returns>
+        public UserAc GetUserDetail(string UserName)
+        {
+            try
+            {
+                var user = _userManager.FindByNameAsync(UserName).Result;
+                var userAc = new UserAc();
+                if (user != null)
+                {
+                    userAc.Email = user.Email;
+                    userAc.Id = user.Id;
+                    userAc.FirstName = user.FirstName;
+                    userAc.LastName = user.LastName;
+                    userAc.UserName = user.UserName;
+                }
+                return userAc;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
 
         /// <summary>
         /// This method is used to check if a user already exists in the database with the given email
@@ -268,6 +293,11 @@ namespace Promact.Oauth.Server.Repository
             _emailSender.SendEmailAsync(user.Email, "Login Credentials", message);
         }
 
+        /// <summary>
+        /// Method to get user details by user first name
+        /// </summary>
+        /// <param name="firstname"></param>
+        /// <returns>user details</returns>
         public ApplicationUser UserDetialByFirstName(string firstname)
         {
             var user = _userManager.Users.FirstOrDefault(x => x.FirstName == firstname);
@@ -280,6 +310,12 @@ namespace Promact.Oauth.Server.Repository
             };
             return newUser;
         }
+
+        /// <summary>
+        /// Method to get team leader's details by user firstname
+        /// </summary>
+        /// <param name="userFirstName"></param>
+        /// <returns>list of team leader</returns>
         public async Task<List<ApplicationUser>> TeamLeaderByUserId(string userFirstName)
         {
             var user = _userManager.Users.FirstOrDefault(x => x.FirstName == userFirstName);
@@ -300,6 +336,10 @@ namespace Promact.Oauth.Server.Repository
             return teamLeaders;
         }
 
+        /// <summary>
+        /// Method to get management people details
+        /// </summary>
+        /// <returns>list of management</returns>
         public async Task<List<ApplicationUser>> ManagementByUserId()
         {
             var management = await _userManager.GetUsersInRoleAsync("Admin");
@@ -316,6 +356,22 @@ namespace Promact.Oauth.Server.Repository
             return managementUser;
         }
 
+        public ApplicationUser UserDetailById(string employeeId)
+        {
+            var user = _userManager.Users.FirstOrDefault(x => x.Id == employeeId);
+            if (user != null)
+            {
+                var newUser = new ApplicationUser
+                {
+                    Id = user.Id,
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName
+                };
+                return newUser;
+            }
+            return null;
+        }
         #endregion
     }
 }

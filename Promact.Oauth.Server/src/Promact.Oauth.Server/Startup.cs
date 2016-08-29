@@ -20,6 +20,7 @@ using Promact.Oauth.Server.Repository.HttpClientRepository;
 using System.Net.Http;
 using Promact.Oauth.Server.AutoMapper;
 using AutoMapper;
+using Promact.Oauth.Server.Controllers;
 
 namespace Promact.Oauth.Server
 {
@@ -78,7 +79,9 @@ namespace Promact.Oauth.Server
             services.AddScoped<HttpClient>();
             services.AddScoped<IHttpClientRepository, HttpClientRepository>();
 
+
             services.AddMvc();
+            services.AddScoped<CustomAttribute>();
             //.AddJsonOptions(opt =>
             //{
             //    var resolver = opt.SerializerSettings.ContractResolver;

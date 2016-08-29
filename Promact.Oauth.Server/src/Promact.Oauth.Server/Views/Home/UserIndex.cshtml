@@ -1,7 +1,6 @@
 ﻿@{
     Layout = null;
 }
-
 <html>
 <head>
     <base href="/">
@@ -10,8 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="~/css/app-seagreen.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-          rel="stylesheet"> 
-
+          rel="stylesheet">
     <!-- 1. Load libraries -->
     <!-- Polyfill(s) for older browsers -->
     <script src="~/lib/shim.min.js"></script>
@@ -21,24 +19,18 @@
     <!-- 2. Configure SystemJS -->
     <script src="~/systemjs.config.js"></script>
     <script>
-      System.import('app').catch(function(err){ console.error(err); });
+        System.import('app').catch(function (err) { console.error(err); });
     </script>
     @*<script src="~/bundle.js"></script>*@
 </head>
 <!-- 3. Display the application -->
 <body>
-    <div class="logout-link">
-        <a href="/LogOff" class="fl-right">LOGOUT</a>
-    </div>
-    <my-app>
-    loading....
+    <user-app>
+        loading....
         <md-progress-bar mode="determinate"
                          [value]="determinateProgressValue"
                          color="primary"
                          class="demo-progress-bar-margins"></md-progress-bar>
-   </my-app>
+    </user-app>
 </body>
 </html>
-
-
-
