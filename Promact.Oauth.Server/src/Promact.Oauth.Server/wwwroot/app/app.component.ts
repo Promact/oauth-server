@@ -4,6 +4,9 @@
 
 @Component({
     selector: 'my-app',
-    templateUrl: "app/index.html"
+    templateUrl: "app/index.html",
 })
-export class AppComponent {   }
+export class AppComponent {
+
+
+}

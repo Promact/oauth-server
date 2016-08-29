@@ -8,13 +8,13 @@ import {ProjectComponent} from "./project/project.component";
 import {UserComponent} from './users/user.component';
 
 const appRoutes: Routes = [
-
     ...consumerRoute,
     { path: '', component: ConsumerAppComponent },
     ...projectRoutes,
     { path: 'project', component: ProjectComponent },
     ...userRoutes,
     { path: 'user', component: UserComponent },
+
 ]
 
 export const routing = RouterModule.forRoot(appRoutes);

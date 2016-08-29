@@ -1,8 +1,8 @@
 ﻿import {Component} from "@angular/core";
-import {ConsumerAppModel} from '../consumerapp-model';
-import { ROUTER_DIRECTIVES, Router } from '@angular/router';
-import { ConsumerAppService} from '../consumerapp.service';
-import {Md2Toast} from 'md2/toast';
+import {ConsumerAppModel} from "../consumerapp-model";
+import { ROUTER_DIRECTIVES, Router } from "@angular/router";
+import { ConsumerAppService} from "../consumerapp.service";
+import {Md2Toast} from "md2/toast";
 
 @Component({
     templateUrl: "app/consumerapp/consumerapp-add/consumerapp-add.html",

@@ -8,16 +8,10 @@
         </div>
     </div>
     <div class="clearfix"></div>
-
-
- 
-        <div>
-         
-           
-                    <ul *ngFor="let consumerApps of listOfConsumerApps">
-                        <li (click)="editDetails(consumerApps.id)">{{consumerApps.name}}</li>
-                    </ul>
-             
-        </div>
+    <div>
+        <ul *ngFor="let consumerApps of listOfConsumerApps">
+            <li (click)="editDetails(consumerApps.id)">{{consumerApps.name}}</li>
+        </ul>
 
     </div>
+</div>
