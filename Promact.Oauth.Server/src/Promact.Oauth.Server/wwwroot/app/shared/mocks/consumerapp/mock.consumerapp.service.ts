@@ -42,15 +42,14 @@ export class MockConsumerappService {
      * @param id 
      */
     getConsumerAppById(id: number) {
-
         let mockConsumerApp = new MockConsumer(id);
         if (id == 1) {
             mockConsumerApp.Name = "slack";
             mockConsumerApp.Description = "slack Description";
             mockConsumerApp.CallbackUrl = "www.google.com";
         }
-        return this.mockBaseService.getMockResponse(this.consumerAppUrl + id, mockConsumerApp);
-
+        let connection = this.mockBaseService.getMockResponse(this.consumerAppUrl + id, mockConsumerApp);
+        return connection;
     }
 
     /*This method used for update consumer apps*
@@ -58,7 +57,8 @@ export class MockConsumerappService {
      * @param consumerAppsAc
      */
     updateConsumerApps(consumerAppModel: ConsumerAppModel) {
-        return this.mockBaseService.getMockResponse(this.consumerAppUrl, consumerAppModel);
+        let connection = this.mockBaseService.getMockResponse(this.consumerAppUrl, consumerAppModel);
+        return connection;
     }
 }
 

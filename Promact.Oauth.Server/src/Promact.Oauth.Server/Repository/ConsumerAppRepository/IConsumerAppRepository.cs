@@ -16,7 +16,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
 
 
         /// <summary>
-        /// This method used forget list of apps. -An
+        /// This method used for get list of apps. -An
         /// </summary>
         /// <returns></returns>
         Task<List<ConsumerApps>> GetListOfApps();
@@ -36,7 +36,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         Task<ConsumerApps> GetConsumerAppsById(int id);
 
         /// <summary>
-        /// This method used for update consumer apps and return primary key. -An
+        /// This method used for update consumer app and return primary key. -An
         /// </summary>
         /// <param name="apps"></param>
         /// <returns></returns>

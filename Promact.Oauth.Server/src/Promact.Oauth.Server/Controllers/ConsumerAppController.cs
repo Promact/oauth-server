@@ -4,12 +4,14 @@ using Microsoft.AspNetCore.Mvc;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Models.ApplicationClasses;
 using Promact.Oauth.Server.Repository.ConsumerAppRepository;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;-*
 using AutoMapper;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Promact.Oauth.Server.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     public class ConsumerAppController : Controller
     {
@@ -58,7 +60,7 @@ namespace Promact.Oauth.Server.Controllers
 
 
         /// <summary>
-        /// This method used for get cinsumer apps list. -An
+        /// This method used for get consumer app list. -An
         /// </summary>
         /// <returns></returns>
         [HttpGet]

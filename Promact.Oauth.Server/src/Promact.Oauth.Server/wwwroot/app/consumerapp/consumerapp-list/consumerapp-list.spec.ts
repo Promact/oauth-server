@@ -1,14 +1,14 @@
 ﻿import {async, inject, TestBed, ComponentFixture, TestComponentBuilder} from '@angular/core/testing';
 import {provide} from "@angular/core";
-import { DeprecatedFormsModule } from "@angular/common";
 import { ROUTER_DIRECTIVES, Router} from "@angular/router";
+import { DeprecatedFormsModule } from '@angular/common';
 import { ConsumerappListComponent } from "../consumerapp-list/consumerapp-list.component";
 import { ConsumerAppService} from "../consumerapp.service";
 import {TestConnection} from "../../shared/mocks/test.connection";
 import { MockConsumerappService } from "../../shared/mocks/consumerapp/mock.consumerapp.service";
 import {MockBaseService} from "../../shared/mocks/mock.base";
 import {ConsumerAppModel} from '../consumerapp-model';
-
+declare var describe, it, beforeEach, expect;
 
 describe('Consumerapp List Test Case', () => {
     let consumerappListComponent: ConsumerappListComponent;

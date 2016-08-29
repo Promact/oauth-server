@@ -24,8 +24,6 @@ export class ConsumerappAddComponent {
             else if (result == false) {
                 this.toast.show('Consumer App Name is already exists.');
             }
-
-
         }, err => {
 
         });

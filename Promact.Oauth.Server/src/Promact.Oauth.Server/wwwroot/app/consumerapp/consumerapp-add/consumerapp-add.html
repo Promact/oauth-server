@@ -10,7 +10,7 @@
     <form #consumerAppForm="ngForm">
         <div class="form-group">
             <div class="half-width">
-                <md-input placeholder="name" class="full-width" type="text" name="consumerName" [(ngModel)]="consumerModel.Name" maxlength="255" required #consumerName="ngModel"></md-input>
+                <md-input placeholder="Name" class="full-width" type="text" name="consumerName" [(ngModel)]="consumerModel.Name" maxlength="255" required #consumerName="ngModel"></md-input>
                 <div [hidden]="!(consumerName.touched && !consumerName.valid && consumerName.errors.required)" class="error">Name is required</div>
             </div>
         </div>
