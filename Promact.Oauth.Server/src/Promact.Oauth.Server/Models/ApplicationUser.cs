@@ -50,6 +50,6 @@ namespace Promact.Oauth.Server.Models
         [DataType(DataType.DateTime)]
         public DateTime UpdatedDateTime { get; set; }
 
-        public string SlackUserName { get; set; }
+        
     }
 }

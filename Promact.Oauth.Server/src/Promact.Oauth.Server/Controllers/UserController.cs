@@ -6,6 +6,7 @@ using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Models.ManageViewModels;
 using Microsoft.AspNetCore.Identity;
 using Promact.Oauth.Server.Models.ApplicationClasses;
+using System.Threading.Tasks;
 
 namespace Promact.Oauth.Server.Controllers
 {

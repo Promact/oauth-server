@@ -53,13 +53,18 @@
             <label>List Of Users:</label>
 
 
-            <md-select disabled>
+            <!--<md-select disabled>
                 <md-option [value]="i.Id" *ngFor="let ul of pro.applicationUsers">{{ul.FirstName}}-{{ul.Email}}</md-option>
-            </md-select>
+            </md-select>-->
+            <md-multiselect *ngIf="pro.applicationUsers && pro.listUsers" [items]="pro.listUsers"
+                                         [item-text]="'UniqueName'"
+                                         [(ngModel)]="pro.applicationUsers"
+                                         placeholder="Placeholder Text">
+            </md-multiselect>
 
-            <select multiple disabled>
+            <!--<select multiple disabled>
                 <option *ngFor="let ul of pro.applicationUsers">{{ul.FirstName}}-{{ul.Email}}</option>
-            </select>
+            </select>-->
         </div>
 
 
