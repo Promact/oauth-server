@@ -37,10 +37,13 @@ describe('User Add Test', () => {
     beforeEach(inject([UserService, Router, ActivatedRoute, Md2Toast], (userService: UserService, router: Router,route: ActivatedRoute,toast: Md2Toast) => {
         userAddComponent = new UserAddComponent(userService, router, route, toast);
     }));
-
+    it("should be defined", () => {
+        expect(userAddComponent).toBeDefined();
+    });
      /**
      * should check Project name and Slack Channel Name before add
      */
+    
     it("should check user first name before add", inject([UserModel], (userModel: UserModel) => {
         let expectedFristName = "First Name";
         userModel.FirstName = expectedFristName;

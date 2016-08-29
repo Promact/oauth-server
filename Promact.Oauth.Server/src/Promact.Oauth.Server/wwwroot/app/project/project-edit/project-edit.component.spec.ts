@@ -45,7 +45,9 @@ describe("Project Edit Test", () => {
     beforeEach(inject([ActivatedRoute, Router, Md2Toast, ProjectService, Location], (route: ActivatedRoute, router: Router, toast: Md2Toast, projectService: ProjectService, location: Location) => {
         projectEditComponent = new ProjectEditComponent(route, router, toast, projectService, location);
     }));
-    
+    it("should be defined", () => {
+        expect(projectEditComponent).toBeDefined();
+    });
     it("should get default page for Project", () => {
         projectEditComponent.ngOnInit();
         expect(projectEditComponent.Userlist).not.toBeNull();

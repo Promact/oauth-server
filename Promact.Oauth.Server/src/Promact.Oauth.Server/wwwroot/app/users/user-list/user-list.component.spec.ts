@@ -32,7 +32,9 @@ describe("Project List Test", () => {
     beforeEach(inject([UserService, Router], (userService: UserService, router: Router) => {
         userListComponent = new UserListComponent(userService,router);
     }));
-
+    it("should be defined", () => {
+        expect(userListComponent).toBeDefined();
+    });
      /**
      * get user of Projects
      */
