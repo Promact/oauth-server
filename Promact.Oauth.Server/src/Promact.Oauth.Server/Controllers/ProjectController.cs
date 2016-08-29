@@ -110,9 +110,22 @@ namespace Promact.Oauth.Server.Controllers
         // GET api/values/name
         [HttpGet]
         [Route("fetchProjectUsers/{name}")]
-        public List<UserAc> FetchUsers(string groupName)
+        public List<UserAc> FetchUsers(string name)
         {
-            return _projectRepository.GetProjectUserByGroupName(groupName);
+            return _projectRepository.GetProjectUserByGroupName(name);
+        }
+
+        // GET api/values/id
+        [HttpGet]
+        [Route("fetchUserById/{id}")]
+        public UserAc FetchUserById(string id)
+        {
+            var user = _userRepository.GetById(id);
+            if (user == null)
+            {
+                return null;
+            }
+            return user;
         }
     }
 }

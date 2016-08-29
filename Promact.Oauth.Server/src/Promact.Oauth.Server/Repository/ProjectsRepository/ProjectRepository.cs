@@ -69,7 +69,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// <param name="newProject">project that need to be added</param>
         /// <param name="createdBy">Login User Id</param>
         /// <returns>project id of newly created project</returns>
-        public async Task<int>  AddProject(ProjectAc newProject,string createdBy)
+        public async Task<int> AddProject(ProjectAc newProject, string createdBy)
         {
             var projectObject = _mapperContext.Map<ProjectAc, Project>(newProject);
             projectObject.CreatedDateTime = DateTime.UtcNow;
@@ -122,7 +122,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// </summary>
         /// <param name="editProject"></param>Updated information in editProject Parmeter
         /// <param name="updatedBy"></param>Login User Id
-        public async Task<int> EditProject(ProjectAc editProject,string updatedBy)
+        public async Task<int> EditProject(ProjectAc editProject, string updatedBy)
         {
             var projectId = editProject.Id;
             var projectInDb = _projectDataRepository.FirstOrDefault(x => x.Id == projectId);
@@ -236,18 +236,21 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             {
                 var project = _projectDataRepository.FirstOrDefault(x => x.SlackChannelName.Equals(GroupName));
                 var userProjects = new List<UserAc>();
-                var projectUserList = _projectUserDataRepository.Fetch(x => x.ProjectId == project.Id).ToList();
-                foreach (var projectUser in projectUserList)
+                if (project != null)
                 {
-                    var user = _userDataRepository.FirstOrDefault(x=>x.Id == projectUser.UserId);
-                    var userAc = new UserAc();
-                    userAc.Id = user.Id;
-                    userAc.Email = user.Email;
-                    userAc.FirstName = user.FirstName;
-                    userAc.IsActive = user.IsActive;
-                    userAc.LastName = user.LastName;
-                    userAc.UserName = user.UserName;
-                    userProjects.Add(userAc);
+                    var projectUserList = _projectUserDataRepository.Fetch(x => x.ProjectId == project.Id).ToList();
+                    foreach (var projectUser in projectUserList)
+                    {
+                        var user = _userDataRepository.FirstOrDefault(x => x.Id == projectUser.UserId);
+                        var userAc = new UserAc();
+                        userAc.Id = user.Id;
+                        userAc.Email = user.Email;
+                        userAc.FirstName = user.FirstName;
+                        userAc.IsActive = user.IsActive;
+                        userAc.LastName = user.LastName;
+                        userAc.UserName = user.UserName;
+                        userProjects.Add(userAc);
+                    }
                 }
                 return userProjects;
             }
