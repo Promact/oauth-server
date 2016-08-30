@@ -306,7 +306,8 @@ namespace Promact.Oauth.Server.Repository
                 Id = user.Id,
                 Email = user.Email,
                 FirstName = user.FirstName,
-                LastName = user.LastName
+                LastName = user.LastName,
+                SlackUserName = user.SlackUserName
             };
             return newUser;
         }
@@ -329,7 +330,8 @@ namespace Promact.Oauth.Server.Repository
                 var newUser = new ApplicationUser
                 {
                     UserName = user.UserName,
-                    Email = user.Email
+                    Email = user.Email,
+                    SlackUserName = user.SlackUserName
                 };
                 teamLeaders.Add(newUser);
             }
@@ -349,7 +351,8 @@ namespace Promact.Oauth.Server.Repository
                 var newUser = new ApplicationUser
                 {
                     FirstName = user.FirstName,
-                    Email = user.Email
+                    Email = user.Email,
+                    SlackUserName = user.SlackUserName
                 };
                 managementUser.Add(newUser);
             }
