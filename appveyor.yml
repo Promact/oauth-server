@@ -22,7 +22,7 @@ test_script:
 
     dotnet restore
 
-    dotnet test
+    dotnet test -appveyor
 notifications:
 - provider: Slack
   auth_token:
