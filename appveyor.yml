@@ -5,12 +5,12 @@ before_build:
 - cmd: >-
     npm install -g typings tslint typescript
 
-    npm install
-    
     dotnet restore
 
     cd ".\Promact.Oauth.Server\src\Promact.Oauth.Server"
-    
+
+    npm install
+
     cd "..\..\.."
 build:
   publish_wap: true
