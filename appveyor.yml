@@ -11,7 +11,7 @@ before_build:
 
     npm install
 
-    cd "..\.."
+    cd "..\..\.."
 build:
   publish_wap: true
   parallel: true
