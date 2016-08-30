@@ -181,6 +181,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public void UserDetail()
         {
+            GenerateTestUser();
             AddRole();
             string id = _userRepository.AddUser(userLocal, "siddhartha");
             var user = _userRepository.UserDetialByUserSlackName("myslackname");
