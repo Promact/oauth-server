@@ -61,9 +61,9 @@ namespace Promact.Oauth.Server.Tests
             Email = StringConstant.Email
         };
         UserAc userSecound = new UserAc()
-        { Id = "2", FirstName = "Secound First Name" };
+        { Id = StringConstant.UserIdSecond, FirstName = StringConstant.FirstNameSecond };
         UserAc userThird = new UserAc()
-        { Id = "3", FirstName = "Third First Name" };
+        { Id = StringConstant.UserIdThird, FirstName = StringConstant.FirstNameThird };
         /// <summary>
         /// This test case to add a new project
         /// </summary>
@@ -96,8 +96,8 @@ namespace Promact.Oauth.Server.Tests
             projectac.TeamLeaderId = TId;
             Task<int> id =  _projectRepository.AddProject(projectac, StringConstant.CreatedBy);
             _projectRepository.AddUserProject(projectUser);
-            Task<ProjectAc> Pc = _projectRepository.GetById(id.Result);
-            Assert.NotNull(Pc);
+            Task<ProjectAc> project = _projectRepository.GetById(id.Result);
+            Assert.NotNull(project);
         }
 
         /// <summary>
@@ -155,8 +155,8 @@ namespace Promact.Oauth.Server.Tests
             ProjectAc projectacSecound = new ProjectAc()
             {
                 Id = 2,
-                Name = "Project Edit",
-                SlackChannelName = "Slack Channel NameEdit",
+                Name = StringConstant.ProjectName,
+                SlackChannelName = StringConstant.SlackChannelName,
                 IsActive = true,
                 TeamLeader = new UserAc { FirstName = StringConstant.FirstName },
                 TeamLeaderId = StringConstant.TeamLeaderId,
@@ -178,8 +178,8 @@ namespace Promact.Oauth.Server.Tests
             var TId = _userRepository.AddUser(user, StringConstant.CreatedBy);
             _projectRepository.AddProject(projectac, StringConstant.CreatedBy);
             _projectRepository.AddUserProject(projectUser);
-            Task<IEnumerable<ProjectAc>> p = _projectRepository.GetAllProjects();
-            Assert.NotNull(p);
+            Task<IEnumerable<ProjectAc>> projects = _projectRepository.GetAllProjects();
+            Assert.NotNull(projects);
         }
     }
 }
