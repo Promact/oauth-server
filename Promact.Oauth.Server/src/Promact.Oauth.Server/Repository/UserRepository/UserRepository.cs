@@ -247,7 +247,7 @@ namespace Promact.Oauth.Server.Repository
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
 
@@ -298,9 +298,11 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="firstname"></param>
         /// <returns>user details</returns>
-        public ApplicationUser UserDetialByFirstName(string firstname)
+        public ApplicationUser UserDetialByFirstName(string userSlackName)
         {
-            var user = _userManager.Users.FirstOrDefault(x => x.FirstName == firstname);
+            
+            var user = _applicationUserDataRepository.FirstOrDefault(x => x.SlackUserName == userSlackName);
+            //var newUserDetail = await _userManager.FindByEmailAsync(user.Email);
             var newUser = new ApplicationUser
             {
                 Id = user.Id,
@@ -317,9 +319,9 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="userFirstName"></param>
         /// <returns>list of team leader</returns>
-        public async Task<List<ApplicationUser>> TeamLeaderByUserId(string userFirstName)
+        public async Task<List<ApplicationUser>> TeamLeaderByUserId(string userSlackName)
         {
-            var user = _userManager.Users.FirstOrDefault(x => x.FirstName == userFirstName);
+            var user = _userManager.Users.FirstOrDefault(x => x.SlackUserName == userSlackName);
             var projects = _projectUserRepository.Fetch(x => x.UserId == user.Id);
             List<ApplicationUser> teamLeaders = new List<ApplicationUser>();
             foreach (var project in projects)

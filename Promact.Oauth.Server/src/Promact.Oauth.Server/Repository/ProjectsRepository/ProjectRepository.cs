@@ -221,7 +221,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
 
@@ -255,7 +255,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
     }
