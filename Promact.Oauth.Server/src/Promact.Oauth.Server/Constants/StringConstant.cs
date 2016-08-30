@@ -31,6 +31,12 @@ namespace Promact.Oauth.Server.Constants
         public static string SlackChannelName = "Slack Channel Name";
         public static bool IsActive = true;
         public static string TeamLeaderId = "1";
+        public static string UserIdSecond = "2";
+        public static string UserIdThird = "3";
+        public static string FirstNameSecond = "Secound First Name";
+        public static string FirstNameThird = "Third First Name";
+        public static string ProjectName = "Project Edit";
+        public static string ProjectSlackChannelName = "Slack Channel NameEdit";
 
         public static string FirstName = "First Name";
         public static string LastName = "Last Name";
