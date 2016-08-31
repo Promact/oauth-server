@@ -18,11 +18,26 @@ namespace Promact.Oauth.Server.Constants
         public static string ConsumerAppNameDemo8 = "Demo Name8";
         public static string TwitterName = "Twitter Name";
         public static string FaceBookName = "FaceBook Name";
-        public static string ConsumerDescription ="Consumer Description";
+        public static string ConsumerDescription = "Consumer Description";
         public static string CallbackUrl = "https://promact.slack.com/messages/@roshni/";
         public static string CreatedBy = "Ankit";
         public static string UpdateBy = "Roshni";
         public static string ATOZ0TO9 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         public static string ATOZaTOz0TO9 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        public static string EmailNotExists = "Email does not exist in the system";
+        public static string ForgotPassword = "Forgot Password";
+        public static string LoginCredentials = "Login Credentials";
+        public static string SuccessfullySendMail = "We have sent you a link on {{emailaddress}} to reset password.Please check your email.";
+        public static string ResetPasswordLink = "${{RestPassWordLink}}$";
+        public static string ResertPasswordUserName = "${{Username}}$";
+        public static string ForgotPasswordTemplateFolderPath = "\\Template\\ForgotPassword.html";
+        public static string UserDetialTemplateFolderPath = "\\Template\\UserDetial.html";
+        public static string From = "From";
+        public static string Password = "Password";
+        public static string Host = "Host";
+        public static string Port = "Port";
+        public static string UserEmail = "${{Email}}$";
+        public static string UserPassword = "${{Password}}$";
+        public static string DefaultUserPassword = "User@123";
     }
 }
