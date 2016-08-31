@@ -8,8 +8,8 @@ namespace Promact.Oauth.Server.Models.AccountViewModels
 {
     public class ForgotPasswordViewModel
     {
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessage = "Email is required")]
+        [EmailAddress(ErrorMessage = "Email is not valid email address")]
         public string Email { get; set; }
     }
 }
