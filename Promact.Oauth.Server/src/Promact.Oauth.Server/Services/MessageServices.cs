@@ -1,10 +1,7 @@
 ﻿using MailKit.Net.Smtp;
-using Microsoft.Extensions.Options;
 using MimeKit;
-using Promact.Oauth.Server.Models;
+using Promact.Oauth.Server.Constants;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,41 +14,36 @@ namespace Promact.Oauth.Server.Services
 
     public class AuthMessageSender : IEmailSender, ISmsSender
     {
-        private readonly AppSettings _appSettings;
-        public AuthMessageSender(IOptions<AppSettings> appSettings)
+
+        public AuthMessageSender()
         {
-            _appSettings = appSettings.Value;
+
         }
 
         public Task SendEmailAsync(string email, string subject, string message)
         {
             // Plug in your email service here to send an email.
-            //Creates MimeMessage object and sets necessary parameters
             var msg = new MimeMessage();
-            msg.From.Add(new MailboxAddress(_appSettings.From, _appSettings.Email));
+            msg.From.Add(new MailboxAddress("Promact", Environment.GetEnvironmentVariable(StringConstant.From)));
             msg.To.Add(new MailboxAddress("User", email));
             msg.Subject = subject;
-            msg.Body = new TextPart("plain")
-            {
-                Text = message
-            };
-
-            //Creates an SMTP object, connects to the server and sends mail
+            var bodyBuilder = new BodyBuilder();
+            bodyBuilder.HtmlBody = message;
+            msg.Body = bodyBuilder.ToMessageBody();
             try
             {
-                using (var client = new SmtpClient())
+                using (var smtp = new SmtpClient())
                 {
-                    client.ConnectAsync("webmail.promactinfo.com", 25, MailKit.Security.SecureSocketOptions.None).Wait();
-                    client.AuthenticateAsync(credentials: new NetworkCredential(_appSettings.Email, _appSettings.Password)).Wait();
-                    client.SendAsync(msg, CancellationToken.None).Wait();
-                    client.DisconnectAsync(true, CancellationToken.None).Wait();
-
+                    smtp.ConnectAsync(Environment.GetEnvironmentVariable(StringConstant.Host), Convert.ToInt32(Environment.GetEnvironmentVariable(StringConstant.Port)), MailKit.Security.SecureSocketOptions.None).Wait();
+                    smtp.AuthenticateAsync(credentials: new NetworkCredential(Environment.GetEnvironmentVariable(StringConstant.From), Environment.GetEnvironmentVariable(StringConstant.Password))).Wait();
+                    smtp.SendAsync(msg, CancellationToken.None).Wait();
+                    smtp.DisconnectAsync(true, CancellationToken.None).Wait();
                     return Task.FromResult(0);
                 }
             }
-            catch(Exception e)
+            catch (Exception ex)
             {
-                return Task.FromException(e);
+                return Task.FromException(ex);
             }
         }
 

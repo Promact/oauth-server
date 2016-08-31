@@ -14,12 +14,13 @@ import {Md2Toast} from 'md2/toast';
 export class ChangePasswordComponent {
     isNotMatch: boolean;
     isSame: boolean;
-    
+
     @Input()
     passwordModel: PasswordModel;
 
     constructor(private userService: UserService, private redirectionRoute: Router, private route: ActivatedRoute, private toast: Md2Toast) {
         this.passwordModel = new PasswordModel();
+        this.isNotMatch = false;
     }
 
     changePassword(passwordModel) {
@@ -29,26 +30,31 @@ export class ChangePasswordComponent {
                 this.redirectionRoute.navigate(['admin/user']);
             }
             else if (result == false) {
-                this.toast.show('Wrong password');                
+                this.toast.show('Wrong password');
             }
-            
+
         }, err => {
-            
+
         });
     }
 
     matchPassword(confirmPassword, newPassword) {
-        if (confirmPassword == newPassword) {
+        if (confirmPassword == undefined && newPassword == undefined) {
             this.isNotMatch = false;
         }
         else {
-            this.isNotMatch = true;
+            if (confirmPassword == newPassword && (confirmPassword != undefined && newPassword != undefined)) {
+                this.isNotMatch = false;
+            }
+            else {
+                this.isNotMatch = true;
+            }
         }
     }
 
     newPasswordIsSame(newPassword, oldPassword, confirmPassword) {
-        this.matchPassword(confirmPassword, newPassword);
-        if (newPassword == oldPassword && (oldPassword != "" && newPassword != undefined)) {
+        // this.matchPassword(confirmPassword, newPassword);
+        if (newPassword == oldPassword && (oldPassword != undefined && newPassword != undefined)) {
             this.isSame = true;
         }
         else {

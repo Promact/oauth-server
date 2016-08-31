@@ -12,6 +12,8 @@ using Promact.Oauth.Server.Services;
 using AutoMapper;
 using Promact.Oauth.Server.Repository.ProjectsRepository;
 using Microsoft.EntityFrameworkCore;
+using Promact.Oauth.Server.Constants;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Promact.Oauth.Server.Repository
 {
@@ -19,6 +21,7 @@ namespace Promact.Oauth.Server.Repository
     {
         #region "Private Variable(s)"
 
+        private readonly IHostingEnvironment _hostingEnvironment;
         private readonly IDataRepository<ApplicationUser> _applicationUserDataRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IEmailSender _emailSender;
@@ -30,9 +33,10 @@ namespace Promact.Oauth.Server.Repository
 
         #region "Constructor"
 
-        public UserRepository(IDataRepository<ApplicationUser> applicationUserDataRepository, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IMapper mapperContext, IDataRepository<ProjectUser> projectUserRepository, IProjectRepository projectRepository)
+        public UserRepository(IDataRepository<ApplicationUser> applicationUserDataRepository, IHostingEnvironment hostingEnvironment, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IMapper mapperContext, IDataRepository<ProjectUser> projectUserRepository, IProjectRepository projectRepository)
         {
             _applicationUserDataRepository = applicationUserDataRepository;
+            _hostingEnvironment = hostingEnvironment;
             _userManager = userManager;
             _emailSender = emailSender;
             _mapperContext = mapperContext;
@@ -58,13 +62,13 @@ namespace Promact.Oauth.Server.Repository
             user.UserName = user.Email;
             user.CreatedBy = createdBy;
             user.CreatedDateTime = DateTime.UtcNow;
-            
+
             _userManager.CreateAsync(user, "User@123").Wait();
             _userManager.AddToRoleAsync(user, "Employee").Wait();
-            //SendEmail(user);
+            SendEmail(user);
             return user.Id;
         }
-    
+
         /// <summary>
         /// Calculat casual leava and sick leave for the date of joining
         /// </summary>
@@ -84,7 +88,7 @@ namespace Promact.Oauth.Server.Repository
                 month = 4;
                 day = 1;
             }
-            double totalDays = (DateTime.Now- Convert.ToDateTime(dateTime)).TotalDays;
+            double totalDays = (DateTime.Now - Convert.ToDateTime(dateTime)).TotalDays;
             if (totalDays > 365)
             {
                 month = 4;
@@ -124,7 +128,7 @@ namespace Promact.Oauth.Server.Repository
             return calculate;
         }
 
-    
+
 
         /// <summary>
         /// This method is used for getting the list of all users
@@ -183,7 +187,7 @@ namespace Promact.Oauth.Server.Repository
         {
             try
             {
-                var user =await _applicationUserDataRepository.FirstOrDefaultAsync(u => u.Id == id);
+                var user = await _applicationUserDataRepository.FirstOrDefaultAsync(u => u.Id == id);
                 var requiredUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
                 return requiredUser;
             }
@@ -269,7 +273,7 @@ namespace Promact.Oauth.Server.Repository
 
         public bool FindUserBySlackUserName(string slackUserName)
         {
-            var user =  _applicationUserDataRepository.FirstOrDefault(x=>x.SlackUserName==slackUserName);
+            var user = _applicationUserDataRepository.FirstOrDefault(x => x.SlackUserName == slackUserName);
             if (user != null)
             {
                 if (user.SlackUserName == slackUserName)
@@ -285,12 +289,10 @@ namespace Promact.Oauth.Server.Repository
         /// <param name="user">Object of newly registered User</param>
         public void SendEmail(ApplicationUser user)
         {
-            //Create a new message for the email with the required content
-            var message = "Welcome to Promact Infotech Private Limited \n"
-                            + "Email: " + user.Email
-                            + "\n Password: User@123"
-                            + "\n Link: ";
-            _emailSender.SendEmailAsync(user.Email, "Login Credentials", message);
+            string path = _hostingEnvironment.ContentRootPath + StringConstant.UserDetialTemplateFolderPath;
+            string finaleTemplate = System.IO.File.ReadAllText(path);
+            finaleTemplate = finaleTemplate.Replace(StringConstant.UserEmail, user.Email).Replace(StringConstant.UserPassword, StringConstant.DefaultUserPassword).Replace(StringConstant.ResertPasswordUserName,user.FirstName);
+            _emailSender.SendEmailAsync(user.Email, StringConstant.LoginCredentials, finaleTemplate);
         }
 
         /// <summary>
