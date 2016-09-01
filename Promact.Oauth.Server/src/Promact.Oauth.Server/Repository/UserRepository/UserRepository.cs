@@ -233,7 +233,7 @@ namespace Promact.Oauth.Server.Repository
             try
             {
                 //fetch by slackusername when model has changed
-                var user = _applicationUserDataRepository.FirstOrDefault(x => x.UserName == UserName);
+                var user = _applicationUserDataRepository.FirstOrDefault(x => x.SlackUserName == UserName);
                 var userAc = new UserAc();
                 if (user != null)
                 {
@@ -242,6 +242,7 @@ namespace Promact.Oauth.Server.Repository
                     userAc.FirstName = user.FirstName;
                     userAc.LastName = user.LastName;
                     userAc.UserName = user.UserName;
+                    userAc.SlackUserName = user.SlackUserName;
                 }
                 return userAc;
             }

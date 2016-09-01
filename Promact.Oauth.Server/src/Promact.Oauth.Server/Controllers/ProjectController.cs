@@ -119,7 +119,7 @@ namespace Promact.Oauth.Server.Controllers
         [Route("fetchUserById/{id}")]
         public UserAc FetchUserById(string id)
         {
-            var user = _userRepository.GetById(id);
+            var user = _userRepository.GetById(id).Result;
             if (user == null)
             {
                 return null;
