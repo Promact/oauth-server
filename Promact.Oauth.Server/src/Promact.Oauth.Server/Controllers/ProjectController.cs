@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace Promact.Oauth.Server.Controllers
 {
 
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     public class ProjectController : Controller
     {
@@ -106,6 +106,23 @@ namespace Promact.Oauth.Server.Controllers
         {
             return _projectRepository.GetProjectByGroupName(name);
         }
+
+        //GET api/values/name
+        //[HttpGet]
+        //[Route("featchUserRole/{name}")]
+        // public ProjectAc GetProjectDetails(string name)
+        // {
+        //     return _projectRepository.GetProjectByGroupName(name);
+
+        // }
+        [HttpGet]
+        [Route("featchUserRole/{name}")]
+        public async Task<List<UserRoleAc>> GetUserRole(string name)
+        {
+            return await _projectRepository.GetUserRole(name);
+
+        }
+
 
         // GET api/values/name
         [HttpGet]
