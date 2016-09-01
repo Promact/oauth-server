@@ -34,7 +34,6 @@ namespace Promact.Oauth.Server.Tests
             _dataRepositoryProjectUser = serviceProvider.GetService<IDataRepository<ProjectUser>>();
             _dataRepositoryUser = serviceProvider.GetService<IDataRepository<ApplicationUser>>();
             _userRepository = serviceProvider.GetService<IUserRepository>();
-            context = serviceProvider.GetService<PromactOauthDbContext>();
         }
 
         ProjectAc projectac = new ProjectAc()
@@ -104,7 +103,6 @@ namespace Promact.Oauth.Server.Tests
             Task<ProjectAc> project = _projectRepository.GetById(id.Result);
             Assert.NotNull(project);
         }
-        
 
         /// <summary>
         /// This test case edit project 
