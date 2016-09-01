@@ -251,7 +251,7 @@ namespace Promact.Oauth.Server.Repository
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
 

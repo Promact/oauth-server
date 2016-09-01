@@ -40,8 +40,6 @@ namespace Promact.Oauth.Server.Tests
         /// <summary>
         /// Static Variables to be used in OAuth Repository Test
         /// </summary>
-        private static string Email = "siddhartha@promactinfo.com";
-        private static string ClientId = "dsfargazdfvfhfghkf";
         private static string accessToken = "bcd34169-1434-40e9-abf5-c9e0e9d20cd8";
     }
 }
