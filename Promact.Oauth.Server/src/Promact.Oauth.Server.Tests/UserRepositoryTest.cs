@@ -181,11 +181,10 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public void UserDetail()
         {
-            GenerateTestUser();
             AddRole();
-            string id = _userRepository.AddUser(_testUser, "siddhartha");
-            var user = _userRepository.UserDetialByFirstName("test");
-            Assert.Equal(user.FirstName, _testUser.FirstName);
+            string id = _userRepository.AddUser(userLocal, "siddhartha");
+            var user = _userRepository.UserDetialByUserSlackName("myslackname");
+            Assert.Equal(user.Email, userLocal.Email);
         }
 
         /// <summary>
@@ -197,7 +196,7 @@ namespace Promact.Oauth.Server.Tests
             GenerateTestUser();
             AddRole();
             string id = _userRepository.AddUser(_testUser, "Siddhartha");
-            var user = await _userRepository.TeamLeaderByUserId("test");
+            var user = await _userRepository.TeamLeaderByUserSlackName("test");
             Assert.Equal(0, user.Count);
         }
 
@@ -205,12 +204,12 @@ namespace Promact.Oauth.Server.Tests
         /// Test case use for getting management's details by users first name
         /// </summary>
         [Fact, Trait("Category", "Required")]
-        public async Task ManagementByUserId()
+        public async Task ManagementDetails()
         {
             GenerateTestUser();
             AddRole();
             string id = _userRepository.AddUser(_testUser, "Siddhartha");
-            var user = await _userRepository.ManagementByUserId();
+            var user = await _userRepository.ManagementDetails();
             Assert.Equal(0, user.Count);
         }
         #endregion
@@ -235,5 +234,14 @@ namespace Promact.Oauth.Server.Tests
                 }
             }
         }
+        private UserAc userLocal = new UserAc()
+        {
+            Email = "testing@promactinfo.com",
+            UserName = "testing@promactinfo.com",
+            FirstName = "Myfirsttest",
+            LastName = "testing",
+            JoiningDate = DateTime.UtcNow,
+            SlackUserName = "myslackname"
+        };
     }
 }
