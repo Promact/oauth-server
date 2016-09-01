@@ -14,11 +14,12 @@ using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Promact.Oauth.Server.Constants;
 
 namespace Promact.Oauth.Server.Tests
 {
 
-    public class ProjectTests:BaseProvider
+    public class ProjectTests : BaseProvider
     {
         private readonly IProjectRepository _projectRepository;
         private readonly IDataRepository<Project> _dataRepository;
@@ -28,7 +29,7 @@ namespace Promact.Oauth.Server.Tests
         private readonly PromactOauthDbContext context;
 
 
-        public ProjectTests():base()
+        public ProjectTests() : base()
         {
             _projectRepository = serviceProvider.GetService<IProjectRepository>();
             _dataRepository = serviceProvider.GetService<IDataRepository<Project>>();
@@ -65,7 +66,7 @@ namespace Promact.Oauth.Server.Tests
         {
             AddRole();
             Task<int> id = _projectRepository.AddProject(projectac, "Ronak");
-            var project = _dataRepository.FirstOrDefault(x => x.Id== id.Result);
+            var project = _dataRepository.FirstOrDefault(x => x.Id == id.Result);
             Assert.NotNull(project);
         }
         /// <summary>
@@ -74,7 +75,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public void AddUserProject()
         {
-           
+
             _projectRepository.AddUserProject(projectUser);
             var ProjectUser = _dataRepositoryProjectUser.Fetch(x => x.ProjectId == 1);
             Assert.NotNull(ProjectUser);
@@ -87,19 +88,19 @@ namespace Promact.Oauth.Server.Tests
         {
             UserAc user = new UserAc()
             {
-                
                 FirstName = "Admin1",
-                LastName="test1",
-                Email= "test131@yahoo.com"
+                LastName = "test1",
+                Email = "test131@yahoo.com"
             };
             AddRole();
-            var TId=_userRepository.AddUser(user, "Ronak");
-            projectac.TeamLeaderId = TId;
-            Task<int> id =  _projectRepository.AddProject(projectac, "Ronak");
+            var TeamLeaderId = _userRepository.AddUser(user, StringConstant.CreatedBy).Result;
+            projectac.TeamLeaderId = TeamLeaderId;
+            Task<int> id = _projectRepository.AddProject(projectac, "Ronak");
             _projectRepository.AddUserProject(projectUser);
             Task<ProjectAc> Pc = _projectRepository.GetById(id.Result);
             Assert.NotNull(Pc);
         }
+        
 
         /// <summary>
         /// This test case edit project 
@@ -109,12 +110,12 @@ namespace Promact.Oauth.Server.Tests
         {
             AddRole();
             UserAc user = new UserAc()
-            {Id = "1",FirstName = "Roshni"};
+            { Id = "1", FirstName = "Roshni" };
             UserAc userSecound = new UserAc()
-            {Id = "2",FirstName = "Ronit"};
+            { Id = "2", FirstName = "Ronit" };
             UserAc userThird = new UserAc()
-            {Id = "3",FirstName = "Raj"};
-            _userRepository.AddUser(user,"Ronak");
+            { Id = "3", FirstName = "Raj" };
+            _userRepository.AddUser(user, "Ronak");
             _userRepository.AddUser(userSecound, "Ronak");
             _userRepository.AddUser(userThird, "Ronak");
             Task<int> id = _projectRepository.AddProject(projectac, "Ronak");
@@ -146,7 +147,7 @@ namespace Promact.Oauth.Server.Tests
         public void checkDuplicateNegative()
         {
             _projectRepository.AddProject(projectac, "Ronak");
-           var project =_projectRepository.checkDuplicate(projectac);
+            var project = _projectRepository.checkDuplicate(projectac);
             Assert.Null(project.Name);
         }
         /// <summary>
@@ -190,10 +191,10 @@ namespace Promact.Oauth.Server.Tests
                 Email = "test13@yahoo.com"
             };
             AddRole();
-            var TId = _userRepository.AddUser(user, "Ronak");
+            var TeamLeaderId = _userRepository.AddUser(user, StringConstant.CreatedBy).Result;
             _projectRepository.AddProject(projectac, "Ronak");
             _projectRepository.AddUserProject(projectUser);
-            Task<IEnumerable<ProjectAc>> p = _projectRepository.GetAllProjects();
+            var p = _projectRepository.GetAllProjects().Result;
             Assert.NotNull(p);
         }
 
