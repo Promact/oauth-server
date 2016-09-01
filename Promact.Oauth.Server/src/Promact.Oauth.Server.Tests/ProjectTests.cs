@@ -175,5 +175,51 @@ namespace Promact.Oauth.Server.Tests
             Task<IEnumerable<ProjectAc>> projects = _projectRepository.GetAllProjects();
             Assert.NotNull(projects);
         }
+
+
+        /// <summary>
+        /// Fetches Users of the given Project Name(slack channel name)
+        /// </summary>
+        [Fact, Trait("Category", "A")]
+        public void GetProjectUserByGroupName()
+        {
+            _projectRepository.AddProject(projectac, "Ronak");
+            _projectRepository.AddUserProject(projectUser);
+            //    var ProjectUser = _dataRepositoryProjectUser.Fetch(x => x.ProjectId == 1);
+            var projectUsers = _projectRepository.GetProjectUserByGroupName(projectac.SlackChannelName);
+            Assert.Equal(projectUsers.Count, 1);
+        }
+
+        /// <summary>
+        /// Fetch the project of the given slack channel name
+        /// </summary>
+        [Fact, Trait("Category", "A")]
+        public void GetProjectByGroupName()
+        {
+            _projectRepository.AddProject(projectac, "Roshni");
+            var project = _projectRepository.GetProjectByGroupName(projectac.SlackChannelName);
+            Assert.NotEqual(null, project);
+        }
+
+        private void AddRole()
+        {
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            if (!roleManager.Roles.Any())
+            {
+                List<IdentityRole> roles = new List<IdentityRole>();
+                roles.Add(new IdentityRole { Name = "Employee", NormalizedName = "EMPLOYEE" });
+                roles.Add(new IdentityRole { Name = "Admin", NormalizedName = "ADMIN" });
+
+                foreach (var role in roles)
+                {
+                    var roleExit = roleManager.RoleExistsAsync(role.Name).Result;
+                    if (!roleExit)
+                    {
+                        context.Roles.Add(role);
+                        context.SaveChanges();
+                    }
+                }
+            }
+        }
     }
 }
