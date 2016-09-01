@@ -5,6 +5,11 @@ using System;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Runtime.InteropServices;
+using System.IO;
+using System.Collections;
+using Promact.Oauth.Server.Models;
+using Microsoft.Extensions.Options;
 
 namespace Promact.Oauth.Server.Services
 {
@@ -15,16 +20,19 @@ namespace Promact.Oauth.Server.Services
     public class AuthMessageSender : IEmailSender, ISmsSender
     {
 
-        public AuthMessageSender()
+        private readonly IOptions<AppSettings> _appSettings;
+        public AuthMessageSender(IOptions<AppSettings> appSettings)
         {
-
+            _appSettings = appSettings;
         }
 
         public Task SendEmailAsync(string email, string subject, string message)
         {
+
             // Plug in your email service here to send an email.
             var msg = new MimeMessage();
-            msg.From.Add(new MailboxAddress("Promact", Environment.GetEnvironmentVariable(StringConstant.From)));
+
+            msg.From.Add(new MailboxAddress("Promact", _appSettings.Value.Email));
             msg.To.Add(new MailboxAddress("User", email));
             msg.Subject = subject;
             var bodyBuilder = new BodyBuilder();
@@ -34,8 +42,8 @@ namespace Promact.Oauth.Server.Services
             {
                 using (var smtp = new SmtpClient())
                 {
-                    smtp.ConnectAsync(Environment.GetEnvironmentVariable(StringConstant.Host), Convert.ToInt32(Environment.GetEnvironmentVariable(StringConstant.Port)), MailKit.Security.SecureSocketOptions.None).Wait();
-                    smtp.AuthenticateAsync(credentials: new NetworkCredential(Environment.GetEnvironmentVariable(StringConstant.From), Environment.GetEnvironmentVariable(StringConstant.Password))).Wait();
+                    smtp.ConnectAsync(_appSettings.Value.Host, 587, MailKit.Security.SecureSocketOptions.None).Wait();
+                    smtp.AuthenticateAsync(credentials: new NetworkCredential(_appSettings.Value.Email, _appSettings.Value.Password)).Wait();
                     smtp.SendAsync(msg, CancellationToken.None).Wait();
                     smtp.DisconnectAsync(true, CancellationToken.None).Wait();
                     return Task.FromResult(0);

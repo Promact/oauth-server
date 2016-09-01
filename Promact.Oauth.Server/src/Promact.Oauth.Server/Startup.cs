@@ -96,6 +96,12 @@ namespace Promact.Oauth.Server
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
 
+            services.AddOptions();
+
+            // Configure MyOptions using config by installing Microsoft.Extensions.Options.ConfigurationExtensions
+            services.Configure<AppSettings>(Configuration);
+            
+
             //Register AppSettings class for Email Credentials of the sender
             services.Configure<AppSettings>(options => Configuration.GetSection("AppSettings").Bind(options));
 
