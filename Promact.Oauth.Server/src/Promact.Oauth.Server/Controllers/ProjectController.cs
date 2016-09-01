@@ -114,5 +114,14 @@ namespace Promact.Oauth.Server.Controllers
         {
             return _projectRepository.GetProjectUserByGroupName(groupName);
         }
+
+
+        [HttpGet]
+        [Route("projectUsersById/{teamLeaderId}")]
+        public List<UserAc> GetProjectUsersByTeamLeaderId(string teamLeaderId)
+        {
+            List<UserAc> projectUsers = _projectRepository.GetProjectUsersByTeamLeaderId(teamLeaderId);
+            return projectUsers;
+        }
     }
 }
