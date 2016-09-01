@@ -257,6 +257,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                         userAc.IsActive = user.IsActive;
                         userAc.LastName = user.LastName;
                         userAc.UserName = user.UserName;
+                        userAc.SlackUserName = user.SlackUserName;
                         userProjects.Add(userAc);
                     }
 

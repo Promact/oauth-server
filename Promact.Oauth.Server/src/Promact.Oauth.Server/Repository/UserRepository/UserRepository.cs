@@ -325,6 +325,7 @@ namespace Promact.Oauth.Server.Repository
                     userAc.FirstName = user.FirstName;
                     userAc.LastName = user.LastName;
                     userAc.UserName = user.UserName;
+                    userAc.SlackUserName = user.SlackUserName;
                 }
                 return userAc;
             }
