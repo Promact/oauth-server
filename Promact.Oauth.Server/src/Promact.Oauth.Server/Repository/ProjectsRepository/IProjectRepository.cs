@@ -69,5 +69,12 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             /// <returns>object of UserAc</returns>
         List<UserAc> GetProjectUserByGroupName(string GroupName);
 
+        /// <summary>
+        /// This method is used to return the list of users in project  based on teamLeaderId
+        /// </summary>
+        /// <param name="teamLeaderId"></param>
+        /// <returns>list of users in a project</returns>
+        List<UserAc> GetProjectUsersByTeamLeaderId(string teamLeaderId);
+
     }
 }

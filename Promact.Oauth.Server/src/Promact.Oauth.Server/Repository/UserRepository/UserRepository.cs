@@ -24,19 +24,22 @@ namespace Promact.Oauth.Server.Repository
         private readonly IEmailSender _emailSender;
         private readonly IMapper _mapperContext;
         private readonly IDataRepository<ProjectUser> _projectUserRepository;
+
+        private readonly IDataRepository<Project> _projectDataRepository;
         private readonly IProjectRepository _projectRepository;
 
         #endregion
 
         #region "Constructor"
 
-        public UserRepository(IDataRepository<ApplicationUser> applicationUserDataRepository, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IMapper mapperContext, IDataRepository<ProjectUser> projectUserRepository, IProjectRepository projectRepository)
+        public UserRepository(IDataRepository<ApplicationUser> applicationUserDataRepository, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IMapper mapperContext, IDataRepository<ProjectUser> projectUserRepository, IDataRepository<Project> projectDataRepository,IProjectRepository projectRepository)
         {
             _applicationUserDataRepository = applicationUserDataRepository;
             _userManager = userManager;
             _emailSender = emailSender;
             _mapperContext = mapperContext;
             _projectUserRepository = projectUserRepository;
+            _projectDataRepository = projectDataRepository;
             _projectRepository = projectRepository;
         }
 
@@ -241,7 +244,7 @@ namespace Promact.Oauth.Server.Repository
                     userAc.Id = user.Id;
                     userAc.FirstName = user.FirstName;
                     userAc.LastName = user.LastName;
-                    userAc.UserName = user.UserName;
+                    userAc.UserName = user.UserName;                    
                 }
                 return userAc;
             }
@@ -360,22 +363,55 @@ namespace Promact.Oauth.Server.Repository
             return managementUser;
         }
 
-        public ApplicationUser UserDetailById(string employeeId)
+        
+        public UserAc UserDetailById(string userId)
         {
-            var user = _userManager.Users.FirstOrDefault(x => x.Id == employeeId);
+            var user =  _userManager.Users.FirstOrDefault(x => x.Id == userId);
+            return GetUser(user);
+        }
+
+        public UserAc GetUserDetailByUserName(string userName)
+        {
+            var user = _userManager.FindByNameAsync(userName).Result;
+            return GetUser(user);
+        }
+
+        /// <summary>
+        /// Method is used to return a user after assigning a role and mapping from ApplicationUser class to UserAc class
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns>user</returns>
+        private UserAc GetUser(ApplicationUser user)
+        {
             if (user != null)
             {
-                var newUser = new ApplicationUser
+                var Roles = _userManager.GetRolesAsync(user).Result.First();
+                if (Roles == "Admin")
                 {
-                    Id = user.Id,
-                    Email = user.Email,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName
-                };
-                return newUser;
+                    var newUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
+                    newUser.Role = Roles;
+                    return newUser;
+                }
+                if (Roles == "Employee")
+                {
+                    var project = _projectDataRepository.FirstOrDefault(x => x.TeamLeaderId.Equals(user.Id));
+                    if (project != null)
+                    {
+                        var newUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
+                        newUser.Role = "TeamLeader";
+                        return newUser;
+                    }
+                    else
+                    {
+                        var newUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
+                        newUser.Role = "Employee";
+                        return newUser;
+                    }
+                }
             }
             return null;
         }
+
         #endregion
     }
 }
