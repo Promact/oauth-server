@@ -148,5 +148,4 @@ namespace Promact.Oauth.Server.Tests
             }
         }
     }
-
 }

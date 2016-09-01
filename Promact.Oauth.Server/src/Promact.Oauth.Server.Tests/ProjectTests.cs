@@ -34,6 +34,7 @@ namespace Promact.Oauth.Server.Tests
             _dataRepositoryProjectUser = serviceProvider.GetService<IDataRepository<ProjectUser>>();
             _dataRepositoryUser = serviceProvider.GetService<IDataRepository<ApplicationUser>>();
             _userRepository = serviceProvider.GetService<IUserRepository>();
+            context = serviceProvider.GetService<PromactOauthDbContext>();
         }
 
         ProjectAc projectac = new ProjectAc()
