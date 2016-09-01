@@ -7,6 +7,7 @@ using Promact.Oauth.Server.Models;
 using AutoMapper;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace Promact.Oauth.Server.Repository.ProjectsRepository
 {
@@ -16,16 +17,18 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         private readonly IDataRepository<Project> _projectDataRepository;
         private readonly IDataRepository<ProjectUser> _projectUserDataRepository;
         private readonly IDataRepository<ApplicationUser> _userDataRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapperContext;
         #endregion
 
         #region "Constructor"
-        public ProjectRepository(IDataRepository<Project> projectDataRepository, IDataRepository<ProjectUser> projectUserDataRepository, IDataRepository<ApplicationUser> userDataRepository, IMapper mapperContext)
+        public ProjectRepository(IDataRepository<Project> projectDataRepository, IDataRepository<ProjectUser> projectUserDataRepository, IDataRepository<ApplicationUser> userDataRepository, IMapper mapperContext, UserManager<ApplicationUser> userManager)
         {
             _projectDataRepository = projectDataRepository;
             _projectUserDataRepository = projectUserDataRepository;
             _userDataRepository = userDataRepository;
             _mapperContext = mapperContext;
+            _userManager = userManager;
         }
         #endregion
 
@@ -257,6 +260,49 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             {
                 throw;
             }
+        }
+
+
+        public async Task<List<UserRoleAc>> GetUserRole(string name)
+        {
+            ApplicationUser user = _userDataRepository.FirstOrDefault(x => x.UserName == name);
+            var role = await _userManager.GetRolesAsync(user);
+            var userRole = role.First();
+            var userRoles = new List<UserRoleAc>();
+            if (userRole == "Admin")
+            {
+                var usersRole = new UserRoleAc();
+                usersRole.UserName = user.UserName;
+                usersRole.Role = userRole;
+                userRoles.Add(usersRole);
+            }
+            else {
+                var project = _projectDataRepository.FirstOrDefault(x => x.TeamLeaderId.Equals(user.Id));
+                if (project == null)
+                {
+                    var usersRole = new UserRoleAc();
+                    usersRole.UserName = user.UserName;
+                    usersRole.Role = userRole;
+                    userRoles.Add(usersRole);
+                }
+                else
+                {
+                    var usersRole = new UserRoleAc();
+                    usersRole.UserName = user.UserName;
+                    usersRole.Role = "TeamLeader";
+                    userRoles.Add(usersRole);
+                    var projectUserList = _projectUserDataRepository.Fetch(x => x.ProjectId == project.Id).ToList();
+                    foreach (var projectUser in projectUserList)
+                    {
+                        var users = _userDataRepository.FirstOrDefault(x => x.Id == projectUser.UserId);
+                        usersRole.UserName = user.UserName;
+                        usersRole.Role = "Employee";
+                        userRoles.Add(usersRole);
+                    }
+
+                }
+            }
+            return userRoles;
         }
     }
 }

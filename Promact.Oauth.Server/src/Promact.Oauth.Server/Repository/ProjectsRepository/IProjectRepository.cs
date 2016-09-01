@@ -69,5 +69,8 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             /// <returns>object of UserAc</returns>
         List<UserAc> GetProjectUserByGroupName(string GroupName);
 
+
+        Task<List<UserRoleAc>> GetUserRole(string name);
+
     }
 }
