@@ -39,5 +39,35 @@ namespace Promact.Oauth.Server.Constants
         public static string UserEmail = "${{Email}}$";
         public static string UserPassword = "${{Password}}$";
         public static string DefaultUserPassword = "User@123";
+
+        public static string Name = "Project Name";
+        public static string EditName = "Project Name Edit";
+        public static string SlackChannelName = "Slack Channel Name";
+        public static bool IsActive = true;
+        public static string TeamLeaderId = "1";
+        public static string UserIdSecond = "2";
+        public static string UserIdThird = "3";
+        public static string FirstNameSecond = "Secound First Name";
+        public static string FirstNameThird = "Third First Name";
+        public static string ProjectName = "Project Edit";
+        public static string ProjectSlackChannelName = "Slack Channel NameEdit";
+
+        public static string FirstName = "First Name";
+        public static string LastName = "Last Name";
+        public static string Email = "test@promactinfo.com";
+        public static string UserId = "1";
+        public static string PasswordUser = "User@123";
+        public static string UserName = "testUser@pronactinfo.com";
+        public static string SlackUserName = "testSlackUserName";
+        public static string EmailUser = "testUsers@promactinfo.com";
+        public static string NewPassword = "User@1";
+        public static string ConfirmPassword = "User@1";
+        public static string UpadteFirstName = "Updated User";
+        public static string UpdateSlackUserName = "Updated test";
+
+        public static string RoleName = "Employee";
+        public static string RoleNameSecond = "Admin";
+        public static string NormalizedName = "EMPLOYEE";
+        public static string NormalizedSecond = "ADMIN";
     }
 }
