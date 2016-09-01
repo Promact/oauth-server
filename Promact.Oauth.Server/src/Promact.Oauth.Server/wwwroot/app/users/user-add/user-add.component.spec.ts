@@ -40,23 +40,16 @@ describe('User Add Test', () => {
     it("should be defined", () => {
         expect(userAddComponent).toBeDefined();
     });
-     /**
-     * should check Project name and Slack Channel Name before add
-     */
-    
     it("should check user first name before add", inject([UserModel], (userModel: UserModel) => {
         let expectedFristName = "First Name";
         userModel.FirstName = expectedFristName;
         userAddComponent.addUser(userModel);
         expect(userModel.FirstName).toBe(expectedFristName);
     }));
-
     it("should check user email before add", () => {
         let email = "test@promactinfo.com";
         let result = true;
         let method = userAddComponent.checkEmail(email);
         expect(method).not.toBe(result);
     });
-
-
 });    
