@@ -298,11 +298,10 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="firstname"></param>
         /// <returns>user details</returns>
-        public ApplicationUser UserDetialByFirstName(string userSlackName)
+        public ApplicationUser UserDetialByUserSlackName(string userSlackName)
         {
             
             var user = _applicationUserDataRepository.FirstOrDefault(x => x.SlackUserName == userSlackName);
-            //var newUserDetail = await _userManager.FindByEmailAsync(user.Email);
             var newUser = new ApplicationUser
             {
                 Id = user.Id,
@@ -319,7 +318,7 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="userFirstName"></param>
         /// <returns>list of team leader</returns>
-        public async Task<List<ApplicationUser>> TeamLeaderByUserId(string userSlackName)
+        public async Task<List<ApplicationUser>> TeamLeaderByUserSlackName(string userSlackName)
         {
             var user = _userManager.Users.FirstOrDefault(x => x.SlackUserName == userSlackName);
             var projects = _projectUserRepository.Fetch(x => x.UserId == user.Id);
@@ -344,7 +343,7 @@ namespace Promact.Oauth.Server.Repository
         /// Method to get management people details
         /// </summary>
         /// <returns>list of management</returns>
-        public async Task<List<ApplicationUser>> ManagementByUserId()
+        public async Task<List<ApplicationUser>> ManagementDetails()
         {
             var management = await _userManager.GetUsersInRoleAsync("Admin");
             List<ApplicationUser> managementUser = new List<ApplicationUser>();
