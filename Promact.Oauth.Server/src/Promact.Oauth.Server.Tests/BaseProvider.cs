@@ -42,7 +42,7 @@ namespace Promact.Oauth.Server.Tests
             var services = new ServiceCollection();
             services.AddEntityFrameworkInMemoryDatabase();
 
-            services.AddSingleton<IHostingEnvironment>(testHostingEnvironment);
+           services.AddSingleton<IHostingEnvironment>(testHostingEnvironment);
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<PromactOauthDbContext>()

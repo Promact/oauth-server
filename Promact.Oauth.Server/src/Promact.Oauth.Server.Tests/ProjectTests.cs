@@ -104,6 +104,7 @@ namespace Promact.Oauth.Server.Tests
             Task<ProjectAc> project = _projectRepository.GetById(id.Result);
             Assert.NotNull(project);
         }
+        
 
         /// <summary>
         /// This test case edit project 
