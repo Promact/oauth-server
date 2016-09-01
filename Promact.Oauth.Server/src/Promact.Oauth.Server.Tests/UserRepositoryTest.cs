@@ -75,8 +75,8 @@ namespace Promact.Oauth.Server.Tests
                 SlackUserName="test"
             };
             AddRole();
-            var id = _userRepository.AddUser(user, "Rajdeep");
-            Task<UserAc> testUser = _userRepository.GetById(id);
+            var id = _userRepository.AddUser(user, "Rajdeep").Result;
+            UserAc testUser = _userRepository.GetById(id).Result;
 
             Assert.NotNull(testUser);
         }
@@ -115,7 +115,7 @@ namespace Promact.Oauth.Server.Tests
         public void AddUser()
         {
             AddRole();
-            string id = _userRepository.AddUser(_testUser, "Rajdeep");
+            string id = _userRepository.AddUser(_testUser, "Rajdeep").Result;
             var user = _dataRepository.FirstOrDefault(u => u.Id == id);
             Assert.NotNull(user);
         }
@@ -164,27 +164,27 @@ namespace Promact.Oauth.Server.Tests
             Assert.Equal(true, passwordMatch);
         }
 
-        ///// <summary>
-        ///// Test case use for getting user details by its first name
-        ///// </summary>
-        //[Fact, Trait("Category", "Required")]
-        //public void UserDetialByFirstName()
-        //{
-        //    AddRole();
-        //    string id = _userRepository.AddUser(_testUser, "Siddhartha");
-        //    var user = _userRepository.UserDetialByFirstName("First name");
-        //    Assert.Equal(user.Email,_testUser.Email);
-        //}
+        /// <summary>
+        /// Test case use for getting user details by its first name
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public void UserDetialByFirstName()
+        {
+            AddRole();
+            string id = _userRepository.AddUser(_testUser, "Siddhartha").Result;
+            var user = _userRepository.UserDetialByFirstName("First name");
+            Assert.Equal(user.Email, _testUser.Email);
+        }
 
         /// <summary>
         /// Test case use for getting team leader's details by users first name
         /// </summary>
         [Fact, Trait("Category", "Required")]
-        public async Task TeamLeaderByUserId()
+        public void TeamLeaderByUserId()
         {
             AddRole();
-            string id = _userRepository.AddUser(_testUser, "Siddhartha");
-            var user = await _userRepository.TeamLeaderByUserId("First name");
+            string id = _userRepository.AddUser(_testUser, "Siddhartha").Result;
+            var user = _userRepository.TeamLeaderByUserId("First name").Result;
             Assert.Equal(0, user.Count);
         }
 
@@ -192,16 +192,16 @@ namespace Promact.Oauth.Server.Tests
         /// Test case use for getting management's details by users first name
         /// </summary>
         [Fact, Trait("Category", "Required")]
-        public async Task ManagementByUserId()
+        public void ManagementByUserId()
         {
             AddRole();
-            string id = _userRepository.AddUser(_testUser, "Siddhartha");
-            var user = await _userRepository.ManagementByUserId();
+            string id = _userRepository.AddUser(_testUser, "Siddhartha").Result;
+            var user = _userRepository.ManagementByUserId().Result;
             Assert.Equal(0, user.Count);
         }
         #endregion
 
-        private void AddRole()
+        private async void AddRole()
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             if (!roleManager.Roles.Any())
@@ -212,7 +212,7 @@ namespace Promact.Oauth.Server.Tests
 
                 foreach (var role in roles)
                 {
-                    var roleExit = roleManager.RoleExistsAsync(role.Name).Result;
+                    var roleExit = await roleManager.RoleExistsAsync(role.Name);
                     if (!roleExit)
                     {
                         context.Roles.Add(role);

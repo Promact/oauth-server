@@ -52,7 +52,7 @@ namespace Promact.Oauth.Server.Repository
         /// This method is used to add new user
         /// </summary>
         /// <param name="applicationUser">UserAc Application class object</param>
-        public string AddUser(UserAc newUser, string createdBy)
+        public async Task<string>  AddUser(UserAc newUser, string createdBy)
         {
             LeaveCalculator LC = new LeaveCalculator();
             LC = CalculateAllowedLeaves(Convert.ToDateTime(newUser.JoiningDate));
@@ -63,8 +63,8 @@ namespace Promact.Oauth.Server.Repository
             user.CreatedBy = createdBy;
             user.CreatedDateTime = DateTime.UtcNow;
 
-            _userManager.CreateAsync(user, "User@123").Wait();
-            _userManager.AddToRoleAsync(user, "Employee").Wait();
+            await _userManager.CreateAsync(user, "User@123");
+            await _userManager.AddToRoleAsync(user, "Employee");
             SendEmail(user);
             return user.Id;
         }
@@ -331,7 +331,8 @@ namespace Promact.Oauth.Server.Repository
             {
                 var teamLeaderId = await _projectRepository.GetById(project.Id);
                 var teamLeader = teamLeaderId.TeamLeaderId;
-                user = _userManager.Users.FirstOrDefault(x => x.Id == teamLeader);
+                user = await _userManager.FindByIdAsync(teamLeader);
+                //user = _userManager.Users.FirstOrDefault(x => x.Id == teamLeader);
                 var newUser = new ApplicationUser
                 {
                     UserName = user.UserName,
