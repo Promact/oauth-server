@@ -186,7 +186,17 @@
 //        //    Assert.Equal(0, user.Count);
 //        //}
 
-//        #endregion
+        /// <summary>
+        /// Test case use for getting user details by its first name
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public void UserDetail()
+        {
+            AddRole();
+            string id = _userRepository.AddUser(userLocal, "siddhartha");
+            var user = _userRepository.UserDetialByUserSlackName("myslackname");
+            Assert.Equal(user.Email, userLocal.Email);
+        }
 
         /// <summary>
         /// Test case use for getting management's details by users first name
@@ -197,7 +207,7 @@
             GenerateTestUser();
             AddRole();
             string id = _userRepository.AddUser(_testUser, "Siddhartha");
-            var user = await _userRepository.ManagementDetails();
+            var user = await _userRepository.TeamLeaderByUserSlackName("test");
             Assert.Equal(0, user.Count);
         }
 
@@ -205,13 +215,13 @@
         /// Test case to get user's number of casual leave
         /// </summary>
         [Fact, Trait("Category", "Required")]
-        public void GetUserCasualLeaveBySlackName()
+        public async Task ManagementDetails()
         {
             GenerateTestUser();
             AddRole();
-            var id = _userRepository.AddUser(userLocal, "Siddhartha");
-            var casualLeave = _userRepository.GetUserCasualLeaveBySlackName(userLocal.SlackUserName);
-            Assert.Equal(8,casualLeave);
+            string id = _userRepository.AddUser(_testUser, "Siddhartha");
+            var user = await _userRepository.ManagementDetails();
+            Assert.Equal(0, user.Count);
         }
         #endregion
 //        private async Task AddRole()
@@ -247,3 +257,15 @@
 //            };
 //    }
 //}
+
+        private UserAc userLocal = new UserAc()
+        {
+            Email = "testing@promactinfo.com",
+            UserName = "testing@promactinfo.com",
+            FirstName = "Myfirsttest",
+            LastName = "testing",
+            JoiningDate = DateTime.UtcNow,
+            SlackUserName = "myslackname"
+        };
+    }
+}
