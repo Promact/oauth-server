@@ -1,0 +1,41 @@
+﻿<div class="consumer-add">
+
+    <div class="card-title-block">
+        <div class="title in_block ">
+            <h3>Add New Consumer App</h3>
+        </div>
+    </div>
+
+
+    <form #consumerAppForm="ngForm">
+        <div class="form-group">
+            <div class="half-width">
+                <md-input placeholder="name" class="full-width" type="text" name="consumerName" [(ngModel)]="consumerModel.Name" maxlength="255" required #consumerName="ngModel"></md-input>
+                <div [hidden]="!(consumerName.touched && !consumerName.valid && consumerName.errors.required)" class="error">Name is required</div>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="half-width">
+                <md-input placeholder="Description" class="full-width" name="consumerDescription" [(ngModel)]="consumerModel.Description" maxlength="1000" required #consumerDescription="ngModel"></md-input>
+                <div [hidden]="!(consumerDescription.touched && !consumerDescription.valid && consumerDescription.errors.required)" class="error">Description is required</div>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="half-width">
+                <md-input placeholder="Call Back Url" class="full-width" type="text" name="consumerCallBackUrl" [(ngModel)]="consumerModel.CallbackUrl" maxlength="255" required #consumerCallBackUrl="ngModel"></md-input>
+                <div [hidden]="!(consumerCallBackUrl.touched && !consumerCallBackUrl.valid && consumerCallBackUrl.errors.required)" class="error">Call Back Url is required</div>
+            </div>
+
+        </div>
+
+
+        <div class="form-group" id="group-btn">
+            <button md-raised-button class="btn-green" type="submit" (click)="submitApps(consumerModel)" [disabled]="!consumerAppForm.form.valid">Submit</button>
+            <button md-raised-button type="button" (click)="cancel()">Cancel</button>
+        </div>
+    </form>
+</div>

@@ -1,4 +1,4 @@
-﻿{
+{
   "userSecretsId": "aspnet-Promact.Oauth.Server-e6fc61da-3875-4c22-9458-d7652dbb0dcc",
 
   "dependencies": {
@@ -42,7 +42,12 @@
     "Microsoft.VisualStudio.Web.CodeGenerators.Mvc": {
       "version": "1.0.0-preview2-final",
       "type": "build"
-    }
+    },
+    "System.Net.Mail": "1.0.0-rtm-00002",
+    "MailKit": "1.4.1",
+    "MimeKit": "1.4.1",
+    "AutoMapper": "5.0.2",
+    "System.Collections": "4.0.11"
   },
 
   "tools": {
