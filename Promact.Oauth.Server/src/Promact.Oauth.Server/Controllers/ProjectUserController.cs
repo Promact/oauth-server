@@ -31,7 +31,7 @@ namespace Promact.Oauth.Server.Controllers
         [Route("userDetails/{userSlackName}")]
         public IActionResult UserDetialByFirstName(string userSlackName)
         {
-            var user = _userRepository.UserDetialByFirstName(userSlackName);
+            var user = _userRepository.UserDetialByUserSlackName(userSlackName);
             return Ok(user);
         }
 
@@ -44,7 +44,7 @@ namespace Promact.Oauth.Server.Controllers
         [Route("teamLeaderDetails/{userSlackName}")]
         public async Task<IActionResult> TeamLeaderByUserId(string userSlackName)
         {
-            var user = await _userRepository.TeamLeaderByUserId(userSlackName);
+            var user = await _userRepository.TeamLeaderByUserSlackName(userSlackName);
             return Ok(user);
         }
 
@@ -54,9 +54,9 @@ namespace Promact.Oauth.Server.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("managementDetails")]
-        public async Task<IActionResult> ManagementByUserId()
+        public async Task<IActionResult> ManagementDetails()
         {
-            var user = await _userRepository.ManagementByUserId();
+            var user = await _userRepository.ManagementDetails();
             return Ok(user);
         }
 
