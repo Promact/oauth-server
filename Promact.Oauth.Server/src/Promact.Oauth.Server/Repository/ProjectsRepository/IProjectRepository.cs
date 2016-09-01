@@ -76,5 +76,8 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// <returns></returns>
         Task<IEnumerable<ProjectAc>> GetAllProjectForUser(string userId);
 
+
+        Task<List<UserRoleAc>> GetUserRole(string name);
+
     }
 }
