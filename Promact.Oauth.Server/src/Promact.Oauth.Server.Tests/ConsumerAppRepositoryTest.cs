@@ -6,7 +6,6 @@ using System;
 using Promact.Oauth.Server.Data_Repository;
 using Xunit;
 using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
 using Promact.Oauth.Server.Models.ApplicationClasses;
 using System.Threading.Tasks;
 using Promact.Oauth.Server.Constants;
@@ -22,7 +21,6 @@ namespace Promact.Oauth.Server.Tests
         {
             _consumerAppRespository = serviceProvider.GetService<IConsumerAppRepository>();
             _consumerAppsContext = serviceProvider.GetService<IDataRepository<ConsumerApps>>();
-
         }
 
         #region Test Case

@@ -11,6 +11,9 @@ using System.Collections.Generic;
 using Promact.Oauth.Server.Repository;
 using System.Globalization;
 using System.Threading.Tasks;
+using System.Linq;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace Promact.Oauth.Server.Tests
 {
@@ -22,7 +25,8 @@ namespace Promact.Oauth.Server.Tests
         private readonly IDataRepository<ProjectUser> _dataRepositoryProjectUser;
         private readonly IDataRepository<ApplicationUser> _dataRepositoryUser;
         private readonly IUserRepository _userRepository;
-        
+        private readonly PromactOauthDbContext context;
+
 
         public ProjectTests():base()
         {
@@ -31,6 +35,7 @@ namespace Promact.Oauth.Server.Tests
             _dataRepositoryProjectUser = serviceProvider.GetService<IDataRepository<ProjectUser>>();
             _dataRepositoryUser = serviceProvider.GetService<IDataRepository<ApplicationUser>>();
             _userRepository = serviceProvider.GetService<IUserRepository>();
+            context = serviceProvider.GetService<PromactOauthDbContext>();
         }
 
         ProjectAc projectac = new ProjectAc()
@@ -58,6 +63,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public void AddProject()
         {
+            AddRole();
             Task<int> id = _projectRepository.AddProject(projectac, "Ronak");
             var project = _dataRepository.FirstOrDefault(x => x.Id== id.Result);
             Assert.NotNull(project);
@@ -86,6 +92,7 @@ namespace Promact.Oauth.Server.Tests
                 LastName="test1",
                 Email= "test131@yahoo.com"
             };
+            AddRole();
             var TId=_userRepository.AddUser(user, "Ronak");
             projectac.TeamLeaderId = TId;
             Task<int> id =  _projectRepository.AddProject(projectac, "Ronak");
@@ -100,6 +107,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public void EditProject()
         {
+            AddRole();
             UserAc user = new UserAc()
             {Id = "1",FirstName = "Roshni"};
             UserAc userSecound = new UserAc()
@@ -147,7 +155,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public void checkDuplicatePositive()
         {
-            
+            AddRole();
             _projectRepository.AddProject(projectac, "Ronak");
             List<UserAc> userlist = new List<UserAc>();
             userlist.Add(new UserAc { Id = "2", FirstName = "Ronit" });
@@ -181,6 +189,7 @@ namespace Promact.Oauth.Server.Tests
                 LastName = "test",
                 Email = "test13@yahoo.com"
             };
+            AddRole();
             var TId = _userRepository.AddUser(user, "Ronak");
             _projectRepository.AddProject(projectac, "Ronak");
             _projectRepository.AddUserProject(projectUser);
@@ -188,7 +197,26 @@ namespace Promact.Oauth.Server.Tests
             Assert.NotNull(p);
         }
 
+        private void AddRole()
+        {
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            if (!roleManager.Roles.Any())
+            {
+                List<IdentityRole> roles = new List<IdentityRole>();
+                roles.Add(new IdentityRole { Name = "Employee", NormalizedName = "EMPLOYEE" });
+                roles.Add(new IdentityRole { Name = "Admin", NormalizedName = "ADMIN" });
 
+                foreach (var role in roles)
+                {
+                    var roleExit = roleManager.RoleExistsAsync(role.Name).Result;
+                    if (!roleExit)
+                    {
+                        context.Roles.Add(role);
+                        context.SaveChanges();
+                    }
+                }
+            }
+        }
 
     }
 }

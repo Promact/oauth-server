@@ -290,9 +290,13 @@ namespace Promact.Oauth.Server.Repository
         public void SendEmail(ApplicationUser user)
         {
             string path = _hostingEnvironment.ContentRootPath + StringConstant.UserDetialTemplateFolderPath;
-            string finaleTemplate = System.IO.File.ReadAllText(path);
-            finaleTemplate = finaleTemplate.Replace(StringConstant.UserEmail, user.Email).Replace(StringConstant.UserPassword, StringConstant.DefaultUserPassword).Replace(StringConstant.ResertPasswordUserName,user.FirstName);
-            _emailSender.SendEmailAsync(user.Email, StringConstant.LoginCredentials, finaleTemplate);
+            string finaleTemplate = "";
+            if (System.IO.File.Exists(path))
+            {
+                finaleTemplate = System.IO.File.ReadAllText(path);
+                finaleTemplate = finaleTemplate.Replace(StringConstant.UserEmail, user.Email).Replace(StringConstant.UserPassword, StringConstant.DefaultUserPassword).Replace(StringConstant.ResertPasswordUserName, user.FirstName);
+               _emailSender.SendEmailAsync(user.Email, StringConstant.LoginCredentials, finaleTemplate);
+            }
         }
 
         /// <summary>

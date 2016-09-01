@@ -278,10 +278,13 @@ namespace Promact.Oauth.Server.Controllers
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                 var resetPasswordLink = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
                 string path = _hostingEnvironment.ContentRootPath + StringConstant.ForgotPasswordTemplateFolderPath;
-                string finaleTemplate = System.IO.File.ReadAllText(path);
-                finaleTemplate = finaleTemplate.Replace(StringConstant.ResetPasswordLink, resetPasswordLink).Replace(StringConstant.ResertPasswordUserName, user.FirstName);
-                await _emailSender.SendEmailAsync(model.Email, StringConstant.ForgotPassword, finaleTemplate);
-                @ViewData["MailSentSuccessfully"] = StringConstant.SuccessfullySendMail.Replace("{{emailaddress}}", "'" + model.Email + "'");
+                if (System.IO.File.Exists(path))
+                {
+                    string finaleTemplate = System.IO.File.ReadAllText(path);
+                    finaleTemplate = finaleTemplate.Replace(StringConstant.ResetPasswordLink, resetPasswordLink).Replace(StringConstant.ResertPasswordUserName, user.FirstName);
+                    await _emailSender.SendEmailAsync(model.Email, StringConstant.ForgotPassword, finaleTemplate);
+                    @ViewData["MailSentSuccessfully"] = StringConstant.SuccessfullySendMail.Replace("{{emailaddress}}", "'" + model.Email + "'");
+                }
             }
             // If we got this far, something failed, redisplay form
             return View(model);
