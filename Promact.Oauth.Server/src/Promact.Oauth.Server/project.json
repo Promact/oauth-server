@@ -47,7 +47,8 @@
     "MailKit": "1.4.1",
     "MimeKit": "1.4.1",
     "AutoMapper": "5.0.2",
-    "System.Collections": "4.0.11"
+    "System.Collections": "4.0.11",
+    "Exceptionless.AspNetCore": "4.0.1902"
   },
 
   "tools": {
