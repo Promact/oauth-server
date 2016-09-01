@@ -40,6 +40,4 @@ describe("Project Edit Test", () => {
     it("should be defined", () => {
         expect(userDetailsComponent).toBeDefined();
     });
-    
-
 });
