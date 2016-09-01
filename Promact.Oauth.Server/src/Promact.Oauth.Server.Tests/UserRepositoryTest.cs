@@ -188,6 +188,19 @@
 
 //        #endregion
 
+        /// <summary>
+        /// Test case use for getting management's details by users first name
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task ManagementDetails()
+        {
+            GenerateTestUser();
+            AddRole();
+            string id = _userRepository.AddUser(_testUser, "Siddhartha");
+            var user = await _userRepository.ManagementDetails();
+            Assert.Equal(0, user.Count);
+        }
+        #endregion
 //        private async Task AddRole()
 //        {
 //            if (!_roleManager.Roles.Any())

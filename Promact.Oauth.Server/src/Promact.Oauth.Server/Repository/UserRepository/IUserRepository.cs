@@ -81,21 +81,21 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="firstname"></param>
         /// <returns></returns>
-        ApplicationUser UserDetialByFirstName(string firstname);
+        ApplicationUser UserDetialByUserSlackName(string userSlackName);
 
         /// <summary>
         /// Method is used to get team leader's list
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        Task<List<ApplicationUser>> TeamLeaderByUserId(string userId);
+        Task<List<ApplicationUser>> TeamLeaderByUserSlackName(string userSlackName);
 
         /// <summary>
         /// Method to get list of management people
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        Task<List<ApplicationUser>> ManagementByUserId();
+        Task<List<ApplicationUser>> ManagementDetails();
 
         /// <summary>
         /// Used to fetch the userdetail by given UserName 
