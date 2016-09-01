@@ -6,7 +6,6 @@ using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Data_Repository;
 using Microsoft.AspNetCore.Identity;
 using Promact.Oauth.Server.Models.ApplicationClasses;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Promact.Oauth.Server.Models.ManageViewModels;
 using Promact.Oauth.Server.Services;
 using AutoMapper;
@@ -233,7 +232,8 @@ namespace Promact.Oauth.Server.Repository
         {
             try
             {
-                var user = _userManager.FindByNameAsync(UserName).Result;
+                //fetch by slackusername when model has changed
+                var user = _applicationUserDataRepository.FirstOrDefault(x => x.UserName == UserName);
                 var userAc = new UserAc();
                 if (user != null)
                 {
@@ -247,7 +247,7 @@ namespace Promact.Oauth.Server.Repository
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
 

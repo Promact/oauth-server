@@ -4,7 +4,6 @@ using Promact.Oauth.Server.Models.ApplicationClasses;
 using Promact.Oauth.Server.Data;
 using Promact.Oauth.Server.Repository.ProjectsRepository;
 using Promact.Oauth.Server.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using System;
 using Promact.Oauth.Server.Repository;

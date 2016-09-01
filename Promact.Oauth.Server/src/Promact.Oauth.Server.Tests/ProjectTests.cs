@@ -11,26 +11,30 @@ using System.Collections.Generic;
 using Promact.Oauth.Server.Repository;
 using System.Globalization;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using System.Linq;
 
 namespace Promact.Oauth.Server.Tests
 {
 
-    public class ProjectTests:BaseProvider
+    public class ProjectTests : BaseProvider
     {
         private readonly IProjectRepository _projectRepository;
         private readonly IDataRepository<Project> _dataRepository;
         private readonly IDataRepository<ProjectUser> _dataRepositoryProjectUser;
         private readonly IDataRepository<ApplicationUser> _dataRepositoryUser;
         private readonly IUserRepository _userRepository;
-        
+        private readonly PromactOauthDbContext context;
 
-        public ProjectTests():base()
+        public ProjectTests() : base()
         {
             _projectRepository = serviceProvider.GetService<IProjectRepository>();
             _dataRepository = serviceProvider.GetService<IDataRepository<Project>>();
             _dataRepositoryProjectUser = serviceProvider.GetService<IDataRepository<ProjectUser>>();
             _dataRepositoryUser = serviceProvider.GetService<IDataRepository<ApplicationUser>>();
             _userRepository = serviceProvider.GetService<IUserRepository>();
+            context = serviceProvider.GetService<PromactOauthDbContext>();
         }
 
         ProjectAc projectac = new ProjectAc()
@@ -68,7 +72,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public void AddUserProject()
         {
-           
+
             _projectRepository.AddUserProject(projectUser);
             var ProjectUser = _dataRepositoryProjectUser.Fetch(x => x.ProjectId == 1);
             Assert.NotNull(ProjectUser);
@@ -81,12 +85,13 @@ namespace Promact.Oauth.Server.Tests
         {
             UserAc user = new UserAc()
             {
-                
+
                 FirstName = "Admin1",
-                LastName="test1",
-                Email= "test131@yahoo.com"
+                LastName = "test1",
+                Email = "test131@yahoo.com"
             };
-            var TId=_userRepository.AddUser(user, "Ronak");
+            AddRole();
+            var TId = _userRepository.AddUser(user, "Ronak");
             projectac.TeamLeaderId = TId;
             Task<int> id =  _projectRepository.AddProject(projectac, "Ronak");
             _projectRepository.AddUserProject(projectUser);
@@ -101,12 +106,13 @@ namespace Promact.Oauth.Server.Tests
         public void EditProject()
         {
             UserAc user = new UserAc()
-            {Id = "1",FirstName = "Roshni"};
+            { Id = "1", FirstName = "Roshni" };
             UserAc userSecound = new UserAc()
-            {Id = "2",FirstName = "Ronit"};
+            { Id = "2", FirstName = "Ronit" };
             UserAc userThird = new UserAc()
-            {Id = "3",FirstName = "Raj"};
-            _userRepository.AddUser(user,"Ronak");
+            { Id = "3", FirstName = "Raj" };
+            AddRole();
+            _userRepository.AddUser(user, "Ronak");
             _userRepository.AddUser(userSecound, "Ronak");
             _userRepository.AddUser(userThird, "Ronak");
             Task<int> id = _projectRepository.AddProject(projectac, "Ronak");
@@ -138,7 +144,7 @@ namespace Promact.Oauth.Server.Tests
         public void checkDuplicateNegative()
         {
             _projectRepository.AddProject(projectac, "Ronak");
-           var project =_projectRepository.checkDuplicate(projectac);
+            var project = _projectRepository.checkDuplicate(projectac);
             Assert.Null(project.Name);
         }
         /// <summary>
@@ -147,7 +153,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public void checkDuplicatePositive()
         {
-            
+
             _projectRepository.AddProject(projectac, "Ronak");
             List<UserAc> userlist = new List<UserAc>();
             userlist.Add(new UserAc { Id = "2", FirstName = "Ronit" });
@@ -181,6 +187,7 @@ namespace Promact.Oauth.Server.Tests
                 LastName = "test",
                 Email = "test13@yahoo.com"
             };
+            AddRole();
             var TId = _userRepository.AddUser(user, "Ronak");
             _projectRepository.AddProject(projectac, "Ronak");
             _projectRepository.AddUserProject(projectUser);
@@ -189,6 +196,49 @@ namespace Promact.Oauth.Server.Tests
         }
 
 
+        /// <summary>
+        /// Fetches Users of the given Project Name(slack channel name)
+        /// </summary>
+        [Fact, Trait("Category", "A")]
+        public void GetProjectUserByGroupName()
+        {
+            _projectRepository.AddProject(projectac, "Ronak");
+            _projectRepository.AddUserProject(projectUser);
+            //    var ProjectUser = _dataRepositoryProjectUser.Fetch(x => x.ProjectId == 1);
+            var projectUsers = _projectRepository.GetProjectUserByGroupName(projectac.SlackChannelName);
+            Assert.Equal(projectUsers.Count, 1);
+        }
 
+        /// <summary>
+        /// Fetch the project of the given slack channel name
+        /// </summary>
+        [Fact, Trait("Category", "A")]
+        public void GetProjectByGroupName()
+        {
+            _projectRepository.AddProject(projectac, "Roshni");
+            var project = _projectRepository.GetProjectByGroupName(projectac.SlackChannelName);
+            Assert.NotEqual(null, project);
+        }
+
+        private void AddRole()
+        {
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            if (!roleManager.Roles.Any())
+            {
+                List<IdentityRole> roles = new List<IdentityRole>();
+                roles.Add(new IdentityRole { Name = "Employee", NormalizedName = "EMPLOYEE" });
+                roles.Add(new IdentityRole { Name = "Admin", NormalizedName = "ADMIN" });
+
+                foreach (var role in roles)
+                {
+                    var roleExit = roleManager.RoleExistsAsync(role.Name).Result;
+                    if (!roleExit)
+                    {
+                        context.Roles.Add(role);
+                        context.SaveChanges();
+                    }
+                }
+            }
+        }
     }
 }

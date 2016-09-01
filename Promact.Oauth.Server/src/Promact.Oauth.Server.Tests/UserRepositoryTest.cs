@@ -8,7 +8,6 @@ using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Models.ApplicationClasses;
 using Promact.Oauth.Server.Models.ManageViewModels;
 using Promact.Oauth.Server.Repository;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -39,7 +38,7 @@ namespace Promact.Oauth.Server.Tests
                 Password = "User@123",
                 UserName = "testUser@pronactinfo.com",
                 SlackUserName = "test",
-                JoiningDate = DateTime.Now
+                JoiningDate = System.DateTime.Now
             };
         }
 
@@ -199,6 +198,20 @@ namespace Promact.Oauth.Server.Tests
             var user = await _userRepository.ManagementByUserId();
             Assert.Equal(0, user.Count);
         }
+
+        /// <summary>
+        /// Get user details by slack name
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public void GetUserDetail()
+        {
+            AddRole();
+            _userRepository.AddUser(_testUser, "Rajdeep");
+            var user = _userRepository.GetUserDetail(_testUser.UserName);
+            //  Assert.Equal(_testUser.FirstName, user.FirstName);
+            Assert.NotEqual(null, user);
+        }
+
         #endregion
 
         private void AddRole()
