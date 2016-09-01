@@ -1,0 +1,33 @@
+version: 1.0.{build}
+configuration: Release
+platform: Any CPU
+before_build:
+- cmd: >-
+    npm install -g typings tslint typescript
+
+    dotnet restore
+
+    cd ".\Promact.Oauth.Server\src\Promact.Oauth.Server"
+
+    npm install
+
+    cd "..\..\.."
+build:
+  publish_wap: true
+  parallel: true
+  verbosity: minimal
+test_script:
+- cmd: >-
+    cd ".\Promact.Oauth.Server\src\Promact.Oauth.Server.Tests"
+
+    dotnet restore
+
+    dotnet test -appveyor
+notifications:
+- provider: Slack
+  auth_token:
+    secure: a8gvDGvmvaulk5ajhx+cTq9Eebui6VidpqGMXmx7HKu5SHwnSKZGveU/BclA+/hifPjQMWUNyvWIFX8LpSDcPQ==
+  channel: sci-oauth-dev
+  on_build_success: true
+  on_build_failure: true
+  on_build_status_changed: false

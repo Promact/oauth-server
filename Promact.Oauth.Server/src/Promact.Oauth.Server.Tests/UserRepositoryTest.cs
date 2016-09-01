@@ -21,7 +21,7 @@ namespace Promact.Oauth.Server.Tests
         private readonly IUserRepository _userRepository;
         private readonly IDataRepository<ApplicationUser> _dataRepository;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly UserAc _testUser;
+        private UserAc _testUser;
         private readonly PromactOauthDbContext context;
 
         public UserRepositoryTest() : base()
@@ -30,16 +30,21 @@ namespace Promact.Oauth.Server.Tests
             _dataRepository = serviceProvider.GetService<IDataRepository<ApplicationUser>>();
             _userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
             context = serviceProvider.GetService<PromactOauthDbContext>();
+            
+        }
+
+        public void GenerateTestUser()
+        {
             _testUser = new UserAc()
             {
                 Email = "testUser@promactinfo.com",
-                FirstName = "First name",
+                FirstName = "First",
                 LastName = "Last name",
                 IsActive = true,
                 Password = "User@123",
                 UserName = "testUser@pronactinfo.com",
                 SlackUserName = "test",
-                JoiningDate = DateTime.Now
+                JoiningDate = DateTime.Now,
             };
         }
 
@@ -51,6 +56,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public void GetAllUser()
         {
+            GenerateTestUser();
             AddRole();
             _userRepository.AddUser(_testUser, "Rajdeep");
             Task<IEnumerable<UserAc>> users = _userRepository.GetAllUsers();
@@ -63,7 +69,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public void GetUserById()
         {
-
+            GenerateTestUser();
             UserAc user = new UserAc()
             {
                 Email = "testUser2@promactinfo.com",
@@ -88,6 +94,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public void FindByEmail()
         {
+            GenerateTestUser();
             AddRole();
             _userRepository.AddUser(_testUser, "Rajdeep");
             var exists = _userRepository.FindByEmail("testUser@promactinfo.com");
@@ -101,6 +108,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public void FindByUserName()
         {
+            GenerateTestUser();
             AddRole();
             _userRepository.AddUser(_testUser, "Rajdeep");
             var exists = _userRepository.FindByUserName("testUser@promactinfo.com");
@@ -114,6 +122,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public void AddUser()
         {
+            GenerateTestUser();
             AddRole();
             string id = _userRepository.AddUser(_testUser, "Rajdeep");
             var user = _dataRepository.FirstOrDefault(u => u.Id == id);
@@ -126,6 +135,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public void UpdateUser()
         {
+            GenerateTestUser();
             AddRole();
             _userRepository.AddUser(_testUser, "Rajdeep");
             var user = _dataRepository.FirstOrDefault(u => u.Email == "testUser@promactinfo.com");
@@ -147,6 +157,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public void ChangePassword()
         {
+            GenerateTestUser();
             AddRole();
             _userRepository.AddUser(_testUser, "Rajdeep");
             var user = _dataRepository.FirstOrDefault(u => u.Email == "testUser@promactinfo.com");
@@ -168,12 +179,12 @@ namespace Promact.Oauth.Server.Tests
         /// Test case use for getting user details by its first name
         /// </summary>
         [Fact, Trait("Category", "Required")]
-        public void UserDetialByFirstName()
+        public void UserDetail()
         {
             AddRole();
-            string id = _userRepository.AddUser(_testUser, "Siddhartha");
-            var user = _userRepository.UserDetialByFirstName("First name");
-            Assert.Equal(user.Email,_testUser.Email);
+            string id = _userRepository.AddUser(userLocal, "siddhartha");
+            var user = _userRepository.UserDetialByUserSlackName("myslackname");
+            Assert.Equal(user.Email, userLocal.Email);
         }
 
         /// <summary>
@@ -182,9 +193,10 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public async Task TeamLeaderByUserId()
         {
+            GenerateTestUser();
             AddRole();
             string id = _userRepository.AddUser(_testUser, "Siddhartha");
-            var user = await _userRepository.TeamLeaderByUserId("First name");
+            var user = await _userRepository.TeamLeaderByUserSlackName("test");
             Assert.Equal(0, user.Count);
         }
 
@@ -192,11 +204,12 @@ namespace Promact.Oauth.Server.Tests
         /// Test case use for getting management's details by users first name
         /// </summary>
         [Fact, Trait("Category", "Required")]
-        public async Task ManagementByUserId()
+        public async Task ManagementDetails()
         {
+            GenerateTestUser();
             AddRole();
             string id = _userRepository.AddUser(_testUser, "Siddhartha");
-            var user = await _userRepository.ManagementByUserId();
+            var user = await _userRepository.ManagementDetails();
             Assert.Equal(0, user.Count);
         }
         #endregion
@@ -221,5 +234,14 @@ namespace Promact.Oauth.Server.Tests
                 }
             }
         }
+        private UserAc userLocal = new UserAc()
+        {
+            Email = "testing@promactinfo.com",
+            UserName = "testing@promactinfo.com",
+            FirstName = "Myfirsttest",
+            LastName = "testing",
+            JoiningDate = DateTime.UtcNow,
+            SlackUserName = "myslackname"
+        };
     }
 }

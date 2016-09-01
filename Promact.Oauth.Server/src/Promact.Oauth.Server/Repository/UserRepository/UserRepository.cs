@@ -250,7 +250,7 @@ namespace Promact.Oauth.Server.Repository
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
 
@@ -301,15 +301,17 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="firstname"></param>
         /// <returns>user details</returns>
-        public ApplicationUser UserDetialByFirstName(string firstname)
+        public ApplicationUser UserDetialByUserSlackName(string userSlackName)
         {
-            var user = _userManager.Users.FirstOrDefault(x => x.FirstName == firstname);
+            
+            var user = _applicationUserDataRepository.FirstOrDefault(x => x.SlackUserName == userSlackName);
             var newUser = new ApplicationUser
             {
                 Id = user.Id,
                 Email = user.Email,
                 FirstName = user.FirstName,
-                LastName = user.LastName
+                LastName = user.LastName,
+                SlackUserName = user.SlackUserName
             };
             return newUser;
         }
@@ -319,9 +321,9 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="userFirstName"></param>
         /// <returns>list of team leader</returns>
-        public async Task<List<ApplicationUser>> TeamLeaderByUserId(string userFirstName)
+        public async Task<List<ApplicationUser>> TeamLeaderByUserSlackName(string userSlackName)
         {
-            var user = _userManager.Users.FirstOrDefault(x => x.FirstName == userFirstName);
+            var user = _userManager.Users.FirstOrDefault(x => x.SlackUserName == userSlackName);
             var projects = _projectUserRepository.Fetch(x => x.UserId == user.Id);
             List<ApplicationUser> teamLeaders = new List<ApplicationUser>();
             foreach (var project in projects)
@@ -332,7 +334,8 @@ namespace Promact.Oauth.Server.Repository
                 var newUser = new ApplicationUser
                 {
                     UserName = user.UserName,
-                    Email = user.Email
+                    Email = user.Email,
+                    SlackUserName = user.SlackUserName
                 };
                 teamLeaders.Add(newUser);
             }
@@ -343,7 +346,7 @@ namespace Promact.Oauth.Server.Repository
         /// Method to get management people details
         /// </summary>
         /// <returns>list of management</returns>
-        public async Task<List<ApplicationUser>> ManagementByUserId()
+        public async Task<List<ApplicationUser>> ManagementDetails()
         {
             var management = await _userManager.GetUsersInRoleAsync("Admin");
             List<ApplicationUser> managementUser = new List<ApplicationUser>();
@@ -352,7 +355,8 @@ namespace Promact.Oauth.Server.Repository
                 var newUser = new ApplicationUser
                 {
                     FirstName = user.FirstName,
-                    Email = user.Email
+                    Email = user.Email,
+                    SlackUserName = user.SlackUserName
                 };
                 managementUser.Add(newUser);
             }

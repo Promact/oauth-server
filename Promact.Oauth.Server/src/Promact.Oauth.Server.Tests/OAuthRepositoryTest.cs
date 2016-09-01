@@ -19,12 +19,12 @@ namespace Promact.Oauth.Server.Tests
         /// <summary>
         /// Checking client is exist or not. If not it will create OAuth response for request.
         /// </summary>
-        //[Fact, Trait("Category", "Required")]
-        //public void OAuthClientChecking()
-        //{
-        //    var response = _oAuthRepository.OAuthClientChecking(Email, ClientId);
-        //    Assert.NotNull(response);
-        //}
+        [Fact, Trait("Category", "Required")]
+        public void OAuthClientChecking()
+        {
+            var response = _oAuthRepository.OAuthClientChecking(Email, ClientId);
+            Assert.Equal(response.Id,1);
+        }
 
         /// <summary>
         /// Method to check verification of accesstoken 

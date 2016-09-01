@@ -28,10 +28,10 @@ namespace Promact.Oauth.Server.Controllers
         /// <param name="userFirstname"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("userDetails/{userFirstname}")]
-        public IActionResult UserDetialByFirstName(string userFirstName)
+        [Route("userDetails/{userSlackName}")]
+        public IActionResult UserDetialByFirstName(string userSlackName)
         {
-            var user = _userRepository.UserDetialByFirstName(userFirstName);
+            var user = _userRepository.UserDetialByUserSlackName(userSlackName);
             return Ok(user);
         }
 
@@ -41,23 +41,22 @@ namespace Promact.Oauth.Server.Controllers
         /// <param name="userId"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("teamLeaderDetails/{userFirstName}")]
-        public async Task<IActionResult> TeamLeaderByUserId(string userFirstName)
+        [Route("teamLeaderDetails/{userSlackName}")]
+        public async Task<IActionResult> TeamLeaderByUserId(string userSlackName)
         {
-            var user = await _userRepository.TeamLeaderByUserId(userFirstName);
+            var user = await _userRepository.TeamLeaderByUserSlackName(userSlackName);
             return Ok(user);
         }
 
         /// <summary>
         /// Method is used to get list of management people
         /// </summary>
-        /// <param name="userId"></param>
         /// <returns></returns>
         [HttpGet]
         [Route("managementDetails")]
-        public async Task<IActionResult> ManagementByUserId(string userId)
+        public async Task<IActionResult> ManagementDetails()
         {
-            var user = await _userRepository.ManagementByUserId();
+            var user = await _userRepository.ManagementDetails();
             return Ok(user);
         }
     }
