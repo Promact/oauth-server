@@ -156,14 +156,14 @@ namespace Promact.Oauth.Server.Tests
         /// <summary>
         /// Test case use for getting user details by its first name
         /// </summary>
-        [Fact, Trait("Category", "Required")]
-        public void UserDetialByFirstName()
-        {
-            AddRole();
-            string id = _userRepository.AddUser(_testUser, StringConstant.CreatedBy);
-            var user = _userRepository.UserDetialByFirstName(StringConstant.FirstName);
-            Assert.Equal(user.Email,_testUser.Email);
-        }
+        //[Fact, Trait("Category", "Required")]
+        //public void UserDetialByFirstName()
+        //{
+        //    AddRole();
+        //    string id = _userRepository.AddUser(_testUser, StringConstant.CreatedBy);
+        //    var user = _userRepository.UserDetialByFirstName(StringConstant.FirstName);
+        //    Assert.Equal(user.Id, id);
+        //}
 
         /// <summary>
         /// Test case use for getting team leader's details by users first name
