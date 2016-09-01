@@ -59,18 +59,5 @@ namespace Promact.Oauth.Server.Controllers
             var user = await _userRepository.ManagementDetails();
             return Ok(user);
         }
-
-        /// <summary>
-        /// Method to get User details by user Id
-        /// </summary>
-        /// <param name="employeeId"></param>
-        /// <returns></returns>
-        [HttpGet]
-        [Route("userDetail/{employeeId}")]
-        public IActionResult UserDetailById(string employeeId)
-        {
-            var user = _userRepository.UserDetailById(employeeId);
-            return Ok(user);
-        }
     }
 }
