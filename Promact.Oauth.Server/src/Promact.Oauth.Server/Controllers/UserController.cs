@@ -7,15 +7,16 @@ using Promact.Oauth.Server.Models.ManageViewModels;
 using Microsoft.AspNetCore.Identity;
 using Promact.Oauth.Server.Models.ApplicationClasses;
 using System.Threading.Tasks;
+using Exceptionless;
 
 namespace Promact.Oauth.Server.Controllers
 {
     [Route("api/[controller]")]
-   // [Authorize(Roles = "Admin")]
+    // [Authorize(Roles = "Admin")]
     public class UserController : BaseController
     {
         #region "Private Variable(s)"
-        
+
         private readonly IUserRepository _userRepository;
         private readonly UserManager<ApplicationUser> _userManager;
 
@@ -42,7 +43,15 @@ namespace Promact.Oauth.Server.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AllUsers()
         {
-            return Ok(await _userRepository.GetAllUsers());
+            try
+            {
+                return Ok(await _userRepository.GetAllUsers());
+            }
+            catch (Exception ex)
+            {
+                ex.ToExceptionless().Submit();
+                throw;
+            }
         }
 
 
@@ -56,12 +65,20 @@ namespace Promact.Oauth.Server.Controllers
         [Authorize(Roles = "Admin,Employee")]
         public async Task<IActionResult> GetUserById(string id)
         {
-            var user =await _userRepository.GetById(id);
-            if (user == null)
+            try
             {
-                return NotFound();
+                var user = await _userRepository.GetById(id);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+                return Ok(user);
             }
-            return Ok(user);
+            catch (Exception ex)
+            {
+                ex.ToExceptionless().Submit();
+                throw ex;
+            }
         }
 
 
@@ -76,9 +93,9 @@ namespace Promact.Oauth.Server.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult RegisterUser([FromBody] UserAc newUser)
         {
-            string createdBy = _userManager.GetUserId(User);
             try
             {
+                string createdBy = _userManager.GetUserId(User);
                 if (ModelState.IsValid)
                 {
                     _userRepository.AddUser(newUser, createdBy);
@@ -86,9 +103,10 @@ namespace Promact.Oauth.Server.Controllers
                 }
                 return Ok(false);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                throw e;
+                ex.ToExceptionless().Submit();
+                throw ex;
             }
         }
 
@@ -103,15 +121,23 @@ namespace Promact.Oauth.Server.Controllers
         [Authorize(Roles = "Admin,Employee")]
         public IActionResult UpdateUser([FromBody] UserAc editedUser)
         {
-            string updatedBy = _userManager.GetUserId(User);
-            if (ModelState.IsValid)
+            try
             {
-                string id=_userRepository.UpdateUserDetails(editedUser, updatedBy);
-                if (id != "")
-                { return Ok(true); }
-                else { return Ok(false); }
+                string updatedBy = _userManager.GetUserId(User);
+                if (ModelState.IsValid)
+                {
+                    string id = _userRepository.UpdateUserDetails(editedUser, updatedBy);
+                    if (id != "")
+                    { return Ok(true); }
+                    else { return Ok(false); }
+                }
+                return Ok(false);
             }
-            return Ok(false);
+            catch (Exception ex)
+            {
+                ex.ToExceptionless().Submit();
+                throw ex;
+            }
         }
 
 
@@ -127,19 +153,25 @@ namespace Promact.Oauth.Server.Controllers
         [Authorize(Roles = "Admin,Employee")]
         public IActionResult ChangePassword([FromBody] ChangePasswordViewModel passwordModel)
         {
-            var user = _userManager.GetUserAsync(User).Result;
-            if (_userManager.CheckPasswordAsync(user, passwordModel.OldPassword).Result)
+            try
             {
-                passwordModel.Email = user.Email;
-                if (ModelState.IsValid)
+                var user = _userManager.GetUserAsync(User).Result;
+                if (_userManager.CheckPasswordAsync(user, passwordModel.OldPassword).Result)
                 {
-                    _userRepository.ChangePassword(passwordModel);
-                    return Ok(true);
-                    
+                    passwordModel.Email = user.Email;
+                    if (ModelState.IsValid)
+                    {
+                        _userRepository.ChangePassword(passwordModel);
+                        return Ok(true);
+                    }
                 }
+                return Ok(false);
             }
-            return Ok(false);
-            
+            catch (Exception ex)
+            {
+                ex.ToExceptionless().Submit();
+                throw ex;
+            }
         }
 
 
@@ -153,7 +185,15 @@ namespace Promact.Oauth.Server.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult FindByUserName(string userName)
         {
-            return Ok(_userRepository.FindByUserName(userName));
+            try
+            {
+                return Ok(_userRepository.FindByUserName(userName));
+            }
+            catch (Exception ex)
+            {
+                ex.ToExceptionless().Submit();
+                throw ex;
+            }
         }
 
 
@@ -166,7 +206,15 @@ namespace Promact.Oauth.Server.Controllers
         [Route("fetchbyusername/{userName}")]
         public IActionResult FetchByUserName(string userName)
         {
-            return Ok(_userRepository.GetUserDetail(userName));
+            try
+            {
+                return Ok(_userRepository.GetUserDetail(userName));
+            }
+            catch (Exception ex)
+            {
+                ex.ToExceptionless().Submit();
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -179,7 +227,15 @@ namespace Promact.Oauth.Server.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult FindByEmail(string email)
         {
-            return Ok(_userRepository.FindByEmail(email));
+            try
+            {
+                return Ok(_userRepository.FindByEmail(email));
+            }
+            catch (Exception ex)
+            {
+                ex.ToExceptionless().Submit();
+                throw ex;
+            }
         }
 
 
@@ -187,7 +243,15 @@ namespace Promact.Oauth.Server.Controllers
         [Route("findUserBySlackUserName/{slackUserName}")]
         public IActionResult FindUserBySlackUserName(string slackUserName)
         {
-            return Ok(_userRepository.FindUserBySlackUserName(slackUserName));
+            try
+            {
+                return Ok(_userRepository.FindUserBySlackUserName(slackUserName));
+            }
+            catch (Exception ex)
+            {
+                ex.ToExceptionless().Submit();
+                throw ex;
+            }
         }
         #endregion
     }
