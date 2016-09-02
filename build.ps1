@@ -20,9 +20,9 @@ if(Test-Path $artifactsPath) { Remove-Item $artifactsPath -Force -Recurse }
 Get-DotNetProjectDirectory -RootPath $PSScriptRoot | Restore-DependencyPackages
 
 # Build/package
-Invoke-DotNetBuild $PSScriptRoot\Promact.Oauth.Server\src\Promact.Oauth.Server\
+Get-DotNetProjectDirectory -RootPath $PSScriptRoot | Invoke-DotNetBuild
 
 # Test
-Invoke-Test Invoke-DotNetBuild $PSScriptRoot\Promact.Oauth.Server\src\Promact.Oauth.Tests\
+Invoke-Test $PSScriptRoot\Promact.Oauth.Server\src\Promact.Oauth.Tests
 
 Pop-Location

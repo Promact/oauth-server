@@ -258,3 +258,4 @@ paket-files/
 **/app/**/*.js.map
 **/typings/
 *.log
+/.dotnet
