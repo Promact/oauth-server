@@ -200,6 +200,19 @@
             var user = await _userRepository.ManagementDetails();
             Assert.Equal(0, user.Count);
         }
+
+        /// <summary>
+        /// Test case to get user's number of casual leave
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public void GetUserCasualLeaveBySlackName()
+        {
+            GenerateTestUser();
+            AddRole();
+            var id = _userRepository.AddUser(userLocal, "Siddhartha");
+            var casualLeave = _userRepository.GetUserCasualLeaveBySlackName(userLocal.SlackUserName);
+            Assert.Equal(8,casualLeave);
+        }
         #endregion
 //        private async Task AddRole()
 //        {
