@@ -26,4 +26,5 @@ mono \
 revision=${TRAVIS_JOB_ID:=1}  
 revision=$(printf "%04d" $revision) 
 
-dotnet pack ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests -c Release -o ./artifacts --version-suffix=$revision  
+
+#dotnet pack ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests -c Release -o ./artifacts --version-suffix=$revision  
