@@ -377,6 +377,17 @@ namespace Promact.Oauth.Server.Repository
         }
 
         /// <summary>
+        /// Method to get the number of casual leave allowed to a user by slack user name
+        /// </summary>
+        /// <param name="slackUserName"></param>
+        /// <returns>number of casual leave</returns>
+        public double GetUserCasualLeaveBySlackName(string slackUserName)
+        {
+            var casualLeave = _applicationUserDataRepository.FirstOrDefault(x => x.SlackUserName == slackUserName).NumberOfCasualLeave;
+            return casualLeave;
+        }
+
+        /// <summary>
         /// Method is used to return a user after assigning a role and mapping from ApplicationUser class to UserAc class
         /// </summary>
         /// <param name="user"></param>
