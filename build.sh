@@ -21,7 +21,7 @@ dotnet build ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests -c Release -f
 
 mono \  
 ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests/bin/Release/net451/*/dotnet-test-xunit.exe \
-./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests/bin/Release/net451/*/TEST_PROJECT_NAME.dll
+./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests/bin/Release/net451/*/Promact.Oauth.Server.Tests.dll
 
 revision=${TRAVIS_JOB_ID:=1}  
 revision=$(printf "%04d" $revision) 

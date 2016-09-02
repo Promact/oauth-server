@@ -17,7 +17,7 @@ build:
   parallel: true
   verbosity: minimal
 test_script:
-- ps: .\KoreBuild.ps1
+- ps: .\build.ps1
 notifications:
 - provider: Slack
   auth_token:
