@@ -17,7 +17,9 @@ build:
   parallel: true
   verbosity: minimal
 test_script:
-- ps: dotnet test .\Promact.Oauth.Server\src\Promact.Oauth.Server.Tests\project.json -c Release -f netcoreapp1.0 -appveyor
+- ps: >-
+      .\KoreBuild.ps1
+      dotnet test .\Promact.Oauth.Server\src\Promact.Oauth.Server.Tests\project.json -c Release -f netcoreapp1.0 -appveyor
 notifications:
 - provider: Slack
   auth_token:
