@@ -18,7 +18,7 @@ build:
   verbosity: minimal
 test_script:
 - cmd: >-
-    dotnet test .\Promact.Oauth.Server\src\Promact.Oauth.Server.Tests\project.json -c Release -f netcoreapp1.0 -appveyor
+    dotnet test .\Promact.Oauth.Server\src\Promact.Oauth.Server.Tests\project.json -c Release -f net451 -appveyor
 notifications:
 - provider: Slack
   auth_token:
