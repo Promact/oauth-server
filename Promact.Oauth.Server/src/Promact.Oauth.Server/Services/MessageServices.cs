@@ -32,7 +32,7 @@ namespace Promact.Oauth.Server.Services
             // Plug in your email service here to send an email.
             var msg = new MimeMessage();
 
-            msg.From.Add(new MailboxAddress("Promact", _appSettings.Value.Email));
+            msg.From.Add(new MailboxAddress("Promact", _appSettings.Value.From));
             msg.To.Add(new MailboxAddress("User", email));
             msg.Subject = subject;
             var bodyBuilder = new BodyBuilder();
