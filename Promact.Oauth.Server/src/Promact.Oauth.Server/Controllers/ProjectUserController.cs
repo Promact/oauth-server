@@ -105,5 +105,26 @@ namespace Promact.Oauth.Server.Controllers
                 throw ex;
             }
         }
+
+        /// <summary>
+        /// Method to get the number of casual leave allowed to a user by slack user name
+        /// </summary>
+        /// <param name="slackUserName"></param>
+        /// <returns>number of casual leave</returns>
+        [HttpGet]
+        [Route("casual/leave/{slackUserName}")]
+        public IActionResult GetUserCasualLeaveBySlackName(string slackUserName)
+        {
+            try
+            {
+                var casualLeave = _userRepository.GetUserCasualLeaveBySlackName(slackUserName);
+                return Ok(casualLeave);
+            }
+            catch (Exception ex)
+            {
+                ex.ToExceptionless().Submit();
+                throw ex;
+            }
+        }
     }
 }
