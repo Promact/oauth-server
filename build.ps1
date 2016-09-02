@@ -23,6 +23,6 @@ Get-DotNetProjectDirectory -RootPath $PSScriptRoot | Restore-DependencyPackages
 Get-DotNetProjectDirectory -RootPath $PSScriptRoot | Invoke-DotNetBuild
 
 # Test
-Invoke-Test $PSScriptRoot\Promact.Oauth.Server\src\Promact.Oauth.Tests
+Invoke-Test $PSScriptRoot\Promact.Oauth.Server\src\Promact.Oauth.Server.Tests
 
 Pop-Location
