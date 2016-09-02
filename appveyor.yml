@@ -1,22 +1,8 @@
 version: 1.0.{build}
 configuration: Release
 platform: Any CPU
-before_build:
-- cmd: >-
-    npm install -g typings tslint typescript
-
-    dotnet restore
-
-    cd ".\Promact.Oauth.Server\src\Promact.Oauth.Server"
-
-    npm install
-
-    cd "..\..\.."
-build:
-  publish_wap: true
-  parallel: true
-  verbosity: minimal
-test_script:
+test: off
+build_script:
 - ps: .\build.ps1
 notifications:
 - provider: Slack

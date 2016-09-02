@@ -20,9 +20,9 @@ if(Test-Path $artifactsPath) { Remove-Item $artifactsPath -Force -Recurse }
 Get-DotNetProjectDirectory -RootPath $PSScriptRoot | Restore-DependencyPackages
 
 # Build/package
-Get-DotNetProjectDirectory -RootPath $PSScriptRoot\Promact.Oauth.Server\src | Invoke-DotNetBuild
+Invoke-DotNetBuild $PSScriptRoot\Promact.Oauth.Server\src\Promact.Oauth.Server\
 
 # Test
-Get-DotNetProjectDirectory -RootPath $PSScriptRoot\Promact.Oauth.Server\src | Where-Object { $_ -inotlike "*Promact.Oauth.Server.Tests" } | Invoke-Test
+Invoke-Test Invoke-DotNetBuild $PSScriptRoot\Promact.Oauth.Server\src\Promact.Oauth.Tests\
 
 Pop-Location
