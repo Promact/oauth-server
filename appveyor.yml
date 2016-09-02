@@ -22,7 +22,7 @@ test_script:
 
     dotnet restore
 
-    dotnet test -appveyor
+    dotnet test .\Promact.Oauth.Server\src\Promact.Oauth.Server.Tests\project.json -c Release -f netcoreapp1.0 -appveyor
 notifications:
 - provider: Slack
   auth_token:
