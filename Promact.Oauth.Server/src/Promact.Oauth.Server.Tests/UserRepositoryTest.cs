@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Promact.Oauth.Server.Constants;
 using Promact.Oauth.Server.Data;
 using Promact.Oauth.Server.Data_Repository;
 using Promact.Oauth.Server.Models;
@@ -39,7 +40,8 @@ namespace Promact.Oauth.Server.Tests
                 Password = "User@123",
                 UserName = "testUser@pronactinfo.com",
                 SlackUserName = "test",
-                JoiningDate = DateTime.Now
+                JoiningDate = DateTime.Now,
+                RoleName = StringConstant.RoleName
             };
         }
 
@@ -72,7 +74,8 @@ namespace Promact.Oauth.Server.Tests
                 IsActive = true,
                 Password = "User@123",
                 UserName = "testUser2@promactinfo.com",
-                SlackUserName="test"
+                SlackUserName="test",
+                RoleName = StringConstant.RoleName
             };
             AddRole();
             var id = _userRepository.AddUser(user, "Rajdeep").Result;
@@ -89,9 +92,8 @@ namespace Promact.Oauth.Server.Tests
         public void FindByEmail()
         {
             AddRole();
-            _userRepository.AddUser(_testUser, "Rajdeep");
+            var a = _userRepository.AddUser(_testUser, "Rajdeep").Result;
             var exists = _userRepository.FindByEmail("testUser@promactinfo.com");
-
             Assert.Equal(true, exists);
         }
 
@@ -134,7 +136,8 @@ namespace Promact.Oauth.Server.Tests
             {
                 Id = user.Id,
                 FirstName = "Updated User",
-                SlackUserName= "Updated test"
+                SlackUserName= "Updated test",
+                RoleName = "Employee"
             }, "Rajdeep");
 
             var editedUser = _dataRepository.FirstOrDefault(u => u.Id == id);
