@@ -26,15 +26,15 @@ namespace Promact.Oauth.Server.Tests
         //    Assert.NotNull(response);
         //}
 
-        /// <summary>
-        /// Method to check verification of accesstoken 
-        /// </summary>
-        [Fact, Trait("Category", "Required")]
-        public void GetDetailsClientByAccessToken()
-        {
-            var response = _oAuthRepository.GetDetailsClientByAccessToken(accessToken);
-            Assert.Equal(false, response);
-        }
+        ///// <summary>
+        ///// Method to check verification of accesstoken 
+        ///// </summary>
+        //[Fact, Trait("Category", "Required")]
+        //public void GetDetailsClientByAccessToken()
+        //{
+        //    var response = _oAuthRepository.GetDetailsClientByAccessToken(accessToken);
+        //    Assert.Equal(false, response);
+        //}
 
 
         /// <summary>

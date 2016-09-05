@@ -24,7 +24,7 @@ namespace Promact.Oauth.Server.Constants
         public static string UpdateBy = "Roshni";
         public static string ATOZ0TO9 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         public static string ATOZaTOz0TO9 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        public static string EmailNotExists = "Email does not exist in the system";
+        public static string EmailNotExists = "Email does not exist";
         public static string ForgotPassword = "Forgot Password";
         public static string LoginCredentials = "Login Credentials";
         public static string SuccessfullySendMail = "We have sent you a link on {{emailaddress}} to reset password.Please check your email.";
@@ -69,5 +69,6 @@ namespace Promact.Oauth.Server.Constants
         public static string RoleNameSecond = "Admin";
         public static string NormalizedName = "EMPLOYEE";
         public static string NormalizedSecond = "ADMIN";
+        
     }
 }

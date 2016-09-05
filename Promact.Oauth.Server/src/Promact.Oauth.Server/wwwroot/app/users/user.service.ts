@@ -43,7 +43,7 @@ export class UserService {
     findUserBySlackUserName(slackUserName: string) {
         return this.httpService.get(this.UserUrl + "/findUserBySlackUserName/" + slackUserName);
     }
-
-
-
+    getRoles() {
+        return this.httpService.get(this.UserUrl + "/getRole");
+    }
 }

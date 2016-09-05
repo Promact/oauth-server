@@ -60,7 +60,8 @@ namespace Promact.Oauth.Server.Tests
 
             FirstName = StringConstant.FirstName,
             LastName = StringConstant.LastName,
-            Email = StringConstant.Email
+            Email = StringConstant.Email,
+            RoleName = StringConstant.RoleName
         };
         UserAc userSecound = new UserAc()
         { Id = StringConstant.UserIdSecond, FirstName = StringConstant.FirstNameSecond };

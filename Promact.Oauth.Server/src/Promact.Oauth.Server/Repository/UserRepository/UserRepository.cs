@@ -14,6 +14,7 @@ using Promact.Oauth.Server.Repository.ProjectsRepository;
 using Microsoft.EntityFrameworkCore;
 using Promact.Oauth.Server.Constants;
 using Microsoft.AspNetCore.Hosting;
+using Promact.Oauth.Server.Data;
 
 namespace Promact.Oauth.Server.Repository
 {
@@ -24,16 +25,16 @@ namespace Promact.Oauth.Server.Repository
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly IDataRepository<ApplicationUser> _applicationUserDataRepository;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IEmailSender _emailSender;
         private readonly IMapper _mapperContext;
         private readonly IDataRepository<ProjectUser> _projectUserRepository;
         private readonly IProjectRepository _projectRepository;
-
         #endregion
 
         #region "Constructor"
 
-        public UserRepository(IDataRepository<ApplicationUser> applicationUserDataRepository, IHostingEnvironment hostingEnvironment, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IMapper mapperContext, IDataRepository<ProjectUser> projectUserRepository, IProjectRepository projectRepository)
+        public UserRepository(IDataRepository<ApplicationUser> applicationUserDataRepository, RoleManager<IdentityRole> roleManager, IHostingEnvironment hostingEnvironment, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IMapper mapperContext, IDataRepository<ProjectUser> projectUserRepository, IProjectRepository projectRepository)
         {
             _applicationUserDataRepository = applicationUserDataRepository;
             _hostingEnvironment = hostingEnvironment;
@@ -42,6 +43,7 @@ namespace Promact.Oauth.Server.Repository
             _mapperContext = mapperContext;
             _projectUserRepository = projectUserRepository;
             _projectRepository = projectRepository;
+            _roleManager = roleManager;
         }
 
         #endregion
@@ -52,21 +54,28 @@ namespace Promact.Oauth.Server.Repository
         /// This method is used to add new user
         /// </summary>
         /// <param name="applicationUser">UserAc Application class object</param>
-        public async Task<string>  AddUser(UserAc newUser, string createdBy)
+        public async Task<string> AddUser(UserAc newUser, string createdBy)
         {
-            LeaveCalculator LC = new LeaveCalculator();
-            LC = CalculateAllowedLeaves(Convert.ToDateTime(newUser.JoiningDate));
-            newUser.NumberOfCasualLeave = LC.CasualLeave;
-            newUser.NumberOfSickLeave = LC.SickLeave;
-            var user = _mapperContext.Map<UserAc, ApplicationUser>(newUser);
-            user.UserName = user.Email;
-            user.CreatedBy = createdBy;
-            user.CreatedDateTime = DateTime.UtcNow;
+            try
+            {
+                LeaveCalculator LC = new LeaveCalculator();
+                LC = CalculateAllowedLeaves(Convert.ToDateTime(newUser.JoiningDate));
+                newUser.NumberOfCasualLeave = LC.CasualLeave;
+                newUser.NumberOfSickLeave = LC.SickLeave;
+                var user = _mapperContext.Map<UserAc, ApplicationUser>(newUser);
+                user.UserName = user.Email;
+                user.CreatedBy = createdBy;
+                user.CreatedDateTime = DateTime.UtcNow;
 
-            await _userManager.CreateAsync(user, "User@123");
-            await _userManager.AddToRoleAsync(user, "Employee");
-            SendEmail(user);
-            return user.Id;
+                _userManager.CreateAsync(user, "User@123").Wait();
+                await _userManager.AddToRoleAsync(user, newUser.RoleName);
+                SendEmail(user);
+                return user.Id;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -130,6 +139,29 @@ namespace Promact.Oauth.Server.Repository
 
 
 
+
+        public List<RolesAc> GetRoles()
+        {
+            try
+            {
+                List<RolesAc> listOfRoleAC = new List<RolesAc>();
+                var roles = _roleManager.Roles;
+                foreach (IdentityRole identityRole in roles.ToList())
+                {
+                    RolesAc roleAc = new RolesAc();
+                    roleAc.Id = identityRole.Id;
+                    roleAc.Name = identityRole.Name;
+                    listOfRoleAC.Add(roleAc);
+                }
+                return listOfRoleAC;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
         /// <summary>
         /// This method is used for getting the list of all users
         /// </summary>
@@ -154,26 +186,37 @@ namespace Promact.Oauth.Server.Repository
         /// <param name="editedUser">UserAc Application class object</param>
         public string UpdateUserDetails(UserAc editedUser, string updatedBy)
         {
-            var slackUserName = _applicationUserDataRepository.FirstOrDefault(x => x.Id != editedUser.Id && x.SlackUserName == editedUser.SlackUserName);
-            if (slackUserName == null)
+            try
             {
-                var user = _userManager.FindByIdAsync(editedUser.Id).Result;
+                var slackUserName = _applicationUserDataRepository.FirstOrDefault(x => x.Id != editedUser.Id && x.SlackUserName == editedUser.SlackUserName);
+                if (slackUserName == null)
+                {
+                    var user = _userManager.FindByIdAsync(editedUser.Id).Result;
 
-                user.FirstName = editedUser.FirstName;
-                user.LastName = editedUser.LastName;
-                user.Email = editedUser.Email;
-                user.IsActive = editedUser.IsActive;
-                user.UpdatedBy = updatedBy;
-                user.UpdatedDateTime = DateTime.UtcNow;
-                user.NumberOfCasualLeave = editedUser.NumberOfCasualLeave;
-                user.NumberOfSickLeave = editedUser.NumberOfSickLeave;
-                user.SlackUserName = editedUser.SlackUserName;
-                _userManager.UpdateAsync(user).Wait();
-                _applicationUserDataRepository.Save();
+                    user.FirstName = editedUser.FirstName;
+                    user.LastName = editedUser.LastName;
+                    user.Email = editedUser.Email;
+                    user.IsActive = editedUser.IsActive;
+                    user.UpdatedBy = updatedBy;
+                    user.UpdatedDateTime = DateTime.UtcNow;
+                    user.NumberOfCasualLeave = editedUser.NumberOfCasualLeave;
+                    user.NumberOfSickLeave = editedUser.NumberOfSickLeave;
+                    user.SlackUserName = editedUser.SlackUserName;
+                    _userManager.UpdateAsync(user).Wait();
+                    _applicationUserDataRepository.Save();
 
-                return user.Id;
+                    IList<string> listofUserRole = _userManager.GetRolesAsync(user).Result;
+                    var removeFromRole = _userManager.RemoveFromRoleAsync(user, listofUserRole.FirstOrDefault()).Result;
+                    var addNewRole = _userManager.AddToRoleAsync(user, editedUser.RoleName).Result;
+                    return user.Id;
+                }
+                else { return ""; }
             }
-            else { return ""; }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
 
@@ -189,6 +232,8 @@ namespace Promact.Oauth.Server.Repository
             {
                 var user = await _applicationUserDataRepository.FirstOrDefaultAsync(u => u.Id == id);
                 var requiredUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
+                IList<string> identityUserRole = _userManager.GetRolesAsync(user).Result;
+                requiredUser.RoleName = identityUserRole.FirstOrDefault();
                 return requiredUser;
             }
             catch (Exception exception)
@@ -295,7 +340,7 @@ namespace Promact.Oauth.Server.Repository
             {
                 finaleTemplate = System.IO.File.ReadAllText(path);
                 finaleTemplate = finaleTemplate.Replace(StringConstant.UserEmail, user.Email).Replace(StringConstant.UserPassword, StringConstant.DefaultUserPassword).Replace(StringConstant.ResertPasswordUserName, user.FirstName);
-               _emailSender.SendEmailAsync(user.Email, StringConstant.LoginCredentials, finaleTemplate);
+                _emailSender.SendEmailAsync(user.Email, StringConstant.LoginCredentials, finaleTemplate);
             }
         }
 
