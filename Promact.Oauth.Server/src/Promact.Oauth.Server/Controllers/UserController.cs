@@ -72,11 +72,27 @@ namespace Promact.Oauth.Server.Controllers
         }
 
 
-        /// <summary>
-        /// This method is used to get particular user's details by his/her id
-        /// </summary>
-        /// <param name="id">String id</param>
-        /// <returns>UserAc Application class user</returns>
+          /**
+          * @api {get} api/User/GetUserById/:id 
+          * @apiVersion 1.0.0
+          * @apiName User
+          * @apiGroup User
+          * @apiParam {int} id User Id
+          * @apiParamExample {json} Request-Example:
+          *      
+          *        {
+          *             "id": "1"
+          *             "description":"get the UserAc Object"
+          *        }      
+          * @apiSuccessExample {json} Success-Response:
+          * HTTP/1.1 200 OK 
+          * {
+          *     "id":"1"
+          *     "description":"get the UserAc Object"
+          * }
+          */
+
+        
         [HttpGet]
         [Route("{id}")]
         [Authorize(Roles = "Admin,Employee")]
