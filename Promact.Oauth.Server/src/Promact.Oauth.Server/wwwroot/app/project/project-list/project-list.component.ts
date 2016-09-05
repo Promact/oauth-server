@@ -14,12 +14,12 @@ import { LoginService } from '../../login.service';
 export class ProjectListComponent{
     projects: Array<projectModel>;
     project: projectModel;
-    constructor(private router: Router, private proService: ProjectService, private toast: Md2Toast) {
+    constructor(private router: Router, private projectService: ProjectService, private toast: Md2Toast) {
         this.projects = new Array<projectModel>();
         this.project = new projectModel();
     }
-    getPros() {
-        this.proService.getPros().subscribe((projects) => {
+    getProjects() {
+        this.projectService.getProjects().subscribe((projects) => {
             this.projects = projects
         }, err => {
 

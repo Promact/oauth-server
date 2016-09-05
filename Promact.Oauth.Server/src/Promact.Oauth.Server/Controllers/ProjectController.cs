@@ -155,14 +155,6 @@ namespace Promact.Oauth.Server.Controllers
             }
         }
 
-        //GET api/values/name
-        //[HttpGet]
-        //[Route("featchUserRole/{name}")]
-        // public ProjectAc GetProjectDetails(string name)
-        // {
-        //     return _projectRepository.GetProjectByGroupName(name);
-
-        // }
         [HttpGet]
         [Route("featchUserRole/{name}")]
         public async Task<List<UserRoleAc>> GetUserRole(string name)
