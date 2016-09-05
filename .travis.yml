@@ -1,0 +1,26 @@
+language: csharp
+solution: ./Promact.Oauth.Server/Promact.Oauth.Server.sln
+
+matrix:
+  include:
+    - os: osx
+      osx_image: xcode7.3
+      dotnet: 1.0.0-preview2-003121
+      mono: latest
+      env: DOTNETCORE=0
+    - os: linux
+      dist: trusty
+      sudo: required
+      dotnet: 1.0.0-preview2-003121
+      mono: latest
+      env: DOTNETCORE=0    
+
+notifications:
+  email:
+    on_success: change
+    on_failure: always
+
+script:
+  - if [ -n "${DOTNETCORE}" ]; then dotnet restore && dotnet build ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests -c Release -f net451 && dotnet test ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests/project.json; fi
+  - if [ -z "${DOTNETCORE}" ]; then xbuild /p:Configuration=Release ./Promact.Oauth.Server/Promact.Oauth.Server.sln; fi
+  - if [ -z "${DOTNETCORE}" ]; then dotnet build ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests -c Release -f net451 && mono ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests/bin/Release/net451/*/dotnet-test-xunit.exe ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests/bin/Release/net451/*/Promact.Oauth.Server.Tests.dll; fi
