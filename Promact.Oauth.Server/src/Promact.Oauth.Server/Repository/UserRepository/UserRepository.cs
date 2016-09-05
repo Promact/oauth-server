@@ -47,7 +47,7 @@ namespace Promact.Oauth.Server.Repository
         /// This method is used to add new user
         /// </summary>
         /// <param name="applicationUser">UserAc Application class object</param>
-        public string AddUser(UserAc newUser, string createdBy)
+        public async Task<string> AddUser(UserAc newUser, string createdBy)
         {
             LeaveCalculator LC = new LeaveCalculator();
             LC = CalculateAllowedLeaves(Convert.ToDateTime(newUser.JoiningDate));
@@ -57,13 +57,13 @@ namespace Promact.Oauth.Server.Repository
             user.UserName = user.Email;
             user.CreatedBy = createdBy;
             user.CreatedDateTime = DateTime.UtcNow;
-            
-            _userManager.CreateAsync(user, "User@123").Wait();
-            _userManager.AddToRoleAsync(user, "Employee").Wait();
-            //SendEmail(user);
+
+            await _userManager.CreateAsync(user, "User@123");
+            await _userManager.AddToRoleAsync(user, "Employee");
+            //   SendEmail(user);
             return user.Id;
         }
-    
+
         /// <summary>
         /// Calculat casual leava and sick leave for the date of joining
         /// </summary>
@@ -83,7 +83,7 @@ namespace Promact.Oauth.Server.Repository
                 month = 4;
                 day = 1;
             }
-            double totalDays = (DateTime.Now- Convert.ToDateTime(dateTime)).TotalDays;
+            double totalDays = (DateTime.Now - Convert.ToDateTime(dateTime)).TotalDays;
             if (totalDays > 365)
             {
                 month = 4;
@@ -123,7 +123,7 @@ namespace Promact.Oauth.Server.Repository
             return calculate;
         }
 
-    
+
 
         /// <summary>
         /// This method is used for getting the list of all users
@@ -182,7 +182,7 @@ namespace Promact.Oauth.Server.Repository
         {
             try
             {
-                var user =await _applicationUserDataRepository.FirstOrDefaultAsync(u => u.Id == id);
+                var user = await _applicationUserDataRepository.FirstOrDefaultAsync(u => u.Id == id);
                 var requiredUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
                 return requiredUser;
             }
@@ -270,7 +270,7 @@ namespace Promact.Oauth.Server.Repository
 
         public bool FindUserBySlackUserName(string slackUserName)
         {
-            var user =  _applicationUserDataRepository.FirstOrDefault(x=>x.SlackUserName==slackUserName);
+            var user = _applicationUserDataRepository.FirstOrDefault(x => x.SlackUserName == slackUserName);
             if (user != null)
             {
                 if (user.SlackUserName == slackUserName)

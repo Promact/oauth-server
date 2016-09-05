@@ -14,8 +14,7 @@ namespace Promact.Oauth.Server.Repository
         /// This method is used for adding user and return its id
         /// </summary>
         /// <param name="applicationUser">UserAc Application class object</param>
-        string AddUser(UserAc newUser, string createdBy);
-
+        Task<string> AddUser(UserAc newUser, string createdBy);
 
         /// <summary>
         /// This method used for get user detail by user id 
@@ -103,6 +102,6 @@ namespace Promact.Oauth.Server.Repository
         /// <param name="employeeId"></param>
         /// <returns></returns>
         ApplicationUser UserDetailById(string employeeId);
-
+        //   object AddUser(UserAc user, object createdBy);
     }
 }
