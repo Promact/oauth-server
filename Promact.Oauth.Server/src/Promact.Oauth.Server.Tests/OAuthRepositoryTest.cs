@@ -10,10 +10,10 @@ namespace Promact.Oauth.Server.Tests
 {
     public class OAuthRepositoryTest : BaseProvider
     {
-        private readonly IOAuthRepository _oAuthRepository;
+       // private readonly IOAuthRepository _oAuthRepository;
         public OAuthRepositoryTest() : base()
         {
-            _oAuthRepository = serviceProvider.GetService<IOAuthRepository>();
+            //_oAuthRepository = serviceProvider.GetService<IOAuthRepository>();
         }
 
         /// <summary>
