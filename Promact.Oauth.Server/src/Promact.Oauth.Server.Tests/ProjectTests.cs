@@ -35,6 +35,7 @@ namespace Promact.Oauth.Server.Tests
             _dataRepositoryUser = serviceProvider.GetService<IDataRepository<ApplicationUser>>();
             _userRepository = serviceProvider.GetService<IUserRepository>();
             context = serviceProvider.GetService<PromactOauthDbContext>();
+            AddRole();
         }
 
         ProjectAc projectac = new ProjectAc()
@@ -98,7 +99,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public void GetById()
         {
-            AddRole();
+            //AddRole();
             var TeamLeaderId = _userRepository.AddUser(user, StringConstant.CreatedBy).Result;
             projectac.TeamLeaderId = TeamLeaderId;
             Task<int> id = _projectRepository.AddProject(projectac, StringConstant.CreatedBy);
@@ -113,7 +114,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public void EditProject()
         {
-            AddRole();
+            //AddRole();
             _userRepository.AddUser(user, StringConstant.FirstName);
             _userRepository.AddUser(userSecound, StringConstant.FirstName);
             _userRepository.AddUser(userThird, StringConstant.FirstName);
@@ -147,7 +148,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public void checkDuplicateNegative()
         {
-            AddRole();
+            //AddRole();
             _projectRepository.AddProject(projectac, StringConstant.CreatedBy);
             var project = _projectRepository.checkDuplicate(projectac);
             Assert.Null(project.Name);
@@ -159,7 +160,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public void checkDuplicatePositive()
         {
-            AddRole();
+            //AddRole();
             _projectRepository.AddProject(projectac, StringConstant.CreatedBy);
             List<UserAc> userlist = new List<UserAc>();
             userlist.Add(userSecound);
@@ -187,7 +188,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public void GetAllProject()
         {
-            AddRole();
+            //AddRole();
             _userRepository.AddUser(user, StringConstant.CreatedBy);
             _projectRepository.AddProject(projectac, StringConstant.CreatedBy);
             _projectRepository.AddUserProject(projectUser);
