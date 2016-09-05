@@ -176,18 +176,19 @@ namespace Promact.Oauth.Server.Tests
             Assert.NotNull(projects);
         }
 
-
         /// <summary>
         /// Fetches Users of the given Project Name(slack channel name)
         /// </summary>
         [Fact, Trait("Category", "A")]
         public void GetProjectUserByGroupName()
         {
-            _projectRepository.AddProject(projectac, "Ronak");
+            AddRole();
+            var TId = _userRepository.AddUser(user, StringConstant.CreatedBy).Result;
+            _projectRepository.AddProject(projectac, StringConstant.CreatedBy);
             _projectRepository.AddUserProject(projectUser);
-            //    var ProjectUser = _dataRepositoryProjectUser.Fetch(x => x.ProjectId == 1);
+            // var ProjectUser = _dataRepositoryProjectUser.Fetch(x => x.ProjectId == 1);
             var projectUsers = _projectRepository.GetProjectUserByGroupName(projectac.SlackChannelName);
-            Assert.Equal(projectUsers.Count, 1);
+            Assert.NotEqual(projectUsers.Count, 2);
         }
 
         /// <summary>
