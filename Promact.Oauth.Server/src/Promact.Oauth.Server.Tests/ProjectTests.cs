@@ -180,7 +180,7 @@ namespace Promact.Oauth.Server.Tests
         public void GetAllProject()
         {
 
-             _userRepository.AddUser(user, StringConstant.CreatedBy);
+            _userRepository.AddUser(user, StringConstant.CreatedBy);
             _projectRepository.AddProject(projectac, StringConstant.CreatedBy);
             _projectRepository.AddUserProject(projectUser);
             Task<IEnumerable<ProjectAc>> projects = _projectRepository.GetAllProjects();

@@ -66,8 +66,7 @@ namespace Promact.Oauth.Server.Tests
             serviceProvider = services.BuildServiceProvider();
         }
     }
-
-
+    
     public class MockHostingEnvironment : IHostingEnvironment
     {
         public string ApplicationName

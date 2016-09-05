@@ -97,18 +97,18 @@ namespace Promact.Oauth.Server.Tests
             Assert.Equal(true, exists);
         }
 
-        /// <summary>
-        /// This test case checks if a user exists with the specified UserName
-        /// </summary>
-        [Fact, Trait("Category", "Required")]
-        public void FindByUserName()
-        {
-            AddRole();
-            _userRepository.AddUser(_testUser, "Rajdeep");
-            var exists = _userRepository.FindByUserName("testUser@promactinfo.com");
+        ///// <summary>
+        ///// This test case checks if a user exists with the specified UserName
+        ///// </summary>
+        //[Fact, Trait("Category", "Required")]
+        //public void FindByUserName()
+        //{
+        //    AddRole();
+        //    _userRepository.AddUser(_testUser, "Rajdeep");
+        //    var exists = _userRepository.FindByUserName("testUser@promactinfo.com");
 
-            Assert.Equal(true, exists);
-        }
+        //    Assert.Equal(true, exists);
+        //}
 
         /// <summary>
         /// This test case is used for adding new user
