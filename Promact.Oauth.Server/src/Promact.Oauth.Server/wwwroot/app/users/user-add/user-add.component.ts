@@ -3,6 +3,8 @@ import { UserService }   from '../user.service';
 import {UserModel} from '../user.model';
 import {Router, ROUTER_DIRECTIVES, ActivatedRoute} from '@angular/router';
 import {Md2Toast} from 'md2/toast';
+import {Location} from "@angular/common";
+
 
 @Component({
     templateUrl: 'app/users/user-add/user-add.html',
@@ -18,7 +20,7 @@ export class UserAddComponent {
     userModel: UserModel;
     listOfRoles: any;
 
-    constructor(private userService: UserService, private redirectionRoute: Router, private route: ActivatedRoute, private toast: Md2Toast) {
+    constructor(private userService: UserService, private redirectionRoute: Router, private route: ActivatedRoute, private toast: Md2Toast, private location: Location) {
         this.userModel = new UserModel();
         this.listOfRoles = [];
     }
@@ -46,7 +48,7 @@ export class UserAddComponent {
                 this.userService.registerUser(this.userModel).subscribe((result) => {
                     if (result == true) {
                         this.toast.show('User added successfully.');
-                        this.redirectionRoute.navigate(['admin/user']);
+                        this.redirectionRoute.navigate(['/user/list']);
                     }
                     else if (result == false) {
                         this.toast.show('User Name already exists.');
@@ -92,7 +94,8 @@ export class UserAddComponent {
     }
 
     goBack() {
-        this.redirectionRoute.navigate(['admin/user']);
+        this.location.back();
+        //this.redirectionRoute.navigate(['/user/list']);
     }
 
 

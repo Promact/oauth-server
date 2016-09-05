@@ -1,5 +1,4 @@
-﻿//import {Http, Headers, RequestOptions, Response} from "@angular/http";
-import {Injectable} from "@angular/core";
+﻿import {Injectable} from "@angular/core";
 import {Observable} from 'rxjs/Observable';
 import {HttpService} from "./http.service";
 import { LoginModel } from './login.model';
