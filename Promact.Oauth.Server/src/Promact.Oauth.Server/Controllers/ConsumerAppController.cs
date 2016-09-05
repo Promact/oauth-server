@@ -32,8 +32,7 @@ namespace Promact.Oauth.Server.Controllers
 
         #region public Methods
 
-
-
+     
         /// <summary>
         /// This method used for add new consumer app. -An
         /// </summary>
