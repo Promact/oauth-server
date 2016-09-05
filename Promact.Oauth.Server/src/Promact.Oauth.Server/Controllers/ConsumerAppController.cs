@@ -32,12 +32,26 @@ namespace Promact.Oauth.Server.Controllers
 
         #region public Methods
 
-     
-        /// <summary>
-        /// This method used for add new consumer app. -An
-        /// </summary>
-        /// <param name="consumerAppsAc"></param>
-        /// <returns></returns>
+
+        /**
+        * @api {post} api/consumerApp/AddConsumerApp 
+        * @apiVersion 1.0.0
+        * @apiName ConsumerApp
+        * @apiGroup ConsumerApp
+        * @apiParam {object} consumerAppsAc  object
+        * @apiParamExample {json} Request-Example:
+        *      
+        *        {
+        *             "Name":"ProjectName",
+        *             "Description":"True",
+        *             "CallbackUrl":"1",
+        *        }      
+        * @apiSuccessExample {json} Success-Response:
+        * HTTP/1.1 200 OK 
+        * {
+        *     "description":"retun true when added succesfully.If any problem in addconsumer mehtod or not added consumer apps so return false."
+        * }
+        */
         [HttpPost]
         [Route("addConsumer")]
         public async Task<IActionResult> AddConsumerApp([FromBody]ConsumerAppsAc consumerAppsAc)
@@ -57,11 +71,19 @@ namespace Promact.Oauth.Server.Controllers
         }
 
 
-
-        /// <summary>
-        /// This method used for get consumer app list. -An
-        /// </summary>
-        /// <returns></returns>
+        /**
+        * @api {get} api/consumerApp/GetConsumerApps 
+        * @apiVersion 1.0.0
+        * @apiName ConsumerApp
+        * @apiGroup ConsumerApp
+        * @apiParam {null} no parameter
+        * @apiSuccessExample {json} Success-Response:
+        * HTTP/1.1 200 OK 
+        * {
+        * 
+        *   "description":"retun consumer app list"
+        * }
+        */
         [HttpGet]
         [Route("getConsumerApps")]
         public async Task<IActionResult> GetConsumerApps()
@@ -78,11 +100,21 @@ namespace Promact.Oauth.Server.Controllers
         }
 
 
-        /// <summary>
-        /// This method used for get consumer app object by id. -An
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /**
+       * @api {get} api/consumerApp/GetConsumerById 
+       * @apiVersion 1.0.0
+       * @apiName ConsumerApp
+       * @apiGroup ConsumerApp
+       * @apiParam {int} id 
+       * @apiSuccessExample {json} Success-Response:
+       * {
+       *   "id":"1",
+       * }
+       * HTTP/1.1 200 OK 
+       * {
+       *   "description":"retun consumer app object"
+       * }
+       */
         [HttpGet]
         [Route("getConsumerById/{id}")]
         public async Task<IActionResult> GetConsumerById(int id)
@@ -98,11 +130,24 @@ namespace Promact.Oauth.Server.Controllers
             }
         }
 
-        /// <summary>
-        /// This method used for update existing consumer app. -An
-        /// </summary>
-        /// <param name="consumerAppsAc"></param>
-        /// <returns></returns>
+        /**
+        * @api {post} api/consumerApp/UpdateConsumerApps 
+        * @apiVersion 1.0.0
+        * @apiName ConsumerApp
+        * @apiGroup ConsumerApp
+        * @apiParam {object} consumerAppsAc object
+        * @apiParamExample {json} Request-Example:  
+          *        {
+          *             "Name":"ProjectName",
+          *             "Description":"True",
+          *             "CallbackUrl":"1",
+          *        } 
+        * HTTP/1.1 200 OK 
+        * {
+        *
+        *   "description":"retun true if succesfully consumer updated If any problem in updte consumer mehtod or not update consumer apps so return false."
+        * }
+        */
         [HttpPost]
         [Route("updateConsumer")]
         public async Task<IActionResult> UpdateConsumerApps([FromBody]ConsumerAppsAc consumerAppsAc)
