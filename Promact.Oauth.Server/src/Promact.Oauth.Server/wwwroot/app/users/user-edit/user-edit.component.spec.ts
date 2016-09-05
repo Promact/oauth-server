@@ -43,7 +43,7 @@ describe("Project Edit Test", () => {
         });
     });
     beforeEach(inject([UserService, ActivatedRoute, Router, Md2Toast], (userService: UserService, route: ActivatedRoute, router: Router, toast: Md2Toast) => {
-        userEditComponent = new UserEditComponent(userService,route, router, toast);
+        //userEditComponent = new UserEditComponent(userService,route, router, toast);
     }));
 
     //it("should get default page for User", () => {

@@ -50,7 +50,9 @@
         </div>
         <div class="form-group">
             <label class="lb-label">Status:</label>
-            <md-checkbox name="IsActive" [(ngModel)]="user.IsActive" id="chckbox"></md-checkbox>
+            <label *ngIf="user.IsActive && admin!=true">Active</label>
+            <label *ngIf="!user.IsActive && admin!=true">Inactive</label>
+            <md-checkbox name="IsActive" [(ngModel)]="user.IsActive" id="chckbox" *ngIf="admin==true"></md-checkbox>
         </div>
         <div>
             <button md-raised-button type="submit" (click)="editUser(user)" class="btn-green">Update</button>

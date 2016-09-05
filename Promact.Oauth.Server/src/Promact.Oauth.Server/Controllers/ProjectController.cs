@@ -39,7 +39,16 @@ namespace Promact.Oauth.Server.Controllers
         {
             try
             {
-                return await _projectRepository.GetAllProjects();
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
+                var userRole = await _userManager.IsInRoleAsync(user, "Employee");
+                if (userRole==true)
+                {
+                    return await _projectRepository.GetAllProjectForUser(user.Id);
+                }
+                else
+                {
+                    return await _projectRepository.GetAllProjects();
+                }
             }
             catch (Exception ex)
             {

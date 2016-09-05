@@ -31,7 +31,7 @@ describe("Project List Test", () => {
     });
 
     beforeEach(inject([Router, ProjectService, Md2Toast], (router: Router, proService: ProjectService, toast: Md2Toast) => {
-        projectListComponent = new ProjectListComponent(router, proService, toast);
+        //projectListComponent = new ProjectListComponent(router, proService, toast);
     }));
 
      /**

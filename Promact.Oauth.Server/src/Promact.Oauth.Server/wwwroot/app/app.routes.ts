@@ -6,21 +6,17 @@ import {Routes, RouterModule } from '@angular/router';
 import {ConsumerAppComponent} from './consumerapp/consumerapp.component';
 import {ProjectComponent} from "./project/project.component";
 import {UserComponent} from './users/user.component';
-import { AdminComponent } from './Admin/admin.component';
-import { AdminRoute } from './Admin/admin.routes';
-import { EmployeeComponent } from './Employee/employee.component';
-import { EmployeeRoute } from './Employee/employee.routes';
-import { EmployeeEditComponent } from './Employee/employee-edit.component';
 
 
 const appRoutes: Routes = [
 
-    { path: '', component: AdminComponent },
-    ...AdminRoute,
-    { path: 'admin', component: AdminComponent },
-    ...EmployeeRoute,
-    { path: 'employee/:id', component: EmployeeComponent },
-    { path: 'employee/edit/:id', component: EmployeeEditComponent },
+    { path: '', component: UserComponent },
+    ...consumerRoute,
+    { path: 'consumerapp', component: ConsumerAppComponent },
+    ...projectRoutes,
+    { path: 'project', component: ProjectComponent },
+    ...userRoutes,
+    { path: 'user', component: UserComponent },
 ]
 
 export const routing = RouterModule.forRoot(appRoutes);

@@ -4,6 +4,8 @@ import {PasswordModel} from '../user-password.model';
 import {FORM_DIRECTIVES, FormBuilder, Validators } from '@angular/forms';
 import {Router, ROUTER_DIRECTIVES, ActivatedRoute} from '@angular/router';
 import {Md2Toast} from 'md2/toast';
+import {Location} from "@angular/common";
+
 
 @Component({
     templateUrl: './app/users/user-change-password/user-change-password.html',
@@ -18,7 +20,7 @@ export class ChangePasswordComponent {
     @Input()
     passwordModel: PasswordModel;
 
-    constructor(private userService: UserService, private redirectionRoute: Router, private route: ActivatedRoute, private toast: Md2Toast) {
+    constructor(private userService: UserService, private redirectionRoute: Router, private route: ActivatedRoute, private toast: Md2Toast, private location: Location) {
         this.passwordModel = new PasswordModel();
     }
 
@@ -26,7 +28,7 @@ export class ChangePasswordComponent {
         this.userService.changePassword(this.passwordModel).subscribe((result) => {
             if (result == true) {
                 this.toast.show('Password changed successfully');
-                this.redirectionRoute.navigate(['admin/user']);
+                this.redirectionRoute.navigate(['']);
             }
             else if (result == false) {
                 this.toast.show('Wrong password');                
@@ -57,6 +59,7 @@ export class ChangePasswordComponent {
     }
 
     goBack() {
-        this.redirectionRoute.navigate(['admin/user']);
+        this.location.back();
+        //this.redirectionRoute.navigate(['admin/user']);
     }
 }

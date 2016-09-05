@@ -1,7 +1,7 @@
 ﻿import {Component} from "@angular/core";
 import {Router, ActivatedRoute, ROUTER_DIRECTIVES} from "@angular/router";
-
-
+import {Location} from "@angular/common";
+import { LoginService } from '../../login.service';
 
 import { UserService }   from '../user.service';
 import {UserModel} from '../user.model';
@@ -18,12 +18,15 @@ export class UserEditComponent {
     id: any;
     errorMessage: string;
     isSlackUserNameExist: boolean;
+    userRole: any;
+    admin: any;
 
-    constructor(private userService: UserService, private route: ActivatedRoute, private redirectionRoute: Router, private toast: Md2Toast) {
+    constructor(private userService: UserService, private route: ActivatedRoute, private redirectionRoute: Router, private toast: Md2Toast, private location: Location, private loginService: LoginService) {
         this.user = new UserModel();
     }
 
     ngOnInit() {
+        this.getRole();
         this.id = this.route.params.subscribe(params => {
             let id = this.route.snapshot.params['id'];
 
@@ -69,7 +72,22 @@ export class UserEditComponent {
 
 
     goBack() {
-        this.redirectionRoute.navigate(['admin/user']);
+        this.location.back();
+        //this.redirectionRoute.navigate(['/user/list']);
+    }
+
+    getRole() {
+        this.loginService.getRoleAsync().subscribe((result) => {
+            this.userRole = result;
+            if (this.userRole.role === "Admin") {
+                this.admin = true;
+            }
+            else {
+                console.log(this.user);
+                this.admin = false;
+            }
+        }, err => {
+        });
     }
 }
 

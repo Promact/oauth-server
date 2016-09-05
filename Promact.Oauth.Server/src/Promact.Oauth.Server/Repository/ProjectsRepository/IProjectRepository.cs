@@ -76,5 +76,11 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// <returns>list of users in a project</returns>
         List<UserAc> GetProjectUsersByTeamLeaderId(string teamLeaderId);
 
+        /// <summary>
+        /// Method to get list of project in which current user is envolved
+        /// </summary>
+        /// <returns></returns>
+        Task<IEnumerable<ProjectAc>> GetAllProjectForUser(string userId);
+
     }
 }

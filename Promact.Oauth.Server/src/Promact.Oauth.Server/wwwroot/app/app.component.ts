@@ -5,23 +5,22 @@ import { Router, ROUTER_DIRECTIVES} from '@angular/router';
 
 @Component({
     selector: 'my-app',
-    template: '<router-outlet></router-outlet>',
+    templateUrl:'./app/index.html',
     directives: [ROUTER_DIRECTIVES]
 })
 export class AppComponent {
     user: any;
+    admin: any;
     constructor(private loginService: LoginService, private router: Router) { }
 
     getRole() {
         this.loginService.getRoleAsync().subscribe((result) => {
             this.user = result;
             if (this.user.role === "Admin") {
-                console.log("admin");
-                this.router.navigate(['admin/']);
+                this.admin = true;
             }
             else {
-                console.log("User");
-                this.router.navigate(['employee/' + this.user.userId]);
+                this.admin = false;
             }
         }, err => {
         });

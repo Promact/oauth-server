@@ -32,7 +32,7 @@ export class ConsumerappAddComponent {
     }
 
     cancel() {
-        this.router.navigate(['admin/consumerapp']);
+        this.router.navigate(['/consumerapp']);
     }
 
     ngOnInit() {

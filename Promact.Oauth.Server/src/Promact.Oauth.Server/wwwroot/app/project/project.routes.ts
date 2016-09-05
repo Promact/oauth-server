@@ -8,7 +8,7 @@ export const projectRoutes: RouterConfig = [{
     path: "project",
     component: ProjectComponent,
     children: [
-        { path: '', component: ProjectListComponent },
+        { path: 'list', component: ProjectListComponent },
         { path: 'add', component: ProjectAddComponent },
         { path: 'edit/:id', component: ProjectEditComponent },
         { path: 'view/:id', component: ProjectViewComponent }
