@@ -27,15 +27,11 @@
 </head>
 <!-- 3. Display the application -->
 <body>
-    <div class="logout-link">
-        <a href="/LogOff" class="fl-right">LOGOUT</a>
-    </div>
+    
     <my-app>
-    loading....
-        <md-progress-bar mode="determinate"
-                         [value]="determinateProgressValue"
-                         color="primary"
-                         class="demo-progress-bar-margins"></md-progress-bar>
+        <div class="loader">
+            <svg width="1em" height="1em"><circle cx="0.5em" cy="0.5em" r="0.45em" /></svg>
+        </div>
    </my-app>
 </body>
 </html>

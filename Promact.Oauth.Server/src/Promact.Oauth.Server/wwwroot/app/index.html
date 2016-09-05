@@ -1,11 +1,10 @@
 ﻿
-
 <div class="main-wrapper">
     <md-sidenav-layout class="demo-sidenav-layout">
         <!--Main Navigation-->
 
         <md-sidenav #start mode="side" opened="true" class="sm-side-menu">
-   
+
             <div class="brand">Promact Oauth</div>
 
             <ul>
@@ -25,20 +24,20 @@
             </ul>
         </md-sidenav>
 
-            <div class="demo-sidenav-content">
-                <md-toolbar>
-                 
-                    <div class="logout-link">
-                        <button id="menu-button" (click)="start.toggle()"><i class="material-icons">menu</i></button>  
-                        <a href="/LogOff" class="fl-right">LOGOUT</a>
-                    </div>
-                </md-toolbar>
-                <div class="p-25">
-                    <router-outlet></router-outlet>
-                </div>
-            </div>
+        <div class="demo-sidenav-content">
+            <md-toolbar>
 
-        
+                <div class="logout-link">
+                    <button id="menu-button" (click)="start.toggle()"><i class="material-icons">menu</i></button>
+                    <a href="/LogOff" class="fl-right">LOGOUT</a>
+                </div>
+            </md-toolbar>
+            <div class="p-25">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+
+
     </md-sidenav-layout>
 
 
@@ -46,5 +45,3 @@
     <!--Main Content Area-->
 
 </div>
-
-

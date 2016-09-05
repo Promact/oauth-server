@@ -1,7 +1,10 @@
-﻿<div class="user-details">
-    <div class="card-title-block">
-        <div class="title in_block">
+﻿<div class="user-details emp-details p-25">
+    <div class="card-title-block d-flex">
+        <div class="title in_block items">
             <h3>User Details</h3>
+        </div>
+        <div class="items text-right">
+            <button md-raised-button class="custom-btn btn-green" (click)="userEdit(user.Id)">Edit</button>
         </div>
     </div>
     <div class="form-group">
@@ -21,5 +24,5 @@
         <p class="in_block" *ngIf="user.IsActive">Active</p>
         <p class="in_block" *ngIf="!user.IsActive">Inactive</p>
     </div>
-    <div><button md-raised-button class="custom-btn" (click)="userEdit(user.Id)">Edit</button></div>
+    <div></div>
 </div>
