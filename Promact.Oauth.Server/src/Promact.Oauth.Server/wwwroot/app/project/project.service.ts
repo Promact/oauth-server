@@ -16,7 +16,7 @@ export class ProjectService {
         return this.httpService.get("api/user" + "/users");
     }
     //
-    getPros() {
+    getProjects() {
         return this.httpService.get(this.ProjectUrl + "/projects");
     }
     getProject(id: number) {

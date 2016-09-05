@@ -64,9 +64,9 @@ namespace Promact.Oauth.Server.Repository
             //SendEmail(user);
             return user.Id;
         }
-    
+
         /// <summary>
-        /// Calculat casual leava and sick leave for the date of joining
+        /// Calculat casual leava and sick leave from the date of joining
         /// </summary>
         /// <param name="dateTime"></param>
         /// <returns></returns>
@@ -84,7 +84,7 @@ namespace Promact.Oauth.Server.Repository
                 month = 4;
                 day = 1;
             }
-            double totalDays = (DateTime.Now- Convert.ToDateTime(dateTime)).TotalDays;
+            double totalDays = (DateTime.Now - Convert.ToDateTime(dateTime)).TotalDays;
             if (totalDays > 365)
             {
                 month = 4;
@@ -116,15 +116,38 @@ namespace Promact.Oauth.Server.Repository
                     sickAllowed = (sickAllow / 12) * (12 - (month + 9));
                 }
             }
+            if (casualAllowed.ToString().Contains(".") == true)
+            {
+                string splitCasualAllowed = "0." + casualAllowed.ToString().Split('.')[1];
+                double casualAllowedConvertedDouble = Convert.ToDouble(splitCasualAllowed);
+                if (casualAllowedConvertedDouble != 0.5) { casualAllowed = Convert.ToInt32(casualAllowed); }
+
+            }
+            else
+            {
+                casualAllowed = Convert.ToInt32(casualAllowed);
+            }
+            if (sickAllowed.ToString().Contains(".") == true)
+            {
+                string splitSickAllowed = "0." + sickAllowed.ToString().Split('.')[1];
+                double sickAllowedConvertedDouble = Convert.ToDouble(splitSickAllowed);
+                if (sickAllowedConvertedDouble != 0.5) { sickAllowed = Convert.ToInt32(Math.Floor(sickAllowed)); }
+                if (sickAllowedConvertedDouble > 0.90) { sickAllowed = sickAllowed + 1; }
+
+            }
+            else
+            {
+                sickAllowed = Convert.ToInt32(Math.Floor(sickAllowed));
+            }
             LeaveCalculator calculate = new LeaveCalculator
             {
-                CasualLeave = Convert.ToInt32(casualAllowed),
-                SickLeave = Convert.ToInt32(sickAllowed)
+                CasualLeave = casualAllowed,
+                SickLeave = sickAllowed
             };
             return calculate;
         }
 
-    
+
 
         /// <summary>
         /// This method is used for getting the list of all users
