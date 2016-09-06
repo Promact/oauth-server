@@ -24,7 +24,6 @@ namespace Promact.Oauth.Server.Tests
         private readonly IDataRepository<Project> _dataRepository;
         private readonly IDataRepository<ProjectUser> _dataRepositoryProjectUser;
         private readonly IUserRepository _userRepository;
-        private readonly PromactOauthDbContext context;
 
         public ProjectTests() : base()
         {
@@ -32,8 +31,6 @@ namespace Promact.Oauth.Server.Tests
             _dataRepository = serviceProvider.GetService<IDataRepository<Project>>();
             _dataRepositoryProjectUser = serviceProvider.GetService<IDataRepository<ProjectUser>>();
             _userRepository = serviceProvider.GetService<IUserRepository>();
-             context = serviceProvider.GetService<PromactOauthDbContext>();
-             //AddRole();
         }
 
         ProjectAc projectac = new ProjectAc()
@@ -85,7 +82,6 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public void AddUserProject()
         {
-
             _projectRepository.AddUserProject(projectUser);
             var ProjectUser = _dataRepositoryProjectUser.Fetch(x => x.ProjectId == 1);
             Assert.NotNull(ProjectUser);
@@ -97,7 +93,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public void GetById()
         {
-            //AddRole();
+            AddRole();
             var TeamLeaderId = _userRepository.AddUser(user, StringConstant.CreatedBy).Result;
             projectac.TeamLeaderId = TeamLeaderId;
             Task<int> id = _projectRepository.AddProject(projectac, StringConstant.CreatedBy);
@@ -106,38 +102,38 @@ namespace Promact.Oauth.Server.Tests
             Assert.NotNull(project);
         }
 
-        ///// <summary>
-        ///// This test case edit project 
-        ///// </summary>
-        //[Fact, Trait("Category", "Required")]
-        //public void EditProject()
-        //{
-        //    //AddRole();
-        //    _userRepository.AddUser(user, StringConstant.FirstName);
-        //    _userRepository.AddUser(userSecound, StringConstant.FirstName);
-        //    _userRepository.AddUser(userThird, StringConstant.FirstName);
-        //    Task<int> id = _projectRepository.AddProject(projectac, StringConstant.FirstName);
-        //    _projectRepository.AddUserProject(projectUser);
-        //    List<UserAc> userlist = new List<UserAc>();
-        //    userlist.Add(userSecound);
-        //    userlist.Add(userThird);
-        //    ProjectAc projectacSecound = new ProjectAc()
-        //    {
-        //        Id = id.Result,
-        //        Name = StringConstant.EditName,
-        //        SlackChannelName = StringConstant.SlackChannelName,
-        //        IsActive = StringConstant.IsActive,
-        //        TeamLeader = new UserAc { FirstName = StringConstant.FirstName },
-        //        TeamLeaderId = StringConstant.TeamLeaderId,
-        //        CreatedBy = StringConstant.CreatedBy,
-        //        CreatedDate = DateTime.Now.ToString(CultureInfo.InvariantCulture),
-        //        ApplicationUsers = userlist
-        //    };
-        //    _projectRepository.EditProject(projectacSecound, StringConstant.CreatedBy);
-        //    var project = _dataRepository.Fetch(x => x.Id == 1);
-        //    _dataRepositoryProjectUser.Fetch(x => x.ProjectId == 1);
-        //    Assert.NotNull(project);
-        //}
+        /// <summary>
+        /// This test case edit project 
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public void EditProject()
+        {
+            AddRole();
+            _userRepository.AddUser(user, StringConstant.FirstName);
+            _userRepository.AddUser(userSecound, StringConstant.FirstName);
+            _userRepository.AddUser(userThird, StringConstant.FirstName);
+            Task<int> id = _projectRepository.AddProject(projectac, StringConstant.FirstName);
+            _projectRepository.AddUserProject(projectUser);
+            List<UserAc> userlist = new List<UserAc>();
+            userlist.Add(userSecound);
+            userlist.Add(userThird);
+            ProjectAc projectacSecound = new ProjectAc()
+            {
+                Id = id.Result,
+                Name = StringConstant.EditName,
+                SlackChannelName = StringConstant.SlackChannelName,
+                IsActive = StringConstant.IsActive,
+                TeamLeader = new UserAc { FirstName = StringConstant.FirstName },
+                TeamLeaderId = StringConstant.TeamLeaderId,
+                CreatedBy = StringConstant.CreatedBy,
+                CreatedDate = DateTime.Now.ToString(CultureInfo.InvariantCulture),
+                ApplicationUsers = userlist
+            };
+            _projectRepository.EditProject(projectacSecound, StringConstant.CreatedBy);
+            var project = _dataRepository.Fetch(x => x.Id == 1);
+            _dataRepositoryProjectUser.Fetch(x => x.ProjectId == 1);
+            Assert.NotNull(project);
+        }
 
         /// <summary>
         /// This test case for the check duplicate project
@@ -145,7 +141,6 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public void checkDuplicateNegative()
         {
-            //AddRole();
             _projectRepository.AddProject(projectac, StringConstant.CreatedBy);
             var project = _projectRepository.checkDuplicate(projectac);
             Assert.Null(project.Name);
@@ -157,7 +152,6 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public void checkDuplicatePositive()
         {
-            //AddRole();
             _projectRepository.AddProject(projectac, StringConstant.CreatedBy);
             List<UserAc> userlist = new List<UserAc>();
             userlist.Add(userSecound);
@@ -179,19 +173,19 @@ namespace Promact.Oauth.Server.Tests
             Assert.Null(project.Name);
         }
 
-        ///// <summary>
-        ///// This test case for the get all projects
-        ///// </summary>
-        //[Fact, Trait("Category", "Required")]
-        //public void GetAllProject()
-        //{
-        //    //AddRole();
-        //    _userRepository.AddUser(user, StringConstant.CreatedBy);
-        //    _projectRepository.AddProject(projectac, StringConstant.CreatedBy);
-        //    _projectRepository.AddUserProject(projectUser);
-        //    Task<IEnumerable<ProjectAc>> projects = _projectRepository.GetAllProjects();
-        //    Assert.NotNull(projects);
-        //}
+        /// <summary>
+        /// This test case for the get all projects
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public void GetAllProject()
+        {
+            AddRole();
+            _userRepository.AddUser(user, StringConstant.CreatedBy);
+            _projectRepository.AddProject(projectac, StringConstant.CreatedBy);
+            _projectRepository.AddUserProject(projectUser);
+            Task<IEnumerable<ProjectAc>> projects = _projectRepository.GetAllProjects();
+            Assert.NotNull(projects);
+        }
 
         private void AddRole()
         {
@@ -207,8 +201,9 @@ namespace Promact.Oauth.Server.Tests
                     var roleExit = roleManager.RoleExistsAsync(role.Name).Result;
                     if (!roleExit)
                     {
-                        context.Roles.Add(role);
-                        context.SaveChanges();
+                        roleManager.CreateAsync(role);
+                        //context.Roles.Add(role);
+                        //context.SaveChanges();
                     }
                 }
             }
