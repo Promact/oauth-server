@@ -35,8 +35,7 @@ namespace Promact.Oauth.Server.Tests
                 Password = "User@123",
                 UserName = "testUser@pronactinfo.com",
                 SlackUserName = "test",
-                JoiningDate = DateTime.Now,
-                RoleName = StringConstant.RoleName
+                JoiningDate = DateTime.Now
             };
         }
 
@@ -111,8 +110,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public void AddUser()
         {
-            AddRole();
-            string id = _userRepository.AddUser(_testUser, "Rajdeep");
+            string id = _userRepository.AddUser(_testUser, StringConstant.CreatedBy);
             var user = _dataRepository.FirstOrDefault(u => u.Id == id);
             Assert.NotNull(user);
         }
@@ -198,28 +196,9 @@ namespace Promact.Oauth.Server.Tests
         //            Assert.Equal(0, user.Count);
         //        }
         //       
-
-
+        
         #endregion
 
-        private void AddRole()
-        {
-            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            if (!roleManager.Roles.Any())
-            {
-                List<IdentityRole> roles = new List<IdentityRole>();
-                roles.Add(new IdentityRole { Name = "Employee", NormalizedName = "EMPLOYEE" });
-                roles.Add(new IdentityRole { Name = "Admin", NormalizedName = "ADMIN" });
-
-                foreach (var role in roles)
-                {
-                    var roleExit = roleManager.RoleExistsAsync(role.Name).Result;
-                    if (!roleExit)
-                    {
-                        var result = roleManager.CreateAsync(role).Result;
-                    }
-                }
-            }
-        }
+        
     }
 }

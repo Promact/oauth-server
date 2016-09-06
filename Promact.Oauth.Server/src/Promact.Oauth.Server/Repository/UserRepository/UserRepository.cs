@@ -22,7 +22,7 @@ namespace Promact.Oauth.Server.Repository
     {
         #region "Private Variable(s)"
 
-       // private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IHostingEnvironment _hostingEnvironment;
         private readonly IDataRepository<ApplicationUser> _applicationUserDataRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -34,10 +34,10 @@ namespace Promact.Oauth.Server.Repository
 
         #region "Constructor"
 
-        public UserRepository(IDataRepository<ApplicationUser> applicationUserDataRepository, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IMapper mapperContext, IDataRepository<ProjectUser> projectUserRepository, IProjectRepository projectRepository)
+        public UserRepository(IDataRepository<ApplicationUser> applicationUserDataRepository, IHostingEnvironment hostingEnvironment, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IMapper mapperContext, IDataRepository<ProjectUser> projectUserRepository, IProjectRepository projectRepository)
         {
             _applicationUserDataRepository = applicationUserDataRepository;
-            //_hostingEnvironment = hostingEnvironment;
+            _hostingEnvironment = hostingEnvironment;
             _userManager = userManager;
             _emailSender = emailSender;
             _mapperContext = mapperContext;
@@ -66,10 +66,7 @@ namespace Promact.Oauth.Server.Repository
                 user.UserName = user.Email;
                 user.CreatedBy = createdBy;
                 user.CreatedDateTime = DateTime.UtcNow;
-            
-                _userManager.CreateAsync(user, "User@123");
-                _userManager.AddToRoleAsync(user, newUser.RoleName);
-                //SendEmail(user);
+                _userManager.CreateAsync(user, "User@123").Wait();
                 return user.Id;
             }
             catch (Exception ex)
