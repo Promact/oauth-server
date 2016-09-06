@@ -110,5 +110,12 @@ namespace Promact.Oauth.Server.Repository
         /// <param name="userName"></param>
         /// <returns>details of user</returns>
         Task<UserAc> GetUserDetailByUserName(string userName);
+
+        /// <summary>
+        /// Method to get the number of casual leave allowed to a user by slack user name
+        /// </summary>
+        /// <param name="slackUserName"></param>
+        /// <returns>number of casual leave</returns>
+        double GetUserCasualLeaveBySlackName(string slackUserName);
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Exceptionless;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -16,7 +17,7 @@ using System.Threading.Tasks;
 namespace Promact.Oauth.Server.Controllers
 {
     public class OAuthController : BaseController
-    {  
+    {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IConsumerAppRepository _appRepository;
@@ -41,34 +42,42 @@ namespace Promact.Oauth.Server.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(OAuthLogin model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, lockoutOnFailure: false);
-                if (result.Succeeded)
+                if (ModelState.IsValid)
                 {
-                    var oAuth = _oAuthRepository.OAuthClientChecking(model.Email, model.ClientId);
-                    var clientResponse = await _oAuthRepository.GetAppDetailsFromClient(model.RedirectUrl, oAuth.RefreshToken);
-                    // Checking whether request client is equal to response client
-                    if (model.ClientId == clientResponse.ClientId)
+                    var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, lockoutOnFailure: false);
+                    if (result.Succeeded)
                     {
-                        //Getting app details from clientId or AuthId
-                        var app = await  _appRepository.GetAppDetails(clientResponse.ClientId);
-                        // Refresh token and app's secret is checking if match then accesstoken will be send
-                        if (app.AuthSecret == clientResponse.ClientSecret && clientResponse.RefreshToken == oAuth.RefreshToken)
+                        var oAuth = _oAuthRepository.OAuthClientChecking(model.Email, model.ClientId);
+                        var clientResponse = await _oAuthRepository.GetAppDetailsFromClient(model.RedirectUrl, oAuth.RefreshToken);
+                        // Checking whether request client is equal to response client
+                        if (model.ClientId == clientResponse.ClientId)
                         {
-                            var user = await _userManager.FindByEmailAsync(oAuth.userEmail);
-                            var returnUrl = string.Format("{0}?accessToken={1}&email={2}&slackUserName={3}", clientResponse.ReturnUrl, oAuth.AccessToken, oAuth.userEmail, user.SlackUserName);
-                            return Redirect(returnUrl);
+                            //Getting app details from clientId or AuthId
+                            var app = await _appRepository.GetAppDetails(clientResponse.ClientId);
+                            // Refresh token and app's secret is checking if match then accesstoken will be send
+                            if (app.AuthSecret == clientResponse.ClientSecret && clientResponse.RefreshToken == oAuth.RefreshToken)
+                            {
+                                var user = await _userManager.FindByEmailAsync(oAuth.userEmail);
+                                var returnUrl = string.Format("{0}?accessToken={1}&email={2}&slackUserName={3}", clientResponse.ReturnUrl, oAuth.AccessToken, oAuth.userEmail, user.SlackUserName);
+                                return Redirect(returnUrl);
+                            }
                         }
                     }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                        return View(model);
+                    }
                 }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return View(model);
-                }
+                return View(model);
             }
-            return View(model);
+            catch (Exception ex)
+            {
+                ex.ToExceptionless().Submit();
+                throw;
+            }
         }
 
         /// <summary>
@@ -78,23 +87,31 @@ namespace Promact.Oauth.Server.Controllers
         /// <returns></returns>
         public async Task<IActionResult> ExternalLogin(string clientId)
         {
-            var result = await _appRepository.GetAppDetails(clientId);
-            if (User.Identity.IsAuthenticated)
+            try
             {
-                var user = await _userManager.FindByNameAsync(User.Identity.Name);
-                var oAuth = _oAuthRepository.OAuthClientChecking(user.Email,clientId);
-                var clientResponse = await _oAuthRepository.GetAppDetailsFromClient(result.CallbackUrl, oAuth.RefreshToken);
-                var returnUrl = string.Format("{0}?accessToken={1}&email={2}",clientResponse.ReturnUrl, oAuth.AccessToken, oAuth.userEmail);
-                return Redirect(returnUrl);
+                var result = await _appRepository.GetAppDetails(clientId);
+                if (User.Identity.IsAuthenticated)
+                {
+                    var user = await _userManager.FindByNameAsync(User.Identity.Name);
+                    var oAuth = _oAuthRepository.OAuthClientChecking(user.Email, clientId);
+                    var clientResponse = await _oAuthRepository.GetAppDetailsFromClient(result.CallbackUrl, oAuth.RefreshToken);
+                    var returnUrl = string.Format("{0}?accessToken={1}&email={2}", clientResponse.ReturnUrl, oAuth.AccessToken, oAuth.userEmail);
+                    return Redirect(returnUrl);
+                }
+                if (result != null)
+                {
+                    // RedirectUrl is assign to ViewBag and on client side it will bind with OAuthLogin data
+                    ViewBag.returnUrl = result.CallbackUrl;
+                    ViewBag.clientId = result.AuthId;
+                    return View();
+                }
+                return BadRequest();
             }
-            if (result != null)
+            catch (Exception ex)
             {
-                // RedirectUrl is assign to ViewBag and on client side it will bind with OAuthLogin data
-                ViewBag.returnUrl = result.CallbackUrl;
-                ViewBag.clientId = result.AuthId;
-                return View();
+                ex.ToExceptionless().Submit();
+                throw;
             }
-            return BadRequest();
         }
     }
 }

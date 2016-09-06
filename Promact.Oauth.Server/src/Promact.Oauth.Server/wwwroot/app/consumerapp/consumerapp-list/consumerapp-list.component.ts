@@ -26,10 +26,10 @@ export class ConsumerappListComponent {
     }
 
     editDetails(consumerId) {
-        this.router.navigate(['admin/consumerapp/edit', consumerId]);
+        this.router.navigate(['/consumerapp/edit', consumerId]);
     }
 
     addNewApp() {
-        this.router.navigate(['admin/consumerapp/add']);
+        this.router.navigate(['/consumerapp/add']);
     }
 } 

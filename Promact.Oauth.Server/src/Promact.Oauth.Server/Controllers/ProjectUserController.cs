@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Exceptionless;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Promact.Oauth.Server.Data;
 using Promact.Oauth.Server.Repository;
@@ -31,8 +32,16 @@ namespace Promact.Oauth.Server.Controllers
         [Route("userDetails/{userSlackName}")]
         public IActionResult UserDetialByFirstName(string userSlackName)
         {
-            var user = _userRepository.UserDetialByUserSlackName(userSlackName);
-            return Ok(user);
+            try
+            {
+                var user = _userRepository.UserDetialByUserSlackName(userSlackName);
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                ex.ToExceptionless().Submit();
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -44,8 +53,16 @@ namespace Promact.Oauth.Server.Controllers
         [Route("teamLeaderDetails/{userSlackName}")]
         public async Task<IActionResult> TeamLeaderByUserId(string userSlackName)
         {
-            var user = await _userRepository.TeamLeaderByUserSlackName(userSlackName);
-            return Ok(user);
+            try
+            {
+                var user = await _userRepository.TeamLeaderByUserSlackName(userSlackName);
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                ex.ToExceptionless().Submit();
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -56,8 +73,58 @@ namespace Promact.Oauth.Server.Controllers
         [Route("managementDetails")]
         public async Task<IActionResult> ManagementDetails()
         {
-            var user = await _userRepository.ManagementDetails();
-            return Ok(user);
+            try
+            {
+                var user = await _userRepository.ManagementDetails();
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                ex.ToExceptionless().Submit();
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// Method to get User details by user Id
+        /// </summary>
+        /// <param name="employeeId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("userDetail/{employeeId}")]
+        public IActionResult UserDetailById(string employeeId)
+        {
+            try
+            {
+                var user = _userRepository.UserDetailById(employeeId);
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                ex.ToExceptionless().Submit();
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// Method to get the number of casual leave allowed to a user by slack user name
+        /// </summary>
+        /// <param name="slackUserName"></param>
+        /// <returns>number of casual leave</returns>
+        [HttpGet]
+        [Route("casual/leave/{slackUserName}")]
+        public IActionResult GetUserCasualLeaveBySlackName(string slackUserName)
+        {
+            try
+            {
+                var casualLeave = _userRepository.GetUserCasualLeaveBySlackName(slackUserName);
+                return Ok(casualLeave);
+            }
+            catch (Exception ex)
+            {
+                ex.ToExceptionless().Submit();
+                throw ex;
+            }
         }
     }
 }

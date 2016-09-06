@@ -3,6 +3,8 @@ import { ProjectService }   from '../project.service';
 import {projectModel} from '../project.model'
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 import {Md2Toast} from 'md2/toast';
+import { LoginService } from '../../login.service';
+
 
 @Component({
     templateUrl: "app/project/project-list/project-list.html",
@@ -12,7 +14,9 @@ import {Md2Toast} from 'md2/toast';
 export class ProjectListComponent{
     pros: Array<projectModel>;
     pro: projectModel;
-    constructor(private router: Router, private proService: ProjectService, private toast: Md2Toast) {
+    user: any;
+    admin: any;
+    constructor(private router: Router, private proService: ProjectService, private toast: Md2Toast, private loginService: LoginService) {
         this.pros = new Array<projectModel>();
         this.pro = new projectModel();
     }
@@ -25,12 +29,27 @@ export class ProjectListComponent{
     }
     ngOnInit() {
         this.getPros();
+        this.getRole();
     }
     editProject(Id) {
-        this.router.navigate(['admin/project/edit', Id]);
+        this.router.navigate(['/project/edit', Id]);
     }
     viewProject(Id) {
-        this.router.navigate(['admin/project/view', Id]);
+        this.router.navigate(['/project/view', Id]);
     }
-    
+
+    getRole() {
+        this.loginService.getRoleAsync().subscribe((result) => {
+            this.user = result;
+            if (this.user.role === "Admin") {
+                this.router.navigate(['project/list']);
+                this.admin = true;
+            }
+            else {
+                this.router.navigate(['project/list']);
+                this.admin = false;
+            }
+        }, err => {
+        });
+    }
 }
