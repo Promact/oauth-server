@@ -85,26 +85,6 @@ namespace Promact.Oauth.Server.Controllers
             }
         }
 
-        /// <summary>
-        /// Method to get User details by user Id
-        /// </summary>
-        /// <param name="employeeId"></param>
-        /// <returns></returns>
-        [HttpGet]
-        [Route("userDetail/{employeeId}")]
-        public IActionResult UserDetailById(string employeeId)
-        {
-            try
-            {
-                var user = _userRepository.UserDetailById(employeeId);
-                return Ok(user);
-            }
-            catch (Exception ex)
-            {
-                ex.ToExceptionless().Submit();
-                throw ex;
-            }
-        }
 
         /// <summary>
         /// Method to get the number of casual leave allowed to a user by slack user name

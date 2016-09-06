@@ -34,7 +34,10 @@ describe('User Add Test', () => {
         });
 
     });
-    beforeEach(inject([UserService, Router, ActivatedRoute, Md2Toast], (userService: UserService, router: Router,route: ActivatedRoute,toast: Md2Toast) => {
+    //beforeEach(inject([UserService, Router, ActivatedRoute, Md2Toast], (userService: UserService, router: Router,route: ActivatedRoute,toast: Md2Toast) => {
+    //    userAddComponent = new UserAddComponent(userService, router, route, toast);
+    //}));
+    beforeEach(inject([UserService, Router, ActivatedRoute, Md2Toast], (userService: UserService, router: Router, route: ActivatedRoute, toast: Md2Toast) => {
         userAddComponent = new UserAddComponent(userService, router, route, toast);
     }));
 

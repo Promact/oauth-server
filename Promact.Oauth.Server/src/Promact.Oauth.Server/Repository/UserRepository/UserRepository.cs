@@ -414,28 +414,7 @@ namespace Promact.Oauth.Server.Repository
             return managementUser;
         }
 
-        /// <summary>
-        /// This method is used to Get User details by Id
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <returns>details of user</returns>
-        public UserAc UserDetailById(string userId)
-        {
-            var user =  _userManager.Users.FirstOrDefault(x => x.Id == userId);
-            return GetUser(user);
-        }
-
-        /// <summary>
-        /// Method is used to get the details of user by using their username
-        /// </summary>
-        /// <param name="userName"></param>
-        /// <returns>details of user</returns>
-        public async Task<UserAc> GetUserDetailByUserName(string userName)
-        {
-            var user = await _userManager.FindByNameAsync(userName);
-            return GetUser(user);
-        }
-
+       
         /// <summary>
         /// Method to get the number of casual leave allowed to a user by slack user name
         /// </summary>
@@ -447,41 +426,7 @@ namespace Promact.Oauth.Server.Repository
             return casualLeave;
         }
 
-        /// <summary>
-        /// Method is used to return a user after assigning a role and mapping from ApplicationUser class to UserAc class
-        /// </summary>
-        /// <param name="user"></param>
-        /// <returns>user</returns>
-        private  UserAc GetUser(ApplicationUser user)
-        {
-            if (user != null)
-            {
-                var Roles =  _userManager.GetRolesAsync(user).Result.First();
-                if (Roles == "Admin")
-                {
-                    var newUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
-                    newUser.Role = Roles;
-                    return newUser;
-                }
-                if (Roles == "Employee")
-                {
-                    var project =  _projectDataRepository.FirstOrDefault(x => x.TeamLeaderId.Equals(user.Id));
-                    if (project != null)
-                    {
-                        var newUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
-                        newUser.Role = "TeamLeader";
-                        return newUser;
-                    }
-                    else
-                    {
-                        var newUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
-                        newUser.Role = "Employee";
-                        return newUser;
-                    }
-                }
-            }
-            return null;
-        }
+        
 
         #endregion
     }

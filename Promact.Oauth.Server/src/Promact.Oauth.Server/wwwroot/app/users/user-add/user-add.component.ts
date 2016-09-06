@@ -3,7 +3,7 @@ import { UserService }   from '../user.service';
 import {UserModel} from '../user.model';
 import {Router, ROUTER_DIRECTIVES, ActivatedRoute} from '@angular/router';
 import {Md2Toast} from 'md2/toast';
-import {Location} from "@angular/common";
+
 
 
 @Component({
@@ -20,7 +20,7 @@ export class UserAddComponent {
     userModel: UserModel;
     listOfRoles: any;
 
-    constructor(private userService: UserService, private redirectionRoute: Router, private route: ActivatedRoute, private toast: Md2Toast, private location: Location) {
+    constructor(private userService: UserService, private redirectionRoute: Router, private route: ActivatedRoute, private toast: Md2Toast) {
         this.userModel = new UserModel();
         this.listOfRoles = [];
     }
@@ -94,8 +94,9 @@ export class UserAddComponent {
     }
 
     goBack() {
-        this.location.back();
+        //this.location.back();
         //this.redirectionRoute.navigate(['/user/list']);
+        this.redirectionRoute.navigate(['admin/user'])
     }
 
 

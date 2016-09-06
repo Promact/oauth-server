@@ -20,7 +20,7 @@ export class ChangePasswordComponent {
     @Input()
     passwordModel: PasswordModel;
 
-    constructor(private userService: UserService, private redirectionRoute: Router, private route: ActivatedRoute, private toast: Md2Toast, private location: Location) {
+    constructor(private userService: UserService, private redirectionRoute: Router, private route: ActivatedRoute, private toast: Md2Toast) {
         this.passwordModel = new PasswordModel();
         this.isNotMatch = false;
     }
@@ -65,7 +65,8 @@ export class ChangePasswordComponent {
     }
 
     goBack() {
-        this.location.back();
+        //this.location.back();
+        this.redirectionRoute.navigate(['admin/user']);
         //this.redirectionRoute.navigate(['admin/user']);
     }
 }
