@@ -54,7 +54,7 @@ namespace Promact.Oauth.Server.Repository
         /// This method is used to add new user
         /// </summary>
         /// <param name="applicationUser">UserAc Application class object</param>
-        public async Task<string> AddUser(UserAc newUser, string createdBy)
+        public string AddUser(UserAc newUser, string createdBy)
         {
             try
             {
@@ -66,9 +66,9 @@ namespace Promact.Oauth.Server.Repository
                 user.UserName = user.Email;
                 user.CreatedBy = createdBy;
                 user.CreatedDateTime = DateTime.UtcNow;
-
-                _userManager.CreateAsync(user, "User@123").Wait();
-                await _userManager.AddToRoleAsync(user, newUser.RoleName);
+            
+                _userManager.CreateAsync(user, "User@123");
+                _userManager.AddToRoleAsync(user, newUser.RoleName);
                 //SendEmail(user);
                 return user.Id;
             }

@@ -20,11 +20,11 @@ namespace Promact.Oauth.Server.Tests
     public class ProjectTests : BaseProvider
     {
         private readonly IProjectRepository _projectRepository;
+
         private readonly IDataRepository<Project> _dataRepository;
         private readonly IDataRepository<ProjectUser> _dataRepositoryProjectUser;
         private readonly IUserRepository _userRepository;
         private readonly RoleManager<IdentityRole> _roleManager;
-
         public ProjectTests() : base()
         {
             _projectRepository = serviceProvider.GetService<IProjectRepository>();
@@ -96,7 +96,7 @@ namespace Promact.Oauth.Server.Tests
         public void GetById()
         {
             AddRole();
-            var TeamLeaderId = _userRepository.AddUser(user, StringConstant.CreatedBy).Result;
+            var TeamLeaderId = _userRepository.AddUser(user, StringConstant.CreatedBy);
             projectac.TeamLeaderId = TeamLeaderId;
             Task<int> id = _projectRepository.AddProject(projectac, StringConstant.CreatedBy);
             _projectRepository.AddUserProject(projectUser);
