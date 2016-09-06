@@ -100,15 +100,15 @@ namespace Promact.Oauth.Server.Repository
         /// <summary>
         /// This method is used to Get User details by Id
         /// </summary>
-        /// <param name="employeeId"></param>
+        /// <param name="userId"></param>
         /// <returns>details of user</returns>
-        UserAc UserDetailById(string employeeId);
+        UserAc UserDetailById(string userId);
 
         /// <summary>
         /// Method is used to get the details of user by using their username
         /// </summary>
-        /// <param name="UserName"></param>
+        /// <param name="userName"></param>
         /// <returns>details of user</returns>
-        UserAc GetUserDetailByUserName(string UserName);
+        Task<UserAc> GetUserDetailByUserName(string userName);
     }
 }

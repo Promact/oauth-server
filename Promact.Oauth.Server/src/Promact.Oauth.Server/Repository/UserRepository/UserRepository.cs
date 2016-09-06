@@ -363,16 +363,25 @@ namespace Promact.Oauth.Server.Repository
             return managementUser;
         }
 
-        
+        /// <summary>
+        /// This method is used to Get User details by Id
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns>details of user</returns>
         public UserAc UserDetailById(string userId)
         {
             var user =  _userManager.Users.FirstOrDefault(x => x.Id == userId);
             return GetUser(user);
         }
 
-        public UserAc GetUserDetailByUserName(string userName)
+        /// <summary>
+        /// Method is used to get the details of user by using their username
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns>details of user</returns>
+        public async Task<UserAc> GetUserDetailByUserName(string userName)
         {
-            var user = _userManager.FindByNameAsync(userName).Result;
+            var user = await _userManager.FindByNameAsync(userName);
             return GetUser(user);
         }
 
@@ -381,11 +390,11 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="user"></param>
         /// <returns>user</returns>
-        private UserAc GetUser(ApplicationUser user)
+        private  UserAc GetUser(ApplicationUser user)
         {
             if (user != null)
             {
-                var Roles = _userManager.GetRolesAsync(user).Result.First();
+                var Roles =  _userManager.GetRolesAsync(user).Result.First();
                 if (Roles == "Admin")
                 {
                     var newUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
@@ -394,7 +403,7 @@ namespace Promact.Oauth.Server.Repository
                 }
                 if (Roles == "Employee")
                 {
-                    var project = _projectDataRepository.FirstOrDefault(x => x.TeamLeaderId.Equals(user.Id));
+                    var project =  _projectDataRepository.FirstOrDefault(x => x.TeamLeaderId.Equals(user.Id));
                     if (project != null)
                     {
                         var newUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
