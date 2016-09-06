@@ -83,7 +83,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-      * @api {get} api/Project/addProject 
+      * @api {post} api/Project/addProject 
       * @apiVersion 1.0.0
       * @apiName Project
       * @apiGroup Project
@@ -137,7 +137,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-        * @api {get} api/Project/editProject 
+        * @api {put} api/Project/editProject 
         * @apiVersion 1.0.0
         * @apiName Project
         * @apiGroup Project
