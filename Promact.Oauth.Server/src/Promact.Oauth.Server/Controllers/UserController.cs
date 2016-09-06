@@ -285,9 +285,9 @@ namespace Promact.Oauth.Server.Controllers
         /// <returns>details of user</returns>
         [HttpGet]
         [Route("getByUserName/{userName}")]
-        public IActionResult GetByUserName(string userName)
+        public async Task<IActionResult> GetByUserName(string userName)
         {
-            return Ok(_userRepository.GetUserDetailByUserName(userName));
+            return Ok(await _userRepository.GetUserDetailByUserName(userName));
         }
         #endregion
     }
