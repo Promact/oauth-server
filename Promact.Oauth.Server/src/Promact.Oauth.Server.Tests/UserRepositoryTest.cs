@@ -18,6 +18,7 @@ namespace Promact.Oauth.Server.Tests
         private readonly IUserRepository _userRepository;
         private readonly IDataRepository<ApplicationUser> _dataRepository;
         private readonly UserManager<ApplicationUser> _userManager;
+
         private readonly UserAc _testUser;
 
         public UserRepositoryTest() : base()
@@ -110,6 +111,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public void AddUser()
         {
+            //AddRole();
             string id = _userRepository.AddUser(_testUser, StringConstant.CreatedBy).Result;
             var user = _dataRepository.FirstOrDefault(u => u.Id == id);
             Assert.NotNull(user);
@@ -196,9 +198,31 @@ namespace Promact.Oauth.Server.Tests
         //            Assert.Equal(0, user.Count);
         //        }
         //       
-        
+
         #endregion
 
-        
+
+
+
+        private void AddRole()
+        {
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            if (!roleManager.Roles.Any())
+            {
+                List<IdentityRole> roles = new List<IdentityRole>();
+                roles.Add(new IdentityRole { Name = StringConstant.RoleName, NormalizedName = StringConstant.NormalizedName });
+                roles.Add(new IdentityRole { Name = StringConstant.RoleNameSecond, NormalizedName = StringConstant.NormalizedSecond });
+
+                foreach (var role in roles)
+                {
+                    var roleExit = roleManager.RoleExistsAsync(role.Name).Result;
+                    if (!roleExit)
+                    {
+                       var result = roleManager.CreateAsync(role).Result;
+                    }
+                }
+            }
+        }
+
     }
 }
