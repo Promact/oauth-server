@@ -110,7 +110,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public void AddUser()
         {
-            string id = _userRepository.AddUser(_testUser, StringConstant.CreatedBy);
+            string id = _userRepository.AddUser(_testUser, StringConstant.CreatedBy).Result;
             var user = _dataRepository.FirstOrDefault(u => u.Id == id);
             Assert.NotNull(user);
         }
