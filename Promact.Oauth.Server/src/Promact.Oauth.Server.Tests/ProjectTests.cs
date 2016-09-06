@@ -7,12 +7,8 @@ using Xunit;
 using System;
 using Promact.Oauth.Server.Models;
 using System.Collections.Generic;
-using Promact.Oauth.Server.Repository;
 using System.Globalization;
 using System.Threading.Tasks;
-using System.Linq;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
 using Promact.Oauth.Server.Constants;
 
 namespace Promact.Oauth.Server.Tests
