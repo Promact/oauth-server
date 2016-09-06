@@ -17,7 +17,7 @@ export class ProjectService {
     }
     //
     getProjects() {
-        return this.httpService.get(this.ProjectUrl + "/projects");
+        return this.httpService.get(this.ProjectUrl + "/getAllProjects");
     }
     getProject(id: number) {
         return this.httpService.get(this.ProjectUrl + "/getProjects/"+ id);

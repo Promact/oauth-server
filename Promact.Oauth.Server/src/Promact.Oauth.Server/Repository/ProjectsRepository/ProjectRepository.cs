@@ -295,6 +295,11 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                 recentProjects.Add(recentProject);
             }
         }
+        /// <summary>
+        /// This Method use to featch user role
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public async Task<List<UserRoleAc>> GetUserRole(string name)
         {
             ApplicationUser user = _userDataRepository.FirstOrDefault(x => x.UserName == name);
