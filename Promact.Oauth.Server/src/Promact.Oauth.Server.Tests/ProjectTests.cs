@@ -33,7 +33,7 @@ namespace Promact.Oauth.Server.Tests
             _dataRepositoryProjectUser = serviceProvider.GetService<IDataRepository<ProjectUser>>();
             _userRepository = serviceProvider.GetService<IUserRepository>();
              context = serviceProvider.GetService<PromactOauthDbContext>();
-             AddRole();
+             //AddRole();
         }
 
         ProjectAc projectac = new ProjectAc()
@@ -91,20 +91,20 @@ namespace Promact.Oauth.Server.Tests
             Assert.NotNull(ProjectUser);
         }
 
-        ///// <summary>
-        ///// This test case for gets project By Id
-        ///// </summary>
-        //[Fact, Trait("Category", "Required")]
-        //public void GetById()
-        //{
-        //    //AddRole();
-        //    var TeamLeaderId = _userRepository.AddUser(user, StringConstant.CreatedBy).Result;
-        //    projectac.TeamLeaderId = TeamLeaderId;
-        //    Task<int> id = _projectRepository.AddProject(projectac, StringConstant.CreatedBy);
-        //    _projectRepository.AddUserProject(projectUser);
-        //    Task<ProjectAc> project = _projectRepository.GetById(id.Result);
-        //    Assert.NotNull(project);
-        //}
+        /// <summary>
+        /// This test case for gets project By Id
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public void GetById()
+        {
+            //AddRole();
+            var TeamLeaderId = _userRepository.AddUser(user, StringConstant.CreatedBy).Result;
+            projectac.TeamLeaderId = TeamLeaderId;
+            Task<int> id = _projectRepository.AddProject(projectac, StringConstant.CreatedBy);
+            _projectRepository.AddUserProject(projectUser);
+            Task<ProjectAc> project = _projectRepository.GetById(id.Result);
+            Assert.NotNull(project);
+        }
 
         ///// <summary>
         ///// This test case edit project 
@@ -138,7 +138,7 @@ namespace Promact.Oauth.Server.Tests
         //    _dataRepositoryProjectUser.Fetch(x => x.ProjectId == 1);
         //    Assert.NotNull(project);
         //}
-        
+
         /// <summary>
         /// This test case for the check duplicate project
         /// </summary>
