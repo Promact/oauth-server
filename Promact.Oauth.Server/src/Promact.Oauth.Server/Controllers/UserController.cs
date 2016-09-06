@@ -99,7 +99,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-         * @api {get} api/User/RegisterUser 
+         * @api {post} api/User/RegisterUser 
          * @apiVersion 1.0.0
          * @apiName User
          * @apiGroup User
@@ -144,7 +144,7 @@ namespace Promact.Oauth.Server.Controllers
 
 
         /**
-     * @api {get} api/User/editProject 
+     * @api {put} api/User/editProject 
      * @apiVersion 1.0.0
      * @apiName User
      * @apiGroup User
@@ -192,7 +192,7 @@ namespace Promact.Oauth.Server.Controllers
 
 
         /**
-        * @api {get} api/User/ChangePasswordViewModel 
+        * @api {post} api/User/ChangePasswordViewModel 
         * @apiVersion 1.0.0
         * @apiName User
         * @apiGroup User
@@ -239,13 +239,6 @@ namespace Promact.Oauth.Server.Controllers
                 throw ex;
             }
         }
-
-
-        /// <summary>
-        /// This method is used to check if a user already exists in the database with the given userName
-        /// </summary>
-        /// <param name="userName"></param>
-        /// <returns></returns>
         [HttpGet]
         [Route("findbyusername/{userName}")]
         [Authorize(Roles = "Admin")]
