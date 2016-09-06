@@ -91,53 +91,53 @@ namespace Promact.Oauth.Server.Tests
             Assert.NotNull(ProjectUser);
         }
 
-        /// <summary>
-        /// This test case for gets project By Id
-        /// </summary>
-        [Fact, Trait("Category", "Required")]
-        public void GetById()
-        {
-            //AddRole();
-            var TeamLeaderId = _userRepository.AddUser(user, StringConstant.CreatedBy).Result;
-            projectac.TeamLeaderId = TeamLeaderId;
-            Task<int> id = _projectRepository.AddProject(projectac, StringConstant.CreatedBy);
-            _projectRepository.AddUserProject(projectUser);
-            Task<ProjectAc> project = _projectRepository.GetById(id.Result);
-            Assert.NotNull(project);
-        }
+        ///// <summary>
+        ///// This test case for gets project By Id
+        ///// </summary>
+        //[Fact, Trait("Category", "Required")]
+        //public void GetById()
+        //{
+        //    //AddRole();
+        //    var TeamLeaderId = _userRepository.AddUser(user, StringConstant.CreatedBy).Result;
+        //    projectac.TeamLeaderId = TeamLeaderId;
+        //    Task<int> id = _projectRepository.AddProject(projectac, StringConstant.CreatedBy);
+        //    _projectRepository.AddUserProject(projectUser);
+        //    Task<ProjectAc> project = _projectRepository.GetById(id.Result);
+        //    Assert.NotNull(project);
+        //}
 
-        /// <summary>
-        /// This test case edit project 
-        /// </summary>
-        [Fact, Trait("Category", "Required")]
-        public void EditProject()
-        {
-            //AddRole();
-            _userRepository.AddUser(user, StringConstant.FirstName);
-            _userRepository.AddUser(userSecound, StringConstant.FirstName);
-            _userRepository.AddUser(userThird, StringConstant.FirstName);
-            Task<int> id = _projectRepository.AddProject(projectac, StringConstant.FirstName);
-            _projectRepository.AddUserProject(projectUser);
-            List<UserAc> userlist = new List<UserAc>();
-            userlist.Add(userSecound);
-            userlist.Add(userThird);
-            ProjectAc projectacSecound = new ProjectAc()
-            {
-                Id = id.Result,
-                Name = StringConstant.EditName,
-                SlackChannelName = StringConstant.SlackChannelName,
-                IsActive = StringConstant.IsActive,
-                TeamLeader = new UserAc { FirstName = StringConstant.FirstName },
-                TeamLeaderId = StringConstant.TeamLeaderId,
-                CreatedBy = StringConstant.CreatedBy,
-                CreatedDate = DateTime.Now.ToString(CultureInfo.InvariantCulture),
-                ApplicationUsers = userlist
-            };
-            _projectRepository.EditProject(projectacSecound, StringConstant.CreatedBy);
-            var project = _dataRepository.Fetch(x => x.Id == 1);
-            _dataRepositoryProjectUser.Fetch(x => x.ProjectId == 1);
-            Assert.NotNull(project);
-        }
+        ///// <summary>
+        ///// This test case edit project 
+        ///// </summary>
+        //[Fact, Trait("Category", "Required")]
+        //public void EditProject()
+        //{
+        //    //AddRole();
+        //    _userRepository.AddUser(user, StringConstant.FirstName);
+        //    _userRepository.AddUser(userSecound, StringConstant.FirstName);
+        //    _userRepository.AddUser(userThird, StringConstant.FirstName);
+        //    Task<int> id = _projectRepository.AddProject(projectac, StringConstant.FirstName);
+        //    _projectRepository.AddUserProject(projectUser);
+        //    List<UserAc> userlist = new List<UserAc>();
+        //    userlist.Add(userSecound);
+        //    userlist.Add(userThird);
+        //    ProjectAc projectacSecound = new ProjectAc()
+        //    {
+        //        Id = id.Result,
+        //        Name = StringConstant.EditName,
+        //        SlackChannelName = StringConstant.SlackChannelName,
+        //        IsActive = StringConstant.IsActive,
+        //        TeamLeader = new UserAc { FirstName = StringConstant.FirstName },
+        //        TeamLeaderId = StringConstant.TeamLeaderId,
+        //        CreatedBy = StringConstant.CreatedBy,
+        //        CreatedDate = DateTime.Now.ToString(CultureInfo.InvariantCulture),
+        //        ApplicationUsers = userlist
+        //    };
+        //    _projectRepository.EditProject(projectacSecound, StringConstant.CreatedBy);
+        //    var project = _dataRepository.Fetch(x => x.Id == 1);
+        //    _dataRepositoryProjectUser.Fetch(x => x.ProjectId == 1);
+        //    Assert.NotNull(project);
+        //}
         
         /// <summary>
         /// This test case for the check duplicate project
@@ -179,19 +179,19 @@ namespace Promact.Oauth.Server.Tests
             Assert.Null(project.Name);
         }
 
-        /// <summary>
-        /// This test case for the get all projects
-        /// </summary>
-        [Fact, Trait("Category", "Required")]
-        public void GetAllProject()
-        {
-            //AddRole();
-            _userRepository.AddUser(user, StringConstant.CreatedBy);
-            _projectRepository.AddProject(projectac, StringConstant.CreatedBy);
-            _projectRepository.AddUserProject(projectUser);
-            Task<IEnumerable<ProjectAc>> projects = _projectRepository.GetAllProjects();
-            Assert.NotNull(projects);
-        }
+        ///// <summary>
+        ///// This test case for the get all projects
+        ///// </summary>
+        //[Fact, Trait("Category", "Required")]
+        //public void GetAllProject()
+        //{
+        //    //AddRole();
+        //    _userRepository.AddUser(user, StringConstant.CreatedBy);
+        //    _projectRepository.AddProject(projectac, StringConstant.CreatedBy);
+        //    _projectRepository.AddUserProject(projectUser);
+        //    Task<IEnumerable<ProjectAc>> projects = _projectRepository.GetAllProjects();
+        //    Assert.NotNull(projects);
+        //}
 
         private async void AddRole()
         {
