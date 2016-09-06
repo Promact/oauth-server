@@ -23,14 +23,14 @@ namespace Promact.Oauth.Server.Tests
         private readonly IProjectRepository _projectRepository;
         private readonly IDataRepository<Project> _dataRepository;
         private readonly IDataRepository<ProjectUser> _dataRepositoryProjectUser;
-        //private readonly IUserRepository _userRepository;
+        private readonly IUserRepository _userRepository;
 
         public ProjectTests() : base()
         {
             _projectRepository = serviceProvider.GetService<IProjectRepository>();
             _dataRepository = serviceProvider.GetService<IDataRepository<Project>>();
             _dataRepositoryProjectUser = serviceProvider.GetService<IDataRepository<ProjectUser>>();
-            //_userRepository = serviceProvider.GetService<IUserRepository>();
+            _userRepository = serviceProvider.GetService<IUserRepository>();
         }
 
         ProjectAc projectac = new ProjectAc()
@@ -87,20 +87,20 @@ namespace Promact.Oauth.Server.Tests
             Assert.NotNull(ProjectUser);
         }
 
-        ///// <summary>
-        ///// This test case for gets project By Id
-        ///// </summary>
-        //[Fact, Trait("Category", "Required")]
-        //public void GetById()
-        //{
-        //    AddRole();
-        //    var TeamLeaderId = _userRepository.AddUser(user, StringConstant.CreatedBy).Result;
-        //    projectac.TeamLeaderId = TeamLeaderId;
-        //    Task<int> id = _projectRepository.AddProject(projectac, StringConstant.CreatedBy);
-        //    _projectRepository.AddUserProject(projectUser);
-        //    Task<ProjectAc> project = _projectRepository.GetById(id.Result);
-        //    Assert.NotNull(project);
-        //}
+        /// <summary>
+        /// This test case for gets project By Id
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public void GetById()
+        {
+            AddRole();
+            var TeamLeaderId = _userRepository.AddUser(user, StringConstant.CreatedBy).Result;
+            projectac.TeamLeaderId = TeamLeaderId;
+            Task<int> id = _projectRepository.AddProject(projectac, StringConstant.CreatedBy);
+            _projectRepository.AddUserProject(projectUser);
+            Task<ProjectAc> project = _projectRepository.GetById(id.Result);
+            Assert.NotNull(project);
+        }
 
         ///// <summary>
         ///// This test case edit project 
@@ -187,25 +187,25 @@ namespace Promact.Oauth.Server.Tests
         //    Assert.NotNull(projects);
         //}
 
-        //private void AddRole()
-        //{
-        //    var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-        //    if (!roleManager.Roles.Any())
-        //    {
-        //        List<IdentityRole> roles = new List<IdentityRole>();
-        //        roles.Add(new IdentityRole { Name = "Employee", NormalizedName = "EMPLOYEE" });
-        //        roles.Add(new IdentityRole { Name = "Admin", NormalizedName = "ADMIN" });
+        private void AddRole()
+        {
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            if (!roleManager.Roles.Any())
+            {
+                List<IdentityRole> roles = new List<IdentityRole>();
+                roles.Add(new IdentityRole { Name = "Employee", NormalizedName = "EMPLOYEE" });
+                roles.Add(new IdentityRole { Name = "Admin", NormalizedName = "ADMIN" });
 
-        //        foreach (var role in roles)
-        //        {
-        //            var roleExit = roleManager.RoleExistsAsync(role.Name).Result;
-        //            if (!roleExit)
-        //            {
-        //                var result = roleManager.CreateAsync(role).Result;
-        //            }
-        //        }
-        //    }
-        //}
+                foreach (var role in roles)
+                {
+                    var roleExit = roleManager.RoleExistsAsync(role.Name).Result;
+                    if (!roleExit)
+                    {
+                        var result = roleManager.CreateAsync(role).Result;
+                    }
+                }
+            }
+        }
 
     }
 }
