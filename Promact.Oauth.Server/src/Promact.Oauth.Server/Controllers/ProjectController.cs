@@ -50,8 +50,8 @@ namespace Promact.Oauth.Server.Controllers
      * }
      */
         [HttpGet]
-        [Route("projects")]
-        public async Task<IEnumerable<ProjectAc>> projects()
+        [Route("getAllProjects")]
+        public async Task<IEnumerable<ProjectAc>> getAllProjects()
         {
             return await _projectRepository.GetAllProjects();
         }
