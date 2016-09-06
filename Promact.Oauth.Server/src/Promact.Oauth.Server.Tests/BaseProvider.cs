@@ -37,12 +37,12 @@ namespace Promact.Oauth.Server.Tests
                 cfg.AddProfile(new AutoMapperProfileConfiguration());
             });
 
-            var testHostingEnvironment = new MockHostingEnvironment();
+            //var testHostingEnvironment = new MockHostingEnvironment();
 
             var services = new ServiceCollection();
             services.AddEntityFrameworkInMemoryDatabase();
 
-            services.AddSingleton<IHostingEnvironment>(testHostingEnvironment);
+         // services.AddSingleton<IHostingEnvironment>(testHostingEnvironment);
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<PromactOauthDbContext>()
@@ -67,85 +67,85 @@ namespace Promact.Oauth.Server.Tests
         }
     }
     
-    public class MockHostingEnvironment : IHostingEnvironment
-    {
-        public string ApplicationName
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
+    //public class MockHostingEnvironment : IHostingEnvironment
+    //{
+    //    public string ApplicationName
+    //    {
+    //        get
+    //        {
+    //            throw new NotImplementedException();
+    //        }
 
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
+    //        set
+    //        {
+    //            throw new NotImplementedException();
+    //        }
+    //    }
 
-        public IFileProvider ContentRootFileProvider
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
+    //    public IFileProvider ContentRootFileProvider
+    //    {
+    //        get
+    //        {
+    //            throw new NotImplementedException();
+    //        }
 
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
+    //        set
+    //        {
+    //            throw new NotImplementedException();
+    //        }
+    //    }
 
-        public string ContentRootPath
-        {
-            get
-            {
-                return "test";
-            }
+    //    public string ContentRootPath
+    //    {
+    //        get
+    //        {
+    //            return "test";
+    //        }
 
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
+    //        set
+    //        {
+    //            throw new NotImplementedException();
+    //        }
+    //    }
 
-        public string EnvironmentName
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
+    //    public string EnvironmentName
+    //    {
+    //        get
+    //        {
+    //            throw new NotImplementedException();
+    //        }
 
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
+    //        set
+    //        {
+    //            throw new NotImplementedException();
+    //        }
+    //    }
 
-        public IFileProvider WebRootFileProvider
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
+    //    public IFileProvider WebRootFileProvider
+    //    {
+    //        get
+    //        {
+    //            throw new NotImplementedException();
+    //        }
 
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
+    //        set
+    //        {
+    //            throw new NotImplementedException();
+    //        }
+    //    }
 
-        public string WebRootPath
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
+    //    public string WebRootPath
+    //    {
+    //        get
+    //        {
+    //            throw new NotImplementedException();
+    //        }
 
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-    }
+    //        set
+    //        {
+    //            throw new NotImplementedException();
+    //        }
+    //    }
+    //}
 
 }

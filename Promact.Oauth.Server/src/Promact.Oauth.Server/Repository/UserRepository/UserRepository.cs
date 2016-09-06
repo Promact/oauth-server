@@ -22,7 +22,7 @@ namespace Promact.Oauth.Server.Repository
     {
         #region "Private Variable(s)"
 
-        private readonly IHostingEnvironment _hostingEnvironment;
+       // private readonly IHostingEnvironment _hostingEnvironment;
         private readonly IDataRepository<ApplicationUser> _applicationUserDataRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -34,10 +34,10 @@ namespace Promact.Oauth.Server.Repository
 
         #region "Constructor"
 
-        public UserRepository(IDataRepository<ApplicationUser> applicationUserDataRepository, RoleManager<IdentityRole> roleManager, IHostingEnvironment hostingEnvironment, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IMapper mapperContext, IDataRepository<ProjectUser> projectUserRepository, IProjectRepository projectRepository)
+        public UserRepository(IDataRepository<ApplicationUser> applicationUserDataRepository, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IMapper mapperContext, IDataRepository<ProjectUser> projectUserRepository, IProjectRepository projectRepository)
         {
             _applicationUserDataRepository = applicationUserDataRepository;
-            _hostingEnvironment = hostingEnvironment;
+            //_hostingEnvironment = hostingEnvironment;
             _userManager = userManager;
             _emailSender = emailSender;
             _mapperContext = mapperContext;
@@ -69,7 +69,7 @@ namespace Promact.Oauth.Server.Repository
 
                 _userManager.CreateAsync(user, "User@123").Wait();
                 await _userManager.AddToRoleAsync(user, newUser.RoleName);
-                SendEmail(user);
+                //SendEmail(user);
                 return user.Id;
             }
             catch (Exception ex)
@@ -328,21 +328,23 @@ namespace Promact.Oauth.Server.Repository
             }
             return true;
         }
+
         /// <summary>
         /// This method is used to send email to the currently added user
         /// </summary>
         /// <param name="user">Object of newly registered User</param>
         public void SendEmail(ApplicationUser user)
         {
-            string path = _hostingEnvironment.ContentRootPath + StringConstant.UserDetialTemplateFolderPath;
-            string finaleTemplate = "";
-            if (System.IO.File.Exists(path))
-            {
-                finaleTemplate = System.IO.File.ReadAllText(path);
-                finaleTemplate = finaleTemplate.Replace(StringConstant.UserEmail, user.Email).Replace(StringConstant.UserPassword, StringConstant.DefaultUserPassword).Replace(StringConstant.ResertPasswordUserName, user.FirstName);
-                _emailSender.SendEmailAsync(user.Email, StringConstant.LoginCredentials, finaleTemplate);
-            }
+            //string path = _hostingEnvironment.ContentRootPath + StringConstant.UserDetialTemplateFolderPath;
+            //string finaleTemplate = "";
+            //if (System.IO.File.Exists(path))
+            //{
+            //    finaleTemplate = System.IO.File.ReadAllText(path);
+            //    finaleTemplate = finaleTemplate.Replace(StringConstant.UserEmail, user.Email).Replace(StringConstant.UserPassword, StringConstant.DefaultUserPassword).Replace(StringConstant.ResertPasswordUserName, user.FirstName);
+            //    _emailSender.SendEmailAsync(user.Email, StringConstant.LoginCredentials, finaleTemplate);
+            //}
         }
+
 
         /// <summary>
         /// Method to get user details by user first name
