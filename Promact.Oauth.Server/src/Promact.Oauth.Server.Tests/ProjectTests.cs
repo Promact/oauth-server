@@ -193,7 +193,7 @@ namespace Promact.Oauth.Server.Tests
         //    Assert.NotNull(projects);
         //}
 
-        private async void AddRole()
+        private void AddRole()
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             if (!roleManager.Roles.Any())
@@ -204,7 +204,7 @@ namespace Promact.Oauth.Server.Tests
 
                 foreach (var role in roles)
                 {
-                    var roleExit = await roleManager.RoleExistsAsync(role.Name);
+                    var roleExit = roleManager.RoleExistsAsync(role.Name).Result;
                     if (!roleExit)
                     {
                         context.Roles.Add(role);
