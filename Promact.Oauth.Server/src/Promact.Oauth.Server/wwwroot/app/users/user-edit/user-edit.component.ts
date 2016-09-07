@@ -9,7 +9,6 @@ import {Md2Toast} from 'md2/toast';
 
 @Component({
     templateUrl: './app/users/user-edit/user-edit.html',
-
     providers: [Md2Toast]
 })
 
@@ -18,19 +17,32 @@ export class UserEditComponent {
     id: any;
     errorMessage: string;
     isSlackUserNameExist: boolean;
+    listOfRoles: any;
 
     constructor(private userService: UserService, private route: ActivatedRoute, private redirectionRoute: Router, private toast: Md2Toast) {
         this.user = new UserModel();
+        this.listOfRoles = [];
     }
 
     ngOnInit() {
+        this.getRoles();
         this.id = this.route.params.subscribe(params => {
             let id = this.route.snapshot.params['id'];
-
             this.userService.getUserById(id)
                 .subscribe(
                 user => this.user = user,
                 error => this.errorMessage = <any>error)
+        });
+    }
+
+    getRoles() {
+        this.userService.getRoles().subscribe((result) => {
+            if (result != null) {
+                for (var i = 0; i < result.length; i++) {
+                    this.listOfRoles.push(result[i]);
+                }
+            }
+        }, err => {
         });
     }
 
@@ -45,9 +57,9 @@ export class UserEditComponent {
             else if (result == false) {
                 this.toast.show('User Name or Slack User Name already exists.');
             }
-            
+
         }, err => {
-                });
+        });
         //}
         //else {
         //    this.toast.show('Slack User Name  already exists.');

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Models.ApplicationClasses;
 using Promact.Oauth.Server.Models.ManageViewModels;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Promact.Oauth.Server.Repository
 {
@@ -14,8 +15,8 @@ namespace Promact.Oauth.Server.Repository
         /// This method is used for adding user and return its id
         /// </summary>
         /// <param name="applicationUser">UserAc Application class object</param>
-        string AddUser(UserAc newUser, string createdBy);
-
+        Task<string> AddUser(UserAc newUser, string createdBy);
+        
 
         /// <summary>
         /// This method used for get user detail by user id 
@@ -37,6 +38,12 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <returns>List of all users</returns>
         Task<IEnumerable<UserAc>> GetAllUsers();
+
+        /// <summary>
+        /// This method used for get role list. 
+        /// </summary>
+        /// <returns></returns>
+        List<RolesAc> GetRoles();
 
 
         /// <summary>

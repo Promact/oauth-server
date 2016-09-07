@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Promact.Oauth.Server.Constants;
 
 namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
 {
@@ -18,7 +19,6 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         private readonly IMapper _mapperContext;
 
         #endregion
-
 
         #region "Constructor"
         public ConsumerAppRepository(IDataRepository<ConsumerApps> appsDataRepository, IMapper mapperContext)
@@ -50,7 +50,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         }
 
         /// <summary>
-        /// This method used for added Consumer apps and return primary key. -An
+        /// This method used for added consumer app and return primary key. -An
         /// </summary>
         /// <param name="aapsObject"></param>
         /// <returns></returns>
@@ -79,7 +79,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
 
 
         /// <summary>
-        /// This method used forget list of apps. -An
+        /// This method used for get list of apps. -An
         /// </summary>
         /// <returns></returns>
         public async Task<List<ConsumerApps>> GetListOfApps()
@@ -98,7 +98,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// <summary>
         /// This method used fro get apps object by id. -An
         /// </summary>
-        /// <param name="id">pass apps object primarykey</param>
+        /// <param name="id">pass app object primary key</param>
         /// <returns></returns>
         public async Task<ConsumerApps> GetConsumerAppsById(int id)
         {
@@ -115,7 +115,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
 
 
         /// <summary>
-        /// This method used for update consumer apps and return primary key. -An
+        /// This method used for update consumer app and return primary key. -An
         /// </summary>
         /// <param name="apps"></param>
         /// <returns></returns>
@@ -143,7 +143,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         #region "Private Method(s)"
 
         /// <summary>
-        /// This method used for Created Random Number For AuthId and Auth Secreate. -An
+        /// This method used for created random number For AuthId and Auth Secreate. -An
         /// </summary>
         /// <param name="isAuthId"></param>
         /// <returns></returns>
@@ -154,14 +154,14 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
                 var random = new Random();
                 if (isAuthId)
                 {
-                    const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-                    return new string(Enumerable.Repeat(chars, 15)
+                    //const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+                    return new string(Enumerable.Repeat(StringConstant.ATOZ0TO9, 15)
                       .Select(s => s[random.Next(s.Length)]).ToArray());
                 }
                 else
                 {
-                    const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-                    return new string(Enumerable.Repeat(chars, 30)
+                    //const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                    return new string(Enumerable.Repeat(StringConstant.ATOZaTOz0TO9, 30)
                       .Select(s => s[random.Next(s.Length)]).ToArray());
                 }
             }
