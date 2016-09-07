@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.Extensions.FileProviders;
 
 namespace Promact.Oauth.Server.Tests
 {
@@ -35,13 +37,16 @@ namespace Promact.Oauth.Server.Tests
                 cfg.AddProfile(new AutoMapperProfileConfiguration());
             });
 
+            var testHostingEnvironment = new MockHostingEnvironment();
+
             var services = new ServiceCollection();
             services.AddEntityFrameworkInMemoryDatabase();
+
+           services.AddSingleton<IHostingEnvironment>(testHostingEnvironment);
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<PromactOauthDbContext>()
                 .AddDefaultTokenProviders();
-
             services.AddScoped<IEnsureSeedData, EnsureSeedData>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IProjectRepository, ProjectRepository>();
@@ -58,9 +63,88 @@ namespace Promact.Oauth.Server.Tests
             services.AddTransient<ISmsSender, AuthMessageSender>();
             services.AddDbContext<PromactOauthDbContext>(options =>
                 options.UseInMemoryDatabase());
-             serviceProvider = services.BuildServiceProvider();
-            
-            
+            serviceProvider = services.BuildServiceProvider();
+        }
+    }
+    
+    public class MockHostingEnvironment : IHostingEnvironment
+    {
+        public string ApplicationName
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public IFileProvider ContentRootFileProvider
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public string ContentRootPath
+        {
+            get
+            {
+                return "test";
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public string EnvironmentName
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public IFileProvider WebRootFileProvider
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public string WebRootPath
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }

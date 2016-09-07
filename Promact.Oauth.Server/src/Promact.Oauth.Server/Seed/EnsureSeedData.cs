@@ -32,6 +32,7 @@ namespace Promact.Oauth.Server.Seed
                 List<IdentityRole> roles = new List<IdentityRole>();
                 roles.Add(new IdentityRole { Name = "Employee", NormalizedName = "EMPLOYEE" });
                 roles.Add(new IdentityRole { Name = "Admin", NormalizedName = "ADMIN" });
+                roles.Add(new IdentityRole { Name = "Management", NormalizedName = "Management" });
 
                 foreach (var role in roles)
                 {

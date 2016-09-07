@@ -16,9 +16,27 @@ export class UserAddComponent {
     isSlackUserNameExist: boolean;
     @Input()
     userModel: UserModel;
+    listOfRoles: any;
 
     constructor(private userService: UserService, private redirectionRoute: Router, private route: ActivatedRoute, private toast: Md2Toast) {
         this.userModel = new UserModel();
+        this.listOfRoles = [];
+    }
+
+
+    ngOnInit() {
+        this.getRoles();
+    }
+
+    getRoles() {
+        this.userService.getRoles().subscribe((result) => {
+            if (result != null) {
+                for (var i = 0; i < result.length; i++) {
+                    this.listOfRoles.push(result[i]);
+                }
+            }
+        }, err => {
+        });
     }
 
     addUser(userModel) {
@@ -60,8 +78,7 @@ export class UserAddComponent {
         });
     }
 
-    checkSlackUserName(slackUserName)
-    {
+    checkSlackUserName(slackUserName) {
         this.isSlackUserNameExist = false;
         this.userService.findUserBySlackUserName(slackUserName).subscribe((isSlackUserNameExist) => {
             if (isSlackUserNameExist) {
@@ -77,5 +94,7 @@ export class UserAddComponent {
     goBack() {
         this.redirectionRoute.navigate(['admin/user']);
     }
+
+
 }
 

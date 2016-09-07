@@ -6,9 +6,9 @@ using System;
 using Promact.Oauth.Server.Data_Repository;
 using Xunit;
 using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
 using Promact.Oauth.Server.Models.ApplicationClasses;
 using System.Threading.Tasks;
+using Promact.Oauth.Server.Constants;
 
 namespace Promact.Oauth.Server.Tests
 {
@@ -21,36 +21,34 @@ namespace Promact.Oauth.Server.Tests
         {
             _consumerAppRespository = serviceProvider.GetService<IConsumerAppRepository>();
             _consumerAppsContext = serviceProvider.GetService<IDataRepository<ConsumerApps>>();
-
         }
-
 
         #region Test Case
 
         /// <summary>
-        /// This test case for add Comnsumer Apps. -An
+        /// This test case for add Consumer Apps. -An
         /// </summary>
         [Fact, Trait("Category", "Required")]
         public void AddConsumerApps()
         {
             ConsumerAppsAc consumerApp = GetConsumerApp();
-            consumerApp.Name = "Demo Name";
-            Task<int> id = _consumerAppRespository.AddConsumerApps(consumerApp);
-            var consumerApps = _consumerAppsContext.FirstOrDefault(x => x.Id == id.Result);
+            consumerApp.Name = StringConstant.ConsumerAppNameDemo;
+            int id = _consumerAppRespository.AddConsumerApps(consumerApp).Result;
+            var consumerApps = _consumerAppsContext.FirstOrDefault(x => x.Id == id);
             Assert.NotNull(consumerApps);
         }
 
         /// <summary>
-        /// This test case used for,when add new consumer app check consumer name is quniqe duplication not allow. -An
+        /// This test case used for check consumer name is unique or not. -An
         /// </summary>
         [Fact, Trait("Category", "Required")]
         public void ConsumerAppNameUnique()
         {
             ConsumerAppsAc consumerApp = GetConsumerApp();
-            consumerApp.Name = "ABCEDF";
+            consumerApp.Name = StringConstant.ConsumerAppNameDemo1;
             _consumerAppRespository.AddConsumerApps(consumerApp);
-            Task<int>  newId = _consumerAppRespository.AddConsumerApps(consumerApp);
-            Assert.Equal(0, newId.Result);
+            int newId = _consumerAppRespository.AddConsumerApps(consumerApp).Result;
+            Assert.Equal(0, newId);
         }
 
         /// <summary>
@@ -60,24 +58,24 @@ namespace Promact.Oauth.Server.Tests
         public void GetAppDetailsByClientId()
         {
             ConsumerAppsAc consumerApp = GetConsumerApp();
-            consumerApp.Name = "Demo2";
-            Task<int> id = _consumerAppRespository.AddConsumerApps(consumerApp);
-            var consumerApps = _consumerAppsContext.FirstOrDefault(x => x.Id == id.Result);
+            consumerApp.Name = StringConstant.ConsumerAppNameDemo2;
+            int id = _consumerAppRespository.AddConsumerApps(consumerApp).Result;
+            var consumerApps = _consumerAppsContext.FirstOrDefault(x => x.Id == id);
             var getApplication = _consumerAppRespository.GetAppDetails(consumerApps.AuthId);
             Assert.NotNull(getApplication);
         }
 
         /// <summary>
-        /// This test case used for check app details not fetch by Invalid client id.
+        /// This test case used for check app details not fetch by invalid client id.
         /// </summary>
         [Fact, Trait("Category", "Required")]
         public void ApplicationDetailsFetchOnlyValidClientId()
         {
             ConsumerAppsAc consumerApp = GetConsumerApp();
-            consumerApp.Name = "Demo3";
+            consumerApp.Name = StringConstant.ConsumerAppNameDemo3;
             _consumerAppRespository.AddConsumerApps(consumerApp);
-            Task<ConsumerApps> getApplication = _consumerAppRespository.GetAppDetails("ABEDNGdeMR1234568F");
-            Assert.Null(getApplication.Result);
+            ConsumerApps getApplication = _consumerAppRespository.GetAppDetails("ABEDNGdeMR1234568F").Result;
+            Assert.Null(getApplication);
         }
 
 
@@ -89,25 +87,25 @@ namespace Promact.Oauth.Server.Tests
         public void GetConsumerAppsById()
         {
             ConsumerAppsAc consumerApp = GetConsumerApp();
-            consumerApp.Name = "Demo4";
-            Task<int> id = _consumerAppRespository.AddConsumerApps(consumerApp);
-            Task<ConsumerApps> getApplication = _consumerAppRespository.GetConsumerAppsById(id.Result);
+            consumerApp.Name = StringConstant.ConsumerAppNameDemo4;
+            int id = _consumerAppRespository.AddConsumerApps(consumerApp).Result;
+            Task<ConsumerApps> getApplication = _consumerAppRespository.GetConsumerAppsById(id);
             Assert.NotNull(getApplication.Result);
         }
 
 
         /// <summary>
-        /// This test case used for check consumer app details not fetch by in valid primary key id. -An
+        /// This test case used for check consumer app details not fetch by invalid primary key id. -An
         /// </summary>
         ///  
         [Fact, Trait("Category", "Required")]
         public void ConsumerAppGetByWrongId()
         {
             ConsumerAppsAc consumerApp = GetConsumerApp();
-            consumerApp.Name = "Demo5";
+            consumerApp.Name = StringConstant.ConsumerAppNameDemo5;
             _consumerAppRespository.AddConsumerApps(consumerApp);
-            Task<ConsumerApps> getApplication = _consumerAppRespository.GetConsumerAppsById(23213);
-            Assert.Null(getApplication.Result);
+            ConsumerApps getApplication = _consumerAppRespository.GetConsumerAppsById(23213).Result;
+            Assert.Null(getApplication);
         }
 
 
@@ -118,10 +116,10 @@ namespace Promact.Oauth.Server.Tests
         public void GetListOfApps()
         {
             ConsumerAppsAc consumerApp = GetConsumerApp();
-            consumerApp.Name = "Demo6";
+            consumerApp.Name = StringConstant.ConsumerAppNameDemo6;
             _consumerAppRespository.AddConsumerApps(consumerApp);
-            Task<List<ConsumerApps>> listOfApps = _consumerAppRespository.GetListOfApps();
-            Assert.NotEmpty(listOfApps.Result);
+            List<ConsumerApps> listOfApps = _consumerAppRespository.GetListOfApps().Result;
+            Assert.NotEmpty(listOfApps);
         }
 
         /// <summary>
@@ -131,34 +129,34 @@ namespace Promact.Oauth.Server.Tests
         public void UpdateConsumerApps()
         {
             ConsumerAppsAc consumerApp = GetConsumerApp();
-            consumerApp.Name = "Demo for Update";
-            Task<int> id = _consumerAppRespository.AddConsumerApps(consumerApp);
-            Task<ConsumerApps> consumerApps = _consumerAppRespository.GetConsumerAppsById(id.Result);
-            consumerApps.Result.Description = "XyzName";
-            consumerApps.Result.UpdatedDateTime = DateTime.Now;
-            consumerApps.Result.UpdatedBy = "Ankit";
-            Task<int> newId = _consumerAppRespository.UpdateConsumerApps(consumerApps.Result);
-            Assert.NotEqual(0, newId.Result);
+            consumerApp.Name = StringConstant.ConsumerAppNameDemo7;
+            int id = _consumerAppRespository.AddConsumerApps(consumerApp).Result;
+            ConsumerApps consumerApps = _consumerAppRespository.GetConsumerAppsById(id).Result;
+            consumerApps.Description = StringConstant.ConsumerDescription;
+            consumerApps.UpdatedDateTime = DateTime.Now;
+            consumerApps.UpdatedBy = StringConstant.UpdateBy;
+            int newId = _consumerAppRespository.UpdateConsumerApps(consumerApps).Result;
+            Assert.NotEqual(0, newId);
         }
 
         /// <summary>
-        /// This test case used for, When update consumer app check consumer name is unique duplication not allow. -An
+        /// This test case used for check consumer name is unique or not when update consumer app. -An
         /// </summary>
         [Fact, Trait("Category", "Required")]
         public void CheckConsumerAppNameUnique()
         {
             var consumer = GetConsumerApp();
-            consumer.Name = "Twitter";
+            consumer.Name = StringConstant.TwitterName;
             _consumerAppRespository.AddConsumerApps(consumer);
             var consumerNew = GetConsumerApp();
-            consumerNew.Name = "Face Book";
-            Task<int> idOfConsumer = _consumerAppRespository.AddConsumerApps(consumerNew);
-            Task<ConsumerApps> oldConsumerApp = _consumerAppRespository.GetConsumerAppsById(idOfConsumer.Result);
-            oldConsumerApp.Result.Name = "Twitter";
-            Task<int> newId = _consumerAppRespository.UpdateConsumerApps(oldConsumerApp.Result);
-            Assert.Equal(0, newId.Result);
+            consumerNew.Name = StringConstant.FaceBookName;
+            int idOfConsumer = _consumerAppRespository.AddConsumerApps(consumerNew).Result;
+            ConsumerApps oldConsumerApp = _consumerAppRespository.GetConsumerAppsById(idOfConsumer).Result;
+            oldConsumerApp.Name = StringConstant.TwitterName;
+            int newId = _consumerAppRespository.UpdateConsumerApps(oldConsumerApp).Result;
+            Assert.Equal(0, newId);
         }
-        
+
 
         #endregion
 
@@ -171,9 +169,9 @@ namespace Promact.Oauth.Server.Tests
         private ConsumerAppsAc GetConsumerApp()
         {
             ConsumerAppsAc comnsumerApp = new ConsumerAppsAc();
-            comnsumerApp.CallbackUrl = "https://promact.slack.com/messages/@roshni/";
-            comnsumerApp.CreatedBy = "Roshni";
-            comnsumerApp.Description = "This App is Demo App, Please don't used";
+            comnsumerApp.CallbackUrl = StringConstant.CallbackUrl;
+            comnsumerApp.CreatedBy = StringConstant.CreatedBy;
+            comnsumerApp.Description = StringConstant.ConsumerDescription;
             return comnsumerApp;
         }
         #endregion

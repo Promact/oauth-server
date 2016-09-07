@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -12,12 +10,16 @@ using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Models.AccountViewModels;
 using Promact.Oauth.Server.Services;
 using Promact.Oauth.Server.Models.ApplicationClasses;
+using Promact.Oauth.Server.Constants;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Promact.Oauth.Server.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+        private readonly IHostingEnvironment _hostingEnvironment;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
@@ -29,9 +31,11 @@ namespace Promact.Oauth.Server.Controllers
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
             ISmsSender smsSender,
-            ILoggerFactory loggerFactory)
+            ILoggerFactory loggerFactory,
+            IHostingEnvironment hostingEnvironment)
         {
             _userManager = userManager;
+            _hostingEnvironment = hostingEnvironment;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _smsSender = smsSender;
@@ -81,7 +85,7 @@ namespace Promact.Oauth.Server.Controllers
                     return View(model);
                 }
             }
-            
+
             //If we got this far, something failed, redisplay form
             return View(model);
         }
@@ -106,7 +110,7 @@ namespace Promact.Oauth.Server.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email};
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -264,21 +268,24 @@ namespace Promact.Oauth.Server.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByNameAsync(model.Email);
-                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+                if (user == null)
                 {
-                    // Don't reveal that the user does not exist or is not confirmed
-                    return View("ForgotPasswordConfirmation");
+                    @ViewData["EmailNotExist"] = StringConstant.EmailNotExists;
+                    return View();
                 }
 
-                // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
                 // Send an email with this link
-                //var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                //var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                //await _emailSender.SendEmailAsync(model.Email, "Reset Password",
-                //   $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>");
-                //return View("ForgotPasswordConfirmation");
+                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var resetPasswordLink = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+                string path = _hostingEnvironment.ContentRootPath + StringConstant.ForgotPasswordTemplateFolderPath;
+                if (System.IO.File.Exists(path))
+                {
+                    string finaleTemplate = System.IO.File.ReadAllText(path);
+                    finaleTemplate = finaleTemplate.Replace(StringConstant.ResetPasswordLink, resetPasswordLink).Replace(StringConstant.ResertPasswordUserName, user.FirstName);
+                    await _emailSender.SendEmailAsync(model.Email, StringConstant.ForgotPassword, finaleTemplate);
+                    @ViewData["MailSentSuccessfully"] = StringConstant.SuccessfullySendMail.Replace("{{emailaddress}}", "'" + model.Email + "'");
+                }
             }
-
             // If we got this far, something failed, redisplay form
             return View(model);
         }
@@ -296,9 +303,19 @@ namespace Promact.Oauth.Server.Controllers
         // GET: /Account/ResetPassword
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult ResetPassword(string code = null)
+        public IActionResult ResetPassword(string code = null, string userId = null)
         {
-            return code == null ? View("Error") : View();
+            if (code != null && userId != null)
+            {
+                ResetPasswordViewModel model = new ResetPasswordViewModel();
+                var user = _userManager.FindByIdAsync(userId);
+                if (user.Result != null)
+                {
+                    model.Email = user.Result.Email;
+                    return View(model);
+                }
+            }
+            return View("Error");
         }
 
         //
@@ -308,23 +325,23 @@ namespace Promact.Oauth.Server.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return View(model);
+                var user = await _userManager.FindByIdAsync(model.UserId);
+                if (user == null)
+                {
+                    // Don't reveal that the user does not exist
+                    return RedirectToAction(nameof(AccountController.ResetPasswordConfirmation), "Account");
+                }
+                var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction(nameof(AccountController.ResetPasswordConfirmation), "Account");
+                }
+                @ViewData["Error"] = result.Errors.FirstOrDefault().Description;
+                model.Email = user.Email;
             }
-            var user = await _userManager.FindByNameAsync(model.Email);
-            if (user == null)
-            {
-                // Don't reveal that the user does not exist
-                return RedirectToAction(nameof(AccountController.ResetPasswordConfirmation), "Account");
-            }
-            var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
-            if (result.Succeeded)
-            {
-                return RedirectToAction(nameof(AccountController.ResetPasswordConfirmation), "Account");
-            }
-            AddErrors(result);
-            return View();
+            return View(model);
         }
 
         //

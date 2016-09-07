@@ -2,7 +2,7 @@
 
     <div class="card-title-block">
         <div class="title in_block items">
-            <h3>Edit Consumer app</h3>
+            <h3>Edit Consumer App</h3>
         </div>
 
     </div>
@@ -22,7 +22,7 @@
 
         <div class="form-group d-flex">
             <div class="half-width mr-25">
-                <md-input class="full-width" name="name" placeholder="name" [(ngModel)]="consumerModel.Name" maxlength="255" required #name="ngModel"></md-input>
+                <md-input class="full-width" name="name" placeholder="Name" [(ngModel)]="consumerModel.Name" maxlength="255" required #name="ngModel"></md-input>
                 <div [hidden]="!(name.touched && !name.valid && name.errors.required)" class="error">Name is required</div>
 
             </div>

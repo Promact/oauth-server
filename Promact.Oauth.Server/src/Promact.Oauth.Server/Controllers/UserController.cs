@@ -7,15 +7,18 @@ using Promact.Oauth.Server.Models.ManageViewModels;
 using Microsoft.AspNetCore.Identity;
 using Promact.Oauth.Server.Models.ApplicationClasses;
 using System.Threading.Tasks;
+using System.Linq;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace Promact.Oauth.Server.Controllers
 {
     [Route("api/[controller]")]
-   // [Authorize(Roles = "Admin")]
+    // [Authorize(Roles = "Admin")]
     public class UserController : BaseController
     {
         #region "Private Variable(s)"
-        
+
         private readonly IUserRepository _userRepository;
         private readonly UserManager<ApplicationUser> _userManager;
 
@@ -45,6 +48,14 @@ namespace Promact.Oauth.Server.Controllers
             return Ok(await _userRepository.GetAllUsers());
         }
 
+        [HttpGet]
+        [Route("getRole")]
+        public IActionResult GetRole()
+        {
+            List<RolesAc> listofRoles = _userRepository.GetRoles();
+            return Ok(listofRoles);
+        }
+
 
         /// <summary>
         /// This method is used to get particular user's details by his/her id
@@ -56,7 +67,7 @@ namespace Promact.Oauth.Server.Controllers
         [Authorize(Roles = "Admin,Employee")]
         public async Task<IActionResult> GetUserById(string id)
         {
-            var user =await _userRepository.GetById(id);
+            var user = await _userRepository.GetById(id);
             if (user == null)
             {
                 return NotFound();
@@ -74,14 +85,14 @@ namespace Promact.Oauth.Server.Controllers
         [HttpPost]
         [Route("add")]
         [Authorize(Roles = "Admin")]
-        public IActionResult RegisterUser([FromBody] UserAc newUser)
+        public async Task<IActionResult> RegisterUser([FromBody] UserAc newUser)
         {
             string createdBy = _userManager.GetUserId(User);
             try
             {
                 if (ModelState.IsValid)
                 {
-                    _userRepository.AddUser(newUser, createdBy);
+                   await _userRepository.AddUser(newUser, createdBy);
                     return Ok(true);
                 }
                 return Ok(false);
@@ -106,7 +117,7 @@ namespace Promact.Oauth.Server.Controllers
             string updatedBy = _userManager.GetUserId(User);
             if (ModelState.IsValid)
             {
-                string id=_userRepository.UpdateUserDetails(editedUser, updatedBy);
+                string id = _userRepository.UpdateUserDetails(editedUser, updatedBy);
                 if (id != "")
                 { return Ok(true); }
                 else { return Ok(false); }
@@ -135,11 +146,11 @@ namespace Promact.Oauth.Server.Controllers
                 {
                     _userRepository.ChangePassword(passwordModel);
                     return Ok(true);
-                    
+
                 }
             }
             return Ok(false);
-            
+
         }
 
 
@@ -189,6 +200,8 @@ namespace Promact.Oauth.Server.Controllers
         {
             return Ok(_userRepository.FindUserBySlackUserName(slackUserName));
         }
+
+
         #endregion
     }
 }

@@ -11,4 +11,5 @@
     NumberOfSickLeave: number;
     JoiningDate: Date;
     SlackUserName: string;
+    RoleName: string;
 }
