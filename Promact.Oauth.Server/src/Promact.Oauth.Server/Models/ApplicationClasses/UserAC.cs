@@ -40,6 +40,9 @@ namespace Promact.Oauth.Server.Models.ApplicationClasses
         [JsonProperty("Role")]
         public string Role { get; set; }
 
+        [JsonProperty("Role")]
+        public string Role { get; set; }
+
         [JsonProperty("JoiningDate")]
         public DateTime JoiningDate { get; set; }
 
