@@ -68,29 +68,29 @@ namespace Promact.Oauth.Server.Tests
         }
 
 
-        /// <summary>
-        /// This test case checks if a user exists with the specified Email
-        /// </summary>
-        [Fact, Trait("Category", "Required")]
-        public void FindByEmail()
-        {
-            AddRole().Wait();
-            var result = _userRepository.AddUser(_testUser, "Rajdeep").Result;
-            var exists = _userRepository.FindByEmail("testUser@promactinfo.com");
-            Assert.Equal(true, exists);
-        }
+        ///// <summary>
+        ///// This test case checks if a user exists with the specified Email
+        ///// </summary>
+        //[Fact, Trait("Category", "Required")]
+        //public void FindByEmail()
+        //{
+        //    AddRole().Wait();
+        //    var result = _userRepository.AddUser(_testUser, "Rajdeep").Result;
+        //    var exists = _userRepository.FindByEmail("testUser@promactinfo.com");
+        //    Assert.Equal(true, exists);
+        //}
 
-        /// <summary>
-        /// This test case checks if a user exists with the specified UserName
-        /// </summary>
-        [Fact, Trait("Category", "Required")]
-        public void FindByUserName()
-        {
-            AddRole().Wait();
-            var id = _userRepository.AddUser(_testUser, "Rajdeep").Result;
-            var exists = _userRepository.FindByUserName("testUser@promactinfo.com");
-            Assert.Equal(true, exists);
-        }
+        ///// <summary>
+        ///// This test case checks if a user exists with the specified UserName
+        ///// </summary>
+        //[Fact, Trait("Category", "Required")]
+        //public void FindByUserName()
+        //{
+        //    AddRole().Wait();
+        //    var id = _userRepository.AddUser(_testUser, "Rajdeep").Result;
+        //    var exists = _userRepository.FindByUserName("testUser@promactinfo.com");
+        //    Assert.Equal(true, exists);
+        //}
 
         /// <summary>
         /// This test case is used for adding new user
@@ -174,6 +174,7 @@ namespace Promact.Oauth.Server.Tests
             Assert.Equal(0, user.Count);
         }
 
+       
         /// <summary>
         /// Test case use for getting management's details by users first name
         /// </summary>
