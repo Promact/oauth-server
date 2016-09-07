@@ -35,7 +35,7 @@ describe('User Add Test', () => {
 
     });
     beforeEach(inject([UserService, Router, ActivatedRoute, Md2Toast], (userService: UserService, router: Router,route: ActivatedRoute,toast: Md2Toast) => {
-        userAddComponent = new UserAddComponent(userService, router, route, toast);
+        //userAddComponent = new UserAddComponent(userService, router, route, toast);
     }));
 
      /**
