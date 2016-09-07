@@ -192,6 +192,7 @@
         [Fact, Trait("Category", "Required")]
         public void UserDetail()
         {
+            GenerateTestUser();
             AddRole();
             string id = _userRepository.AddUser(userLocal, "siddhartha");
             var user = _userRepository.UserDetialByUserSlackName("myslackname");
@@ -222,6 +223,19 @@
             string id = _userRepository.AddUser(_testUser, "Siddhartha");
             var user = await _userRepository.ManagementDetails();
             Assert.Equal(0, user.Count);
+        }
+
+        /// <summary>
+        /// Test case to get user's number of casual leave
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public void GetUserCasualLeaveBySlackName()
+        {
+            GenerateTestUser();
+            AddRole();
+            var id = _userRepository.AddUser(userLocal, "Siddhartha");
+            var casualLeave = _userRepository.GetUserCasualLeaveBySlackName(userLocal.SlackUserName);
+            Assert.Equal(8,casualLeave);
         }
 
         /// <summary>
