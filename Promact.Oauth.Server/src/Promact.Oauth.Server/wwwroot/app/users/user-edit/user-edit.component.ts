@@ -1,0 +1,87 @@
+﻿import {Component} from "@angular/core";
+import {Router, ActivatedRoute, ROUTER_DIRECTIVES} from "@angular/router";
+
+
+
+import { UserService }   from '../user.service';
+import {UserModel} from '../user.model';
+import {Md2Toast} from 'md2/toast';
+
+@Component({
+    templateUrl: './app/users/user-edit/user-edit.html',
+    providers: [Md2Toast]
+})
+
+export class UserEditComponent {
+    user: UserModel;
+    id: any;
+    errorMessage: string;
+    isSlackUserNameExist: boolean;
+    listOfRoles: any;
+
+    constructor(private userService: UserService, private route: ActivatedRoute, private redirectionRoute: Router, private toast: Md2Toast) {
+        this.user = new UserModel();
+        this.listOfRoles = [];
+    }
+
+    ngOnInit() {
+        this.getRoles();
+        this.id = this.route.params.subscribe(params => {
+            let id = this.route.snapshot.params['id'];
+            this.userService.getUserById(id)
+                .subscribe(
+                user => this.user = user,
+                error => this.errorMessage = <any>error)
+        });
+    }
+
+    getRoles() {
+        this.userService.getRoles().subscribe((result) => {
+            if (result != null) {
+                for (var i = 0; i < result.length; i++) {
+                    this.listOfRoles.push(result[i]);
+                }
+            }
+        }, err => {
+        });
+    }
+
+
+    editUser(user: UserModel) {
+        //if (this.isSlackUserNameExist == true) {
+        this.userService.editUser(user).subscribe((result) => {
+            if (result == true) {
+                this.toast.show('User updated successfully.');
+                this.redirectionRoute.navigate(['admin/user']);
+            }
+            else if (result == false) {
+                this.toast.show('User Name or Slack User Name already exists.');
+            }
+
+        }, err => {
+        });
+        //}
+        //else {
+        //    this.toast.show('Slack User Name  already exists.');
+        //}
+    }
+
+    //checkSlackUserName(slackUserName) {
+    //    this.isSlackUserNameExist = false;
+    //    this.userService.findUserBySlackUserName(slackUserName).subscribe((isSlackUserNameExist) => {
+    //        if (isSlackUserNameExist) {
+    //            this.isSlackUserNameExist = true;
+    //        }
+    //        else {
+    //            this.isSlackUserNameExist = false;
+    //        }
+    //    }, err => {
+    //    });
+    //}
+
+
+    goBack() {
+        this.redirectionRoute.navigate(['admin/user']);
+    }
+}
+
