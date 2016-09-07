@@ -186,71 +186,71 @@
 //        //    Assert.Equal(0, user.Count);
 //        //}
 
-        /// <summary>
-        /// Test case use for getting user details by its first name
-        /// </summary>
-        [Fact, Trait("Category", "Required")]
-        public void UserDetail()
-        {
-            GenerateTestUser();
-            AddRole();
-            string id = _userRepository.AddUser(userLocal, "siddhartha");
-            var user = _userRepository.UserDetialByUserSlackName("myslackname");
-            Assert.Equal(user.Email, userLocal.Email);
-        }
+        ///// <summary>
+        ///// Test case use for getting user details by its first name
+        ///// </summary>
+        //[Fact, Trait("Category", "Required")]
+        //public void UserDetail()
+        //{
+        //    GenerateTestUser();
+        //    AddRole();
+        //    string id = _userRepository.AddUser(userLocal, "siddhartha");
+        //    var user = _userRepository.UserDetialByUserSlackName("myslackname");
+        //    Assert.Equal(user.Email, userLocal.Email);
+        //}
 
-        /// <summary>
-        /// Test case use for getting management's details by users first name
-        /// </summary>
-        [Fact, Trait("Category", "Required")]
-        public async Task ManagementDetails()
-        {
-            GenerateTestUser();
-            AddRole();
-            string id = _userRepository.AddUser(_testUser, "Siddhartha");
-            var user = await _userRepository.TeamLeaderByUserSlackName("test");
-            Assert.Equal(0, user.Count);
-        }
+        ///// <summary>
+        ///// Test case use for getting management's details by users first name
+        ///// </summary>
+        //[Fact, Trait("Category", "Required")]
+        //public async Task ManagementDetails()
+        //{
+        //    GenerateTestUser();
+        //    AddRole();
+        //    string id = _userRepository.AddUser(_testUser, "Siddhartha");
+        //    var user = await _userRepository.TeamLeaderByUserSlackName("test");
+        //    Assert.Equal(0, user.Count);
+        //}
 
-        /// <summary>
-        /// Test case to get user's number of casual leave
-        /// </summary>
-        [Fact, Trait("Category", "Required")]
-        public async Task ManagementDetails()
-        {
-            GenerateTestUser();
-            AddRole();
-            string id = _userRepository.AddUser(_testUser, "Siddhartha");
-            var user = await _userRepository.ManagementDetails();
-            Assert.Equal(0, user.Count);
-        }
+        ///// <summary>
+        ///// Test case to get user's number of casual leave
+        ///// </summary>
+        //[Fact, Trait("Category", "Required")]
+        //public async Task ManagementDetails()
+        //{
+        //    GenerateTestUser();
+        //    AddRole();
+        //    string id = _userRepository.AddUser(_testUser, "Siddhartha");
+        //    var user = await _userRepository.ManagementDetails();
+        //    Assert.Equal(0, user.Count);
+        //}
 
-        /// <summary>
-        /// Test case to get user's number of casual leave
-        /// </summary>
-        [Fact, Trait("Category", "Required")]
-        public void GetUserCasualLeaveBySlackName()
-        {
-            GenerateTestUser();
-            AddRole();
-            var id = _userRepository.AddUser(userLocal, "Siddhartha");
-            var casualLeave = _userRepository.GetUserCasualLeaveBySlackName(userLocal.SlackUserName);
-            Assert.Equal(8,casualLeave);
-        }
+        ///// <summary>
+        ///// Test case to get user's number of casual leave
+        ///// </summary>
+        //[Fact, Trait("Category", "Required")]
+        //public void GetUserCasualLeaveBySlackName()
+        //{
+        //    GenerateTestUser();
+        //    AddRole();
+        //    var id = _userRepository.AddUser(userLocal, "Siddhartha");
+        //    var casualLeave = _userRepository.GetUserCasualLeaveBySlackName(userLocal.SlackUserName);
+        //    Assert.Equal(8,casualLeave);
+        //}
 
-        /// <summary>
-        /// Test case to get user's number of casual leave
-        /// </summary>
-        [Fact, Trait("Category", "Required")]
-        public void GetUserCasualLeaveBySlackName()
-        {
-            GenerateTestUser();
-            AddRole();
-            var id = _userRepository.AddUser(userLocal, "Siddhartha");
-            var casualLeave = _userRepository.GetUserCasualLeaveBySlackName(userLocal.SlackUserName);
-            Assert.Equal(8,casualLeave);
-        }
-        #endregion
+        ///// <summary>
+        ///// Test case to get user's number of casual leave
+        ///// </summary>
+        //[Fact, Trait("Category", "Required")]
+        //public void GetUserCasualLeaveBySlackName()
+        //{
+        //    GenerateTestUser();
+        //    AddRole();
+        //    var id = _userRepository.AddUser(userLocal, "Siddhartha");
+        //    var casualLeave = _userRepository.GetUserCasualLeaveBySlackName(userLocal.SlackUserName);
+        //    Assert.Equal(8,casualLeave);
+        //}
+        //#endregion
 //        private async Task AddRole()
 //        {
 //            if (!_roleManager.Roles.Any())
@@ -283,17 +283,17 @@
 //                RoleName = StringConstant.Employee
 //            };
 //    }
-//}
+////}
 
-        private UserAc userLocal = new UserAc()
-        {
-            Email = "testing@promactinfo.com",
-            UserName = "testing@promactinfo.com",
-            FirstName = "Myfirsttest",
-            LastName = "testing",
-            JoiningDate = DateTime.ParseExact("02-09-2016", "dd-MM-yyyy",null),
-            //JoiningDate = DateTime.UtcNow,
-            SlackUserName = "myslackname"
-        };
-    }
-}
+//        private UserAc userLocal = new UserAc()
+//        {
+//            Email = "testing@promactinfo.com",
+//            UserName = "testing@promactinfo.com",
+//            FirstName = "Myfirsttest",
+//            LastName = "testing",
+//            JoiningDate = DateTime.ParseExact("02-09-2016", "dd-MM-yyyy",null),
+//            //JoiningDate = DateTime.UtcNow,
+//            SlackUserName = "myslackname"
+//        };
+//    }
+//}

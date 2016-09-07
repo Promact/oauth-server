@@ -45,7 +45,6 @@ namespace Promact.Oauth.Server.Repository
             _emailSender = emailSender;
             _mapperContext = mapperContext;
             _projectUserRepository = projectUserRepository;
-            _projectDataRepository = projectDataRepository;
             _projectRepository = projectRepository;
             _roleManager = roleManager;
         }
