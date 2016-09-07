@@ -24,6 +24,7 @@ namespace Promact.Oauth.Server.Repository
 
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly IDataRepository<ApplicationUser> _applicationUserDataRepository;
+      
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IEmailSender _emailSender;
@@ -66,9 +67,10 @@ namespace Promact.Oauth.Server.Repository
                 user.UserName = user.Email;
                 user.CreatedBy = createdBy;
                 user.CreatedDateTime = DateTime.UtcNow;
-               await _userManager.CreateAsync(user, "User@123");
-               await _userManager.AddToRoleAsync(user, newUser.RoleName);
-                //SendEmail(user);
+
+                await _userManager.CreateAsync(user, "User@123");
+                await _userManager.AddToRoleAsync(user, newUser.RoleName);
+               //SendEmail(user);
                 return user.Id;
             }
             catch (Exception ex)

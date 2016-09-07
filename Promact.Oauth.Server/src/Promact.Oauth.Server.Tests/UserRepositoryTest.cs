@@ -10,6 +10,7 @@ using Promact.Oauth.Server.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Promact.Oauth.Server.Tests
@@ -112,7 +113,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public void AddUser()
         {
-            AddRole();
+            AddRole().Wait();
             string id = _userRepository.AddUser(_testUser, StringConstant.CreatedBy).Result;
             ApplicationUser user = _userManager.FindByIdAsync(id).Result;
             Assert.NotNull(user);
@@ -196,11 +197,10 @@ namespace Promact.Oauth.Server.Tests
         //    var user = _userRepository.ManagementByUserId().Result;
         //    Assert.Equal(0, user.Count);
         //}
-
-
+        
         #endregion
 
-        private void AddRole()
+        private async Task AddRole()
         {
             if (!_roleManager.Roles.Any())
             {
@@ -210,10 +210,10 @@ namespace Promact.Oauth.Server.Tests
 
                 foreach (var role in roles)
                 {
-                    var roleExit = _roleManager.RoleExistsAsync(role.Name).Result;
+                    var roleExit = await _roleManager.RoleExistsAsync(role.Name);
                     if (!roleExit)
                     {
-                        var result = _roleManager.CreateAsync(role).Result;
+                        var result = await _roleManager.CreateAsync(role);
                     }
                 }
             }
