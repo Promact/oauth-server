@@ -37,6 +37,9 @@ namespace Promact.Oauth.Server.Models.ApplicationClasses
         [JsonProperty("NumberOfSickLeave")]
         public double NumberOfSickLeave { get; set; }
 
+        [JsonProperty("Role")]
+        public string Role { get; set; }
+
         [JsonProperty("JoiningDate")]
         public DateTime JoiningDate { get; set; }
 
