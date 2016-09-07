@@ -8,6 +8,7 @@ using AutoMapper;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Promact.Oauth.Server.Constants;
 
 namespace Promact.Oauth.Server.Repository.ProjectsRepository
 {
