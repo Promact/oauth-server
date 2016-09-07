@@ -295,5 +295,47 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             }
             return recentProjects;
         }
+
+        /// <summary>
+        /// The method is used to fetch list of users in a project based on their teamleader id
+        /// </summary>
+        /// <param name="teamLeaderId"></param>
+        /// <returns>list of project users</returns>
+        public  List<UserAc> GetProjectUsersByTeamLeaderId(string teamLeaderId)
+        {
+            try
+            {
+                List<UserAc> projectUsers = new List<UserAc>();
+                var project = _projectDataRepository.FirstOrDefault(x => x.TeamLeaderId.Equals(teamLeaderId));
+                List<ApplicationUser> teamLeaders = _userDataRepository.Fetch(x => x.Id.Equals(project.TeamLeaderId)).ToList();
+                if (teamLeaders != null)
+                {
+                    foreach (var teamLeader in teamLeaders)
+                    {
+                        var projTeamLeader = _mapperContext.Map<ApplicationUser, UserAc>(teamLeader);
+                        projTeamLeader.Role = "TeamLeader";
+                        projectUsers.Add(projTeamLeader);
+                    }
+                }
+
+                List<ProjectUser> projectUsersList = _projectUserDataRepository.Fetch(x => x.ProjectId == project.Id).ToList();
+                foreach (var projectUser in projectUsersList)
+                {
+                    var user = _userDataRepository.FirstOrDefault(x => x.Id.Equals(projectUser.UserId));
+                    if (user != null)
+                    {
+                        var Roles = _userManager.GetRolesAsync(user).Result.First();
+                        var projUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
+                        projUser.Role = Roles;
+                        projectUsers.Add(projUser);
+                    }
+                }
+                return projectUsers;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }
