@@ -5,7 +5,7 @@ import {UserModel} from '../../users/user.model';
 import { ROUTER_DIRECTIVES, Router, ActivatedRoute } from '@angular/router';
 import {Md2Toast} from 'md2/toast';
 import {Md2Multiselect } from 'md2/multiselect';
-import {Location} from "@angular/common";
+
 
 
 @Component({
@@ -27,7 +27,6 @@ export class ProjectAddComponent {
         private route: ActivatedRoute,
         private router: Router,
         private toast: Md2Toast,
-        private location: Location,
         private proService: ProjectService) {
         this.pros = new Array<projectModel>();
         this.pro = new projectModel();
@@ -89,7 +88,7 @@ export class ProjectAddComponent {
     }
 
     gotoProjects() {
-        this.location.back();
+        this.router.navigate(['admin/project/']);
         //this.router.navigate(['admin/project/']);
     }
 

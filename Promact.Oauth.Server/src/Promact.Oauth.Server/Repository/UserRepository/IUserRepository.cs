@@ -97,19 +97,6 @@ namespace Promact.Oauth.Server.Repository
         /// <returns>object of UserAc</returns>
         UserAc GetUserDetail(string UserName);
 
-        /// <summary>
-        /// This method is used to Get User details by Id
-        /// </summary>
-        /// <param name="employeeId"></param>
-        /// <returns>details of user</returns>
-        UserAc UserDetailById(string employeeId);
-
-        /// <summary>
-        /// Method is used to get the details of user by using their username
-        /// </summary>
-        /// <param name="UserName"></param>
-        /// <returns>details of user</returns>
-        UserAc GetUserDetailByUserName(string UserName);
 
         /// <summary>
         /// Method to get the number of casual leave allowed to a user by slack user name

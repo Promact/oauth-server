@@ -252,32 +252,7 @@ namespace Promact.Oauth.Server.Controllers
                 ex.ToExceptionless().Submit();
                 throw ex;
             }
-        }
-
-        /// <summary>
-        /// Method to get User details by user Id
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <returns>details of the user</returns>
-        [HttpGet]
-        [Route("userDetail/{userId}")]
-        public IActionResult UserDetailById(string userId)
-        {
-            var user = _userRepository.UserDetailById(userId);
-            return Ok(user);
-        }
-
-        /// <summary>
-        /// Method to return details of user based on their username
-        /// </summary>
-        /// <param name="userName"></param>
-        /// <returns>details of user</returns>
-        [HttpGet]
-        [Route("getByUserName/{userName}")]
-        public IActionResult GetByUserName(string userName)
-        {
-            return Ok(_userRepository.GetUserDetailByUserName(userName));
-        }
+        }        
         #endregion
     }
 }
