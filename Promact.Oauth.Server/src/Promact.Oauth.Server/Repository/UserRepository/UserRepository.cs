@@ -45,6 +45,7 @@ namespace Promact.Oauth.Server.Repository
             _projectUserRepository = projectUserRepository;
             _projectRepository = projectRepository;
             _roleManager = roleManager;
+            _projectDataRepository = projectDataRepository;
         }
 
         #endregion
