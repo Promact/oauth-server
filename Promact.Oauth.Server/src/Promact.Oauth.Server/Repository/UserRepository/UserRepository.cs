@@ -25,12 +25,12 @@ namespace Promact.Oauth.Server.Repository
         private readonly IMapper _mapperContext;
         private readonly IDataRepository<ProjectUser> _projectUserRepository;
         private readonly IProjectRepository _projectRepository;
-
+        private readonly IDataRepository<Project> _projectDataRepository;
         #endregion
 
         #region "Constructor"
 
-        public UserRepository(IDataRepository<ApplicationUser> applicationUserDataRepository, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IMapper mapperContext, IDataRepository<ProjectUser> projectUserRepository, IProjectRepository projectRepository)
+        public UserRepository(IDataRepository<ApplicationUser> applicationUserDataRepository, UserManager<ApplicationUser> userManager, IDataRepository<Project> projectDataRepository, IEmailSender emailSender, IMapper mapperContext, IDataRepository<ProjectUser> projectUserRepository, IProjectRepository projectRepository)
         {
             _applicationUserDataRepository = applicationUserDataRepository;
             _userManager = userManager;
@@ -38,6 +38,7 @@ namespace Promact.Oauth.Server.Repository
             _mapperContext = mapperContext;
             _projectUserRepository = projectUserRepository;
             _projectRepository = projectRepository;
+            _projectDataRepository = projectDataRepository;
         }
 
         #endregion
@@ -356,19 +357,62 @@ namespace Promact.Oauth.Server.Repository
             return managementUser;
         }
 
-        public ApplicationUser UserDetailById(string employeeId)
+
+        /// <summary>
+        /// This method is used to Get User details by Id
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns>details of user</returns>
+        public  UserAc UserDetailById(string userId)
         {
-            var user = _userManager.Users.FirstOrDefault(x => x.Id == employeeId);
+            var user = _userManager.Users.FirstOrDefault(x => x.Id == userId);
+            return GetUser(user);
+        }
+
+        /// <summary>
+        /// Method is used to get the details of user by using their username
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns>details of user</returns>
+        public async Task<UserAc> GetUserDetailByUserName(string userName)
+        {
+            var user = await _userManager.FindByNameAsync(userName);
+            return GetUser(user);
+        }
+
+
+        /// <summary>
+        /// Method is used to return a user after assigning a role and mapping from ApplicationUser class to UserAc class
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns>user</returns>
+        private UserAc GetUser(ApplicationUser user)
+        {
             if (user != null)
             {
-                var newUser = new ApplicationUser
+                var Roles = _userManager.GetRolesAsync(user).Result.First();
+                if (Roles == "Admin")
                 {
-                    Id = user.Id,
-                    Email = user.Email,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName
-                };
-                return newUser;
+                    var newUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
+                    newUser.Role = Roles;
+                    return newUser;
+                }
+                if (Roles == "Employee")
+                {
+                    var project = _projectDataRepository.FirstOrDefault(x => x.TeamLeaderId.Equals(user.Id));
+                    if (project != null)
+                    {
+                        var newUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
+                        newUser.Role = "TeamLeader";
+                        return newUser;
+                    }
+                    else
+                    {
+                        var newUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
+                        newUser.Role = "Employee";
+                        return newUser;
+                    }
+                }
             }
             return null;
         }

@@ -7,6 +7,7 @@ using Promact.Oauth.Server.Models;
 using AutoMapper;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace Promact.Oauth.Server.Repository.ProjectsRepository
 {
@@ -16,16 +17,18 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         private readonly IDataRepository<Project> _projectDataRepository;
         private readonly IDataRepository<ProjectUser> _projectUserDataRepository;
         private readonly IDataRepository<ApplicationUser> _userDataRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapperContext;
         #endregion
 
         #region "Constructor"
-        public ProjectRepository(IDataRepository<Project> projectDataRepository, IDataRepository<ProjectUser> projectUserDataRepository, IDataRepository<ApplicationUser> userDataRepository, IMapper mapperContext)
+        public ProjectRepository(IDataRepository<Project> projectDataRepository, IDataRepository<ProjectUser> projectUserDataRepository, UserManager<ApplicationUser> userManager, IDataRepository<ApplicationUser> userDataRepository, IMapper mapperContext)
         {
             _projectDataRepository = projectDataRepository;
             _projectUserDataRepository = projectUserDataRepository;
             _userDataRepository = userDataRepository;
             _mapperContext = mapperContext;
+            _userManager = userManager;
         }
         #endregion
 
@@ -256,6 +259,48 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             catch (Exception ex)
             {
                 throw;
+            }
+        }
+
+        /// <summary>
+        /// The method is used to fetch list of users in a project based on their teamleader id
+        /// </summary>
+        /// <param name="teamLeaderId"></param>
+        /// <returns>list of project users</returns>
+        public  List<UserAc> GetProjectUsersByTeamLeaderId(string teamLeaderId)
+        {
+            try
+            {
+                List<UserAc> projectUsers = new List<UserAc>();
+                var project = _projectDataRepository.FirstOrDefault(x => x.TeamLeaderId.Equals(teamLeaderId));
+                List<ApplicationUser> teamLeaders = _userDataRepository.Fetch(x => x.Id.Equals(project.TeamLeaderId)).ToList();
+                if (teamLeaders != null)
+                {
+                    foreach (var teamLeader in teamLeaders)
+                    {
+                        var projTeamLeader = _mapperContext.Map<ApplicationUser, UserAc>(teamLeader);
+                        projTeamLeader.Role = "TeamLeader";
+                        projectUsers.Add(projTeamLeader);
+                    }
+                }
+
+                List<ProjectUser> projectUsersList = _projectUserDataRepository.Fetch(x => x.ProjectId == project.Id).ToList();
+                foreach (var projectUser in projectUsersList)
+                {
+                    var user = _userDataRepository.FirstOrDefault(x => x.Id.Equals(projectUser.UserId));
+                    if (user != null)
+                    {
+                        var Roles = _userManager.GetRolesAsync(user).Result.First();
+                        var projUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
+                        projUser.Role = Roles;
+                        projectUsers.Add(projUser);
+                    }
+                }
+                return projectUsers;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
     }
