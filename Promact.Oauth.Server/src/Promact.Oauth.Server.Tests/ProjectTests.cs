@@ -175,5 +175,24 @@ namespace Promact.Oauth.Server.Tests
             Task<IEnumerable<ProjectAc>> projects = _projectRepository.GetAllProjects();
             Assert.NotNull(projects);
         }
+
+        ///// <summary>
+        ///// Method is used to test the method GetProjectUsersByTeamLeaderId
+        ///// </summary>
+        //[Fact, Trait("Category", "Required")]
+        //public void GetProjectUsersByTeamLeaderId()
+        //{
+        //    var id = _projectRepository.AddProject(projectac, "Gourav").Result;
+        //    UserAc user = new UserAc()
+        //    {
+        //        FirstName = "test",
+        //        LastName = "test",
+        //        Email = "test13@yahoo.com",
+        //        Role = "Employee"
+        //    };
+        //    _projectRepository.AddUserProject(projectUser);
+        //    var projectUsers = _projectRepository.GetProjectUsersByTeamLeaderId("1");
+        //    Assert.Equal(2, projectUsers.Count);
+        //}
     }
 }
