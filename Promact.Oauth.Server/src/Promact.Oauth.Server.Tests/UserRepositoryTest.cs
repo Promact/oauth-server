@@ -21,26 +21,11 @@ namespace Promact.Oauth.Server.Tests
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        private readonly UserAc _testUser;
-
         public UserRepositoryTest() : base()
         {
             _userRepository = serviceProvider.GetService<IUserRepository>();
             _userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
             _roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-
-            _testUser = new UserAc()
-            {
-                Email = "testUser@promactinfo.com",
-                FirstName = "First name",
-                LastName = "Last name",
-                IsActive = true,
-                Password = "User@123",
-                UserName = "testUser@pronactinfo.com",
-                SlackUserName = "test",
-                JoiningDate = DateTime.Now,
-                RoleName = StringConstant.Employee
-            };
         }
 
         #region Test Case
@@ -218,6 +203,17 @@ namespace Promact.Oauth.Server.Tests
                 }
             }
         }
-
+        private UserAc _testUser = new UserAc()
+        {
+            Email = "testUser@promactinfo.com",
+                FirstName = "First name",
+                LastName = "Last name",
+                IsActive = true,
+                Password = "User@123",
+                UserName = "testUser@pronactinfo.com",
+                SlackUserName = "test",
+                JoiningDate = DateTime.UtcNow,
+                RoleName = StringConstant.Employee
+            };
     }
 }
