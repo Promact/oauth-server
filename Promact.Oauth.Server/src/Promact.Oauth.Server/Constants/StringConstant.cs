@@ -65,8 +65,8 @@ namespace Promact.Oauth.Server.Constants
         public static string UpadteFirstName = "Updated User";
         public static string UpdateSlackUserName = "Updated test";
 
-        public static string RoleName = "Employee";
-        public static string RoleNameSecond = "Admin";
+        public static string Employee = "Employee";
+        public static string Admin = "Admin";
         public static string NormalizedName = "EMPLOYEE";
         public static string NormalizedSecond = "ADMIN";        
     }
