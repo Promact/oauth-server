@@ -54,7 +54,7 @@ namespace Promact.Oauth.Server.Repository
         /// This method is used to add new user
         /// </summary>
         /// <param name="applicationUser">UserAc Application class object</param>
-        public async Task<string> AddUser(UserAc newUser, string createdBy)
+        public string AddUser(UserAc newUser, string createdBy)
         {
             try
             {
@@ -66,7 +66,7 @@ namespace Promact.Oauth.Server.Repository
                 user.UserName = user.Email;
                 user.CreatedBy = createdBy;
                 user.CreatedDateTime = DateTime.UtcNow;
-                await _userManager.CreateAsync(user, "User@123");
+                _userManager.CreateAsync(user, "User@123").Wait();
                 //await _userManager.AddToRoleAsync(user, newUser.RoleName);
                 //SendEmail(user);
                 return user.Id;
@@ -203,10 +203,9 @@ namespace Promact.Oauth.Server.Repository
                     user.SlackUserName = editedUser.SlackUserName;
                     _userManager.UpdateAsync(user).Wait();
                     _applicationUserDataRepository.Save();
-
-                    IList<string> listofUserRole = _userManager.GetRolesAsync(user).Result;
-                    var removeFromRole = _userManager.RemoveFromRoleAsync(user, listofUserRole.FirstOrDefault()).Result;
-                    var addNewRole = _userManager.AddToRoleAsync(user, editedUser.RoleName).Result;
+                    //IList<string> listofUserRole = _userManager.GetRolesAsync(user).Result;
+                    //var removeFromRole = _userManager.RemoveFromRoleAsync(user, listofUserRole.FirstOrDefault()).Result;
+                    //var addNewRole = _userManager.AddToRoleAsync(user, editedUser.RoleName).Result;
                     return user.Id;
                 }
                 else { return ""; }
