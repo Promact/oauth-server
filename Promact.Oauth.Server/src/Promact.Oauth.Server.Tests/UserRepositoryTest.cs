@@ -30,44 +30,43 @@ namespace Promact.Oauth.Server.Tests
 
         #region Test Case
 
-        /// <summary>
-        /// This test case gets the list of all users
-        /// </summary>
-        [Fact, Trait("Category", "Required")]
-        public void GetAllUser()
-        {
-            AddRole().Wait();
-            var id = _userRepository.AddUser(_testUser, "Rajdeep").Result;
-            IEnumerable<UserAc> users = _userRepository.GetAllUsers().Result;
-            Assert.NotNull(users);
-        }
+        ///// <summary>
+        ///// This test case gets the list of all users
+        ///// </summary>
+        //[Fact, Trait("Category", "Required")]
+        //public void GetAllUser()
+        //{
+        //    AddRole().Wait();
+        //    var id = _userRepository.AddUser(_testUser, "Rajdeep").Result;
+        //    IEnumerable<UserAc> users = _userRepository.GetAllUsers().Result;
+        //    Assert.NotNull(users);
+        //}
 
-        /// <summary>
-        /// This test case gets the user by its id
-        /// </summary>
-        [Fact, Trait("Category", "Required")]
-        public void GetUserById()
-        {
+        ///// <summary>
+        ///// This test case gets the user by its id
+        ///// </summary>
+        //[Fact, Trait("Category", "Required")]
+        //public void GetUserById()
+        //{
 
-            UserAc user = new UserAc()
-            {
-                Email = "testUser2@promactinfo.com",
-                FirstName = "First name 2",
-                LastName = "Last name 2",
-                IsActive = true,
-                Password = "User@123",
-                UserName = "testUser2@promactinfo.com",
-                SlackUserName = "test",
-                RoleName = StringConstant.Employee
-            };
-            AddRole().Wait();
-            var id = _userRepository.AddUser(user, "Rajdeep").Result;
-            UserAc testUser = _userRepository.GetById(id).Result;
+        //    UserAc user = new UserAc()
+        //    {
+        //        Email = "testUser2@promactinfo.com",
+        //        FirstName = "First name 2",
+        //        LastName = "Last name 2",
+        //        IsActive = true,
+        //        Password = "User@123",
+        //        UserName = "testUser2@promactinfo.com",
+        //        SlackUserName = "test",
+        //        RoleName = StringConstant.Employee
+        //    };
+        //    AddRole().Wait();
+        //    var id = _userRepository.AddUser(user, "Rajdeep").Result;
+        //    UserAc testUser = _userRepository.GetById(id).Result;
 
-            Assert.NotNull(testUser);
-        }
-
-
+        //    Assert.NotNull(testUser);
+        //}
+        
         ///// <summary>
         ///// This test case checks if a user exists with the specified Email
         ///// </summary>
@@ -162,30 +161,30 @@ namespace Promact.Oauth.Server.Tests
         //    Assert.Equal(user.Email, _testUser.Email);
         //}
 
-        /// <summary>
-        /// Test case use for getting team leader's details by users first name
-        /// </summary>
-        [Fact, Trait("Category", "Required")]
-        public void TeamLeaderByUserId()
-        {
-            AddRole().Wait();
-            string id = _userRepository.AddUser(_testUser, "Siddhartha").Result;
-            var user = _userRepository.TeamLeaderByUserId("First name").Result;
-            Assert.Equal(0, user.Count);
-        }
+        ///// <summary>
+        ///// Test case use for getting team leader's details by users first name
+        ///// </summary>
+        //[Fact, Trait("Category", "Required")]
+        //public void TeamLeaderByUserId()
+        //{
+        //    AddRole().Wait();
+        //    string id = _userRepository.AddUser(_testUser, "Siddhartha").Result;
+        //    var user = _userRepository.TeamLeaderByUserId("First name").Result;
+        //    Assert.Equal(0, user.Count);
+        //}
 
        
-        /// <summary>
-        /// Test case use for getting management's details by users first name
-        /// </summary>
-        [Fact, Trait("Category", "Required")]
-        public void ManagementByUserId()
-        {
-            AddRole().Wait();
-            string id = _userRepository.AddUser(_testUser, "Siddhartha").Result;
-            var user = _userRepository.ManagementByUserId().Result;
-            Assert.Equal(0, user.Count);
-        }
+        ///// <summary>
+        ///// Test case use for getting management's details by users first name
+        ///// </summary>
+        //[Fact, Trait("Category", "Required")]
+        //public void ManagementByUserId()
+        //{
+        //    AddRole().Wait();
+        //    string id = _userRepository.AddUser(_testUser, "Siddhartha").Result;
+        //    var user = _userRepository.ManagementByUserId().Result;
+        //    Assert.Equal(0, user.Count);
+        //}
 
         #endregion
 
@@ -207,6 +206,7 @@ namespace Promact.Oauth.Server.Tests
                 }
             }
         }
+
         private UserAc _testUser = new UserAc()
         {
             Email = "testUser@promactinfo.com",
