@@ -69,6 +69,10 @@ namespace Promact.Oauth.Server.Constants
         public static string Admin = "Admin";
         public static string NormalizedName = "EMPLOYEE";
         public static string NormalizedSecond = "ADMIN";
+        public static string RawEmailIdForTest = "siddhartha@promactinfo.com";
+        public static string RawFirstNameForTest = "Siddhartha";
+        public static string RawLastNameForTest = "Shaw";
+        public static string NormalizedSecond = "ADMIN";
 
         public static string RoleEmployee = "Employee";
         public static string RoleAdmin = "Admin";
