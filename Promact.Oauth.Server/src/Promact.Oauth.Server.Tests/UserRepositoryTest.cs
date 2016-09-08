@@ -33,14 +33,14 @@ namespace Promact.Oauth.Server.Tests
         /// <summary>
         /// This test case gets the list of all users
         /// </summary>
-        [Fact, Trait("Category", "Required")]
-        public void GetAllUser()
-        {
-            AddRole().Wait();
-            var id = _userRepository.AddUser(_testUser, "Rajdeep").Result;
-            IEnumerable<UserAc> users = _userRepository.GetAllUsers();
-            Assert.NotNull(users);
-        }
+        //[Fact, Trait("Category", "Required")]
+        //public void GetAllUser()
+        //{
+        //    AddRole().Wait();
+        //    var id = _userRepository.AddUser(_testUser, "Rajdeep").Result;
+        //    IEnumerable<UserAc> users = _userRepository.GetAllUsers();
+        //    Assert.NotNull(users);
+        //}
 
         //        ///// <summary>
         //        ///// This test case gets the user by its id
@@ -251,48 +251,48 @@ namespace Promact.Oauth.Server.Tests
         //    Assert.Equal(8,casualLeave);
         //}
         #endregion
-        private async Task AddRole()
-        {
-            if (!_roleManager.Roles.Any())
-            {
-                List<IdentityRole> roles = new List<IdentityRole>();
-                roles.Add(new IdentityRole { Name = StringConstant.Employee, NormalizedName = StringConstant.NormalizedName });
-                roles.Add(new IdentityRole { Name = StringConstant.Admin, NormalizedName = StringConstant.NormalizedSecond });
+        //private async Task AddRole()
+        //{
+        //    if (!_roleManager.Roles.Any())
+        //    {
+        //        List<IdentityRole> roles = new List<IdentityRole>();
+        //        roles.Add(new IdentityRole { Name = StringConstant.Employee, NormalizedName = StringConstant.NormalizedName });
+        //        roles.Add(new IdentityRole { Name = StringConstant.Admin, NormalizedName = StringConstant.NormalizedSecond });
 
-                foreach (var role in roles)
-                {
-                    var roleExit = await _roleManager.RoleExistsAsync(role.Name);
-                    if (!roleExit)
-                    {
-                        var result = await _roleManager.CreateAsync(role);
-                    }
-                }
-            }
-        }
+        //        foreach (var role in roles)
+        //        {
+        //            var roleExit = await _roleManager.RoleExistsAsync(role.Name);
+        //            if (!roleExit)
+        //            {
+        //                var result = await _roleManager.CreateAsync(role);
+        //            }
+        //        }
+        //    }
+        //}
 
-        private UserAc _testUser = new UserAc()
-        {
-            Email = "testUser@promactinfo.com",
-            FirstName = "First name",
-            LastName = "Last name",
-            IsActive = true,
-            Password = "User@123",
-            UserName = "testUser@pronactinfo.com",
-            SlackUserName = "test",
-            JoiningDate = DateTime.UtcNow,
-            RoleName = StringConstant.Employee
-        };
+        //private UserAc _testUser = new UserAc()
+        //{
+        //    Email = "testUser@promactinfo.com",
+        //    FirstName = "First name",
+        //    LastName = "Last name",
+        //    IsActive = true,
+        //    Password = "User@123",
+        //    UserName = "testUser@pronactinfo.com",
+        //    SlackUserName = "test",
+        //    JoiningDate = DateTime.UtcNow,
+        //    RoleName = StringConstant.Employee
+        //};
 
 
-        private UserAc userLocal = new UserAc()
-        {
-            Email = "testing@promactinfo.com",
-            UserName = "testing@promactinfo.com",
-            FirstName = "Myfirsttest",
-            LastName = "testing",
-            JoiningDate = DateTime.ParseExact("02-09-2016", "dd-MM-yyyy", null),
-            //JoiningDate = DateTime.UtcNow,
-            SlackUserName = "myslackname"
-        };
+        //private UserAc userLocal = new UserAc()
+        //{
+        //    Email = "testing@promactinfo.com",
+        //    UserName = "testing@promactinfo.com",
+        //    FirstName = "Myfirsttest",
+        //    LastName = "testing",
+        //    JoiningDate = DateTime.ParseExact("02-09-2016", "dd-MM-yyyy", null),
+        //    //JoiningDate = DateTime.UtcNow,
+        //    SlackUserName = "myslackname"
+        //};
     }
 }
