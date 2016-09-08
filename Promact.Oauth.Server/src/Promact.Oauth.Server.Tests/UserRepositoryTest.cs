@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Promact.Oauth.Server.Constants;
+using Promact.Oauth.Server.Data;
 using Promact.Oauth.Server.Data_Repository;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Models.ApplicationClasses;
@@ -20,12 +21,13 @@ namespace Promact.Oauth.Server.Tests
         private readonly IUserRepository _userRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-
+        private readonly PromactOauthDbContext _db;
         public UserRepositoryTest() : base()
         {
             _userRepository = serviceProvider.GetService<IUserRepository>();
             _userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
             _roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            _db = serviceProvider.GetRequiredService<PromactOauthDbContext>();
         }
 
         #region Test Case
@@ -291,5 +293,9 @@ namespace Promact.Oauth.Server.Tests
         //    //JoiningDate = DateTime.UtcNow,
         //    SlackUserName = "myslackname"
         //};
+        ~UserRepositoryTest()
+        {
+            _db.Dispose();
+        }
     }
 }
