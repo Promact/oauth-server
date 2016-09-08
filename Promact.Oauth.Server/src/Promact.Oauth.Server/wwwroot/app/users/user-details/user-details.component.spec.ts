@@ -14,12 +14,13 @@ import {TestConnection} from "../../shared/mocks/test.connection";
 import {MockUserService} from "../../shared/mocks/user/mock.user.service";
 import {MockBaseService} from '../../shared/mocks/mock.base';
 import {MockRouter} from '../../shared/mocks/mock.router';
-
+import { LoginService } from '../../login.service';
 describe("Project Edit Test", () => {
     let userDetailsComponent: UserDetailsComponent;
     let userService: UserService;
     class MockActivatedRoute { }
     class MockLocation { }
+    class MockLoginService { }
     beforeEach(() => {
         TestBed.configureTestingModule({
             providers: [
@@ -30,12 +31,13 @@ describe("Project Edit Test", () => {
                 provide(Md2Toast, { useClass: MockToast }),
                 provide(MockBaseService, { useClass: MockBaseService }),
                 provide(UserModel, { useClass: UserModel }),
-                provide(Location, { useClass: MockLocation })
+                provide(Location, { useClass: MockLocation }),
+                provide(LoginService, { useClass: MockLoginService }),
             ]
         });
     });
-    beforeEach(inject([UserService, ActivatedRoute, Router], (userService: UserService, route: ActivatedRoute, router: Router) => {
-        //userDetailsComponent = new UserDetailsComponent(userService, route, router);
+    beforeEach(inject([UserService, ActivatedRoute, Router], (userService: UserService, route: ActivatedRoute, router: Router, loginService: LoginService) => {
+        userDetailsComponent = new UserDetailsComponent(userService, route, router, loginService);
     }));
     it("should be defined", () => {
         expect(userDetailsComponent).toBeDefined();

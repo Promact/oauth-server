@@ -21,7 +21,7 @@ export class UserEditComponent {
     userRole: any;
     admin: any;
 
-    constructor(private userService: UserService, private route: ActivatedRoute, private redirectionRoute: Router, private toast: Md2Toast, private location: Location, private loginService: LoginService) {
+    constructor(private userService: UserService, private route: ActivatedRoute, private redirectionRoute: Router, private toast: Md2Toast, private loginService: LoginService) {
         this.user = new UserModel();
         this.listOfRoles = [];
     }
@@ -55,7 +55,7 @@ export class UserEditComponent {
         this.userService.editUser(user).subscribe((result) => {
             if (result == true) {
                 this.toast.show('User updated successfully.');
-                this.redirectionRoute.navigate(['admin/user']);
+                this.redirectionRoute.navigate(['/user/list']);
             }
             else if (result == false) {
                 this.toast.show('User Name or Slack User Name already exists.');
@@ -84,8 +84,8 @@ export class UserEditComponent {
 
 
     goBack() {
-        this.location.back();
-        //this.redirectionRoute.navigate(['/user/list']);
+        //this.location.back();
+        this.redirectionRoute.navigate(['/user/list']);
     }
 
     getRole() {

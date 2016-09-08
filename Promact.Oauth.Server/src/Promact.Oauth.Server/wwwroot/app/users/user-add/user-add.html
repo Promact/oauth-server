@@ -48,7 +48,14 @@
                 <div [hidden]="!(SlackUserName.touched && !SlackUserName.valid && SlackUserName.errors.required)" class="error">Slack User Name is required</div>
             </div>
         </div>
-
+        <div class="form-group">
+            <div class="half-width" style="position:relative">
+                <md-select class="field" name="UserRole" [(ngModel)]="userModel.RoleName" placeholder="User Role" required #UserRole="ngModel">
+                    <md-option [value]="role.name" *ngFor="let role of listOfRoles">{{role.name}}</md-option>
+                </md-select>
+            </div>
+            <div [hidden]="!(UserRole.touched && !UserRole.valid && UserRole.errors.required)" class="error">Please Select User Role</div>
+        </div>
         <div class="form-group">
             <div class="half-width">
                 <input type="date" name="JoiningDate" [(ngModel)]="userModel.JoiningDate" placeholder="Enter joining date" required #JoiningDate="ngModel" />

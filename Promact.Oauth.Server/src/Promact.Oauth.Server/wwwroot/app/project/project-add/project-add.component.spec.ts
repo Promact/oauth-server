@@ -44,7 +44,7 @@ describe('Project Add Test', () => {
 
     });
     beforeEach(inject([ActivatedRoute, Router, Md2Toast, ProjectService], (route: ActivatedRoute, router: Router, toast: Md2Toast, projectService: ProjectService) => {
-        //projectAddComponent = new ProjectAddComponent(route, router, toast, projectService);
+        projectAddComponent = new ProjectAddComponent(route, router, toast, projectService);
     }));
     it("should be defined", () => {
         expect(projectAddComponent).toBeDefined();

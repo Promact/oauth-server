@@ -232,7 +232,7 @@ namespace Promact.Oauth.Server.Repository
         {
             try
             {
-                var user = _userManager.Users.FirstOrDefault(x => x.SlackUserName == editedUser.SlackUserName && x.Id == editedUser.Id);
+                var user = _userManager.Users.FirstOrDefault(x => x.SlackUserName == editedUser.SlackUserName && x.Id != editedUser.Id);
                 if (user == null)
                 {
                     user = await _userManager.FindByIdAsync(editedUser.Id);

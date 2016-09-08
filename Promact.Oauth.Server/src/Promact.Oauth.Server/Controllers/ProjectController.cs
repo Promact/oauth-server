@@ -206,8 +206,8 @@ namespace Promact.Oauth.Server.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    ProjectAc p = _projectRepository.checkDuplicateFromEditProject(project);
-                    if (p.Name != null && p.SlackChannelName != null)
+                    ProjectAc projectAc = _projectRepository.checkDuplicateFromEditProject(project);
+                    if (projectAc.Name != null && projectAc.SlackChannelName != null)
                     {
                         await _projectRepository.EditProject(project, updatedBy);
                     }

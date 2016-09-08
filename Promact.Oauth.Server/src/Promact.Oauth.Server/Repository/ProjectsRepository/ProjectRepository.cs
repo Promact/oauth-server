@@ -112,7 +112,9 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                 applicationUserList.Add(new UserAc
                 {
                     Id = applicationUser.Id,
-                    FirstName = applicationUser.FirstName
+                    FirstName = applicationUser.FirstName,
+                    Email=applicationUser.Email,
+                    LastName=applicationUser.LastName
                 });
             }
 
@@ -298,6 +300,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                 recentProject.IsActive = projectDetails.IsActive;
                 recentProjects.Add(recentProject);
             }
+            return recentProjects;
         }
         /// <summary>
         /// This Method use to featch user role
@@ -357,65 +360,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
 
                 }
             }
-        }
-
-
-        public async Task<List<UserRoleAc>> GetUserRole(string name)
-        {
-            ApplicationUser user = _userDataRepository.FirstOrDefault(x => x.UserName == name);
-            var role = await _userManager.GetRolesAsync(user);
-            var userRole = role.First();
-            var userRoles = new List<UserRoleAc>();
-            if (userRole == "Admin")
-            {
-                var userList = _userDataRepository.GetAll().ToList();
-                foreach (var userDetails in userList)
-                {
-                    var roles= await _userManager.GetRolesAsync(userDetails);
-                    string assignRole;
-                    if (roles.Count == 0)
-                    { assignRole = StringConstant.RoleEmployee; }
-                    else { assignRole = roles.First(); }
-                    var userRoleAc = new UserRoleAc();
-                    userRoleAc.UserName = userDetails.UserName;
-                    userRoleAc.Name = userDetails.FirstName + " " + userDetails.LastName;
-                    userRoleAc.Role = assignRole;
-                    userRoles.Add(userRoleAc);
-                }
-            }
-            else {
-                var project = _projectDataRepository.FirstOrDefault(x => x.TeamLeaderId.Equals(user.Id));
-                if (project == null)
-                {
-                    var usersRole = new UserRoleAc();
-                    usersRole.UserName = user.UserName;
-                    usersRole.Role = userRole;
-                    usersRole.Name = user.FirstName + " " + user.LastName;
-                    userRoles.Add(usersRole);
-                }
-                else
-                {
-                    var usersRole = new UserRoleAc();
-                    usersRole.UserName = user.UserName;
-                    usersRole.Role = StringConstant.RoleTeamLeader;
-                    usersRole.Name = user.FirstName + " " + user.LastName;
-                    userRoles.Add(usersRole);
-                    var projectUserList = _projectUserDataRepository.Fetch(x => x.ProjectId == project.Id).ToList();
-                    foreach (var projectUser in projectUserList)
-                    {
-                        var usersRoles = new UserRoleAc();
-                        var users = _userDataRepository.FirstOrDefault(x => x.Id == projectUser.UserId);
-                        usersRoles.UserName = users.UserName;
-                        usersRoles.Name = users.FirstName + " " + users.LastName;
-                        usersRoles.Role = StringConstant.RoleAdmin;
-                        userRoles.Add(usersRoles);
-                    }
-
-                }
-            }
             return userRoles;
-            return userRoles;
-            return recentProjects;
         }
     }
 }

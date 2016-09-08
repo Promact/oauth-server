@@ -34,7 +34,7 @@ describe('User Add Test', () => {
 
     });
     beforeEach(inject([UserService, Router, ActivatedRoute, Md2Toast], (userService: UserService, router: Router, route: ActivatedRoute, toast: Md2Toast) => {
-        //changePasswordComponent = new ChangePasswordComponent(userService, router, route, toast);
+         changePasswordComponent = new ChangePasswordComponent(userService, router, route, toast);
     }));
     it("should be defined", () => {
         expect(changePasswordComponent).toBeDefined();
