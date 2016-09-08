@@ -44,11 +44,11 @@ namespace Promact.Oauth.Server.Controllers
         [HttpGet]
         [Route("users")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> AllUsers()
+        public IActionResult AllUsers()
         {
             try
             {
-                return Ok(await _userRepository.GetAllUsers());
+                return Ok(_userRepository.GetAllUsers());
             }
             catch (Exception ex)
             {
@@ -130,14 +130,14 @@ namespace Promact.Oauth.Server.Controllers
         [HttpPut]
         [Route("edit")]
         [Authorize(Roles = "Admin,Employee")]
-        public IActionResult UpdateUser([FromBody] UserAc editedUser)
+        public async Task<IActionResult> UpdateUser([FromBody] UserAc editedUser)
         {
             try
             {
                 string updatedBy = _userManager.GetUserId(User);
                 if (ModelState.IsValid)
                 {
-                    string id = _userRepository.UpdateUserDetails(editedUser, updatedBy);
+                    string id = await _userRepository.UpdateUserDetails(editedUser, updatedBy);
                     if (id != "")
                     { return Ok(true); }
                     else { return Ok(false); }

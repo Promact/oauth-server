@@ -30,14 +30,14 @@ namespace Promact.Oauth.Server.Repository
         /// This method used for update user and return its id
         /// </summary>
         /// <param name="editedUser">UserAc Application class object</param>
-        string UpdateUserDetails(UserAc editedUser, string updatedBy);
+        Task<string> UpdateUserDetails(UserAc editedUser, string updatedBy);
 
 
         /// <summary>
         /// This method used forget list of users
         /// </summary>
         /// <returns>List of all users</returns>
-        Task<IEnumerable<UserAc>> GetAllUsers();
+        IEnumerable<UserAc> GetAllUsers();
 
         /// <summary>
         /// This method used for get role list. 

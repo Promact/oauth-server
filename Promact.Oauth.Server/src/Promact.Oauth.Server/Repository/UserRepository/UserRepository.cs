@@ -24,14 +24,11 @@ namespace Promact.Oauth.Server.Repository
 
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly IDataRepository<ApplicationUser> _applicationUserDataRepository;
-      
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IEmailSender _emailSender;
         private readonly IMapper _mapperContext;
         private readonly IDataRepository<ProjectUser> _projectUserRepository;
-
-        private readonly IDataRepository<Project> _projectDataRepository;
         private readonly IProjectRepository _projectRepository;
         #endregion
 
@@ -166,9 +163,10 @@ namespace Promact.Oauth.Server.Repository
         /// This method is used for getting the list of all users
         /// </summary>
         /// <returns>List of all users</returns>
-        public async Task<IEnumerable<UserAc>> GetAllUsers()
+        public IEnumerable<UserAc> GetAllUsers()
         {
-            var users = await _applicationUserDataRepository.GetAll().ToListAsync();
+            var users = _userManager.Users;
+            //var users = await _applicationUserDataRepository.GetAll().ToListAsync();
             var userList = new List<UserAc>();
             foreach (var user in users)
             {
@@ -184,14 +182,15 @@ namespace Promact.Oauth.Server.Repository
         /// This method is used to edit the details of an existing user
         /// </summary>
         /// <param name="editedUser">UserAc Application class object</param>
-        public string UpdateUserDetails(UserAc editedUser, string updatedBy)
+        public async Task<string> UpdateUserDetails(UserAc editedUser, string updatedBy)
         {
             try
             {
-                var slackUserName = _applicationUserDataRepository.FirstOrDefault(x => x.Id != editedUser.Id && x.SlackUserName == editedUser.SlackUserName);
-                if (slackUserName == null)
+                var user = await _userManager.FindByIdAsync(editedUser.Id);
+                //var slackUserName = _applicationUserDataRepository.FirstOrDefault(x => x.Id != editedUser.Id && x.SlackUserName == editedUser.SlackUserName);
+                if (user == null)
                 {
-                    var user = _userManager.FindByIdAsync(editedUser.Id).Result;
+                    //user = _userManager.FindByIdAsync(editedUser.Id).Result;
 
                     user.FirstName = editedUser.FirstName;
                     user.LastName = editedUser.LastName;
@@ -203,10 +202,10 @@ namespace Promact.Oauth.Server.Repository
                     user.NumberOfSickLeave = editedUser.NumberOfSickLeave;
                     user.SlackUserName = editedUser.SlackUserName;
                     _userManager.UpdateAsync(user).Wait();
-                    _applicationUserDataRepository.Save();
-                    //IList<string> listofUserRole = _userManager.GetRolesAsync(user).Result;
-                    //var removeFromRole = _userManager.RemoveFromRoleAsync(user, listofUserRole.FirstOrDefault()).Result;
-                    //var addNewRole = _userManager.AddToRoleAsync(user, editedUser.RoleName).Result;
+                    //_applicationUserDataRepository.Save();
+                    IList<string> listofUserRole = _userManager.GetRolesAsync(user).Result;
+                    var removeFromRole = _userManager.RemoveFromRoleAsync(user, listofUserRole.FirstOrDefault()).Result;
+                    var addNewRole = _userManager.AddToRoleAsync(user, editedUser.RoleName).Result;
                     return user.Id;
                 }
                 else { return ""; }
@@ -229,7 +228,8 @@ namespace Promact.Oauth.Server.Repository
         {
             try
             {
-                var user = await _applicationUserDataRepository.FirstOrDefaultAsync(u => u.Id == id);
+                var user = await _userManager.FindByIdAsync(id);
+                //var user = await _applicationUserDataRepository.FirstOrDefaultAsync(u => u.Id == id);
                 var requiredUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
                 IList<string> identityUserRole = _userManager.GetRolesAsync(user).Result;
                 requiredUser.RoleName = identityUserRole.FirstOrDefault();
