@@ -140,6 +140,17 @@ namespace Promact.Oauth.Server.Repository
             {
                 casualAllowed = Convert.ToInt32(casualAllowed);
             }
+            if (casualAllowed.ToString().Contains(".") == true)
+            {
+                string splitCasualAllowed = "0." + casualAllowed.ToString().Split('.')[1];
+                double casualAllowedConvertedDouble = Convert.ToDouble(splitCasualAllowed);
+                if (casualAllowedConvertedDouble != 0.5) { casualAllowed = Convert.ToInt32(casualAllowed); }
+
+            }
+            else
+            {
+                casualAllowed = Convert.ToInt32(casualAllowed);
+            }
             if (sickAllowed.ToString().Contains(".") == true)
             {
                 string splitSickAllowed = "0." + sickAllowed.ToString().Split('.')[1];
