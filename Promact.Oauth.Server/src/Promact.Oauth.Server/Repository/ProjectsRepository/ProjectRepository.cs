@@ -242,18 +242,22 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             {
                 var project = _projectDataRepository.FirstOrDefault(x => x.SlackChannelName.Equals(GroupName));
                 var userProjects = new List<UserAc>();
-                var projectUserList = _projectUserDataRepository.Fetch(x => x.ProjectId == project.Id).ToList();
-                foreach (var projectUser in projectUserList)
+                if (project != null)
                 {
-                    var user = _userDataRepository.FirstOrDefault(x => x.Id == projectUser.UserId);
-                    var userAc = new UserAc();
-                    userAc.Id = user.Id;
-                    userAc.Email = user.Email;
-                    userAc.FirstName = user.FirstName;
-                    userAc.IsActive = user.IsActive;
-                    userAc.LastName = user.LastName;
-                    userAc.UserName = user.UserName;
-                    userProjects.Add(userAc);
+                    var projectUserList = _projectUserDataRepository.Fetch(x => x.ProjectId == project.Id).ToList();
+                    foreach (var projectUser in projectUserList)
+                    {
+                        var user = _userDataRepository.FirstOrDefault(x => x.Id == projectUser.UserId);
+                        var userAc = new UserAc();
+                        userAc.Id = user.Id;
+                        userAc.Email = user.Email;
+                        userAc.FirstName = user.FirstName;
+                        userAc.IsActive = user.IsActive;
+                        userAc.LastName = user.LastName;
+                        userAc.UserName = user.UserName;
+                        userProjects.Add(userAc);
+                    }
+
                 }
                 return userProjects;
             }

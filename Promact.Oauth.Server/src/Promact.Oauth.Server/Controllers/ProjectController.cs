@@ -303,7 +303,7 @@ namespace Promact.Oauth.Server.Controllers
       * }
       */
         [HttpGet]
-        [Route("fetchProjectUsers/{name}")]
+        [Route("fetchProjectUsers/{groupName}")]
         public List<UserAc> FetchUsers(string groupName)
         {
             try
