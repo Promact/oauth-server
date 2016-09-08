@@ -28,6 +28,7 @@ export class UserEditComponent {
 
     ngOnInit() {
         this.getRole();
+        this.getRoles();
         this.id = this.route.params.subscribe(params => {
             let id = this.route.snapshot.params['id'];
             this.userService.getUserById(id)

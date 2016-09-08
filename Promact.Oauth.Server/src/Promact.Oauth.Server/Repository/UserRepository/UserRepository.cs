@@ -66,10 +66,10 @@ namespace Promact.Oauth.Server.Repository
                 user.UserName = user.Email;
                 user.CreatedBy = createdBy;
                 user.CreatedDateTime = DateTime.UtcNow;
-
+                
                 await _userManager.CreateAsync(user, "User@123");
                 await _userManager.AddToRoleAsync(user, newUser.RoleName);
-               //SendEmail(user);
+                //SendEmail(user);
                 return user.Id;
             }
             catch (Exception ex)
@@ -136,7 +136,7 @@ namespace Promact.Oauth.Server.Repository
             };
             return calculate;
         }
-        
+
         public List<RolesAc> GetRoles()
         {
             try
@@ -186,12 +186,10 @@ namespace Promact.Oauth.Server.Repository
         {
             try
             {
-                var user = await _userManager.FindByIdAsync(editedUser.Id);
-                //var slackUserName = _applicationUserDataRepository.FirstOrDefault(x => x.Id != editedUser.Id && x.SlackUserName == editedUser.SlackUserName);
+                var user = _userManager.Users.FirstOrDefault(x => x.SlackUserName == editedUser.SlackUserName && x.Id == editedUser.Id);
                 if (user == null)
                 {
-                    //user = _userManager.FindByIdAsync(editedUser.Id).Result;
-
+                    user = await _userManager.FindByIdAsync(editedUser.Id);
                     user.FirstName = editedUser.FirstName;
                     user.LastName = editedUser.LastName;
                     user.Email = editedUser.Email;
@@ -201,8 +199,8 @@ namespace Promact.Oauth.Server.Repository
                     user.NumberOfCasualLeave = editedUser.NumberOfCasualLeave;
                     user.NumberOfSickLeave = editedUser.NumberOfSickLeave;
                     user.SlackUserName = editedUser.SlackUserName;
+                    var userPreviousInfo = await _userManager.FindByEmailAsync(editedUser.Email);
                     _userManager.UpdateAsync(user).Wait();
-                    //_applicationUserDataRepository.Save();
                     IList<string> listofUserRole = _userManager.GetRolesAsync(user).Result;
                     var removeFromRole = _userManager.RemoveFromRoleAsync(user, listofUserRole.FirstOrDefault()).Result;
                     var addNewRole = _userManager.AddToRoleAsync(user, editedUser.RoleName).Result;
@@ -289,7 +287,7 @@ namespace Promact.Oauth.Server.Repository
                     userAc.Id = user.Id;
                     userAc.FirstName = user.FirstName;
                     userAc.LastName = user.LastName;
-                    userAc.UserName = user.UserName;                    
+                    userAc.UserName = user.UserName;
                 }
                 return userAc;
             }
@@ -352,7 +350,7 @@ namespace Promact.Oauth.Server.Repository
         /// <returns>user details</returns>
         public ApplicationUser UserDetialByUserSlackName(string userSlackName)
         {
-            
+
             var user = _applicationUserDataRepository.FirstOrDefault(x => x.SlackUserName == userSlackName);
             var newUser = new ApplicationUser
             {
@@ -413,7 +411,7 @@ namespace Promact.Oauth.Server.Repository
             return managementUser;
         }
 
-       
+
         /// <summary>
         /// Method to get the number of casual leave allowed to a user by slack user name
         /// </summary>
@@ -425,7 +423,7 @@ namespace Promact.Oauth.Server.Repository
             return casualLeave;
         }
 
-        
+
 
         #endregion
     }
