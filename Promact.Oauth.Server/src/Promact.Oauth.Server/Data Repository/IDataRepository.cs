@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Promact.Oauth.Server.Data_Repository
 {
-    public interface IDataRepository<T>
+    public interface IDataRepository<T> :IDisposable
     {
         /// <summary>
         /// Add the new entity into the datacontext
