@@ -30,16 +30,13 @@ import { ConsumerAppService }   from "./consumerapp/consumerapp.service";
 import {ProjectService} from "./project/project.service";
 import {UserService} from "./users/user.service";
 import { LoginService } from "./login.service";
-import { AdminComponent } from './Admin/admin.component';
-import { EmployeeComponent } from './Employee/employee.component';
-import { EmployeeEditComponent } from './Employee/employee-edit.component';
 import {MdSelect, MdOption, MdSelectDispatcher} from './select/select';
 import {MdMultiselect} from './multiselect/multiselect';
 
 
 
 @NgModule({
-    declarations: [AppComponent, ConsumerAppComponent, ConsumerappListComponent, ConsumerappAddComponent, ConsumerappEditComponent, ProjectComponent, ProjectListComponent, ProjectAddComponent, ProjectEditComponent, ProjectViewComponent, UserComponent, UserListComponent, UserAddComponent, UserEditComponent, UserDetailsComponent, ChangePasswordComponent, AdminComponent, EmployeeComponent, EmployeeEditComponent, MdSelect, MdOption, MdMultiselect],
+    declarations: [AppComponent, ConsumerAppComponent, ConsumerappListComponent, ConsumerappAddComponent, ConsumerappEditComponent, ProjectComponent, ProjectListComponent, ProjectAddComponent, ProjectEditComponent, ProjectViewComponent, UserComponent, UserListComponent, UserAddComponent, UserEditComponent, UserDetailsComponent, ChangePasswordComponent, MdSelect, MdOption, MdMultiselect],
 
     imports: [
         BrowserModule,

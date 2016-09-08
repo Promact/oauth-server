@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using AutoMapper;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Exceptionless;
 
 namespace Promact.Oauth.Server.Controllers
 {
@@ -66,6 +67,7 @@ namespace Promact.Oauth.Server.Controllers
             }
             catch (Exception ex)
             {
+                ex.ToExceptionless().Submit();
                 throw ex;
             }
         }
@@ -95,6 +97,7 @@ namespace Promact.Oauth.Server.Controllers
             }
             catch (Exception ex)
             {
+                ex.ToExceptionless().Submit();
                 throw ex;
             }
         }
@@ -126,6 +129,7 @@ namespace Promact.Oauth.Server.Controllers
             }
             catch (Exception ex)
             {
+                ex.ToExceptionless().Submit();
                 throw ex;
             }
         }
@@ -170,6 +174,7 @@ namespace Promact.Oauth.Server.Controllers
             }
             catch (Exception ex)
             {
+                ex.ToExceptionless().Submit();
                 throw ex;
             }
         }

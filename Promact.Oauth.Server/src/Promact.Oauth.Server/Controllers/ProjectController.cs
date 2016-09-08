@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using Promact.Oauth.Server.Repository;
 using System.Threading.Tasks;
+using Exceptionless;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -36,7 +37,24 @@ namespace Promact.Oauth.Server.Controllers
         [Route("projects")]
         public async Task<IEnumerable<ProjectAc>> projects()
         {
-            return await _projectRepository.GetAllProjects();
+            try
+            {
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
+                var userRole = await _userManager.IsInRoleAsync(user, "Employee");
+                if (userRole==true)
+                {
+                    return await _projectRepository.GetAllProjectForUser(user.Id);
+                }
+                else
+                {
+                    return await _projectRepository.GetAllProjects();
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.ToExceptionless().Submit();
+                throw ex;
+            }
         }
 
 
@@ -46,7 +64,15 @@ namespace Promact.Oauth.Server.Controllers
         [Route("getProjects/{id}")]
         public async Task<ProjectAc> getProjects(int id)
         {
-            return await _projectRepository.GetById(id);
+            try
+            {
+                return await _projectRepository.GetById(id);
+            }
+            catch (Exception ex)
+            {
+                ex.ToExceptionless().Submit();
+                throw ex;
+            }
         }
 
         // POST api/values
@@ -54,29 +80,36 @@ namespace Promact.Oauth.Server.Controllers
         [Route("addProject")]
         public async Task<IActionResult> addProject([FromBody]ProjectAc project)
         {
-            var createdBy = _userManager.GetUserId(User);
-            if (ModelState.IsValid)
+            try
             {
-                ProjectAc p = _projectRepository.checkDuplicate(project);
-                if (p.Name != null && p.SlackChannelName != null)
+                var createdBy = _userManager.GetUserId(User);
+                if (ModelState.IsValid)
                 {
-                    int id =await _projectRepository.AddProject(project, createdBy);
-                    foreach (var applicationUser in project.ApplicationUsers)
+                    ProjectAc p = _projectRepository.checkDuplicate(project);
+                    if (p.Name != null && p.SlackChannelName != null)
                     {
-                        ProjectUser projectUser = new ProjectUser();
-                        projectUser.ProjectId = id;
-                        projectUser.UserId = applicationUser.Id;
-                        projectUser.CreatedBy = createdBy;
-                        projectUser.CreatedDateTime = DateTime.UtcNow;
-                         _projectRepository.AddUserProject(projectUser);
+                        int id = await _projectRepository.AddProject(project, createdBy);
+                        foreach (var applicationUser in project.ApplicationUsers)
+                        {
+                            ProjectUser projectUser = new ProjectUser();
+                            projectUser.ProjectId = id;
+                            projectUser.UserId = applicationUser.Id;
+                            projectUser.CreatedBy = createdBy;
+                            projectUser.CreatedDateTime = DateTime.UtcNow;
+                            _projectRepository.AddUserProject(projectUser);
+                        }
+                        return Ok(project);
                     }
-                    return Ok(project);
+                    else
+                    { return Ok(project); }
                 }
-                else
-                { return Ok(project); }
+                return Ok(false);
             }
-            return Ok(false);
-
+            catch (Exception ex)
+            {
+                ex.ToExceptionless().Submit();
+                throw ex;
+            }
         }
 
         // PUT api/values/5
@@ -84,19 +117,26 @@ namespace Promact.Oauth.Server.Controllers
         [Route("editProject")]
         public async Task<IActionResult> editProject(int id, [FromBody]ProjectAc project)
         {
-            var updatedBy = _userManager.GetUserId(User);
-           
+            try
+            {
+                var updatedBy = _userManager.GetUserId(User);
+
                 if (ModelState.IsValid)
                 {
                     ProjectAc p = _projectRepository.checkDuplicateFromEditProject(project);
                     if (p.Name != null && p.SlackChannelName != null)
                     {
-                       await _projectRepository.EditProject(project, updatedBy);
+                        await _projectRepository.EditProject(project, updatedBy);
                     }
                     else { return Ok(project); }
                 }
-          
-           return Ok(project);
+                return Ok(project);
+            }
+            catch (Exception ex)
+            {
+                ex.ToExceptionless().Submit();
+                throw ex;
+            }
         }
 
         // GET api/values/name
@@ -104,7 +144,15 @@ namespace Promact.Oauth.Server.Controllers
         [Route("fetchProject/{name}")]
         public ProjectAc Fetch(string name)
         {
-            return _projectRepository.GetProjectByGroupName(name);
+            try
+            {
+                return _projectRepository.GetProjectByGroupName(name);
+            }
+            catch (Exception ex)
+            {
+                ex.ToExceptionless().Submit();
+                throw ex;
+            }
         }
 
         // GET api/values/name
@@ -112,7 +160,15 @@ namespace Promact.Oauth.Server.Controllers
         [Route("fetchProjectUsers/{name}")]
         public List<UserAc> FetchUsers(string groupName)
         {
-            return _projectRepository.GetProjectUserByGroupName(groupName);
+            try
+            {
+                return _projectRepository.GetProjectUserByGroupName(groupName);
+            }
+            catch (Exception ex)
+            {
+                ex.ToExceptionless().Submit();
+                throw ex;
+            }
         }
     }
 }

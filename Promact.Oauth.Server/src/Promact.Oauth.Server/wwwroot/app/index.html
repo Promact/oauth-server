@@ -16,11 +16,11 @@
                     <a routerLink="project" routerLinkActive="active"><i class="fa fa-file-text" aria-hidden="true"></i>Projects</a>
                 </li>
                 <li>
-                    <a routerLink="consumerapp" routerLinkActive="active">Consumer App</a>
+                    <a routerLink="consumerapp" routerLinkActive="active" *ngIf="admin==true">Consumer App</a>
                 </li>
 
                 <li>
-                    <a routerLink="user/changePassword" routerLinkActive="active">Change Password</a>
+                    <a routerLink="/user/changePassword" routerLinkActive="active">Change Password</a>
                 </li>
             </ul>
         </md-sidenav>

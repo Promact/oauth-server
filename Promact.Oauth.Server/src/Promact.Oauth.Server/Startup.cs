@@ -21,6 +21,7 @@ using System.Net.Http;
 using Promact.Oauth.Server.AutoMapper;
 using AutoMapper;
 using Promact.Oauth.Server.Controllers;
+using Exceptionless;
 
 namespace Promact.Oauth.Server
 {
@@ -133,6 +134,8 @@ namespace Promact.Oauth.Server
 
             app.UseIdentity();
 
+            // Add Exceptionless Api_key and will be used on project for throwing exception
+            app.UseExceptionless(Environment.GetEnvironmentVariable("ExceptionLessApiKey"));
             // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
 
             app.UseMvc(routes =>

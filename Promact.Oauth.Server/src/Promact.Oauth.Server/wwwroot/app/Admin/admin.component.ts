@@ -2,7 +2,7 @@
 import { Router, ROUTER_DIRECTIVES}from '@angular/router';
 
 @Component({
-    templateUrl: "app/index.html",
+    template:'',
     directives: [ROUTER_DIRECTIVES]
 })
 

@@ -5,6 +5,9 @@ import {UserModel} from '../../users/user.model';
 import { ROUTER_DIRECTIVES, Router, ActivatedRoute } from '@angular/router';
 import {Md2Toast} from 'md2/toast';
 import {Md2Multiselect } from 'md2/multiselect';
+
+
+
 @Component({
     selector: 'md2-select',
     templateUrl: "app/project/project-add/project-add.html",
@@ -27,7 +30,6 @@ export class ProjectAddComponent {
         private proService: ProjectService) {
         this.pros = new Array<projectModel>();
         this.pro = new projectModel();
-
     }
     /**
      * Project Added in database
@@ -63,7 +65,7 @@ export class ProjectAddComponent {
             }
             else {
                 this.toast.show("Project Successfully Added.");
-                this.router.navigate(['admin/project/'])
+                this.router.navigate(['/project/list'])
             }
 
         }, err => {
@@ -87,6 +89,7 @@ export class ProjectAddComponent {
 
     gotoProjects() {
         this.router.navigate(['admin/project/']);
+        //this.router.navigate(['admin/project/']);
     }
 
 }

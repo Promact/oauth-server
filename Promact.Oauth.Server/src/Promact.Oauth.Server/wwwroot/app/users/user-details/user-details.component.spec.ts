@@ -35,7 +35,7 @@ describe("Project Edit Test", () => {
         });
     });
     beforeEach(inject([UserService, ActivatedRoute, Router], (userService: UserService, route: ActivatedRoute, router: Router) => {
-        userDetailsComponent = new UserDetailsComponent(userService, route, router);
+        //userDetailsComponent = new UserDetailsComponent(userService, route, router);
     }));
     
     

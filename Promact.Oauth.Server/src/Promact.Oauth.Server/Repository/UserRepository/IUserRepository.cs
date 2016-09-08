@@ -30,14 +30,14 @@ namespace Promact.Oauth.Server.Repository
         /// This method used for update user and return its id
         /// </summary>
         /// <param name="editedUser">UserAc Application class object</param>
-        string UpdateUserDetails(UserAc editedUser, string updatedBy);
+        Task<string> UpdateUserDetails(UserAc editedUser, string updatedBy);
 
 
         /// <summary>
         /// This method used forget list of users
         /// </summary>
         /// <returns>List of all users</returns>
-        Task<IEnumerable<UserAc>> GetAllUsers();
+        IEnumerable<UserAc> GetAllUsers();
 
         /// <summary>
         /// This method used for get role list. 
@@ -81,21 +81,21 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="firstname"></param>
         /// <returns></returns>
-        ApplicationUser UserDetialByFirstName(string firstname);
+        ApplicationUser UserDetialByUserSlackName(string userSlackName);
 
         /// <summary>
         /// Method is used to get team leader's list
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        Task<List<ApplicationUser>> TeamLeaderByUserId(string userId);
+        Task<List<ApplicationUser>> TeamLeaderByUserSlackName(string userSlackName);
 
         /// <summary>
         /// Method to get list of management people
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        Task<List<ApplicationUser>> ManagementByUserId();
+        Task<List<ApplicationUser>> ManagementDetails();
 
         /// <summary>
         /// Used to fetch the userdetail by given UserName 
@@ -104,12 +104,26 @@ namespace Promact.Oauth.Server.Repository
         /// <returns>object of UserAc</returns>
         UserAc GetUserDetail(string UserName);
 
-        /// <summary>
-        /// Method is used to Get User details by Id
-        /// </summary>
-        /// <param name="employeeId"></param>
-        /// <returns></returns>
-        ApplicationUser UserDetailById(string employeeId);
 
+        ///// <summary>
+        ///// This method is used to Get User details by Id
+        ///// </summary>
+        ///// <param name="userId"></param>
+        ///// <returns>details of user</returns>
+        //UserAc UserDetailById(string userId);
+
+        ///// <summary>
+        ///// Method is used to get the details of user by using their username
+        ///// </summary>
+        ///// <param name="userName"></param>
+        ///// <returns>details of user</returns>
+        //UserAc GetUserDetailByUserName(string UserName);
+
+        /// <summary>
+        /// Method to get the number of casual leave allowed to a user by slack user name
+        /// </summary>
+        /// <param name="slackUserName"></param>
+        /// <returns>number of casual leave</returns>
+        double GetUserCasualLeaveBySlackName(string slackUserName);
     }
 }

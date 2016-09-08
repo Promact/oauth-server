@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Exceptionless;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Promact.Oauth.Server.Data;
 using Promact.Oauth.Server.Repository;
@@ -28,11 +29,19 @@ namespace Promact.Oauth.Server.Controllers
         /// <param name="userFirstname"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("userDetails/{userFirstname}")]
-        public IActionResult UserDetialByFirstName(string userFirstName)
+        [Route("userDetails/{userSlackName}")]
+        public IActionResult UserDetialByFirstName(string userSlackName)
         {
-            var user = _userRepository.UserDetialByFirstName(userFirstName);
-            return Ok(user);
+            try
+            {
+                var user = _userRepository.UserDetialByUserSlackName(userSlackName);
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                ex.ToExceptionless().Submit();
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -41,37 +50,61 @@ namespace Promact.Oauth.Server.Controllers
         /// <param name="userId"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("teamLeaderDetails/{userFirstName}")]
-        public async Task<IActionResult> TeamLeaderByUserId(string userFirstName)
+        [Route("teamLeaderDetails/{userSlackName}")]
+        public async Task<IActionResult> TeamLeaderByUserId(string userSlackName)
         {
-            var user = await _userRepository.TeamLeaderByUserId(userFirstName);
-            return Ok(user);
+            try
+            {
+                var user = await _userRepository.TeamLeaderByUserSlackName(userSlackName);
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                ex.ToExceptionless().Submit();
+                throw ex;
+            }
         }
 
         /// <summary>
         /// Method is used to get list of management people
         /// </summary>
-        /// <param name="userId"></param>
         /// <returns></returns>
         [HttpGet]
         [Route("managementDetails")]
-        public async Task<IActionResult> ManagementByUserId(string userId)
+        public async Task<IActionResult> ManagementDetails()
         {
-            var user = await _userRepository.ManagementByUserId();
-            return Ok(user);
+            try
+            {
+                var user = await _userRepository.ManagementDetails();
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                ex.ToExceptionless().Submit();
+                throw ex;
+            }
         }
 
+
         /// <summary>
-        /// Method to get User details by user Id
+        /// Method to get the number of casual leave allowed to a user by slack user name
         /// </summary>
-        /// <param name="employeeId"></param>
-        /// <returns></returns>
+        /// <param name="slackUserName"></param>
+        /// <returns>number of casual leave</returns>
         [HttpGet]
-        [Route("userDetail/{employeeId}")]
-        public IActionResult UserDetailById(string employeeId)
+        [Route("casual/leave/{slackUserName}")]
+        public IActionResult GetUserCasualLeaveBySlackName(string slackUserName)
         {
-            var user = _userRepository.UserDetailById(employeeId);
-            return Ok(user);
+            try
+            {
+                var casualLeave = _userRepository.GetUserCasualLeaveBySlackName(slackUserName);
+                return Ok(casualLeave);
+            }
+            catch (Exception ex)
+            {
+                ex.ToExceptionless().Submit();
+                throw ex;
+            }
         }
     }
 }

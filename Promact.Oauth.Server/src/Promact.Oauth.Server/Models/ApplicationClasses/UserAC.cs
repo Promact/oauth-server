@@ -31,6 +31,9 @@ namespace Promact.Oauth.Server.Models.ApplicationClasses
         [JsonProperty("IsActive")]
         public bool IsActive { get; set; }
 
+        [JsonProperty("Role")]
+        public string Role { get; set; }
+
         [JsonProperty("NumberOfCasualLeave")]
         public double NumberOfCasualLeave { get; set; }
 

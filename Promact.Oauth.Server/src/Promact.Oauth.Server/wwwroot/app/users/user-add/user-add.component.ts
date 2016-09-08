@@ -4,6 +4,8 @@ import {UserModel} from '../user.model';
 import {Router, ROUTER_DIRECTIVES, ActivatedRoute} from '@angular/router';
 import {Md2Toast} from 'md2/toast';
 
+
+
 @Component({
     templateUrl: 'app/users/user-add/user-add.html',
     providers: [Md2Toast]
@@ -46,7 +48,7 @@ export class UserAddComponent {
                 this.userService.registerUser(this.userModel).subscribe((result) => {
                     if (result == true) {
                         this.toast.show('User added successfully.');
-                        this.redirectionRoute.navigate(['admin/user']);
+                        this.redirectionRoute.navigate(['/user/list']);
                     }
                     else if (result == false) {
                         this.toast.show('User Name already exists.');
@@ -92,7 +94,9 @@ export class UserAddComponent {
     }
 
     goBack() {
-        this.redirectionRoute.navigate(['admin/user']);
+        //this.location.back();
+        //this.redirectionRoute.navigate(['/user/list']);
+        this.redirectionRoute.navigate(['admin/user'])
     }
 
 

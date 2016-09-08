@@ -24,7 +24,6 @@ namespace Promact.Oauth.Server.Repository
 
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly IDataRepository<ApplicationUser> _applicationUserDataRepository;
-      
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IEmailSender _emailSender;
@@ -67,10 +66,10 @@ namespace Promact.Oauth.Server.Repository
                 user.UserName = user.Email;
                 user.CreatedBy = createdBy;
                 user.CreatedDateTime = DateTime.UtcNow;
-
+                
                 await _userManager.CreateAsync(user, "User@123");
                 await _userManager.AddToRoleAsync(user, newUser.RoleName);
-               //SendEmail(user);
+                //SendEmail(user);
                 return user.Id;
             }
             catch (Exception ex)
@@ -137,7 +136,7 @@ namespace Promact.Oauth.Server.Repository
             };
             return calculate;
         }
-        
+
         public List<RolesAc> GetRoles()
         {
             try
@@ -164,9 +163,10 @@ namespace Promact.Oauth.Server.Repository
         /// This method is used for getting the list of all users
         /// </summary>
         /// <returns>List of all users</returns>
-        public async Task<IEnumerable<UserAc>> GetAllUsers()
+        public IEnumerable<UserAc> GetAllUsers()
         {
-            var users = await _applicationUserDataRepository.GetAll().ToListAsync();
+            var users = _userManager.Users;
+            //var users = await _applicationUserDataRepository.GetAll().ToListAsync();
             var userList = new List<UserAc>();
             foreach (var user in users)
             {
@@ -182,15 +182,14 @@ namespace Promact.Oauth.Server.Repository
         /// This method is used to edit the details of an existing user
         /// </summary>
         /// <param name="editedUser">UserAc Application class object</param>
-        public string UpdateUserDetails(UserAc editedUser, string updatedBy)
+        public async Task<string> UpdateUserDetails(UserAc editedUser, string updatedBy)
         {
             try
             {
-                var slackUserName = _applicationUserDataRepository.FirstOrDefault(x => x.Id != editedUser.Id && x.SlackUserName == editedUser.SlackUserName);
-                if (slackUserName == null)
+                var user = _userManager.Users.FirstOrDefault(x => x.SlackUserName == editedUser.SlackUserName && x.Id == editedUser.Id);
+                if (user == null)
                 {
-                    var user = _userManager.FindByIdAsync(editedUser.Id).Result;
-
+                    user = await _userManager.FindByIdAsync(editedUser.Id);
                     user.FirstName = editedUser.FirstName;
                     user.LastName = editedUser.LastName;
                     user.Email = editedUser.Email;
@@ -200,11 +199,11 @@ namespace Promact.Oauth.Server.Repository
                     user.NumberOfCasualLeave = editedUser.NumberOfCasualLeave;
                     user.NumberOfSickLeave = editedUser.NumberOfSickLeave;
                     user.SlackUserName = editedUser.SlackUserName;
+                    var userPreviousInfo = await _userManager.FindByEmailAsync(editedUser.Email);
                     _userManager.UpdateAsync(user).Wait();
-                    _applicationUserDataRepository.Save();
-                    //IList<string> listofUserRole = _userManager.GetRolesAsync(user).Result;
-                    //var removeFromRole = _userManager.RemoveFromRoleAsync(user, listofUserRole.FirstOrDefault()).Result;
-                    //var addNewRole = _userManager.AddToRoleAsync(user, editedUser.RoleName).Result;
+                    IList<string> listofUserRole = _userManager.GetRolesAsync(user).Result;
+                    var removeFromRole = _userManager.RemoveFromRoleAsync(user, listofUserRole.FirstOrDefault()).Result;
+                    var addNewRole = _userManager.AddToRoleAsync(user, editedUser.RoleName).Result;
                     return user.Id;
                 }
                 else { return ""; }
@@ -227,7 +226,8 @@ namespace Promact.Oauth.Server.Repository
         {
             try
             {
-                var user = await _applicationUserDataRepository.FirstOrDefaultAsync(u => u.Id == id);
+                var user = await _userManager.FindByIdAsync(id);
+                //var user = await _applicationUserDataRepository.FirstOrDefaultAsync(u => u.Id == id);
                 var requiredUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
                 IList<string> identityUserRole = _userManager.GetRolesAsync(user).Result;
                 requiredUser.RoleName = identityUserRole.FirstOrDefault();
@@ -348,15 +348,17 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="firstname"></param>
         /// <returns>user details</returns>
-        public ApplicationUser UserDetialByFirstName(string firstname)
+        public ApplicationUser UserDetialByUserSlackName(string userSlackName)
         {
-            var user = _userManager.Users.FirstOrDefault(x => x.FirstName == firstname);
+
+            var user = _applicationUserDataRepository.FirstOrDefault(x => x.SlackUserName == userSlackName);
             var newUser = new ApplicationUser
             {
                 Id = user.Id,
                 Email = user.Email,
                 FirstName = user.FirstName,
-                LastName = user.LastName
+                LastName = user.LastName,
+                SlackUserName = user.SlackUserName
             };
             return newUser;
         }
@@ -366,9 +368,9 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="userFirstName"></param>
         /// <returns>list of team leader</returns>
-        public async Task<List<ApplicationUser>> TeamLeaderByUserId(string userFirstName)
+        public async Task<List<ApplicationUser>> TeamLeaderByUserSlackName(string userSlackName)
         {
-            var user = _userManager.Users.FirstOrDefault(x => x.FirstName == userFirstName);
+            var user = _userManager.Users.FirstOrDefault(x => x.SlackUserName == userSlackName);
             var projects = _projectUserRepository.Fetch(x => x.UserId == user.Id);
             List<ApplicationUser> teamLeaders = new List<ApplicationUser>();
             foreach (var project in projects)
@@ -380,7 +382,8 @@ namespace Promact.Oauth.Server.Repository
                 var newUser = new ApplicationUser
                 {
                     UserName = user.UserName,
-                    Email = user.Email
+                    Email = user.Email,
+                    SlackUserName = user.SlackUserName
                 };
                 teamLeaders.Add(newUser);
             }
@@ -391,7 +394,7 @@ namespace Promact.Oauth.Server.Repository
         /// Method to get management people details
         /// </summary>
         /// <returns>list of management</returns>
-        public async Task<List<ApplicationUser>> ManagementByUserId()
+        public async Task<List<ApplicationUser>> ManagementDetails()
         {
             var management = await _userManager.GetUsersInRoleAsync("Admin");
             List<ApplicationUser> managementUser = new List<ApplicationUser>();
@@ -400,29 +403,28 @@ namespace Promact.Oauth.Server.Repository
                 var newUser = new ApplicationUser
                 {
                     FirstName = user.FirstName,
-                    Email = user.Email
+                    Email = user.Email,
+                    SlackUserName = user.SlackUserName
                 };
                 managementUser.Add(newUser);
             }
             return managementUser;
         }
 
-        public ApplicationUser UserDetailById(string employeeId)
+
+        /// <summary>
+        /// Method to get the number of casual leave allowed to a user by slack user name
+        /// </summary>
+        /// <param name="slackUserName"></param>
+        /// <returns>number of casual leave</returns>
+        public double GetUserCasualLeaveBySlackName(string slackUserName)
         {
-            var user = _userManager.Users.FirstOrDefault(x => x.Id == employeeId);
-            if (user != null)
-            {
-                var newUser = new ApplicationUser
-                {
-                    Id = user.Id,
-                    Email = user.Email,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName
-                };
-                return newUser;
-            }
-            return null;
+            var casualLeave = _applicationUserDataRepository.FirstOrDefault(x => x.SlackUserName == slackUserName).NumberOfCasualLeave;
+            return casualLeave;
         }
+
+
+
         #endregion
     }
 }
