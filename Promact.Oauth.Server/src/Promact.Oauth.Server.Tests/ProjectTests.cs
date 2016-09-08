@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
 using Promact.Oauth.Server.Constants;
+using Promact.Oauth.Server.Data;
 
 namespace Promact.Oauth.Server.Tests
 {
@@ -19,13 +20,14 @@ namespace Promact.Oauth.Server.Tests
 
         private readonly IDataRepository<Project> _dataRepository;
         private readonly IDataRepository<ProjectUser> _dataRepositoryProjectUser;
-
+        private readonly PromactOauthDbContext _db;
 
         public ProjectTests() : base()
         {
             _projectRepository = serviceProvider.GetService<IProjectRepository>();
             _dataRepository = serviceProvider.GetService<IDataRepository<Project>>();
             _dataRepositoryProjectUser = serviceProvider.GetService<IDataRepository<ProjectUser>>();
+            _db = serviceProvider.GetService<PromactOauthDbContext>();
         }
 
         ProjectAc projectac = new ProjectAc()
@@ -174,6 +176,10 @@ namespace Promact.Oauth.Server.Tests
             _projectRepository.AddUserProject(projectUser);
             Task<IEnumerable<ProjectAc>> projects = _projectRepository.GetAllProjects();
             Assert.NotNull(projects);
+        }
+        ~ProjectTests()
+        {
+            _db.Dispose();
         }
     }
 }
