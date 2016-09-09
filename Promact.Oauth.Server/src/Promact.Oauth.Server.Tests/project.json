@@ -6,10 +6,15 @@
     "Microsoft.AspNetCore.Identity": "1.0.0",
     "dotnet-test-xunit": "2.2.0-preview2-build1029",
     "AutoMapper": "5.0.2",
-    "Autofac": "4.1.0"
+    "moq.netcore": "4.4.0-beta8"
   },
   "frameworks": {
     "netcoreapp1.0": {
+      "imports": [
+        "dotnet5.6",
+        "dnxcore50",
+        "portable-net45+win8"
+      ],
       "dependencies": {
         "Microsoft.NETCore.App": {
           "type": "platform",
@@ -18,17 +23,7 @@
       }
     }
   },
-  //"frameworks": {
-  //  "net451": {
-  //    "dependencies": {
-  //      "Microsoft.NETCore.App": {
-  //        "type": "platform",
-  //        "version": "1.0.0"
-  //        //"Microsoft.NETCore.Platforms": "1.0.1"
-  //      }
-  //    }
-  //  }
-  //},
+
   "publishOptions": {
     "include": [
       "appsettings.json"

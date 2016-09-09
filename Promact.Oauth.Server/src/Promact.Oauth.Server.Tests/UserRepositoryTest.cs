@@ -1,7 +1,8 @@
-﻿using Autofac;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using Promact.Oauth.Server.Constants;
 using Promact.Oauth.Server.Data;
 using Promact.Oauth.Server.Data_Repository;
@@ -23,12 +24,14 @@ namespace Promact.Oauth.Server.Tests
         //private readonly UserManager<ApplicationUser> _userManager;
         //private readonly RoleManager<IdentityRole> _roleManager;
         private readonly PromactOauthDbContext _db;
+        private readonly IMapper _mapperContext;
         public UserRepositoryTest() : base()
         {
             _userRepository = serviceProvider.GetService<IUserRepository>();
             //_userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
             //_roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             _db = serviceProvider.GetService<PromactOauthDbContext>();
+            _mapperContext = serviceProvider.GetService<IMapper>();
         }
 
         #region Test Case
@@ -98,7 +101,9 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public void AddUser()
         {
-            //AddRole();
+            var mockApplicationUser = new Mock<UserManager<ApplicationUser>>();
+            var user = _mapperContext.Map<UserAc, ApplicationUser>(_testUser);
+            mockApplicationUser.Setup(x => x.AddToRoleAsync(user, StringConstant.Employee)).Returns(Task.FromResult(IdentityResult.Success));
             string id = _userRepository.AddUser(_testUser, StringConstant.CreatedBy).Result;
             //ApplicationUser user = _userManager.FindByIdAsync(id).Result;
             Assert.NotNull(id);
@@ -252,27 +257,27 @@ namespace Promact.Oauth.Server.Tests
         //    Assert.Equal(8,casualLeave);
         //}
         #endregion
-        private void AddRole()
-        {
-            if(!_db.Roles.Any())
-            //if (!_roleManager.Roles.Any())
-            {
-                List<IdentityRole> roles = new List<IdentityRole>();
-                roles.Add(new IdentityRole { Name = StringConstant.Employee, NormalizedName = StringConstant.NormalizedName });
-                roles.Add(new IdentityRole { Name = StringConstant.Admin, NormalizedName = StringConstant.NormalizedSecond });
+        //private void AddRole()
+        //{
+        //    if(!_db.Roles.Any())
+        //    //if (!_roleManager.Roles.Any())
+        //    {
+        //        List<IdentityRole> roles = new List<IdentityRole>();
+        //        roles.Add(new IdentityRole { Name = StringConstant.Employee, NormalizedName = StringConstant.NormalizedName });
+        //        roles.Add(new IdentityRole { Name = StringConstant.Admin, NormalizedName = StringConstant.NormalizedSecond });
 
-                foreach (var role in roles)
-                {
-                    //var roleExist = _db.Roles.
-                    //var roleExit = await _roleManager.RoleExistsAsync(role.Name);
-                    //if (!roleExit)
-                    //{
-                    var result = _db.Roles.Add(role);
-                    //}
-                }
-                _db.SaveChanges();
-            }
-        }
+        //        foreach (var role in roles)
+        //        {
+        //            //var roleExist = _db.Roles.
+        //            //var roleExit = await _roleManager.RoleExistsAsync(role.Name);
+        //            //if (!roleExit)
+        //            //{
+        //            var result = _db.Roles.Add(role);
+        //            //}
+        //        }
+        //        _db.SaveChanges();
+        //    }
+        //}
 
         private UserAc _testUser = new UserAc()
         {
