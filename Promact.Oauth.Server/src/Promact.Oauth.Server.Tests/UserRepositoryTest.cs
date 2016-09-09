@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Moq;
 using Promact.Oauth.Server.Constants;
 using Promact.Oauth.Server.Data;
 using Promact.Oauth.Server.Data_Repository;
@@ -24,15 +23,11 @@ namespace Promact.Oauth.Server.Tests
         private readonly IUserRepository _userRepository;
         //private readonly UserManager<ApplicationUser> _userManager;
         //private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly PromactOauthDbContext _db;
-        private readonly IMapper _mapperContext;
         public UserRepositoryTest() : base()
         {
             _userRepository = serviceProvider.GetService<IUserRepository>();
             //_userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
             //_roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            _db = serviceProvider.GetService<PromactOauthDbContext>();
-            _mapperContext = serviceProvider.GetService<IMapper>();
         }
 
         #region Test Case
@@ -102,9 +97,9 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public void AddUser()
         {
-            var mockApplicationUser = new Mock<UserManager<ApplicationUser>>();
-            var user = _mapperContext.Map<UserAc, ApplicationUser>(_testUser);
-            mockApplicationUser.Setup(x => x.AddToRoleAsync(user, StringConstant.Employee)).Returns(Task.FromResult(IdentityResult.Success));
+            //var mockApplicationUser = new Mock<UserManager<ApplicationUser>>();
+            //var user = _mapperContext.Map<UserAc, ApplicationUser>(_testUser);
+            //mockApplicationUser.Setup(x => x.AddToRoleAsync(user, StringConstant.Employee)).Returns(Task.FromResult(IdentityResult.Success));
             string id = _userRepository.AddUser(_testUser, StringConstant.CreatedBy).Result;
             //ApplicationUser user = _userManager.FindByIdAsync(id).Result;
             Assert.NotNull(id);
