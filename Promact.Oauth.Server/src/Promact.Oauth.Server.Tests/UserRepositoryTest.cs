@@ -99,7 +99,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public void AddUser()
         {
-            AddRole();
+            //AddRole();
             string id = _userRepository.AddUser(_testUser, StringConstant.CreatedBy).Result;
             //ApplicationUser user = _userManager.FindByIdAsync(id).Result;
             Assert.NotNull(id);
