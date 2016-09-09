@@ -50,7 +50,7 @@ namespace Promact.Oauth.Server.Repository
         /// This method is used for changing the password of an user
         /// </summary>
         /// <param name="passwordModel">ChangePasswordViewModel type object</param>
-        string ChangePassword(ChangePasswordViewModel passwordModel);
+        Task<string> ChangePassword(ChangePasswordViewModel passwordModel);
 
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="userName">string userName</param>
         /// <returns> boolean: true if the user name exists, false if does not exist</returns>
-        bool FindByUserName(string userName);
+        Task<bool> FindByUserName(string userName);
 
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="email"></param>
         /// <returns> boolean: true if the email exists, false if does not exist</returns>
-        bool FindByEmail(string email);
+        Task<bool> FindByEmail(string email);
 
         bool FindUserBySlackUserName(string slackUserName);
 
@@ -74,7 +74,7 @@ namespace Promact.Oauth.Server.Repository
         /// This method is used to send email to the currently added user
         /// </summary>
         /// <param name="user">Object of newly registered User</param>
-        void SendEmail(ApplicationUser user);
+        //void SendEmail(ApplicationUser user);
 
         /// <summary>
         /// Method is used to Get User details by firstname
@@ -102,22 +102,7 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="UserName"></param>
         /// <returns>object of UserAc</returns>
-        UserAc GetUserDetail(string UserName);
-
-
-        ///// <summary>
-        ///// This method is used to Get User details by Id
-        ///// </summary>
-        ///// <param name="userId"></param>
-        ///// <returns>details of user</returns>
-        //UserAc UserDetailById(string userId);
-
-        ///// <summary>
-        ///// Method is used to get the details of user by using their username
-        ///// </summary>
-        ///// <param name="userName"></param>
-        ///// <returns>details of user</returns>
-        //UserAc GetUserDetailByUserName(string UserName);
+        Task<UserAc> GetUserDetail(string UserName);
 
         /// <summary>
         /// Method to get the number of casual leave allowed to a user by slack user name
