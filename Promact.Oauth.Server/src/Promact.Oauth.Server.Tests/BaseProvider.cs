@@ -82,6 +82,7 @@ namespace Promact.Oauth.Server.Tests
                 {
                     _db.Roles.Add(role);
                 }
+                _db.SaveChanges();
             }
         }
     }
