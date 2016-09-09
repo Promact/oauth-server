@@ -67,12 +67,12 @@ namespace Promact.Oauth.Server.Tests
             services.AddDbContext<PromactOauthDbContext>(options => options.UseInMemoryDatabase(randomString), ServiceLifetime.Transient);
 
             serviceProvider = services.BuildServiceProvider();
-            RoleSeedFake(serviceProvider).Wait();
+            RoleSeedFake(serviceProvider);
         }
-        public async Task RoleSeedFake(IServiceProvider serviceProvider)
+        public void RoleSeedFake(IServiceProvider serviceProvider)
         {
-            var _roleManager = serviceProvider.GetService<RoleManager<IdentityRole>>();
-            if (!_roleManager.Roles.Any())
+            var _db = serviceProvider.GetService<PromactOauthDbContext>();
+            if (!_db.Roles.Any())
             {
                 List<IdentityRole> roles = new List<IdentityRole>();
                 roles.Add(new IdentityRole { Name = StringConstant.Employee, NormalizedName = StringConstant.NormalizedName });
@@ -80,7 +80,7 @@ namespace Promact.Oauth.Server.Tests
 
                 foreach (var role in roles)
                 {
-                    await _roleManager.CreateAsync(role);
+                    _db.Roles.Add(role);
                 }
             }
         }
