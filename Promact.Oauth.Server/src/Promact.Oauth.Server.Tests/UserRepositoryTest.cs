@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Autofac;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Promact.Oauth.Server.Constants;
@@ -19,16 +20,20 @@ namespace Promact.Oauth.Server.Tests
 {
     public class UserRepositoryTest : BaseProvider
     {
+        //private readonly IComponentContext _componentContext;
         private readonly IUserRepository _userRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly PromactOauthDbContext _db;
+        //private readonly PromactOauthDbContext _db;
         public UserRepositoryTest() : base()
         {
+            //_componentContext = AutofacConfig.RegisterDependancies();
+            //_userManager = _componentContext.Resolve<UserManager<ApplicationUser>>();
+            //_roleManager = _componentContext.Resolve<RoleManager<IdentityRole>>();
+            //_userRepository = _componentContext.Resolve<IUserRepository>();
             _userRepository = serviceProvider.GetService<IUserRepository>();
             _userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
             _roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            _db = serviceProvider.GetRequiredService<PromactOauthDbContext>();
         }
 
         #region Test Case
@@ -42,7 +47,7 @@ namespace Promact.Oauth.Server.Tests
             AddRole().Wait();
             var id = _userRepository.AddUser(_testUser, StringConstant.RawFirstNameForTest).Result;
             IEnumerable<UserAc> users = _userRepository.GetAllUsers();
-            Assert.NotEqual(0, users.Count());
+            Assert.Equal(1, users.Count());
         }
 
         //        ///// <summary>
@@ -294,9 +299,9 @@ namespace Promact.Oauth.Server.Tests
         //    //JoiningDate = DateTime.UtcNow,
         //    SlackUserName = "myslackname"
         //};
-        ~UserRepositoryTest()
-        {
-            _db.Dispose();
-        }
+        //~UserRepositoryTest()
+        //{
+        //    _db.Dispose();
+        //}
     }
 }
