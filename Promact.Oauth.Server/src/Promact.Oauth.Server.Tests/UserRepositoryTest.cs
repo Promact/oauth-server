@@ -99,7 +99,7 @@ namespace Promact.Oauth.Server.Tests
             //var mockApplicationUser = new Mock<UserManager<ApplicationUser>>();
             //var user = _mapperContext.Map<UserAc, ApplicationUser>(_testUser);
             //mockApplicationUser.Setup(x => x.AddToRoleAsync(user, StringConstant.Employee)).Returns(Task.FromResult(IdentityResult.Success));
-            string id = _userRepository.AddUser(_testUser, StringConstant.CreatedBy).Result;
+            string id = _userRepository.AddUser(_testUser, StringConstant.CreatedBy);
             //ApplicationUser user = _userManager.FindByIdAsync(id).Result;
             Assert.NotNull(id);
         }
