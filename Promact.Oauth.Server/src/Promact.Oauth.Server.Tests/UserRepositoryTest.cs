@@ -21,13 +21,13 @@ namespace Promact.Oauth.Server.Tests
     public class UserRepositoryTest : BaseProvider
     {
         private readonly IUserRepository _userRepository;
-        private readonly UserManager<ApplicationUser> _userManager;
+        //private readonly UserManager<ApplicationUser> _userManager;
         //private readonly RoleManager<IdentityRole> _roleManager;
         private readonly PromactOauthDbContext _db;
         public UserRepositoryTest() : base()
         {
             _userRepository = serviceProvider.GetService<IUserRepository>();
-            _userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
+            //_userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
             //_roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             _db = serviceProvider.GetService<PromactOauthDbContext>();
         }
@@ -96,14 +96,14 @@ namespace Promact.Oauth.Server.Tests
         //        /// <summary>
         //        /// This test case is used for adding new user
         //        /// </summary>
-        //        [Fact, Trait("Category", "Required")]
-        //        public async void AddUser()
-        //        {
-        //            await AddRole();
-        //            string id = _userRepository.AddUser(_testUser, StringConstant.CreatedBy).Result;
-        //            ApplicationUser user = _userManager.FindByIdAsync(id).Result;
-        //            Assert.NotNull(user);
-        //        }
+        [Fact, Trait("Category", "Required")]
+        public void AddUser()
+        {
+            AddRole();
+            string id = _userRepository.AddUser(_testUser, StringConstant.CreatedBy).Result;
+            //ApplicationUser user = _userManager.FindByIdAsync(id).Result;
+            Assert.NotNull(id);
+        }
 
         //        /// <summary>
         //        /// This test case is used for updating user details
