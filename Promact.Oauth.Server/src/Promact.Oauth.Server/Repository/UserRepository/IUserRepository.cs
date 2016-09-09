@@ -15,7 +15,7 @@ namespace Promact.Oauth.Server.Repository
         /// This method is used for adding user and return its id
         /// </summary>
         /// <param name="applicationUser">UserAc Application class object</param>
-        string AddUser(UserAc newUser, string createdBy);
+        Task<string> AddUser(UserAc newUser, string createdBy);
         
 
         /// <summary>
