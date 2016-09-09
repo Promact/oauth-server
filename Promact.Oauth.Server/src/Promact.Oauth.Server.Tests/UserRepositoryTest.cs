@@ -37,14 +37,14 @@ namespace Promact.Oauth.Server.Tests
         /// <summary>
         /// This test case gets the list of all users
         /// </summary>
-        [Fact, Trait("Category", "Required")]
-        public void GetAllUser()
-        {
-            AddRole().Wait();
-            var id = _userRepository.AddUser(_testUser, StringConstant.RawFirstNameForTest).Result;
-            IEnumerable<UserAc> users = _userRepository.GetAllUsers();
-            Assert.Equal(1, users.Count());
-        }
+        //[Fact, Trait("Category", "Required")]
+        //public void GetAllUser()
+        //{
+        //    AddRole();
+        //    var id = _userRepository.AddUser(_testUser, StringConstant.RawFirstNameForTest).Result;
+        //    IEnumerable<UserAc> users = _userRepository.GetAllUsers();
+        //    Assert.Equal(1, users.Count());
+        //}
 
         //        ///// <summary>
         //        ///// This test case gets the user by its id
@@ -253,7 +253,7 @@ namespace Promact.Oauth.Server.Tests
         //    Assert.Equal(8,casualLeave);
         //}
         #endregion
-        private async Task AddRole()
+        private void AddRole()
         {
             if(!_db.Roles.Any())
             //if (!_roleManager.Roles.Any())
