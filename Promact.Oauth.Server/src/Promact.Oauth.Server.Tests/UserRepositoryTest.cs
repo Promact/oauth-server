@@ -94,13 +94,13 @@ namespace Promact.Oauth.Server.Tests
         //        /// This test case is used for adding new user
         //        /// </summary>
         [Fact, Trait("Category", "Required")]
-        public void AddUser()
+        public async Task AddUser()
         {
             //var mockApplicationUser = new Mock<UserManager<ApplicationUser>>();
             //var user = _mapperContext.Map<UserAc, ApplicationUser>(_testUser);
             //mockApplicationUser.Setup(x => x.AddToRoleAsync(user, StringConstant.Employee)).Returns(Task.FromResult(IdentityResult.Success));
-            string id = _userRepository.AddUser(_testUser, StringConstant.CreatedBy).Result;
-            //ApplicationUser user = _userManager.FindByIdAsync(id).Result;
+            string id = await _userRepository.AddUser(_testUser, StringConstant.CreatedBy);
+            //ApplicationUser user = _userManager.FindByIdAsync();
             Assert.NotNull(id);
         }
 
