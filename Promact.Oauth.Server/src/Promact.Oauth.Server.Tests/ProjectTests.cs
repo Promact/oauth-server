@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
 using Promact.Oauth.Server.Constants;
+using Promact.Oauth.Server.Data;
 
 namespace Promact.Oauth.Server.Tests
 {
@@ -19,7 +20,6 @@ namespace Promact.Oauth.Server.Tests
 
         private readonly IDataRepository<Project> _dataRepository;
         private readonly IDataRepository<ProjectUser> _dataRepositoryProjectUser;
-
 
         public ProjectTests() : base()
         {

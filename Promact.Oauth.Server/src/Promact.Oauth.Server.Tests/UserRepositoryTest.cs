@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using Promact.Oauth.Server.Constants;
+using Promact.Oauth.Server.Data;
 using Promact.Oauth.Server.Data_Repository;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Models.ApplicationClasses;
@@ -18,14 +21,17 @@ namespace Promact.Oauth.Server.Tests
     public class UserRepositoryTest : BaseProvider
     {
         private readonly IUserRepository _userRepository;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
-
+        //private readonly UserManager<ApplicationUser> _userManager;
+        //private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly PromactOauthDbContext _db;
+        private readonly IMapper _mapperContext;
         public UserRepositoryTest() : base()
         {
             _userRepository = serviceProvider.GetService<IUserRepository>();
-            _userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
-            _roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            //_userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
+            //_roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            _db = serviceProvider.GetService<PromactOauthDbContext>();
+            _mapperContext = serviceProvider.GetService<IMapper>();
         }
 
         #region Test Case
@@ -36,36 +42,34 @@ namespace Promact.Oauth.Server.Tests
         //[Fact, Trait("Category", "Required")]
         //public void GetAllUser()
         //{
-        //    AddRole().Wait();
-        //    var id = _userRepository.AddUser(_testUser, "Rajdeep").Result;
+        //    AddRole();
+        //    var id = _userRepository.AddUser(_testUser, StringConstant.RawFirstNameForTest).Result;
         //    IEnumerable<UserAc> users = _userRepository.GetAllUsers();
-        //    Assert.NotNull(users);
+        //    Assert.Equal(1, users.Count());
         //}
 
         //        ///// <summary>
         //        ///// This test case gets the user by its id
-        //        ///// </summary>
-        //        //[Fact, Trait("Category", "Required")]
-        //        //public void GetUserById()
-        //        //{
-
-        //        //    UserAc user = new UserAc()
-        //        //    {
-        //        //        Email = "testUser2@promactinfo.com",
-        //        //        FirstName = "First name 2",
-        //        //        LastName = "Last name 2",
-        //        //        IsActive = true,
-        //        //        Password = "User@123",
-        //        //        UserName = "testUser2@promactinfo.com",
-        //        //        SlackUserName = "test",
-        //        //        RoleName = StringConstant.Employee
-        //        //    };
-        //        //    AddRole().Wait();
-        //        //    var id = _userRepository.AddUser(user, "Rajdeep").Result;
-        //        //    UserAc testUser = _userRepository.GetById(id).Result;
-
-        //        //    Assert.NotNull(testUser);
-        //        //}
+        ///// </summary>
+        //[Fact, Trait("Category", "Required")]
+        //public void GetUserById()
+        //{
+        //    UserAc user = new UserAc()
+        //    {
+        //        Email = "testUser2@promactinfo.com",
+        //        FirstName = "First name 2",
+        //        LastName = "Last name 2",
+        //        IsActive = true,
+        //        Password = "User@123",
+        //        UserName = "testUser2@promactinfo.com",
+        //        SlackUserName = "test",
+        //        RoleName = StringConstant.Employee
+        //    };
+        //    AddRole().Wait();
+        //    var id = _userRepository.AddUser(user, "Rajdeep").Result;
+        //    UserAc testUser = _userRepository.GetById(id).Result;
+        //    Assert.NotNull(testUser);
+        //}
 
         //        ///// <summary>
         //        ///// This test case checks if a user exists with the specified Email
@@ -94,14 +98,16 @@ namespace Promact.Oauth.Server.Tests
         //        /// <summary>
         //        /// This test case is used for adding new user
         //        /// </summary>
-        //        [Fact, Trait("Category", "Required")]
-        //        public async void AddUser()
-        //        {
-        //            await AddRole();
-        //            string id = _userRepository.AddUser(_testUser, StringConstant.CreatedBy).Result;
-        //            ApplicationUser user = _userManager.FindByIdAsync(id).Result;
-        //            Assert.NotNull(user);
-        //        }
+        [Fact, Trait("Category", "Required")]
+        public void AddUser()
+        {
+            var mockApplicationUser = new Mock<UserManager<ApplicationUser>>();
+            var user = _mapperContext.Map<UserAc, ApplicationUser>(_testUser);
+            mockApplicationUser.Setup(x => x.AddToRoleAsync(user, StringConstant.Employee)).Returns(Task.FromResult(IdentityResult.Success));
+            string id = _userRepository.AddUser(_testUser, StringConstant.CreatedBy).Result;
+            //ApplicationUser user = _userManager.FindByIdAsync(id).Result;
+            Assert.NotNull(id);
+        }
 
         //        /// <summary>
         //        /// This test case is used for updating user details
@@ -251,9 +257,10 @@ namespace Promact.Oauth.Server.Tests
         //    Assert.Equal(8,casualLeave);
         //}
         #endregion
-        //private async Task AddRole()
+        //private void AddRole()
         //{
-        //    if (!_roleManager.Roles.Any())
+        //    if(!_db.Roles.Any())
+        //    //if (!_roleManager.Roles.Any())
         //    {
         //        List<IdentityRole> roles = new List<IdentityRole>();
         //        roles.Add(new IdentityRole { Name = StringConstant.Employee, NormalizedName = StringConstant.NormalizedName });
@@ -261,27 +268,28 @@ namespace Promact.Oauth.Server.Tests
 
         //        foreach (var role in roles)
         //        {
-        //            var roleExit = await _roleManager.RoleExistsAsync(role.Name);
-        //            if (!roleExit)
-        //            {
-        //                var result = await _roleManager.CreateAsync(role);
-        //            }
+        //            //var roleExist = _db.Roles.
+        //            //var roleExit = await _roleManager.RoleExistsAsync(role.Name);
+        //            //if (!roleExit)
+        //            //{
+        //            var result = _db.Roles.Add(role);
+        //            //}
         //        }
+        //        _db.SaveChanges();
         //    }
         //}
 
-        //private UserAc _testUser = new UserAc()
-        //{
-        //    Email = "testUser@promactinfo.com",
-        //    FirstName = "First name",
-        //    LastName = "Last name",
-        //    IsActive = true,
-        //    Password = "User@123",
-        //    UserName = "testUser@pronactinfo.com",
-        //    SlackUserName = "test",
-        //    JoiningDate = DateTime.UtcNow,
-        //    RoleName = StringConstant.Employee
-        //};
+        private UserAc _testUser = new UserAc()
+        {
+            Email = StringConstant.RawEmailIdForTest,
+            FirstName = StringConstant.RawFirstNameForTest,
+            LastName = StringConstant.RawLastNameForTest,
+            IsActive = true,
+            UserName = StringConstant.RawEmailIdForTest,
+            SlackUserName = StringConstant.RawFirstNameForTest,
+            JoiningDate = DateTime.UtcNow,
+            RoleName = StringConstant.Employee
+        };
 
 
         //private UserAc userLocal = new UserAc()
@@ -294,5 +302,9 @@ namespace Promact.Oauth.Server.Tests
         //    //JoiningDate = DateTime.UtcNow,
         //    SlackUserName = "myslackname"
         //};
+        //~UserRepositoryTest()
+        //{
+        //    _db.Dispose();
+        //}
     }
 }
