@@ -19,20 +19,16 @@ namespace Promact.Oauth.Server.Tests
 {
     public class UserRepositoryTest : BaseProvider
     {
-        //private readonly IComponentContext _componentContext;
         private readonly IUserRepository _userRepository;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
-        //private readonly PromactOauthDbContext _db;
+        //private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly PromactOauthDbContext _db;
         public UserRepositoryTest() : base()
         {
-            //_componentContext = AutofacConfig.RegisterDependancies();
-            //_userManager = _componentContext.Resolve<UserManager<ApplicationUser>>();
-            //_roleManager = _componentContext.Resolve<RoleManager<IdentityRole>>();
-            //_userRepository = _componentContext.Resolve<IUserRepository>();
             _userRepository = serviceProvider.GetService<IUserRepository>();
             _userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
-            _roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            //_roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            _db = serviceProvider.GetService<PromactOauthDbContext>();
         }
 
         #region Test Case
@@ -258,7 +254,8 @@ namespace Promact.Oauth.Server.Tests
         #endregion
         private async Task AddRole()
         {
-            if (!_roleManager.Roles.Any())
+            if(!_db.Roles.Any())
+            //if (!_roleManager.Roles.Any())
             {
                 List<IdentityRole> roles = new List<IdentityRole>();
                 roles.Add(new IdentityRole { Name = StringConstant.Employee, NormalizedName = StringConstant.NormalizedName });
@@ -266,12 +263,14 @@ namespace Promact.Oauth.Server.Tests
 
                 foreach (var role in roles)
                 {
-                    var roleExit = await _roleManager.RoleExistsAsync(role.Name);
-                    if (!roleExit)
-                    {
-                        var result = await _roleManager.CreateAsync(role);
-                    }
+                    //var roleExist = _db.Roles.
+                    //var roleExit = await _roleManager.RoleExistsAsync(role.Name);
+                    //if (!roleExit)
+                    //{
+                    var result = _db.Roles.Add(role);
+                    //}
                 }
+                _db.SaveChanges();
             }
         }
 
