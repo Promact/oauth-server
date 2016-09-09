@@ -84,7 +84,7 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="dateTime"></param>
         /// <returns></returns>
-        public LeaveCalculator CalculateAllowedLeaves(DateTime dateTime)
+        private LeaveCalculator CalculateAllowedLeaves(DateTime dateTime)
         {
             double casualAllowed = 0;
             double sickAllowed = 0;
@@ -201,10 +201,10 @@ namespace Promact.Oauth.Server.Repository
                     user.NumberOfSickLeave = editedUser.NumberOfSickLeave;
                     user.SlackUserName = editedUser.SlackUserName;
                     var userPreviousInfo = await _userManager.FindByEmailAsync(editedUser.Email);
-                    _userManager.UpdateAsync(user).Wait();
-                    IList<string> listofUserRole = _userManager.GetRolesAsync(user).Result;
-                    var removeFromRole = _userManager.RemoveFromRoleAsync(user, listofUserRole.FirstOrDefault()).Result;
-                    var addNewRole = _userManager.AddToRoleAsync(user, editedUser.RoleName).Result;
+                    await _userManager.UpdateAsync(user);
+                    IList<string> listofUserRole = await _userManager.GetRolesAsync(user);
+                    var removeFromRole = await _userManager.RemoveFromRoleAsync(user, listofUserRole.FirstOrDefault());
+                    var addNewRole = await _userManager.AddToRoleAsync(user, editedUser.RoleName);
                     return user.Id;
                 }
                 else { return ""; }
@@ -230,7 +230,7 @@ namespace Promact.Oauth.Server.Repository
                 var user = await _userManager.FindByIdAsync(id);
                 //var user = await _applicationUserDataRepository.FirstOrDefaultAsync(u => u.Id == id);
                 var requiredUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
-                IList<string> identityUserRole = _userManager.GetRolesAsync(user).Result;
+                IList<string> identityUserRole = await _userManager.GetRolesAsync(user);
                 requiredUser.RoleName = identityUserRole.FirstOrDefault();
                 return requiredUser;
             }
@@ -246,12 +246,12 @@ namespace Promact.Oauth.Server.Repository
         /// This method is used to change the password of a particular user
         /// </summary>
         /// <param name="passwordModel">ChangePasswordViewModel type object</param>
-        public string ChangePassword(ChangePasswordViewModel passwordModel)
+        public async Task<string> ChangePassword(ChangePasswordViewModel passwordModel)
         {
-            var user = _userManager.FindByEmailAsync(passwordModel.Email).Result;
+            var user = await _userManager.FindByEmailAsync(passwordModel.Email);
             if (user != null)
             {
-                _userManager.ChangePasswordAsync(user, passwordModel.OldPassword, passwordModel.NewPassword).Wait();
+                await _userManager.ChangePasswordAsync(user, passwordModel.OldPassword, passwordModel.NewPassword);
             }
             return passwordModel.NewPassword;
         }
@@ -261,9 +261,9 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="userName">string userName</param>
         /// <returns> boolean: true if the user name exists, false if does not exist</returns>
-        public bool FindByUserName(string userName)
+        public async Task<bool> FindByUserName(string userName)
         {
-            var user = _userManager.FindByNameAsync(userName).Result;
+            var user = await _userManager.FindByNameAsync(userName);
             if (user == null)
             {
                 return false;
@@ -276,11 +276,11 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="UserName"></param>
         /// <returns>object of UserAc</returns>
-        public UserAc GetUserDetail(string UserName)
+        public async Task<UserAc> GetUserDetail(string UserName)
         {
             try
             {
-                var user = _userManager.FindByNameAsync(UserName).Result;
+                var user = await _userManager.FindByNameAsync(UserName);
                 var userAc = new UserAc();
                 if (user != null)
                 {
@@ -303,9 +303,9 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="email"></param>
         /// <returns> boolean: true if the email exists, false if does not exist</returns>
-        public bool FindByEmail(string email)
+        public async Task<bool> FindByEmail(string email)
         {
-            var user = _userManager.FindByEmailAsync(email).Result;
+            var user = await _userManager.FindByEmailAsync(email);
             if (user == null)
             {
                 return false;
@@ -331,16 +331,16 @@ namespace Promact.Oauth.Server.Repository
         /// This method is used to send email to the currently added user
         /// </summary>
         /// <param name="user">Object of newly registered User</param>
-        public void SendEmail(ApplicationUser user)
+        private void SendEmail(ApplicationUser user)
         {
-            //string path = _hostingEnvironment.ContentRootPath + StringConstant.UserDetialTemplateFolderPath;
-            //string finaleTemplate = "";
-            //if (System.IO.File.Exists(path))
-            //{
-            //    finaleTemplate = System.IO.File.ReadAllText(path);
-            //    finaleTemplate = finaleTemplate.Replace(StringConstant.UserEmail, user.Email).Replace(StringConstant.UserPassword, StringConstant.DefaultUserPassword).Replace(StringConstant.ResertPasswordUserName, user.FirstName);
-            //    _emailSender.SendEmailAsync(user.Email, StringConstant.LoginCredentials, finaleTemplate);
-            //}
+            string path = _hostingEnvironment.ContentRootPath + StringConstant.UserDetialTemplateFolderPath;
+            string finaleTemplate = "";
+            if (System.IO.File.Exists(path))
+            {
+                finaleTemplate = System.IO.File.ReadAllText(path);
+                finaleTemplate = finaleTemplate.Replace(StringConstant.UserEmail, user.Email).Replace(StringConstant.UserPassword, StringConstant.DefaultUserPassword).Replace(StringConstant.ResertPasswordUserName, user.FirstName);
+                _emailSender.SendEmailAsync(user.Email, StringConstant.LoginCredentials, finaleTemplate);
+            }
         }
 
 

@@ -162,17 +162,17 @@ namespace Promact.Oauth.Server.Controllers
         [Route("changepassword")]
         [AllowAnonymous]
         [Authorize(Roles = "Admin,Employee")]
-        public IActionResult ChangePassword([FromBody] ChangePasswordViewModel passwordModel)
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordViewModel passwordModel)
         {
             try
             {
-                var user = _userManager.GetUserAsync(User).Result;
-                if (_userManager.CheckPasswordAsync(user, passwordModel.OldPassword).Result)
+                var user = await _userManager.GetUserAsync(User);
+                if (await _userManager.CheckPasswordAsync(user, passwordModel.OldPassword))
                 {
                     passwordModel.Email = user.Email;
                     if (ModelState.IsValid)
                     {
-                        _userRepository.ChangePassword(passwordModel);
+                        await _userRepository.ChangePassword(passwordModel);
                         return Ok(true);
                     }
                 }
@@ -194,11 +194,11 @@ namespace Promact.Oauth.Server.Controllers
         [HttpGet]
         [Route("findbyusername/{userName}")]
         [Authorize(Roles = "Admin")]
-        public IActionResult FindByUserName(string userName)
+        public async Task<IActionResult> FindByUserName(string userName)
         {
             try
             {
-                return Ok(_userRepository.FindByUserName(userName));
+                return Ok(await _userRepository.FindByUserName(userName));
             }
             catch (Exception ex)
             {
@@ -215,11 +215,11 @@ namespace Promact.Oauth.Server.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("fetchbyusername/{userName}")]
-        public IActionResult FetchByUserName(string userName)
+        public async Task<IActionResult> FetchByUserName(string userName)
         {
             try
             {
-                return Ok(_userRepository.GetUserDetail(userName));
+                return Ok(await _userRepository.GetUserDetail(userName));
             }
             catch (Exception ex)
             {
@@ -236,11 +236,11 @@ namespace Promact.Oauth.Server.Controllers
         [HttpGet]
         [Route("findbyemail/{email}")]
         [Authorize(Roles = "Admin")]
-        public IActionResult FindByEmail(string email)
+        public async Task<IActionResult> FindByEmail(string email)
         {
             try
             {
-                return Ok(_userRepository.FindByEmail(email));
+                return Ok(await _userRepository.FindByEmail(email));
             }
             catch (Exception ex)
             {

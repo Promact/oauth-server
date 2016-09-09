@@ -52,8 +52,8 @@ namespace Promact.Oauth.Server.Constants
         public static string ProjectName = "Project Edit";
         public static string ProjectSlackChannelName = "Slack Channel NameEdit";
 
-        public static string FirstName = "First Name";
-        public static string LastName = "Last Name";
+        public static string FirstName = "First";
+        public static string LastName = "Last";
         public static string Email = "test@promactinfo.com";
         public static string UserId = "1";
         public static string PasswordUser = "User@123";
@@ -72,5 +72,6 @@ namespace Promact.Oauth.Server.Constants
         public static string RawEmailIdForTest = "siddhartha@promactinfo.com";
         public static string RawFirstNameForTest = "Siddhartha";
         public static string RawLastNameForTest = "Shaw";
+        public static string OldPassword = "User@123";
     }
 }
