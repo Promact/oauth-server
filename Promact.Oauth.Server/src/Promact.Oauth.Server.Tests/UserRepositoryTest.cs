@@ -20,13 +20,11 @@ namespace Promact.Oauth.Server.Tests
     public class UserRepositoryTest : BaseProvider
     {
         private readonly IUserRepository _userRepository;
-        //private readonly UserManager<ApplicationUser> _userManager;
-        //private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         public UserRepositoryTest() : base()
         {
             _userRepository = serviceProvider.GetService<IUserRepository>();
-            //_userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
-            //_roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            _userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
         }
 
         #region Test Case
@@ -34,14 +32,13 @@ namespace Promact.Oauth.Server.Tests
         /// <summary>
         /// This test case gets the list of all users
         /// </summary>
-        //[Fact, Trait("Category", "Required")]
-        //public void GetAllUser()
-        //{
-        //    AddRole();
-        //    var id = _userRepository.AddUser(_testUser, StringConstant.RawFirstNameForTest).Result;
-        //    IEnumerable<UserAc> users = _userRepository.GetAllUsers();
-        //    Assert.Equal(1, users.Count());
-        //}
+        [Fact, Trait("Category", "Required")]
+        public async Task GetAllUser()
+        {
+            var id = await _userRepository.AddUser(_testUser, StringConstant.RawFirstNameForTest);
+            IEnumerable<UserAc> users = _userRepository.GetAllUsers();
+            Assert.Equal(1, users.Count());
+        }
 
         //        ///// <summary>
         //        ///// This test case gets the user by its id
@@ -90,17 +87,14 @@ namespace Promact.Oauth.Server.Tests
         //        //    Assert.Equal(true, exists);
         //        //}
 
-        //        /// <summary>
-        //        /// This test case is used for adding new user
-        //        /// </summary>
+        /// <summary>
+        /// This test case is used for adding new user
+        /// </summary>
         [Fact, Trait("Category", "Required")]
         public async Task AddUser()
         {
-            //var mockApplicationUser = new Mock<UserManager<ApplicationUser>>();
-            //var user = _mapperContext.Map<UserAc, ApplicationUser>(_testUser);
-            //mockApplicationUser.Setup(x => x.AddToRoleAsync(user, StringConstant.Employee)).Returns(Task.FromResult(IdentityResult.Success));
             string id = await _userRepository.AddUser(_testUser, StringConstant.CreatedBy);
-            //ApplicationUser user = _userManager.FindByIdAsync();
+            var user = await _userManager.FindByIdAsync(id);
             Assert.NotNull(id);
         }
 
