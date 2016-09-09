@@ -102,14 +102,14 @@ namespace Promact.Oauth.Server.Controllers
         [HttpPost]
         [Route("add")]
         [Authorize(Roles = "Admin")]
-        public IActionResult RegisterUser([FromBody] UserAc newUser)
+        public async Task<IActionResult> RegisterUser([FromBody] UserAc newUser)
         {
             try
             {
                 string createdBy = _userManager.GetUserId(User);
                 if (ModelState.IsValid)
                 {
-                   _userRepository.AddUser(newUser, createdBy);
+                   await _userRepository.AddUser(newUser, createdBy);
                     return Ok(true);
                 }
                 return Ok(false);
