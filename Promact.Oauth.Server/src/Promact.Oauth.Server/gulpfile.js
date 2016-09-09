@@ -55,14 +55,13 @@ gulp.task("copytowwwroot", function () {
 
 gulp.task('bundle', function (done) {
     var builder = new sysBuilder('./wwwroot', './wwwroot/systemjs.config.js');
-
     builder
      .buildStatic('app', './wwwroot/bundle.js', {
       runtime: false
   }).then(function () {
       done();
-  })
-   
+  });
+
 });
 
 gulp.task("clean:js", function (cb) {
@@ -90,14 +89,6 @@ gulp.task("min:css", function () {
 });
 
 gulp.task("min", ["min:js", "min:css"]);
-
-//// Run test once and exit
-//gulp.task('test', function (done) {
-//    new Server({
-//        configFile: __dirname + '/karma.conf.js',
-//        singleRun: true
-//    }, done).start();
-//});
 
 //Runs karma test
 gulp.task('test', function (done) {

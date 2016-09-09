@@ -1,6 +1,11 @@
+
+language: node_js
+node_js:
+  - 4
+  - 5
+  - stable
 language: csharp
 solution: ./Promact.Oauth.Server/Promact.Oauth.Server.sln
-
 matrix:
   include:
     - os: linux
@@ -9,11 +14,10 @@ matrix:
       dotnet: 1.0.0-preview2-003121
       mono: latest
       env: DOTNETCORE=1    
-
 notifications:
   email:
     on_success: change
     on_failure: always
-
+    
 script:
-  - if [ -n "${DOTNETCORE}" ]; then dotnet restore && dotnet build ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests -c Release && dotnet test ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests/project.json -c Release; fi
+  - if [ -n "${DOTNETCORE}" ]; then dotnet restore && dotnet build ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests -c Release && dotnet test ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests/project.json -c Release && - npm run test; fi
