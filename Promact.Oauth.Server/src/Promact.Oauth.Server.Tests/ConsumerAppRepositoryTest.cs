@@ -17,13 +17,11 @@ namespace Promact.Oauth.Server.Tests
     {
         private readonly IConsumerAppRepository _consumerAppRespository;
         private readonly IDataRepository<ConsumerApps> _consumerAppsContext;
-        private readonly PromactOauthDbContext _db;
 
         public ConsumerAppRepositoryTest() : base()
         {
             _consumerAppRespository = serviceProvider.GetService<IConsumerAppRepository>();
             _consumerAppsContext = serviceProvider.GetService<IDataRepository<ConsumerApps>>();
-            _db = serviceProvider.GetService<PromactOauthDbContext>();
         }
 
         #region Test Case
@@ -178,9 +176,5 @@ namespace Promact.Oauth.Server.Tests
             return comnsumerApp;
         }
         #endregion
-        ~ConsumerAppRepositoryTest()
-        {
-            _db.Dispose();
-        }
     }
 }

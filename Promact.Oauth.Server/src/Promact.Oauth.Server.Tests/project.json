@@ -1,12 +1,12 @@
 {
-  "version": "1.0.0-*",
-  "testRunner": "xunit",
   "dependencies": {
     "xunit": "2.2.0-beta2-build3300",
     "Promact.Oauth.Server": "1.0.0-*",
     "Microsoft.EntityFrameworkCore.InMemory": "1.0.0",
+    "Microsoft.AspNetCore.Identity": "1.0.0",
     "dotnet-test-xunit": "2.2.0-preview2-build1029",
-    "AutoMapper": "5.0.2"
+    "AutoMapper": "5.0.2",
+    "Autofac": "4.1.0"
   },
   "frameworks": {
     "netcoreapp1.0": {
@@ -18,9 +18,22 @@
       }
     }
   },
+  //"frameworks": {
+  //  "net451": {
+  //    "dependencies": {
+  //      "Microsoft.NETCore.App": {
+  //        "type": "platform",
+  //        "version": "1.0.0"
+  //        //"Microsoft.NETCore.Platforms": "1.0.1"
+  //      }
+  //    }
+  //  }
+  //},
   "publishOptions": {
     "include": [
       "appsettings.json"
     ]
-  }
+  },
+  "testRunner": "xunit",
+  "version": "1.0.0-*"
 }

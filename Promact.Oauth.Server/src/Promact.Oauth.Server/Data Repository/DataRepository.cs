@@ -284,5 +284,9 @@ namespace Promact.Oauth.Server.Data_Repository
             GC.SuppressFinalize(this);
         }
         #endregion
+        ~DataRepository()
+        {
+            Dispose();
+        }
     }
 }

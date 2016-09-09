@@ -20,6 +20,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Promact.Oauth.Server.Tests
 {
@@ -31,6 +32,8 @@ namespace Promact.Oauth.Server.Tests
 
         public BaseProvider()
         {
+
+            var randomString = Guid.NewGuid().ToString();
 
             _mapperConfiguration = new MapperConfiguration(cfg =>
             {
@@ -58,11 +61,9 @@ namespace Promact.Oauth.Server.Tests
 
             //Register Mapper
             services.AddSingleton<IMapper>(sp => _mapperConfiguration.CreateMapper());
-
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
-            services.AddDbContext<PromactOauthDbContext>(options =>
-                options.UseInMemoryDatabase());
+            services.AddDbContext<PromactOauthDbContext>(options => options.UseInMemoryDatabase(randomString),ServiceLifetime.Transient);
             serviceProvider = services.BuildServiceProvider();
         }
     }
