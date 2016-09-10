@@ -76,5 +76,12 @@ namespace Promact.Oauth.Server.Constants
         public static string RoleAdmin = "Admin";
         public static string RoleTeamLeader = "TeamLeader";
         public static string OldPassword = "User@123";
+        public static string NormalizedSecond = "ADMIN";
+        public static string AccessToken = "bcd34169-1434-40e9-abf5-c9e0e9d20cd8";
+        public static string ClientIdForTest = "adasfs21gv1drv1gd1sd";
+        public static string CallBackUrl = "http://www.example.com";
+        public static string PasswordForTest = "User@123";
+        public static string EmptyString = "";
+        public static string InvalidLogin = "Invalid login attempt.";
     }
 }
