@@ -471,6 +471,7 @@ namespace Promact.Oauth.Server.Repository
                 }
             }
             return null;
+        }
 
         /// <summary>
         /// Method to get the number of casual leave allowed to a user by slack user name
