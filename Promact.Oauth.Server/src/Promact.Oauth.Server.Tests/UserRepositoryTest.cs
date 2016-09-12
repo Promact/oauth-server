@@ -1,10 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Promact.Oauth.Server.Constants;
-using Promact.Oauth.Server.Data;
-using Promact.Oauth.Server.Data_Repository;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Models.ApplicationClasses;
 using Promact.Oauth.Server.Models.ManageViewModels;
@@ -14,7 +11,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
-using Promact.Oauth.Server.Constants;
 
 namespace Promact.Oauth.Server.Tests
 {
