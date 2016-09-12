@@ -13,7 +13,7 @@ import {Md2Multiselect } from 'md2/multiselect';
     providers: [Md2Toast]
 })
 export class ProjectEditComponent implements OnInit {
-    pro: projectModel;
+    project: projectModel;
     private sub: any;
     Userlist: Array<UserModel>;
     @Output() close = new EventEmitter();
@@ -28,31 +28,31 @@ export class ProjectEditComponent implements OnInit {
      * Get Project details and user details 
      */
     ngOnInit() {
-        this.pro = new projectModel();
-        this.pro.listUsers = new Array<UserModel>();
-        this.pro.applicationUsers = new Array<UserModel>();
+        this.project = new projectModel();
+        this.project.ListUsers = new Array<UserModel>();
+        this.project.ApplicationUsers = new Array<UserModel>();
         this.route.params.subscribe(params => {
             let id = +params['id']; // (+) converts string 'id' to a number
-            this.service.getProject(id).subscribe(pro => {
-                this.pro = pro;
+            this.service.getProject(id).subscribe(project => {
+                this.project = project;
                 this.service.getUsers().subscribe(listUsers => {
-                    this.pro.listUsers = listUsers;
-                    if (!this.pro.applicationUsers)
-                        this.pro.applicationUsers = new Array<UserModel>();
-                    for (let i = 0; i<this.pro.listUsers.length; i++) {
-                        for (let j = 0; j < this.pro.applicationUsers.length; j++)
+                    this.project.ListUsers = listUsers;
+                    if (!this.project.ApplicationUsers)
+                        this.project.ApplicationUsers = new Array<UserModel>();
+                    for (let i = 0; i < this.project.ListUsers.length; i++) {
+                        for (let j = 0; j < this.project.ApplicationUsers.length; j++)
                             {
-                            if (this.pro.listUsers[i].Id == this.pro.applicationUsers[j].Id) {
-                                this.pro.applicationUsers[j].Email = this.pro.listUsers[i].Email;
-                                this.pro.applicationUsers[j].IsActive = this.pro.listUsers[i].IsActive;
-                                this.pro.applicationUsers[j].LastName = this.pro.listUsers[i].LastName;
-                                this.pro.applicationUsers[j].UserName = this.pro.listUsers[i].UserName;
-                                this.pro.applicationUsers[j].UniqueName = this.pro.listUsers[i].UniqueName;
-                                this.pro.applicationUsers[j].NumberOfCasualLeave = this.pro.listUsers[i].NumberOfCasualLeave;
-                                this.pro.applicationUsers[j].NumberOfSickLeave = this.pro.listUsers[i].NumberOfSickLeave;
-                                this.pro.applicationUsers[j].JoiningDate = this.pro.listUsers[i].JoiningDate;
-                                this.pro.applicationUsers[j].SlackUserName = this.pro.listUsers[i].SlackUserName;
-                            }//break; 
+                            if (this.project.ListUsers[i].Id == this.project.ApplicationUsers[j].Id) {
+                                this.project.ApplicationUsers[j].Email = this.project.ListUsers[i].Email;
+                                this.project.ApplicationUsers[j].IsActive = this.project.ListUsers[i].IsActive;
+                                this.project.ApplicationUsers[j].LastName = this.project.ListUsers[i].LastName;
+                                this.project.ApplicationUsers[j].UserName = this.project.ListUsers[i].UserName;
+                                this.project.ApplicationUsers[j].UniqueName = this.project.ListUsers[i].UniqueName;
+                                this.project.ApplicationUsers[j].NumberOfCasualLeave = this.project.ListUsers[i].NumberOfCasualLeave;
+                                this.project.ApplicationUsers[j].NumberOfSickLeave = this.project.ListUsers[i].NumberOfSickLeave;
+                                this.project.ApplicationUsers[j].JoiningDate = this.project.ListUsers[i].JoiningDate;
+                                this.project.ApplicationUsers[j].SlackUserName = this.project.ListUsers[i].SlackUserName;
+                            }
                         }
                     }
                 })
@@ -71,17 +71,17 @@ export class ProjectEditComponent implements OnInit {
 
     /**
      * edit project and nevigate back to project page after update
-     * @param pro project that need update.
+     * @param project project that need update.
      */
-    editProject(pro: projectModel) {
-           this.service.editProject(pro).subscribe((pro) => {
-            if (pro.name == null && pro.slackChannelName == null) {
+    editProject(project: projectModel) {
+        this.service.editProject(project).subscribe((project) => {
+               if (project.name == null && project.slackChannelName == null) {
                 this.toast.show("Project and slackChannelName already exists");
             }
-            else if (pro.name != null && pro.slackChannelName == null) {
+               else if (project.name != null && project.slackChannelName == null) {
                 this.toast.show("slackChannelName already exists");
             }
-            else if (pro.name == null && pro.slackChannelName != null) {
+               else if (project.name == null && project.slackChannelName != null) {
                 this.toast.show("Project already exists");
             }
             else {

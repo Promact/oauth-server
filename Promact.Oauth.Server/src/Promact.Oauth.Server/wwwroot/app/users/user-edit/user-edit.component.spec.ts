@@ -15,16 +15,18 @@ import {MockUserService} from "../../shared/mocks/user/mock.user.service";
 import {MockBaseService} from '../../shared/mocks/mock.base';
 import {MockRouter} from '../../shared/mocks/mock.router';
 import {Observable} from 'rxjs/Observable';
+import { LoginService } from '../../login.service';
 
 describe("Project Edit Test", () => {
     let userEditComponent: UserEditComponent;
     let userService: UserService;
     class MockActivatedRoute { }
+    class MockLoginService { }
     //class MockActivatedRoute extends ActivatedRoute {
     //    constructor() {
     //        super();
-    //        this.params = Observable.of({ id: "1"});
-    //        this.snapshot = Observable.of({ id: "1" });
+    //        //this.params = Observable.of({ id: "1"});
+    //        this.snapshot.params = Observable.of({ id: "1" });
     //    }
     //}
     class MockLocation { }
@@ -42,10 +44,12 @@ describe("Project Edit Test", () => {
             ]
         });
     });
-    beforeEach(inject([UserService, ActivatedRoute, Router, Md2Toast], (userService: UserService, route: ActivatedRoute, router: Router, toast: Md2Toast) => {
-        //userEditComponent = new UserEditComponent(userService,route, router, toast);
+    beforeEach(inject([UserService, ActivatedRoute, Router, Md2Toast], (userService: UserService, route: ActivatedRoute, router: Router, toast: Md2Toast, loginService: LoginService) => {
+        userEditComponent = new UserEditComponent(userService, route, router, toast, loginService);
     }));
-
+    it("should be defined", () => {
+        expect(userEditComponent).toBeDefined();
+    });
     //it("should get default page for User", () => {
     //    userEditComponent.ngOnInit();
     //    expect(userEditComponent.user).not.toBeNull();

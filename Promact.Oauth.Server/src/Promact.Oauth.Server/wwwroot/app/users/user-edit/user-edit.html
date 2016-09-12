@@ -14,7 +14,6 @@
                 <div [hidden]="!(FirstName.touched && !FirstName.valid && FirstName.errors.required)" class="error">First Name is required</div>
             </div>
         </div>
-
         <div class="form-group">
             <div class="half-width">
                 <md-input placeholder="Last Name" class="full-width" type="text" name="LastName" [(ngModel)]="user.LastName" maxlength="255" required #LastName="ngModel"></md-input>

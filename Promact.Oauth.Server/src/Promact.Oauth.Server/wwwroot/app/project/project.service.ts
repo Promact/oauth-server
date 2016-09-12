@@ -16,8 +16,8 @@ export class ProjectService {
         return this.httpService.get("api/user" + "/users");
     }
     //
-    getPros() {
-        return this.httpService.get(this.ProjectUrl + "/projects");
+    getProjects() {
+        return this.httpService.get(this.ProjectUrl + "/getAllProjects");
     }
     getProject(id: number) {
         return this.httpService.get(this.ProjectUrl + "/getProjects/"+ id);
@@ -33,8 +33,4 @@ export class ProjectService {
     {
         return this.httpService.put(this.ProjectUrl + "/editProject/", project);
     }
-    //deleteProject(id) {
-    //    return this.httpService.delete("api/project/deleteProject/id");
-    //}
-
 }

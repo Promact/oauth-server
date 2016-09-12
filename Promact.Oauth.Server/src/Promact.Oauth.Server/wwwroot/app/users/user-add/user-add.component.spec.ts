@@ -35,25 +35,21 @@ describe('User Add Test', () => {
 
     });
     beforeEach(inject([UserService, Router, ActivatedRoute, Md2Toast], (userService: UserService, router: Router,route: ActivatedRoute,toast: Md2Toast) => {
-        //userAddComponent = new UserAddComponent(userService, router, route, toast);
+        userAddComponent = new UserAddComponent(userService, router, route, toast);
     }));
-
-     /**
-     * should check Project name and Slack Channel Name before add
-     */
+    it("should be defined", () => {
+        expect(userAddComponent).toBeDefined();
+    });
     it("should check user first name before add", inject([UserModel], (userModel: UserModel) => {
         let expectedFristName = "First Name";
         userModel.FirstName = expectedFristName;
         userAddComponent.addUser(userModel);
         expect(userModel.FirstName).toBe(expectedFristName);
     }));
-
     it("should check user email before add", () => {
         let email = "test@promactinfo.com";
         let result = true;
         let method = userAddComponent.checkEmail(email);
         expect(method).not.toBe(result);
     });
-
-
 });    

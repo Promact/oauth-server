@@ -33,17 +33,17 @@
     </div>
     <div class="form-group">
         <label>CasualLeave:</label>
-        <p class="in_block">{{user.NumberOfCasualLeave}}/14</p>
+        <p class="in_block">{{user.NumberOfCasualLeave}}</p>
     </div>
 
     <div class="form-group">
         <label>Sick Leave:</label>
-        <p class="in_block">{{user.NumberOfSickLeave}}/7</p>
+        <p class="in_block">{{user.NumberOfSickLeave}}</p>
     </div>
     
     <div class="form-group">
         <label>Date of Joining:</label>
-        <p class="in_block">{{user.JoiningDate |date:"dd/MM/yyyy"}}/7</p>
+        <p class="in_block">{{user.JoiningDate |date:"dd/MM/yyyy"}}</p>
     </div>
     <div>
         <button md-raised-button type="submit" (click)="edit(user.Id)" *ngIf="admin!=true" class="btn-green">Edit</button>

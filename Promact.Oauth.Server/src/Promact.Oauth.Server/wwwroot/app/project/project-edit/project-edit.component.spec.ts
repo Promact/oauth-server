@@ -45,11 +45,13 @@ describe("Project Edit Test", () => {
     beforeEach(inject([ActivatedRoute, Router, Md2Toast, ProjectService, Location], (route: ActivatedRoute, router: Router, toast: Md2Toast, projectService: ProjectService, location: Location) => {
         projectEditComponent = new ProjectEditComponent(route, router, toast, projectService, location);
     }));
-    
+    it("should be defined", () => {
+        expect(projectEditComponent).toBeDefined();
+    });
     it("should get default page for Project", () => {
         projectEditComponent.ngOnInit();
         expect(projectEditComponent.Userlist).not.toBeNull();
-        expect(projectEditComponent.pro).not.toBeNull();
+        expect(projectEditComponent.project).not.toBeNull();
     });
    
     it("should check Project name and Slack Channel Name before update", inject([projectModel], (projectModel: projectModel) => {

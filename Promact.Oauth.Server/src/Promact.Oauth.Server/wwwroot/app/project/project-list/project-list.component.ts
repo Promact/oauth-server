@@ -9,26 +9,27 @@ import { LoginService } from '../../login.service';
 @Component({
     templateUrl: "app/project/project-list/project-list.html",
     directives: [ROUTER_DIRECTIVES],
-    providers: [Md2Toast] 
+    providers: [Md2Toast],
+    
 })
 export class ProjectListComponent{
-    pros: Array<projectModel>;
-    pro: projectModel;
+    projects: Array<projectModel>;
+    project: projectModel;
     user: any;
     admin: any;
-    constructor(private router: Router, private proService: ProjectService, private toast: Md2Toast, private loginService: LoginService) {
-        this.pros = new Array<projectModel>();
-        this.pro = new projectModel();
+    constructor(private router: Router, private projectService: ProjectService, private toast: Md2Toast, private loginService: LoginService) {
+        this.projects = new Array<projectModel>();
+        this.project = new projectModel();
     }
-    getPros() {
-        this.proService.getPros().subscribe((pros) => {
-            this.pros = pros
+    getProjects() {
+        this.projectService.getProjects().subscribe((projects) => {
+            this.projects = projects
         }, err => {
 
         });
     }
     ngOnInit() {
-        this.getPros();
+        this.getProjects();
         this.getRole();
     }
     editProject(Id) {

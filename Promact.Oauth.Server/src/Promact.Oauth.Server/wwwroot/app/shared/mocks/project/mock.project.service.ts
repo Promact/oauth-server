@@ -15,7 +15,7 @@ export class MockProjectService {
     private userUrl="api/users"
     constructor(private mockBaseService: MockBaseService) { }
     
-    getPros() {
+    getProjects() {
         let mockProject = new MockProject();
         let mockProjectList = new Array<MockProject>();
         mockProject.Name = "slack";

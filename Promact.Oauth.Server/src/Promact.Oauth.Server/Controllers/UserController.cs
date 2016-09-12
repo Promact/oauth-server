@@ -36,11 +36,17 @@ namespace Promact.Oauth.Server.Controllers
         #endregion
 
         #region public Methods
-
-        /// <summary>
-        /// This method is used for getting the list of all users
-        /// </summary>
-        /// <returns>User list</returns>
+        /**
+        * @api {get} api/User/AllUsers 
+        * @apiVersion 1.0.0
+        * @apiName User
+        * @apiGroup User
+        * @apiSuccessExample {json} Success-Response:
+        * HTTP/1.1 200 OK 
+        * {
+        *     "description":"Get List of Users"
+        * }
+        */
         [HttpGet]
         [Route("users")]
         [Authorize(Roles = "Admin")]
@@ -66,11 +72,27 @@ namespace Promact.Oauth.Server.Controllers
         }
 
 
-        /// <summary>
-        /// This method is used to get particular user's details by his/her id
-        /// </summary>
-        /// <param name="id">String id</param>
-        /// <returns>UserAc Application class user</returns>
+          /**
+          * @api {get} api/User/GetUserById/:id 
+          * @apiVersion 1.0.0
+          * @apiName User
+          * @apiGroup User
+          * @apiParam {int} id User Id
+          * @apiParamExample {json} Request-Example:
+          *      
+          *        {
+          *             "id": "1"
+          *             "description":"get the UserAc Object"
+          *        }      
+          * @apiSuccessExample {json} Success-Response:
+          * HTTP/1.1 200 OK 
+          * {
+          *     "id":"1"
+          *     "description":"get the UserAc Object"
+          * }
+          */
+
+        
         [HttpGet]
         [Route("{id}")]
         [Authorize(Roles = "Admin,Employee")]
@@ -92,13 +114,28 @@ namespace Promact.Oauth.Server.Controllers
             }
         }
 
+        /**
+         * @api {post} api/User/RegisterUser 
+         * @apiVersion 1.0.0
+         * @apiName User
+         * @apiGroup User
+         * @apiParamExample {json} Request-Example:
+         *      
+         *        {
+         *             "FirstName":"ProjectName",
+         *             "LastName":"SlackChannelName",
+         *             "IsActive":"True",
+         *             "JoiningDate":"01-01-2016"
+         *             "SlackUserName":"SlackUserName"
+         *        }      
+         * @apiSuccessExample {json} Success-Response:
+         * HTTP/1.1 200 OK 
+         * {
+         *     "description":"Add User in Application User Table"
+         * }
+         */
 
-
-        /// <summary>
-        /// This method is used to add new user
-        /// </summary>
-        /// <param name="newUser">UserAc application class user</param>
-        /// <returns></returns>
+        
         [HttpPost]
         [Route("add")]
         [Authorize(Roles = "Admin")]
@@ -122,11 +159,28 @@ namespace Promact.Oauth.Server.Controllers
         }
 
 
-        /// <summary>
-        /// This method is used to edit the details of an existing user
-        /// </summary>
-        /// <param name="editedUser">UserAc application class user</param>
-        /// <returns></returns>
+        /**
+     * @api {put} api/User/editProject 
+     * @apiVersion 1.0.0
+     * @apiName User
+     * @apiGroup User
+     * @apiParam {int} id  User Id
+     * @apiParamExample {json} Request-Example:
+     *      
+     *        {
+     *             "Id":"1",
+     *             "FirstName":"ProjectName",
+     *             "LastName":"SlackChannelName",
+     *             "IsActive":"True",
+     *             "JoiningDate":"01-01-2016"
+     *             "SlackUserName":"SlackUserName"
+     *        }      
+     * @apiSuccessExample {json} Success-Response:
+     * HTTP/1.1 200 OK 
+     * {
+     *     "description":"edit User in User Table"
+     * }
+     */
         [HttpPut]
         [Route("edit")]
         [Authorize(Roles = "Admin,Employee")]
@@ -153,11 +207,28 @@ namespace Promact.Oauth.Server.Controllers
 
 
 
-        /// <summary>
-        /// This method is used to change the password of a particular user
-        /// </summary>
-        /// <param name="passwordModel">ChangePassWordModel object</param>
-        /// <returns></returns>
+        /**
+        * @api {post} api/User/ChangePasswordViewModel 
+        * @apiVersion 1.0.0
+        * @apiName User
+        * @apiGroup User
+        * @apiParam {string} OldPassword  User OldPassword
+        * @apiParam {string} NewPassword  User NewPassword
+        * @apiParam {string} ConfirmPassword  User ConfirmPassword
+        * @apiParamExample {json} Request-Example:
+        *      
+        *        {
+        *             "OldPassword":"OldPassword",
+        *             "NewPassword":"NewPassword",
+        *             "ConfirmPassword":"ConfirmPassword"
+        *            
+        *        }      
+        * @apiSuccessExample {json} Success-Response:
+        * HTTP/1.1 200 OK 
+        * {
+        *     "description":"Change Password"
+        * }
+        */
         [HttpPost]
         [Route("changepassword")]
         [AllowAnonymous]
@@ -184,13 +255,6 @@ namespace Promact.Oauth.Server.Controllers
                 throw ex;
             }
         }
-
-
-        /// <summary>
-        /// This method is used to check if a user already exists in the database with the given userName
-        /// </summary>
-        /// <param name="userName"></param>
-        /// <returns></returns>
         [HttpGet]
         [Route("findbyusername/{userName}")]
         [Authorize(Roles = "Admin")]
@@ -208,11 +272,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
 
-        /// <summary>
-        /// This method is used to check if a user already exists in the database with the given userName
-        /// </summary>
-        /// <param name="userName"></param>
-        /// <returns></returns>
+       
         [HttpGet]
         [Route("fetchbyusername/{userName}")]
         public IActionResult FetchByUserName(string userName)

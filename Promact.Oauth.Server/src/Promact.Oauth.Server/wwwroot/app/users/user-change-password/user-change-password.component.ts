@@ -66,7 +66,7 @@ export class ChangePasswordComponent {
 
     goBack() {
         //this.location.back();
-        this.redirectionRoute.navigate(['admin/user']);
+        this.redirectionRoute.navigate(['user/list']);
         //this.redirectionRoute.navigate(['admin/user']);
     }
 }

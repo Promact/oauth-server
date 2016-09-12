@@ -18,9 +18,9 @@ export class ProjectAddComponent {
 
     private disabled: boolean = false;
 
-    pros: Array<projectModel>;
+    projects: Array<projectModel>;
     item: Array<string> = [];
-    pro: projectModel;
+    project: projectModel;
     private sub: any
     Userlist: Array<UserModel>;
     constructor(
@@ -28,38 +28,39 @@ export class ProjectAddComponent {
         private router: Router,
         private toast: Md2Toast,
         private proService: ProjectService) {
-        this.pros = new Array<projectModel>();
-        this.pro = new projectModel();
+        this.projects = new Array<projectModel>();
+        this.project = new projectModel();
+
     }
     /**
      * Project Added in database
      * @param pro project table information pass
      */
-    addProject(pro: projectModel) {
-        this.proService.addProject(pro).subscribe((pro) => {
-            this.pro = pro;
-            if (pro.name == null && pro.slackChannelName == null) {
+    addProject(project: projectModel) {
+        this.proService.addProject(project).subscribe((project) => {
+            this.project = project;
+            if (project.name == null && project.slackChannelName == null) {
                 this.toast.show("Project and slackChannelName already exists");
                 this.proService.getUsers().subscribe(listUsers => {
-                    this.pro.listUsers = listUsers;
-                    this.pro.applicationUsers = new Array<UserModel>();
+                    this.project.ListUsers = listUsers;
+                    this.project.ApplicationUsers = new Array<UserModel>();
 
                 });
             }
-            else if (pro.name != null && pro.slackChannelName == null) {
+            else if (project.name != null && project.slackChannelName == null) {
                 this.toast.show("slackChannelName already exists");
                 this.proService.getUsers().subscribe(listUsers => {
-                    this.pro.listUsers = listUsers;
-                    this.pro.applicationUsers = new Array<UserModel>();
+                    this.project.ListUsers = listUsers;
+                    this.project.ApplicationUsers = new Array<UserModel>();
 
                 });
 
             }
-            else if (pro.name == null && pro.slackChannelName != null) {
+            else if (project.name == null && project.slackChannelName != null) {
                 this.toast.show("Project already exists");
                 this.proService.getUsers().subscribe(listUsers => {
-                    this.pro.listUsers = listUsers;
-                    this.pro.applicationUsers = new Array<UserModel>();
+                    this.project.ListUsers = listUsers;
+                    this.project.ApplicationUsers = new Array<UserModel>();
 
                 });
             }
@@ -76,11 +77,11 @@ export class ProjectAddComponent {
      * getUser Method get User Information
      */
     ngOnInit() {
-        this.pro = new projectModel();
+        this.project = new projectModel();
         this.sub = this.route.params.subscribe(params => {
             this.proService.getUsers().subscribe(listUsers => {
-                this.pro.listUsers = listUsers;
-                this.pro.applicationUsers = new Array<UserModel>();
+                this.project.ListUsers = listUsers;
+                this.project.ApplicationUsers = new Array<UserModel>();
 
             });
         });
@@ -89,7 +90,6 @@ export class ProjectAddComponent {
 
     gotoProjects() {
         this.router.navigate(['admin/project/']);
-        //this.router.navigate(['admin/project/']);
     }
 
 }

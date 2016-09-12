@@ -4,7 +4,7 @@
             <h3 class="in_block">Users</h3>
         </div>
         <div class="text-right items">
-            <button md-raised-button  type="submit" class="btn-back btn-green" (click)="goBack()"> <i class="material-icons">arrow_back</i>Back</button>
+            <button md-raised-button  type="submit" class="btn-back btn-green" (click)="gotoProjects()"> <i class="material-icons">arrow_back</i>Back</button>
         </div>
 
     </div>
@@ -12,14 +12,14 @@
 
         <div class="form-group">
             <div class="half-width">
-                <md-input class="full-width" placeholder="Name" type="text" name="name" [(ngModel)]="pro.name" maxlength="255" required #name="ngModel"></md-input>
+                <md-input class="full-width" placeholder="Name" type="text" name="name" [(ngModel)]="project.name" maxlength="255" required #name="ngModel"></md-input>
                 <div [hidden]="!(name.touched && !name.valid && name.errors.required)" class="error">Name is required</div>
             </div>
         </div>
 
         <div class="form-group">
             <div class="half-width">
-                <md-input type="text" class="full-width" placeholder="Slack Channel Name" name="SlackChannelName" [(ngModel)]="pro.SlackChannelName" maxlength="255" required #SlackChannelName="ngModel"></md-input>
+                <md-input type="text" class="full-width" placeholder="Slack Channel Name" name="SlackChannelName" [(ngModel)]="project.SlackChannelName" maxlength="255" required #SlackChannelName="ngModel"></md-input>
                 <div class="errors"><div [hidden]="!(SlackChannelName.touched && !SlackChannelName.valid && SlackChannelName.errors.required)" class="error">Slack Channel Name is required</div></div>
 
             </div>
@@ -28,7 +28,7 @@
 
         <div class="form-group">
             <label class="lb-label">Status</label>
-            <md-checkbox type="checkbox" id="chckbox" name="IsActive" [(ngModel)]="pro.IsActive"></md-checkbox>
+            <md-checkbox type="checkbox" id="chckbox" name="IsActive" [(ngModel)]="project.IsActive"></md-checkbox>
         </div>
 
 
@@ -36,8 +36,8 @@
        
             <div class="half-width" style="position:relative">
         
-                <md-select class="field" name="temleader" [(ngModel)]="pro.TeamLeaderId" placeholder="Teamleader">
-                    <md-option [value]="i.Id" *ngFor="let i of pro.listUsers">{{i.FirstName}}-{{i.Email}}</md-option>
+                <md-select class="field" name="temleader" [(ngModel)]="project.TeamLeaderId" placeholder="Teamleader">
+                    <md-option [value]="i.Id" *ngFor="let i of project.ListUsers">{{i.FirstName}}-{{i.Email}}</md-option>
                 </md-select>
                 <!--<label class="lb-label1">Teamleader</label>-->
                
@@ -49,9 +49,9 @@
         <div class="form-group">
 
             <div class="half-width" style="position:relative;">
-                <md-multiselect name="select" [items]="pro.listUsers"
+                <md-multiselect name="select" [items]="project.ListUsers"
                                 item-text="UniqueName"
-                                [(ngModel)]="pro.applicationUsers"
+                                [(ngModel)]="project.ApplicationUsers"
                                 placeholder="Select users">
                 </md-multiselect>
             </div>
@@ -62,7 +62,7 @@
                          placeholder="Placeholder Text">
         </md2-multiselect>-->
 
-        <button  md-raised-button class="btn-green"  type="submit" (click)="addProject(pro)">Add New Project</button>
+        <button  md-raised-button class="btn-green"  type="submit" (click)="addProject(project)">Add New Project</button>
       
 
 

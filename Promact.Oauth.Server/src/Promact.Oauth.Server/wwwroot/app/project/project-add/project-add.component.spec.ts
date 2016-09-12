@@ -15,13 +15,11 @@ import {MockProjectService} from "../../shared/mocks/project/mock.project.servic
 import {MockBaseService} from '../../shared/mocks/mock.base';
 import {MockRouter} from '../../shared/mocks/mock.router';
 import {Observable} from 'rxjs/Observable';
-//import {MockActivatedRoute} from '../../shared/mocks/mock.activatedroute';
 declare var describe, it, beforeEach, expect;
 
 describe('Project Add Test', () => {
     let projectAddComponent: ProjectAddComponent;
     class MockRouter { }
-    //class MockActivatedRoute { }
     class MockActivatedRoute extends ActivatedRoute {
         constructor() {
             super();
@@ -46,9 +44,11 @@ describe('Project Add Test', () => {
 
     });
     beforeEach(inject([ActivatedRoute, Router, Md2Toast, ProjectService], (route: ActivatedRoute, router: Router, toast: Md2Toast, projectService: ProjectService) => {
-        //projectAddComponent = new ProjectAddComponent(route, router, toast, projectService);
+        projectAddComponent = new ProjectAddComponent(route, router, toast, projectService);
     }));
-    
+    it("should be defined", () => {
+        expect(projectAddComponent).toBeDefined();
+    });
     it("should get default page for Project", () => {
         projectAddComponent.ngOnInit();
         expect(projectAddComponent.Userlist).not.toBeNull();
@@ -63,8 +63,6 @@ describe('Project Add Test', () => {
         projectAddComponent.addProject(projectModel);
         expect(projectModel.Name).toBe(expectedProjectName);
     }));
-
-   
 });    
 
 

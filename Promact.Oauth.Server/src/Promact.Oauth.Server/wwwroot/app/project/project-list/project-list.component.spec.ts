@@ -11,11 +11,13 @@ import {MockToast} from "../../shared/mocks/mock.toast";
 import {TestConnection} from "../../shared/mocks/test.connection";
 import {MockProjectService} from "../../shared/mocks/project/mock.project.service";
 import {MockBaseService} from '../../shared/mocks/mock.base';
+import { LoginService } from '../../login.service';
 declare var describe, it, beforeEach, expect;
 
 describe("Project List Test", () => {
     let projectListComponent: ProjectListComponent;
     class MockRouter { }
+    class McokLogin { }
     beforeEach(() => {
         TestBed.configureTestingModule({
             providers: [
@@ -24,22 +26,23 @@ describe("Project List Test", () => {
                 provide(ProjectService, { useClass: MockProjectService }),
                 provide(Md2Toast, { useClass: MockToast }),
                 provide(MockBaseService, { useClass: MockBaseService }),
-
+                provide(LoginService, { useClass: McokLogin }),
             ]
         });
 
     });
 
-    beforeEach(inject([Router, ProjectService, Md2Toast], (router: Router, proService: ProjectService, toast: Md2Toast) => {
-        //projectListComponent = new ProjectListComponent(router, proService, toast);
+    beforeEach(inject([Router, ProjectService, Md2Toast], (router: Router, proService: ProjectService, toast: Md2Toast, loginService: LoginService) => {
+        projectListComponent = new ProjectListComponent(router, proService, toast, loginService);
     }));
 
-     /**
-     * get list of Projects
-     */
+    it("should be defined", () => {
+        expect(projectListComponent).toBeDefined();
+    });
+     
     it("should get list of Project on initialization", () => {
-        projectListComponent.ngOnInit();
-        expect(projectListComponent.pros.length).toEqual(1);
+        projectListComponent.getProjects();
+        expect(projectListComponent.projects.length).toEqual(1);
     });
 
     

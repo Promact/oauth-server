@@ -47,11 +47,13 @@ describe("Project View Test", () => {
     beforeEach(inject([ActivatedRoute, Router, ProjectService, Location], (route: ActivatedRoute, router: Router, projectService: ProjectService, location: Location) => {
         projectViewComponent = new ProjectViewComponent(route, router,projectService, location);
     }));
-    
+    it("should be defined", () => {
+        expect(projectViewComponent).toBeDefined();
+    });
     it("should get default page for Project", () => {
         projectViewComponent.ngOnInit();
         expect(projectViewComponent.Userlist).not.toBeNull();
-        expect(projectViewComponent.pro).not.toBeNull();
+        expect(projectViewComponent.project).not.toBeNull();
     });
     
 
