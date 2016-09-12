@@ -22,6 +22,7 @@ using Promact.Oauth.Server.AutoMapper;
 using AutoMapper;
 using Promact.Oauth.Server.Controllers;
 using Exceptionless;
+using Promact.Oauth.Server.Constants;
 
 namespace Promact.Oauth.Server
 {
@@ -98,6 +99,7 @@ namespace Promact.Oauth.Server
             services.AddTransient<ISmsSender, AuthMessageSender>();
 
             services.AddOptions();
+            services.Configure<AppSettingUtil>(Configuration.GetSection(StringConstant.Url));
 
             // Configure MyOptions using config by installing Microsoft.Extensions.Options.ConfigurationExtensions
             services.Configure<AppSettings>(Configuration);
