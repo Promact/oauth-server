@@ -82,5 +82,6 @@ namespace Promact.Oauth.Server.Constants
         public static string RoleAdmin = "Admin";
         public static string RoleTeamLeader = "TeamLeader";
         public static string OldPassword = "User@123";
+        public static string Url = "Url";
     }
 }

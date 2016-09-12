@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Promact.Oauth.Server.Constants;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Repository.ConsumerAppRepository;
@@ -17,41 +18,57 @@ namespace Promact.Oauth.Server.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IConsumerAppRepository _appRepository;
         private readonly IOAuthRepository _oAuthRepository;
+        private readonly IOptions<AppSettingUtil> _appSettingUtil;
 
-        public OAuthController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IConsumerAppRepository appRepository, IOAuthRepository oAuthRepository)
+        public OAuthController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IConsumerAppRepository appRepository, IOAuthRepository oAuthRepository, IOptions<AppSettingUtil> appSettingUtil)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _appRepository = appRepository;
             _oAuthRepository = oAuthRepository;
+            _appSettingUtil = appSettingUtil;
         }
 
-        /// <summary>
-        /// External Login
-        /// </summary>
-        /// <param name="model">It contain Email Password to Login to the server & contain redirectUrl and clientId used after LogIn</param>
-        /// <returns></returns>
-        // POST: /OAuth/Login
+        /**
+        * @api {post} OAuth/Login 
+        * @apiVersion 1.0.0
+        * @apiName Login
+        * @apiGroup Login
+        * @apiParam {OAuthLogin} Name  login
+        * @apiParamExample {json} Request-Example:
+        *        {
+        *             "Email":"siddhartha@promactinfo.com",
+        *             "Password":"***********",
+        *             "RedirectUrl":"http://localhost:1234",
+        *             "ClientId":"d1tge1ygr1t321yhfty",
+        *        }      
+        * @apiSuccessExample {json} Success-Response:
+        * HTTP/1.1 200 OK 
+        * {
+        *     "Description":"Redirect to Authorize user to external server"
+        * }
+        */
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(OAuthLogin model)
+        public async Task<IActionResult> Login(OAuthLogin login)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var redirectUrl = await _oAuthRepository.UserNotAlreadyLogin(model);
+                    var redirectUrl = await _oAuthRepository.UserNotAlreadyLogin(login);
                     if (redirectUrl != StringConstant.EmptyString)
                     {
                         return Redirect(redirectUrl);
                     }
-                    return View();
+                    var url = string.Format("{0}/OAuth/ExternalLogin?clientId={1}", _appSettingUtil.Value.PromactOAuthUrl, login.ClientId);
+                    return Redirect(url);
                 }
                 else
                 {
                     ModelState.AddModelError(string.Empty, StringConstant.InvalidLogin);
-                    return View(model);
+                    return View(login);
                 }
             }
             catch (Exception ex)
@@ -66,6 +83,18 @@ namespace Promact.Oauth.Server.Controllers
         /// </summary>
         /// <param name="clientId"></param>
         /// <returns></returns>
+        /**
+        * @api {post} OAuth/ExternalLogin
+        * @apiVersion 1.0.0
+        * @apiName ExternalLogin
+        * @apiGroup ExternalLogin
+        * @apiParam {string} Name  clientId    
+        * @apiSuccessExample {json} Success-Response:
+        * HTTP/1.1 200 OK 
+        * {
+        *     "Description":"Redirect to Promact OAuth server external login page"
+        * }
+        */
         public async Task<IActionResult> ExternalLogin(string clientId)
         {
             try
