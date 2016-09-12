@@ -52,4 +52,10 @@ describe('User Add Test', () => {
         let method = userAddComponent.checkEmail(email);
         expect(method).not.toBe(result);
     });
+
+    it("get role test", () => {
+        userAddComponent.getRoles();
+        expect(userAddComponent.listOfRoles.length).toEqual(1);
+    });
+
 });    

@@ -10,7 +10,7 @@ import {ConsumerAppModel} from '../../consumerapp/consumerapp-model';
 export class MockBaseService {
     constructor(private connection: TestConnection) { }
     //This is used to get the mock response
-    getMockResponse(api: string, mockBody: boolean | string | number | projectModel | Array<projectModel> | UserModel | ConsumerAppModel | Array<ConsumerAppModel>) {
+    getMockResponse(api: string, mockBody: boolean | string | number | projectModel | Array<projectModel> | UserModel | Array<UserModel> | ConsumerAppModel | Array<ConsumerAppModel>) {
         let connection = this.connection.mockConnection(api);
         let response = new Response(new ResponseOptions({ body: mockBody }));
         //sends mock response to connection
