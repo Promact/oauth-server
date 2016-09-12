@@ -83,5 +83,6 @@ namespace Promact.Oauth.Server.Constants
         public static string PasswordForTest = "User@123";
         public static string EmptyString = "";
         public static string InvalidLogin = "Invalid login attempt.";
+        public static string Url = "Url";
     }
 }
