@@ -81,7 +81,7 @@ namespace Promact.Oauth.Server.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    @ViewData["ReturnError"] = "Invalid login attempt.";
                     return View(model);
                 }
             }
