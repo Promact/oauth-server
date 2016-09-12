@@ -63,4 +63,9 @@ describe("Project Edit Test", () => {
        
     }));
 
+    it("get role test", () => {
+        userEditComponent.getRoles();
+        expect(userEditComponent.listOfRoles.length).toEqual(1);
+    });
+
 });
