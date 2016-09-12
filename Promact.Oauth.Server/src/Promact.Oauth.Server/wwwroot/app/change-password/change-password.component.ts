@@ -1,6 +1,6 @@
 ﻿import {Component, Input} from '@angular/core';
-import { UserService }   from '../user.service';
-import {PasswordModel} from '../user-password.model';
+import { UserService }   from '../users/user.service';
+import {PasswordModel} from '../users/user-password.model';
 import {FORM_DIRECTIVES, FormBuilder, Validators } from '@angular/forms';
 import {Router, ROUTER_DIRECTIVES, ActivatedRoute} from '@angular/router';
 import {Md2Toast} from 'md2/toast';
@@ -8,7 +8,7 @@ import {Location} from "@angular/common";
 
 
 @Component({
-    templateUrl: './app/users/user-change-password/user-change-password.html',
+    templateUrl: './app/change-password/change-password.html',
     directives: [FORM_DIRECTIVES],
     providers: [Md2Toast]
 })

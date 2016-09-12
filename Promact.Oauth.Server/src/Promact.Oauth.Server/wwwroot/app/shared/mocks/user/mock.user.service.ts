@@ -64,10 +64,26 @@ export class MockUserService {
         return connection;
     }
 
-
+    getRoles() {
+        let listOfRole = new Array<MockRole>();
+        let mockRole = new MockRole();
+        mockRole.Id = "1";
+        mockRole.RoleName = "Employee";
+        listOfRole.push(mockRole);
+        let connection = this.mockBaseService.getMockResponse(this.UserUrl, listOfRole);
+        return connection;
+    }
     
 
 }
+
+class MockRole extends UserModel
+{
+    constructor() {
+        super();
+    }
+} 
+
 class MockUser extends UserModel {
 
     constructor() {

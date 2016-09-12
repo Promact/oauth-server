@@ -2,17 +2,17 @@
 import {async, inject, TestBed, ComponentFixture, TestComponentBuilder} from '@angular/core/testing';
 import {provide} from "@angular/core";
 import {Component, Input} from '@angular/core';
-import {TestConnection} from "../../shared/mocks/test.connection";
-import { UserService }   from '../user.service';
-import {PasswordModel} from '../user-password.model';
+import {TestConnection} from "../shared/mocks/test.connection";
+import { UserService }   from '../users/user.service';
+import {PasswordModel} from '../users/user-password.model';
 import {FORM_DIRECTIVES, FormBuilder, Validators } from '@angular/forms';
 import {Router, ROUTER_DIRECTIVES, ActivatedRoute} from '@angular/router';
-import {MockUserService} from "../../shared/mocks/user/mock.user.service";
+import {MockUserService} from "../shared/mocks/user/mock.user.service";
 import {Md2Toast} from 'md2/toast';
-import {MockBaseService} from '../../shared/mocks/mock.base';
-import {MockRouter} from '../../shared/mocks/mock.router';
-import {MockToast} from "../../shared/mocks/mock.toast";
-import {ChangePasswordComponent} from "../user-change-password/user-change-password.component";
+import {MockBaseService} from '../shared/mocks/mock.base';
+import {MockRouter} from '../shared/mocks/mock.router';
+import {MockToast} from "../shared/mocks/mock.toast";
+import {ChangePasswordComponent} from "../change-password/change-password.component";
 
 describe('User Add Test', () => {
     let changePasswordComponent: ChangePasswordComponent;

@@ -2,7 +2,6 @@
 import { LoginService } from './login.service';
 import { Router, ROUTER_DIRECTIVES} from '@angular/router';
 
-
 @Component({
     selector: 'my-app',
     templateUrl:'./app/index.html',
