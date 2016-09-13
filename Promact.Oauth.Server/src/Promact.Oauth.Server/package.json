@@ -5,6 +5,8 @@
     "build": "rm -rf dist && tsc -p src",
     "pretest": "npm run build",
     "test": "karma start karma.conf.js",
+    "posttest": "node_modules/.bin/remap-istanbul -i coverage/coverage-final.json -o coverage -t html",
+    "coverage": "http-server -c-1 -o -p 9875 ./coverage",
     "citest": "karma start karma.conf.ci.js",
     "start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" ",
     "lite": "lite-server",
@@ -12,7 +14,6 @@
     "tsc": "tsc",
     "tsc:w": "tsc -w",
     "typings": "typings"
-
   },
   "license": "ISC",
   "dependencies": {
@@ -43,30 +44,30 @@
     "zone.js": "^0.6.12",
     "md2": "1.0.14",
     "apidoc": "0.16.1"
-
   },
   "devDependencies": {
     "concurrently": "^2.0.0",
     "gulp": "3.9.1",
     "gulp-concat": "2.6.0",
     "gulp-cssmin": "0.1.7",
-    "gulp-uglify": "1.4.2",
-    "lite-server": "^2.2.0",
-    "rimraf": "2.5.3",
-    "systemjs-builder": "^0.15.26",
-    "typescript": "^1.8.10",
-    "typings": "^1.0.4",
     "gulp-shell": "0.5.2",
+    "gulp-uglify": "1.4.2",
     "jasmine": "2.4.1",
     "jasmine-core": "2.4.1",
     "karma": "1.2.0",
-    "karma-coverage": "1.0.0",
     "karma-chrome-launcher": "1.0.1",
+    "karma-cli": "1.0.1",
+    "karma-coverage": "1.0.0",
     "karma-html-detailed-reporter": "1.1.8",
+    "karma-jasmine": "^1.0.2",
     "karma-phantomjs-launcher": "1.0.1",
-    "karma-jasmine": "1.0.2",
+    "lite-server": "^2.2.0",
     "phantomjs": "2.1.7",
-    "remap-istanbul": "0.6.4",
-    "karma-cli": "1.0.1"
+    "remap-istanbul": "^0.6.4",
+    "rimraf": "2.5.3",
+    "systemjs": "^0.19.38",
+    "systemjs-builder": "^0.15.26",
+    "typescript": "^1.8.10",
+    "typings": "^1.0.4"
   }
 }

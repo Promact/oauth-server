@@ -11,18 +11,14 @@ export class ConsumerappListComponent {
     constructor(private router: Router, private consumerAppService: ConsumerAppService) {
 
     }
-
-    getConsumerApps() {
+    
+    ngOnInit() {
         this.consumerAppService.getConsumerApps().subscribe((result) => {
             if (result.length > 0)
                 this.listOfConsumerApps = result;
         }, err => {
 
         });
-    }
-
-    ngOnInit() {
-        this.getConsumerApps();
     }
 
     editDetails(consumerId) {
