@@ -94,27 +94,27 @@ namespace Promact.Oauth.Server.Tests
             userEmail = StringConstant.UserName
         };
 
-        //private UserAc _testUser = new UserAc()
-        //{
-        //    Email = StringConstant.UserName,
-        //    FirstName = StringConstant.FirstName,
-        //    LastName = StringConstant.LastName,
-        //    IsActive = true,
-        //    UserName = StringConstant.UserName,
-        //    SlackUserName = StringConstant.FirstName,
-        //    JoiningDate = DateTime.UtcNow,
-        //    RoleName = StringConstant.Employee
-        //};
+        private UserAc _testUser = new UserAc()
+        {
+            Email = StringConstant.UserName,
+            FirstName = StringConstant.FirstName,
+            LastName = StringConstant.LastName,
+            IsActive = true,
+            UserName = StringConstant.UserName,
+            SlackUserName = StringConstant.FirstName,
+            JoiningDate = DateTime.UtcNow,
+            RoleName = StringConstant.Employee
+        };
 
-        //private ConsumerAppsAc app = new ConsumerAppsAc()
-        //{
-        //    AuthId = StringConstant.ClientIdForTest,
-        //    AuthSecret = StringConstant.AccessToken,
-        //    CallbackUrl = StringConstant.CallBackUrl,
-        //    CreatedBy = StringConstant.FirstName,
-        //    Description = StringConstant.ConsumerDescription,
-        //    Name = StringConstant.ConsumerAppNameDemo1
-        //};
+        private ConsumerAppsAc app = new ConsumerAppsAc()
+        {
+            AuthId = StringConstant.ClientIdForTest,
+            AuthSecret = StringConstant.AccessToken,
+            CallbackUrl = StringConstant.CallBackUrl,
+            CreatedBy = StringConstant.FirstName,
+            Description = StringConstant.ConsumerDescription,
+            Name = StringConstant.ConsumerAppNameDemo1
+        };
 
         private OAuthLogin login = new OAuthLogin()
         {
