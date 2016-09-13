@@ -19,7 +19,7 @@ module.exports = function (config) {
           'node_modules/systemjs/dist/system-polyfills.js',
           'node_modules/systemjs/dist/system.src.js',
           'node_modules/zone.js/dist/zone.js',
-          //'node_modules/zone.js/dist/jasmine-patch.js',
+          'node_modules/zone.js/dist/jasmine-patch.js',
           'node_modules/zone.js/dist/async-test.js',
           'node_modules/zone.js/dist/fake-async-test.js',
           { pattern: 'node_modules/rxjs/**/*.js', included: false, watched: false },
