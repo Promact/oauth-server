@@ -50,31 +50,31 @@ namespace Promact.Oauth.Server.Tests
             Assert.Equal(result, false);
         }
 
-        /// <summary>
-        /// Test case to check UserAlreadyLogin of Oauth Repository
-        /// </summary>
-        [Fact, Trait("Category", "Required")]
-        public async Task UserAlreadyLogin()
-        {
-            var userId = await _userRepository.AddUser(_testUser, StringConstant.FirstNameSecond);
-            var consumerId = await _appRepository.AddConsumerApps(app);
-            var returnUrl = string.Format("{0}?accessToken={1}&email={2}", StringConstant.CallBackUrl, oAuth.AccessToken, oAuth.userEmail);
-            var redirectUrl = await _oAuthRepository.UserAlreadyLogin(StringConstant.UserName, StringConstant.ClientIdForTest, StringConstant.CallBackUrl);
-            Assert.Equal(redirectUrl, returnUrl);
-        }
+        ///// <summary>
+        ///// Test case to check UserAlreadyLogin of Oauth Repository
+        ///// </summary>
+        //[Fact, Trait("Category", "Required")]
+        //public async Task UserAlreadyLogin()
+        //{
+        //    var userId = await _userRepository.AddUser(_testUser, StringConstant.FirstNameSecond);
+        //    var consumerId = await _appRepository.AddConsumerApps(app);
+        //    var returnUrl = string.Format("{0}?accessToken={1}&email={2}", StringConstant.CallBackUrl, oAuth.AccessToken, oAuth.userEmail);
+        //    var redirectUrl = await _oAuthRepository.UserAlreadyLogin(StringConstant.UserName, StringConstant.ClientIdForTest, StringConstant.CallBackUrl);
+        //    Assert.Equal(redirectUrl, returnUrl);
+        //}
 
-        /// <summary>
-        /// Test case to check UserNotAlreadyLogin for true value of Oauth Repository
-        /// </summary>
-        [Fact, Trait("Category", "Required")]
-        public async Task UserNotAlreadyLogin()
-        {
-            var userId = await _userRepository.AddUser(_testUser, StringConstant.FirstNameSecond);
-            var consumerId = await _appRepository.AddConsumerApps(app);
-            var returnUrl = string.Format("{0}?accessToken={1}&email={2}&slackUserName={3}", StringConstant.CallBackUrl, oAuth.AccessToken, oAuth.userEmail, StringConstant.SlackUserName);
-            var response = await _oAuthRepository.UserNotAlreadyLogin(login);
-            Assert.Equal(response, returnUrl);
-        }
+        ///// <summary>
+        ///// Test case to check UserNotAlreadyLogin for true value of Oauth Repository
+        ///// </summary>
+        //[Fact, Trait("Category", "Required")]
+        //public async Task UserNotAlreadyLogin()
+        //{
+        //    var userId = await _userRepository.AddUser(_testUser, StringConstant.FirstNameSecond);
+        //    var consumerId = await _appRepository.AddConsumerApps(app);
+        //    var returnUrl = string.Format("{0}?accessToken={1}&email={2}&slackUserName={3}", StringConstant.CallBackUrl, oAuth.AccessToken, oAuth.userEmail, StringConstant.SlackUserName);
+        //    var response = await _oAuthRepository.UserNotAlreadyLogin(login);
+        //    Assert.Equal(response, returnUrl);
+        //}
 
         /// <summary>
         /// Test case to check UserNotAlreadyLogin for false value of Oauth Repository
@@ -94,27 +94,27 @@ namespace Promact.Oauth.Server.Tests
             userEmail = StringConstant.UserName
         };
 
-        private UserAc _testUser = new UserAc()
-        {
-            Email = StringConstant.UserName,
-            FirstName = StringConstant.FirstName,
-            LastName = StringConstant.LastName,
-            IsActive = true,
-            UserName = StringConstant.UserName,
-            SlackUserName = StringConstant.FirstName,
-            JoiningDate = DateTime.UtcNow,
-            RoleName = StringConstant.Employee
-        };
+        //private UserAc _testUser = new UserAc()
+        //{
+        //    Email = StringConstant.UserName,
+        //    FirstName = StringConstant.FirstName,
+        //    LastName = StringConstant.LastName,
+        //    IsActive = true,
+        //    UserName = StringConstant.UserName,
+        //    SlackUserName = StringConstant.FirstName,
+        //    JoiningDate = DateTime.UtcNow,
+        //    RoleName = StringConstant.Employee
+        //};
 
-        private ConsumerAppsAc app = new ConsumerAppsAc()
-        {
-            AuthId = StringConstant.ClientIdForTest,
-            AuthSecret = StringConstant.AccessToken,
-            CallbackUrl = StringConstant.CallBackUrl,
-            CreatedBy = StringConstant.FirstName,
-            Description = StringConstant.ConsumerDescription,
-            Name = StringConstant.ConsumerAppNameDemo1
-        };
+        //private ConsumerAppsAc app = new ConsumerAppsAc()
+        //{
+        //    AuthId = StringConstant.ClientIdForTest,
+        //    AuthSecret = StringConstant.AccessToken,
+        //    CallbackUrl = StringConstant.CallBackUrl,
+        //    CreatedBy = StringConstant.FirstName,
+        //    Description = StringConstant.ConsumerDescription,
+        //    Name = StringConstant.ConsumerAppNameDemo1
+        //};
 
         private OAuthLogin login = new OAuthLogin()
         {
