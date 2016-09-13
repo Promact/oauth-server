@@ -32,9 +32,6 @@ module.exports = function (config) {
           { pattern: 'node_modules/lodash/*.js', included: false, watched: true },
           { pattern: 'wwwroot/app/**/*.js', included: false, watched: true },
           { pattern: 'wwwroot/app/**/*.html', included: false, watched: true },
-          //{ pattern: 'wwwroot/app/users/user.model.js', included: false, watched: true },
-          //{ pattern: 'wwwroot/app/project/project-list/Project-list.Component.js', included: false, watched: true },
-          //{ pattern: 'wwwroot/app/users/user-list/user-list.Component.js', included: false, watched: true },
           // paths to support debugging with source maps in dev tools
           { pattern: 'wwwroot/app/**/*.ts', included: false, watched: false },
           { pattern: 'wwwroot/app/**/*.js.map', included: false, watched: false }
@@ -96,9 +93,9 @@ module.exports = function (config) {
         concurrency: Infinity,
 
         customLaunchers: {
-            Chrome_travis_ci: {
-                base: 'Chrome',
-                flags: ['--no-sandbox']
+            'PhantomJS_flags': {
+                base: 'PhantomJS',
+                flags: ['--load-images=false']
             }
         },
 
@@ -111,7 +108,7 @@ module.exports = function (config) {
     })
 
     if (process.env.TRAVIS || process.env.CIRCLECI) {
-        config.browsers = ['Chrome_travis_ci'];
+        config.browsers = ['PhantomJS_flags'];
         config.singleRun = true;
         config.browserNoActivityTimeout = 90000;
     }
