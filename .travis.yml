@@ -20,4 +20,4 @@ notifications:
     on_failure: always
     
 script:
-  - if [ -n "${DOTNETCORE}" ]; then dotnet restore && dotnet build ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests -c Release && dotnet test ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests/project.json -c Release && cd ./Promact.Oauth.Server/src/Promact.Oauth.Server && npm install -g  typescript && npm install typings && npm run test; fi
+  - if [ -n "${DOTNETCORE}" ]; then dotnet restore && dotnet build ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests -c Release && dotnet test ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests/project.json -c Release && cd ./Promact.Oauth.Server/src/Promact.Oauth.Server && npm install && npm install -g  typescript && npm install typings && npm run test; fi
