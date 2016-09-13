@@ -69,7 +69,7 @@ namespace Promact.Oauth.Server.Repository
                 var result = _userManager.CreateAsync(user, "User@123");
                 var resultSuccess = await result;
                 result = _userManager.AddToRoleAsync(user, newUser.RoleName);
-                //SendEmail(user);
+                SendEmail(user);
                 resultSuccess = await result;
                 return user.Id;
             }
