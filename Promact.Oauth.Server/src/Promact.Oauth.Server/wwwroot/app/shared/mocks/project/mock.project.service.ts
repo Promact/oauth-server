@@ -2,7 +2,7 @@
 import {Injectable} from '@angular/core';
 import {ResponseOptions, Response} from "@angular/http";
 import {projectModel} from "../../../project/project.model";
-import {UserModel} from "../../../users/User.model";
+import {UserModel} from '../../../users/user.model';
 import {Md2Toast} from 'md2/toast';
 import {Subject} from 'rxjs/Rx';
 import {MockBaseService} from '../mock.base';
