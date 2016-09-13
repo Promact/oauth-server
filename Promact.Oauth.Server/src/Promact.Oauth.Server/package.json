@@ -2,7 +2,7 @@
   "name": "PromactOauthServer",
   "version": "1.0.0",
   "scripts": {
-    "build": "rm -rf dist && tsc -p wwwroot",
+    "build": "tsc -p wwwroot",
     "pretest": "npm run build",
     "test": "karma start karma.conf.js",
     "posttest": "node_modules/.bin/remap-istanbul -i coverage/coverage-final.json -o coverage -t html",
