@@ -68,6 +68,7 @@
     "karma-jasmine": "^1.0.2",
     "lite-server": "^2.2.0",
     "phantomjs": "2.1.7",
+    "karma-phantomjs-launcher": "1.0.2",
     "remap-istanbul": "^0.6.4",
     "rimraf": "2.5.3",
     "systemjs": "^0.19.38",
