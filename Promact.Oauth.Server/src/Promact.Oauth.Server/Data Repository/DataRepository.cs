@@ -47,7 +47,7 @@ namespace Promact.Oauth.Server.Data_Repository
         /// </summary>
         /// <param name="entity">entity</param>
         public void Add(T entity)
-        { 
+        {
             try
             {
                 _dbSet.Add(entity);
@@ -128,9 +128,9 @@ namespace Promact.Oauth.Server.Data_Repository
         public async Task<int> SaveChangesAsync()
         {
             try
-            {return await _promactDbContext.SaveChangesAsync();}
+            { return await _promactDbContext.SaveChangesAsync(); }
             catch (Exception)
-            {throw;}
+            { throw; }
         }
         /// <summary>
         /// Method attaches the entity from the context
@@ -140,7 +140,7 @@ namespace Promact.Oauth.Server.Data_Repository
         {
             _dbSet.Attach(entity);
         }
-        
+
         /// <summary>
         /// Method fetches the IQueryable based on expression.
         /// </summary>
@@ -150,7 +150,7 @@ namespace Promact.Oauth.Server.Data_Repository
         {
             return _dbSet.Where(predicate).AsQueryable();
         }
-        
+
         /// <summary>
         /// Method fetches the first or default item from the datacontext based on the the supplied function.
         /// </summary>
@@ -260,9 +260,33 @@ namespace Promact.Oauth.Server.Data_Repository
             }
         }
 
+        private bool disposed = false;
 
+        /// <summary>
+        /// Dispose Method
+        /// </summary>
+        /// <param name="disposing"></param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    _promactDbContext.Dispose();
+                }
+            }
+            this.disposed = true;
+        }
 
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
         #endregion
-
+        ~DataRepository()
+        {
+            Dispose();
+        }
     }
 }

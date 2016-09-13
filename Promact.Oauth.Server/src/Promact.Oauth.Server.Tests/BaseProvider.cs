@@ -15,11 +15,13 @@ using Promact.Oauth.Server.Repository.ProjectsRepository;
 using Promact.Oauth.Server.Seed;
 using Promact.Oauth.Server.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Threading.Tasks;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.AspNetCore.Identity;
+using System.Linq;
+using System.Collections.Generic;
+using Promact.Oauth.Server.Constants;
+using System.Threading.Tasks;
 
 namespace Promact.Oauth.Server.Tests
 {
@@ -32,6 +34,8 @@ namespace Promact.Oauth.Server.Tests
         public BaseProvider()
         {
 
+            var randomString = Guid.NewGuid().ToString();
+
             _mapperConfiguration = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile(new AutoMapperProfileConfiguration());
@@ -42,7 +46,7 @@ namespace Promact.Oauth.Server.Tests
             var services = new ServiceCollection();
             services.AddEntityFrameworkInMemoryDatabase();
 
-           services.AddSingleton<IHostingEnvironment>(testHostingEnvironment);
+            services.AddSingleton<IHostingEnvironment>(testHostingEnvironment);
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<PromactOauthDbContext>()
@@ -58,15 +62,31 @@ namespace Promact.Oauth.Server.Tests
 
             //Register Mapper
             services.AddSingleton<IMapper>(sp => _mapperConfiguration.CreateMapper());
-
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
-            services.AddDbContext<PromactOauthDbContext>(options =>
-                options.UseInMemoryDatabase());
+            services.AddDbContext<PromactOauthDbContext>(options => options.UseInMemoryDatabase(randomString), ServiceLifetime.Transient);
+
             serviceProvider = services.BuildServiceProvider();
+            RoleSeedFake(serviceProvider);
+        }
+        public void RoleSeedFake(IServiceProvider serviceProvider)
+        {
+            var _db = serviceProvider.GetService<PromactOauthDbContext>();
+            if (!_db.Roles.Any())
+            {
+                List<IdentityRole> roles = new List<IdentityRole>();
+                roles.Add(new IdentityRole { Name = StringConstant.Employee, NormalizedName = StringConstant.NormalizedName });
+                roles.Add(new IdentityRole { Name = StringConstant.Admin, NormalizedName = StringConstant.NormalizedSecond });
+
+                foreach (var role in roles)
+                {
+                    _db.Roles.Add(role);
+                }
+                _db.SaveChanges();
+            }
         }
     }
-    
+
     public class MockHostingEnvironment : IHostingEnvironment
     {
         public string ApplicationName
