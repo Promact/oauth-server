@@ -109,6 +109,13 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="slackUserName"></param>
         /// <returns>number of casual leave</returns>
-        double GetUserCasualLeaveBySlackName(string slackUserName);
+        LeaveAllowed GetUserAllowedLeaveBySlackName(string slackUserName);
+
+        /// <summary>
+        /// Method to check whether user is admin or not
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns>true or false</returns>
+        Task<bool> IsAdmin(string userName);
     }
 }
