@@ -97,7 +97,7 @@ namespace Promact.Oauth.Server.Controllers
         {
             try
             {
-                var casualLeave = _userRepository.GetUserCasualLeaveBySlackName(slackUserName);
+                var casualLeave = _userRepository.GetUserAllowedLeaveBySlackName(slackUserName);
                 return Ok(casualLeave);
             }
             catch (Exception ex)
@@ -105,6 +105,14 @@ namespace Promact.Oauth.Server.Controllers
                 ex.ToExceptionless().Submit();
                 throw ex;
             }
+        }
+
+        [HttpGet]
+        [Route("userIsAdmin/{userName}")]
+        public async Task<IActionResult> UserIsAdmin(string userName)
+        {
+            var result = await _userRepository.IsAdmin(userName);
+            return Ok(result);
         }
     }
 }
