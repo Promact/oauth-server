@@ -45,6 +45,9 @@ describe("Consumerapp Add Test Case", () => {
         consumerappAddComponent.submitApps(consumerAppModel);
         expect(consumerAppModel.Name).toBe(expectedconsumerappname);
     }));
+
+
+    it("consumer ")
 });
 
 

@@ -63,6 +63,8 @@ namespace Promact.Oauth.Server.Controllers
             }
         }
 
+
+
         [HttpGet]
         [Route("getRole")]
         public IActionResult GetRole()

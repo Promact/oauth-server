@@ -29,12 +29,9 @@ describe('Consumerapp List Test Case', () => {
     beforeEach(inject([Router, ConsumerAppService], (router: Router, consumerAppService: ConsumerAppService) => {
         consumerappListComponent = new ConsumerappListComponent(router,consumerAppService);
     }));
-
-
-
-
+    
     it("consumer test", () => {
-        let listOfConsumrApp = consumerappListComponent.getConsumerApps();
+        let listOfConsumrApp = consumerappListComponent.ngOnInit();
         expect(consumerappListComponent.listOfConsumerApps.length).toEqual(1);
     });
 
