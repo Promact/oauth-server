@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
 import { DeprecatedFormsModule } from '@angular/common';
 import {ROUTER_DIRECTIVES, Router } from '@angular/router';
 import {Md2Toast} from 'md2/toast';
-import {UserListComponent} from '../user-list/user-list.Component';
+import {UserListComponent} from '../user-list/user-list.component';
 import {MockToast} from "../../shared/mocks/mock.toast";
 import {TestConnection} from "../../shared/mocks/test.connection";
 import {MockUserService} from "../../shared/mocks/user/mock.user.service";
