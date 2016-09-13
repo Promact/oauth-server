@@ -66,11 +66,6 @@
     "karma-coverage": "1.0.0",
     "karma-html-detailed-reporter": "1.1.8",
     "karma-jasmine": "^1.0.2",
-    "karma-phantomjs-launcher": "1.0.1",
-
-    "phantomjs-prebuilt": "2.1.12",
-    "remap-istanbul": "0.6.4",
-    "karma-cli": "1.0.1"
     "lite-server": "^2.2.0",
     "phantomjs": "2.1.7",
     "remap-istanbul": "^0.6.4",
