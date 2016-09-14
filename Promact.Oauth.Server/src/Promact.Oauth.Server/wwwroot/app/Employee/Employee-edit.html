@@ -1,10 +1,10 @@
-﻿<div class="user-edit">
-    <div class="card-title-block">
-        <div class="title in_block">
+﻿<div class="user-edit emp-details p-25">
+    <div class="card-title-block d-flex">
+        <div class="title in_block items">
             <h3>User Edit</h3>
         </div>
-        <div class="fl-right">
-            <md-button type="submit" class="btn-back" (click)="goBack()"> <i class="material-icons">arrow_back</i>Back</md-button>
+        <div class="items text-right">
+            <button md-raised-button type="submit" class="btn-back btn-green" (click)="goBack()"> <i class="material-icons">arrow_back</i>Back</button>
         </div>
     </div>
     <form>
@@ -43,7 +43,7 @@
         <div>
 
             <button md-raised-button type="submit" (click)="editUser(user)" class="btn-green">Update</button>
-            <button md-raised-button type="submit" (click)="goBack()" class="btn-green">Back</button>
+      
 
         </div>
     </form>
