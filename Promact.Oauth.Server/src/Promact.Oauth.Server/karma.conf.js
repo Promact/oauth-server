@@ -102,8 +102,19 @@ module.exports = function (config) {
         customLaunchers: {
             'PhantomJS_flags': {
                 base: 'PhantomJS',
-                flags: ['--load-images=false']
+                options: {
+                    windowName: 'my-window',
+                    settings: {
+                        webSecurityEnabled: false
+                    }
+                },
+                flags: ['--load-images=false'],
+                debug: true
             }
+        },
+        phantomjsLauncher: {
+            // Have phantomjs exit if a ResourceError is encountered (useful if karma exits without killing phantom) 
+            exitOnResourceError: true
         },
 
 
