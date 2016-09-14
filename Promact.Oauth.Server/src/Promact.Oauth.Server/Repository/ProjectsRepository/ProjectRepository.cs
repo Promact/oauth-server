@@ -362,5 +362,67 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             }
             return userRoles;
         }
+
+        /// <summary>
+        /// Method to return list of projects along with the users and teamleader in a project
+        /// </summary>
+        /// <returns>List of projects along with users</returns>
+        public async Task<IList<ProjectAc>> GetProjectsWithUsers()
+        {
+            List<ProjectAc> projectAcs = new List<ProjectAc>();
+            var projects = await _projectDataRepository.GetAll().ToListAsync();
+           
+            projects.ForEach(project =>
+            {
+                ApplicationUser teamLeader = _userDataRepository.FirstOrDefault(x => x.Id == project.TeamLeaderId);
+                UserAc teamLead = _mapperContext.Map<ApplicationUser, UserAc>(teamLeader);
+                teamLead.Role = StringConstant.TeamLeader;
+                //var CreatedBy = _userDataRepository.FirstOrDefault(x => x.Id == project.CreatedBy)?.FirstName;
+                //var UpdatedBy = _userDataRepository.FirstOrDefault(x => x.Id == project.UpdatedBy)?.FirstName;
+                List<ProjectUser> projectUsers = _projectUserDataRepository.Fetch(x => x.ProjectId == project.Id).ToList();
+                ProjectAc projectObject = _mapperContext.Map<Project, ProjectAc>(project);
+                projectObject.TeamLeader = teamLead;
+                //projectObject.CreatedBy = CreatedBy;
+                //projectObject.CreatedDate = project.CreatedDateTime.ToLocalTime().ToString("dd'/'MM'/'yyyy HH:mm");
+                //projectObject.UpdatedBy = UpdatedBy;
+                //projectObject.UpdatedDate = UpdatedDate;
+                foreach (var projectUser in projectUsers)
+                {
+                    ApplicationUser user = _userDataRepository.FirstOrDefault(x => x.Id == projectUser.UserId);
+                    UserAc proUser = _mapperContext.Map<ApplicationUser,UserAc>(user);
+                    proUser.Role = StringConstant.Employee;
+                    projectObject.ApplicationUsers.Add(proUser);
+                }
+                projectAcs.Add(projectObject);
+            });
+            return projectAcs;
+        }
+
+        /// <summary>
+        /// Method to return project details by using projectId
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <returns>Project details along with users</returns>
+        public async Task<ProjectAc> GetProjectDetails(int projectId)
+        {
+            //Project project =  _projectDataRepository.FirstOrDefault(x => x.Id.Equals(projectId));
+            Project project = _projectDataRepository.FirstOrDefault(x => x.Id == projectId);
+            ApplicationUser teamLeader = _userDataRepository.FirstOrDefault(x => x.Id == project.TeamLeaderId);
+            UserAc teamLead = _mapperContext.Map<ApplicationUser, UserAc>(teamLeader);
+            teamLead.Role = StringConstant.TeamLeader;
+            List<ProjectUser> projectUsers = await _projectUserDataRepository.Fetch(x => x.ProjectId == project.Id).ToListAsync();
+            ProjectAc projectDetails = _mapperContext.Map<Project, ProjectAc>(project);
+            projectDetails.TeamLeader = teamLead;
+            List<UserAc> projectUserList = new List<UserAc>();
+            foreach (var projectUser in projectUsers)
+            {
+                ApplicationUser user = _userDataRepository.FirstOrDefault(x => x.Id == projectUser.UserId);
+                UserAc proUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
+                proUser.Role = StringConstant.Employee;
+                projectDetails.ApplicationUsers.Add(proUser);
+            }
+            
+            return projectDetails;
+        }
     }
 }
