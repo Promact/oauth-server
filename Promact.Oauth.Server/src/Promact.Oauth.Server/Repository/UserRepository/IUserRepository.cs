@@ -105,19 +105,19 @@ namespace Promact.Oauth.Server.Repository
         UserAc GetUserDetail(string UserName);
 
 
-        ///// <summary>
-        ///// This method is used to Get User details by Id
-        ///// </summary>
-        ///// <param name="userId"></param>
-        ///// <returns>details of user</returns>
-        //UserAc UserDetailById(string userId);
+        /// <summary>
+        /// This method is used to Get User details by Id
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns>details of user</returns>
+        UserAc UserDetailById(string userId);
 
-        ///// <summary>
-        ///// Method is used to get the details of user by using their username
-        ///// </summary>
-        ///// <param name="userName"></param>
-        ///// <returns>details of user</returns>
-        //UserAc GetUserDetailByUserName(string UserName);
+        /// <summary>
+        /// Method is used to get the details of user by using their username
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns>details of user</returns>
+        Task<UserAc> GetUserDetailByUserName(string UserName);
 
         /// <summary>
         /// Method to get the number of casual leave allowed to a user by slack user name

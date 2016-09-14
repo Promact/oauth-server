@@ -67,6 +67,7 @@ namespace Promact.Oauth.Server.Constants
 
         public static string Employee = "Employee";
         public static string Admin = "Admin";
+        public static string TeamLeader = "TeamLeader";
         public static string NormalizedName = "EMPLOYEE";
         public static string NormalizedSecond = "ADMIN";        
     }
