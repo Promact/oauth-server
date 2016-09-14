@@ -324,11 +324,26 @@ namespace Promact.Oauth.Server.Controllers
                 throw ex;
             }
         }
-        /// <summary>
-        /// Method to get User details by user Id
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <returns>details of the user</returns>
+
+
+
+        /**
+          * @api {get} api/User/userDetail/:userId 
+          * @apiVersion 1.0.0
+          * @apiName User
+          * @apiGroup User
+          * @apiParam {string} id userId
+          * @apiParamExample {json} Request-Example:
+          *      
+          *        {
+          *             "id": "1"
+          *        }      
+          * @apiSuccessExample {json} Success-Response:
+          * HTTP/1.1 200 OK 
+          * {
+          *     "description":"Object of type UserAc "
+          * }
+          */
         [HttpGet]
         [Route("userDetail/{userId}")]
         public IActionResult UserDetailById(string userId)
@@ -337,11 +352,23 @@ namespace Promact.Oauth.Server.Controllers
             return Ok(user);
         }
 
-        /// <summary>
-        /// Method to return details of user based on their username
-        /// </summary>
-        /// <param name="userName"></param>
-        /// <returns>details of user</returns>
+        /**
+          * @api {get} api/User/getByUserName/:userName 
+          * @apiVersion 1.0.0
+          * @apiName User
+          * @apiGroup User
+          * @apiParam {string} Name userName
+          * @apiParamExample {json} Request-Example:
+          *      
+          *        {
+          *             "userName": "abc"
+          *        }      
+          * @apiSuccessExample {json} Success-Response:
+          * HTTP/1.1 200 OK 
+          * {
+          *     "description":"Object of type UserAc "
+          * }
+          */
         [HttpGet]
         [Route("getByUserName/{userName}")]
         public async Task<IActionResult> GetByUserName(string userName)
