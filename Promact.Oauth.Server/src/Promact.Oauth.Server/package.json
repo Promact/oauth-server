@@ -71,7 +71,7 @@
     "rimraf": "2.5.3",
     "systemjs": "^0.19.38",
     "systemjs-builder": "^0.15.26",
-    "typescript": "^1.8.10",
+    "typescript": "^2.1.0-dev.20160914",
     "typings": "^1.0.4"
   }
 }
