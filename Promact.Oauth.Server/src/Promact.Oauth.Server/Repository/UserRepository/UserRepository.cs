@@ -484,6 +484,11 @@ namespace Promact.Oauth.Server.Repository
             return leaveAllowed;
         }
 
+        /// <summary>
+        /// Method to check whether user is admin or not
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns>true or false</returns>
         public async Task<bool> IsAdmin(string userName)
         {
             var user = await _userManager.FindByNameAsync(userName);

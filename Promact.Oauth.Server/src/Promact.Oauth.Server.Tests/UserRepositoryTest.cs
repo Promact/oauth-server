@@ -160,7 +160,7 @@ namespace Promact.Oauth.Server.Tests
         public void GetUserCasualLeaveBySlackName()
         {
             var id = _userRepository.AddUser(userLocal, StringConstant.RawFirstNameForTest);
-            var casualLeave = _userRepository.GetUserCasualLeaveBySlackName(userLocal.SlackUserName);
+            var casualLeave = _userRepository.GetUserAllowedLeaveBySlackName(userLocal.SlackUserName);
             Assert.NotNull(casualLeave);
         }
 
@@ -194,6 +194,17 @@ namespace Promact.Oauth.Server.Tests
             var id = await _userRepository.AddUser(_testUser, StringConstant.RawFirstNameForTest);
             var result = _userRepository.FindUserBySlackUserName(StringConstant.RawFirstNameForTest);
             Assert.Equal(result, false);
+        }
+
+        /// <summary>
+        /// Test case to check method IsAdmin of user repository
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task IsAdmin()
+        {
+            var id = await _userRepository.AddUser(_testUser, StringConstant.RawFirstNameForTest);
+            var result = await _userRepository.IsAdmin(_testUser.UserName);
+            Assert.Equal(false, result);
         }
 
         #endregion
