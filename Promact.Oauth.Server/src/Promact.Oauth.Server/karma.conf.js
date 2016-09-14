@@ -14,27 +14,36 @@ module.exports = function (config) {
 
 
         // list of files / patterns to load in the browser
-        files: [
-          'node_modules/reflect-metadata/Reflect.js',
-          'node_modules/systemjs/dist/system-polyfills.js',
-          'node_modules/systemjs/dist/system.src.js',
-          'node_modules/zone.js/dist/zone.js',
-          'node_modules/zone.js/dist/jasmine-patch.js',
-          'node_modules/zone.js/dist/async-test.js',
-          'node_modules/zone.js/dist/fake-async-test.js',
-          { pattern: 'node_modules/rxjs/**/*.js', included: false, watched: false },
-          { pattern: 'node_modules/rxjs/**/*.js.map', included: false, watched: false },
-          'karma-test-shim.js',
-          { pattern: 'node_modules/@angular/**/*.js', included: false, watched: true },
-          { pattern: 'node_modules/@angular/**/*.js.map', included: false, watched: true },
-          { pattern: 'node_modules/md2/**/*.js', included: false, watched: true },
-          { pattern: 'node_modules/md2/**/*.js.map', included: false, watched: true },
-          { pattern: 'node_modules/lodash/*.js', included: false, watched: true },
-          { pattern: 'wwwroot/app/**/*.js', included: false, watched: true },
-          { pattern: 'wwwroot/app/**/*.html', included: false, watched: true },
-          // paths to support debugging with source maps in dev tools
-          { pattern: 'wwwroot/app/**/*.ts', included: false, watched: false },
-          { pattern: 'wwwroot/app/**/*.js.map', included: false, watched: false }
+        files: [// Polyfills.
+                'node_modules/core-js/client/shim.min.js',
+                'node_modules/traceur/bin/traceur.js',
+                // System.js for module loading
+                'node_modules/systemjs/dist/system.src.js',
+                // Zone.js dependencies
+                'node_modules/zone.js/dist/zone.js',
+                'node_modules/zone.js/dist/long-stack-trace-zone.js',
+                'node_modules/zone.js/dist/async-test.js',
+                'node_modules/zone.js/dist/fake-async-test.js',
+                'node_modules/zone.js/dist/sync-test.js',
+                'node_modules/zone.js/dist/proxy.js',
+                'node_modules/zone.js/dist/jasmine-patch.js',
+                // RxJs.
+                { pattern: 'node_modules/rxjs/**/*.js', included: false, watched: false },
+                { pattern: 'node_modules/rxjs/**/*.js.map', included: false, watched: false },
+                'karma-test-shim.js',
+                // paths loaded via module imports
+                // Angular itself
+                { pattern: 'node_modules/@angular/**/*.js', included: false, watched: true },
+                { pattern: 'node_modules/@angular/**/*.js.map', included: false, watched: false },
+
+                { pattern: 'node_modules/md2/**/*.js', included: false, watched: true },
+                { pattern: 'node_modules/md2/**/*.js.map', included: false, watched: true },
+                { pattern: 'node_modules/lodash/*.js', included: false, watched: true },
+                { pattern: 'wwwroot/app/**/*.js', included: false, watched: true },
+                { pattern: 'wwwroot/app/**/*.html', included: false, watched: true },
+                 //// paths to support debugging with source maps in dev tools
+                { pattern: 'wwwroot/app/**/*.ts', included: false, watched: false },
+                { pattern: 'wwwroot/app/**/*.js.map', included: false, watched: false },
         ],
 
 
