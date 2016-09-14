@@ -91,7 +91,5 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// <returns>Project details along with users</returns>
         Task<ProjectAc> GetProjectDetails(int projectId);
 
-        Task<List<UserRoleAc>> GetUserRole(string name);
-
     }
 }
