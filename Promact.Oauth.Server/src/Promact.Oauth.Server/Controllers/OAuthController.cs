@@ -2,16 +2,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+using Microsoft.Extensions.Options;
+using Promact.Oauth.Server.Constants;
 using Promact.Oauth.Server.Models;
-using Promact.Oauth.Server.Models.ApplicationClasses;
 using Promact.Oauth.Server.Repository.ConsumerAppRepository;
 using Promact.Oauth.Server.Repository.OAuthRepository;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Promact.Oauth.Server.Controllers
@@ -22,56 +18,58 @@ namespace Promact.Oauth.Server.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IConsumerAppRepository _appRepository;
         private readonly IOAuthRepository _oAuthRepository;
+        private readonly IOptions<AppSettingUtil> _appSettingUtil;
 
-        public OAuthController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IConsumerAppRepository appRepository, IOAuthRepository oAuthRepository)
+        public OAuthController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IConsumerAppRepository appRepository, IOAuthRepository oAuthRepository, IOptions<AppSettingUtil> appSettingUtil)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _appRepository = appRepository;
             _oAuthRepository = oAuthRepository;
+            _appSettingUtil = appSettingUtil;
         }
 
-        /// <summary>
-        /// External Login
-        /// </summary>
-        /// <param name="model">It contain Email Password to Login to the server & contain redirectUrl and clientId used after LogIn</param>
-        /// <returns></returns>
-        // POST: /OAuth/Login
+        /**
+        * @api {post} OAuth/Login 
+        * @apiVersion 1.0.0
+        * @apiName Login
+        * @apiGroup Login
+        * @apiParam {OAuthLogin} Name  login
+        * @apiParamExample {json} Request-Example:
+        *        {
+        *             "Email":"siddhartha@promactinfo.com",
+        *             "Password":"***********",
+        *             "RedirectUrl":"http://localhost:1234",
+        *             "ClientId":"d1tge1ygr1t321yhfty",
+        *        }      
+        * @apiSuccessExample {json} Success-Response:
+        * HTTP/1.1 200 OK 
+        * {
+        *     "Description":"Redirect to Authorize user to external server"
+        * }
+        */
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(OAuthLogin model)
+        public async Task<IActionResult> Login(OAuthLogin login)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, lockoutOnFailure: false);
-                    if (result.Succeeded)
+                    var redirectUrl = await _oAuthRepository.UserNotAlreadyLogin(login);
+                    if (redirectUrl != StringConstant.EmptyString)
                     {
-                        var oAuth = _oAuthRepository.OAuthClientChecking(model.Email, model.ClientId);
-                        var clientResponse = await _oAuthRepository.GetAppDetailsFromClient(model.RedirectUrl, oAuth.RefreshToken);
-                        // Checking whether request client is equal to response client
-                        if (model.ClientId == clientResponse.ClientId)
-                        {
-                            //Getting app details from clientId or AuthId
-                            var app = await _appRepository.GetAppDetails(clientResponse.ClientId);
-                            // Refresh token and app's secret is checking if match then accesstoken will be send
-                            if (app.AuthSecret == clientResponse.ClientSecret && clientResponse.RefreshToken == oAuth.RefreshToken)
-                            {
-                                var user = await _userManager.FindByEmailAsync(oAuth.userEmail);
-                                var returnUrl = string.Format("{0}?accessToken={1}&email={2}&slackUserName={3}", clientResponse.ReturnUrl, oAuth.AccessToken, oAuth.userEmail, user.SlackUserName);
-                                return Redirect(returnUrl);
-                            }
-                        }
+                        return Redirect(redirectUrl);
                     }
-                    else
-                    {
-                        ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                        return View(model);
-                    }
+                    var url = string.Format("{0}/OAuth/ExternalLogin?clientId={1}", _appSettingUtil.Value.PromactOAuthUrl, login.ClientId);
+                    return Redirect(url);
                 }
-                return View(model);
+                else
+                {
+                    ModelState.AddModelError(string.Empty, StringConstant.InvalidLogin);
+                    return View(login);
+                }
             }
             catch (Exception ex)
             {
@@ -85,25 +83,38 @@ namespace Promact.Oauth.Server.Controllers
         /// </summary>
         /// <param name="clientId"></param>
         /// <returns></returns>
+        /**
+        * @api {post} OAuth/ExternalLogin
+        * @apiVersion 1.0.0
+        * @apiName ExternalLogin
+        * @apiGroup ExternalLogin
+        * @apiParam {string} Name  clientId    
+        * @apiSuccessExample {json} Success-Response:
+        * HTTP/1.1 200 OK 
+        * {
+        *     "Description":"Redirect to Promact OAuth server external login page"
+        * }
+        */
         public async Task<IActionResult> ExternalLogin(string clientId)
         {
             try
             {
                 var result = await _appRepository.GetAppDetails(clientId);
-                if (User.Identity.IsAuthenticated)
-                {
-                    var user = await _userManager.FindByNameAsync(User.Identity.Name);
-                    var oAuth = _oAuthRepository.OAuthClientChecking(user.Email, clientId);
-                    var clientResponse = await _oAuthRepository.GetAppDetailsFromClient(result.CallbackUrl, oAuth.RefreshToken);
-                    var returnUrl = string.Format("{0}?accessToken={1}&email={2}", clientResponse.ReturnUrl, oAuth.AccessToken, oAuth.userEmail);
-                    return Redirect(returnUrl);
-                }
                 if (result != null)
                 {
-                    // RedirectUrl is assign to ViewBag and on client side it will bind with OAuthLogin data
-                    ViewBag.returnUrl = result.CallbackUrl;
-                    ViewBag.clientId = result.AuthId;
-                    return View();
+                    if (User.Identity.IsAuthenticated)
+                    {
+                        // If already login it will return a redirect url and will be redirect back to another server with access token 
+                        var returnUrl = await _oAuthRepository.UserAlreadyLogin(User.Identity.Name, clientId, result.CallbackUrl);
+                        return Redirect(returnUrl);
+                    }
+                    else
+                    {
+                        // RedirectUrl is assign to ViewBag and on client side it will bind with OAuthLogin data
+                        ViewBag.returnUrl = result.CallbackUrl;
+                        ViewBag.clientId = result.AuthId;
+                        return View();
+                    }
                 }
                 return BadRequest();
             }

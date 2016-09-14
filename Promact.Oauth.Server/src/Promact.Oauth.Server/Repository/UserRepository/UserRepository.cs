@@ -475,10 +475,25 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="slackUserName"></param>
         /// <returns>number of casual leave</returns>
-        public double GetUserCasualLeaveBySlackName(string slackUserName)
+        public LeaveAllowed GetUserAllowedLeaveBySlackName(string slackUserName)
         {
-            var casualLeave = _applicationUserDataRepository.FirstOrDefault(x => x.SlackUserName == slackUserName).NumberOfCasualLeave;
-            return casualLeave;
+            var user = _applicationUserDataRepository.FirstOrDefault(x => x.SlackUserName == slackUserName);
+            LeaveAllowed leaveAllowed = new LeaveAllowed();
+            leaveAllowed.CasualLeave = user.NumberOfCasualLeave;
+            leaveAllowed.SickLeave = user.NumberOfSickLeave;
+            return leaveAllowed;
+        }
+
+        /// <summary>
+        /// Method to check whether user is admin or not
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns>true or false</returns>
+        public async Task<bool> IsAdmin(string userName)
+        {
+            var user = await _userManager.FindByNameAsync(userName);
+            var isAdmin = await _userManager.IsInRoleAsync(user, StringConstant.Admin);
+            return isAdmin;
         }
 
 
