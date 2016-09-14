@@ -1,21 +1,21 @@
-﻿declare var describe, it, beforeEach, expect;
-import {addProviders, async, inject, TestBed, ComponentFixture, TestComponentBuilder} from '@angular/core/testing';
-import {provide} from "@angular/core";
-import {Location} from "@angular/common";
-import {LocationStrategy} from "@angular/common";
-import {UserEditComponent} from "../user-edit/user-edit.component";
-import {UserService} from "../user.service";
-import {UserModel} from '../../users/user.model';
-import {ROUTER_DIRECTIVES, Router, ActivatedRoute } from '@angular/router';
-import {Md2Toast} from 'md2/toast';
-import {MockToast} from "../../shared/mocks/mock.toast";
-import {Md2Multiselect } from 'md2/multiselect';
-import {TestConnection} from "../../shared/mocks/test.connection";
-import {MockUserService} from "../../shared/mocks/user/mock.user.service";
-import {MockBaseService} from '../../shared/mocks/mock.base';
-import {MockRouter} from '../../shared/mocks/mock.router';
-import {Observable} from 'rxjs/Observable';
-import { LoginService } from '../../login.service';
+﻿//declare var describe, it, beforeEach, expect;
+//import {addProviders, async, inject, TestBed, ComponentFixture, TestComponentBuilder} from '@angular/core/testing';
+//import {provide} from "@angular/core";
+//import {Location} from "@angular/common";
+//import {LocationStrategy} from "@angular/common";
+//import {UserEditComponent} from "../user-edit/user-edit.component";
+//import {UserService} from "../user.service";
+//import {UserModel} from '../../users/user.model';
+//import {ROUTER_DIRECTIVES, Router, ActivatedRoute } from '@angular/router';
+//import {Md2Toast} from 'md2/toast';
+//import {MockToast} from "../../shared/mocks/mock.toast";
+//import {Md2Multiselect } from 'md2/multiselect';
+//import {TestConnection} from "../../shared/mocks/test.connection";
+//import {MockUserService} from "../../shared/mocks/user/mock.user.service";
+//import {MockBaseService} from '../../shared/mocks/mock.base';
+//import {MockRouter} from '../../shared/mocks/mock.router';
+//import {Observable} from 'rxjs/Observable';
+//import { LoginService } from '../../login.service';
 
 describe("Project Edit Test", () => {
     let userEditComponent: UserEditComponent;
@@ -57,6 +57,6 @@ describe("Project Edit Test", () => {
         userEditComponent.editUser(userModel);
         expect(userModel.FirstName).toBe(expectedFirstName);
        
-    }));
+//    }));
 
 //});
