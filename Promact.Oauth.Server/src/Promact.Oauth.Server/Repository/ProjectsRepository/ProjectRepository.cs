@@ -377,15 +377,11 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                 ApplicationUser teamLeader = _userDataRepository.FirstOrDefault(x => x.Id == project.TeamLeaderId);
                 UserAc teamLead = _mapperContext.Map<ApplicationUser, UserAc>(teamLeader);
                 teamLead.Role = StringConstant.TeamLeader;
-                //var CreatedBy = _userDataRepository.FirstOrDefault(x => x.Id == project.CreatedBy)?.FirstName;
-                //var UpdatedBy = _userDataRepository.FirstOrDefault(x => x.Id == project.UpdatedBy)?.FirstName;
+
                 List<ProjectUser> projectUsers = _projectUserDataRepository.Fetch(x => x.ProjectId == project.Id).ToList();
                 ProjectAc projectObject = _mapperContext.Map<Project, ProjectAc>(project);
                 projectObject.TeamLeader = teamLead;
-                //projectObject.CreatedBy = CreatedBy;
-                //projectObject.CreatedDate = project.CreatedDateTime.ToLocalTime().ToString("dd'/'MM'/'yyyy HH:mm");
-                //projectObject.UpdatedBy = UpdatedBy;
-                //projectObject.UpdatedDate = UpdatedDate;
+
                 foreach (var projectUser in projectUsers)
                 {
                     ApplicationUser user = _userDataRepository.FirstOrDefault(x => x.Id == projectUser.UserId);
@@ -405,7 +401,6 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// <returns>Project details along with users</returns>
         public async Task<ProjectAc> GetProjectDetails(int projectId)
         {
-            //Project project =  _projectDataRepository.FirstOrDefault(x => x.Id.Equals(projectId));
             Project project = _projectDataRepository.FirstOrDefault(x => x.Id == projectId);
             ApplicationUser teamLeader = _userDataRepository.FirstOrDefault(x => x.Id == project.TeamLeaderId);
             UserAc teamLead = _mapperContext.Map<ApplicationUser, UserAc>(teamLeader);
