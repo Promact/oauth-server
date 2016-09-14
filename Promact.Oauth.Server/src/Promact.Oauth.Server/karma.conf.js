@@ -113,4 +113,5 @@ module.exports = function (config) {
         config.singleRun = true;
         config.browserNoActivityTimeout = 90000;
     }
+
 }
