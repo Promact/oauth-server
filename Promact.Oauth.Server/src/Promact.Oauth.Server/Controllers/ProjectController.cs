@@ -316,6 +316,20 @@ namespace Promact.Oauth.Server.Controllers
                 throw ex;
             }
         }
+
+        [HttpGet]
+        [Route("allProjects")]
+        public async Task<IEnumerable<ProjectAc>> AllProjects()
+        {
+            return await _projectRepository.GetProjectsWithUsers();
+        }
+
+        [HttpGet]
+        [Route("projectDetails/{projectId}")]
+        public async Task<ProjectAc> ProjectDetails(int projectId)
+        {
+            return await _projectRepository.GetProjectDetails(projectId);
+        }
         #endregion
     }
 }
