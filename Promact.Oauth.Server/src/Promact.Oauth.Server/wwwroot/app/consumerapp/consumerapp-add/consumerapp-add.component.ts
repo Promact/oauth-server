@@ -25,12 +25,12 @@ export class ConsumerappAddComponent {
             }
         }, err => {
 
-//        });
-//    }
+        });
+    }
 
-//    cancel() {
-//        this.router.navigate(['/consumerapp']);
-//    }
+    cancel() {
+        this.router.navigate(['/consumerapp']);
+    }
 
    
-//}
+}
