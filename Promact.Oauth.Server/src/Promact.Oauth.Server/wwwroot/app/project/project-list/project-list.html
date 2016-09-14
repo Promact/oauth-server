@@ -1,0 +1,47 @@
+﻿<div class="project-list">
+    <div class="card-title-block d-flex">
+        <div class="title items">
+            <h3>Projects</h3>
+        </div>
+        <div class="items text-right">
+            <button md-raised-button routerLink="/project/add" class="add-link btn-green" *ngIf="admin==true"><i class="material-icons">add</i>Add Project</button>
+        </div>
+    </div>
+
+    <div class="table-sm">
+        <table class="table-bordered">
+            <thead>
+                <tr>
+                    <th>Project Name</th>
+                    <th>Slack Channel Name</th>
+                    <th>Is Active</th>
+                    <th>TeamLeader Name</th>
+                    <th *ngIf="admin==true">Created By</th>
+                    <th *ngIf="admin==true">Created Date</th>
+                    <th *ngIf="admin==true">Updated By</th>
+                    <th *ngIf="admin==true">Updated Date</th>
+                    <th *ngIf="admin==true">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let project of projects">
+                    <td>{{project.name}}</td>
+                    <td>{{project.slackChannelName}}</td>
+                    <td *ngIf="project.isActive">Active</td>
+                    <td *ngIf="!project.isActive">Inactive</td>
+                    <td>{{project.teamLeader.FirstName}}</td>
+                    <td *ngIf="admin==true">{{project.createdBy}}</td>
+                    <td *ngIf="admin==true">{{project.createdDate}}</td>
+                    <td *ngIf="admin==true">{{project.updatedBy}}</td>
+                    <td *ngIf="admin==true">{{project.updatedDate}}</td>
+                    <td *ngIf="admin==true">
+                        <button md-raised-button class="btn-green custom-btn mr-5" (click)="editProject(project.id)">Edit</button>
+                        <button md-raised-button class="custom-btn" (click)="viewProject(project.id)">View</button>
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+
+        </div>
+    </div>

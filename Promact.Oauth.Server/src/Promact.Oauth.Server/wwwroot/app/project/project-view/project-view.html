@@ -1,0 +1,77 @@
+﻿<div class="project-edit">
+    <div class="card-title-block d-flex">
+        <div class="title items">
+            <h3>Edit Project</h3>
+        </div>
+        <div class="text-right items">
+            <button md-raised-button type="submit" class="btn-back btn-green" (click)="gotoProjects()"> <i class="material-icons">arrow_back</i>Back</button>
+        </div>
+
+    </div>
+    <div *ngIf="project">
+
+
+        <div class="form-group">
+            <label>Name:</label>
+
+            {{project.name}}
+        </div>
+
+
+        <div class="form-group">
+            <label>
+                Slack Channel Name:
+            </label>
+
+            {{project.slackChannelName}}
+        </div>
+
+
+        <div class="form-group">
+
+
+            <label>
+                IsActive:
+            </label>
+
+            <md-checkbox type="checkbox" id="chckbox" name="IsActive" [(ngModel)]="project.isActive" disabled></md-checkbox>
+
+        </div>
+
+        <div class="form-group">
+            <label>TeamLeader:</label>
+            <div class="half-width">
+                <md-select [(ngModel)]="project.teamLeaderId" disabled>
+                    <md-option [value]="i.Id" *ngFor="let i of project.ListUsers">{{i.FirstName}}-{{i.Email}}</md-option>
+                </md-select>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+
+            <label>List Of Users:</label>
+
+
+            <!--<md-select disabled>
+                <md-option [value]="i.Id" *ngFor="let ul of pro.applicationUsers">{{ul.FirstName}}-{{ul.Email}}</md-option>
+            </md-select>-->
+            <md-multiselect *ngIf="project.ApplicationUsers && project.listUsers" [items]="project.ListUsers"
+                                         [item-text]="'UniqueName'"
+                                         [(ngModel)]="project.ApplicationUsers"
+                                         placeholder="Placeholder Text">
+            </md-multiselect>
+
+            <!--<select multiple disabled>
+                <option *ngFor="let ul of pro.applicationUsers">{{ul.FirstName}}-{{ul.Email}}</option>
+            </select>-->
+        </div>
+
+
+
+    </div>
+
+</div>
+
+
+

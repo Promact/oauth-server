@@ -1,0 +1,75 @@
+﻿<div class="user-details">
+    <div class="card-title-block">
+        <div class="title in_block">
+            <h3>User Details</h3>
+        </div>
+        <div class="fl-right">
+            <md-button type="submit" class="btn-back" (click)="goBack()" *ngIf="admin==true"> <i class="material-icons">arrow_back</i>Back</md-button>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>First Name: </label>
+        <p class="in_block">{{user.FirstName}}</p>
+    </div>
+
+    <div class="form-group">
+        <label>Last Name:</label>
+        <p class="in_block">{{user.LastName}}</p>
+    </div>
+
+    <div class="form-group">
+        <label>Email: </label>
+        <p class="in_block">{{user.Email}}</p>
+    </div>
+
+    <div class="form-group">
+        <label>Status</label>
+
+        <p class="in_block" *ngIf="user.IsActive">Active</p>
+        <p class="in_block" *ngIf="!user.IsActive">
+            Inactive
+        </p>
+    </div>
+    <div class="form-group">
+        <label>CasualLeave:</label>
+        <p class="in_block">{{user.NumberOfCasualLeave}}</p>
+    </div>
+
+    <div class="form-group">
+        <label>Sick Leave:</label>
+        <p class="in_block">{{user.NumberOfSickLeave}}</p>
+    </div>
+    
+    <div class="form-group">
+        <label>Date of Joining:</label>
+        <p class="in_block">{{user.JoiningDate |date:"dd/MM/yyyy"}}</p>
+    </div>
+    <div>
+        <button md-raised-button type="submit" (click)="edit(user.Id)" *ngIf="admin!=true" class="btn-green">Edit</button>
+    </div>
+
+</div>
+
+
+<!--<center>
+    <h1>{{title}}</h1>
+    <h2>Users Details</h2>
+
+    <div>
+        <label>First Name: </label>
+        {{user.firstName}}
+    </div>
+    <div>
+        <label>Last Name: </label>
+        {{user.lastName}}
+    </div>
+    <div>
+        <label>Email: </label>
+        {{user.email}}
+    </div>
+    <div>
+        <label>Status: </label>
+        {{user.isActive}}
+    </div>
+</center>-->
