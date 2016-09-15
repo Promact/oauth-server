@@ -18,27 +18,23 @@ describe('User Change Password Test', () => {
     let changePasswordComponent: ChangePasswordComponent;
     class MockActivatedRoute { }
 
-    //beforeEach(() => {
-    //    TestBed.configureTestingModule({
-    //        providers: [
-    //            { provide: ActivatedRoute, useClass: MockActivatedRoute },
-    //            { provide: Router, useClass: MockRouter },
-    //            { provide: TestConnection, useClass: TestConnection },
-    //            { provide: UserService, useClass: MockUserService },
-    //            { provide: Md2Toast, useClass: MockToast },
-    //            { provide: MockBaseService, useClass: MockBaseService },
-    //            { provide: PasswordModel, useClass: PasswordModel }
-    //        ]
-    //    });
-    //});
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            providers: [
+                { provide: ActivatedRoute, useClass: MockActivatedRoute },
+                { provide: Router, useClass: MockRouter },
+                { provide: TestConnection, useClass: TestConnection },
+                { provide: UserService, useClass: MockUserService },
+                { provide: Md2Toast, useClass: MockToast },
+                { provide: MockBaseService, useClass: MockBaseService },
+                { provide: PasswordModel, useClass: PasswordModel }
+            ]
+        });
+    });
 
     beforeEach(inject([UserService, Router, ActivatedRoute, Md2Toast], (userService: UserService, router: Router, route: ActivatedRoute, toast: Md2Toast) => {
          changePasswordComponent = new ChangePasswordComponent(userService, router, route, toast);
     }));
-
-    //beforeEach(inject([UserService, Router, ActivatedRoute, Md2Toast], (userService: UserService, router: Router, route: ActivatedRoute, toast: Md2Toast) => {
-    //     changePasswordComponent = new ChangePasswordComponent(userService, router, route, toast);
-    //}));
 
     it("contains spec with an expectation", function () {
         expect(true).toBe(true);
