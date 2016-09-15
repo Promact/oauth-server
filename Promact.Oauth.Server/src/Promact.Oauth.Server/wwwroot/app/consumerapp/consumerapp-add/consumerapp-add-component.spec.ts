@@ -13,13 +13,13 @@ import {MockBaseService} from "../../shared/mocks/mock.base";
 import {MockRouter} from "../../shared/mocks/mock.router";
 declare var describe, it, beforeEach, expect;
 
-//describe("Consumerapp Test Case", function () {
-//    it("This is a spec with expectations", function () {
-//        var expectedValue = 12;
-//        var actualValue = 12;
-//        expect(expectedValue).toBe(actualValue);
-//    });
-//});
+describe("Consumerapp Test Case", function () {
+    it("This is a spec with expectations", function () {
+        var expectedValue = 12;
+        var actualValue = 12;
+        expect(expectedValue).toBe(actualValue);
+    });
+});
 
 
 describe("Consumerapp Test Case", function () {

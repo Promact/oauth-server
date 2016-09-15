@@ -13,34 +13,34 @@
 //import {MockUserService} from "../../shared/mocks/user/mock.user.service";
 //import {MockBaseService} from '../../shared/mocks/mock.base';
 
-//describe("Project List Test", () => {
-//    let userListComponent: UserListComponent;
-//    class MockRouter { }
-//    beforeEach(() => {
-//        TestBed.configureTestingModule({
-//            providers: [
-//                provide(Router, { useClass: MockRouter }),
-//                provide(TestConnection, { useClass: TestConnection }),
-//                provide(UserService, { useClass: MockUserService }),
-//                provide(Md2Toast, { useClass: MockToast }),
-//                provide(MockBaseService, { useClass: MockBaseService})
-//            ]
-//        });
+describe("Project List Test", () => {
+    let userListComponent: UserListComponent;
+    class MockRouter { }
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            providers: [
+                provide(Router, { useClass: MockRouter }),
+                provide(TestConnection, { useClass: TestConnection }),
+                provide(UserService, { useClass: MockUserService }),
+                provide(Md2Toast, { useClass: MockToast }),
+                provide(MockBaseService, { useClass: MockBaseService})
+            ]
+        });
 
-//    });
+    });
 
-//    beforeEach(inject([UserService, Router], (userService: UserService, router: Router) => {
-//        userListComponent = new UserListComponent(userService,router);
-//    }));
-//    it("should be defined", () => {
-//        expect(userListComponent).toBeDefined();
-//    });
-//     /**
-//     * get user of Projects
-//     */
-//    it("should get list of Project on initialization", () => {
-//        userListComponent.ngOnInit();
-//        expect(userListComponent.getUsers());
-//    });
+    beforeEach(inject([UserService, Router], (userService: UserService, router: Router) => {
+        userListComponent = new UserListComponent(userService,router);
+    }));
+    it("should be defined", () => {
+        expect(userListComponent).toBeDefined();
+    });
+     /**
+     * get user of Projects
+     */
+    it("should get list of Project on initialization", () => {
+        userListComponent.ngOnInit();
+        expect(userListComponent.getUsers());
+    });
 
-//});
+});
