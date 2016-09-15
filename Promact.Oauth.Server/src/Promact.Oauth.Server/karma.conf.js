@@ -35,7 +35,6 @@ module.exports = function (config) {
                 // Angular itself
                 { pattern: 'node_modules/@angular/**/*.js', included: false, watched: true },
                 { pattern: 'node_modules/@angular/**/*.js.map', included: false, watched: false },
-
                 { pattern: 'node_modules/md2/**/*.js', included: false, watched: true },
                 { pattern: 'node_modules/md2/**/*.js.map', included: false, watched: true },
                 { pattern: 'node_modules/lodash/*.js', included: false, watched: true },
@@ -55,7 +54,7 @@ module.exports = function (config) {
         //// preprocess matching files before serving them to the browser
         //// available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         //preprocessors: {
-        //    'wwwroot/app/**/!(*spec).js': ['coverage']
+        //    './karma-shim.js': ['webpack', 'sourcemap']
         //},
 
 
