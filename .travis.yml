@@ -1,11 +1,8 @@
-
+sudo:required
+dist: trusty
 language: node_js
 node_js:
   - '4.2'
-include:
-  -sudo:required
-   dist: trusty
-
 language: csharp
 solution: ./Promact.Oauth.Server/Promact.Oauth.Server.sln
 matrix:
