@@ -4,9 +4,6 @@ node_js:
   - 5
   - stable
 sudo: false
-os:
-  - linux
-  - osx
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export CHROME_BIN=chromium-browser; fi  # Karma CI
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export DISPLAY=:99.0; fi
