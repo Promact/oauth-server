@@ -100,16 +100,9 @@ module.exports = function (config) {
         concurrency: Infinity,
 
         customLaunchers: {
-            'PhantomJS_flags': {
-                base: 'PhantomJS',
-                options: {
-                    windowName: 'my-window',
-                    settings: {
-                        webSecurityEnabled: false
-                    }
-                },
-                flags: ['--load-images=false'],
-                debug: true
+            Chrome_travis_ci: {
+                base: 'Chrome',
+                flags: ['--no-sandbox']
             }
         },
 
@@ -128,7 +121,7 @@ module.exports = function (config) {
     })
 
     if (process.env.TRAVIS || process.env.CIRCLECI) {
-        config.browsers = ['PhantomJS_flags'];
+        config.browsers = ['Chrome_travis_ci'];
         config.singleRun = true;
         config.browserNoActivityTimeout = 90000;
     }
