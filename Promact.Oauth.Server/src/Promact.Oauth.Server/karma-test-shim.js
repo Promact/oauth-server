@@ -15,11 +15,11 @@ function isSpecFile(path) {
 }
 
 function isBuiltFile(path) {
-    let builtPath = '/base/wwwroot/app/';
+    var builtPath = '/base/wwwroot/app/';
     return isJsFile(path) && (path.substr(0, builtPath.length) === builtPath);
 }
 
-let allSpecFiles = Object.keys(window.__karma__.files)
+var allSpecFiles = Object.keys(window.__karma__.files)
   .filter(isSpecFile)
   .filter(isBuiltFile);
 
@@ -242,8 +242,8 @@ Promise.all([
   System.import('@angular/core/testing'),
   System.import('@angular/platform-browser-dynamic/testing')
 ]).then(function (providers) {
-    let testing = providers[0];
-    let testingBrowser = providers[1];
+    var testing = providers[0];
+    var testingBrowser = providers[1];
 
     testing.setBaseTestProviders(testingBrowser.TEST_BROWSER_DYNAMIC_PLATFORM_PROVIDERS,
       testingBrowser.TEST_BROWSER_DYNAMIC_APPLICATION_PROVIDERS);
