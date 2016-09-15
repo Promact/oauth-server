@@ -15,7 +15,7 @@
 //import {ChangePasswordComponent} from "../user-change-password/user-change-password.component";
 
 describe('User Add Test', () => {
-    let changePasswordComponent: ChangePasswordComponent;
+    //let changePasswordComponent: ChangePasswordComponent;
     class MockActivatedRoute { }
 
     beforeEach(() => {
