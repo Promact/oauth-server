@@ -23,9 +23,14 @@ describe('User Change Password Test', () => {
             providers: [
                 { provide: ActivatedRoute, useClass: MockActivatedRoute },
                 { provide: Router, useClass: MockRouter },
-                { provide: Md2Toast, useClass: MockToast }
+                { provide: TestConnection, useClass: TestConnection },
+                { provide: UserService, useClass: MockUserService },
+                { provide: Md2Toast, useClass: MockToast },
+                { provide: MockBaseService, useClass: MockBaseService },
+                { provide: PasswordModel, useClass: PasswordModel }
             ]
         });
+
     });
 
     beforeEach(inject([UserService, Router, ActivatedRoute, Md2Toast], (userService: UserService, router: Router, route: ActivatedRoute, toast: Md2Toast) => {
