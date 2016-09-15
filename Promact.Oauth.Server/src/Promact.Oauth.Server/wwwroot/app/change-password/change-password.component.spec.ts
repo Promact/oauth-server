@@ -48,6 +48,9 @@ describe('User Change Password Test', () => {
         passwordModel.Email = "test@yahoo.com";
         let method = changePasswordComponent.changePassword(passwordModel);
         expect(method).not.toBe(true);
+        let result = true;
+        let method = changePasswordComponent.changePassword(passwordModel);
+        expect(method).not.toBe(result);
     }));
 
 }); 
