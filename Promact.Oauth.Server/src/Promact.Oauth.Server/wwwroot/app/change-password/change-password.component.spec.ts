@@ -15,16 +15,21 @@
 //import {ChangePasswordComponent} from "../user-change-password/user-change-password.component";
 
 describe("Consumerapp Test Case", function () {
-
     class MockActivatedRoute { }
+    
     beforeEach(() => {
         TestBed.configureTestingModule({
             providers: [
                 { provide: ActivatedRoute, useClass: MockActivatedRoute },
                 { provide: Router, useClass: MockRouter },
-                { provide: Md2Toast, useClass: MockToast }
+                { provide: TestConnection, useClass: TestConnection },
+                { provide: UserService, useClass: MockUserService },
+                { provide: Md2Toast, useClass: MockToast },
+                { provide: MockBaseService, useClass: MockBaseService },
+                { provide: PasswordModel, useClass: PasswordModel }
             ]
         });
+
     });
 
     it("This is a spec with expectations", function () {
