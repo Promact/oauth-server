@@ -10,7 +10,7 @@ module.exports = function (config) {
 
         // frameworks to use
         // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-        frameworks: ['jasmine', 'requirejs', 'es6-shim'],
+        frameworks: ['jasmine'],
 
         // list of files / patterns to load in the browser
         files: [// Polyfills.
@@ -114,7 +114,6 @@ module.exports = function (config) {
 
         // Karma plugins loaded
         plugins: [
-            'karma-es6-shim',
             'karma-jasmine',
             'karma-chrome-launcher'
         ],
