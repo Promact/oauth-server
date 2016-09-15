@@ -14,43 +14,46 @@ import {MockRouter} from '../shared/mocks/mock.router';
 import {MockToast} from "../shared/mocks/mock.toast";
 import {ChangePasswordComponent} from "../change-password/change-password.component";
 
-describe('User Add Test', () => {
-    //let changePasswordComponent: ChangePasswordComponent;
-    class MockActivatedRoute { }
-
-    //beforeEach(() => {
-    //    TestBed.configureTestingModule({
-    //        providers: [
-    //            { provide: ActivatedRoute, useClass: MockActivatedRoute },
-    //            { provide: Router, useClass: MockRouter },
-    //            { provide: TestConnection, useClass: TestConnection },
-    //            { provide: UserService, useClass: MockUserService },
-    //            { provide: Md2Toast, useClass: MockToast },
-    //            { provide: MockBaseService, useClass: MockBaseService },
-    //            { provide: PasswordModel, useClass: PasswordModel }
-    //        ]
-    //    });
-    //});
-
-    //beforeEach(inject([UserService, Router, ActivatedRoute, Md2Toast], (userService: UserService, router: Router, route: ActivatedRoute, toast: Md2Toast) => {
-    //     changePasswordComponent = new ChangePasswordComponent(userService, router, route, toast);
-    //}));
-
-    it("contains spec with an expectation", function () {
-        expect(true).toBe(true);
+describe('sorting the list of users', function () {
+    it('sorts in descending order by default', function () {
+        
     });
+});
 
+//describe('User Add Test', () => {
+//    let changePasswordComponent: ChangePasswordComponent;
+//    class MockActivatedRoute { }
 
-    //it("should be defined", () => {
-    //    expect(changePasswordComponent).toBeDefined();
-    //});
+//    beforeEach(() => {
+//        TestBed.configureTestingModule({
+//            providers: [
+//                { provide: ActivatedRoute, useClass: MockActivatedRoute },
+//                { provide: Router, useClass: MockRouter },
+//                { provide: TestConnection, useClass: TestConnection },
+//                { provide: UserService, useClass: MockUserService },
+//                { provide: Md2Toast, useClass: MockToast },
+//                { provide: MockBaseService, useClass: MockBaseService },
+//                { provide: PasswordModel, useClass: PasswordModel }
+//            ]
+//        });
 
-    //it("should check password before change", inject([PasswordModel], (passwordModel: PasswordModel) => {
-    //    passwordModel.NewPassword = "test123";
-    //    passwordModel.OldPassword = "test";
-    //    passwordModel.ConfirmPassword = "test123";
-    //    passwordModel.Email = "test@yahoo.com";
-    //    let method = changePasswordComponent.changePassword(passwordModel);
-    //    expect(method).not.toBe(true);
-    //}));
-});  
+//    });
+
+//    beforeEach(inject([UserService, Router, ActivatedRoute, Md2Toast], (userService: UserService, router: Router, route: ActivatedRoute, toast: Md2Toast) => {
+//         changePasswordComponent = new ChangePasswordComponent(userService, router, route, toast);
+//    }));
+    
+//    it("should be defined", () => {
+//        expect(changePasswordComponent).toBeDefined();
+//    });
+
+//    it("should check password before change", inject([PasswordModel], (passwordModel: PasswordModel) => {
+//        passwordModel.NewPassword = "test123";
+//        passwordModel.OldPassword = "test";
+//        passwordModel.ConfirmPassword = "test123";
+//        passwordModel.Email = "test@yahoo.com";
+//        let method = changePasswordComponent.changePassword(passwordModel);
+//        expect(method).not.toBe(true);
+//    }));
+
+//});  
