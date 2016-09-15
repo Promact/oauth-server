@@ -15,7 +15,7 @@ import {MockToast} from "../shared/mocks/mock.toast";
 import {ChangePasswordComponent} from "../change-password/change-password.component";
 
 describe('User Add Test', () => {
-    let changePasswordComponent: ChangePasswordComponent;
+    //let changePasswordComponent: ChangePasswordComponent;
     class MockActivatedRoute { }
 
     beforeEach(() => {
