@@ -10,7 +10,7 @@ module.exports = function (config) {
 
         // frameworks to use
         // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-        frameworks: ['jasmine', 'es6-shim'],
+        frameworks: ['jasmine', 'requirejs', 'es6-shim'],
 
         // list of files / patterns to load in the browser
         files: [// Polyfills.
@@ -112,17 +112,18 @@ module.exports = function (config) {
                 debug: true
             }
         },
-        phantomjsLauncher: {
-            // Have phantomjs exit if a ResourceError is encountered (useful if karma exits without killing phantom) 
-            exitOnResourceError: true
-        },
+
+        //phantomjsLauncher: {
+        //    // Have phantomjs exit if a ResourceError is encountered (useful if karma exits without killing phantom) 
+        //    exitOnResourceError: true
+        //},
 
 
 
 
         // Karma plugins loaded
         plugins: [
-            'karma-es6-shim',
+         
             'karma-jasmine',
             'karma-chrome-launcher'
         ],
