@@ -23,10 +23,8 @@ describe('User Change Password Test', () => {
             providers: [
                 { provide: ActivatedRoute, useClass: MockActivatedRoute },
                 { provide: Router, useClass: MockRouter },
-                { provide: TestConnection, useClass: TestConnection },
-                { provide: UserService, useClass: MockUserService },
-                { provide: Md2Toast, useClass: MockToast },
-                { provide: MockBaseService, useClass: MockBaseService }]
+                { provide: Md2Toast, useClass: MockToast }
+            ]
         });
     });
 
