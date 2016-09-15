@@ -1,4 +1,4 @@
-﻿declare var describe, it, beforeEach, expect;
+﻿declare let describe, it, beforeEach, expect;
 import {async, inject, TestBed, ComponentFixture, TestComponentBuilder} from '@angular/core/testing';
 import {provide} from "@angular/core";
 import {Component, Input} from '@angular/core';
@@ -16,7 +16,6 @@ import {ChangePasswordComponent} from "../change-password/change-password.compon
 
 describe('User Add Test', () => {
     let changePasswordComponent: ChangePasswordComponent;
-    //class MockRouter { }
     class MockActivatedRoute { }
 
     beforeEach(() => {
@@ -44,8 +43,8 @@ describe('User Add Test', () => {
         passwordModel.OldPassword = "test";
         passwordModel.ConfirmPassword = "test123";
         passwordModel.Email = "test@yahoo.com";
-        const result = true;
-        const method = changePasswordComponent.changePassword(passwordModel);
+        let result = true;
+        let method = changePasswordComponent.changePassword(passwordModel);
         expect(method).not.toBe(result);
     }));
 });  
