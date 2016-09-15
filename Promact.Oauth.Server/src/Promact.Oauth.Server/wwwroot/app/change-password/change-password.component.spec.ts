@@ -15,7 +15,7 @@
 //import {ChangePasswordComponent} from "../user-change-password/user-change-password.component";
 
 describe('User Add Test', () => {
-    let changePasswordComponent: ChangePasswordComponent;
+    var changePasswordComponent: ChangePasswordComponent;
     class MockActivatedRoute { }
 
     beforeEach(() => {
@@ -43,8 +43,8 @@ describe('User Add Test', () => {
         passwordModel.OldPassword = "test";
         passwordModel.ConfirmPassword = "test123";
         passwordModel.Email = "test@yahoo.com";
-        let result = true;
-        let method = changePasswordComponent.changePassword(passwordModel);
+        var result = true;
+        var method = changePasswordComponent.changePassword(passwordModel);
         expect(method).not.toBe(result);
     }));
 });  
