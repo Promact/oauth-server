@@ -14,9 +14,10 @@ import {MockRouter} from '../shared/mocks/mock.router';
 import {MockToast} from "../shared/mocks/mock.toast";
 import {ChangePasswordComponent} from "../change-password/change-password.component";
 
-describe("Consumerapp Test Case", function () {
+describe('User Change Password Test', () => {
+    let changePasswordComponent: ChangePasswordComponent;
     class MockActivatedRoute { }
-    
+
     beforeEach(() => {
         TestBed.configureTestingModule({
             providers: [
@@ -32,11 +33,22 @@ describe("Consumerapp Test Case", function () {
 
     });
 
-    it("This is a spec with expectations", function () {
-        var expectedValue = 12;
-        var actualValue = 12;
-        expect(expectedValue).toBe(actualValue);
-    });
-});
+    beforeEach(inject([UserService, Router, ActivatedRoute, Md2Toast], (userService: UserService, router: Router, route: ActivatedRoute, toast: Md2Toast) => {
+         changePasswordComponent = new ChangePasswordComponent(userService, router, route, toast);
+    }));
 
+    it("should be defined", () => {
+        expect(changePasswordComponent).toBeDefined();
+    });
+
+    it("should check password before change", inject([PasswordModel], (passwordModel: PasswordModel) => {
+        passwordModel.NewPassword = "test123";
+        passwordModel.OldPassword = "test";
+        passwordModel.ConfirmPassword = "test123";
+        passwordModel.Email = "test@yahoo.com";
+        let method = changePasswordComponent.changePassword(passwordModel);
+        expect(method).not.toBe(true);
+    }));
+
+}); 
 

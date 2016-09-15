@@ -107,16 +107,11 @@ module.exports = function (config) {
             }
         },
 
-        //phantomjsLauncher: {
-        //    // Have phantomjs exit if a ResourceError is encountered (useful if karma exits without killing phantom) 
-        //    exitOnResourceError: true
-        //},
 
         // Karma plugins loaded
         plugins: [
             'karma-jasmine',
-            'karma-chrome-launcher',
-            'karma-phantomjs-launcher'
+            'karma-chrome-launcher'
         ],
     })
 
