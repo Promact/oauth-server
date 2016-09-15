@@ -1,5 +1,5 @@
 ﻿declare var describe, it, beforeEach, expect;
-import {async, inject, TestBed, ComponentFixture, TestComponentBuilder} from '@angular/core/testing';
+import {async, inject, TestBed, ComponentFixture, TestComponentBuilder, addProviders} from '@angular/core/testing';
 import {provide} from "@angular/core";
 import {Component, Input} from '@angular/core';
 import {TestConnection} from "../shared/mocks/test.connection";
@@ -18,17 +18,14 @@ describe("Consumerapp Test Case", function () {
 
     class MockActivatedRoute { }
     beforeEach(() => {
-        TestBed.configureTestingModule({
-            providers: [
-                { provide: ActivatedRoute, useClass: MockActivatedRoute },
-                { provide: Router, useClass: MockRouter },
-                { provide: TestConnection, useClass: TestConnection },
-                { provide: UserService, useClass: MockUserService },
-                { provide: Md2Toast, useClass: MockToast },
-                { provide: MockBaseService, useClass: MockBaseService },
-                { provide: PasswordModel, useClass: PasswordModel }
-            ]
-        });
+        addProviders([
+            { provide: ActivatedRoute, useClass: MockActivatedRoute },
+            { provide: Router, useClass: MockRouter },
+            { provide: TestConnection, useClass: TestConnection },
+            { provide: UserService, useClass: MockUserService },
+            { provide: Md2Toast, useClass: MockToast },
+            { provide: MockBaseService, useClass: MockBaseService }]
+        );
     });
 
     it("This is a spec with expectations", function () {
