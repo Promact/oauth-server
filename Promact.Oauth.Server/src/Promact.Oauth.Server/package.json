@@ -67,6 +67,7 @@
     "karma-html-detailed-reporter": "1.1.8",
     "karma-jasmine": "^1.0.2",
     "karma-phantomjs-launcher": "^1.0.2",
+    "karma-requirejs": "~1.0.0",
     "lite-server": "^2.2.0",
     "phantomjs": "2.1.7",
     "remap-istanbul": "^0.6.4",
