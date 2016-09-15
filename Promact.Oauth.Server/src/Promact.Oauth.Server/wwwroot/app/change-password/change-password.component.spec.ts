@@ -16,7 +16,6 @@
 
 describe('User Add Test', () => {
     let changePasswordComponent: ChangePasswordComponent;
-    //class MockRouter { }
     class MockActivatedRoute { }
 
     beforeEach(() => {
@@ -44,8 +43,8 @@ describe('User Add Test', () => {
         passwordModel.OldPassword = "test";
         passwordModel.ConfirmPassword = "test123";
         passwordModel.Email = "test@yahoo.com";
-        const result = true;
-        const method = changePasswordComponent.changePassword(passwordModel);
+        let result = true;
+        let method = changePasswordComponent.changePassword(passwordModel);
         expect(method).not.toBe(result);
     }));
 });  
