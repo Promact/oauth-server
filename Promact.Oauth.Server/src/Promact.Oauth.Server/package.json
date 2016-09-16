@@ -2,13 +2,13 @@
   "name": "PromactOauthServer",
   "version": "1.0.0",
   "scripts": {
-    "build": "rm -rf wwwroot/app/*.js && tsc -p wwwroot/app",
+    "build": "rm -rf wwwroot/app/*.js && tsc -p tsconfig.json",
     "pretest": "npm run build",
     "test": "karma start karma.conf.js",
     "citest": "karma start karma.conf.ci.js",
     "start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" ",
     "lite": "lite-server",
-    "postinstall": "typings install",
+    "postinstall": "typings install && npm build",
     "tsc": "tsc",
     "tsc:w": "tsc -w",
     "typings": "typings"
