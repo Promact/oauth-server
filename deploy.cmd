@@ -71,7 +71,7 @@ echo Handling .NET Web Application deployment.
 IF NOT DEFINED TYPINGS_CMD (
   :: Install kudu sync
   echo Installing Typings
-  call npm install typescript typings -g --silent
+  call npm install typescript typings gulp-cli -g --silent
   IF !ERRORLEVEL! NEQ 0 goto error
 
   :: Locally just running "kuduSync" would also work
