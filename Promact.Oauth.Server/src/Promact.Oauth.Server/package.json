@@ -2,7 +2,7 @@
   "name": "PromactOauthServer",
   "version": "1.0.0",
   "scripts": {
-    "build": "rm -rf dist && tsc -p src",
+    "build": "rm -rf wwwroot/app/*.js && tsc -p wwwroot/app",
     "pretest": "npm run build",
     "test": "karma start karma.conf.js",
     "citest": "karma start karma.conf.ci.js",
