@@ -68,7 +68,7 @@ SET MSBUILD_PATH=%ProgramFiles(x86)%\MSBuild\14.0\Bin\MSBuild.exe
 echo Handling .NET Web Application deployment.
 
 :: 1. Typings Install
-IF NOT DEFINED TYPINGS_CMD (
+IF NOT EXIST "%AppData%\npm\node_modules\typings\typings.json" (
   :: Install kudu sync
   echo Installing Typings
   call npm install typescript typings gulp-cli -g
