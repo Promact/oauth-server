@@ -80,14 +80,17 @@ IF NOT DEFINED TYPINGS_CMD (
 :: 2. NPM Install
 if EXIST "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Promact.Oauth.Server\package.json" (    
     pushd "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Promact.Oauth.Server"
-    call npm install
-	call gulp clean
-	call gulp min
-	call gulp bundle
-	call gulp copytowwwroot
+    call :ExecuteCmd npm install	
     IF !ERRORLEVEL! NEQ 0 goto error
     popd
 )
+:: 2.5 Execute gulp task
+if EXIST "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Promact.Oauth.Server\package.json" (    
+	pushd "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Promact.Oauth.Server"
+	call :ExecuteCmd gulp clean min bundle copytowwwroot
+	IF !ERRORLEVEL! NEQ 0 goto error
+    popd
+}
 
 :: 3. Bower Install
 if EXIST "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Promact.Oauth.Server\bower.json" (
