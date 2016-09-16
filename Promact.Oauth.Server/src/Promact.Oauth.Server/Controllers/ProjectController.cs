@@ -283,6 +283,26 @@ namespace Promact.Oauth.Server.Controllers
 
         }
 
+
+        /**
+        * @api {get} api/Project/GetListOfEmployee 
+        * @apiVersion 1.0.0
+        * @apiName Project
+        * @apiGroup Project
+        * @apiSuccessExample {json} Success-Response:
+        * HTTP/1.1 200 OK 
+        * {
+        *     "description":"Get List of Users"
+        * }
+        */
+        [HttpGet]
+        [Route("featchListOfUser/{name}")]
+        public async Task<List<UserRoleAc>> GetListOfEmployee(string name)
+        {
+            return await _projectRepository.GetListOfEmployee(name);
+
+        }
+
         /**
       * @api {get} api/Project/fetchProject 
       * @apiVersion 1.0.0
