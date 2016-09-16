@@ -71,7 +71,7 @@ echo Handling .NET Web Application deployment.
 IF NOT DEFINED TYPINGS_CMD (
   :: Install kudu sync
   echo Installing Typings
-  call npm install typescript typings gulp-cli -g --silent
+  call npm install typescript typings gulp-cli -g
   IF !ERRORLEVEL! NEQ 0 goto error
 
   :: Locally just running "kuduSync" would also work
@@ -79,13 +79,15 @@ IF NOT DEFINED TYPINGS_CMD (
 )
 :: 2. NPM Install
 if EXIST "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Promact.Oauth.Server\package.json" (    
-    pushd "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Promact.Oauth.Server"
-    call :ExecuteCmd npm install	
+    echo Installing NPM packages
+	pushd "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Promact.Oauth.Server"
+    call :ExecuteCmd npm install --silent	
     IF !ERRORLEVEL! NEQ 0 goto error
     popd
 )
 :: 2.5 Execute gulp task
 if EXIST "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Promact.Oauth.Server\package.json" (    
+	echo Executing GULP Tasks
 	pushd "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Promact.Oauth.Server"
 	call :ExecuteCmd gulp clean min bundle copytowwwroot
 	IF !ERRORLEVEL! NEQ 0 goto error
@@ -94,7 +96,8 @@ if EXIST "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Promact.Oauth.Server\pack
 
 :: 3. Bower Install
 if EXIST "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Promact.Oauth.Server\bower.json" (
-    pushd "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Promact.Oauth.Server"
+    echo Executing bower install
+	pushd "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Promact.Oauth.Server"
     call :ExecuteCmd bower install
     IF !ERRORLEVEL! NEQ 0 goto error
     popd
