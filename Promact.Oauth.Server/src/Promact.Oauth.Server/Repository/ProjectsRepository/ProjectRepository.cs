@@ -304,6 +304,34 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             return recentProjects;
         }
         /// <summary>
+        /// This Method get the list of Users.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public async Task<List<UserRoleAc>> GetListOfEmployee(string name)
+        {
+            ApplicationUser user = _userDataRepository.FirstOrDefault(x => x.UserName == name);
+            var userRoles = new List<UserRoleAc>();
+            var usersRole = new UserRoleAc();
+            usersRole.UserName = user.UserName;
+            usersRole.Role = StringConstant.RoleTeamLeader;
+            usersRole.Name = user.FirstName + " " + user.LastName;
+            userRoles.Add(usersRole);
+            var project = await _projectDataRepository.FirstOrDefaultAsync(x => x.TeamLeaderId.Equals(user.Id));
+            var projectUserList = _projectUserDataRepository.Fetch(x => x.ProjectId == project.Id).ToList();
+
+            foreach (var projectUser in projectUserList)
+            {
+                var usersRoles = new UserRoleAc();
+                var users = _userDataRepository.FirstOrDefault(x => x.Id == projectUser.UserId);
+                usersRoles.UserName = users.UserName;
+                usersRoles.Name = users.FirstName + " " + users.LastName;
+                usersRoles.Role = StringConstant.RoleAdmin;
+                userRoles.Add(usersRoles);
+            }
+            return userRoles;
+        }
+        /// <summary>
         /// This Method use to featch user role
         /// </summary>
         /// <param name="name"></param>
@@ -314,30 +342,33 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             var role = await _userManager.GetRolesAsync(user);
             var userRole = role.First();
             var userRoles = new List<UserRoleAc>();
-            if (userRole == StringConstant.RoleEmployee)
+            //userRole = StringConstant.RoleTeamLeader;
+            if (userRole == StringConstant.RoleAdmin)
             {
                 var userList = _userDataRepository.GetAll().ToList();
                 foreach (var userDetails in userList)
                 {
                     var roles= await _userManager.GetRolesAsync(userDetails);
-                    string assignRole;
-                    if (roles.Count == 0)
-                    { assignRole = StringConstant.RoleEmployee; }
-                    else { assignRole = roles.First(); }
+                    //string assignRole;
+                    //if (roles.Count == 0)
+                    //{ assignRole = StringConstant.RoleEmployee; }
+                    //else { assignRole = roles.First(); }
                     var userRoleAc = new UserRoleAc();
                     userRoleAc.UserName = userDetails.UserName;
                     userRoleAc.Name = userDetails.FirstName + " " + userDetails.LastName;
-                    userRoleAc.Role = assignRole;
+                    //userRoleAc.Role = assignRole;
+                    userRoleAc.Role = userRole;
                     userRoles.Add(userRoleAc);
                 }
             }
             else {
                 var project = _projectDataRepository.FirstOrDefault(x => x.TeamLeaderId.Equals(user.Id));
+                //project = null;
                 if (project == null)
                 {
                     var usersRole = new UserRoleAc();
                     usersRole.UserName = user.UserName;
-                    usersRole.Role = userRole;
+                    usersRole.Role = StringConstant.RoleEmployee;
                     usersRole.Name = user.FirstName + " " + user.LastName;
                     userRoles.Add(usersRole);
                 }
@@ -348,17 +379,6 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                     usersRole.Role = StringConstant.RoleTeamLeader;
                     usersRole.Name = user.FirstName + " " + user.LastName;
                     userRoles.Add(usersRole);
-                    var projectUserList = _projectUserDataRepository.Fetch(x => x.ProjectId == project.Id).ToList();
-                    foreach (var projectUser in projectUserList)
-                    {
-                        var usersRoles = new UserRoleAc();
-                        var users = _userDataRepository.FirstOrDefault(x => x.Id == projectUser.UserId);
-                        usersRoles.UserName = users.UserName;
-                        usersRoles.Name = users.FirstName + " " + users.LastName;
-                        usersRoles.Role = StringConstant.RoleAdmin;
-                        userRoles.Add(usersRoles);
-                    }
-
                 }
             }
             return userRoles;
