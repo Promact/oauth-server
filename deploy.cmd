@@ -68,10 +68,10 @@ SET MSBUILD_PATH=%ProgramFiles(x86)%\MSBuild\14.0\Bin\MSBuild.exe
 echo Handling .NET Web Application deployment.
 
 :: 1. Typings Install
-IF NOT DEFINED TYPINGS_CMD (
+IF NOT EXIST "%AppData%\npm\node_modules\typings\typings.json" (
   :: Install kudu sync
   echo Installing Typings
-  call npm install typescript typings gulp-cli -g --silent
+  call npm install typescript typings gulp-cli -g
   IF !ERRORLEVEL! NEQ 0 goto error
 
   :: Locally just running "kuduSync" would also work
@@ -79,19 +79,32 @@ IF NOT DEFINED TYPINGS_CMD (
 )
 :: 2. NPM Install
 if EXIST "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Promact.Oauth.Server\package.json" (    
-    pushd "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Promact.Oauth.Server"
-    call :ExecuteCmd npm install
-	call :ExecuteCmd gulp clean
-	call :ExecuteCmd gulp min
-	call :ExecuteCmd gulp bundle
-	call :ExecuteCmd gulp copytowwwroot
+    echo Installing NPM packages
+	pushd "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Promact.Oauth.Server"
+    call :ExecuteCmd npm install --silent	
     IF !ERRORLEVEL! NEQ 0 goto error
     popd
 )
+if EXIST "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Promact.Oauth.Server\tsconfig.json" (    
+    echo Compiling Typescript
+	pushd "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Promact.Oauth.Server"
+    call :ExecuteCmd tsc -p tsconfig.json	
+    IF !ERRORLEVEL! NEQ 0 goto error
+    popd
+)
+:: 2.5 Execute gulp task
+if EXIST "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Promact.Oauth.Server\package.json" (    
+	echo Executing GULP Tasks
+	pushd "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Promact.Oauth.Server"
+	call :ExecuteCmd gulp clean min bundle copytowwwroot
+	IF !ERRORLEVEL! NEQ 0 goto error
+    popd
+}
 
 :: 3. Bower Install
 if EXIST "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Promact.Oauth.Server\bower.json" (
-    pushd "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Promact.Oauth.Server"
+    echo Executing bower install
+	pushd "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Promact.Oauth.Server"
     call :ExecuteCmd bower install
     IF !ERRORLEVEL! NEQ 0 goto error
     popd
@@ -102,7 +115,7 @@ call :ExecuteCmd nuget.exe restore "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\Pro
 IF !ERRORLEVEL! NEQ 0 goto error
 
 :: 5. Build and publish
-call :ExecuteCmd "%MSBUILD_PATH%" "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\Promact.Oauth.Server.sln" /nologo /verbosity:m /p:deployOnBuild=True;AutoParameterizationWebConfigConnectionStrings=false;Configuration=Release;UseSharedCompilation=false;publishUrl="%DEPLOYMENT_TEMP%" %SCM_BUILD_ARGS%
+call :ExecuteCmd "%MSBUILD_PATH%" "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\Promact.Oauth.Server.sln" /nologo /verbosity:d /m /p:deployOnBuild=True;AutoParameterizationWebConfigConnectionStrings=false;Configuration=Release;UseSharedCompilation=false;publishUrl="%DEPLOYMENT_TEMP%" %SCM_BUILD_ARGS%
 IF !ERRORLEVEL! NEQ 0 goto error
 
 :: 6. KuduSync
