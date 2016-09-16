@@ -259,3 +259,6 @@ paket-files/
 **/typings/
 *.log
 /.dotnet
+*.min.js
+*.min.css
+bundle.js
