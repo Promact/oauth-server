@@ -108,7 +108,7 @@ call :ExecuteCmd nuget.exe restore "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\Pro
 IF !ERRORLEVEL! NEQ 0 goto error
 
 :: 5. Build and publish
-call :ExecuteCmd "%MSBUILD_PATH%" "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\Promact.Oauth.Server.sln" /nologo /verbosity:m /p:deployOnBuild=True;AutoParameterizationWebConfigConnectionStrings=false;Configuration=Release;UseSharedCompilation=false;publishUrl="%DEPLOYMENT_TEMP%" %SCM_BUILD_ARGS%
+call :ExecuteCmd "%MSBUILD_PATH%" "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\Promact.Oauth.Server.sln" /nologo /verbosity:d /m /p:deployOnBuild=True;AutoParameterizationWebConfigConnectionStrings=false;Configuration=Release;UseSharedCompilation=false;publishUrl="%DEPLOYMENT_TEMP%" %SCM_BUILD_ARGS%
 IF !ERRORLEVEL! NEQ 0 goto error
 
 :: 6. KuduSync
