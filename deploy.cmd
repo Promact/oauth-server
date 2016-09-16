@@ -78,8 +78,8 @@ IF NOT DEFINED TYPINGS_CMD (
   SET TYPINGS_CMD=%appdata%\npm\typings.cmd
 )
 :: 2. NPM Install
-if EXIST "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\package.json" (    
-    pushd "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server"
+if EXIST "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Promact.Oauth.Server\package.json" (    
+    pushd "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Promact.Oauth.Server"
     call :ExecuteCmd npm install
 	call :ExecuteCmd gulp clean
 	call :ExecuteCmd gulp min
@@ -90,8 +90,8 @@ if EXIST "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\package.json" (
 )
 
 :: 3. Bower Install
-if EXIST "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\bower.json" (
-    pushd "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server"
+if EXIST "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Promact.Oauth.Server\bower.json" (
+    pushd "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Promact.Oauth.Server"
     call :ExecuteCmd bower install
     IF !ERRORLEVEL! NEQ 0 goto error
     popd
