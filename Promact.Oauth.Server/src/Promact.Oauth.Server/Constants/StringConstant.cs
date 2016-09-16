@@ -67,6 +67,7 @@ namespace Promact.Oauth.Server.Constants
 
         public static string Employee = "Employee";
         public static string Admin = "Admin";
+        public static string TeamLeader = "TeamLeader";
         public static string NormalizedName = "EMPLOYEE";
         public static string NormalizedSecond = "ADMIN";
         public static string AccessToken = "bcd34169-1434-40e9-abf5-c9e0e9d20cd8";
@@ -83,5 +84,6 @@ namespace Promact.Oauth.Server.Constants
         public static string RoleTeamLeader = "TeamLeader";
         public static string OldPassword = "User@123";
         public static string Url = "Url";
+        public static string Format = "yyyy-MM-dd";
     }
 }

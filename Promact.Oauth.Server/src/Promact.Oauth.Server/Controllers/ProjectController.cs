@@ -316,6 +316,49 @@ namespace Promact.Oauth.Server.Controllers
                 throw ex;
             }
         }
+
+        /**
+      * @api {get} api/Project/allProjects 
+      * @apiVersion 1.0.0
+      * @apiName Project
+      * @apiGroup Project  
+      * @apiSuccessExample {json} Success-Response:
+      * HTTP/1.1 200 OK 
+      * {
+      *     "description":"List of Object of ProjectAc"
+      * }
+      */
+        [HttpGet]
+        [Route("allProjects")]
+        public async Task<IEnumerable<ProjectAc>> AllProjects()
+        {
+            return await _projectRepository.GetProjectsWithUsers();
+        }
+
+
+        /**
+      * @api {get} api/Project/projectDetails/:projectId 
+      * @apiVersion 1.0.0
+      * @apiName Project
+      * @apiGroup Project
+      * @apiParam {int} id  projectId
+      * @apiParamExample {json} Request-Example:
+      *      
+      *        {
+      *             "id": "1"
+      *        }      
+      * @apiSuccessExample {json} Success-Response:
+      * HTTP/1.1 200 OK 
+      * {
+      *     "description":"Object of type ProjectAc "
+      * }
+      */
+        [HttpGet]
+        [Route("projectDetails/{projectId}")]
+        public async Task<ProjectAc> ProjectDetails(int projectId)
+        {
+            return await _projectRepository.GetProjectDetails(projectId);
+        }
         #endregion
     }
 }

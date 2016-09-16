@@ -323,7 +323,58 @@ namespace Promact.Oauth.Server.Controllers
                 ex.ToExceptionless().Submit();
                 throw ex;
             }
-        }        
+        }
+
+
+
+        /**
+          * @api {get} api/User/userDetail/:userId 
+          * @apiVersion 1.0.0
+          * @apiName User
+          * @apiGroup User
+          * @apiParam {string} id userId
+          * @apiParamExample {json} Request-Example:
+          *      
+          *        {
+          *             "id": "1"
+          *        }      
+          * @apiSuccessExample {json} Success-Response:
+          * HTTP/1.1 200 OK 
+          * {
+          *     "description":"Object of type UserAc "
+          * }
+          */
+        [HttpGet]
+        [Route("userDetail/{userId}")]
+        public IActionResult UserDetailById(string userId)
+        {
+            var user = _userRepository.UserDetailById(userId);
+            return Ok(user);
+        }
+
+        /**
+          * @api {get} api/User/getByUserName/:userName 
+          * @apiVersion 1.0.0
+          * @apiName User
+          * @apiGroup User
+          * @apiParam {string} Name userName
+          * @apiParamExample {json} Request-Example:
+          *      
+          *        {
+          *             "userName": "abc"
+          *        }      
+          * @apiSuccessExample {json} Success-Response:
+          * HTTP/1.1 200 OK 
+          * {
+          *     "description":"Object of type UserAc "
+          * }
+          */
+        [HttpGet]
+        [Route("getByUserName/{userName}")]
+        public async Task<IActionResult> GetByUserName(string userName)
+        {
+            return Ok(await _userRepository.GetUserDetailByUserName(userName));
+        }
         #endregion
     }
 }
