@@ -85,6 +85,13 @@ if EXIST "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Promact.Oauth.Server\pack
     IF !ERRORLEVEL! NEQ 0 goto error
     popd
 )
+if EXIST "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Promact.Oauth.Server\tsconfig.json" (    
+    echo Compiling Typescript
+	pushd "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Promact.Oauth.Server"
+    call :ExecuteCmd tsc -p tsconfig.json	
+    IF !ERRORLEVEL! NEQ 0 goto error
+    popd
+)
 :: 2.5 Execute gulp task
 if EXIST "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Promact.Oauth.Server\package.json" (    
 	echo Executing GULP Tasks
