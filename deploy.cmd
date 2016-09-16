@@ -80,11 +80,11 @@ IF NOT DEFINED TYPINGS_CMD (
 :: 2. NPM Install
 if EXIST "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Promact.Oauth.Server\package.json" (    
     pushd "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Promact.Oauth.Server"
-    call :ExecuteCmd npm install
-	call :ExecuteCmd gulp clean
-	call :ExecuteCmd gulp min
-	call :ExecuteCmd gulp bundle
-	call :ExecuteCmd gulp copytowwwroot
+    call npm install
+	call gulp clean
+	call gulp min
+	call gulp bundle
+	call gulp copytowwwroot
     IF !ERRORLEVEL! NEQ 0 goto error
     popd
 )
