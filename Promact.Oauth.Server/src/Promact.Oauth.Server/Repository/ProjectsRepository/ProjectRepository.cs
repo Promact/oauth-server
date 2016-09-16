@@ -291,6 +291,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             }
             foreach (var project in projectUser)
             {
+                recentProject = new ProjectAc();
                 var projectDetails = _projectDataRepository.FirstOrDefault(x => x.Id == project.ProjectId);
                 var teamLeader = await _userManager.FindByIdAsync(projectDetails.TeamLeaderId);
                 var projectMapper = _mapperContext.Map<ApplicationUser, UserAc>(teamLeader);
@@ -377,11 +378,11 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                 ApplicationUser teamLeader = _userDataRepository.FirstOrDefault(x => x.Id == project.TeamLeaderId);
                 UserAc teamLead = _mapperContext.Map<ApplicationUser, UserAc>(teamLeader);
                 teamLead.Role = StringConstant.TeamLeader;
-
+                
                 List<ProjectUser> projectUsers = _projectUserDataRepository.Fetch(x => x.ProjectId == project.Id).ToList();
                 ProjectAc projectObject = _mapperContext.Map<Project, ProjectAc>(project);
                 projectObject.TeamLeader = teamLead;
-
+                projectObject.CreatedDate = project.CreatedDateTime.ToString(StringConstant.Format);
                 foreach (var projectUser in projectUsers)
                 {
                     ApplicationUser user = _userDataRepository.FirstOrDefault(x => x.Id == projectUser.UserId);
@@ -407,6 +408,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             teamLead.Role = StringConstant.TeamLeader;
             List<ProjectUser> projectUsers = await _projectUserDataRepository.Fetch(x => x.ProjectId == project.Id).ToListAsync();
             ProjectAc projectDetails = _mapperContext.Map<Project, ProjectAc>(project);
+            projectDetails.CreatedDate = project.CreatedDateTime.ToString(StringConstant.Format);
             projectDetails.TeamLeader = teamLead;
             List<UserAc> projectUserList = new List<UserAc>();
             foreach (var projectUser in projectUsers)
