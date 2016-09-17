@@ -55,7 +55,7 @@ export class UserEditComponent {
         this.userService.editUser(user).subscribe((result) => {
             if (result == true) {
                 this.toast.show('User updated successfully.');
-                this.redirectionRoute.navigate(['/user/list']);
+                this.redirectionRoute.navigate(['']);
             }
             else if (result == false) {
                 this.toast.show('User Name or Slack User Name already exists.');
