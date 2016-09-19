@@ -9,6 +9,8 @@
     Your Email Id 
   * ```Host``` =  smtp.gmail.com :
     Your Mail service Host 
+  * ```Port``` =  587 :
+    Your Mail service Port 
 
 2. Miscellaneous Variables 
   * ```ExceptionLessApiKey``` =  askfasdl45fdam54dsg51sg :
