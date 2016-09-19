@@ -15,6 +15,8 @@ namespace Promact.Oauth.Server.Models
 
         public string Host { get; set; }
 
+        public int Port { get; set; }
+
         public string ExceptionLessApiKey { get; set; }
     }
 }
