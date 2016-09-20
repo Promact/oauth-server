@@ -1,4 +1,4 @@
-﻿import { provideRouter, RouterConfig } from '@angular/router';
+﻿import { Routes } from '@angular/router';
 
 import {UserComponent} from './user.component';
 import {UserListComponent} from './user-list/user-list.component';
@@ -7,7 +7,7 @@ import {UserEditComponent} from './user-edit/user-edit.component';
 import {UserDetailsComponent} from './user-details/user-details.component';
 import {ChangePasswordComponent} from './user-change-password/user-change-password.component';
 
-export const userRoutes: RouterConfig = [{
+export const userRoutes: Routes = [{
     path: "user",
     component: UserComponent,
     children: [

@@ -2,11 +2,10 @@
 import { ProjectService }   from '../project.service';
 import {projectModel} from '../project.model';
 import {UserModel} from '../../users/user.model';
-import { ROUTER_DIRECTIVES, Router, ActivatedRoute } from '@angular/router';
+import {  Router, ActivatedRoute } from '@angular/router';
 import {Location} from "@angular/common";
 @Component({
     templateUrl: "app/project/project-view/project-view.html",
-    directives: []
 })
 export class ProjectViewComponent implements OnInit {
     project: projectModel;
