@@ -333,9 +333,9 @@ export class MdSelect implements AfterContentInit, AfterContentChecked, ControlV
     }
 
     private _updateOptions(): void {
-        (this._options || []).forEach(option => {
-            option.name = this.name;
-        });
+        //(this._options || []).forEach(option => {
+        //    option.name = this.name;
+        //});
     }
 
     private _updateSelectedOptionValue(): void {

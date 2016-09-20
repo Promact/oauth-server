@@ -1,10 +1,9 @@
 ﻿import {Component} from "@angular/core";
-import { Router, ROUTER_DIRECTIVES}from '@angular/router';
+import { Router }from '@angular/router';
 import { ConsumerAppService} from '../consumerapp.service';
 
 @Component({
-    templateUrl: "app/consumerapp/consumerapp-list/consumerapp-list.html",
-    directives: []
+    templateUrl: "app/consumerapp/consumerapp-list/consumerapp-list.html"
 })
 export class ConsumerappListComponent {
     listOfConsumerApps: any;

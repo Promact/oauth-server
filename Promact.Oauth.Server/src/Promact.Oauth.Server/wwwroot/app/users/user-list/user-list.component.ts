@@ -1,11 +1,10 @@
 ﻿import {Component} from "@angular/core";
-import { Router, ROUTER_DIRECTIVES} from '@angular/router';
+import { Router } from '@angular/router';
 import { UserService }   from '../user.service';
 import {UserModel} from '../user.model';
 
 @Component({
-    templateUrl: "app/users/user-list/user-list.html",
-    directives: [ROUTER_DIRECTIVES]
+    templateUrl: "app/users/user-list/user-list.html"
 })
 
 export class UserListComponent {

@@ -1,12 +1,11 @@
 ﻿import { Component } from '@angular/core';
 import { LoginService } from './login.service';
-import { Router, ROUTER_DIRECTIVES} from '@angular/router';
+import { Router } from '@angular/router';
 
 
 @Component({
     selector: 'my-app',
-    templateUrl:'./app/index.html',
-    directives: [ROUTER_DIRECTIVES]
+    templateUrl: './app/index.html'
 })
 export class AppComponent {
     user: any;

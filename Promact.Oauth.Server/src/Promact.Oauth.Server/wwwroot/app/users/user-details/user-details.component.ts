@@ -2,13 +2,11 @@
 import { LoginService } from '../../login.service';
 import {UserModel} from '../user.model';
 import {UserService} from '../user.service';
-import { Router, ROUTER_DIRECTIVES, ActivatedRoute }from '@angular/router';
+import { Router, ActivatedRoute }from '@angular/router';
 
 
 @Component({
-    templateUrl: './app/users/user-details/user-details.html',
-    directives: [ROUTER_DIRECTIVES],
-   
+    templateUrl: './app/users/user-details/user-details.html'   
 })
 
 export class UserDetailsComponent {
