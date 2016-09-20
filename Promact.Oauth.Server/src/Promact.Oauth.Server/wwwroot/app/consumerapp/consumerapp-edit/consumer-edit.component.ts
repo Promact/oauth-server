@@ -1,20 +1,20 @@
 ﻿import {Component} from "@angular/core";
 import {ConsumerAppModel} from '../consumerapp-model';
-import { ROUTER_DIRECTIVES, Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ConsumerAppService} from '../consumerapp.service';
-import {Md2Toast} from 'md2/toast';
+//import {Md2Toast} from 'md2/toast';
 import {Location} from "@angular/common";
 
 
 @Component({
     templateUrl: "app/consumerapp/consumerapp-edit/consumerapp-edit.html",
-    directives: [],
-    providers: [Md2Toast]
+    //directives: [],
+    //providers: [Md2Toast]
 })
 export class ConsumerappEditComponent {
     consumerModel: ConsumerAppModel;
     private sub: any;
-    constructor(private router: Router, private consumerAppService: ConsumerAppService, private route: ActivatedRoute, private toast: Md2Toast, private location: Location) {
+    constructor(private router: Router, private consumerAppService: ConsumerAppService, private route: ActivatedRoute,/* private toast: Md2Toast,*/ private location: Location) {
         this.consumerModel = new ConsumerAppModel();
     }
 
@@ -39,11 +39,11 @@ export class ConsumerappEditComponent {
     updateApps(consumerModel) {
         this.consumerAppService.updateConsumerApps(consumerModel).subscribe((result) => {
             if (result == true) {
-                this.toast.show('Consumer App is updated successfully.');
+                //this.toast.show('Consumer App is updated successfully.');
                 this.cancel();
             }
             else if (result == false) {
-                this.toast.show('Consumer App Name is already exists.');
+                //this.toast.show('Consumer App Name is already exists.');
             }
         }, err => {
 

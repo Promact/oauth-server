@@ -1,12 +1,11 @@
 ﻿import { Component, OnInit }   from '@angular/core';
-import { Router, ROUTER_DIRECTIVES}from '@angular/router';
+import { Router }from '@angular/router';
 import { LoginService } from '../login.service';
 import {UserService} from './user.service';
 
 @Component({
     template: `
     <router-outlet></router-outlet>`,
-    directives: [ROUTER_DIRECTIVES],
     providers: [UserService]
 })
 

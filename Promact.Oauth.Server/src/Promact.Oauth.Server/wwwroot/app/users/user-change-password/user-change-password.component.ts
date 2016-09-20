@@ -1,16 +1,16 @@
 ﻿import {Component, Input} from '@angular/core';
 import { UserService }   from '../user.service';
 import {PasswordModel} from '../user-password.model';
-import {FORM_DIRECTIVES, FormBuilder, Validators } from '@angular/forms';
-import {Router, ROUTER_DIRECTIVES, ActivatedRoute} from '@angular/router';
-import {Md2Toast} from 'md2/toast';
+import { FormBuilder, Validators } from '@angular/forms';
+import {Router,  ActivatedRoute} from '@angular/router';
+//import {Md2Toast} from 'md2/toast';
 import {Location} from "@angular/common";
 
 
 @Component({
     templateUrl: './app/users/user-change-password/user-change-password.html',
-    directives: [FORM_DIRECTIVES],
-    providers: [Md2Toast]
+    //directives: [FORM_DIRECTIVES],
+    //providers: [Md2Toast]
 })
 
 export class ChangePasswordComponent {
@@ -20,7 +20,7 @@ export class ChangePasswordComponent {
     @Input()
     passwordModel: PasswordModel;
 
-    constructor(private userService: UserService, private redirectionRoute: Router, private route: ActivatedRoute, private toast: Md2Toast) {
+    constructor(private userService: UserService, private redirectionRoute: Router, private route: ActivatedRoute /*,private toast: Md2Toast*/) {
         this.passwordModel = new PasswordModel();
         this.isNotMatch = false;
     }
@@ -28,11 +28,11 @@ export class ChangePasswordComponent {
     changePassword(passwordModel) {
         this.userService.changePassword(this.passwordModel).subscribe((result) => {
             if (result == true) {
-                this.toast.show('Password changed successfully');
+                //this.toast.show('Password changed successfully');
                 this.redirectionRoute.navigate(['']);
             }
             else if (result == false) {
-                this.toast.show('Wrong password');
+                //this.toast.show('Wrong password');
             }
 
         }, err => {

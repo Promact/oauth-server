@@ -1,5 +1,5 @@
 ﻿import { Component, OnInit }   from '@angular/core';
-import { Router, ROUTER_DIRECTIVES}from '@angular/router';
+import { Router }from '@angular/router';
 import { ProjectService }   from './project.service';
 import { LoginService } from '../login.service';
 
@@ -8,7 +8,7 @@ import { LoginService } from '../login.service';
     template: `
     <router-outlet></router-outlet>
 `,
-    directives: [ROUTER_DIRECTIVES],
+    //directives: [ROUTER_DIRECTIVES],
     providers: [ProjectService]
 
 })
