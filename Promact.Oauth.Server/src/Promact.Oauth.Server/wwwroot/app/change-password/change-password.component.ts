@@ -8,7 +8,7 @@ import {Location} from "@angular/common";
 
 
 @Component({
-    templateUrl: './app/users/user-change-password/user-change-password.html',
+    templateUrl: './app/change-password/change-password.html',
     //directives: [FORM_DIRECTIVES],
     //providers: [Md2Toast]
 })
