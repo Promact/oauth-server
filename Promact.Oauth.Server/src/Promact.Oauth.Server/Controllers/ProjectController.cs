@@ -10,6 +10,7 @@ using System;
 using Promact.Oauth.Server.Repository;
 using System.Threading.Tasks;
 using Exceptionless;
+using Promact.Oauth.Server.Services;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -275,6 +276,7 @@ namespace Promact.Oauth.Server.Controllers
         *     "description":"Object of UserRoleAc"
         * }
         */
+        [ServiceFilter(typeof(CustomAttribute))]
         [HttpGet]
         [Route("featchUserRole/{name}")]
         public async Task<List<UserRoleAc>> GetUserRole(string name)
@@ -295,6 +297,7 @@ namespace Promact.Oauth.Server.Controllers
         *     "description":"Get List of Users"
         * }
         */
+        
         [HttpGet]
         [Route("featchListOfUser/{name}")]
         public async Task<List<UserRoleAc>> GetListOfEmployee(string name)

@@ -18,5 +18,8 @@ namespace Promact.Oauth.Server.Models
         public int Port { get; set; }
 
         public string ExceptionLessApiKey { get; set; }
+
+        public string SickLeave { get; set; }
+        public string CasualLeave { get; set; }
     }
 }

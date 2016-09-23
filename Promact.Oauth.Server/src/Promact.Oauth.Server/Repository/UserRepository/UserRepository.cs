@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using Promact.Oauth.Server.Constants;
 using Microsoft.AspNetCore.Hosting;
 using Promact.Oauth.Server.Data;
+using Microsoft.Extensions.Options;
 
 namespace Promact.Oauth.Server.Repository
 {
@@ -31,11 +32,12 @@ namespace Promact.Oauth.Server.Repository
         private readonly IDataRepository<ProjectUser> _projectUserRepository;
         private readonly IProjectRepository _projectRepository;
         private readonly IDataRepository<Project> _projectDataRepository;
+        private readonly IOptions<AppSettings> _appSetting;
         #endregion
 
         #region "Constructor"
 
-        public UserRepository(IDataRepository<ApplicationUser> applicationUserDataRepository, IDataRepository<Project> projectDataRepository, IHostingEnvironment hostingEnvironment, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IMapper mapperContext, IDataRepository<ProjectUser> projectUserRepository, IProjectRepository projectRepository)
+        public UserRepository(IDataRepository<ApplicationUser> applicationUserDataRepository, IHostingEnvironment hostingEnvironment, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IMapper mapperContext, IDataRepository<ProjectUser> projectUserRepository, IProjectRepository projectRepository, IOptions<AppSettings> appSetting)
         {
             _applicationUserDataRepository = applicationUserDataRepository;
             _hostingEnvironment = hostingEnvironment;
@@ -46,6 +48,7 @@ namespace Promact.Oauth.Server.Repository
             _projectRepository = projectRepository;
             _roleManager = roleManager;
             _projectDataRepository = projectDataRepository;
+            _appSetting = appSetting;
         }
 
         #endregion
@@ -93,107 +96,82 @@ namespace Promact.Oauth.Server.Repository
             var day = dateTime.Day;
             var month = dateTime.Month;
             var year = dateTime.Year;
-            double casualAllow = 14;
-            double sickAllow = 7;
-            if (year - DateTime.Now.Year > 365)
+            double casualAllow = Convert.ToDouble(_appSetting.Value.CasualLeave);
+            double sickAllow = Convert.ToDouble(_appSetting.Value.SickLeave);
+            if (year >= DateTime.Now.Year)
             {
-                month = 4;
-                day = 1;
-            }
-            double totalDays = (DateTime.Now - Convert.ToDateTime(dateTime)).TotalDays;
-            if (totalDays > 365)
-            {
-                month = 4;
-                day = 1;
-            }
-            if (month >= 4)
-            {
-                if (day <= 15)
+                if (year - DateTime.Now.Year > 365)
                 {
-                    casualAllowed = (casualAllow / 12) * (12 - (month - 4));
-                    sickAllowed = (sickAllow / 12) * (12 - (month - 4));
+                    month = 4;
+                    day = 1;
+                }
+                double totalDays = (DateTime.Now - Convert.ToDateTime(dateTime)).TotalDays;
+                if (totalDays > 365)
+                {
+                    month = 4;
+                    day = 1;
+                }
+                if (month >= 4)
+                {
+                    if (day <= 15)
+                    {
+                        casualAllowed = (casualAllow / 12) * (12 - (month - 4));
+                        sickAllowed = (sickAllow / 12) * (12 - (month - 4));
+                    }
+                    else
+                    {
+                        casualAllowed = (casualAllow / 12) * (12 - (month - 3));
+                        sickAllowed = (sickAllow / 12) * (12 - (month - 3));
+                    }
                 }
                 else
                 {
-                    casualAllowed = (casualAllow / 12) * (12 - (month - 3));
-                    sickAllowed = (sickAllow / 12) * (12 - (month - 3));
+                    if (day <= 15)
+                    {
+                        casualAllowed = (casualAllow / 12) * (12 - (month + 8));
+                        sickAllowed = (sickAllow / 12) * (12 - (month + 8));
+                    }
+                    else
+                    {
+                        casualAllowed = (casualAllow / 12) * (12 - (month + 9));
+                        sickAllowed = (sickAllow / 12) * (12 - (month + 9));
+                    }
                 }
-            }
-            else
-            {
-                if (day <= 15)
+
+                if (casualAllowed.ToString().Contains(".") == true)
                 {
-                    casualAllowed = (casualAllow / 12) * (12 - (month + 8));
-                    sickAllowed = (sickAllow / 12) * (12 - (month + 8));
+                    string splitCasualAllowed = "0." + casualAllowed.ToString().Split('.')[1];
+                    double casualAllowedConvertedDouble = Convert.ToDouble(splitCasualAllowed);
+                    if (casualAllowedConvertedDouble != 0.5) { casualAllowed = Convert.ToInt32(casualAllowed); }
+
                 }
                 else
                 {
-                    casualAllowed = (casualAllow / 12) * (12 - (month + 9));
-                    sickAllowed = (sickAllow / 12) * (12 - (month + 9));
+                    casualAllowed = Convert.ToInt32(casualAllowed);
+                }
+                if (sickAllowed.ToString().Contains(".") == true)
+                {
+                    string splitSickAllowed = "0." + sickAllowed.ToString().Split('.')[1];
+                    double sickAllowedConvertedDouble = Convert.ToDouble(splitSickAllowed);
+                    if (sickAllowedConvertedDouble != 0.5) { sickAllowed = Convert.ToInt32(Math.Floor(sickAllowed)); }
+                    if (sickAllowedConvertedDouble > 0.90) { sickAllowed = sickAllowed + 1; }
+
+                }
+                else
+                {
+                    sickAllowed = Convert.ToInt32(Math.Floor(sickAllowed));
                 }
             }
-            //if (casualAllowed.ToString().Contains(".") == true)
-            //{
-            //    string splitCasualAllowed = "0." + casualAllowed.ToString().Split('.')[1];
-            //    double casualAllowedConvertedDouble = Convert.ToDouble(splitCasualAllowed);
-            //    if (casualAllowedConvertedDouble != 0.5) { casualAllowed = Convert.ToInt32(casualAllowed); }
-
-            //}
-            //else
-            //{
-            //    casualAllowed = Convert.ToInt32(casualAllowed);
-            //}
-            if (casualAllowed.ToString().Contains(".") == true)
-            {
-                string splitCasualAllowed = "0." + casualAllowed.ToString().Split('.')[1];
-                double casualAllowedConvertedDouble = Convert.ToDouble(splitCasualAllowed);
-                if (casualAllowedConvertedDouble != 0.5) { casualAllowed = Convert.ToInt32(casualAllowed); }
-
+            else {
+                casualAllow = 14;
+                sickAllowed = 7;
             }
-            else
-            {
-                casualAllowed = Convert.ToInt32(casualAllowed);
-            }
-            if (sickAllowed.ToString().Contains(".") == true)
-            {
-                string splitSickAllowed = "0." + sickAllowed.ToString().Split('.')[1];
-                double sickAllowedConvertedDouble = Convert.ToDouble(splitSickAllowed);
-                if (sickAllowedConvertedDouble != 0.5) { sickAllowed = Convert.ToInt32(Math.Floor(sickAllowed)); }
-                if (sickAllowedConvertedDouble > 0.90) { sickAllowed = sickAllowed + 1; }
-
-            }
-            else
-            {
-                sickAllowed = Convert.ToInt32(Math.Floor(sickAllowed));
-            }
-            //if (casualAllowed.ToString().Contains(".") == true)
-            //{
-            //    string splitCasualAllowed = "0." + casualAllowed.ToString().Split('.')[1];
-            //    double casualAllowedConvertedDouble = Convert.ToDouble(splitCasualAllowed);
-            //    if (casualAllowedConvertedDouble != 0.5) { casualAllowed = Convert.ToInt32(casualAllowed); }
-
-            //}
-            //else
-            //{
-            //    casualAllowed = Convert.ToInt32(casualAllowed);
-            //}
-            //if (sickAllowed.ToString().Contains(".") == true)
-            //{
-            //    string splitSickAllowed = "0." + sickAllowed.ToString().Split('.')[1];
-            //    double sickAllowedConvertedDouble = Convert.ToDouble(splitSickAllowed);
-            //    if (sickAllowedConvertedDouble != 0.5) { sickAllowed = Convert.ToInt32(Math.Floor(sickAllowed)); }
-            //    if (sickAllowedConvertedDouble > 0.90) { sickAllowed = sickAllowed + 1; }
-
-            //}
-            //else
-            //{
-            //    sickAllowed = Convert.ToInt32(Math.Floor(sickAllowed));
-            //}
-            LeaveCalculator calculate = new LeaveCalculator
-            {
-                CasualLeave = casualAllowed,
-                SickLeave = sickAllowed
-            };
+                LeaveCalculator calculate = new LeaveCalculator
+                {
+                    CasualLeave = casualAllowed,
+                    SickLeave = sickAllowed
+                };
+            
             return calculate;
         }
 
