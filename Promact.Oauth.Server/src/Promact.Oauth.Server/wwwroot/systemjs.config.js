@@ -1,4 +1,4 @@
-﻿/**
+/**
  * System configuration for Angular 2 samples
  * Adjust as necessary for your application needs.
  */
@@ -8,9 +8,9 @@
         'app': 'app', // 'dist',
         '@angular': 'lib/@angular',
         'angular2-in-memory-web-api': 'lib/angular2-in-memory-web-api',
+        '@angular2-material' : 'lib/@angular2-material',
         'rxjs': 'lib/rxjs',
-        'md2': 'lib/md2',
-        '@angular2-material' : 'lib/@angular2-material'
+        //'md2': 'lib/md2'
     };
     // packages tells the System loader how to load when no filename and/or no extension
     var packages = {
@@ -18,12 +18,58 @@
         'rxjs': { defaultExtension: 'js' },
         'angular2-in-memory-web-api': { main: 'index.js', defaultExtension: 'js' },
 
+        '@angular2-material/core': {
+            format: 'cjs',
+            defaultExtension: 'js',
+            main: 'core.js'
+        },
 
-        //'md2/select': {
-        //    format: 'cjs',
-        //    defaultExtension: 'js',
-        //    main: 'select.js'
-        //},
+        '@angular2-material/button': {
+            format: 'cjs',
+            defaultExtension: 'js',
+            main: 'button.js'
+        },
+
+        '@angular2-material/toolbar': {
+            format: 'cjs',
+            defaultExtension: 'js',
+            main: 'toolbar.js'
+        },
+
+        '@angular2-material/sidenav': {
+            format: 'cjs',
+            defaultExtension: 'js',
+            main: 'sidenav.js'
+        },
+
+        '@angular2-material/input': {
+            format: 'cjs',
+            defaultExtension: 'js',
+            main: 'input.js'
+        },
+
+        '@angular2-material/card': {
+            format: 'cjs',
+            defaultExtension: 'js',
+            main: 'card.js'
+        },
+        '@angular2-material/checkbox': {
+            format: 'cjs',
+            defaultExtension: 'js',
+            main: 'checkbox.js'
+        },
+        '@angular2-material/progress-bar': {
+            format: 'cjs',
+            defaultExtension: 'js',
+            main: 'progress-bar.js'
+        },
+
+        '@angular2-material/progress-circle': {
+            format: 'cjs',
+            defaultExtension: 'js',
+            main: 'progress-circle.js'
+        },
+
         'md2/switch': {
             format: 'cjs',
             defaultExtension: 'js',
@@ -39,63 +85,8 @@
             defaultExtension: 'js',
             main: 'multiselect.js'
         },
-
-        '@angular2-material/core': {
-            format: 'cjs',
-            main: 'core.umd.js'
-        },
-
-        '@angular2-material/button': {
-            format: 'cjs',
-            main: 'button.umd.js'
-        },
-
-        '@angular2-material/toolbar': {
-            format: 'cjs',
-            main: 'toolbar.umd.js'
-        },
-
-        '@angular2-material/sidenav': {
-            format: 'cjs',
-            main: 'sidenav.umd.js'
-        },
-
-        '@angular2-material/input': {
-            format: 'cjs',
-            main: 'input.umd.js'
-        },
-
-        '@angular2-material/card': {
-            format: 'cjs',
-            main: 'card.umd.js'
-        },
-        '@angular2-material/checkbox': {
-            format: 'cjs',
-            main: 'checkbox.umd.js'
-        },
-        '@angular2-material/progress-bar': {
-            format: 'cjs',
-            main: 'progress-bar.umd.js'
-        },
-
-        '@angular2-material/progress-circle': {
-            format: 'cjs',
-            main: 'progress-circle.umd.js'
-        },
-
-
-        //...
-
-        //--- or ---
-
-        //'md2/all': {
-        //    format: 'cjs',
-        //    defaultExtension: 'js',
-        //    main: 'all.js'
-        //}
-
-
     };
+
     var ngPackageNames = [
       'common',
       'compiler',
@@ -105,7 +96,6 @@
       'platform-browser',
       'platform-browser-dynamic',
       'router',
-      'router-deprecated',
       'upgrade',
     ];
 

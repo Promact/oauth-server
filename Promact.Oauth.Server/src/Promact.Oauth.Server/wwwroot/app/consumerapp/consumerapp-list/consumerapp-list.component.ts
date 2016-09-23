@@ -12,13 +12,20 @@ export class ConsumerappListComponent {
     }
     
     ngOnInit() {
+        this.getConsumerApps();
+    }
+
+    getConsumerApps()
+    {
         this.consumerAppService.getConsumerApps().subscribe((result) => {
             if (result.length > 0)
                 this.listOfConsumerApps = result;
         }, err => {
 
         });
+
     }
+
 
     editDetails(consumerId) {
         this.router.navigate(['/consumerapp/edit', consumerId]);

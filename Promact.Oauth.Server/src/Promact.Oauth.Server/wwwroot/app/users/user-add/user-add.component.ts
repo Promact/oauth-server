@@ -20,7 +20,7 @@ export class UserAddComponent {
     userModel: UserModel;
     listOfRoles: any;
 
-    constructor(private userService: UserService, private redirectionRoute: Router, private route: ActivatedRoute, /*private toast: Md2Toast*/) {
+    constructor(private userService: UserService, private redirectionRoute: Router, private route: ActivatedRoute /*private toast: Md2Toast*/) {
         this.userModel = new UserModel();
         this.listOfRoles = [];
     }

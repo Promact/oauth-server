@@ -37,7 +37,7 @@ gulp.task("copytowwwroot", function () {
     ]).pipe(gulp.dest('./wwwroot/lib/@angular'));
 
 
-   
+
 
     gulp.src([
     'node_modules/@angular2-material/**/*.js'
@@ -48,22 +48,23 @@ gulp.task("copytowwwroot", function () {
       'node_modules/rxjs/**/*.js'
     ]).pipe(gulp.dest('./wwwroot/lib/rxjs'));
 
-    gulp.src([
-        'node_modules/md2/src/components/**/*.js',
-        'node_modules/md2/src/components/**/*.js.map'
-    ]).pipe(gulp.dest('./wwwroot/lib/md2'));
+    //gulp.src([
+    //    'node_modules/md2/src/components/**/*.js',
+    //    'node_modules/md2/src/components/**/*.js.map'
+    //]).pipe(gulp.dest('./wwwroot/lib/md2'));
 
 });
 
 
 gulp.task('bundle', function (done) {
     var builder = new sysBuilder('./wwwroot', './wwwroot/systemjs.config.js');
+
     builder
      .buildStatic('app', './wwwroot/bundle.js', {
       runtime: false
   }).then(function () {
       done();
-  });
+  })
 
 });
 
@@ -92,6 +93,14 @@ gulp.task("min:css", function () {
 });
 
 gulp.task("min", ["min:js", "min:css"]);
+
+//// Run test once and exit
+//gulp.task('test', function (done) {
+//    new Server({
+//        configFile: __dirname + '/karma.conf.js',
+//        singleRun: true
+//    }, done).start();
+//});
 
 //Runs karma test
 gulp.task('test', function (done) {
