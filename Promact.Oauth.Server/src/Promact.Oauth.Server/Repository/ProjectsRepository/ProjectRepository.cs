@@ -344,20 +344,24 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             //userRole = StringConstant.RoleTeamLeader;
             if (userRole == StringConstant.RoleAdmin)
             {
+                var userRoleAdmin = new UserRoleAc();
+                userRoleAdmin.UserName = user.UserName;
+                userRoleAdmin.Name = user.FirstName+" "+user.LastName;
+                userRoleAdmin.Role = userRole;
+                userRoles.Add(userRoleAdmin);
                 var userList = _userDataRepository.GetAll().ToList();
                 foreach (var userDetails in userList)
                 {
                     var roles= await _userManager.GetRolesAsync(userDetails);
-                    //string assignRole;
-                    //if (roles.Count == 0)
-                    //{ assignRole = StringConstant.RoleEmployee; }
-                    //else { assignRole = roles.First(); }
-                    var userRoleAc = new UserRoleAc();
-                    userRoleAc.UserName = userDetails.UserName;
-                    userRoleAc.Name = userDetails.FirstName + " " + userDetails.LastName;
-                    //userRoleAc.Role = assignRole;
-                    userRoleAc.Role = userRole;
-                    userRoles.Add(userRoleAc);
+                    if (roles.Count()!=0 && roles[0] == StringConstant.RoleEmployee)
+                    {
+                        var userRoleAc = new UserRoleAc();
+                        userRoleAc.UserName = userDetails.UserName;
+                        userRoleAc.Name = userDetails.FirstName + " " + userDetails.LastName;
+                        userRoleAc.Role = userRole;
+                        userRoles.Add(userRoleAc);
+                    }
+                    
                 }
             }
             else {
