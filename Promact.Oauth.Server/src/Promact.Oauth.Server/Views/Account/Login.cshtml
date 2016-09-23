@@ -5,21 +5,23 @@
 @using Microsoft.AspNetCore.Http.Authentication
 @model LoginViewModel
 @inject SignInManager<ApplicationUser> SignInManager
-
 @{
     ViewData["Title"] = "Log in";
 }
-
 @*<h2>@ViewData["Title"].</h2>*@
 <div class="auth">
     <div class="auth-container">
         <div class="card">
             <header class="auth-header">
                 <h1 class="auth-title">
-                    Promact Oauth 
+                    Promact Oauth
                 </h1>
             </header>
             <div class="auth-content login-form">
+                @if (@ViewData["ReturnError"] != null)
+                {
+                    <span class="text-danger error">@ViewData["ReturnError"]</span>
+                }
                 <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
                     @*<div asp-validation-summary="All" class="text-danger"></div>*@
                     <div class="form-group">
@@ -36,22 +38,21 @@
                             <span asp-validation-for="Password" class="text-danger error"></span>
                         </div>
                     </div>
-              
+
                     <div class="form-group">
                         <div>
                             <button type="submit" class="btn btn-block btn-primary">Log in</button>
                         </div>
                     </div>
-                 
+
                     <p>
                         <a asp-action="ForgotPassword" class="link">Forgot your password?</a>
                     </p>
                 </form>
-                </div>
             </div>
+        </div>
     </div>
 </div>
-
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

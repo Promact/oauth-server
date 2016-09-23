@@ -50,11 +50,7 @@
 //    it("should be defined", () => {
 //        expect(userEditComponent).toBeDefined();
 //    });
-//    //it("should get default page for User", () => {
-//    //    userEditComponent.ngOnInit();
-//    //    expect(userEditComponent.user).not.toBeNull();
-//    //});
-
+    
 //    it("should check User first name before update", inject([UserModel], (userModel: UserModel) => {
 //        let expectedFirstName = "First Name";
 //        userModel.FirstName = expectedFirstName;
@@ -63,4 +59,4 @@
        
 //    }));
 
-//});
+////});

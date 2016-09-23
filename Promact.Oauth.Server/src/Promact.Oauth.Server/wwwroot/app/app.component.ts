@@ -2,7 +2,6 @@
 import { LoginService } from './login.service';
 import { Router } from '@angular/router';
 
-
 @Component({
     selector: 'my-app',
     templateUrl: './app/index.html'
@@ -29,3 +28,5 @@ export class AppComponent {
         this.getRole();
     }
 }
+
+

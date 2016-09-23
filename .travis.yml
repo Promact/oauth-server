@@ -1,6 +1,16 @@
+language: node_js
+node_js:
+  - 6
+  - stable
+sudo: false
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export CHROME_BIN=chromium-browser; fi  # Karma CI
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export DISPLAY=:99.0; fi
+before_script:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sh -e /etc/init.d/xvfb start; fi
+
 language: csharp
 solution: ./Promact.Oauth.Server/Promact.Oauth.Server.sln
-
 matrix:
   include:
     - os: linux
@@ -9,11 +19,9 @@ matrix:
       dotnet: 1.0.0-preview2-003121
       mono: latest
       env: DOTNETCORE=1    
-
 notifications:
   email:
     on_success: change
     on_failure: always
-
 script:
-  - if [ -n "${DOTNETCORE}" ]; then dotnet restore && dotnet build ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests -c Release && dotnet test ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests/project.json -c Release; fi
+  - if [ -n "${DOTNETCORE}" ]; then dotnet restore && dotnet build ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests -c Release && dotnet test ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests/project.json -c Release && cd ./Promact.Oauth.Server/src/Promact.Oauth.Server && npm install typings --global && npm install -g typescript && npm install && npm run test; fi

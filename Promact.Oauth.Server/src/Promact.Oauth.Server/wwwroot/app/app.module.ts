@@ -24,7 +24,8 @@ import {UserListComponent} from "./users/user-list/user-list.component";
 import {UserAddComponent} from "./users/user-add/user-add.component";
 import {UserEditComponent} from "./users/user-edit/user-edit.component";
 import {UserDetailsComponent} from "./users/user-details/user-details.component";
-import {ChangePasswordComponent} from "./users/user-change-password/user-change-password.component"
+import {ChangePasswordComponent} from "./change-password/change-password.component";
+import {ChangePassword} from "./change-password/changepassword.component";
 import {HttpService} from "./http.service";
 import { ConsumerAppService }   from "./consumerapp/consumerapp.service";
 import {ProjectService} from "./project/project.service";
@@ -32,11 +33,11 @@ import {UserService} from "./users/user.service";
 import { LoginService } from "./login.service";
 import {MdSelect, MdOption, MdSelectDispatcher} from './select/select';
 import {MdMultiselect} from './multiselect/multiselect';
-
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 
 @NgModule({
-    declarations: [AppComponent, ConsumerAppComponent, ConsumerappListComponent, ConsumerappAddComponent, ConsumerappEditComponent, ProjectComponent, ProjectListComponent, ProjectAddComponent, ProjectEditComponent, ProjectViewComponent, UserComponent, UserListComponent, UserAddComponent, UserEditComponent, UserDetailsComponent, ChangePasswordComponent, MdSelect, MdOption, MdMultiselect],
+    declarations: [AppComponent, ConsumerAppComponent, ConsumerappListComponent, ConsumerappAddComponent, ConsumerappEditComponent, ProjectComponent, ProjectListComponent, ProjectAddComponent, ProjectEditComponent, ProjectViewComponent, UserComponent, UserListComponent, UserAddComponent, UserEditComponent, UserDetailsComponent, ChangePasswordComponent, MdSelect, MdOption, MdMultiselect, ChangePassword],
 
     imports: [
         BrowserModule,
@@ -52,7 +53,7 @@ import {MdMultiselect} from './multiselect/multiselect';
 
     ],
     bootstrap: [AppComponent],
-    providers: [HttpService, ConsumerAppService, ProjectService, UserService, LoginService, MdSelectDispatcher
+    providers: [HttpService, ConsumerAppService, ProjectService, UserService, LoginService, MdSelectDispatcher, { provide: LocationStrategy, useClass: HashLocationStrategy }
     ],
 })
 export class AppModule { } 

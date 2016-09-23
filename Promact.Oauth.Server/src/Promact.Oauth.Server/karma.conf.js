@@ -12,37 +12,44 @@ module.exports = function (config) {
         // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
         frameworks: ['jasmine'],
 
+        // list of files / patterns to load in the browser
+        files: [// Polyfills.
+                 
+                 //'node_modules/systemjs/dist/system-polyfills.js',
+                 'node_modules/systemjs/dist/system.src.js',
+                  'node_modules/core-js/client/shim.js',
+                 'node_modules/reflect-metadata/Reflect.js',
+                 // zone.js
+                    // Zone.js dependencies
+                 'node_modules/zone.js/dist/zone.js',
+                 'node_modules/zone.js/dist/proxy.js',
+                 'node_modules/zone.js/dist/sync-test.js',
+                 'node_modules/zone.js/dist/jasmine-patch.js',
+                 'node_modules/zone.js/dist/async-test.js',
+                 'node_modules/zone.js/dist/fake-async-test.js',
+                // RxJs.
 
-    // list of files / patterns to load in the browser
-    files: [
-      'node_modules/reflect-metadata/Reflect.js',
-      'node_modules/systemjs/dist/system-polyfills.js',
-      'node_modules/systemjs/dist/system.src.js',
-      'node_modules/zone.js/dist/zone.js',
-      'node_modules/zone.js/dist/jasmine-patch.js',
-      'node_modules/zone.js/dist/async-test.js',
-      'node_modules/zone.js/dist/fake-async-test.js',
-      { pattern: 'node_modules/rxjs/**/*.js', included: false, watched: false },
-      { pattern: 'node_modules/rxjs/**/*.js.map', included: false, watched: false },
-      'karma-test-shim.js',
-      { pattern: 'node_modules/@angular/**/*.js', included: false, watched: true },
-      { pattern: 'node_modules/@angular/**/*.js.map', included: false, watched: true },
-      { pattern: 'node_modules/md2/**/*.js', included: false, watched: true },
-      { pattern: 'node_modules/md2/**/*.js.map', included: false, watched: true },
-      { pattern: 'node_modules/lodash/*.js', included: false, watched: true },
+                { pattern: 'node_modules/rxjs/**/*.js', included: false, watched: false },
+                { pattern: 'node_modules/rxjs/**/*.js.map', included: false, watched: false },
 
-      { pattern: 'wwwroot/app/**/*.js', included: false, watched: true },
-      //{ pattern: 'wwwroot/app/**/*.js.map', included: false, watched: true },
-      { pattern: 'wwwroot/app/**/*.html', included: false, watched: true },
-      { pattern: 'wwwroot/app/users/User.model.js', included: false, watched: true },
-      { pattern: 'wwwroot/app/project/project-list/Project-list.Component.js', included: false, watched: true },
-      //{ pattern: 'wwwroot/app/project/project-list/Project-list.Component.js.map', included: false, watched: true },
-      { pattern: 'wwwroot/app/users/user-list/user-list.Component.js', included: false, watched: true },
-      { pattern: 'wwwroot/app/users/user-list/user-list.Component.js.map', included: false, watched: true },
-      // paths to support debugging with source maps in dev tools
-      { pattern: 'wwwroot/app/**/*.ts', included: false, watched: false },
-      { pattern: 'wwwroot/app/**/*.js.map', included: false, watched: false }
-    ],
+
+                //{ pattern: 'node_modules/md2/**/*.js', included: false, watched: true },
+                //{ pattern: 'node_modules/md2/**/*.js.map', included: false, watched: true },
+
+                // paths loaded via module imports
+                // Angular itself
+
+                { pattern: 'node_modules/@angular/**/*.js', included: false, watched: true },
+                { pattern: 'node_modules/@angular/**/*.js.map', included: false, watched: false },
+                { pattern: 'node_modules/lodash/*.js', included: false, watched: true },
+                 'karma-test-shim.js',
+
+                { pattern: 'wwwroot/app/**/*.js', included: false, watched: true },
+                { pattern: 'wwwroot/app/**/*.html', included: false, watched: true },
+                 //// paths to support debugging with source maps in dev tools
+                { pattern: 'wwwroot/app/**/*.ts', included: false, watched: false },
+                { pattern: 'wwwroot/app/**/*.js.map', included: false, watched: false },
+        ],
 
 
         // list of files to exclude
@@ -50,10 +57,11 @@ module.exports = function (config) {
         ],
 
 
-        // preprocess matching files before serving them to the browser
-        // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-        preprocessors: {
-        },
+        //// preprocess matching files before serving them to the browser
+        //// available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
+        //preprocessors: {
+        //    './karma-shim.js': ['webpack', 'sourcemap']
+        //},
 
 
         // test results reporter to use
@@ -61,6 +69,12 @@ module.exports = function (config) {
         // available reporters: https://npmjs.org/browse/keyword/karma-reporter
         reporters: ['progress'],
 
+        //coverageReporter: {
+        //    reporters: [
+        //        { type: 'json', subdir: '.', file: 'coverage-final.json' },
+        //        { type: 'html', dir: 'coverage/', file: 'coverage.html'}
+        //    ]
+        //},
 
         // web server port
         port: 9876,
@@ -90,6 +104,27 @@ module.exports = function (config) {
 
         // Concurrency level
         // how many browser should be started simultaneous
-        concurrency: Infinity
+        concurrency: Infinity,
+
+        customLaunchers: {
+            Chrome_travis_ci: {
+                base: 'Chrome',
+                flags: ['--no-sandbox']
+            }
+        },
+
+        // Karma plugins loaded
+        plugins: [
+
+            'karma-jasmine',
+            'karma-chrome-launcher'
+        ],
     })
+
+    if (process.env.TRAVIS || process.env.CIRCLECI) {
+        config.browsers = ['Chrome_travis_ci'];
+        config.singleRun = true;
+        config.browserNoActivityTimeout = 90000;
+    }
+
 }

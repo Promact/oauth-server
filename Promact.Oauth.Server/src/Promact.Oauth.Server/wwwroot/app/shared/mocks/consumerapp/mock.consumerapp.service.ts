@@ -1,7 +1,7 @@
 ﻿//import {TestConnection} from "../test.connection";
 //import {Injectable} from '@angular/core';
 //import {ResponseOptions, Response} from "@angular/http";
-//import {Md2Toast} from 'md2/toast';
+////import {Md2Toast} from 'md2/toast';
 //import {Subject} from 'rxjs/Rx';
 //import {MockBaseService} from '../mock.base';
 //import {ConsumerAppModel} from "../../../consumerapp/consumerapp-model";

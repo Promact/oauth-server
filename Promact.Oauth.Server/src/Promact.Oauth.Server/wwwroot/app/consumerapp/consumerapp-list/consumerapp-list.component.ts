@@ -10,19 +10,22 @@ export class ConsumerappListComponent {
     constructor(private router: Router, private consumerAppService: ConsumerAppService) {
 
     }
+    
+    ngOnInit() {
+        this.getConsumerApps();
+    }
 
-    getConsumerApps() {
+    getConsumerApps()
+    {
         this.consumerAppService.getConsumerApps().subscribe((result) => {
             if (result.length > 0)
                 this.listOfConsumerApps = result;
         }, err => {
 
         });
+
     }
 
-    ngOnInit() {
-        this.getConsumerApps();
-    }
 
     editDetails(consumerId) {
         this.router.navigate(['/consumerapp/edit', consumerId]);

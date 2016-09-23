@@ -42,7 +42,7 @@ namespace Promact.Oauth.Server.Services
             {
                 using (var smtp = new SmtpClient())
                 {
-                    smtp.ConnectAsync(_appSettings.Value.Host, 587, MailKit.Security.SecureSocketOptions.None).Wait();
+                    smtp.ConnectAsync(_appSettings.Value.Host, _appSettings.Value.Port, MailKit.Security.SecureSocketOptions.None).Wait();
                     smtp.AuthenticateAsync(credentials: new NetworkCredential(_appSettings.Value.Email, _appSettings.Value.Password)).Wait();
                     smtp.SendAsync(msg, CancellationToken.None).Wait();
                     smtp.DisconnectAsync(true, CancellationToken.None).Wait();

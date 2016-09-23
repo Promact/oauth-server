@@ -32,7 +32,5 @@ export class ConsumerappAddComponent {
         this.router.navigate(['/consumerapp']);
     }
 
-    ngOnInit() {
-        this.consumerModel = new ConsumerAppModel();
-    }
+   
 }
