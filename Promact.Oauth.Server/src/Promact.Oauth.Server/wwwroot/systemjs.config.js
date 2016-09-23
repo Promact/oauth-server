@@ -21,70 +21,69 @@
         '@angular2-material/core': {
             format: 'cjs',
             defaultExtension: 'js',
-            main: 'core.js'
+            main: 'core.umd.js'
         },
 
         '@angular2-material/button': {
             format: 'cjs',
             defaultExtension: 'js',
-            main: 'button.js'
+            main: 'button.umd.js'
         },
 
         '@angular2-material/toolbar': {
             format: 'cjs',
             defaultExtension: 'js',
-            main: 'toolbar.js'
+            main: 'toolbar.umd.js'
         },
 
         '@angular2-material/sidenav': {
             format: 'cjs',
             defaultExtension: 'js',
-            main: 'sidenav.js'
+            main: 'sidenav.umd.js'
         },
 
         '@angular2-material/input': {
             format: 'cjs',
             defaultExtension: 'js',
-            main: 'input.js'
+            main: 'input.umd.js'
         },
 
         '@angular2-material/card': {
             format: 'cjs',
             defaultExtension: 'js',
-            main: 'card.js'
+            main: 'card.umd.js'
         },
         '@angular2-material/checkbox': {
             format: 'cjs',
             defaultExtension: 'js',
-            main: 'checkbox.js'
+            main: 'checkbox.umd.js'
         },
         '@angular2-material/progress-bar': {
             format: 'cjs',
             defaultExtension: 'js',
-            main: 'progress-bar.js'
+            main: 'progress-bar.umd.js'
         },
 
         '@angular2-material/progress-circle': {
             format: 'cjs',
             defaultExtension: 'js',
-            main: 'progress-circle.js'
+            main: 'progress-circle.umd.js'
         },
-
-        'md2/switch': {
-            format: 'cjs',
-            defaultExtension: 'js',
-            main: 'switch.js'
-        },
-        'md2/toast': {
-            format: 'cjs',
-            defaultExtension: 'js',
-            main: 'toast.js'
-        },
-        'md2/multiselect': {
-            format: 'cjs',
-            defaultExtension: 'js',
-            main: 'multiselect.js'
-        },
+        //'md2/switch': {
+        //    format: 'cjs',
+        //    defaultExtension: 'js',
+        //    main: 'switch.js'
+        //},
+        //'md2/toast': {
+        //    format: 'cjs',
+        //    defaultExtension: 'js',
+        //    main: 'toast.js'
+        //},
+        //'md2/multiselect': {
+        //    format: 'cjs',
+        //    defaultExtension: 'js',
+        //    main: 'multiselect.js'
+        //},
     };
 
     var ngPackageNames = [
