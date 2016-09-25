@@ -37,7 +37,7 @@ namespace Promact.Oauth.Server.Repository
 
         #region "Constructor"
 
-        public UserRepository(IDataRepository<ApplicationUser> applicationUserDataRepository, IHostingEnvironment hostingEnvironment, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IMapper mapperContext, IDataRepository<ProjectUser> projectUserRepository, IProjectRepository projectRepository, IOptions<AppSettings> appSetting)
+        public UserRepository(IDataRepository<ApplicationUser> applicationUserDataRepository, IHostingEnvironment hostingEnvironment, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IMapper mapperContext, IDataRepository<ProjectUser> projectUserRepository, IProjectRepository projectRepository, IOptions<AppSettings> appSetting, IDataRepository<Project> projectDataRepository)
         {
             _applicationUserDataRepository = applicationUserDataRepository;
             _hostingEnvironment = hostingEnvironment;
