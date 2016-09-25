@@ -163,8 +163,8 @@ namespace Promact.Oauth.Server.Repository
                 }
             }
             else {
-                casualAllow = 14;
-                sickAllowed = 7;
+                casualAllow = Convert.ToDouble(_appSetting.Value.CasualLeave); 
+                sickAllowed = Convert.ToDouble(_appSetting.Value.SickLeave); 
             }
                 LeaveCalculator calculate = new LeaveCalculator
                 {
