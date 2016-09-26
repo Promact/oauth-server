@@ -182,45 +182,23 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "A")]
         public void GetProjectUserByGroupName()
         {
-            AddRole();
-            var TId = _userRepository.AddUser(user, StringConstant.CreatedBy).Result;
             _projectRepository.AddProject(projectac, StringConstant.CreatedBy);
             _projectRepository.AddUserProject(projectUser);
-            // var ProjectUser = _dataRepositoryProjectUser.Fetch(x => x.ProjectId == 1);
             var projectUsers = _projectRepository.GetProjectUserByGroupName(projectac.SlackChannelName);
             Assert.NotEqual(projectUsers.Count, 2);
         }
 
+       
         /// <summary>
-        /// Fetch the project of the given slack channel name
+        /// Fetch the project of the given slack channel name 
         /// </summary>
         [Fact, Trait("Category", "A")]
         public void GetProjectByGroupName()
         {
-            _projectRepository.AddProject(projectac, "Roshni");
+            _projectRepository.AddProject(projectac, StringConstant.CreatedBy);
             var project = _projectRepository.GetProjectByGroupName(projectac.SlackChannelName);
-            Assert.NotEqual(null, project);
-        }
-
-        private void AddRole()
-        {
-            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            if (!roleManager.Roles.Any())
-            {
-                List<IdentityRole> roles = new List<IdentityRole>();
-                roles.Add(new IdentityRole { Name = "Employee", NormalizedName = "EMPLOYEE" });
-                roles.Add(new IdentityRole { Name = "Admin", NormalizedName = "ADMIN" });
-
-                foreach (var role in roles)
-                {
-                    var roleExit = roleManager.RoleExistsAsync(role.Name).Result;
-                    if (!roleExit)
-                    {
-                        context.Roles.Add(role);
-                        context.SaveChanges();
-                    }
-                }
-            }
-        }
+            Assert.Equal(projectac.TeamLeaderId, project.TeamLeaderId);
+        }                             
+               
     }
 }

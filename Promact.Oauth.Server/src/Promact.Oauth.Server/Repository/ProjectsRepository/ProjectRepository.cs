@@ -113,8 +113,8 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                 {
                     Id = applicationUser.Id,
                     FirstName = applicationUser.FirstName,
-                    Email=applicationUser.Email,
-                    LastName=applicationUser.LastName
+                    Email = applicationUser.Email,
+                    LastName = applicationUser.LastName
                 });
             }
 
@@ -215,7 +215,6 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                 if (project != null)
                 {
                     projectAc.CreatedBy = project.CreatedBy;
-                    //projectAc.CreatedDate = project.CreatedDateTime;
                     projectAc.Id = project.Id;
                     projectAc.IsActive = project.IsActive;
                     projectAc.Name = project.Name;
@@ -270,7 +269,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             }
         }
 
-        
+
         public async Task<IEnumerable<ProjectAc>> GetAllProjectForUser(string userId)
         {
             var projects = _projectDataRepository.Fetch(x => x.TeamLeaderId == userId);
@@ -348,14 +347,14 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             {
                 var userRoleAdmin = new UserRoleAc();
                 userRoleAdmin.UserName = user.UserName;
-                userRoleAdmin.Name = user.FirstName+" "+user.LastName;
+                userRoleAdmin.Name = user.FirstName + " " + user.LastName;
                 userRoleAdmin.Role = userRole;
                 userRoles.Add(userRoleAdmin);
                 var userList = _userDataRepository.GetAll().ToList();
                 foreach (var userDetails in userList)
                 {
-                    var roles= await _userManager.GetRolesAsync(userDetails);
-                    if (roles.Count()!=0 && roles[0] == StringConstant.RoleEmployee)
+                    var roles = await _userManager.GetRolesAsync(userDetails);
+                    if (roles.Count() != 0 && roles[0] == StringConstant.RoleEmployee)
                     {
                         var userRoleAc = new UserRoleAc();
                         userRoleAc.UserName = userDetails.UserName;
@@ -363,10 +362,11 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                         userRoleAc.Role = userRole;
                         userRoles.Add(userRoleAc);
                     }
-                    
+
                 }
             }
-            else {
+            else
+            {
                 var project = _projectDataRepository.FirstOrDefault(x => x.TeamLeaderId.Equals(user.Id));
                 //project = null;
                 if (project == null)
@@ -397,13 +397,13 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         {
             List<ProjectAc> projectAcs = new List<ProjectAc>();
             var projects = await _projectDataRepository.GetAll().ToListAsync();
-           
+
             projects.ForEach(project =>
             {
                 ApplicationUser teamLeader = _userDataRepository.FirstOrDefault(x => x.Id == project.TeamLeaderId);
                 UserAc teamLead = _mapperContext.Map<ApplicationUser, UserAc>(teamLeader);
                 teamLead.Role = StringConstant.TeamLeader;
-                
+
                 List<ProjectUser> projectUsers = _projectUserDataRepository.Fetch(x => x.ProjectId == project.Id).ToList();
                 ProjectAc projectObject = _mapperContext.Map<Project, ProjectAc>(project);
                 projectObject.TeamLeader = teamLead;
@@ -411,7 +411,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                 foreach (var projectUser in projectUsers)
                 {
                     ApplicationUser user = _userDataRepository.FirstOrDefault(x => x.Id == projectUser.UserId);
-                    UserAc proUser = _mapperContext.Map<ApplicationUser,UserAc>(user);
+                    UserAc proUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
                     proUser.Role = StringConstant.Employee;
                     projectObject.ApplicationUsers.Add(proUser);
                 }
@@ -443,7 +443,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                 proUser.Role = StringConstant.Employee;
                 projectDetails.ApplicationUsers.Add(proUser);
             }
-            
+
             return projectDetails;
         }
     }

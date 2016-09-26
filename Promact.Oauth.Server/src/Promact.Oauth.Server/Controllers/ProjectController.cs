@@ -10,6 +10,7 @@ using Promact.Oauth.Server.Repository;
 using System.Threading.Tasks;
 using Exceptionless;
 using Promact.Oauth.Server.Services;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -59,7 +60,7 @@ namespace Promact.Oauth.Server.Controllers
             {
                 var user = await _userManager.FindByNameAsync(User.Identity.Name);
                 var userRole = await _userManager.IsInRoleAsync(user, "Employee");
-                if (userRole==true)
+                if (userRole == true)
                 {
                     return await _projectRepository.GetAllProjectForUser(user.Id);
                 }
@@ -244,6 +245,7 @@ namespace Promact.Oauth.Server.Controllers
         *     "description":"Object of ProjectAc"
         * }
         */
+        [ServiceFilter(typeof(CustomAttribute))]
         [HttpGet]
         [Route("fetchProject/{name}")]
         public ProjectAc Fetch(string name)
@@ -327,6 +329,7 @@ namespace Promact.Oauth.Server.Controllers
       *     "description":"List of Object of UserAc"
       * }
       */
+        [ServiceFilter(typeof(CustomAttribute))]
         [HttpGet]
         [Route("fetchProjectUsers/{groupName}")]
         public List<UserAc> FetchUsers(string groupName)
