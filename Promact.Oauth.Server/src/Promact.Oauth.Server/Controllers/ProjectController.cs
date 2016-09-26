@@ -10,6 +10,7 @@ using System;
 using Promact.Oauth.Server.Repository;
 using System.Threading.Tasks;
 using Exceptionless;
+using Promact.Oauth.Server.Services;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -50,6 +51,7 @@ namespace Promact.Oauth.Server.Controllers
      *     "description":"Get List of Projects"
      * }
      */
+        [Authorize]
         [HttpGet]
         [Route("getAllProjects")]
         public async Task<IEnumerable<ProjectAc>> getAllProjects()
@@ -92,7 +94,7 @@ namespace Promact.Oauth.Server.Controllers
       *     "description":"get the ProjectAc Object"
       * }
       */
-
+        [Authorize]
         [HttpGet]
         [Route("getProjects/{id}")]
         public async Task<ProjectAc> getProjects(int id)
@@ -133,6 +135,7 @@ namespace Promact.Oauth.Server.Controllers
       *     "description":"Add Project in ProjectTable"
       * }
       */
+        [Authorize]
         [HttpPost]
         [Route("addProject")]
         public async Task<IActionResult> addProject([FromBody]ProjectAc project)
@@ -196,6 +199,7 @@ namespace Promact.Oauth.Server.Controllers
         *     "description":"edit Project in ProjectTable"
         * }
         */
+        [Authorize]
         [HttpPut]
         [Route("editProject")]
         public async Task<IActionResult> editProject(int id, [FromBody]ProjectAc project)
@@ -275,11 +279,33 @@ namespace Promact.Oauth.Server.Controllers
         *     "description":"Object of UserRoleAc"
         * }
         */
+        [ServiceFilter(typeof(CustomAttribute))]
         [HttpGet]
         [Route("featchUserRole/{name}")]
         public async Task<List<UserRoleAc>> GetUserRole(string name)
         {
             return await _projectRepository.GetUserRole(name);
+
+        }
+
+
+        /**
+        * @api {get} api/Project/GetListOfEmployee 
+        * @apiVersion 1.0.0
+        * @apiName Project
+        * @apiGroup Project
+        * @apiSuccessExample {json} Success-Response:
+        * HTTP/1.1 200 OK 
+        * {
+        *     "description":"Get List of Users"
+        * }
+        */
+        [ServiceFilter(typeof(CustomAttribute))]
+        [HttpGet]
+        [Route("featchListOfUser/{name}")]
+        public async Task<List<UserRoleAc>> GetListOfEmployee(string name)
+        {
+            return await _projectRepository.GetListOfEmployee(name);
 
         }
 
