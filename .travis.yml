@@ -22,8 +22,6 @@ notifications:
   email:
     on_success: change
     on_failure: always
-after_success:
-  - ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
 script:
 - if [ -n "${DOTNETCORE}" ]; then dotnet restore && dotnet build ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests
   -c Release && dotnet test ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests/project.json
