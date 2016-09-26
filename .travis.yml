@@ -1,29 +1,32 @@
-language: node_js
+language: csharp
 node_js:
-  - 6
-  - stable
+- 6
+- stable
 sudo: false
 before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export CHROME_BIN=chromium-browser; fi  # Karma CI
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export DISPLAY=:99.0; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export CHROME_BIN=chromium-browser;
+  fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export DISPLAY=:99.0; fi
 before_script:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sh -e /etc/init.d/xvfb start; fi
-
-language: csharp
-solution: ./Promact.Oauth.Server/Promact.Oauth.Server.sln
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sh -e /etc/init.d/xvfb start; fi
+solution: "./Promact.Oauth.Server/Promact.Oauth.Server.sln"
 matrix:
   include:
-    - os: linux
-      dist: trusty
-      sudo: required
-      dotnet: 1.0.0-preview2-003121
-      mono: latest
-      env: DOTNETCORE=1    
+  - os: linux
+    dist: trusty
+    sudo: required
+    dotnet: 1.0.0-preview2-003121
+    mono: latest
+    env: DOTNETCORE=1
 notifications:
   email:
     on_success: change
     on_failure: always
-after_success:
-  - ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
 script:
-  - if [ -n "${DOTNETCORE}" ]; then dotnet restore && dotnet build ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests -c Release && dotnet test ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests/project.json -c Release && cd ./Promact.Oauth.Server/src/Promact.Oauth.Server && npm install typings --global && npm install -g typescript && npm install && npm run test; fi
+- if [ -n "${DOTNETCORE}" ]; then dotnet restore && dotnet build ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests
+  -c Release && dotnet test ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests/project.json
+  -c Release && cd ./Promact.Oauth.Server/src/Promact.Oauth.Server && npm install
+  typings --global && npm install -g typescript && npm install && npm run test; fi
+env:
+  matrix:
+  - secure: DkhgBzCWnOqeA8Rw5FoJ9/CsFusvM6kc8AzeWQDwJi/chAeCc4jlE0ch/t8Otzfzr2/CFFZBGGw3wHoPZUKNvoJZiUyRN9GW2SRkVu/GH3pou1Cs5LyE5HvFDd1jpefYpHjv2R2bqd6iv9zyRkhIC01JyadnYsFiAqNc2VRrZfHG2PGkrQBmz+VWaHBhyMYr26WIJxKiPTN8C7ZZZ7JYd3KrIDKZPxrRog7rNP59qH0Qodqj6G7zqW4hRC9s2XPtlXQQLXBRlrEqUyEQ+NbDTe8NXjVxLoevFpX2X2BkCZDpS19NMvO9nYewqfpkRZkBEHXL7JYWcwyppGGf5sUC3Z2cit4ooR1t/lDzpTv0KfIbHpGY1IStAF0p1rV7JO5MamaqOEMGtt4rF49w5Z1bp8KONGknD57N0l2RsvQMODA4WFQdTVgI/dUO3uwubkjFq5SJelNjb8hk0VXE6dhg01ZvBBpP6LM5eumOgnOMlYco2/X9w2Dz4lA3e6jEASjKLRGRTURR7Xq81/frLrPEb/XbdLgrd6bLiGVIeuOVo79GnvRvZs7NGH1UB5uZjsj+SaeMC7v3BWLcDFzfGtc+tRb5JTIfcFRmYknu4POyrOvZyfGrScz0148Yp0vYtgA8JGUFG7ilTWrfMGNjfihsPzVBtQHBOtYDXuDHlLbifqQ=
