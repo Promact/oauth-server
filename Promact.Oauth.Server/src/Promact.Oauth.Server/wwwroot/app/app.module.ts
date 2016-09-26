@@ -4,7 +4,8 @@ import { MdButtonModule } from "@angular2-material/button";
 import { MdToolbarModule } from "@angular2-material/toolbar";
 import {MdInputModule} from "@angular2-material/input";
 import {MdSidenavModule} from "@angular2-material/sidenav";
-import {MdCheckboxModule} from "@angular2-material/checkbox";
+import { MdCheckboxModule } from "@angular2-material/checkbox";
+import { Md2Toast } from 'md2/toast';
 // Imports for loading & configuring the in-memory web api
 import { HttpModule, XHRBackend } from "@angular/http";
 import { AppComponent } from "./app.component";
@@ -48,12 +49,10 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
         MdToolbarModule,
         MdSidenavModule,
         MdInputModule,
-        MdCheckboxModule, 
-        
-
+        MdCheckboxModule
     ],
     bootstrap: [AppComponent],
-    providers: [HttpService, ConsumerAppService, ProjectService, UserService, LoginService, MdSelectDispatcher, { provide: LocationStrategy, useClass: HashLocationStrategy }
+    providers: [HttpService, ConsumerAppService, Md2Toast, ProjectService, UserService, LoginService, MdSelectDispatcher, { provide: LocationStrategy, useClass: HashLocationStrategy }
     ],
 })
 export class AppModule { } 

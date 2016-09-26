@@ -33,8 +33,8 @@ module.exports = function (config) {
                 { pattern: 'node_modules/rxjs/**/*.js.map', included: false, watched: false },
 
 
-                //{ pattern: 'node_modules/md2/**/*.js', included: false, watched: true },
-                //{ pattern: 'node_modules/md2/**/*.js.map', included: false, watched: true },
+                { pattern: 'node_modules/md2/**/*.js', included: false, watched: true },
+                { pattern: 'node_modules/md2/**/*.js.map', included: false, watched: true },
 
                 // paths loaded via module imports
                 // Angular itself
@@ -67,14 +67,12 @@ module.exports = function (config) {
         // test results reporter to use
         // possible values: 'dots', 'progress'
         // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-        reporters: ['progress'],
+        reporters: ['progress', 'coverage', 'coveralls'],
 
-        //coverageReporter: {
-        //    reporters: [
-        //        { type: 'json', subdir: '.', file: 'coverage-final.json' },
-        //        { type: 'html', dir: 'coverage/', file: 'coverage.html'}
-        //    ]
-        //},
+        coverageReporter: {
+            type: 'lcov', // lcov or lcovonly are required for generating lcov.info files
+            dir: 'coverage/'
+        },
 
         // web server port
         port: 9876,
@@ -115,9 +113,10 @@ module.exports = function (config) {
 
         // Karma plugins loaded
         plugins: [
-
             'karma-jasmine',
-            'karma-chrome-launcher'
+            'karma-chrome-launcher',
+            'karma-coverage',
+            'karma-coveralls'
         ],
     })
 

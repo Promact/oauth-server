@@ -106,66 +106,66 @@ System.config({
             defaultExtension: 'js',
             main: 'toolbar.js'
         },
-        //'md2/accordion': {
-        //    format: 'cjs',
-        //    defaultExtension: 'js',
-        //    main: 'accordion.js'
-        //},
-        //'md2/autocomplete': {
-        //    format: 'cjs',
-        //    defaultExtension: 'js',
-        //    main: 'autocomplete.js'
-        //},
-        //'md2/collapse': {
-        //    format: 'cjs',
-        //    defaultExtension: 'js',
-        //    main: 'collapse.js'
-        //},
-        //'md2/colorpicker': {
-        //    format: 'cjs',
-        //    defaultExtension: 'js',
-        //    main: 'colorpicker.js'
-        //},
-        //'md2/dialog': {
-        //    format: 'cjs',
-        //    defaultExtension: 'js',
-        //    main: 'dialog.js'
-        //},
-        //'md2/menu': {
-        //    format: 'cjs',
-        //    defaultExtension: 'js',
-        //    main: 'menu.js'
-        //},
-        //'md2/multiselect': {
-        //    format: 'cjs',
-        //    defaultExtension: 'js',
-        //    main: 'multiselect.js'
-        //},
-        //'md2/select': {
-        //    format: 'cjs',
-        //    defaultExtension: 'js',
-        //    main: 'select.js'
-        //},
-        //'md2/switch': {
-        //    format: 'cjs',
-        //    defaultExtension: 'js',
-        //    main: 'switch.js'
-        //},
-        //'md2/tabs': {
-        //    format: 'cjs',
-        //    defaultExtension: 'js',
-        //    main: 'tabs.js'
-        //},
-        //'md2/toast': {
-        //    format: 'cjs',
-        //    defaultExtension: 'js',
-        //    main: 'toast.js'
-        //},
-        //'md2/tooltip': {
-        //    format: 'cjs',
-        //    defaultExtension: 'js',
-        //    main: 'tooltip.js'
-        //},
+        'md2/accordion': {
+            format: 'cjs',
+            defaultExtension: 'js',
+            main: 'accordion.js'
+        },
+        'md2/autocomplete': {
+            format: 'cjs',
+            defaultExtension: 'js',
+            main: 'autocomplete.js'
+        },
+        'md2/collapse': {
+            format: 'cjs',
+            defaultExtension: 'js',
+            main: 'collapse.js'
+        },
+        'md2/colorpicker': {
+            format: 'cjs',
+            defaultExtension: 'js',
+            main: 'colorpicker.js'
+        },
+        'md2/dialog': {
+            format: 'cjs',
+            defaultExtension: 'js',
+            main: 'dialog.js'
+        },
+        'md2/menu': {
+            format: 'cjs',
+            defaultExtension: 'js',
+            main: 'menu.js'
+        },
+        'md2/multiselect': {
+            format: 'cjs',
+            defaultExtension: 'js',
+            main: 'multiselect.js'
+        },
+        'md2/select': {
+            format: 'cjs',
+            defaultExtension: 'js',
+            main: 'select.js'
+        },
+        'md2/switch': {
+            format: 'cjs',
+            defaultExtension: 'js',
+            main: 'switch.js'
+        },
+        'md2/tabs': {
+            format: 'cjs',
+            defaultExtension: 'js',
+            main: 'tabs.js'
+        },
+        'md2/toast': {
+            format: 'cjs',
+            defaultExtension: 'js',
+            main: 'toast.js'
+        },
+        'md2/tooltip': {
+            format: 'cjs',
+            defaultExtension: 'js',
+            main: 'tooltip.js'
+        },
     },
 
     map: {
