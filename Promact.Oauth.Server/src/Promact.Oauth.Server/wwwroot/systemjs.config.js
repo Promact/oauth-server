@@ -8,9 +8,9 @@
         'app': 'app', // 'dist',
         '@angular': 'lib/@angular',
         'angular2-in-memory-web-api': 'lib/angular2-in-memory-web-api',
-        '@angular2-material' : 'lib/@angular2-material',
+        '@angular2-material': 'lib/@angular2-material',
         'rxjs': 'lib/rxjs',
-        //'md2': 'lib/md2'
+        'md2': 'lib/md2'
     };
     // packages tells the System loader how to load when no filename and/or no extension
     var packages = {
@@ -69,21 +69,15 @@
             defaultExtension: 'js',
             main: 'progress-circle.umd.js'
         },
-        //'md2/switch': {
-        //    format: 'cjs',
-        //    defaultExtension: 'js',
-        //    main: 'switch.js'
-        //},
-        //'md2/toast': {
-        //    format: 'cjs',
-        //    defaultExtension: 'js',
-        //    main: 'toast.js'
-        //},
-        //'md2/multiselect': {
-        //    format: 'cjs',
-        //    defaultExtension: 'js',
-        //    main: 'multiselect.js'
-        //},
+        'md2': {
+            main: 'all.js',
+            defaultExtension: 'js'
+        },
+        'md2/toast': {
+            format: 'cjs',
+            defaultExtension: 'js',
+            main: 'toast.js'
+        },
     };
 
     var ngPackageNames = [

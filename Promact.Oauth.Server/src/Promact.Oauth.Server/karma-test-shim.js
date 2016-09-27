@@ -37,15 +37,6 @@ System.config({
         'rxjs': {
             defaultExtension: 'js'
         },
-        '@angular/router': {
-            main: 'index.js',
-            defaultExtension: 'js'
-        },
-        '@angular/http': {
-            main: 'index.js',
-            defaultExtension: 'js'
-        },
-      
         '@angular2-material/button': {
             format: 'cjs',
             defaultExtension: 'js',
@@ -106,90 +97,41 @@ System.config({
             defaultExtension: 'js',
             main: 'toolbar.js'
         },
-        //'md2/accordion': {
-        //    format: 'cjs',
-        //    defaultExtension: 'js',
-        //    main: 'accordion.js'
-        //},
-        //'md2/autocomplete': {
-        //    format: 'cjs',
-        //    defaultExtension: 'js',
-        //    main: 'autocomplete.js'
-        //},
-        //'md2/collapse': {
-        //    format: 'cjs',
-        //    defaultExtension: 'js',
-        //    main: 'collapse.js'
-        //},
-        //'md2/colorpicker': {
-        //    format: 'cjs',
-        //    defaultExtension: 'js',
-        //    main: 'colorpicker.js'
-        //},
-        //'md2/dialog': {
-        //    format: 'cjs',
-        //    defaultExtension: 'js',
-        //    main: 'dialog.js'
-        //},
-        //'md2/menu': {
-        //    format: 'cjs',
-        //    defaultExtension: 'js',
-        //    main: 'menu.js'
-        //},
-        //'md2/multiselect': {
-        //    format: 'cjs',
-        //    defaultExtension: 'js',
-        //    main: 'multiselect.js'
-        //},
-        //'md2/select': {
-        //    format: 'cjs',
-        //    defaultExtension: 'js',
-        //    main: 'select.js'
-        //},
-        //'md2/switch': {
-        //    format: 'cjs',
-        //    defaultExtension: 'js',
-        //    main: 'switch.js'
-        //},
-        //'md2/tabs': {
-        //    format: 'cjs',
-        //    defaultExtension: 'js',
-        //    main: 'tabs.js'
-        //},
-        //'md2/toast': {
-        //    format: 'cjs',
-        //    defaultExtension: 'js',
-        //    main: 'toast.js'
-        //},
-        //'md2/tooltip': {
-        //    format: 'cjs',
-        //    defaultExtension: 'js',
-        //    main: 'tooltip.js'
-        //},
+        'md2': {
+            main: 'all.js',
+            defaultExtension: 'js'
+        },
+        'md2/toast': {
+            format: 'cjs',
+            defaultExtension: 'js',
+            main: 'toast.js'
+        }
     },
 
     map: {
+        'rxjs': 'node_modules/rxjs',
+        '@angular': 'node_modules/@angular',
+        '@angular2-material': 'node_modules/@angular2-material',
+        'lodash': 'node_modules/lodash',
         'app': 'wwwroot/app',
+        '@angular/core/testing': 'node_modules/@angular/core/bundles/core-testing.umd.js',
+        '@angular/platform-browser-dynamic/testing': 'node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic-testing.umd.js',
+        '@angular/compiler/testing': 'node_modules/@angular/compiler/bundles/compiler-testing.umd.js',
+        '@angular/platform-browser/testing': 'node_modules/@angular/platform-browser/bundles/platform-browser-testing.umd.js',
+        '@angular/common/testing': 'node_modules/@angular/common/bundles/common-testing.umd.js',
+        '@angular/http/testing': 'node_modules/@angular/http/bundles/http-testing.umd.js',
+        '@angular/router/testing': 'node_modules/@angular/router/bundles/router-testing.umd.js',
+        '@angular/forms/testing': 'node_modules/@angular/forms/bundles/forms-testing.umd.js',
         '@angular/core': 'node_modules/@angular/core/bundles/core.umd.js',
         '@angular/common': 'node_modules/@angular/common/bundles/common.umd.js',
         '@angular/compiler': 'node_modules/@angular/compiler/bundles/compiler.umd.js',
         '@angular/platform-browser': 'node_modules/@angular/platform-browser/bundles/platform-browser.umd.js',
         '@angular/platform-browser-dynamic': 'node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js',
-        '@angular2-material': 'node_modules/@angular2-material',
-        // angular testing umd bundles
-        '@angular/core/testing': 'node_modules/@angular/core/bundles/core-testing.umd.js',
-        '@angular/common/testing': 'node_modules/@angular/common/bundles/common-testing.umd.js',
-        '@angular/compiler/testing': 'node_modules/@angular/compiler/bundles/compiler-testing.umd.js',
-        '@angular/platform-browser/testing': 'node_modules/@angular/platform-browser/bundles/platform-browser-testing.umd.js',
-        '@angular/platform-browser-dynamic/testing': 'node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic-testing.umd.js',
-        '@angular/router/testing': 'npm:@angular/router/bundles/router-testing.umd.js',
-        '@angular/forms/testing': 'npm:@angular/forms/bundles/forms-testing.umd.js',
-        '@angular/http/testing': 'npm:@angular/http/bundles/http-testing.umd.js',
-        'rxjs': 'node_modules/rxjs',
-        '@angular': 'node_modules/@angular',
-
-        'lodash': 'node_modules/lodash',
-        'md2': 'node_modules/md2/src/components'
+        '@angular/http': 'node_modules/@angular/http/bundles/http.umd.js',
+        '@angular/router': 'node_modules/@angular/router/bundles/router.umd.js',
+        '@angular/forms': 'node_modules/@angular/forms/bundles/forms.umd.js',
+        'md2': 'node_modules/md2',
+        'md2/toast': 'node_modules/md2/toast'
     }
 });
 

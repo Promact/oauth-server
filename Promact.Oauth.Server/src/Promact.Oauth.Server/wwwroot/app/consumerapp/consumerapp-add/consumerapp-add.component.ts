@@ -2,26 +2,26 @@
 import {ConsumerAppModel} from "../consumerapp-model";
 import { Router } from "@angular/router";
 import { ConsumerAppService} from "../consumerapp.service";
-//import {Md2Toast} from "md2/toast";
+import {Md2Toast} from "md2/toast";
 
 @Component({
     templateUrl: "app/consumerapp/consumerapp-add/consumerapp-add.html",
-    //providers: [Md2Toast]
+    providers: [Md2Toast]
 })
 export class ConsumerappAddComponent {
     consumerModel: ConsumerAppModel;
-    constructor(private consumerAppService: ConsumerAppService, private router: Router /*,private toast: Md2Toast*/) {
+    constructor(private consumerAppService: ConsumerAppService, private router: Router ,private toast: Md2Toast) {
         this.consumerModel = new ConsumerAppModel();
     }
 
     submitApps(consumerModel) {
         this.consumerAppService.addConsumerApps(consumerModel).subscribe((result) => {
             if (result == true) {
-                //this.toast.show('Consumer App is added successfully.');
+                this.toast.show('Consumer App is added successfully.');
                 this.cancel();
             }
             else if (result == false) {
-                //this.toast.show('Consumer App Name is already exists.');
+                this.toast.show('Consumer App Name is already exists.');
             }
         }, err => {
 

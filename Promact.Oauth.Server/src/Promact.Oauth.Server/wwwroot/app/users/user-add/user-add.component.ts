@@ -2,13 +2,13 @@
 import { UserService }   from '../user.service';
 import {UserModel} from '../user.model';
 import {Router, ActivatedRoute} from '@angular/router';
-//import {Md2Toast} from 'md2/toast';
+import {Md2Toast} from 'md2/toast';
 
 
 
 @Component({
     templateUrl: 'app/users/user-add/user-add.html',
-    //providers: [Md2Toast]
+    providers: [Md2Toast]
 })
 
 export class UserAddComponent {
@@ -20,7 +20,7 @@ export class UserAddComponent {
     userModel: UserModel;
     listOfRoles: any;
 
-    constructor(private userService: UserService, private redirectionRoute: Router, private route: ActivatedRoute /*private toast: Md2Toast*/) {
+    constructor(private userService: UserService, private redirectionRoute: Router, private route: ActivatedRoute, private toast: Md2Toast) {
         this.userModel = new UserModel();
         this.listOfRoles = [];
     }
@@ -47,21 +47,21 @@ export class UserAddComponent {
             if (this.isEmailExist == false) {
                 this.userService.registerUser(this.userModel).subscribe((result) => {
                     if (result == true) {
-                        //this.toast.show('User added successfully.');
+                        this.toast.show('User added successfully.');
                         this.redirectionRoute.navigate(['user/list']);
                     }
                     else if (result == false) {
-                        //this.toast.show('User Name already exists.');
+                        this.toast.show('User Name already exists.');
                     }
                 }, err => {
                 });
             }
             else {
-                //this.toast.show('Email Address already exists.');
+                this.toast.show('Email Address already exists.');
             }
         }
         else {
-            //this.toast.show('Slack User Name  already exists.');
+           this.toast.show('Slack User Name  already exists.');
         }
     }
 
@@ -94,7 +94,7 @@ export class UserAddComponent {
     }
 
     goBack() {
-       this.redirectionRoute.navigate(['user/list'])
+        this.redirectionRoute.navigate(['user/list']);
     }
 
 
