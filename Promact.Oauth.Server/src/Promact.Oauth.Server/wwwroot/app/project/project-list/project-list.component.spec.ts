@@ -1,49 +1,44 @@
 ﻿//import {async,inject,TestBed,ComponentFixture} from '@angular/core/testing';
-//import {Provider} from "@angular/core";
+//import { By } from "@angular/platform-browser";
+//import { Provider, DebugElement } from "@angular/core";
 //import { ProjectService }   from '../project.service';
 //import {projectModel} from '../project.model';
-//import { Component } from '@angular/core';
 //import { Router } from '@angular/router';
-////import {Md2Toast} from 'md2/toast';
-//import {ProjectListComponent} from '../project-list/Project-list.Component';
-//import {MockToast} from "../../shared/mocks/mock.toast";
+//import {ProjectListComponent} from './project-list.component';
 //import {TestConnection} from "../../shared/mocks/test.connection";
 //import {MockProjectService} from "../../shared/mocks/project/mock.project.service";
 //import {MockBaseService} from '../../shared/mocks/mock.base';
 //import { LoginService } from '../../login.service';
+//import { ProjectModule } from '../project.module';
+
 //declare var describe, it, beforeEach, expect;
+//let comp: ProjectListComponent;
+//let fixture: ComponentFixture<ProjectListComponent>;
+//let el: DebugElement;
+
 
 //describe("Project List Test", () => {
 //    let projectListComponent: ProjectListComponent;
 //    class MockRouter { }
 //    class McokLogin { }
-
-//    beforeEach(() => {
+//    beforeEach(async(() => {
 //        TestBed.configureTestingModule({
+//            imports: [ProjectModule],
 //            providers: [
 //                { provide: Router, useClass: MockRouter },
-//                { provide: TestConnection, useClass: TestConnection },
-//                { provide: ProjectService, useClass: ProjectService },
-//                //{ provide: Md2Toast, useClass: MockToast },
-//                { provide: MockBaseService, useClass: MockBaseService },
+//                { provide: ProjectService, useClass: MockProjectService },
 //                { provide: LoginService, useClass: McokLogin }
 //            ]
-//        });
 
-//    });
-   
+//        }).compileComponents(); //compile template and css 
+//        fixture = TestBed.createComponent(ProjectListComponent);
+//        comp = fixture.componentInstance;
 
-//    beforeEach(inject([Router, ProjectService  /*Md2Toast*/], (router: Router, proService: ProjectService, /*toast: Md2Toast,*/ loginService: LoginService) => {
-//        projectListComponent = new ProjectListComponent(router, proService, /*toast,*/ loginService);
 //    }));
 
-//    it("should be defined", () => {
+//    it("should get default Project for company", done => {
+
 //        expect(projectListComponent).toBeDefined();
 //    });
-     
-//    it("should get list of Project on initialization", () => {
-//        projectListComponent.getProjects();
-//        expect(projectListComponent.projects.length).toEqual(1);
-//    });
-
 //});
+

@@ -3,14 +3,12 @@ import {Location} from "@angular/common";
 import { ProjectService }   from '../project.service';
 import {projectModel} from '../project.model'
 import {UserModel} from '../../users/user.model';
-import {  Router, ActivatedRoute } from '@angular/router';
-//import {Md2Toast} from 'md2/toast';
-//import {Md2Multiselect } from 'md2/multiselect';
+import { Router, ActivatedRoute } from '@angular/router';
+import {Md2Toast} from 'md2/toast';
 
 @Component({
     templateUrl: "app/project/project-edit/project-edit.html",
-    //directives: [Md2Multiselect],
-    //providers: [Md2Toast]
+    providers: [Md2Toast]
 })
 export class ProjectEditComponent implements OnInit {
     project: projectModel;
@@ -21,7 +19,7 @@ export class ProjectEditComponent implements OnInit {
     constructor(
         private route: ActivatedRoute,
         private router: Router,
-        //private toast: Md2Toast,
+        private toast: Md2Toast,
         private service: ProjectService,
         private location: Location) { }
     /**
@@ -35,6 +33,7 @@ export class ProjectEditComponent implements OnInit {
             let id = +params['id']; // (+) converts string 'id' to a number
             this.service.getProject(id).subscribe(project => {
                 this.project = project;
+                this.project.ApplicationUsers = project.applicationUsers;
                 this.service.getUsers().subscribe(listUsers => {
                     this.project.ListUsers = listUsers;
                     if (!this.project.ApplicationUsers)
@@ -76,16 +75,16 @@ export class ProjectEditComponent implements OnInit {
     editProject(project: projectModel) {
         this.service.editProject(project).subscribe((project) => {
                if (project.name == null && project.slackChannelName == null) {
-                //this.toast.show("Project and slackChannelName already exists");
+                this.toast.show("Project and slackChannelName already exists");
             }
                else if (project.name != null && project.slackChannelName == null) {
-                //this.toast.show("slackChannelName already exists");
+                this.toast.show("slackChannelName already exists");
             }
                else if (project.name == null && project.slackChannelName != null) {
-                //this.toast.show("Project already exists");
+                this.toast.show("Project already exists");
             }
             else {
-                //this.toast.show("Project Successfully Updated.");
+                this.toast.show("Project Successfully Updated.");
                 this.router.navigate(['/project/list'])
             }
            

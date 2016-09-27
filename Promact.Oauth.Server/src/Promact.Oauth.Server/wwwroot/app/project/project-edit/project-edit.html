@@ -4,13 +4,11 @@
             <h3>Edit Project</h3>
         </div>
         <div class="text-right items">
-            <button md-raised-button type="submit" class="btn-back btn-green"  (click)="gotoProjects()"> <i class="material-icons">arrow_back</i>Back</button>
+            <button md-raised-button type="submit" class="btn-back btn-green" (click)="gotoProjects()"> <i class="material-icons">arrow_back</i>Back</button>
         </div>
 
     </div>
     <div *ngIf="project">
-
-
         <div class="form-group">
             <div class="half-width">
                 <md-input type="text" class="full-width" placeholder="Name" name="name" [(ngModel)]="project.name" maxlength="255" required #name="ngModel"></md-input>
@@ -30,33 +28,26 @@
 
             <md-checkbox type="checkbox" id="chckbox" name="IsActive" [(ngModel)]="project.isActive"></md-checkbox>
         </div>
-
-
         <div class="form-group">
             <label class="lb-label">TeamLeader:</label>
             <div class="half-width">
 
-                <md-select [(ngModel)]="project.teamLeaderId" placeholder="select">
-                    <md-option [value]="i.Id" *ngFor="let i of project.ListUsers">{{i.FirstName}}-{{i.Email}}</md-option>
-                </md-select>
+                <md2-select [(ngModel)]="project.teamLeaderId" placeholder="select">
+                    <md2-option [value]="i.Id" *ngFor="let i of project.ListUsers">{{i.FirstName}}-{{i.Email}}</md2-option>
+                </md2-select>
             </div>
-                <!--<select name="sel3" [(ngModel)]="pro.teamLeaderId">
-            <option value={{i.Id}} *ngFor="let i of pro.listUsers">{{i.FirstName}}-{{i.Email}}</option>
-        </select>-->
-            </div>
+        </div>
+        <div class="form-group">
+            <label class="lb-label"> List Of Users:</label>
+        </div>
+        <div class="half-width">
+            <md2-multiselect *ngIf="project.ApplicationUsers && project.ListUsers" [items]="project.ListUsers"
+                             [item-text]="'UniqueName'"
+                             [(ngModel)]="project.ApplicationUsers"
+                             placeholder="Placeholder Text">
+            </md2-multiselect>
+        </div>
 
-        <!--<tr>
-            <td>
-                List Of Users:
-            </td>
-            <td>
-                <md2-multiselect *ngIf="pro.applicationUsers && pro.listUsers" [items]="pro.listUsers"
-                                 [item-text]="'UniqueName'"
-                                 [(ngModel)]="pro.applicationUsers"
-                                 placeholder="Placeholder Text">
-                </md2-multiselect>
-            </td>
-        </tr>-->
 
 
         <div class="form-group">
