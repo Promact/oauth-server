@@ -44,7 +44,7 @@ namespace Promact.Oauth.Server
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
 
-            
+
             _mapperConfiguration = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile(new AutoMapperProfileConfiguration());
@@ -99,14 +99,17 @@ namespace Promact.Oauth.Server
             services.AddTransient<ISmsSender, AuthMessageSender>();
 
             services.AddOptions();
-            services.Configure<AppSettingUtil>(Configuration.GetSection(StringConstant.Url));
-
+                       
+            // Configure AppSettingUtil using code
+            services.Configure<AppSettingUtil>(appSettingUtil =>
+            {
+                appSettingUtil.PromactOAuthUrl = "http://localhost:35716";
+                appSettingUtil.CasualLeave = "14";
+                appSettingUtil.SickLeave = "7";
+            });
+            
             // Configure MyOptions using config by installing Microsoft.Extensions.Options.ConfigurationExtensions
             services.Configure<AppSettings>(Configuration);
-            
-
-            //Register AppSettings class for Email Credentials of the sender
-            services.Configure<AppSettings>(options => Configuration.GetSection("AppSettings").Bind(options));
 
             //Register Mapper
             services.AddSingleton<IMapper>(sp => _mapperConfiguration.CreateMapper());

@@ -6,7 +6,6 @@ using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Data_Repository;
 using Microsoft.AspNetCore.Identity;
 using Promact.Oauth.Server.Models.ApplicationClasses;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Promact.Oauth.Server.Models.ManageViewModels;
 using Promact.Oauth.Server.Services;
 using AutoMapper;
@@ -16,6 +15,7 @@ using Promact.Oauth.Server.Constants;
 using Microsoft.AspNetCore.Hosting;
 using Promact.Oauth.Server.Data;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Promact.Oauth.Server.Repository
 {
@@ -32,12 +32,12 @@ namespace Promact.Oauth.Server.Repository
         private readonly IDataRepository<ProjectUser> _projectUserRepository;
         private readonly IProjectRepository _projectRepository;
         private readonly IDataRepository<Project> _projectDataRepository;
-        private readonly IOptions<AppSettings> _appSetting;
+        private readonly IOptions<AppSettingUtil> _appSettingUtil;
         #endregion
 
         #region "Constructor"
 
-        public UserRepository(IDataRepository<ApplicationUser> applicationUserDataRepository, IHostingEnvironment hostingEnvironment, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IMapper mapperContext, IDataRepository<ProjectUser> projectUserRepository, IProjectRepository projectRepository, IOptions<AppSettings> appSetting, IDataRepository<Project> projectDataRepository)
+        public UserRepository(IDataRepository<ApplicationUser> applicationUserDataRepository, IHostingEnvironment hostingEnvironment, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IMapper mapperContext, IDataRepository<ProjectUser> projectUserRepository, IProjectRepository projectRepository, IOptions<AppSettingUtil> appSettingUtil, IDataRepository<Project> projectDataRepository)
         {
             _applicationUserDataRepository = applicationUserDataRepository;
             _hostingEnvironment = hostingEnvironment;
@@ -48,7 +48,7 @@ namespace Promact.Oauth.Server.Repository
             _projectRepository = projectRepository;
             _roleManager = roleManager;
             _projectDataRepository = projectDataRepository;
-            _appSetting = appSetting;
+            _appSettingUtil = appSettingUtil;
         }
 
         #endregion
@@ -96,8 +96,8 @@ namespace Promact.Oauth.Server.Repository
             var day = dateTime.Day;
             var month = dateTime.Month;
             var year = dateTime.Year;
-            double casualAllow = Convert.ToDouble(_appSetting.Value.CasualLeave);
-            double sickAllow = Convert.ToDouble(_appSetting.Value.SickLeave);
+            double casualAllow = Convert.ToDouble(_appSettingUtil.Value.CasualLeave);
+            double sickAllow = Convert.ToDouble(_appSettingUtil.Value.SickLeave);
             if (year >= DateTime.Now.Year)
             {
                 if (year - DateTime.Now.Year > 365)
@@ -163,8 +163,8 @@ namespace Promact.Oauth.Server.Repository
                 }
             }
             else {
-                casualAllow = Convert.ToDouble(_appSetting.Value.CasualLeave); 
-                sickAllowed = Convert.ToDouble(_appSetting.Value.SickLeave); 
+                casualAllow = Convert.ToDouble(_appSettingUtil.Value.CasualLeave); 
+                sickAllowed = Convert.ToDouble(_appSettingUtil.Value.SickLeave); 
             }
                 LeaveCalculator calculate = new LeaveCalculator
                 {
@@ -326,6 +326,7 @@ namespace Promact.Oauth.Server.Repository
                     userAc.FirstName = user.FirstName;
                     userAc.LastName = user.LastName;
                     userAc.UserName = user.UserName;
+                    userAc.SlackUserName = user.SlackUserName;
                 }
                 return userAc;
             }
