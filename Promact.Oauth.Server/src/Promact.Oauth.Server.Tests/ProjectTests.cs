@@ -198,7 +198,7 @@ namespace Promact.Oauth.Server.Tests
             _projectRepository.AddProject(projectac, StringConstant.CreatedBy);
             var project = _projectRepository.GetProjectByGroupName(projectac.SlackChannelName);
             Assert.Equal(projectac.TeamLeaderId, project.TeamLeaderId);
-        }                             
-               
+        }     
+           
     }
 }
