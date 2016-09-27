@@ -26,9 +26,9 @@
         </div>
         <div class="form-group" *ngIf="admin==true">
             <div class="half-width" style="position:relative">
-                <md-select class="field" name="UserRole" [(ngModel)]="user.RoleName" placeholder="User Role" required #UserRole="ngModel">
-                    <md-option [value]="role.name" *ngFor="let role of listOfRoles">{{role.name}}</md-option>
-                </md-select>
+                <md2-select class="field" name="UserRole" [(ngModel)]="user.RoleName" placeholder="User Role" required #UserRole="ngModel">
+                    <md2-option [value]="role.name" *ngFor="let role of listOfRoles">{{role.name}}</md2-option>
+                </md2-select>
             </div>
             <div [hidden]="!(UserRole.touched && !UserRole.valid && UserRole.errors.required)" class="error">Please Select User Role</div>
         </div>

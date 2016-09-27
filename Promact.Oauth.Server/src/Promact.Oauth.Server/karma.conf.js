@@ -15,40 +15,50 @@ module.exports = function (config) {
         // list of files / patterns to load in the browser
         files: [// Polyfills.
                  
-                 //'node_modules/systemjs/dist/system-polyfills.js',
-                 'node_modules/systemjs/dist/system.src.js',
-                  'node_modules/core-js/client/shim.js',
-                 'node_modules/reflect-metadata/Reflect.js',
-                 // zone.js
-                    // Zone.js dependencies
-                 'node_modules/zone.js/dist/zone.js',
-                 'node_modules/zone.js/dist/proxy.js',
-                 'node_modules/zone.js/dist/sync-test.js',
-                 'node_modules/zone.js/dist/jasmine-patch.js',
-                 'node_modules/zone.js/dist/async-test.js',
-                 'node_modules/zone.js/dist/fake-async-test.js',
-                // RxJs.
+               //'node_modules/traceur/bin/traceur-runtime.js',
+                'node_modules/es6-shim/es6-shim.js',
+                'node_modules/reflect-metadata/Reflect.js',
 
-                { pattern: 'node_modules/rxjs/**/*.js', included: false, watched: false },
-                { pattern: 'node_modules/rxjs/**/*.js.map', included: false, watched: false },
+                'node_modules/systemjs/dist/system-polyfills.js',
+                'node_modules/systemjs/dist/system.src.js',
+                'node_modules/core-js/client/shim.js',
+
+                'node_modules/zone.js/dist/zone.js',
+                'node_modules/zone.js/dist/proxy.js',
+                'node_modules/zone.js/dist/sync-test.js',
+                'node_modules/zone.js/dist/jasmine-patch.js',
+                'node_modules/zone.js/dist/async-test.js',
+                'node_modules/zone.js/dist/fake-async-test.js',
+                'node_modules/hammerjs/hammer.js',
+               // RxJs.
+
+               { pattern: 'node_modules/rxjs/**/*.js', included: false, watched: false },
+               { pattern: 'node_modules/rxjs/**/*.js.map', included: false, watched: false },
 
 
-                { pattern: 'node_modules/md2/**/*.js', included: false, watched: true },
-                { pattern: 'node_modules/md2/**/*.js.map', included: false, watched: true },
+               { pattern: 'node_modules/md2/**/*.js', included: false, watched: true },
+               { pattern: 'node_modules/md2/**/*.js.map', included: false, watched: true },
 
-                // paths loaded via module imports
-                // Angular itself
+               // paths loaded via module imports
+               // Angular itself
+               'karma-test-shim.js',
+               { pattern: 'node_modules/@angular/**/*.js', included: false, watched: true },
+               { pattern: 'node_modules/@angular/**/*.js.map', included: false, watched: false },
 
-                { pattern: 'node_modules/@angular/**/*.js', included: false, watched: true },
-                { pattern: 'node_modules/@angular/**/*.js.map', included: false, watched: false },
-                { pattern: 'node_modules/lodash/*.js', included: false, watched: true },
-                 'karma-test-shim.js',
+               { pattern: 'node_modules/@angular2-material/**/*.js', included: false, watched: true },
+               { pattern: 'node_modules/@angular2-material/**/*.js.map', included: false, watched: false },
+
+               { pattern: 'node_modules/lodash/*.js', included: false, watched: true },
+               { pattern: 'node_modules/lodash/**/*.js', included: false, watched: true },
+
+               { pattern: 'node_modules/hammerjs/hammer.js', included: false, watched: true },
+
 
                 { pattern: 'wwwroot/app/**/*.js', included: false, watched: true },
-                { pattern: 'wwwroot/app/**/*.html', included: false, watched: true },
-                 //// paths to support debugging with source maps in dev tools
-                { pattern: 'wwwroot/app/**/*.ts', included: false, watched: false },
-                { pattern: 'wwwroot/app/**/*.js.map', included: false, watched: false },
+               { pattern: 'wwwroot/app/**/*.html', included: false, watched: true },
+                //// paths to support debugging with source maps in dev tools
+               { pattern: 'wwwroot/app/**/*.ts', included: false, watched: false },
+               { pattern: 'wwwroot/app/**/*.js.map', included: false, watched: false },
         ],
 
 
@@ -60,19 +70,19 @@ module.exports = function (config) {
         //// preprocess matching files before serving them to the browser
         //// available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
-            'src/**/*.js': ['coverage']
+            'wwwroot/app/**/!(*spec).js': ['coverage']
         },
 
 
         // test results reporter to use
         // possible values: 'dots', 'progress'
         // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-        reporters: ['progress', 'coverage', 'coveralls'],
+        reporters: ['progress', 'dots', 'coverage'],
 
         coverageReporter: {
-            type: 'lcov', // lcov or lcovonly are required for generating lcov.info files
-            dir: 'coverage/'
-        },
+            reporters:[
+                { type: 'html', subdir: 'report-html' },
+                { type: 'json', subdir: '.', file: 'coverage-final.json' }]},
 
         // web server port
         port: 9876,
@@ -115,8 +125,7 @@ module.exports = function (config) {
         plugins: [
             'karma-jasmine',
             'karma-chrome-launcher',
-            'karma-coverage',
-            'karma-coveralls'
+            'karma-coverage'
         ],
     })
 

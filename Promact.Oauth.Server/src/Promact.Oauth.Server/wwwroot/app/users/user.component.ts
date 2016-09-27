@@ -6,7 +6,7 @@ import {UserService} from './user.service';
 @Component({
     template: `
     <router-outlet></router-outlet>`,
-    providers: [UserService]
+    providers: [UserService, LoginService]
 })
 
 export class UserComponent {

@@ -2,14 +2,13 @@
 import { ProjectService }   from '../project.service';
 import {projectModel} from '../project.model'
 import {  Router } from '@angular/router';
-//import {Md2Toast} from 'md2/toast';
+import {Md2Toast} from 'md2/toast';
 import { LoginService } from '../../login.service';
 
 
 @Component({
     templateUrl: "app/project/project-list/project-list.html",
-    //directives: [ROUTER_DIRECTIVES],
-    //providers: [Md2Toast],
+    providers: [Md2Toast],
     
 })
 export class ProjectListComponent{
@@ -17,7 +16,7 @@ export class ProjectListComponent{
     project: projectModel;
     user: any;
     admin: any;
-    constructor(private router: Router, private projectService: ProjectService, /*private toast: Md2Toast,*/ private loginService: LoginService) {
+    constructor(private router: Router, private projectService: ProjectService,private toast: Md2Toast, private loginService: LoginService) {
         this.projects = new Array<projectModel>();
         this.project = new projectModel();
     }

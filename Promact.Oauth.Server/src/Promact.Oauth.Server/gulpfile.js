@@ -7,7 +7,9 @@ var gulp = require("gulp"),
     cssmin = require("gulp-cssmin"),
     uglify = require("gulp-uglify"),
     sysBuilder = require('systemjs-builder'),
+    remapIstanbul = require('remap-istanbul'),
     Server = require('karma').Server;
+
 
 var paths = {
     webroot: "./wwwroot/"
@@ -37,8 +39,6 @@ gulp.task("copytowwwroot", function () {
     ]).pipe(gulp.dest('./wwwroot/lib/@angular'));
 
 
-
-
     gulp.src([
     'node_modules/@angular2-material/**/*.js'
     ]).pipe(gulp.dest('./wwwroot/lib/@angular2-material'));
@@ -48,10 +48,10 @@ gulp.task("copytowwwroot", function () {
       'node_modules/rxjs/**/*.js'
     ]).pipe(gulp.dest('./wwwroot/lib/rxjs'));
 
-    //gulp.src([
-    //    'node_modules/md2/src/components/**/*.js',
-    //    'node_modules/md2/src/components/**/*.js.map'
-    //]).pipe(gulp.dest('./wwwroot/lib/md2'));
+    gulp.src([
+        'node_modules/md2/**/*.js',
+        'node_modules/md2/**/*.js.map'
+    ]).pipe(gulp.dest('./wwwroot/lib/md2'));
 
 });
 
