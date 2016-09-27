@@ -12,7 +12,7 @@ namespace Promact.Oauth.Server.Constants
         public static string ConsumerAppNameDemo2 = "Demo Name2";
         public static string ConsumerAppNameDemo3 = "Demo Name3";
         public static string ConsumerAppNameDemo4 = "Demo Name4";
-        public static string ConsumerAppNameDemo5 = "Demo Name5"; 
+        public static string ConsumerAppNameDemo5 = "Demo Name5";
         public static string ConsumerAppNameDemo6 = "Demo Name6";
         public static string ConsumerAppNameDemo7 = "Demo Name7";
         public static string ConsumerAppNameDemo8 = "Demo Name8";

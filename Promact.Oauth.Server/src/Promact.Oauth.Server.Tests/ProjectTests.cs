@@ -175,5 +175,30 @@ namespace Promact.Oauth.Server.Tests
             Task<IEnumerable<ProjectAc>> projects = _projectRepository.GetAllProjects();
             Assert.NotNull(projects);
         }
+
+        /// <summary>
+        /// Fetches Users of the given Project Name(slack channel name)
+        /// </summary>
+        [Fact, Trait("Category", "A")]
+        public void GetProjectUserByGroupName()
+        {
+            _projectRepository.AddProject(projectac, StringConstant.CreatedBy);
+            _projectRepository.AddUserProject(projectUser);
+            var projectUsers = _projectRepository.GetProjectUserByGroupName(projectac.SlackChannelName);
+            Assert.NotEqual(projectUsers.Count, 2);
+        }
+
+       
+        /// <summary>
+        /// Fetch the project of the given slack channel name 
+        /// </summary>
+        [Fact, Trait("Category", "A")]
+        public void GetProjectByGroupName()
+        {
+            _projectRepository.AddProject(projectac, StringConstant.CreatedBy);
+            var project = _projectRepository.GetProjectByGroupName(projectac.SlackChannelName);
+            Assert.Equal(projectac.TeamLeaderId, project.TeamLeaderId);
+        }                             
+               
     }
 }
