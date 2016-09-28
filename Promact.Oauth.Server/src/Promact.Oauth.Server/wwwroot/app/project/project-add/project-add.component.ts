@@ -1,15 +1,15 @@
-﻿import {Component} from "@angular/core";
-import { ProjectService }   from '../project.service';
-import {projectModel} from '../project.model'
-import {UserModel} from '../../users/user.model';
-import {  Router, ActivatedRoute } from '@angular/router';
-import {Md2Toast} from 'md2/toast';
+﻿import { Component } from "@angular/core";
+import { ProjectService } from '../project.service';
+import { projectModel } from '../project.model'
+import { UserModel } from '../../users/user.model';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Md2Toast } from 'md2/toast';
 
 
 
 @Component({
     templateUrl: "app/project/project-add/project-add.html",
-     providers: [Md2Toast]
+    providers: [Md2Toast]
 })
 export class ProjectAddComponent {
 
@@ -38,16 +38,16 @@ export class ProjectAddComponent {
             if (project.name == null && project.slackChannelName == null) {
                 this.toast.show("Project and slackChannelName already exists");
                 this.proService.getUsers().subscribe(listUsers => {
-                    this.project.ListUsers = listUsers;
-                    this.project.ApplicationUsers = new Array<UserModel>();
+                    this.project.listUsers = listUsers;
+                    this.project.applicationUsers = new Array<UserModel>();
 
                 });
             }
             else if (project.name != null && project.slackChannelName == null) {
                 this.toast.show("slackChannelName already exists");
                 this.proService.getUsers().subscribe(listUsers => {
-                    this.project.ListUsers = listUsers;
-                    this.project.ApplicationUsers = new Array<UserModel>();
+                    this.project.listUsers = listUsers;
+                    this.project.applicationUsers = new Array<UserModel>();
 
                 });
 
@@ -55,8 +55,8 @@ export class ProjectAddComponent {
             else if (project.name == null && project.slackChannelName != null) {
                 this.toast.show("Project already exists");
                 this.proService.getUsers().subscribe(listUsers => {
-                    this.project.ListUsers = listUsers;
-                    this.project.ApplicationUsers = new Array<UserModel>();
+                    this.project.listUsers = listUsers;
+                    this.project.applicationUsers = new Array<UserModel>();
 
                 });
             }
@@ -76,8 +76,8 @@ export class ProjectAddComponent {
         this.project = new projectModel();
         this.sub = this.route.params.subscribe(params => {
             this.proService.getUsers().subscribe(listUsers => {
-                this.project.ListUsers = listUsers;
-                this.project.ApplicationUsers = new Array<UserModel>();
+                this.project.listUsers = listUsers;
+                this.project.applicationUsers = new Array<UserModel>();
 
             });
         });
@@ -89,3 +89,4 @@ export class ProjectAddComponent {
     }
 
 }
+

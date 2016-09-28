@@ -42,7 +42,7 @@
             <label>TeamLeader:</label>
             <div class="half-width">
                 <md2-select [(ngModel)]="project.teamLeaderId" disabled>
-                    <md2-option [value]="i.Id" *ngFor="let i of project.ListUsers">{{i.FirstName}}-{{i.Email}}</md2-option>
+                    <md2-option [value]="i.Id" *ngFor="let i of project.listUsers">{{i.FirstName}}-{{i.Email}}</md2-option>
                 </md2-select>
             </div>
         </div>
@@ -50,16 +50,16 @@
 
         <div class="form-group">
 
-            <label>List Of Users:</label>
+            <label>List Of Team Members:</label>
 
 
             <!--<md-select disabled>
                 <md-option [value]="i.Id" *ngFor="let ul of pro.applicationUsers">{{ul.FirstName}}-{{ul.Email}}</md-option>
             </md-select>-->
-            <md2-multiselect *ngIf="project.ApplicationUsers && project.listUsers" [items]="project.ListUsers"
+            <md2-multiselect *ngIf="project.applicationUsers && project.listUsers" [items]="project.listUsers"
                              [item-text]="'UniqueName'"
-                             [(ngModel)]="project.ApplicationUsers"
-                             placeholder="Placeholder Text">
+                             [(ngModel)]="project.applicationUsers"
+                             placeholder="Placeholder Text" disabled>
             </md2-multiselect>
 
             <!--<select multiple disabled>

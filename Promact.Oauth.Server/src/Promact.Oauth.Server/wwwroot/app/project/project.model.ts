@@ -1,4 +1,4 @@
-﻿import {UserModel} from '../users/user.model'
+﻿import { UserModel } from '../users/user.model'
 export class projectModel {
     Id: number;
     Name: string;
@@ -11,6 +11,7 @@ export class projectModel {
     UpdatedDate: string;
     UniqueName: String;
     TeamLeader: UserModel;
-    ListUsers: Array<UserModel>;
-    ApplicationUsers: Array<UserModel>;
-} 
+    listUsers: Array<UserModel>;
+    applicationUsers: Array<UserModel>;
+}
+

@@ -1,9 +1,9 @@
-﻿import {Component, OnInit} from "@angular/core";
-import { ProjectService }   from '../project.service';
-import {projectModel} from '../project.model';
-import {UserModel} from '../../users/user.model';
-import {  Router, ActivatedRoute } from '@angular/router';
-import {Location} from "@angular/common";
+﻿import { Component, OnInit } from "@angular/core";
+import { ProjectService } from '../project.service';
+import { projectModel } from '../project.model';
+import { UserModel } from '../../users/user.model';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Location } from "@angular/common";
 @Component({
     templateUrl: "app/project/project-view/project-view.html",
 })
@@ -25,21 +25,21 @@ export class ProjectViewComponent implements OnInit {
             this.service.getProject(id).subscribe(project => {
                 this.project = project;
                 this.service.getUsers().subscribe(ListUsers => {
-                    this.project.ListUsers = ListUsers;
-                    if (!this.project.ApplicationUsers)
-                        this.project.ApplicationUsers = new Array<UserModel>();
-                    for (let i = 0; i < this.project.ListUsers.length; i++) {
-                        for (let j = 0; j < this.project.ApplicationUsers.length; j++) {
-                            if (this.project.ListUsers[i].Id == this.project.ApplicationUsers[j].Id) {
-                                this.project.ApplicationUsers[j].Email = this.project.ListUsers[i].Email;
-                                this.project.ApplicationUsers[j].IsActive = this.project.ListUsers[i].IsActive;
-                                this.project.ApplicationUsers[j].LastName = this.project.ListUsers[i].LastName;
-                                this.project.ApplicationUsers[j].UserName = this.project.ListUsers[i].UserName;
-                                this.project.ApplicationUsers[j].UniqueName = this.project.ListUsers[i].UniqueName;
-                                this.project.ApplicationUsers[j].NumberOfCasualLeave = this.project.ListUsers[i].NumberOfCasualLeave;
-                                this.project.ApplicationUsers[j].NumberOfSickLeave = this.project.ListUsers[i].NumberOfSickLeave;
-                                this.project.ApplicationUsers[j].JoiningDate = this.project.ListUsers[i].JoiningDate;
-                                this.project.ApplicationUsers[j].SlackUserName = this.project.ListUsers[i].SlackUserName;
+                    this.project.listUsers = ListUsers;
+                    if (!this.project.applicationUsers)
+                        this.project.applicationUsers = new Array<UserModel>();
+                    for (let i = 0; i < this.project.listUsers.length; i++) {
+                        for (let j = 0; j < this.project.applicationUsers.length; j++) {
+                            if (this.project.listUsers[i].Id == this.project.applicationUsers[j].Id) {
+                                this.project.applicationUsers[j].Email = this.project.listUsers[i].Email;
+                                this.project.applicationUsers[j].IsActive = this.project.listUsers[i].IsActive;
+                                this.project.applicationUsers[j].LastName = this.project.listUsers[i].LastName;
+                                this.project.applicationUsers[j].UserName = this.project.listUsers[i].UserName;
+                                this.project.applicationUsers[j].UniqueName = this.project.listUsers[i].UniqueName;
+                                this.project.applicationUsers[j].NumberOfCasualLeave = this.project.listUsers[i].NumberOfCasualLeave;
+                                this.project.applicationUsers[j].NumberOfSickLeave = this.project.listUsers[i].NumberOfSickLeave;
+                                this.project.applicationUsers[j].JoiningDate = this.project.listUsers[i].JoiningDate;
+                                this.project.applicationUsers[j].SlackUserName = this.project.listUsers[i].SlackUserName;
                             }
                         }
                     }

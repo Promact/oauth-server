@@ -106,9 +106,9 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             List<UserAc> applicationUserList = new List<UserAc>();
             var project = await _projectDataRepository.FirstOrDefaultAsync(x => x.Id == id);
             List<ProjectUser> projectUserList = _projectUserDataRepository.Fetch(y => y.ProjectId == project.Id).ToList();
-            foreach (ProjectUser pu in projectUserList)
+            foreach (ProjectUser projectUsers in projectUserList)
             {
-                var applicationUser = _userDataRepository.FirstOrDefault(z => z.Id == pu.UserId);
+                var applicationUser = _userDataRepository.FirstOrDefault(z => z.Id == projectUsers.UserId);
                 applicationUserList.Add(new UserAc
                 {
                     Id = applicationUser.Id,
