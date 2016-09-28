@@ -1,10 +1,10 @@
-﻿import {Component, OnInit, EventEmitter, Output} from "@angular/core";
-import {Location} from "@angular/common";
-import { ProjectService }   from '../project.service';
-import {projectModel} from '../project.model'
-import {UserModel} from '../../users/user.model';
+﻿import { Component, OnInit, EventEmitter, Output } from "@angular/core";
+import { Location } from "@angular/common";
+import { ProjectService } from '../project.service';
+import { projectModel } from '../project.model'
+import { UserModel } from '../../users/user.model';
 import { Router, ActivatedRoute } from '@angular/router';
-import {Md2Toast} from 'md2/toast';
+import { Md2Toast } from 'md2/toast';
 
 @Component({
     templateUrl: "app/project/project-edit/project-edit.html",
@@ -27,30 +27,29 @@ export class ProjectEditComponent implements OnInit {
      */
     ngOnInit() {
         this.project = new projectModel();
-        this.project.ListUsers = new Array<UserModel>();
-        this.project.ApplicationUsers = new Array<UserModel>();
+        this.project.listUsers = new Array<UserModel>();
+        this.project.applicationUsers = new Array<UserModel>();
         this.route.params.subscribe(params => {
             let id = +params['id']; // (+) converts string 'id' to a number
             this.service.getProject(id).subscribe(project => {
                 this.project = project;
-                this.project.ApplicationUsers = project.applicationUsers;
+                //this.project.applicationUsers = project.applicationUsers;
                 this.service.getUsers().subscribe(listUsers => {
-                    this.project.ListUsers = listUsers;
-                    if (!this.project.ApplicationUsers)
-                        this.project.ApplicationUsers = new Array<UserModel>();
-                    for (let i = 0; i < this.project.ListUsers.length; i++) {
-                        for (let j = 0; j < this.project.ApplicationUsers.length; j++)
-                            {
-                            if (this.project.ListUsers[i].Id == this.project.ApplicationUsers[j].Id) {
-                                this.project.ApplicationUsers[j].Email = this.project.ListUsers[i].Email;
-                                this.project.ApplicationUsers[j].IsActive = this.project.ListUsers[i].IsActive;
-                                this.project.ApplicationUsers[j].LastName = this.project.ListUsers[i].LastName;
-                                this.project.ApplicationUsers[j].UserName = this.project.ListUsers[i].UserName;
-                                this.project.ApplicationUsers[j].UniqueName = this.project.ListUsers[i].UniqueName;
-                                this.project.ApplicationUsers[j].NumberOfCasualLeave = this.project.ListUsers[i].NumberOfCasualLeave;
-                                this.project.ApplicationUsers[j].NumberOfSickLeave = this.project.ListUsers[i].NumberOfSickLeave;
-                                this.project.ApplicationUsers[j].JoiningDate = this.project.ListUsers[i].JoiningDate;
-                                this.project.ApplicationUsers[j].SlackUserName = this.project.ListUsers[i].SlackUserName;
+                    this.project.listUsers = listUsers;
+                    if (!this.project.applicationUsers)
+                        this.project.applicationUsers = new Array<UserModel>();
+                    for (let i = 0; i < this.project.listUsers.length; i++) {
+                        for (let j = 0; j < this.project.applicationUsers.length; j++) {
+                            if (this.project.listUsers[i].Id == this.project.applicationUsers[j].Id) {
+                                this.project.applicationUsers[j].Email = this.project.listUsers[i].Email;
+                                this.project.applicationUsers[j].IsActive = this.project.listUsers[i].IsActive;
+                                this.project.applicationUsers[j].LastName = this.project.listUsers[i].LastName;
+                                this.project.applicationUsers[j].UserName = this.project.listUsers[i].UserName;
+                                this.project.applicationUsers[j].UniqueName = this.project.listUsers[i].UniqueName;
+                                this.project.applicationUsers[j].NumberOfCasualLeave = this.project.listUsers[i].NumberOfCasualLeave;
+                                this.project.applicationUsers[j].NumberOfSickLeave = this.project.listUsers[i].NumberOfSickLeave;
+                                this.project.applicationUsers[j].JoiningDate = this.project.listUsers[i].JoiningDate;
+                                this.project.applicationUsers[j].SlackUserName = this.project.listUsers[i].SlackUserName;
                             }
                         }
                     }
@@ -59,7 +58,7 @@ export class ProjectEditComponent implements OnInit {
         });
     }
 
-    
+
 
     /**
      * navigation to projects page
@@ -74,25 +73,26 @@ export class ProjectEditComponent implements OnInit {
      */
     editProject(project: projectModel) {
         this.service.editProject(project).subscribe((project) => {
-               if (project.name == null && project.slackChannelName == null) {
+            if (project.name == null && project.slackChannelName == null) {
                 this.toast.show("Project and slackChannelName already exists");
             }
-               else if (project.name != null && project.slackChannelName == null) {
+            else if (project.name != null && project.slackChannelName == null) {
                 this.toast.show("slackChannelName already exists");
             }
-               else if (project.name == null && project.slackChannelName != null) {
+            else if (project.name == null && project.slackChannelName != null) {
                 this.toast.show("Project already exists");
             }
             else {
                 this.toast.show("Project Successfully Updated.");
                 this.router.navigate(['/project/list'])
             }
-           
-            
+
+
         }, err => {
 
         });
     }
-    
-    
+
+
 }
+
