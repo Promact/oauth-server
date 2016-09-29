@@ -46,4 +46,9 @@ export class UserService {
     getRoles() {
         return this.httpService.get(this.UserUrl + "/getRole");
     }
+
+    reSendMail(id: string) {
+        return this.httpService.get(this.UserUrl + "/reSendMail" + "/" + id);
+    }
+
 }

@@ -74,27 +74,27 @@ namespace Promact.Oauth.Server.Controllers
         }
 
 
-          /**
-          * @api {get} api/User/GetUserById/:id 
-          * @apiVersion 1.0.0
-          * @apiName User
-          * @apiGroup User
-          * @apiParam {int} id User Id
-          * @apiParamExample {json} Request-Example:
-          *      
-          *        {
-          *             "id": "1"
-          *             "description":"get the UserAc Object"
-          *        }      
-          * @apiSuccessExample {json} Success-Response:
-          * HTTP/1.1 200 OK 
-          * {
-          *     "id":"1"
-          *     "description":"get the UserAc Object"
-          * }
-          */
+        /**
+        * @api {get} api/User/GetUserById/:id 
+        * @apiVersion 1.0.0
+        * @apiName User
+        * @apiGroup User
+        * @apiParam {int} id User Id
+        * @apiParamExample {json} Request-Example:
+        *      
+        *        {
+        *             "id": "1"
+        *             "description":"get the UserAc Object"
+        *        }      
+        * @apiSuccessExample {json} Success-Response:
+        * HTTP/1.1 200 OK 
+        * {
+        *     "id":"1"
+        *     "description":"get the UserAc Object"
+        * }
+        */
 
-        
+
         [HttpGet]
         [Route("{id}")]
         [Authorize(Roles = "Admin,Employee")]
@@ -137,7 +137,7 @@ namespace Promact.Oauth.Server.Controllers
          * }
          */
 
-        
+
         [HttpPost]
         [Route("add")]
         [Authorize(Roles = "Admin")]
@@ -148,7 +148,7 @@ namespace Promact.Oauth.Server.Controllers
                 string createdBy = _userManager.GetUserId(User);
                 if (ModelState.IsValid)
                 {
-                   await _userRepository.AddUser(newUser, createdBy);
+                    await _userRepository.AddUser(newUser, createdBy);
                     return Ok(true);
                 }
                 return Ok(false);
@@ -272,9 +272,9 @@ namespace Promact.Oauth.Server.Controllers
                 throw ex;
             }
         }
-                             
 
-       
+
+
         [HttpGet]
         [Route("fetchbyusername/{userName}")]
         public async Task<IActionResult> FetchByUserName(string userName)
@@ -377,6 +377,30 @@ namespace Promact.Oauth.Server.Controllers
         {
             return Ok(await _userRepository.GetUserDetailByUserName(userName));
         }
+
+        /**
+          * @api {get} api/User/ReSendMail/:id 
+          * @apiVersion 1.0.0
+          * @apiName ReSendMail
+          * @apiParam {string} id
+          * @apiParamExample {json} Request-Example:
+          *      
+          *        {
+          *             "id": "adssdvvsdv55gdfgdsgbc"
+          *        }      
+          * @apiSuccessExample {json} Success-Response:
+          * HTTP/1.1 200 OK 
+          * {
+          *     "description":"true"
+          * }
+          */
+        [HttpGet]
+        [Route("reSendMail/{id}")]
+        public async Task<IActionResult> ReSendMail(string id)
+        {
+            return Ok(await _userRepository.ReSendMail(id));
+        }
+
         #endregion
     }
 }

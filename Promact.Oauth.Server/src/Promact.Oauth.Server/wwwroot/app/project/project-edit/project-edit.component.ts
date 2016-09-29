@@ -4,7 +4,7 @@ import { ProjectService } from '../project.service';
 import { projectModel } from '../project.model'
 import { UserModel } from '../../users/user.model';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Md2Toast } from 'md2/toast';
+import { Md2Toast } from 'md2/toast/toast';
 
 @Component({
     templateUrl: "app/project/project-edit/project-edit.html",

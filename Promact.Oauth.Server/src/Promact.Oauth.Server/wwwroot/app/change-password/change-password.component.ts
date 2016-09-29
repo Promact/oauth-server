@@ -3,9 +3,8 @@ import { UserService }   from '../users/user.service';
 import {PasswordModel} from '../users/user-password.model';
 import { FormBuilder, Validators } from '@angular/forms';
 import {Router} from '@angular/router';
-import {Md2Toast} from 'md2/toast';
+import { Md2Toast } from 'md2/toast/toast';
 import {Location} from "@angular/common";
-
 
 @Component({
     templateUrl: './app/change-password/change-password.html',
@@ -19,7 +18,7 @@ export class ChangePasswordComponent {
     @Input()
     passwordModel: PasswordModel;
 
-    constructor(private userService: UserService, private redirectionRoute: Router ,private toast: Md2Toast) {
+    constructor(private userService: UserService, private redirectionRoute: Router, private toast: Md2Toast) {
         this.passwordModel = new PasswordModel();
         this.isNotMatch = false;
     }
@@ -33,7 +32,6 @@ export class ChangePasswordComponent {
             else if (result == false) {
                 this.toast.show('Wrong password');
             }
-
         }, err => {
 
         });
