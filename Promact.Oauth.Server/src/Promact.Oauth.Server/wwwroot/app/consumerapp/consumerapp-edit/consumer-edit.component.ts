@@ -2,9 +2,9 @@
 import {ConsumerAppModel} from '../consumerapp-model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ConsumerAppService} from '../consumerapp.service';
-import {Md2Toast} from 'md2/toast';
+import { Md2Toast } from 'md2/toast/toast';
 import {Location} from "@angular/common";
-
+import { LoaderService } from '../../shared/loader.service';
 
 @Component({
     templateUrl: "app/consumerapp/consumerapp-edit/consumerapp-edit.html",
@@ -14,7 +14,7 @@ import {Location} from "@angular/common";
 export class ConsumerappEditComponent {
     consumerModel: ConsumerAppModel;
     private sub: any;
-    constructor(private router: Router, private consumerAppService: ConsumerAppService, private route: ActivatedRoute,private toast: Md2Toast,private location: Location) {
+    constructor(private router: Router, private consumerAppService: ConsumerAppService, private route: ActivatedRoute, private toast: Md2Toast, private location: Location, private  loader:LoaderService) {
         this.consumerModel = new ConsumerAppModel();
     }
 
@@ -37,6 +37,7 @@ export class ConsumerappEditComponent {
     }
 
     updateApps(consumerModel) {
+        this.loader.loader = true;
         this.consumerAppService.updateConsumerApps(consumerModel).subscribe((result) => {
             if (result == true) {
                 this.toast.show('Consumer App is updated successfully.');

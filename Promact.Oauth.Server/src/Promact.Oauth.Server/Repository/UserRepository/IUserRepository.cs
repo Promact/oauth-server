@@ -133,5 +133,12 @@ namespace Promact.Oauth.Server.Repository
         /// <param name="userName"></param>
         /// <returns>true or false</returns>
         Task<bool> IsAdmin(string userName);
-    }
+
+        /// <summary>
+        /// This method used for re -send mail for user credentails
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<bool> ReSendMail(string id);
+     }
 }

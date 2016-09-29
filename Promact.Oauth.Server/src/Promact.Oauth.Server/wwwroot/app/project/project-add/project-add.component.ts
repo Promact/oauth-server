@@ -1,9 +1,9 @@
-﻿import { Component } from "@angular/core";
-import { ProjectService } from '../project.service';
-import { projectModel } from '../project.model'
-import { UserModel } from '../../users/user.model';
-import { Router, ActivatedRoute } from '@angular/router';
-import { Md2Toast } from 'md2/toast';
+﻿import {Component} from "@angular/core";
+import { ProjectService }   from '../project.service';
+import {projectModel} from '../project.model'
+import {UserModel} from '../../users/user.model';
+import {  Router, ActivatedRoute } from '@angular/router';
+import { Md2Toast } from 'md2/toast/toast';
 
 
 

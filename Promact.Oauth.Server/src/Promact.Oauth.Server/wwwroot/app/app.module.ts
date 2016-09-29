@@ -13,6 +13,7 @@ import { ChangePasswordModule } from "./change-password/change-password.module";
 import { LoginService } from "./login.service";
 import { MdSidenavModule } from "@angular2-material/sidenav";
 import { MdToolbarModule } from "@angular2-material/toolbar";
+import { LoaderService } from "./shared/loader.service";
 
 @NgModule({
     declarations: [AppComponent],
@@ -28,7 +29,7 @@ import { MdToolbarModule } from "@angular2-material/toolbar";
         ChangePasswordModule,
     ],
     bootstrap: [AppComponent],
-    providers: [HttpService, LoginService, { provide: LocationStrategy, useClass: HashLocationStrategy }
+    providers: [HttpService, LoginService, LoaderService, { provide: LocationStrategy, useClass: HashLocationStrategy }
     ],
 })
 export class AppModule { }

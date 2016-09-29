@@ -5,7 +5,7 @@ import { LoginService } from '../../login.service';
 
 import { UserService }   from '../user.service';
 import {UserModel} from '../user.model';
-import {Md2Toast} from 'md2/toast';
+import { Md2Toast } from 'md2/toast/toast';
 
 @Component({
     templateUrl: './app/users/user-edit/user-edit.html',

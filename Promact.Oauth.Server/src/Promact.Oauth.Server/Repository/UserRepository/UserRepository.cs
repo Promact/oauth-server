@@ -70,11 +70,12 @@ namespace Promact.Oauth.Server.Repository
                 var user = _mapperContext.Map<UserAc, ApplicationUser>(newUser);
                 user.UserName = user.Email;
                 user.CreatedBy = createdBy;
-                user.CreatedDateTime = DateTime.UtcNow;                
-                var result = _userManager.CreateAsync(user, "User@123");
+                user.CreatedDateTime = DateTime.UtcNow;
+                string password = GetRandomString();
+                var result = _userManager.CreateAsync(user, password);
                 var resultSuccess = await result;
                 result = _userManager.AddToRoleAsync(user, newUser.RoleName);
-                SendEmail(user);
+                SendEmail(user, password);
                 resultSuccess = await result;
                 return user.Id;
             }
@@ -162,16 +163,17 @@ namespace Promact.Oauth.Server.Repository
                     sickAllowed = Convert.ToInt32(Math.Floor(sickAllowed));
                 }
             }
-            else {
-                casualAllow = Convert.ToDouble(_appSettingUtil.Value.CasualLeave); 
-                sickAllowed = Convert.ToDouble(_appSettingUtil.Value.SickLeave); 
+            else
+            {
+                casualAllow = Convert.ToDouble(_appSettingUtil.Value.CasualLeave);
+                sickAllowed = Convert.ToDouble(_appSettingUtil.Value.SickLeave);
             }
-                LeaveCalculator calculate = new LeaveCalculator
-                {
-                    CasualLeave = casualAllowed,
-                    SickLeave = sickAllowed
-                };
-            
+            LeaveCalculator calculate = new LeaveCalculator
+            {
+                CasualLeave = casualAllowed,
+                SickLeave = sickAllowed
+            };
+
             return calculate;
         }
 
@@ -366,21 +368,31 @@ namespace Promact.Oauth.Server.Repository
         }
 
         /// <summary>
-        /// This method is used to send email to the currently added user
+        /// This method used for re -send mail for user credentails
         /// </summary>
-        /// <param name="user">Object of newly registered User</param>
-        private void SendEmail(ApplicationUser user)
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<bool> ReSendMail(string id)
         {
-            string path = _hostingEnvironment.ContentRootPath + StringConstant.UserDetialTemplateFolderPath;
-            string finaleTemplate = "";
-            if (System.IO.File.Exists(path))
+            try
             {
-                finaleTemplate = System.IO.File.ReadAllText(path);
-                finaleTemplate = finaleTemplate.Replace(StringConstant.UserEmail, user.Email).Replace(StringConstant.UserPassword, StringConstant.DefaultUserPassword).Replace(StringConstant.ResertPasswordUserName, user.FirstName);
-                _emailSender.SendEmailAsync(user.Email, StringConstant.LoginCredentials, finaleTemplate);
+                var user = await _userManager.FindByIdAsync(id);
+                string newPassword = GetRandomString();
+                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                IdentityResult result = await _userManager.ResetPasswordAsync(user,code,newPassword);
+                if (result.Succeeded)
+                {
+                    SendEmail(user, newPassword);
+                    return true;
+                }
+                return false;
             }
-        }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
 
+        }
 
         /// <summary>
         /// Method to get user details by user first name
@@ -500,6 +512,8 @@ namespace Promact.Oauth.Server.Repository
         }
 
 
+        #region Private Methods
+
         /// <summary>
         /// Method is used to return a user after assigning a role and mapping from ApplicationUser class to UserAc class
         /// </summary>
@@ -535,6 +549,37 @@ namespace Promact.Oauth.Server.Repository
             }
             return null;
         }
+
+
+        /// <summary>
+        /// This method is used to send email to the currently added user
+        /// </summary>
+        /// <param name="user">Object of newly registered User</param>
+        private void SendEmail(ApplicationUser user, string password)
+        {
+            string path = _hostingEnvironment.ContentRootPath + StringConstant.UserDetialTemplateFolderPath;
+            string finaleTemplate = "";
+            if (System.IO.File.Exists(path))
+            {
+                finaleTemplate = System.IO.File.ReadAllText(path);
+                finaleTemplate = finaleTemplate.Replace(StringConstant.UserEmail, user.Email).Replace(StringConstant.UserPassword, password).Replace(StringConstant.ResertPasswordUserName, user.FirstName);
+                _emailSender.SendEmailAsync(user.Email, StringConstant.LoginCredentials, finaleTemplate);
+            }
+        }
+
+        /// <summary>
+        /// This method used for genrate random string. 
+        /// </summary>
+        /// <returns></returns>
+        private string GetRandomString()
+        {
+            Random random = new Random();
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            string randomString = new string(Enumerable.Repeat(chars, 8).Select(s => s[random.Next(8)]).ToArray());
+            return "User00" + "_" + randomString; 
+        }
+
+        #endregion
 
         #endregion
     }

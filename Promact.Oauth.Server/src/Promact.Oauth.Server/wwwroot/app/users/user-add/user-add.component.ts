@@ -2,7 +2,7 @@
 import { UserService }   from '../user.service';
 import {UserModel} from '../user.model';
 import {Router, ActivatedRoute} from '@angular/router';
-import {Md2Toast} from 'md2/toast';
+import { Md2Toast } from 'md2/toast/toast';
 
 
 

@@ -1,12 +1,8 @@
 ﻿
 <div class="main-wrapper">
     <md-sidenav-layout class="demo-sidenav-layout">
-        <!--Main Navigation-->
-
         <md-sidenav #start mode="side" opened="true" class="sm-side-menu">
-
             <div class="brand">Promact Oauth</div>
-
             <ul>
                 <li>
                     <a routerLink="user" routerLinkActive="active"><i class="fa fa-users" aria-hidden="true"></i>Users</a>
@@ -22,10 +18,8 @@
                 </li>
             </ul>
         </md-sidenav>
-
         <div class="demo-sidenav-content">
             <md-toolbar>
-
                 <div class="logout-link">
                     <button id="menu-button" (click)="start.toggle()"><i class="material-icons">menu</i></button>
                     <a href="/LogOff" class="fl-right">LOGOUT</a>
@@ -35,12 +29,13 @@
                 <router-outlet></router-outlet>
             </div>
         </div>
-
-
     </md-sidenav-layout>
-
-
-
-    <!--Main Content Area-->
-
+    
+    <div *ngIf="loader.loader">
+        <div class="overlay">
+        </div>
+        <div class="loader">
+            <svg width="1em" height="1em"><circle cx="0.5em" cy="0.5em" r="0.45em" /></svg>
+        </div>
+    </div>
 </div>
