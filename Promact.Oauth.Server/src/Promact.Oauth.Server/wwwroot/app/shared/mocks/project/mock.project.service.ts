@@ -18,7 +18,7 @@ export class MockProjectService {
     getProjects() {
         let mockProject = new MockProject();
         let mockProjectList = new Array<MockProject>();
-        mockProject.Name = "slack";
+        mockProject.name = "slack";
         mockProject.SlackChannelName = "slack.test";
         mockProjectList.push(mockProject);
         let connection = this.mockBaseService.getMockResponse(this.projectUrl, mockProjectList);
@@ -37,7 +37,7 @@ export class MockProjectService {
     getProject(Id: number) {
         let mockProject = new MockProjects(Id);
         if (Id === 1) {
-           mockProject.Name = "Project";
+           mockProject.name = "Project";
            mockProject.SlackChannelName="Slack Channel"
         }
         let connection = this.mockBaseService.getMockResponse(this.projectUrl + Id, mockProject);
