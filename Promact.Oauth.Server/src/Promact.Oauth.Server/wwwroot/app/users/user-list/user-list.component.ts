@@ -21,8 +21,10 @@ export class UserListComponent {
 
 
     getUsers() {
+        this.loader.loader = true;
         this.userService.getUsers().subscribe((users) => {
             this.users = users
+            this.loader.loader = false;
         }, err => {
         });
     }

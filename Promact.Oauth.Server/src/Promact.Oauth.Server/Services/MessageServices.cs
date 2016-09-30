@@ -10,6 +10,7 @@ using System.IO;
 using System.Collections;
 using Promact.Oauth.Server.Models;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Logging;
 
 namespace Promact.Oauth.Server.Services
 {
@@ -21,14 +22,17 @@ namespace Promact.Oauth.Server.Services
     {
 
         private readonly IOptions<AppSettings> _appSettings;
-        public AuthMessageSender(IOptions<AppSettings> appSettings)
+        private readonly ILogger _logger;
+
+        public AuthMessageSender(IOptions<AppSettings> appSettings, ILoggerFactory loggerFactory)
         {
+            _logger = loggerFactory.CreateLogger<AuthMessageSender>();
             _appSettings = appSettings;
         }
 
         public Task SendEmailAsync(string email, string subject, string message)
         {
-
+            _logger.LogInformation("Start Email Service");
             // Plug in your email service here to send an email.
             var msg = new MimeMessage();
 
@@ -42,6 +46,7 @@ namespace Promact.Oauth.Server.Services
             {
                 using (var smtp = new SmtpClient())
                 {
+                    _logger.LogInformation("Start Email Sending");
                     smtp.ConnectAsync(_appSettings.Value.Host, _appSettings.Value.Port, MailKit.Security.SecureSocketOptions.None).Wait();
                     smtp.AuthenticateAsync(credentials: new NetworkCredential(_appSettings.Value.UserName, _appSettings.Value.Password)).Wait();
                     smtp.SendAsync(msg, CancellationToken.None).Wait();
@@ -51,7 +56,9 @@ namespace Promact.Oauth.Server.Services
             }
             catch (Exception ex)
             {
-                return Task.FromException(ex);
+                _logger.LogInformation("Throw Email Error", ex);
+                _logger.LogInformation("Throw Email Error Message", ex.Message);
+                throw ex;
             }
         }
 

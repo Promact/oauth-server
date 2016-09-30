@@ -6,6 +6,7 @@ import { LoginService } from '../../login.service';
 import { UserService }   from '../user.service';
 import {UserModel} from '../user.model';
 import { Md2Toast } from 'md2/toast/toast';
+import { LoaderService } from '../../shared/loader.service';
 
 @Component({
     templateUrl: './app/users/user-edit/user-edit.html',
@@ -21,7 +22,7 @@ export class UserEditComponent {
     userRole: any;
     admin: any;
 
-    constructor(private userService: UserService, private route: ActivatedRoute, private redirectionRoute: Router, private toast: Md2Toast,private loginService: LoginService) {
+    constructor(private userService: UserService, private route: ActivatedRoute, private redirectionRoute: Router, private toast: Md2Toast,private loginService: LoginService,private loader : LoaderService) {
         this.user = new UserModel();
         this.listOfRoles = [];
     }
@@ -51,6 +52,7 @@ export class UserEditComponent {
 
 
     editUser(user: UserModel) {
+        this.loader.loader = true;
         //if (this.isSlackUserNameExist == true) {
         this.userService.editUser(user).subscribe((result) => {
             if (result == true) {
@@ -60,6 +62,7 @@ export class UserEditComponent {
             else if (result == false) {
                 this.toast.show('User Name or Slack User Name already exists.');
             }
+            this.loader.loader = false;
 
         }, err => {
         });

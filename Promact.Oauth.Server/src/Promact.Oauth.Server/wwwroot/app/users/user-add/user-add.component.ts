@@ -3,6 +3,7 @@ import { UserService }   from '../user.service';
 import {UserModel} from '../user.model';
 import {Router, ActivatedRoute} from '@angular/router';
 import { Md2Toast } from 'md2/toast/toast';
+import { LoaderService } from '../../shared/loader.service';
 
 
 
@@ -12,7 +13,6 @@ import { Md2Toast } from 'md2/toast/toast';
 })
 
 export class UserAddComponent {
-
     isEmailExist: boolean;
     isUserNameExist: boolean;
     isSlackUserNameExist: boolean;
@@ -20,9 +20,10 @@ export class UserAddComponent {
     userModel: UserModel;
     listOfRoles: any;
 
-    constructor(private userService: UserService, private redirectionRoute: Router, private route: ActivatedRoute, private toast: Md2Toast) {
+    constructor(private userService: UserService, private redirectionRoute: Router, private route: ActivatedRoute, private toast: Md2Toast, private loader: LoaderService) {
         this.userModel = new UserModel();
         this.listOfRoles = [];
+        this.isEmailExist = false;
     }
 
 
@@ -42,6 +43,7 @@ export class UserAddComponent {
     }
 
     addUser(userModel) {
+        this.loader.loader = true;
         userModel.JoiningDate = new Date(userModel.JoiningDate);
         if (this.isSlackUserNameExist == true) {
             if (this.isEmailExist == false) {
@@ -53,14 +55,17 @@ export class UserAddComponent {
                     else if (result == false) {
                         this.toast.show('User Name already exists.');
                     }
+                    this.loader.loader = false;
                 }, err => {
                 });
             }
             else {
+                this.loader.loader = false;
                 this.toast.show('Email Address already exists.');
             }
         }
         else {
+            this.loader.loader = false;
            this.toast.show('Slack User Name  already exists.');
         }
     }
