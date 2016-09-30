@@ -63,7 +63,33 @@ namespace Promact.Oauth.Server.Controllers
             }
         }
 
-
+        /**
+        * @api {get} api/User/GetEmployees 
+        * @apiVersion 1.0.0
+        * @apiName User
+        * @apiGroup User
+        * @apiSuccessExample {json} Success-Response:
+        * HTTP/1.1 200 OK 
+        * {
+        *     "description":"Get List of Employees"
+        * }
+        */
+        [HttpGet]
+        [Route("getEmployees")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetEmployees()
+        {
+            try
+            {
+                var user = await _userRepository.GetAllEmployees();
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                ex.ToExceptionless().Submit();
+                throw;
+            }
+        }
 
         [HttpGet]
         [Route("getRole")]

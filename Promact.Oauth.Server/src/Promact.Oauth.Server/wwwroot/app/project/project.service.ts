@@ -13,7 +13,7 @@ export class ProjectService {
 
     //list of users
     getUsers() {
-        return this.httpService.get("api/user" + "/users");
+        return this.httpService.get("api/user" + "/getEmployees");
     }
     //
     getProjects() {
