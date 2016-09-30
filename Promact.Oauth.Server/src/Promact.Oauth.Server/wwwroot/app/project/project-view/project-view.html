@@ -34,7 +34,7 @@
                 IsActive:
             </label>
 
-            <md-checkbox type="checkbox" id="chckbox" name="IsActive" [(ngModel)]="project.isActive" disabled></md-checkbox>
+            <md-checkbox type="checkbox" id="chckbox" name="IsActive" [(ngModel)]="project.isActive" disabled="true"></md-checkbox>
 
         </div>
 
@@ -59,7 +59,7 @@
             <md2-multiselect *ngIf="project.applicationUsers && project.listUsers" [items]="project.listUsers"
                              [item-text]="'UniqueName'"
                              [(ngModel)]="project.applicationUsers"
-                             placeholder="Placeholder Text"  disabled="true">
+                             placeholder="Placeholder Text" disabled="true">
             </md2-multiselect>
 
             <!--<select multiple disabled>
