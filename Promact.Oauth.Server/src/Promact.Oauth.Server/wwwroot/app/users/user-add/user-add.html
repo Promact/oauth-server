@@ -8,8 +8,7 @@
             <button md-raised-button type="submit" class="btn-back btn-green" (click)="goBack()"> <i class="material-icons">arrow_back</i>Back</button>
         </div>
     </div>
-    <form>
-
+    <form #userForm="ngForm">
         <div class="form-group">
             <div class="half-width">
                 <md-input placeholder="First Name" class="full-width" type="text" name="FirstName" [(ngModel)]="userModel.FirstName" maxlength="255" required #FirstName="ngModel"></md-input>
@@ -21,11 +20,7 @@
                 <md-input type="text" class="full-width" placeholder="Last Name" name="LastName" [(ngModel)]="userModel.LastName" maxlength="255" required #LastName="ngModel"></md-input>
                 <div [hidden]="!(LastName.touched && !LastName.valid && LastName.errors.required)" class="error">Last Name is required</div>
             </div>
-            <!--<div *ngIf="LastName.touched && !LastName.valid && LastName.errors.required" style="color:red">
-                 Required!
-            </div>-->
         </div>
-
         <div class="form-group">
             <div class="half-width in_block">
                 <md-input class="full-width" type="email" placeholder="email" name="Email" [(ngModel)]="userModel.Email"
@@ -34,12 +29,9 @@
             </div>
             @promactinfo.com
         </div>
-        <!--<div *ngIf="Email.touched && !Email.valid && !isEmailExist" style="color:red">
-            Required!
+        <div [hidden]="!isEmailExist" style="color:red">
+            Email already exist!
         </div>
-        <div *ngIf="isEmailExist" style="color:red">
-            This email already exist!
-        </div>-->
         <div class="form-group">
             <div class="half-width">
                 <md-input type="text" class="full-width" placeholder="Slack User Name" name="SlackUserName"
@@ -58,12 +50,12 @@
         </div>
         <div class="form-group">
             <div class="half-width">
-                <input type="date" name="JoiningDate" [(ngModel)]="userModel.JoiningDate" placeholder="Enter joining date" required #JoiningDate="ngModel" />
+                <md2-datepicker [(ngModel)]="userModel.JoiningDate" name="JoiningDate" required #JoiningDate="ngModel" ></md2-datepicker>
                 <div [hidden]="!(JoiningDate.touched && !JoiningDate.valid && JoiningDate.errors.required)" class="error">Joining Date is required</div>
             </div>
         </div>
         <div>
-            <button md-raised-button class="btn-green" type="submit" (click)="addUser(userModel)">Add</button>
+            <button md-raised-button class="btn-green" type="submit" (click)="addUser(userModel)" [disabled]="!userForm.form.valid">Add</button>
         </div>
     </form>
 </div>

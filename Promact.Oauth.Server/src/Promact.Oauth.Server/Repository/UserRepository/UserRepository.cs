@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Hosting;
 using Promact.Oauth.Server.Data;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Promact.Oauth.Server.Repository
 {
@@ -75,7 +76,7 @@ namespace Promact.Oauth.Server.Repository
                 var result = _userManager.CreateAsync(user, password);
                 var resultSuccess = await result;
                 result = _userManager.AddToRoleAsync(user, newUser.RoleName);
-                SendEmail(user, password);
+                //SendEmail(user, password);
                 resultSuccess = await result;
                 return user.Id;
             }
@@ -397,10 +398,10 @@ namespace Promact.Oauth.Server.Repository
                 var user = await _userManager.FindByIdAsync(id);
                 string newPassword = GetRandomString();
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                IdentityResult result = await _userManager.ResetPasswordAsync(user,code,newPassword);
+                IdentityResult result = await _userManager.ResetPasswordAsync(user, code, newPassword);
                 if (result.Succeeded)
                 {
-                    SendEmail(user, newPassword);
+                    if (SendEmail(user, newPassword));
                     return true;
                 }
                 return false;
@@ -573,15 +574,24 @@ namespace Promact.Oauth.Server.Repository
         /// This method is used to send email to the currently added user
         /// </summary>
         /// <param name="user">Object of newly registered User</param>
-        private void SendEmail(ApplicationUser user, string password)
+        private bool SendEmail(ApplicationUser user, string password)
         {
-            string path = _hostingEnvironment.ContentRootPath + StringConstant.UserDetialTemplateFolderPath;
-            string finaleTemplate = "";
-            if (System.IO.File.Exists(path))
+            try
             {
-                finaleTemplate = System.IO.File.ReadAllText(path);
-                finaleTemplate = finaleTemplate.Replace(StringConstant.UserEmail, user.Email).Replace(StringConstant.UserPassword, password).Replace(StringConstant.ResertPasswordUserName, user.FirstName);
-                _emailSender.SendEmailAsync(user.Email, StringConstant.LoginCredentials, finaleTemplate);
+                string path = _hostingEnvironment.ContentRootPath + StringConstant.UserDetialTemplateFolderPath;
+                string finaleTemplate = "";
+                if (System.IO.File.Exists(path))
+                {
+                    finaleTemplate = System.IO.File.ReadAllText(path);
+                    finaleTemplate = finaleTemplate.Replace(StringConstant.UserEmail, user.Email).Replace(StringConstant.UserPassword, password).Replace(StringConstant.ResertPasswordUserName, user.FirstName);
+                    _emailSender.SendEmailAsync(user.Email, StringConstant.LoginCredentials, finaleTemplate);
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
 
@@ -594,7 +604,7 @@ namespace Promact.Oauth.Server.Repository
             Random random = new Random();
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             string randomString = new string(Enumerable.Repeat(chars, 8).Select(s => s[random.Next(8)]).ToArray());
-            return "User00" + "_" + randomString; 
+            return "User00" + "_" + randomString;
         }
 
         #endregion
