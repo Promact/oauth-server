@@ -217,6 +217,24 @@ namespace Promact.Oauth.Server.Repository
             return userList;
         }
 
+        /// <summary>
+        /// This method is used for getting the list of all Employees
+        /// </summary>
+        /// <returns>List of all Employees</returns>
+        public async Task<List<UserAc>> GetAllEmployees()
+        {
+            var employees = await _userManager.GetUsersInRoleAsync(StringConstant.RoleEmployee); 
+            var userList = new List<UserAc>();
+
+            foreach (var user in employees)
+            {
+                var listItem = _mapperContext.Map<ApplicationUser, UserAc>(user);
+
+                userList.Add(listItem);
+            }
+            return userList;
+        }
+
 
         /// <summary>
         /// This method is used to edit the details of an existing user

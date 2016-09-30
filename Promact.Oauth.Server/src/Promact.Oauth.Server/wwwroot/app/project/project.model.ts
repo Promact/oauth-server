@@ -1,7 +1,7 @@
 ﻿import { UserModel } from '../users/user.model'
 export class projectModel {
     Id: number;
-    Name: string;
+    name: string;
     SlackChannelName: string;
     IsActive: boolean;
     TeamLeaderId: string;

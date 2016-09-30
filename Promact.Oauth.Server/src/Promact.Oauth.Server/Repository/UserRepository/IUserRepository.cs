@@ -40,6 +40,11 @@ namespace Promact.Oauth.Server.Repository
         IEnumerable<UserAc> GetAllUsers();
 
         /// <summary>
+        /// This method  get the list of Employees
+        /// </summary>
+        /// <returns>List of all Employees</returns>
+        Task<List<UserAc>> GetAllEmployees();
+        /// <summary>
         /// This method used for get role list. 
         /// </summary>
         /// <returns></returns>

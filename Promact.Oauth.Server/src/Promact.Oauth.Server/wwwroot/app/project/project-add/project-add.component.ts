@@ -4,7 +4,7 @@ import {projectModel} from '../project.model'
 import {UserModel} from '../../users/user.model';
 import {  Router, ActivatedRoute } from '@angular/router';
 import { Md2Toast } from 'md2/toast/toast';
-
+import { LoaderService } from '../../shared/loader.service';
 
 
 @Component({
@@ -23,7 +23,8 @@ export class ProjectAddComponent {
         private route: ActivatedRoute,
         private router: Router,
         private toast: Md2Toast,
-        private proService: ProjectService) {
+        private proService: ProjectService,
+        private loader: LoaderService) {
         this.projects = new Array<projectModel>();
         this.project = new projectModel();
 
@@ -33,41 +34,51 @@ export class ProjectAddComponent {
      * @param pro project table information pass
      */
     addProject(project: projectModel) {
-        this.proService.addProject(project).subscribe((project) => {
-            this.project = project;
-            if (project.name == null && project.slackChannelName == null) {
-                this.toast.show("Project and slackChannelName already exists");
-                this.proService.getUsers().subscribe(listUsers => {
-                    this.project.listUsers = listUsers;
-                    this.project.applicationUsers = new Array<UserModel>();
 
-                });
-            }
-            else if (project.name != null && project.slackChannelName == null) {
-                this.toast.show("slackChannelName already exists");
-                this.proService.getUsers().subscribe(listUsers => {
-                    this.project.listUsers = listUsers;
-                    this.project.applicationUsers = new Array<UserModel>();
+        if (project.name == null && project.SlackChannelName == null)
+        { this.toast.show("Project Name and Slack Channel Name can not be blank"); }
+        else if (project.name == null && project.SlackChannelName != null)
+        { this.toast.show("Project Name can not be blank "); }
+        else if (project.name != null && project.SlackChannelName == null)
+        { this.toast.show("Slack Channel Name can not be blank"); }
+        else {
+            this.loader.loader = true;
+            this.proService.addProject(project).subscribe((project) => {
+                this.project = project;
+                if (project.name == null && project.slackChannelName == null) {
+                    this.toast.show("Project and slackChannelName already exists");
+                    this.proService.getUsers().subscribe(listUsers => {
+                        this.project.listUsers = listUsers;
+                        this.project.applicationUsers = new Array<UserModel>();
 
-                });
+                    });
+                }
+                else if (project.name != null && project.slackChannelName == null) {
+                    this.toast.show("slackChannelName already exists");
+                    this.proService.getUsers().subscribe(listUsers => {
+                        this.project.listUsers = listUsers;
+                        this.project.applicationUsers = new Array<UserModel>();
 
-            }
-            else if (project.name == null && project.slackChannelName != null) {
-                this.toast.show("Project already exists");
-                this.proService.getUsers().subscribe(listUsers => {
-                    this.project.listUsers = listUsers;
-                    this.project.applicationUsers = new Array<UserModel>();
+                    });
 
-                });
-            }
-            else {
-                this.toast.show("Project Successfully Added.");
-                this.router.navigate(['/project/list'])
-            }
+                }
+                else if (project.name == null && project.slackChannelName != null) {
+                    this.toast.show("Project already exists");
+                    this.proService.getUsers().subscribe(listUsers => {
+                        this.project.listUsers = listUsers;
+                        this.project.applicationUsers = new Array<UserModel>();
 
-        }, err => {
+                    });
+                }
+                else {
+                    this.toast.show("Project Successfully Added.");
+                    this.router.navigate(['/project/list'])
+                }
+                this.loader.loader = false;
+            }, err => {
 
-        });
+            });
+        }
     }
     /**
      * getUser Method get User Information

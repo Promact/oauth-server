@@ -5,6 +5,7 @@ import { projectModel } from '../project.model'
 import { UserModel } from '../../users/user.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Md2Toast } from 'md2/toast/toast';
+import { LoaderService } from '../../shared/loader.service';
 
 @Component({
     templateUrl: "app/project/project-edit/project-edit.html",
@@ -21,7 +22,8 @@ export class ProjectEditComponent implements OnInit {
         private router: Router,
         private toast: Md2Toast,
         private service: ProjectService,
-        private location: Location) { }
+        private location: Location,
+        private loader: LoaderService) { }
     /**
      * Get Project details and user details 
      */
@@ -72,22 +74,23 @@ export class ProjectEditComponent implements OnInit {
      * @param project project that need update.
      */
     editProject(project: projectModel) {
+        this.loader.loader = true;
         this.service.editProject(project).subscribe((project) => {
             if (project.name == null && project.slackChannelName == null) {
-                this.toast.show("Project and slackChannelName already exists");
+                this.toast.show("Project Name and slackChannelName already exists");
             }
             else if (project.name != null && project.slackChannelName == null) {
-                this.toast.show("slackChannelName already exists");
+                this.toast.show("slack Channel Name already exists");
             }
             else if (project.name == null && project.slackChannelName != null) {
-                this.toast.show("Project already exists");
+                this.toast.show("Project Name already exists");
             }
             else {
                 this.toast.show("Project Successfully Updated.");
                 this.router.navigate(['/project/list'])
             }
 
-
+            this.loader.loader = false;
         }, err => {
 
         });
