@@ -19,16 +19,16 @@ namespace Promact.Oauth.Server.Controllers
         #region "Private Variable(s)"
         private readonly IUserRepository _userRepository;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly ILogger _logger;
+        private readonly ILogger<UserController> _logger;
         #endregion
 
         #region "Constructor"
 
-        public UserController(IUserRepository userRepository, UserManager<ApplicationUser> userManager, ILoggerFactory loggerFactory)
+        public UserController(IUserRepository userRepository, UserManager<ApplicationUser> userManager, ILogger<UserController> logger)
         {
             _userRepository = userRepository;
             _userManager = userManager;
-            _logger = loggerFactory.CreateLogger<UserController>();
+            _logger = logger;
         }
 
         #endregion

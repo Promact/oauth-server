@@ -15,12 +15,12 @@ namespace Promact.Oauth.Server.Services
 
     public class AuthMessageSender : IEmailSender, ISmsSender
     {
-        private readonly ILogger _logger;
+        private readonly ILogger<AuthMessageSender> _logger;
         private readonly IOptions<AppSettings> _appSettings;
 
-        public AuthMessageSender(IOptions<AppSettings> appSettings, ILoggerFactory loggerFactory)
+        public AuthMessageSender(IOptions<AppSettings> appSettings, ILogger<AuthMessageSender> logger)
         {
-            _logger = loggerFactory.CreateLogger<AuthMessageSender>();
+            _logger = logger;
             _appSettings = appSettings;
         }
 
