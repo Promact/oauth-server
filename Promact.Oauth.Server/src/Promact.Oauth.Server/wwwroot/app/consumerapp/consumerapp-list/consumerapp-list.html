@@ -10,7 +10,7 @@
     <div class="clearfix"></div>
     <div>
         <ul *ngFor="let consumerApps of listOfConsumerApps">
-            <li (click)="editDetails(consumerApps.id)">{{consumerApps.name}}</li>
+            <li (click)="editDetails(consumerApps.id)" class="list-left">{{consumerApps.name}}</li>
         </ul>
 
     </div>

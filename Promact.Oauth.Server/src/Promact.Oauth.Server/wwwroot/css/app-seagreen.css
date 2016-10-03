@@ -120,11 +120,12 @@ i.material-icons{    vertical-align: middle;
 md-checkbox{position:relative;top:2px;}
 #chckbox .md-checkbox-inner-container{margin:0 auto;}
 .consumer-app{overflow:hidden;}
-.consumer-app .card-title-block , .user-list .card-title-block ,.project-add .card-title-block,.user-add .card-title-block,   .project-list .card-title-block , .project-edit .card-title-block , .user-edit .card-title-block{display: flex;align-items: flex-end;}
+.consumer-app .card-title-block , .user-list .card-title-block ,.project-add .card-title-block,.user-add .card-title-block,   .project-list .card-title-block , .project-edit .card-title-block , .user-edit .card-title-block , .consumer-add .card-title-block , .consumer-edit .card-title-block,.user-details .card-title-block{display: flex;align-items: flex-end;}
 .consumer-app .card-title-block .btn-green{font-size:17px;padding: 1px 8px;}
-.consumer-app .items, .user-list .items , .project-list .items , .project-edit .items , .project-add .items , .user-add .items , .emp-details .items , .user-edit .items{ flex-grow:1;}
+.consumer-app .items, .user-list .items , .project-list .items , .project-edit .items , .project-add .items , .user-add .items , .emp-details .items , .user-edit .items , .consumer-add .items , .consumer-edit .items,.user-details .items{ flex-grow:1;}
 .consumer-app .fl-right{text-align:right}
-.consumer-app  li{    background-color: #f0f3f6;box-shadow: 0 0 3px #ccc;padding: 15px;text-transform: capitalize;display: inline-block;float: left;cursor: pointer;min-width: 284px;margin:0px 20px 20px 0px;list-style-type:none}
+.consumer-app li{background-color: #f0f3f6;box-shadow: 0 0 3px #ccc;padding: 15px;text-transform: capitalize;display: inline-block; cursor: pointer;min-width: 284px;margin:0px 20px 20px 0px;list-style-type:none}
+.consumer-app .list-left{float:left;}
 .consumer-edit .form-group , .consumer-add .form-group , .change-password .form-group, .user-edit .form-group , .project-edit .form-group , .project-add .form-group{margin:20px 0;}
 .consumer-edit  button , .consumer-add button , .form-group button{text-transform:uppercase;font-family:roboto-medium;} 
 .consumer-edit button:hover , .change-password button:hover{    box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);} 

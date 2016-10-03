@@ -1,18 +1,10 @@
 ﻿using MailKit.Net.Smtp;
 using MimeKit;
-using Exceptionless;
-using Promact.Oauth.Server.Constants;
-using System;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Runtime.InteropServices;
-using System.IO;
-using System.Collections;
 using Promact.Oauth.Server.Models;
 using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Logging;
-using System.Net.Mail;
 
 namespace Promact.Oauth.Server.Services
 {
@@ -24,13 +16,13 @@ namespace Promact.Oauth.Server.Services
     {
 
         private readonly IOptions<AppSettings> _appSettings;
-        
+
         public AuthMessageSender(IOptions<AppSettings> appSettings)
         {
             _appSettings = appSettings;
         }
 
-        public Task SendEmailAsync(string email, string subject, string message)
+        public void SendEmail(string email, string subject, string message)
         {
             // Plug in your email service here to send an email.
             var msg = new MimeMessage();
@@ -41,22 +33,13 @@ namespace Promact.Oauth.Server.Services
             var bodyBuilder = new BodyBuilder();
             bodyBuilder.HtmlBody = message;
             msg.Body = bodyBuilder.ToMessageBody();
-            try
+            using (var smtp = new SmtpClient())
             {
-                using (var smtp = new SmtpClient())
-                {
-                  
-                    smtp.ConnectAsync(_appSettings.Value.Host, _appSettings.Value.Port, MailKit.Security.SecureSocketOptions.None).Wait();
-                    smtp.AuthenticateAsync(credentials: new NetworkCredential(_appSettings.Value.UserName, _appSettings.Value.Password)).Wait();
-                    smtp.SendAsync(msg).Wait();
-                    smtp.DisconnectAsync(true).Wait();
-                    return Task.FromResult(0);
-                }
-            }
-            catch (Exception ex)
-            {
-                ex.ToExceptionless().Submit();
-                throw ex;
+                smtp.Connect(_appSettings.Value.Host, _appSettings.Value.Port, MailKit.Security.SecureSocketOptions.None);
+                smtp.Authenticate(credentials: new NetworkCredential(_appSettings.Value.UserName, _appSettings.Value.Password));
+                smtp.Send(msg, CancellationToken.None);
+                smtp.Disconnect(true, CancellationToken.None);
+                //return Task.FromResult();
             }
         }
 
