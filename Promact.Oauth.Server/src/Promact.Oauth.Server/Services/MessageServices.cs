@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Promact.Oauth.Server.Models;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Logging;
 
 namespace Promact.Oauth.Server.Services
 {
@@ -14,16 +15,18 @@ namespace Promact.Oauth.Server.Services
 
     public class AuthMessageSender : IEmailSender, ISmsSender
     {
-
+        private readonly ILogger _logger;
         private readonly IOptions<AppSettings> _appSettings;
 
-        public AuthMessageSender(IOptions<AppSettings> appSettings)
+        public AuthMessageSender(IOptions<AppSettings> appSettings, ILoggerFactory loggerFactory)
         {
+            _logger = loggerFactory.CreateLogger<AuthMessageSender>();
             _appSettings = appSettings;
         }
 
         public void SendEmail(string email, string subject, string message)
         {
+            _logger.LogInformation("Start Email Log");
             // Plug in your email service here to send an email.
             var msg = new MimeMessage();
 
@@ -35,11 +38,13 @@ namespace Promact.Oauth.Server.Services
             msg.Body = bodyBuilder.ToMessageBody();
             using (var smtp = new SmtpClient())
             {
+                _logger.LogInformation("Smtp Connect");
                 smtp.Connect(_appSettings.Value.Host, _appSettings.Value.Port, MailKit.Security.SecureSocketOptions.None);
+                _logger.LogInformation("Authenticate");
                 smtp.Authenticate(credentials: new NetworkCredential(_appSettings.Value.UserName, _appSettings.Value.Password));
                 smtp.Send(msg, CancellationToken.None);
                 smtp.Disconnect(true, CancellationToken.None);
-                //return Task.FromResult();
+                _logger.LogInformation("SendEmail Mail Succesfully");
             }
         }
 

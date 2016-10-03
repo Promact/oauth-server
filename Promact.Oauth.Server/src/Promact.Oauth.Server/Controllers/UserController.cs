@@ -7,8 +7,6 @@ using Promact.Oauth.Server.Models.ManageViewModels;
 using Microsoft.AspNetCore.Identity;
 using Promact.Oauth.Server.Models.ApplicationClasses;
 using System.Threading.Tasks;
-using Exceptionless;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 
@@ -21,16 +19,16 @@ namespace Promact.Oauth.Server.Controllers
         #region "Private Variable(s)"
         private readonly IUserRepository _userRepository;
         private readonly UserManager<ApplicationUser> _userManager;
-
+        private readonly ILogger _logger;
         #endregion
 
         #region "Constructor"
 
-        public UserController(IUserRepository userRepository, UserManager<ApplicationUser> userManager)
+        public UserController(IUserRepository userRepository, UserManager<ApplicationUser> userManager, ILoggerFactory loggerFactory)
         {
             _userRepository = userRepository;
             _userManager = userManager;
-
+            _logger = loggerFactory.CreateLogger<UserController>();
         }
 
         #endregion
@@ -58,8 +56,7 @@ namespace Promact.Oauth.Server.Controllers
             }
             catch (Exception ex)
             {
-                ex.ToExceptionless().Submit();
-                throw;
+                throw ex;
             }
         }
 
@@ -86,8 +83,7 @@ namespace Promact.Oauth.Server.Controllers
             }
             catch (Exception ex)
             {
-                ex.ToExceptionless().Submit();
-                throw;
+                throw ex;
             }
         }
 
@@ -137,7 +133,6 @@ namespace Promact.Oauth.Server.Controllers
             }
             catch (Exception ex)
             {
-                ex.ToExceptionless().Submit();
                 throw ex;
             }
         }
@@ -181,7 +176,6 @@ namespace Promact.Oauth.Server.Controllers
             }
             catch (Exception ex)
             {
-                ex.ToExceptionless().Submit();
                 throw ex;
             }
         }
@@ -228,7 +222,6 @@ namespace Promact.Oauth.Server.Controllers
             }
             catch (Exception ex)
             {
-                ex.ToExceptionless().Submit();
                 throw ex;
             }
         }
@@ -279,7 +272,6 @@ namespace Promact.Oauth.Server.Controllers
             }
             catch (Exception ex)
             {
-                ex.ToExceptionless().Submit();
                 throw ex;
             }
         }
@@ -294,7 +286,6 @@ namespace Promact.Oauth.Server.Controllers
             }
             catch (Exception ex)
             {
-                ex.ToExceptionless().Submit();
                 throw ex;
             }
         }
@@ -311,7 +302,6 @@ namespace Promact.Oauth.Server.Controllers
             }
             catch (Exception ex)
             {
-                ex.ToExceptionless().Submit();
                 throw ex;
             }
         }
@@ -332,7 +322,6 @@ namespace Promact.Oauth.Server.Controllers
             }
             catch (Exception ex)
             {
-                ex.ToExceptionless().Submit();
                 throw ex;
             }
         }
@@ -348,7 +337,6 @@ namespace Promact.Oauth.Server.Controllers
             }
             catch (Exception ex)
             {
-                ex.ToExceptionless().Submit();
                 throw ex;
             }
         }
@@ -424,6 +412,7 @@ namespace Promact.Oauth.Server.Controllers
         [Route("reSendMail/{id}")]
         public async Task<IActionResult> ReSendMail(string id)
         {
+            _logger.LogInformation("Start Re-Send Mail");
             return Ok(await _userRepository.ReSendMail(id));
         }
 

@@ -10,13 +10,10 @@ using Promact.Oauth.Server.Models.ManageViewModels;
 using Promact.Oauth.Server.Services;
 using AutoMapper;
 using Promact.Oauth.Server.Repository.ProjectsRepository;
-using Microsoft.EntityFrameworkCore;
 using Promact.Oauth.Server.Constants;
 using Microsoft.AspNetCore.Hosting;
-using Promact.Oauth.Server.Data;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Exceptionless;
 
 namespace Promact.Oauth.Server.Repository
 {
@@ -399,7 +396,7 @@ namespace Promact.Oauth.Server.Repository
             IdentityResult result = await _userManager.ResetPasswordAsync(user, code, newPassword);
             if (result.Succeeded)
             {
-                if (SendEmail(user, newPassword)) ;
+                if (SendEmail(user, newPassword));
                 return true;
             }
             return false;
