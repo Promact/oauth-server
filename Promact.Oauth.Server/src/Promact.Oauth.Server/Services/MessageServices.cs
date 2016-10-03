@@ -1,13 +1,8 @@
 ﻿using MailKit.Net.Smtp;
 using MimeKit;
-using Promact.Oauth.Server.Constants;
-using System;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Runtime.InteropServices;
-using System.IO;
-using System.Collections;
 using Promact.Oauth.Server.Models;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
@@ -20,19 +15,18 @@ namespace Promact.Oauth.Server.Services
 
     public class AuthMessageSender : IEmailSender, ISmsSender
     {
-
+        private readonly ILogger<AuthMessageSender> _logger;
         private readonly IOptions<AppSettings> _appSettings;
-        private readonly ILogger _logger;
 
-        public AuthMessageSender(IOptions<AppSettings> appSettings, ILoggerFactory loggerFactory)
+        public AuthMessageSender(IOptions<AppSettings> appSettings, ILogger<AuthMessageSender> logger)
         {
-            _logger = loggerFactory.CreateLogger<AuthMessageSender>();
+            _logger = logger;
             _appSettings = appSettings;
         }
 
-        public Task SendEmailAsync(string email, string subject, string message)
+        public void SendEmail(string email, string subject, string message)
         {
-            _logger.LogInformation("Start Email Service");
+            _logger.LogInformation("Start Email Log");
             // Plug in your email service here to send an email.
             var msg = new MimeMessage();
 
@@ -42,23 +36,15 @@ namespace Promact.Oauth.Server.Services
             var bodyBuilder = new BodyBuilder();
             bodyBuilder.HtmlBody = message;
             msg.Body = bodyBuilder.ToMessageBody();
-            try
+            using (var smtp = new SmtpClient())
             {
-                using (var smtp = new SmtpClient())
-                {
-                    _logger.LogInformation("Start Email Sending");
-                    smtp.ConnectAsync(_appSettings.Value.Host, _appSettings.Value.Port, MailKit.Security.SecureSocketOptions.None).Wait();
-                    smtp.AuthenticateAsync(credentials: new NetworkCredential(_appSettings.Value.UserName, _appSettings.Value.Password)).Wait();
-                    smtp.SendAsync(msg, CancellationToken.None).Wait();
-                    smtp.DisconnectAsync(true, CancellationToken.None).Wait();
-                    return Task.FromResult(0);
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogInformation("Throw Email Error", ex);
-                _logger.LogInformation("Throw Email Error Message", ex.Message);
-                throw ex;
+                _logger.LogInformation("Smtp Connect");
+                smtp.Connect(_appSettings.Value.Host, _appSettings.Value.Port, MailKit.Security.SecureSocketOptions.None);
+                _logger.LogInformation("Authenticate");
+                smtp.Authenticate(credentials: new NetworkCredential(_appSettings.Value.UserName, _appSettings.Value.Password));
+                smtp.Send(msg, CancellationToken.None);
+                smtp.Disconnect(true, CancellationToken.None);
+                _logger.LogInformation("SendEmail Mail Succesfully");
             }
         }
 
@@ -67,5 +53,6 @@ namespace Promact.Oauth.Server.Services
             // Plug in your SMS service here to send a text message.
             return Task.FromResult(0);
         }
+
     }
 }

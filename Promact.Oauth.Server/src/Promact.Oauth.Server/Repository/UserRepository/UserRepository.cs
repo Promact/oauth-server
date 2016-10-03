@@ -10,13 +10,10 @@ using Promact.Oauth.Server.Models.ManageViewModels;
 using Promact.Oauth.Server.Services;
 using AutoMapper;
 using Promact.Oauth.Server.Repository.ProjectsRepository;
-using Microsoft.EntityFrameworkCore;
 using Promact.Oauth.Server.Constants;
 using Microsoft.AspNetCore.Hosting;
-using Promact.Oauth.Server.Data;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace Promact.Oauth.Server.Repository
 {
@@ -224,7 +221,7 @@ namespace Promact.Oauth.Server.Repository
         /// <returns>List of all Employees</returns>
         public async Task<List<UserAc>> GetAllEmployees()
         {
-            var employees = await _userManager.GetUsersInRoleAsync(StringConstant.RoleEmployee); 
+            var employees = await _userManager.GetUsersInRoleAsync(StringConstant.RoleEmployee);
             var userList = new List<UserAc>();
 
             foreach (var user in employees)
@@ -393,24 +390,16 @@ namespace Promact.Oauth.Server.Repository
         /// <returns></returns>
         public async Task<bool> ReSendMail(string id)
         {
-            try
+            var user = await _userManager.FindByIdAsync(id);
+            string newPassword = GetRandomString();
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+            IdentityResult result = await _userManager.ResetPasswordAsync(user, code, newPassword);
+            if (result.Succeeded)
             {
-                var user = await _userManager.FindByIdAsync(id);
-                string newPassword = GetRandomString();
-                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                IdentityResult result = await _userManager.ResetPasswordAsync(user, code, newPassword);
-                if (result.Succeeded)
-                {
-                    if (SendEmail(user, newPassword));
-                    return true;
-                }
-                return false;
+                if (SendEmail(user, newPassword));
+                return true;
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
+            return false;
         }
 
         /// <summary>
@@ -576,23 +565,17 @@ namespace Promact.Oauth.Server.Repository
         /// <param name="user">Object of newly registered User</param>
         private bool SendEmail(ApplicationUser user, string password)
         {
-            try
+
+            string path = _hostingEnvironment.ContentRootPath + StringConstant.UserDetialTemplateFolderPath;
+            string finaleTemplate = "";
+            if (System.IO.File.Exists(path))
             {
-                string path = _hostingEnvironment.ContentRootPath + StringConstant.UserDetialTemplateFolderPath;
-                string finaleTemplate = "";
-                if (System.IO.File.Exists(path))
-                {
-                    finaleTemplate = System.IO.File.ReadAllText(path);
-                    finaleTemplate = finaleTemplate.Replace(StringConstant.UserEmail, user.Email).Replace(StringConstant.UserPassword, password).Replace(StringConstant.ResertPasswordUserName, user.FirstName);
-                    _emailSender.SendEmailAsync(user.Email, StringConstant.LoginCredentials, finaleTemplate);
-                    return true;
-                }
-                return false;
+                finaleTemplate = System.IO.File.ReadAllText(path);
+                finaleTemplate = finaleTemplate.Replace(StringConstant.UserEmail, user.Email).Replace(StringConstant.UserPassword, password).Replace(StringConstant.ResertPasswordUserName, user.FirstName);
+                _emailSender.SendEmail(user.Email, StringConstant.LoginCredentials, finaleTemplate);
+                return true;
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            return false;
         }
 
         /// <summary>

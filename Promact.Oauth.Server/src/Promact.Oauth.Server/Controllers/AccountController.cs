@@ -282,7 +282,7 @@ namespace Promact.Oauth.Server.Controllers
                 {
                     string finaleTemplate = System.IO.File.ReadAllText(path);
                     finaleTemplate = finaleTemplate.Replace(StringConstant.ResetPasswordLink, resetPasswordLink).Replace(StringConstant.ResertPasswordUserName, user.FirstName);
-                    await _emailSender.SendEmailAsync(model.Email, StringConstant.ForgotPassword, finaleTemplate);
+                    _emailSender.SendEmail(model.Email, StringConstant.ForgotPassword, finaleTemplate);
                     @ViewData["MailSentSuccessfully"] = StringConstant.SuccessfullySendMail.Replace("{{emailaddress}}", "'" + model.Email + "'");
                 }
             }
