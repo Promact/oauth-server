@@ -1,5 +1,6 @@
 ﻿using MailKit.Net.Smtp;
 using MimeKit;
+using Exceptionless;
 using Promact.Oauth.Server.Constants;
 using System;
 using System.Net;
@@ -11,6 +12,7 @@ using System.Collections;
 using Promact.Oauth.Server.Models;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
+using System.Net.Mail;
 
 namespace Promact.Oauth.Server.Services
 {
@@ -22,17 +24,14 @@ namespace Promact.Oauth.Server.Services
     {
 
         private readonly IOptions<AppSettings> _appSettings;
-        private readonly ILogger _logger;
-
-        public AuthMessageSender(IOptions<AppSettings> appSettings, ILoggerFactory loggerFactory)
+        
+        public AuthMessageSender(IOptions<AppSettings> appSettings)
         {
-            _logger = loggerFactory.CreateLogger<AuthMessageSender>();
             _appSettings = appSettings;
         }
 
         public Task SendEmailAsync(string email, string subject, string message)
         {
-            _logger.LogInformation("Start Email Service");
             // Plug in your email service here to send an email.
             var msg = new MimeMessage();
 
@@ -46,18 +45,17 @@ namespace Promact.Oauth.Server.Services
             {
                 using (var smtp = new SmtpClient())
                 {
-                    _logger.LogInformation("Start Email Sending");
+                  
                     smtp.ConnectAsync(_appSettings.Value.Host, _appSettings.Value.Port, MailKit.Security.SecureSocketOptions.None).Wait();
                     smtp.AuthenticateAsync(credentials: new NetworkCredential(_appSettings.Value.UserName, _appSettings.Value.Password)).Wait();
-                    smtp.SendAsync(msg, CancellationToken.None).Wait();
-                    smtp.DisconnectAsync(true, CancellationToken.None).Wait();
+                    smtp.SendAsync(msg).Wait();
+                    smtp.DisconnectAsync(true).Wait();
                     return Task.FromResult(0);
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogInformation("Throw Email Error", ex);
-                _logger.LogInformation("Throw Email Error Message", ex.Message);
+                ex.ToExceptionless().Submit();
                 throw ex;
             }
         }
@@ -67,5 +65,6 @@ namespace Promact.Oauth.Server.Services
             // Plug in your SMS service here to send a text message.
             return Task.FromResult(0);
         }
+
     }
 }

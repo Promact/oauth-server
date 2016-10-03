@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Hosting;
 using Promact.Oauth.Server.Data;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+using Exceptionless;
 
 namespace Promact.Oauth.Server.Repository
 {
@@ -408,7 +408,8 @@ namespace Promact.Oauth.Server.Repository
             }
             catch (Exception ex)
             {
-                throw ex;
+                ex.ToExceptionless().Submit();
+                return false;
             }
 
         }

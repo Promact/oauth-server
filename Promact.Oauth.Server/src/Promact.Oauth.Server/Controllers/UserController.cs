@@ -7,10 +7,9 @@ using Promact.Oauth.Server.Models.ManageViewModels;
 using Microsoft.AspNetCore.Identity;
 using Promact.Oauth.Server.Models.ApplicationClasses;
 using System.Threading.Tasks;
-using System.Linq;
+using Exceptionless;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System.Collections.Generic;
-using Exceptionless;
 using Microsoft.Extensions.Logging;
 
 namespace Promact.Oauth.Server.Controllers
@@ -20,7 +19,6 @@ namespace Promact.Oauth.Server.Controllers
     public class UserController : BaseController
     {
         #region "Private Variable(s)"
-        private readonly ILogger _logger;
         private readonly IUserRepository _userRepository;
         private readonly UserManager<ApplicationUser> _userManager;
 
@@ -28,11 +26,11 @@ namespace Promact.Oauth.Server.Controllers
 
         #region "Constructor"
 
-        public UserController(IUserRepository userRepository, UserManager<ApplicationUser> userManager, ILoggerFactory loggerFactory)
+        public UserController(IUserRepository userRepository, UserManager<ApplicationUser> userManager)
         {
             _userRepository = userRepository;
             _userManager = userManager;
-            _logger = loggerFactory.CreateLogger<UserController>();
+
         }
 
         #endregion
@@ -426,15 +424,7 @@ namespace Promact.Oauth.Server.Controllers
         [Route("reSendMail/{id}")]
         public async Task<IActionResult> ReSendMail(string id)
         {
-            try
-            {
-                return Ok(await _userRepository.ReSendMail(id));
-            }
-            catch (Exception ex)
-            {
-                _logger.LogInformation("Logger Info:" + ex);
-                throw ex;
-            }
+            return Ok(await _userRepository.ReSendMail(id));
         }
 
         #endregion
