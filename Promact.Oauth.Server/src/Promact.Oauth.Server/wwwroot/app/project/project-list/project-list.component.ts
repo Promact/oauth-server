@@ -7,7 +7,7 @@ import { LoginService } from '../../login.service';
 import { LoaderService } from '../../shared/loader.service';
 
 @Component({
-    templateUrl: "app/project/project-list/project-list.html",
+    templateUrl: 'app/project/project-list/project-list.html',
     providers: [Md2Toast],
 
 })
