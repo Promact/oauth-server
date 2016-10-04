@@ -20,14 +20,17 @@ namespace Promact.Oauth.Server.Controllers
         #region "Private Variable(s)"
         private readonly IUserRepository _userRepository;
         private readonly UserManager<ApplicationUser> _userManager;
-      
+        private readonly ILogger<UserController> _logger; 
+
+
         #endregion
 
         #region "Constructor"
 
-        public UserController(IUserRepository userRepository, UserManager<ApplicationUser> userManager)
+        public UserController(IUserRepository userRepository, UserManager<ApplicationUser> userManager, ILogger<UserController> logger)
         {
             _userRepository = userRepository;
+            _logger = logger;
             _userManager = userManager;
         }
 
@@ -412,6 +415,7 @@ namespace Promact.Oauth.Server.Controllers
         [Route("reSendMail/{id}")]
         public async Task<IActionResult> ReSendMail(string id)
         {
+            _logger.LogInformation("Resend Mail");
             return Ok(await _userRepository.ReSendMail(id));
         }
 

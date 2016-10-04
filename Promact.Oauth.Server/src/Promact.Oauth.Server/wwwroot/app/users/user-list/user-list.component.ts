@@ -45,9 +45,9 @@ export class UserListComponent {
         this.loader.loader = true;
         this.userService.reSendMail(user.Id).subscribe((response) => {
             if (response == true) {
-                this.loader.loader = false;
                 this.toast.show('Credentials re-send succesfully');
             }
+            this.loader.loader = false;
         }, err => {
         });
     }

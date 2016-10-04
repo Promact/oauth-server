@@ -572,6 +572,8 @@ namespace Promact.Oauth.Server.Repository
         {
             _logger.LogInformation("Start Fetch Email Template");
             string path = _hostingEnvironment.ContentRootPath + StringConstant.UserDetialTemplateFolderPath;
+            _logger.LogInformation("ContentRootPath Path:" + _hostingEnvironment.ContentRootPath);
+            _logger.LogInformation("Full Path:" + _hostingEnvironment.ContentRootPath + StringConstant.UserDetialTemplateFolderPath);
             string finaleTemplate = "";
             if (System.IO.File.Exists(path))
             {
