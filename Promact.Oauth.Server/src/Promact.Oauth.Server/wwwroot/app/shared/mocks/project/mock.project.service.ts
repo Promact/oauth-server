@@ -1,75 +1,93 @@
-﻿import {TestConnection} from "../test.connection";
-import {Injectable} from '@angular/core';
-import {ResponseOptions, Response} from "@angular/http";
-import {projectModel} from "../../../project/project.model";
-import { UserModel } from "../../../users/user.model";
-//import {Md2Toast} from 'md2/toast';
-import {Subject} from 'rxjs/Rx';
-import {MockBaseService} from '../mock.base';
-
-
+﻿import { Injectable } from '@angular/core';
+import { projectModel } from "../../../project/project.model";
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class MockProjectService {
-    private projectUrl = "api/project";
-    private userUrl="api/users"
-    constructor(private mockBaseService: MockBaseService) { }
-    
-    getProjects() {
-        let mockProject = new MockProject();
-        let mockProjectList = new Array<MockProject>();
+    projects: Array<projectModel> = new Array<projectModel>();
+    constructor() {
+        let mockProject = new projectModel();
         mockProject.name = "slack";
         mockProject.SlackChannelName = "slack.test";
-        mockProjectList.push(mockProject);
-        let connection = this.mockBaseService.getMockResponse(this.projectUrl, mockProjectList);
-        return connection;
+        this.projects.push(mockProject);
     }
-    addProject(projectModel: projectModel)
-    {
-        let connection = this.mockBaseService.getMockResponse(this.projectUrl, projectModel);
-        return connection;
-    }
-    editProject(projectModel: projectModel)
-    {
-        let connection = this.mockBaseService.getMockResponse(this.projectUrl, projectModel);
-        return connection;
-    }
-    getProject(Id: number) {
-        let mockProject = new MockProjects(Id);
-        if (Id === 1) {
-           mockProject.name = "Project";
-           mockProject.SlackChannelName="Slack Channel"
-        }
-        let connection = this.mockBaseService.getMockResponse(this.projectUrl + Id, mockProject);
-       return connection;
-   }
-
-
-    getUsers() {
-        let mockProject = new MockProject();
-        let mockUser = new UserModel();
-        mockUser.FirstName = "Ronak";
-        mockUser.LastName = "Shah";
-        mockUser.Email = "rshah@Promactinfo.com";
-        mockUser.IsActive = true;
-        let mockList = new Array<UserModel>();
-        let connection = this.mockBaseService.getMockResponse(this.userUrl, mockList.push(mockUser));
-        return connection;
+    getProjects() {
+        return new BehaviorSubject(this.projects).asObservable();
     }
 }
-    class MockProjects extends projectModel {
+
+//import {TestConnection} from "../test.connection";
+//import {Injectable} from '@angular/core';
+//import {ResponseOptions, Response} from "@angular/http";
+//import {projectModel} from "../../../project/project.model";
+//import { UserModel } from "../../../users/user.model";
+////import {Md2Toast} from 'md2/toast';
+//import {Subject} from 'rxjs/Rx';
+////import {MockBaseService} from '../mock.base';
+
+
+
+//@Injectable()
+//export class MockProjectService {
+//    private projectUrl = "api/project";
+//    private userUrl="api/users"
+//    constructor() { }
+    
+//    getProjects() {
+//        let mockProject = new MockProject();
+//        let mockProjectList = new Array<MockProject>();
+//        mockProject.name = "slack";
+//        mockProject.SlackChannelName = "slack.test";
+//        mockProjectList.push(mockProject);
+//        //let connection = this.mockBaseService.getMockResponse(this.projectUrl, mockProjectList);
+//        //return connection;
+//    }
+//    addProject(projectModel: projectModel)
+//    {
+//        //let connection = this.mockBaseService.getMockResponse(this.projectUrl, projectModel);
+//        //return connection;
+//    }
+//    editProject(projectModel: projectModel)
+//    {
+//        //let connection = this.mockBaseService.getMockResponse(this.projectUrl, projectModel);
+//        //return connection;
+//    }
+//    getProject(Id: number) {
+//        let mockProject = new MockProjects(Id);
+//        if (Id === 1) {
+//           mockProject.name = "Project";
+//           mockProject.SlackChannelName="Slack Channel"
+//        }
+//        //let connection = this.mockBaseService.getMockResponse(this.projectUrl + Id, mockProject);
+//      // return connection;
+//   }
+
+
+//    getUsers() {
+//        let mockProject = new MockProject();
+//        let mockUser = new UserModel();
+//        mockUser.FirstName = "Ronak";
+//        mockUser.LastName = "Shah";
+//        mockUser.Email = "rshah@Promactinfo.com";
+//        mockUser.IsActive = true;
+//        let mockList = new Array<UserModel>();
+//        //let connection = this.mockBaseService.getMockResponse(this.userUrl, mockList.push(mockUser));
+//        //return connection;
+//    }
+//}
+//    class MockProjects extends projectModel {
         
-    constructor(id: number) {
-        super();
-        this.Id = id;
-        }
+//    constructor(id: number) {
+//        super();
+//        this.Id = id;
+//        }
         
-}
-class MockProject extends projectModel {
+//}
+//class MockProject extends projectModel {
 
-    constructor() {
-        super();
-        //this.Id = id;
-    }
-}
+//    constructor() {
+//        super();
+//        //this.Id = id;
+//    }
+//}
 
