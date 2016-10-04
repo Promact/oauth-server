@@ -11,7 +11,7 @@ import {Provider} from "@angular/core";
 //import {MockBaseService} from '../../shared/mocks/mock.base';
 //import {MockRouter} from '../../shared/mocks/mock.router';
 //import {MockToast} from "../../shared/mocks/mock.toast";
-import { ChangePasswordComponent } from "../change-password/change-password.component";
+//import { ChangePasswordComponent } from "../change-password/change-password.component";
 
 describe('demo test case', function () {
     it('test case', function () {

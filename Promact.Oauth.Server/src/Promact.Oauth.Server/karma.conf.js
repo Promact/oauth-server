@@ -18,8 +18,10 @@ module.exports = function (config) {
                //'node_modules/traceur/bin/traceur-runtime.js',
                 'node_modules/es6-shim/es6-shim.js',
                 'node_modules/reflect-metadata/Reflect.js',
+                { pattern: 'node_modules/reflect-metadata/Reflect.js.map', included: false, watched: false },
 
                 'node_modules/systemjs/dist/system-polyfills.js',
+                 { pattern:  'node_modules/systemjs/dist/system-polyfills.js', included: false, watched: false },
                 'node_modules/systemjs/dist/system.src.js',
                 'node_modules/core-js/client/shim.js',
 
@@ -29,7 +31,7 @@ module.exports = function (config) {
                 'node_modules/zone.js/dist/jasmine-patch.js',
                 'node_modules/zone.js/dist/async-test.js',
                 'node_modules/zone.js/dist/fake-async-test.js',
-                'node_modules/hammerjs/hammer.js',
+                //'node_modules/hammerjs/hammer.js',
                // RxJs.
 
                { pattern: 'node_modules/rxjs/**/*.js', included: false, watched: false },
@@ -48,14 +50,16 @@ module.exports = function (config) {
                { pattern: 'node_modules/@angular2-material/**/*.js', included: false, watched: true },
                { pattern: 'node_modules/@angular2-material/**/*.js.map', included: false, watched: false },
 
-               { pattern: 'node_modules/lodash/*.js', included: false, watched: true },
-               { pattern: 'node_modules/lodash/**/*.js', included: false, watched: true },
+               //{ pattern: 'node_modules/lodash/*.js', included: false, watched: true },
+               //{ pattern: 'node_modules/lodash/**/*.js', included: false, watched: true },
 
-               { pattern: 'node_modules/hammerjs/hammer.js', included: false, watched: true },
+               //{ pattern: 'node_modules/hammerjs/hammer.js', included: false, watched: true },
 
 
                 { pattern: 'wwwroot/app/**/*.js', included: false, watched: true },
                { pattern: 'wwwroot/app/**/*.html', included: false, watched: true },
+               { pattern: 'wwwroot/app/**/*.css', included: false, watched: true },
+
                 //// paths to support debugging with source maps in dev tools
                { pattern: 'wwwroot/app/**/*.ts', included: false, watched: false },
                { pattern: 'wwwroot/app/**/*.js.map', included: false, watched: false },
