@@ -50,7 +50,9 @@
     "System.Collections": "4.0.11",
     "Exceptionless.AspNetCore": "4.0.1902",
     "Microsoft.IdentityModel.Protocols": "2.0.0",
-    "Microsoft.TypeScript.MSBuild": "1.8.11"
+    "Microsoft.TypeScript.MSBuild": "1.8.11",
+    "NLog.Extensions.Logging": "1.0.0-*",
+    "NLog.Config": "4.3.9"
   },
 
   "tools": {
@@ -93,7 +95,8 @@
       "Views",
       "Areas/**/Views",
       "appsettings.json",
-      "web.config"
+      "web.config",
+      "nlog.config"
     ]
   },
 

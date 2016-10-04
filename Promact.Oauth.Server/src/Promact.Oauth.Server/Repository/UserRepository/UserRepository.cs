@@ -14,6 +14,7 @@ using Promact.Oauth.Server.Constants;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Promact.Oauth.Server.Repository
 {
@@ -31,11 +32,12 @@ namespace Promact.Oauth.Server.Repository
         private readonly IProjectRepository _projectRepository;
         private readonly IDataRepository<Project> _projectDataRepository;
         private readonly IOptions<AppSettingUtil> _appSettingUtil;
+        private readonly ILogger<UserRepository> _logger;
         #endregion
 
         #region "Constructor"
 
-        public UserRepository(IDataRepository<ApplicationUser> applicationUserDataRepository, IHostingEnvironment hostingEnvironment, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IMapper mapperContext, IDataRepository<ProjectUser> projectUserRepository, IProjectRepository projectRepository, IOptions<AppSettingUtil> appSettingUtil, IDataRepository<Project> projectDataRepository)
+        public UserRepository(IDataRepository<ApplicationUser> applicationUserDataRepository, IHostingEnvironment hostingEnvironment, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IMapper mapperContext, IDataRepository<ProjectUser> projectUserRepository, IProjectRepository projectRepository, IOptions<AppSettingUtil> appSettingUtil, IDataRepository<Project> projectDataRepository, ILogger<UserRepository> logger)
         {
             _applicationUserDataRepository = applicationUserDataRepository;
             _hostingEnvironment = hostingEnvironment;
@@ -47,6 +49,7 @@ namespace Promact.Oauth.Server.Repository
             _roleManager = roleManager;
             _projectDataRepository = projectDataRepository;
             _appSettingUtil = appSettingUtil;
+            _logger = logger;
         }
 
         #endregion
@@ -390,13 +393,15 @@ namespace Promact.Oauth.Server.Repository
         /// <returns></returns>
         public async Task<bool> ReSendMail(string id)
         {
+            _logger.LogInformation("start Resend Mail Method in User Repository");
             var user = await _userManager.FindByIdAsync(id);
             string newPassword = GetRandomString();
             var code = await _userManager.GeneratePasswordResetTokenAsync(user);
             IdentityResult result = await _userManager.ResetPasswordAsync(user, code, newPassword);
             if (result.Succeeded)
             {
-                if (SendEmail(user, newPassword));
+                _logger.LogInformation("Successfully Reset Password");
+                if (SendEmail(user, newPassword))
                 return true;
             }
             return false;
@@ -565,11 +570,12 @@ namespace Promact.Oauth.Server.Repository
         /// <param name="user">Object of newly registered User</param>
         private bool SendEmail(ApplicationUser user, string password)
         {
-
+            _logger.LogInformation("Start Fetch Email Template");
             string path = _hostingEnvironment.ContentRootPath + StringConstant.UserDetialTemplateFolderPath;
             string finaleTemplate = "";
             if (System.IO.File.Exists(path))
             {
+                _logger.LogInformation("Email Template Featch successfully");
                 finaleTemplate = System.IO.File.ReadAllText(path);
                 finaleTemplate = finaleTemplate.Replace(StringConstant.UserEmail, user.Email).Replace(StringConstant.UserPassword, password).Replace(StringConstant.ResertPasswordUserName, user.FirstName);
                 _emailSender.SendEmail(user.Email, StringConstant.LoginCredentials, finaleTemplate);

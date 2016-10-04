@@ -23,6 +23,7 @@ using AutoMapper;
 using Promact.Oauth.Server.Controllers;
 using Exceptionless;
 using Promact.Oauth.Server.Constants;
+using NLog.Extensions.Logging;
 
 namespace Promact.Oauth.Server
 {
@@ -120,6 +121,11 @@ namespace Promact.Oauth.Server
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
+            //add NLog to ASP.NET Core
+            loggerFactory.AddNLog();
+            //needed for non-NETSTANDARD platforms: configure nlog.config in your project root
+            env.ConfigureNLog("nlog.config");
 
             //Call the Seed method in (Seed.EnsureSeedData) to create initial Admin
             seeder.Seed(serviceProvider);
