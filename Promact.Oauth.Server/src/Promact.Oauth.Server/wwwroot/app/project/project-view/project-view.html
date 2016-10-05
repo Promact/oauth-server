@@ -46,32 +46,24 @@
                 </md2-select>
             </div>
         </div>
-
-
-        <div class="form-group">
-
+        <div class="half-width">
             <label>List Of Team Members:</label>
-
-
-            <!--<md-select disabled>
-                <md-option [value]="i.Id" *ngFor="let ul of pro.applicationUsers">{{ul.FirstName}}-{{ul.Email}}</md-option>
-            </md-select>-->
-            <md2-multiselect *ngIf="project.applicationUsers && project.listUsers" [items]="project.listUsers"
-                             [item-text]="'UniqueName'"
-                             [(ngModel)]="project.applicationUsers"
-                             placeholder="Placeholder Text"  disabled="true">
-            </md2-multiselect>
-
-            <!--<select multiple disabled>
-                <option *ngFor="let ul of pro.applicationUsers">{{ul.FirstName}}-{{ul.Email}}</option>
-            </select>-->
         </div>
-
-
+        <div>
+            <br />
+        </div>
+        <table>
+            <tr *ngFor="let teamMember of project.applicationUsers">
+                <td>{{teamMember.UniqueName}}</td>
+            </tr>
+        </table>
+        
 
     </div>
 
-</div>
+ </div>
+
+
 
 
 
