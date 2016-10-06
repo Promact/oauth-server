@@ -31,6 +31,6 @@ import { DataTableModule } from "angular2-datatable";
     ],
     bootstrap: [AppComponent],
     providers: [HttpService, LoginService, LoaderService, { provide: LocationStrategy, useClass: HashLocationStrategy }
-    ],
+        , MyService],
 })
 export class AppModule { }
