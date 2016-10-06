@@ -74,28 +74,43 @@ export class ProjectEditComponent implements OnInit {
      * @param project project that need update.
      */
     editProject(project: projectModel) {
-        this.loader.loader = true;
-        this.service.editProject(project).subscribe((project) => {
-            if (project.name == null && project.slackChannelName == null) {
-                this.toast.show("Project Name and slackChannelName already exists");
+        var bool = 0;
+        for (let i = 0; i < project.applicationUsers.length; i++) {
+            if (project.teamLeaderId == project.applicationUsers[i].Id) {
+                this.toast.show("Teamleader is selected as team member,Please select another team leader");
+                bool = 1;
             }
-            else if (project.name != null && project.slackChannelName == null) {
-                this.toast.show("slack Channel Name already exists");
-            }
-            else if (project.name == null && project.slackChannelName != null) {
-                this.toast.show("Project Name already exists");
-            }
-            else {
-                this.toast.show("Project Successfully Updated.");
-                this.router.navigate(['/project/list'])
-            }
+        }
+        if (project.name == null)
+        { this.toast.show("Project Name can not be blank"); }
 
-            this.loader.loader = false;
-        }, err => {
 
-        });
+        else {
+            if (bool == 0) {
+                this.loader.loader = true;
+                this.service.editProject(project).subscribe((project) => {
+                    if (project.name == null && project.slackChannelName == null) {
+                        this.toast.show("Project Name and slackChannelName already exists");
+                    }
+                    else if (project.name != null && project.slackChannelName == null) {
+                        this.toast.show("slack Channel Name already exists");
+                    }
+                    else if (project.name == null && project.slackChannelName != null) {
+                        this.toast.show("Project Name already exists");
+                    }
+                    else {
+                        this.toast.show("Project Successfully Updated.");
+                        this.router.navigate(['/project/list'])
+                    }
+
+                    this.loader.loader = false;
+                }, err => {
+
+                });
+            }
+        }
+
+
     }
 
-
 }
-
