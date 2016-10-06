@@ -14,6 +14,7 @@ import { LoginService } from "./login.service";
 import { MdSidenavModule } from "@angular2-material/sidenav";
 import { MdToolbarModule } from "@angular2-material/toolbar";
 import { LoaderService } from "./shared/loader.service";
+import { MyService } from "./shared/globalVariable";
 
 @NgModule({
     declarations: [AppComponent],
@@ -30,6 +31,6 @@ import { LoaderService } from "./shared/loader.service";
     ],
     bootstrap: [AppComponent],
     providers: [HttpService, LoginService, LoaderService, { provide: LocationStrategy, useClass: HashLocationStrategy }
-    ],
+        , MyService],
 })
 export class AppModule { }
