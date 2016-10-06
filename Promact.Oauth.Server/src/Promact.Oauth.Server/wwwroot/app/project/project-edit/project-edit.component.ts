@@ -9,7 +9,7 @@ import { LoaderService } from '../../shared/loader.service';
 
 @Component({
     templateUrl: "app/project/project-edit/project-edit.html",
-    providers: [Md2Toast]
+    
 })
 export class ProjectEditComponent implements OnInit {
     project: projectModel;

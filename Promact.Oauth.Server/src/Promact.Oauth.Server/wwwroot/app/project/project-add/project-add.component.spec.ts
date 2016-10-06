@@ -14,12 +14,15 @@ import {MockRouter} from '../../shared/mocks/mock.router';
 import { Observable } from 'rxjs/Observable';
 import { RouterLinkStubDirective } from '../../shared/mocks/mock.routerLink';
 import { ProjectModule } from '../project.module';
+import { LoaderService } from '../../shared/loader.service';
+
 let promise: TestBed;
 
 
 describe('Project Add Test', () => {
-    let projectAddComponent: ProjectAddComponent;
+    //let projectAddComponent: ProjectAddComponent;
     class MockRouter { }
+    class MockLoaderService { }
     const routes: Routes = [];
     class MockActivatedRoute extends ActivatedRoute {
         constructor() {
@@ -37,24 +40,55 @@ describe('Project Add Test', () => {
             providers: [
                 { provide: ActivatedRoute, useClass: MockActivatedRoute },
                 { provide: Router, useClass: MockRouter },
-                { provide: ProjectService, useClass: ProjectService },
+                { provide: ProjectService, useClass: MockProjectService },
+                { provide: Md2Toast, useClass: MockToast },
                 { provide: UserModel, useClass: UserModel },
                 { provide: projectModel, useClass: projectModel },
+                { provide: LoaderService, useClass: MockLoaderService }
             ]
         }).compileComponents();
-            this.promise.then(() => {
-                this.fixture = TestBed.createComponent(ProjectAddComponent); //Create instance of component            
-            this.projectListComponent = this.fixture.componentInstance;
-        });
+            
     }));
 
     it("should get default Project for company", done => {
         this.promise.then(() => {
-            expect(projectAddComponent).toBeDefined();
+            //expect(projectAddComponent).toBeDefined();
+            let fixture = TestBed.createComponent(ProjectAddComponent); //Create instance of component            
+            let projectAddComponent = fixture.componentInstance;
+            let toast = fixture.debugElement.injector.get(Md2Toast);
+            projectAddComponent.ngOnInit();
+            expect(projectAddComponent.Userlist).not.toBeNull();
             done();
         })
     });
-   
+    it("should get default Project for company", done => {
+        this.promise.then(() => {
+            //expect(projectAddComponent).toBeDefined();
+            
+            let fixture = TestBed.createComponent(ProjectAddComponent); //Create instance of component            
+           
+            let projectAddComponent = fixture.componentInstance;
+            let toast = fixture.debugElement.injector.get(Md2Toast);
+            let expectedProjectName = "Tests Projects";
+            let projectModels = new projectModel();
+            projectModels.name = expectedProjectName;
+            let expectedSlackChannelName = "Test Slack Name";
+            projectModels.SlackChannelName = expectedSlackChannelName;
+            let mockUser = new UserModel();
+            mockUser.FirstName = "Ronak";
+            mockUser.LastName = "Shah";
+            mockUser.Email = "rshah@Promactinfo.com";
+            mockUser.IsActive = true;
+            mockUser.Id = "1";
+            let mockList = new Array<UserModel>();
+            mockList.push(mockUser);
+            projectModels.applicationUsers = mockList;
+            projectModels.teamLeaderId = "2";
+            projectAddComponent.addProject(projectModels);
+            expect(projectModels.name).toBe(expectedProjectName);
+            done();
+        })
+    });
 
     //it("should get default page for Project", () => {
     //    projectAddComponent.ngOnInit();
