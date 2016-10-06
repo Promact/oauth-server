@@ -9,7 +9,6 @@ import { LoaderService } from '../../shared/loader.service';
 
 @Component({
     templateUrl: "app/project/project-add/project-add.html",
-    providers: [Md2Toast]
 })
 export class ProjectAddComponent {
 

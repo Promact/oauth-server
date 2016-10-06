@@ -37,65 +37,56 @@ System.config({
         'rxjs': {
             defaultExtension: 'js'
         },
+        '@angular2-material/core': {
+            format: 'cjs',
+            defaultExtension: 'js',
+            main: 'core.umd.js'
+        },
+
         '@angular2-material/button': {
             format: 'cjs',
             defaultExtension: 'js',
-            main: 'button.js'
+            main: 'button.umd.js'
         },
+
+        '@angular2-material/toolbar': {
+            format: 'cjs',
+            defaultExtension: 'js',
+            main: 'toolbar.umd.js'
+        },
+
+        '@angular2-material/sidenav': {
+            format: 'cjs',
+            defaultExtension: 'js',
+            main: 'sidenav.umd.js'
+        },
+
+        '@angular2-material/input': {
+            format: 'cjs',
+            defaultExtension: 'js',
+            main: 'input.umd.js'
+        },
+
         '@angular2-material/card': {
             format: 'cjs',
             defaultExtension: 'js',
-            main: 'card.js'
+            main: 'card.umd.js'
         },
         '@angular2-material/checkbox': {
             format: 'cjs',
             defaultExtension: 'js',
-            main: 'checkbox.js'
-        },
-        '@angular2-material/input': {
-            format: 'cjs',
-            defaultExtension: 'js',
-            main: 'input.js'
-        },
-        '@angular2-material/list': {
-            format: 'cjs',
-            defaultExtension: 'js',
-            main: 'list.js'
+            main: 'checkbox.umd.js'
         },
         '@angular2-material/progress-bar': {
             format: 'cjs',
             defaultExtension: 'js',
-            main: 'progress-bar.js'
+            main: 'progress-bar.umd.js'
         },
+
         '@angular2-material/progress-circle': {
             format: 'cjs',
             defaultExtension: 'js',
-            main: 'progress-circle.js'
-        },
-        '@angular2-material/radio': {
-            format: 'cjs',
-            defaultExtension: 'js',
-            main: 'radio.js'
-        },
-        '@angular2-material/sidenav': {
-            format: 'cjs',
-            defaultExtension: 'js',
-            main: 'sidenav.js'
-        },
-        '@angular2-material/slide-toggle': {
-            format: 'cjs',
-            defaultExtension: 'js',
-            main: 'slide-toggle.js'
-        },
-        '@angular2-material/tabs': {
-            format: 'cjs',
-            defaultExtension: 'js',
-            main: 'tabs.js'
-        },
-        '@angular2-material/toolbar': {
-            format: 'cjs',
-            defaultExtension: 'js',
-            main: 'toolbar.js'
+            main: 'progress-circle.umd.js'
         },
         'md2': {
             main: 'all.js',
@@ -105,7 +96,12 @@ System.config({
             format: 'cjs',
             defaultExtension: 'js',
             main: 'toast.js'
-        }
+        },
+        
+        'angular2-in-memory-web-api': {
+            main: 'index.js',
+            defaultExtension: 'js'
+        },
     },
 
     map: {
@@ -114,14 +110,12 @@ System.config({
         '@angular2-material': 'node_modules/@angular2-material',
         'lodash': 'node_modules/lodash',
         'app': 'wwwroot/app',
-        '@angular/core/testing': 'node_modules/@angular/core/bundles/core-testing.umd.js',
-        '@angular/platform-browser-dynamic/testing': 'node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic-testing.umd.js',
-        '@angular/compiler/testing': 'node_modules/@angular/compiler/bundles/compiler-testing.umd.js',
-        '@angular/platform-browser/testing': 'node_modules/@angular/platform-browser/bundles/platform-browser-testing.umd.js',
-        '@angular/common/testing': 'node_modules/@angular/common/bundles/common-testing.umd.js',
-        '@angular/http/testing': 'node_modules/@angular/http/bundles/http-testing.umd.js',
-        '@angular/router/testing': 'node_modules/@angular/router/bundles/router-testing.umd.js',
-        '@angular/forms/testing': 'node_modules/@angular/forms/bundles/forms-testing.umd.js',
+        '@angular2-material': 'node_modules/@angular2-material',
+        
+        'md2': 'node_modules/md2',
+        'md2/toast': 'node_modules/md2/toast',
+       
+
         '@angular/core': 'node_modules/@angular/core/bundles/core.umd.js',
         '@angular/common': 'node_modules/@angular/common/bundles/common.umd.js',
         '@angular/compiler': 'node_modules/@angular/compiler/bundles/compiler.umd.js',
@@ -130,8 +124,20 @@ System.config({
         '@angular/http': 'node_modules/@angular/http/bundles/http.umd.js',
         '@angular/router': 'node_modules/@angular/router/bundles/router.umd.js',
         '@angular/forms': 'node_modules/@angular/forms/bundles/forms.umd.js',
-        'md2': 'node_modules/md2',
-        'md2/toast': 'node_modules/md2/toast'
+        '@angular/upgrade': 'node_modules/@angular/upgrade/bundles/upgrade.umd.js',
+
+
+        '@angular/core/testing': 'node_modules/@angular/core/bundles/core-testing.umd.js',
+        '@angular/platform-browser-dynamic/testing': 'node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic-testing.umd.js',
+        '@angular/compiler/testing': 'node_modules/@angular/compiler/bundles/compiler-testing.umd.js',
+        '@angular/platform-browser/testing': 'node_modules/@angular/platform-browser/bundles/platform-browser-testing.umd.js',
+        '@angular/common/testing': 'node_modules/@angular/common/bundles/common-testing.umd.js',
+        '@angular/http/testing': 'node_modules/@angular/http/bundles/http-testing.umd.js',
+        '@angular/router/testing': 'node_modules/@angular/router/bundles/router-testing.umd.js',
+        '@angular/forms/testing': 'node_modules/@angular/forms/bundles/forms-testing.umd.js',
+
+
+        
     }
 });
 
