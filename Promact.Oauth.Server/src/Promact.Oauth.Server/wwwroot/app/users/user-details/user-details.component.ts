@@ -19,8 +19,6 @@ export class UserDetailsComponent {
     constructor(private userService: UserService, private route: ActivatedRoute, private redirectRoute: Router, private loginService: LoginService) {
         this.user = new UserModel();
     }
-
-
     ngOnInit() {
         this.getRole();
         this.id = this.route.params.subscribe(params => {

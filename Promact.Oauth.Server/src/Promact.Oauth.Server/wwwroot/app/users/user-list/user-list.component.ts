@@ -7,7 +7,7 @@ import { LoaderService } from '../../shared/loader.service';
 
 @Component({
     templateUrl: "app/users/user-list/user-list.html",
-    providers: [Md2Toast]
+    
 })
 
 export class UserListComponent {

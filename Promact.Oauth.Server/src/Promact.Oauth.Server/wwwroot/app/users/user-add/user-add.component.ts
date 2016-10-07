@@ -8,8 +8,8 @@ import { LoaderService } from '../../shared/loader.service';
 
 
 @Component({
-    templateUrl: 'app/users/user-add/user-add.html',
-    providers: [Md2Toast]
+    templateUrl: 'app/users/user-add/user-add.html'
+    
 })
 
 export class UserAddComponent {
