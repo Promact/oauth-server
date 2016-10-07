@@ -19,7 +19,7 @@ import { LoaderService } from '../../shared/loader.service';
 let promise: TestBed;
 
 
-describe('Project Add Test', () => {
+describe('Project edit Test', () => {
     //let projectAddComponent: ProjectAddComponent;
     class MockRouter { }
     class MockLocation { }
@@ -54,7 +54,6 @@ describe('Project Add Test', () => {
 
     it("should get default Project for company", done => {
         this.promise.then(() => {
-            //expect(projectAddComponent).toBeDefined();
             let fixture = TestBed.createComponent(ProjectEditComponent); //Create instance of component            
             let projectEditComponent = fixture.componentInstance;
             projectEditComponent.ngOnInit();
@@ -65,7 +64,6 @@ describe('Project Add Test', () => {
 
     it("should check Project name and Slack Channel Name before update", done => {
         this.promise.then(() => {
-            //expect(projectAddComponent).toBeDefined();
             let fixture = TestBed.createComponent(ProjectEditComponent); //Create instance of component            
             let projectEditComponent = fixture.componentInstance;
             let projectModels = new projectModel();

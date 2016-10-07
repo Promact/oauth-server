@@ -1,32 +1,32 @@
-﻿import {TestConnection} from "../test.connection";
+﻿
 import {Injectable} from '@angular/core';
 import {ResponseOptions, Response} from "@angular/http";
 import { UserModel } from "../../../users/user.model";
 import {PasswordModel} from "../../../users/user-password.model";
-//import {Md2Toast} from 'md2/toast';
 import {Subject} from 'rxjs/Rx';
-import {MockBaseService} from '../mock.base';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 
 
 @Injectable()
 export class MockUserService {
-    private UserUrl = 'api/user';
-    constructor(private mockBaseService: MockBaseService) { }
+    //private UserUrl = 'api/user';
+    constructor() { }
 
     getUsers() {
         let mockUser = new MockUser();
         mockUser.FirstName = "First Name";
         mockUser.LastName = "Last Name";
         mockUser.Email = "test@promactinfo.com";
-        let connection = this.mockBaseService.getMockResponse(this.UserUrl, mockUser);
-        return connection;
+        
+        //let connection = this.mockBaseService.getMockResponse(this.UserUrl, mockUser);
+        //return connection;
+        return new BehaviorSubject(mockUser).asObservable();
         
     }
 
     registerUser(newUser: UserModel) {
-        let connection = this.mockBaseService.getMockResponse(this.UserUrl, newUser);
-        return connection;
+        return new BehaviorSubject(newUser).asObservable();
     }
 
     getUserById(userId: string) {
@@ -36,33 +36,31 @@ export class MockUserService {
             mockUser.LastName = "Last Name";
             mockUser.Email = "test@promactinfo.com";
         }
-        let connection = this.mockBaseService.getMockResponse(this.UserUrl + userId, mockUser);
-        return connection;
+        return new BehaviorSubject(mockUser).asObservable();
         //return this.mockBaseService.get(this.UserUrl + "/" + userId);
     }
 
     editUser(editedUser: UserModel) {
-        let connection = this.mockBaseService.getMockResponse(this.UserUrl, editedUser);
-        return connection;
+        return new BehaviorSubject(editedUser).asObservable();
     }
 
-    changePassword(newPassword: PasswordModel) {
-        let result = true;
-        let connection = this.mockBaseService.getMockResponse(this.UserUrl, result);
-        return connection;
-        //return this.mockBaseService.post(this.UserUrl + "/changePassword", newPassword);
-    }
-
-    //findUserByUserName(userName: string) {
-
-    //    return this.mockBaseService.get(this.UserUrl + "/findbyusername/" + userName);
+    //changePassword(newPassword: PasswordModel) {
+    //    let result = true;
+    //    let connection = this.mockBaseService.getMockResponse(this.UserUrl, result);
+    //    return connection;
+    //    //return this.mockBaseService.post(this.UserUrl + "/changePassword", newPassword);
     //}
 
-    findUserByEmail(email: string) {
-        let isEmailExist = true;
-        let connection = this.mockBaseService.getMockResponse(this.UserUrl, isEmailExist);
-        return connection;
-    }
+    ////findUserByUserName(userName: string) {
+
+    ////    return this.mockBaseService.get(this.UserUrl + "/findbyusername/" + userName);
+    ////}
+
+    //findUserByEmail(email: string) {
+    //    let isEmailExist = true;
+    //    let connection = this.mockBaseService.getMockResponse(this.UserUrl, isEmailExist);
+    //    return connection;
+    //}
 
     getRoles() {
         let listOfRole = new Array<MockRole>();
@@ -70,8 +68,8 @@ export class MockUserService {
         mockRole.Id = "1";
         mockRole.RoleName = "Employee";
         listOfRole.push(mockRole);
-        let connection = this.mockBaseService.getMockResponse(this.UserUrl, listOfRole);
-        return connection;
+        //let connection = this.mockBaseService.getMockResponse(this.UserUrl, listOfRole);
+        return new BehaviorSubject(listOfRole).asObservable();
     }
     
 
