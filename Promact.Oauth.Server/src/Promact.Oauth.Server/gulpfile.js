@@ -35,22 +35,21 @@ gulp.task("copytowwwroot", function () {
     ]).pipe(gulp.dest('./wwwroot/lib/'));
 
     gulp.src([
-      'node_modules/@angular/**/*.js'
+      'node_modules/@angular/**/*.js', '!node_modules/@angular/**/*.js.map'
     ]).pipe(gulp.dest('./wwwroot/lib/@angular'));
 
 
     gulp.src([
-    'node_modules/@angular2-material/**/*.js'
+    'node_modules/@angular2-material/**/*.js', '!node_modules/@angular2-material/**/*.js.map'
     ]).pipe(gulp.dest('./wwwroot/lib/@angular2-material'));
 
 
     gulp.src([
-      'node_modules/rxjs/**/*.js'
+      'node_modules/rxjs/**/*.js', '!node_modules/rxjs/**/*.js.map'
     ]).pipe(gulp.dest('./wwwroot/lib/rxjs'));
 
     gulp.src([
-        'node_modules/md2/**/*.js',
-        'node_modules/md2/**/*.js.map'
+        'node_modules/md2/**/*.js', '!node_modules/md2/**/*.js.map'
     ]).pipe(gulp.dest('./wwwroot/lib/md2'));
 
 });
