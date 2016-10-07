@@ -7,7 +7,6 @@ import { LoaderService } from '../../shared/loader.service';
 
 @Component({
     templateUrl: "app/consumerapp/consumerapp-add/consumerapp-add.html",
-    providers: [Md2Toast]
 })
 export class ConsumerappAddComponent {
     consumerModel: ConsumerAppModel;

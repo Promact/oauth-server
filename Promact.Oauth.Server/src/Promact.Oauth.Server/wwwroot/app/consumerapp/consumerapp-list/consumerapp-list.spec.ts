@@ -1,40 +1,55 @@
-﻿//import {async, inject, TestBed, ComponentFixture } from '@angular/core/testing';
-//import {Provider} from "@angular/core";
-//import {Router} from "@angular/router";
-//import { ConsumerappListComponent } from "../consumerapp-list/consumerapp-list.component";
-//import { ConsumerAppService} from "../consumerapp.service";
-//import {TestConnection} from "../../shared/mocks/test.connection";
-//import { MockConsumerappService } from "../../shared/mocks/consumerapp/mock.consumerapp.service";
-//import {MockBaseService} from "../../shared/mocks/mock.base";
-//import {ConsumerAppModel} from '../consumerapp-model';
-//declare var describe, it, beforeEach, expect;
+﻿declare var describe, it, beforeEach, expect;
+import { async, inject, TestBed, ComponentFixture } from '@angular/core/testing';
+import { Provider } from "@angular/core";
+import { ConsumerAppModel } from "../consumerapp-model";
+import { ConsumerappListComponent } from "../consumerapp-list/consumerapp-list.component";
+import { ConsumerAppService } from "../consumerapp.service";
+import { Router, ActivatedRoute, RouterModule, Routes } from '@angular/router';
+import { Md2Toast } from 'md2/toast/toast';
+import { MockToast } from "../../shared/mocks/mock.toast";
+import { MockConsumerappService } from "../../shared/mocks/consumerapp/mock.consumerapp.service";
+import { MockRouter } from '../../shared/mocks/mock.router';
+import { Observable } from 'rxjs/Observable';
+import { RouterLinkStubDirective } from '../../shared/mocks/mock.routerLink';
+import { ConsumerAppModule } from '../consumerapp.module';
+import { LoaderService } from '../../shared/loader.service';
 
-//describe('Consumerapp List Test Case', () => {
-//    let consumerappListComponent: ConsumerappListComponent;
-//    class MockRouter { }
+let promise: TestBed;
 
-//    beforeEach(() => {
-//        TestBed.configureTestingModule({
-//            providers: [
-//                { provide: Router, useClass: MockRouter },
-//                { provide: TestConnection, useClass: TestConnection },
-//                { provide: ConsumerAppService, useClass: MockConsumerappService },
-//                { provide: MockBaseService, useClass: MockBaseService },
-//                { provide: ConsumerAppModel, useClass: ConsumerAppModel }
-//            ]
-//        });
+declare var describe, it, beforeEach, expect;
 
-//    });
+describe('Consumer List Test', () => {
+    class MockRouter { }
+    class MockLoaderService { }
+    const routes: Routes = [];
 
-//    beforeEach(inject([Router, ConsumerAppService], (router: Router, consumerAppService: ConsumerAppService) => {
-//        consumerappListComponent = new ConsumerappListComponent(router,consumerAppService);
-//    }));
+    beforeEach(async(() => {
+        this.promise = TestBed.configureTestingModule({
+            declarations: [RouterLinkStubDirective], //Declaration of mock routerLink used on page.
+            imports: [ConsumerAppModule, RouterModule.forRoot(routes, { useHash: true }) //Set LocationStrategy for component. 
+            ],
+            providers: [
+                { provide: Router, useClass: MockRouter },
+                { provide: ConsumerAppService, useClass: MockConsumerappService },
+                { provide: Md2Toast, useClass: MockToast },
+                { provide: ConsumerAppModel, useClass: ConsumerAppModel },
+                { provide: LoaderService, useClass: MockLoaderService }
+            ]
+        }).compileComponents();
+    }))
+
+    it("Get Consumer Apps", () => done => {
+        this.promise.then(() => {
+            let fixture = TestBed.createComponent(ConsumerappListComponent); //Create instance of component            
+            let consumerappListComponent = fixture.componentInstance;
+            consumerappListComponent.getConsumerApps();
+            expect(consumerappListComponent.listOfConsumerApps.length).toEqual(1);
+            done();
+        })
+    });
+});
 
 
-//    it("consumer test", () => {
-//        let listOfConsumrApp = consumerappListComponent.getConsumerApps();
-//        expect(consumerappListComponent.listOfConsumerApps.length).toEqual(1);
-//    });
 
-//});
+
 

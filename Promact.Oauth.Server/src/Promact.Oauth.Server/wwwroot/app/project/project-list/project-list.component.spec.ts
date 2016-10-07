@@ -44,7 +44,7 @@ describe("Project List Test", () => {
     }));
 
  
-    it("should get default Project for company", done => {
+    it("should get Projects for company", done => {
         this.promise.then(() => {
             let fixture = TestBed.createComponent(ProjectListComponent); //Create instance of component            
             let projectListComponent = fixture.componentInstance;
