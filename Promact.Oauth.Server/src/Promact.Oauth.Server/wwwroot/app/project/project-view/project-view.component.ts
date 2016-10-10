@@ -11,6 +11,8 @@ export class ProjectViewComponent implements OnInit {
     project: projectModel;
     private sub: any;
     Userlist: Array<UserModel>;
+    teamLeaderFirstName: string;
+    teamLeaderEmail: string;
     constructor(
         private route: ActivatedRoute,
         private router: Router,
@@ -24,6 +26,16 @@ export class ProjectViewComponent implements OnInit {
             let id = +params['id']; // (+) converts string 'id' to a number
             this.service.getProject(id).subscribe(project => {
                 this.project = project;
+
+                if (this.project.teamLeaderId == null) {
+                    this.teamLeaderFirstName = "";
+                    this.teamLeaderEmail = "";
+                }
+                else {
+                    this.teamLeaderFirstName = this.project.teamLeader.FirstName;
+                    this.teamLeaderEmail = this.project.teamLeader.Email;
+
+                }
                 this.service.getUsers().subscribe(ListUsers => {
                     this.project.listUsers = ListUsers;
                     if (!this.project.applicationUsers)
