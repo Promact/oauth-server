@@ -2,7 +2,6 @@
 "use strict";
 
 var gulp = require("gulp"),
-    gutil = require('gulp-util'),
     rimraf = require("rimraf"),
     concat = require("gulp-concat"),
     cssmin = require("gulp-cssmin"),
@@ -27,19 +26,13 @@ paths.concatJsDest = paths.webroot + "js/site.min.js";
 paths.concatCssDest = paths.webroot + "css/site.min.css";
 paths.systemConfig = paths.webroot + "systemjs.config.js";
 
-gulp.task('default', function () {
-    //return gutil.log('Gulp is running!')
-  
-});
-
 gulp.task("copytowwwroot", function () {
-
-     var launch = require('./Properties/launchSettings.json');
-
+    var launch = require('./Properties/launchSettings.json');
     // Holds information about the hosting environment.
-  
-     gutil.log(launch.profiles['IIS Express'].environmentVariables.ASPNETCORE_ENVIRONMENT);
-     var result = launch.profiles['IIS Express'].environmentVariables.ASPNETCORE_ENVIRONMENT;
+    //gutil.log(launch.profiles['IIS Express'].environmentVariables.ASPNETCORE_ENVIRONMENT);
+    var result = launch.profiles['IIS Express'].environmentVariables.ASPNETCORE_ENVIRONMENT;
+
+
     gulp.src([
          'node_modules/zone.js/dist/zone.js',
          'node_modules/reflect-metadata/Reflect.js',
@@ -47,7 +40,6 @@ gulp.task("copytowwwroot", function () {
          'node_modules/core-js/client/shim.min.js'
     ]).pipe(gulp.dest('./wwwroot/lib/'));
     if (result == "Production") {
-        gutil.log("test1");
         gulp.src([
           'node_modules/@angular/**/*.js', '!node_modules/@angular/**/*.js.map'
         ]).pipe(gulp.dest('./wwwroot/lib/@angular'));
@@ -63,13 +55,13 @@ gulp.task("copytowwwroot", function () {
         ]).pipe(gulp.dest('./wwwroot/lib/rxjs'));
 
         gulp.src([
-            'node_modules/md2/**/*.js', '!node_modules/md2/**/*.js.map'
+            'node_modules/md2/**/*.js',
+            '!node_modules/md2/**/*.js.map'
         ]).pipe(gulp.dest('./wwwroot/lib/md2'));
     }
     else {
-        gutil.log("test2");
         gulp.src([
-          'node_modules/@angular/**/*.js'
+        'node_modules/@angular/**/*.js'
         ]).pipe(gulp.dest('./wwwroot/lib/@angular'));
 
 
@@ -83,7 +75,8 @@ gulp.task("copytowwwroot", function () {
         ]).pipe(gulp.dest('./wwwroot/lib/rxjs'));
 
         gulp.src([
-            'node_modules/md2/**/*.js'
+            'node_modules/md2/**/*.js',
+            'node_modules/md2/**/*.js.map'
         ]).pipe(gulp.dest('./wwwroot/lib/md2'));
     }
 });
@@ -92,11 +85,11 @@ gulp.task("copytowwwroot", function () {
 gulp.task('bundle', function (done) {
     var builder = new sysBuilder('./wwwroot', './wwwroot/systemjs.config.js');
     builder
-     .buildStatic('app', './wwwroot/bundle.js', {
-      runtime: false
-  }).then(function () {
-      done();
-  });
+     .buildStatic('app', './wwwroot/bundle.js', {
+         runtime: false
+     }).then(function () {
+         done();
+     });
 
 });
 
@@ -144,3 +137,4 @@ gulp.task('coverage', function () {
     }))
     .pipe(gulp.dest('./coverage'));
 });
+
