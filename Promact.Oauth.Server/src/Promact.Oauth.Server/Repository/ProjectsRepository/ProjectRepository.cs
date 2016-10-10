@@ -44,12 +44,22 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
 
             projects.ForEach(project =>
             {
-                var teamLeaders = _userDataRepository.FirstOrDefault(x => x.Id == project.TeamLeaderId);
-
                 var teamLeader = new UserAc();
-                teamLeader.FirstName = teamLeaders.FirstName;
-                teamLeader.LastName = teamLeaders.LastName;
-                teamLeader.Email = teamLeaders.Email;
+                if (project.TeamLeaderId != null)
+                {
+                    var teamLeaders = _userDataRepository.FirstOrDefault(x => x.Id == project.TeamLeaderId);
+                    //var teamLeader = new UserAc();
+                    teamLeader.FirstName = teamLeaders.FirstName;
+                    teamLeader.LastName = teamLeaders.LastName;
+                    teamLeader.Email = teamLeaders.Email;
+                }
+                else
+                {
+
+                    teamLeader.FirstName = "Not Assign";
+                    teamLeader.LastName = "Not Assign";
+                    teamLeader.Email = "Not Assign";
+                }
                 var CreatedBy = _userDataRepository.FirstOrDefault(x => x.Id == project.CreatedBy)?.FirstName;
                 var UpdatedBy = _userDataRepository.FirstOrDefault(x => x.Id == project.UpdatedBy)?.FirstName;
                 string UpdatedDate;
@@ -119,8 +129,17 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             }
 
             var projectObject = _mapperContext.Map<Project, ProjectAc>(project);
-            var a = _userDataRepository.FirstOrDefault(x => x.Id == project.TeamLeaderId);
-            projectObject.TeamLeader = new UserAc { FirstName = a.FirstName, LastName = a.LastName, Email = a.Email };
+            if (project.TeamLeaderId != null)
+            {
+                var teamLeader = _userDataRepository.FirstOrDefault(x => x.Id == project.TeamLeaderId);
+                projectObject.TeamLeader = new UserAc { FirstName = teamLeader.FirstName, LastName = teamLeader.LastName, Email = teamLeader.Email };
+            }
+            else
+            {
+
+                projectObject.TeamLeader = null;
+            }
+
             projectObject.ApplicationUsers = applicationUserList;
             return projectObject;
         }
