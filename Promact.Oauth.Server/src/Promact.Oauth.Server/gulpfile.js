@@ -2,7 +2,6 @@
 "use strict";
 
 var gulp = require("gulp"),
-    gutil = require('gulp-util'),
     rimraf = require("rimraf"),
     concat = require("gulp-concat"),
     cssmin = require("gulp-cssmin"),
@@ -26,11 +25,6 @@ paths.minCss = paths.webroot + "css/**/*.min.css";
 paths.concatJsDest = paths.webroot + "js/site.min.js";
 paths.concatCssDest = paths.webroot + "css/site.min.css";
 paths.systemConfig = paths.webroot + "systemjs.config.js";
-
-gulp.task('default', function () {
-    //return gutil.log('Gulp is running!')
-  
-});
 
 gulp.task("copytowwwroot", function () {
     var launch = require('./Properties/launchSettings.json');
