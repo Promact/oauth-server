@@ -1,68 +1,83 @@
-﻿//import {async, inject, TestBed, ComponentFixture} from "@angular/core/testing";
-//import {Provider} from "@angular/core";
-//import { Router} from "@angular/router";
-////import {Md2Toast} from "md2/toast";
-//import { ConsumerappEditComponent } from "../consumerapp-edit/consumer-edit.component";
-//import { ConsumerAppService} from "../consumerapp.service";
-//import {ConsumerAppModel} from "../consumerapp-model";
-//import {TestConnection} from "../../shared/mocks/test.connection";
-////import {MockToast} from "../../shared/mocks/mock.toast";
-//import { MockConsumerappService } from "../../shared/mocks/consumerapp/mock.consumerapp.service";
-//import {MockBaseService} from "../../shared/mocks/mock.base";
-//import {MockRouter} from "../../shared/mocks/mock.router";
-//import { ActivatedRoute} from "@angular/router";
-//import {Observable} from "rxjs/Observable";
-//import {Location} from "@angular/common";
+﻿declare var describe, it, beforeEach, expect;
+import { async, inject, TestBed, ComponentFixture } from '@angular/core/testing';
+import { Provider } from "@angular/core";
+import { ConsumerAppModel } from "../consumerapp-model";
+import { ConsumerappEditComponent } from "../consumerapp-edit/consumer-edit.component";
+import { ConsumerAppService } from "../consumerapp.service";
+import { Router, ActivatedRoute, RouterModule, Routes } from '@angular/router';
+import { Md2Toast } from 'md2/toast/toast';
+import { MockToast } from "../../shared/mocks/mock.toast";
+import { MockConsumerappService } from "../../shared/mocks/consumerapp/mock.consumerapp.service";
+import { MockRouter } from '../../shared/mocks/mock.router';
+import { Observable } from 'rxjs/Observable';
+import { RouterLinkStubDirective } from '../../shared/mocks/mock.routerLink';
+import { ConsumerAppModule } from '../consumerapp.module';
+import { LoaderService } from '../../shared/loader.service';
 
 
-//declare var describe, it, beforeEach, expect;
+let promise: TestBed;
 
-//describe("Consumerapp Add Test Case", () => {
-//    let consumerappEditComponent: ConsumerappEditComponent;
-//    class MockLocation { }
-//    class MockActivatedRoute extends ActivatedRoute {
-//        constructor() {
-//            super();
-//            this.params = Observable.of({ id: "1"});
-//        }
-//    }
+declare var describe, it, beforeEach, expect;
 
-//    beforeEach(() => {
-//        TestBed.configureTestingModule({
-//            providers: [
-//                { provide: ActivatedRoute, useClass: MockActivatedRoute },
-//                { provide: Location, useClass: MockLocation },
-//                { provide: Router, useClass: MockRouter },
-//                { provide: TestConnection, useClass: TestConnection },
-//                { provide: ConsumerAppService, useClass: MockConsumerappService },
-//                { provide: MockBaseService, useClass: MockBaseService },
-//                { provide: ConsumerAppModel, useClass: ConsumerAppModel }
-//            ]
-//        });
+describe('Consumer Edit Test', () => {
+    class MockRouter { }
+    class MockLoaderService { }
+    const routes: Routes = [];
+    class MockActivatedRoute extends ActivatedRoute {
+        constructor() {
+            super();
+            this.params = Observable.of({ id: "1" });
+        }
+    }
 
-//    });
+    beforeEach(async(() => {
+        this.promise = TestBed.configureTestingModule({
+            declarations: [RouterLinkStubDirective], //Declaration of mock routerLink used on page.
+            imports: [ConsumerAppModule, RouterModule.forRoot(routes, { useHash: true }) //Set LocationStrategy for component. 
+            ],
+            providers: [
+                { provide: ActivatedRoute, useClass: MockActivatedRoute },
+                { provide: Router, useClass: MockRouter },
+                { provide: ConsumerAppService, useClass: MockConsumerappService },
+                { provide: Md2Toast, useClass: MockToast },
+                { provide: ConsumerAppModel, useClass: ConsumerAppModel },
+                { provide: LoaderService, useClass: MockLoaderService }
+            ]
+        }).compileComponents();
+    }))
 
-//    beforeEach(inject([Router, ConsumerAppService, ActivatedRoute, /*Md2Toast*/ Location], (router: Router, consumerAppService: ConsumerAppService, activatedRoute: ActivatedRoute,/*toast: Md2Toast,*/ location:Location) => {
-//        consumerappEditComponent = new ConsumerappEditComponent(router,consumerAppService,activatedRoute,/*toast*/location);
-//    }));
+    it("Get consumerApp by id", done => {
+        this.promise.then(() => {
+            let fixture = TestBed.createComponent(ConsumerappEditComponent); //Create instance of component            
+            let consumerappEditComponent = fixture.componentInstance;
+            consumerappEditComponent.ngOnInit();
+            expect(consumerappEditComponent.consumerModel).not.toBeNull();
+            done();
+        })
+    });
 
-//    it("get consumerpp object on edit page", () => {
-//        consumerappEditComponent.ngOnInit();
-//        expect(consumerappEditComponent.consumerModel).not.toBeNull();
-//    });
+    it("Edit consumer app", done => {
+        this.promise.then(() => {
+            let fixture = TestBed.createComponent(ConsumerappEditComponent); //Create instance of component            
+            let consumerappEditComponent = fixture.componentInstance;
+            let toast = fixture.debugElement.injector.get(Md2Toast);
+            let consumerAppModel = new ConsumerAppModel();
+            let expectedconsumerappname = "slack";
+            consumerAppModel.Name = expectedconsumerappname;
+            consumerAppModel.Description = "slack description";
+            consumerAppModel.CallbackUrl = "www.google.com";
+            consumerAppModel.AuthSecret = "dsdsdsdsdsdsd";
+            consumerAppModel.AuthId = "ASASs5454545455";
+            consumerappEditComponent.updateApps(consumerAppModel);
+            expect(consumerAppModel.Name).toBe(expectedconsumerappname);
+            done();
+        })
 
-//    it("consumerapp edit method test", inject([ConsumerAppModel], (consumerAppModel: ConsumerAppModel) => {
-//        let expectedconsumerappname = "slack";
-//        let result = true;
-//        consumerAppModel.Name = expectedconsumerappname;
-//        consumerAppModel.Description = "slack description";
-//        consumerAppModel.CallbackUrl = "www.google.com";
-//        consumerAppModel.AuthSecret = "dsdsdsdsdsdsd";
-//        consumerAppModel.AuthId = "ASASs5454545455";
-//        consumerappEditComponent.updateApps(consumerAppModel);
-//        expect(consumerAppModel.Name).toBe(expectedconsumerappname);
-//    }));
+    });
 
-//});
+});
+
+
+
 
 

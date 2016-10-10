@@ -96,7 +96,8 @@
       "Areas/**/Views",
       "appsettings.json",
       "web.config",
-      "nlog.config"
+      "nlog.config",
+      "Template"
     ]
   },
 

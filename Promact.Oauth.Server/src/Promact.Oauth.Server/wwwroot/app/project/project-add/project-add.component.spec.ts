@@ -61,7 +61,7 @@ describe('Project Add Test', () => {
             done();
         })
     });
-    it("should get default Project for company", done => {
+    it("should check project name before add", done => {
         this.promise.then(() => {
             //expect(projectAddComponent).toBeDefined();
             

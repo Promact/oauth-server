@@ -2,13 +2,13 @@
 import { UserService }   from '../users/user.service';
 import {PasswordModel} from '../users/user-password.model';
 import { FormBuilder, Validators } from '@angular/forms';
-import {Router} from '@angular/router';
+import { Router} from '@angular/router';
 import { Md2Toast } from 'md2/toast/toast';
-import {Location} from "@angular/common";
+import { Location } from "@angular/common";
+import { LoaderService } from '../shared/loader.service';
 
 @Component({
     templateUrl: './app/change-password/change-password.html',
-    providers: [Md2Toast]
 })
 
 export class ChangePasswordComponent {
@@ -18,22 +18,24 @@ export class ChangePasswordComponent {
     @Input()
     passwordModel: PasswordModel;
 
-    constructor(private userService: UserService, private redirectionRoute: Router, private toast: Md2Toast) {
+    constructor(private userService: UserService, private redirectionRoute: Router, private toast: Md2Toast, private loader: LoaderService) {
         this.passwordModel = new PasswordModel();
         this.isNotMatch = false;
     }
 
     changePassword(passwordModel) {
+        this.loader.loader = true;
         this.userService.changePassword(this.passwordModel).subscribe((result) => {
             if (result == true) {
                 this.toast.show('Password changed successfully');
                 this.redirectionRoute.navigate(['']);
+                this.loader.loader = false;
             }
             else if (result == false) {
                 this.toast.show('Wrong password');
+                this.loader.loader = false;
             }
         }, err => {
-
         });
     }
 

@@ -1,45 +1,57 @@
-﻿//import {async, inject, TestBed, ComponentFixture,  } from "@angular/core/testing";
-//import { Provider } from "@angular/core";
-//import { Router } from "@angular/router";
-////import { Md2Toast } from "md2/toast";
-//import { ConsumerappAddComponent } from "../consumerapp-add/consumerapp-add.component";
-//import { ConsumerAppService } from "../consumerapp.service";
-//import { ConsumerAppModel } from "../consumerapp-model";
-//import { TestConnection } from "../../shared/mocks/test.connection";
-//import { MockToast } from "../../shared/mocks/mock.toast";
-//import { MockConsumerappService } from "../../shared/mocks/consumerapp/mock.consumerapp.service";
-//import { MockBaseService } from "../../shared/mocks/mock.base";
-//import { MockRouter } from "../../shared/mocks/mock.router";
-//declare var describe, it, beforeEach, expect;
+﻿declare var describe, it, beforeEach, expect;
+import { async, inject, TestBed, ComponentFixture } from '@angular/core/testing';
+import { Provider } from "@angular/core";
+import { ConsumerAppModel } from "../consumerapp-model";
+import { ConsumerappAddComponent } from "../consumerapp-add/consumerapp-add.component";
+import { ConsumerAppService } from "../consumerapp.service";
+import { Router, ActivatedRoute, RouterModule, Routes } from '@angular/router';
+import { Md2Toast } from 'md2/toast/toast';
+import { MockToast } from "../../shared/mocks/mock.toast";
+import { MockConsumerappService } from "../../shared/mocks/consumerapp/mock.consumerapp.service";
+import { MockRouter } from '../../shared/mocks/mock.router';
+import { Observable } from 'rxjs/Observable';
+import { RouterLinkStubDirective } from '../../shared/mocks/mock.routerLink';
+import { ConsumerAppModule } from '../consumerapp.module';
+import { LoaderService } from '../../shared/loader.service';
 
-//describe("Consumerapp Add Test Case", () => {
-//    let consumerappAddComponent: ConsumerappAddComponent;
+let promise: TestBed;
 
 
-//    beforeEach(() => {
-//        TestBed.configureTestingModule({
-//            providers: [
-//                { provide: Router, useClass: MockRouter },
-//                { provide: TestConnection, useClass: TestConnection },
-//                { provide: ConsumerAppService, useClass: ConsumerAppService },
-//                //{ provide: Md2Toast, useClass: MockToast },
-//                { provide: MockBaseService, useClass: MockBaseService },
-//                { provide: ConsumerAppModel, useClass: ConsumerAppModel}]
-//        });
-//    });
-//    beforeEach(inject([ConsumerAppService, Router/*, Md2Toast*/], (consumerAppService: ConsumerAppService, router: Router/*, toast: Md2Toast*/) => {
-//        consumerappAddComponent = new ConsumerappAddComponent(consumerAppService, router/*, toast*/);
-//    }));
+describe('Consumer Add Test', () => {
+    class MockRouter { }
+    class MockLoaderService { }
+    const routes: Routes = [];
 
-//    it("consumerapp add method test", inject([ConsumerAppModel], (consumerAppModel: ConsumerAppModel) => {
-//        let expectedconsumerappname = "slack";
-//        let result = true;
-//        consumerAppModel.Name = expectedconsumerappname;
-//        consumerAppModel.Description = "slack description";
-//        consumerAppModel.CallbackUrl = "www.google.com";
-//        consumerAppModel.AuthSecret = "dsdsdsdsdsdsd";
-//        consumerAppModel.AuthId = "ASASs5454545455";
-//        consumerappAddComponent.submitApps(consumerAppModel);
-//        expect(consumerAppModel.Name).toBe(expectedconsumerappname);
-//    }));
-//});
+    beforeEach(async(() => {
+        this.promise = TestBed.configureTestingModule({
+            declarations: [RouterLinkStubDirective], //Declaration of mock routerLink used on page.
+            imports: [ConsumerAppModule, RouterModule.forRoot(routes, { useHash: true }) //Set LocationStrategy for component. 
+            ],
+            providers: [
+                { provide: Router, useClass: MockRouter },
+                { provide: ConsumerAppService, useClass: MockConsumerappService },
+                { provide: Md2Toast, useClass: MockToast },
+                { provide: ConsumerAppModel, useClass: ConsumerAppModel },
+                { provide: LoaderService, useClass: MockLoaderService }
+            ]
+        }).compileComponents();
+    }))
+
+    it("Added consumer app", done => {
+        this.promise.then(() => {
+            let fixture = TestBed.createComponent(ConsumerappAddComponent); //Create instance of component            
+            let consumerappAddComponent = fixture.componentInstance;
+            let toast = fixture.debugElement.injector.get(Md2Toast);
+            let consumerAppModel = new ConsumerAppModel();
+            let expectedconsumerappname = "slack"
+            consumerAppModel.Name = expectedconsumerappname;
+            consumerAppModel.Description = "slack description";
+            consumerAppModel.CallbackUrl = "www.google.com";
+            consumerAppModel.AuthSecret = "dsdsdsdsdsdsd";
+            consumerAppModel.AuthId = "ASASs5454545455";
+            consumerappAddComponent.submitApps(consumerAppModel);
+            expect(consumerAppModel.Name).toBe(expectedconsumerappname);
+            done();
+        })
+    });
+});
