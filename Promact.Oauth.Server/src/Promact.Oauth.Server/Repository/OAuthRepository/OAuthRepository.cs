@@ -96,7 +96,7 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
             var user = await _userManager.FindByNameAsync(userName);
             var oAuth = OAuthClientChecking(user.Email, clientId);
             var clientResponse = await GetAppDetailsFromClient(callBackUrl, oAuth.RefreshToken);
-            var returnUrl = string.Format("{0}?accessToken={1}&email={2}", clientResponse.ReturnUrl, oAuth.AccessToken, oAuth.userEmail);
+            var returnUrl = string.Format("{0}?accessToken={1}&email={2}&slackUserName={3}", clientResponse.ReturnUrl, oAuth.AccessToken, oAuth.userEmail, user.SlackUserName);
             return returnUrl;
         }
 
