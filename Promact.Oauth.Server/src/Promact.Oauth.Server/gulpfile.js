@@ -5,6 +5,7 @@ var gulp = require("gulp"),
     rimraf = require("rimraf"),
     concat = require("gulp-concat"),
     cssmin = require("gulp-cssmin"),
+    gutil = require('gulp-util'),
     uglify = require("gulp-uglify"),
     sysBuilder = require('systemjs-builder'),
     remapIstanbul = require('remap-istanbul'),
@@ -15,9 +16,6 @@ var paths = {
     webroot: "./wwwroot/"
 };
 
-
-//var Server = require('karma').Server;
-
 paths.js = paths.webroot + "js/**/*.js";
 paths.minJs = paths.webroot + "js/**/*.min.js";
 paths.css = paths.webroot + "css/**/*.css";
@@ -27,11 +25,20 @@ paths.concatCssDest = paths.webroot + "css/site.min.css";
 paths.systemConfig = paths.webroot + "systemjs.config.js";
 
 gulp.task("copytowwwroot", function () {
-    var launch = require('./Properties/launchSettings.json');
-    // Holds information about the hosting environment.
-    //gutil.log(launch.profiles['IIS Express'].environmentVariables.ASPNETCORE_ENVIRONMENT);
-    var result = launch.profiles['IIS Express'].environmentVariables.ASPNETCORE_ENVIRONMENT;
+    var environment = {
+        // The names of the different environments.
+        development: "Development",
+        production: "Production",
 
+        // Gets the current hosting environment the application is running under. if environment not set then its take the Development
+        current: function () {
+            return process.env.ASPNETCORE_ENVIRONMENT || this.development;
+        },
+        // Are we running under the development environment.
+        isDevelopment: function () { return this.current() === this.development; },
+        // Are we running under the production environment.
+        isProduction: function () { return this.current() === this.production; }
+    };
 
     gulp.src([
          'node_modules/zone.js/dist/zone.js',
@@ -39,46 +46,33 @@ gulp.task("copytowwwroot", function () {
          'node_modules/systemjs/dist/system.src.js',
          'node_modules/core-js/client/shim.min.js'
     ]).pipe(gulp.dest('./wwwroot/lib/'));
-    if (result == "Production") {
-        gulp.src([
-          'node_modules/@angular/**/*.js', '!node_modules/@angular/**/*.js.map'
-        ]).pipe(gulp.dest('./wwwroot/lib/@angular'));
-
-
-        gulp.src([
-        'node_modules/@angular2-material/**/*.js', '!node_modules/@angular2-material/**/*.js.map'
-        ]).pipe(gulp.dest('./wwwroot/lib/@angular2-material'));
-
-
-        gulp.src([
-          'node_modules/rxjs/**/*.js', '!node_modules/rxjs/**/*.js.map'
-        ]).pipe(gulp.dest('./wwwroot/lib/rxjs'));
-
-        gulp.src([
-            'node_modules/md2/**/*.js',
-            '!node_modules/md2/**/*.js.map'
-        ]).pipe(gulp.dest('./wwwroot/lib/md2'));
-    }
-    else {
-        gulp.src([
+        
+   gulp.src([
         'node_modules/@angular/**/*.js'
         ]).pipe(gulp.dest('./wwwroot/lib/@angular'));
 
 
-        gulp.src([
+   gulp.src([
         'node_modules/@angular2-material/**/*.js'
         ]).pipe(gulp.dest('./wwwroot/lib/@angular2-material'));
 
 
-        gulp.src([
+   gulp.src([
           'node_modules/rxjs/**/*.js'
         ]).pipe(gulp.dest('./wwwroot/lib/rxjs'));
-
-        gulp.src([
-            'node_modules/md2/**/*.js',
-            'node_modules/md2/**/*.js.map'
-        ]).pipe(gulp.dest('./wwwroot/lib/md2'));
-    }
+   
+   if (environment.isProduction() === true) {
+          gulp.src([
+                'node_modules/md2/**/*.js'
+            ]).pipe(gulp.dest('./wwwroot/lib/md2'));
+   }
+   else{
+           gulp.src([
+           'node_modules/md2/**/*.js',
+           'node_modules/md2/**/*.js.map'
+            ]).pipe(gulp.dest('./wwwroot/lib/md2'));
+   }
+ 
 });
 
 
