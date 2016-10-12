@@ -2,8 +2,10 @@ language: csharp
 node_js:
 - 6
 - stable
-sudo: false
 mono: none
+os: linux		
+dist: trusty		
+sudo: required
 dotnet: 1.0.0-preview2-003131
 before_install:
 - export CHROME_BIN=chromium-browser
