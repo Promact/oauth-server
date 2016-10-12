@@ -19,7 +19,7 @@ import { LoaderService } from '../../shared/loader.service';
 let promise: TestBed;
 
 
-describe('Project Add Test', () => {
+describe('Project Edit Test', () => {
     //let projectAddComponent: ProjectAddComponent;
     class MockRouter { }
     class MockLocation { }
@@ -52,7 +52,7 @@ describe('Project Add Test', () => {
 
     }));
 
-    it("should get default Project for company", done => {
+    it("should get selected Project", done => {
         this.promise.then(() => {
             //expect(projectAddComponent).toBeDefined();
             let fixture = TestBed.createComponent(ProjectEditComponent); //Create instance of component            
@@ -72,7 +72,7 @@ describe('Project Add Test', () => {
             let expectedProjecteName = "Test Page2";
             projectModels.name = expectedProjecteName;
             let expectedSlackChannelName = "Test Slack Name";
-            projectModels.SlackChannelName = expectedSlackChannelName;
+            projectModels.slackChannelName = expectedSlackChannelName;
             let mockUser = new UserModel();
             mockUser.FirstName = "Ronak";
             mockUser.LastName = "Shah";
@@ -85,7 +85,6 @@ describe('Project Add Test', () => {
             projectModels.teamLeaderId = "2";
             projectEditComponent.editProject(projectModels);
             expect(projectModels.name).toBe(expectedProjecteName);
-            expect(projectModels.SlackChannelName).toBe(expectedSlackChannelName);
             done();
         })
     });

@@ -21,7 +21,7 @@ let promise: TestBed;
 
 describe('Project Add Test', () => {
     //let projectAddComponent: ProjectAddComponent;
-    class MockRouter { }
+   
     class MockLoaderService { }
     const routes: Routes = [];
     class MockActivatedRoute extends ActivatedRoute {
@@ -50,7 +50,7 @@ describe('Project Add Test', () => {
             
     }));
 
-    it("should get default Project for company", done => {
+    it("should get user list for project", done => {
         this.promise.then(() => {
             //expect(projectAddComponent).toBeDefined();
             let fixture = TestBed.createComponent(ProjectAddComponent); //Create instance of component            
@@ -61,7 +61,7 @@ describe('Project Add Test', () => {
             done();
         })
     });
-    it("should get default Project for company", done => {
+    it("should be add new project", done => {
         this.promise.then(() => {
             //expect(projectAddComponent).toBeDefined();
             
@@ -73,7 +73,7 @@ describe('Project Add Test', () => {
             let projectModels = new projectModel();
             projectModels.name = expectedProjectName;
             let expectedSlackChannelName = "Test Slack Name";
-            projectModels.SlackChannelName = expectedSlackChannelName;
+            projectModels.slackChannelName = expectedSlackChannelName;
             let mockUser = new UserModel();
             mockUser.FirstName = "Ronak";
             mockUser.LastName = "Shah";

@@ -41,11 +41,11 @@ export class ProjectAddComponent {
             }
         }
 
-        if (project.name == null && project.SlackChannelName == null)
+        if (project.name == null && project.slackChannelName == null)
         { this.toast.show("Project Name and Slack Channel Name can not be blank"); }
-        else if (project.name == null && project.SlackChannelName != null)
+        else if (project.name == null && project.slackChannelName != null)
         { this.toast.show("Project Name can not be blank "); }
-        else if (project.name != null && project.SlackChannelName == null)
+        else if (project.name != null && project.slackChannelName == null)
         { this.toast.show("Slack Channel Name can not be blank"); }
         else {
             if (bool == 0) {
