@@ -1,15 +1,15 @@
 ﻿import { UserModel } from '../users/user.model'
 export class projectModel {
-    Id: number;
+    id: number;
     name: string;
-    SlackChannelName: string;
-    IsActive: boolean;
+    slackChannelName: string;
+    isActive: boolean;
     teamLeaderId: string;
-    CreatedBy: string;
-    CreatedDate: string;
-    UpdatedBy: string;
-    UpdatedDate: string;
-    UniqueName: String;
+    createdBy: string;
+    createdDate: string;
+    updatedBy: string;
+    updatedDate: string;
+    uniqueName: string;
     teamLeader: UserModel;
     listUsers: Array<UserModel>;
     applicationUsers: Array<UserModel>;
