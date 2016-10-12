@@ -55,6 +55,12 @@ export class ProjectViewComponent implements OnInit {
                             }
                         }
                     }
+                    if (this.project.applicationUsers.length == 0)
+                    {
+                        var user = new UserModel();
+                        user.UniqueName = "-";
+                        this.project.applicationUsers.push(user);
+                    }
                 })
             });
         });
