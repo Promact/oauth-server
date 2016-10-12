@@ -32,7 +32,7 @@
             <div class="form-group">
                 <label class="lb-label">TeamLeader:</label>
                 <div class="half-width">
-                    <md2-select [(ngModel)]="project.teamLeaderId" placeholder="select teamLeader" name="teamLeaderId">
+                    <md2-select [(ngModel)]="project.teamLeaderId" placeholder="select team leader" name="teamLeaderId">
                         <md2-option [value]="i.Id" *ngFor="let i of project.listUsers">{{i.FirstName}}-{{i.Email}}</md2-option>
                     </md2-select>
                 </div>
