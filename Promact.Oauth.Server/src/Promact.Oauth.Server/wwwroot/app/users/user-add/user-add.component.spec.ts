@@ -31,8 +31,8 @@ describe('User Add Test', () => {
                 { provide: Router, useClass: MockRouter },
                 { provide: UserService, useClass: MockUserService },
                 { provide: Md2Toast, useClass: MockToast },
-                { provide: UserModel, useClass: UserModel }
-                 { provide: LoaderService, useClass: MockLoaderService }
+                { provide: UserModel, useClass: UserModel },
+                 { provide: LoaderService, useClass: MockLoaderService }]
            }).compileComponents();
 
     }));
