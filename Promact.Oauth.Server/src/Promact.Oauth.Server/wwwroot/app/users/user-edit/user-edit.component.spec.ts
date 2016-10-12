@@ -50,7 +50,7 @@ describe("User Edit Test", () => {
 
 
 
-    it("should get default Project for company", done => {
+    it("should get particular user details", done => {
         this.promise.then(() => {
             let fixture = TestBed.createComponent(UserEditComponent); //Create instance of component     
             let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
@@ -78,18 +78,8 @@ describe("User Edit Test", () => {
         });
        
 
-    }));
+    });
 
-    //it("should be defined", () => {
-    //    expect(userEditComponent).toBeDefined();
-    //});
     
-    //it("should check User first name before update", inject([UserModel], (userModel: UserModel) => {
-    //    let expectedFirstName = "First Name";
-    //    userModel.FirstName = expectedFirstName;
-    //    userEditComponent.editUser(userModel);
-    //    expect(userModel.FirstName).toBe(expectedFirstName);
-       
-    //}));
 
 });
