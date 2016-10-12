@@ -9,8 +9,8 @@ import { Md2Toast } from 'md2/toast/toast';
 import { LoaderService } from '../../shared/loader.service';
 
 @Component({
-    templateUrl: './app/users/user-edit/user-edit.html',
-    providers: [Md2Toast]
+    templateUrl: './app/users/user-edit/user-edit.html'
+    
 })
 
 export class UserEditComponent {
