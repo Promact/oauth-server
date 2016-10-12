@@ -61,7 +61,7 @@ gulp.task("copytowwwroot", function () {
           'node_modules/rxjs/**/*.js'
         ]).pipe(gulp.dest('./wwwroot/lib/rxjs'));
    
-   if (environment.isProduction() === true) {
+   if (environment.isProduction()) {
          gulp.src([
                 'node_modules/md2/**/*.js'
             ]).pipe(gulp.dest('./wwwroot/lib/md2'));
