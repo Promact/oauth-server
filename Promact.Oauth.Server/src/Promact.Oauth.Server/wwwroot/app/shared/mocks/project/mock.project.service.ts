@@ -45,6 +45,7 @@ export class MockProjectService {
         if (Id === 1) {
            mockProject.name = "Project";
            mockProject.slackChannelName = "Slack Channel"
+
            let mockUser = new UserModel();
             mockUser.FirstName = "Ronakfdfas";
             mockUser.LastName = "Shahfdsaf";
@@ -55,6 +56,7 @@ export class MockProjectService {
             mockList.push(mockUser);
             mockProject.applicationUsers = mockList;
             mockProject.teamLeaderId = "2";
+            mockProject.teamLeader = mockUser;
             return new BehaviorSubject(mockProject).asObservable();
         }
         //let connection = this.mockBaseService.getMockResponse(this.projectUrl + Id, mockProject);
