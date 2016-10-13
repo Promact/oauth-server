@@ -85,9 +85,7 @@ module.exports = function (config) {
 
         coverageReporter: {
             reporters:[
-                { type: 'html', subdir: 'report-html' },
-                { type: 'lcov', subdir: '.', file: 'lcov.info' },
-            ]
+                { type: 'lcov', subdir: '.', file: 'lcov.info' }]
         },
 
         // web server port
