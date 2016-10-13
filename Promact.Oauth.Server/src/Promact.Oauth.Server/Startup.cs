@@ -14,22 +14,21 @@ using Promact.Oauth.Server.Repository;
 using Promact.Oauth.Server.Data_Repository;
 using Promact.Oauth.Server.Repository.ProjectsRepository;
 using Promact.Oauth.Server.Repository.ConsumerAppRepository;
-using Newtonsoft.Json.Serialization;
 using Promact.Oauth.Server.Repository.OAuthRepository;
 using Promact.Oauth.Server.Repository.HttpClientRepository;
 using System.Net.Http;
 using Promact.Oauth.Server.AutoMapper;
 using AutoMapper;
-using Promact.Oauth.Server.Controllers;
 using Exceptionless;
-using Promact.Oauth.Server.Constants;
 using NLog.Extensions.Logging;
 
 namespace Promact.Oauth.Server
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env)
+        private ILoggerFactory _loggerFactory { get; }
+
+        public Startup(IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
@@ -50,6 +49,8 @@ namespace Promact.Oauth.Server
             {
                 cfg.AddProfile(new AutoMapperProfileConfiguration());
             });
+
+            _loggerFactory = loggerFactory;
 
         }
 
@@ -100,7 +101,7 @@ namespace Promact.Oauth.Server
             services.AddTransient<ISmsSender, AuthMessageSender>();
 
             services.AddOptions();
-                       
+
             // Configure AppSettingUtil using code
             services.Configure<AppSettingUtil>(appSettingUtil =>
             {
@@ -108,13 +109,17 @@ namespace Promact.Oauth.Server
                 appSettingUtil.CasualLeave = "14";
                 appSettingUtil.SickLeave = "7";
             });
-            
+
             // Configure MyOptions using config by installing Microsoft.Extensions.Options.ConfigurationExtensions
             services.Configure<AppSettings>(Configuration);
 
             //Register Mapper
             services.AddSingleton<IMapper>(sp => _mapperConfiguration.CreateMapper());
+
+            services.AddMvc().AddMvcOptions(x => x.Filters.Add(new GlobalExceptionFilter(_loggerFactory)));
         }
+
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IEnsureSeedData seeder, IServiceProvider serviceProvider)

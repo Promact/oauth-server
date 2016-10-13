@@ -86,7 +86,11 @@ module.exports = function (config) {
         coverageReporter: {
             reporters:[
                 { type: 'html', subdir: 'report-html' },
-                { type: 'json', subdir: '.', file: 'coverage-final.json' }]},
+                { type: 'json', subdir: '.', file: 'coverage-final.json' },
+                { type: 'lcov', dir: 'coverage/'}
+            ]
+        },
+
 
         // web server port
         port: 9876,
