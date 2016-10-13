@@ -9,7 +9,7 @@ export class MockProjectService {
     constructor() {
         let mockProject = new projectModel();
         mockProject.name = "slack1";
-        mockProject.SlackChannelName = "slack.test";
+        mockProject.slackChannelName = "slack.test";
         this.projects.push(mockProject);
     }
     getProjects() {
@@ -19,12 +19,14 @@ export class MockProjectService {
     {
         
         //this.projects.push(projectModel);
+        projectModel.slackChannelName = null;
         return new BehaviorSubject(projectModel).asObservable();
     }
     editProject(projectModel: projectModel)
     {
         //let connection = this.mockBaseService.getMockResponse(this.projectUrl, projectModel);
         //return connection;
+        projectModel.slackChannelName = null;
         return new BehaviorSubject(projectModel).asObservable();
     }
     getUsers() {
@@ -42,7 +44,8 @@ export class MockProjectService {
         let mockProject = new MockProjects(Id);
         if (Id === 1) {
            mockProject.name = "Project";
-           mockProject.SlackChannelName = "Slack Channel"
+           mockProject.slackChannelName = "Slack Channel"
+
            let mockUser = new UserModel();
             mockUser.FirstName = "Ronakfdfas";
             mockUser.LastName = "Shahfdsaf";
@@ -53,6 +56,7 @@ export class MockProjectService {
             mockList.push(mockUser);
             mockProject.applicationUsers = mockList;
             mockProject.teamLeaderId = "2";
+            mockProject.teamLeader = mockUser;
             return new BehaviorSubject(mockProject).asObservable();
         }
         //let connection = this.mockBaseService.getMockResponse(this.projectUrl + Id, mockProject);
@@ -126,7 +130,7 @@ export class MockProjectService {
         
     constructor(id: number) {
         super();
-        this.Id = id;
+        this.id = id;
         }
         
 }

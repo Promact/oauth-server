@@ -52,7 +52,7 @@ describe('Project Edit Test', () => {
 
     }));
 
-    it("should get default Project for company", done => {
+    it("should get selected Project", done => {
         this.promise.then(() => {
             let fixture = TestBed.createComponent(ProjectEditComponent); //Create instance of component            
             let projectEditComponent = fixture.componentInstance;
@@ -70,7 +70,7 @@ describe('Project Edit Test', () => {
             let expectedProjecteName = "Test Page2";
             projectModels.name = expectedProjecteName;
             let expectedSlackChannelName = "Test Slack Name";
-            projectModels.SlackChannelName = expectedSlackChannelName;
+            projectModels.slackChannelName = expectedSlackChannelName;
             let mockUser = new UserModel();
             mockUser.FirstName = "Ronak";
             mockUser.LastName = "Shah";
@@ -83,7 +83,6 @@ describe('Project Edit Test', () => {
             projectModels.teamLeaderId = "2";
             projectEditComponent.editProject(projectModels);
             expect(projectModels.name).toBe(expectedProjecteName);
-            expect(projectModels.SlackChannelName).toBe(expectedSlackChannelName);
             done();
         })
     });
