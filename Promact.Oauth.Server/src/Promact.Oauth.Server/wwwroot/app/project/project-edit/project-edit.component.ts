@@ -42,7 +42,7 @@ export class ProjectEditComponent implements OnInit {
                         this.project.applicationUsers = new Array<UserModel>();
                     for (let i = 0; i < this.project.listUsers.length; i++) {
                         for (let j = 0; j < this.project.applicationUsers.length; j++) {
-                            if (this.project.listUsers[i].Id == this.project.applicationUsers[j].Id) {
+                            if (this.project.listUsers[i].Id === this.project.applicationUsers[j].Id) {
                                 this.project.applicationUsers[j].Email = this.project.listUsers[i].Email;
                                 this.project.applicationUsers[j].IsActive = this.project.listUsers[i].IsActive;
                                 this.project.applicationUsers[j].LastName = this.project.listUsers[i].LastName;
@@ -76,26 +76,26 @@ export class ProjectEditComponent implements OnInit {
     editProject(project: projectModel) {
         var bool = 0;
         for (let i = 0; i < project.applicationUsers.length; i++) {
-            if (project.teamLeaderId == project.applicationUsers[i].Id) {
+            if (project.teamLeaderId === project.applicationUsers[i].Id) {
                 this.toast.show("Teamleader is selected as team member,Please select another team leader");
                 bool = 1;
             }
         }
-        if (project.name == null)
+        if (project.name === null)
         { this.toast.show("Project Name can not be blank"); }
 
 
         else {
-            if (bool == 0) {
+            if (bool === 0) {
                 this.loader.loader = true;
                 this.service.editProject(project).subscribe((project) => {
-                    if (project.name == null && project.slackChannelName == null) {
+                    if (project.name === null && project.slackChannelName === null) {
                         this.toast.show("Project Name and slackChannelName already exists");
                     }
-                    else if (project.name != null && project.slackChannelName == null) {
+                    else if (project.name !== null && project.slackChannelName === null) {
                         this.toast.show("slack Channel Name already exists");
                     }
-                    else if (project.name == null && project.slackChannelName != null) {
+                    else if (project.name === null && project.slackChannelName !== null) {
                         this.toast.show("Project Name already exists");
                     }
                     else {
