@@ -67,22 +67,11 @@ SET MSBUILD_PATH=%ProgramFiles(x86)%\MSBuild\14.0\Bin\MSBuild.exe
 
 echo Handling .NET Web Application deployment.
 
-:: 1. Installing Yarn
-IF NOT EXIST "%AppData%\npm\node_modules\yarnpkg\bin\yarn.js" (
-  :: Install kudu sync
-  echo Installing Yarn
-  call npm i -g yarn
-  IF !ERRORLEVEL! NEQ 0 goto error
-
-  :: Locally just running "kuduSync" would also work
-  SET TYPINGS_CMD=%appdata%\npm\typings.cmd
-)
-
 :: 1. Typings Install
 IF NOT EXIST "%AppData%\npm\node_modules\typings\typings.json" (
   :: Install kudu sync
   echo Installing Typings
-  call yarn global add typescript typings gulp-cli
+  call npm install -g typescript typings gulp-cli
   IF !ERRORLEVEL! NEQ 0 goto error
 
   :: Locally just running "kuduSync" would also work
@@ -92,7 +81,7 @@ IF NOT EXIST "%AppData%\npm\node_modules\typings\typings.json" (
 if EXIST "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Promact.Oauth.Server\package.json" (    
     echo Installing NPM packages
 	pushd "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Promact.Oauth.Server"
-    call :ExecuteCmd yarn --silent	
+    call :ExecuteCmd npm install --silent	
     IF !ERRORLEVEL! NEQ 0 goto error
     popd
 )
