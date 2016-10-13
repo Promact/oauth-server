@@ -229,11 +229,13 @@ namespace Promact.Oauth.Server.Repository
 
             foreach (var user in employees)
             {
+                
                 var listItem = _mapperContext.Map<ApplicationUser, UserAc>(user);
-
+                
                 userList.Add(listItem);
             }
-            return userList;
+            
+            return userList.OrderBy(users => users.FirstName).ToList();
         }
 
 
