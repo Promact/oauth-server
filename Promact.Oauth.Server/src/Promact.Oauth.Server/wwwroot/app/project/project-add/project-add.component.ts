@@ -35,24 +35,24 @@ export class ProjectAddComponent {
     addProject(project: projectModel) {
         var bool = 0;
         for (let i = 0; i < project.applicationUsers.length; i++) {
-            if (project.teamLeaderId == project.applicationUsers[i].Id) {
+            if (project.teamLeaderId === project.applicationUsers[i].Id) {
                 this.toast.show("Teamleader is selected as team member,Please select another team leader");
                 bool = 1;
             }
         }
 
-        if (project.name == null && project.slackChannelName == null)
+        if (project.name === null && project.slackChannelName === null)
         { this.toast.show("Project Name and Slack Channel Name can not be blank"); }
-        else if (project.name == null && project.slackChannelName != null)
+        else if (project.name === null && project.slackChannelName !== null)
         { this.toast.show("Project Name can not be blank "); }
-        else if (project.name != null && project.slackChannelName == null)
+        else if (project.name !== null && project.slackChannelName === null)
         { this.toast.show("Slack Channel Name can not be blank"); }
         else {
-            if (bool == 0) {
+            if (bool === 0) {
                 this.loader.loader = true;
                 this.proService.addProject(project).subscribe((project) => {
                     this.project = project;
-                    if (project.name == null && project.slackChannelName == null) {
+                    if (project.name === null && project.slackChannelName === null) {
                         this.toast.show("Project and slackChannelName already exists");
                         this.proService.getUsers().subscribe(listUsers => {
                             this.project.listUsers = listUsers;
@@ -60,7 +60,7 @@ export class ProjectAddComponent {
 
                         });
                     }
-                    else if (project.name != null && project.slackChannelName == null) {
+                    else if (project.name !== null && project.slackChannelName === null) {
                         this.toast.show("slackChannelName already exists");
                         this.proService.getUsers().subscribe(listUsers => {
                             this.project.listUsers = listUsers;
@@ -69,7 +69,7 @@ export class ProjectAddComponent {
                         });
 
                     }
-                    else if (project.name == null && project.slackChannelName != null) {
+                    else if (project.name === null && project.slackChannelName !== null) {
                         this.toast.show("Project already exists");
                         this.proService.getUsers().subscribe(listUsers => {
                             this.project.listUsers = listUsers;
