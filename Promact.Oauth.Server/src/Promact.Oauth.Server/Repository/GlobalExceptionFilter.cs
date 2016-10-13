@@ -19,7 +19,7 @@ namespace Promact.Oauth.Server.Repository
                 throw new ArgumentNullException(nameof(logger));
             }
 
-            _logger = logger.CreateLogger("Global Exception Filter");
+            _logger = logger.CreateLogger("GlobalExceptionFilter");
         }
 
         public void OnException(ExceptionContext context)
@@ -32,7 +32,7 @@ namespace Promact.Oauth.Server.Repository
                 DeclaredType = typeof(ErrorResponse)
             };
 
-            _logger.LogError("GlobalExceptionFilter", context.Exception);
+            _logger.LogError("GlobalExceptionFilter: "+ context.Exception);
         }
 
         private ErrorResponse GetResponse(ExceptionContext context)
