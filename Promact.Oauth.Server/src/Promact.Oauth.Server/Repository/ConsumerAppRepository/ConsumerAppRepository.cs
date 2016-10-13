@@ -38,15 +38,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// <returns></returns>
         public async Task<ConsumerApps> GetAppDetails(string clientId)
         {
-            try
-            {
-                return await _appsDataRepository.FirstOrDefaultAsync(x => x.AuthId == clientId);
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
+            return await _appsDataRepository.FirstOrDefaultAsync(x => x.AuthId == clientId);
         }
 
         /// <summary>
@@ -56,25 +48,17 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// <returns></returns>
         public async Task<int> AddConsumerApps(ConsumerAppsAc consumerApps)
         {
-            try
+            if (_appsDataRepository.FirstOrDefault(x => x.Name == consumerApps.Name) == null)
             {
-                if (_appsDataRepository.FirstOrDefault(x => x.Name == consumerApps.Name) == null)
-                {
-                    var consumerAppObject = _mapperContext.Map<ConsumerAppsAc, ConsumerApps>(consumerApps);
-                    consumerAppObject.AuthId = CreatedRandomNumer(true);
-                    consumerAppObject.AuthSecret = CreatedRandomNumer(false);
-                    consumerAppObject.CreatedDateTime = DateTime.Now;
-                     _appsDataRepository.AddAsync(consumerAppObject);
-                    await _appsDataRepository.SaveChangesAsync();
-                    return consumerAppObject.Id;
-                }
-                return 0;
+                var consumerAppObject = _mapperContext.Map<ConsumerAppsAc, ConsumerApps>(consumerApps);
+                consumerAppObject.AuthId = CreatedRandomNumer(true);
+                consumerAppObject.AuthSecret = CreatedRandomNumer(false);
+                consumerAppObject.CreatedDateTime = DateTime.Now;
+                _appsDataRepository.AddAsync(consumerAppObject);
+                await _appsDataRepository.SaveChangesAsync();
+                return consumerAppObject.Id;
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
+            return 0;
         }
 
 
@@ -84,15 +68,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// <returns></returns>
         public async Task<List<ConsumerApps>> GetListOfApps()
         {
-            try
-            {
-                return await _appsDataRepository.GetAll().ToListAsync();
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
+            return await _appsDataRepository.GetAll().ToListAsync();
         }
 
         /// <summary>
@@ -102,15 +78,8 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// <returns></returns>
         public async Task<ConsumerApps> GetConsumerAppsById(int id)
         {
-            try
-            {
-                return await _appsDataRepository.FirstOrDefaultAsync(x => x.Id == id);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
+            return await _appsDataRepository.FirstOrDefaultAsync(x => x.Id == id);
+            
         }
 
 
@@ -121,20 +90,15 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// <returns></returns>
         public async Task<int> UpdateConsumerApps(ConsumerApps consumerApps)
         {
-            try
+
+            if (_appsDataRepository.FirstOrDefault(x => x.Name == consumerApps.Name && x.Id != consumerApps.Id) == null)
             {
-                if (_appsDataRepository.FirstOrDefault(x => x.Name == consumerApps.Name && x.Id != consumerApps.Id) == null)
-                {
-                    _appsDataRepository.UpdateAsync(consumerApps);
-                    await _appsDataRepository.SaveChangesAsync();
-                    return consumerApps.Id;
-                }
-                return 0;
+                _appsDataRepository.UpdateAsync(consumerApps);
+                await _appsDataRepository.SaveChangesAsync();
+                return consumerApps.Id;
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            return 0;
+
 
         }
 
@@ -149,26 +113,21 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// <returns></returns>
         private string CreatedRandomNumer(bool isAuthId)
         {
-            try
+
+            var random = new Random();
+            if (isAuthId)
             {
-                var random = new Random();
-                if (isAuthId)
-                {
-                    //const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-                    return new string(Enumerable.Repeat(StringConstant.ATOZ0TO9, 15)
-                      .Select(s => s[random.Next(s.Length)]).ToArray());
-                }
-                else
-                {
-                    //const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-                    return new string(Enumerable.Repeat(StringConstant.ATOZaTOz0TO9, 30)
-                      .Select(s => s[random.Next(s.Length)]).ToArray());
-                }
+                //const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+                return new string(Enumerable.Repeat(StringConstant.ATOZ0TO9, 15)
+                  .Select(s => s[random.Next(s.Length)]).ToArray());
             }
-            catch (Exception ex)
+            else
             {
-                throw ex;
+                //const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                return new string(Enumerable.Repeat(StringConstant.ATOZaTOz0TO9, 30)
+                  .Select(s => s[random.Next(s.Length)]).ToArray());
             }
+
         }
         #endregion
     }
