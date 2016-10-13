@@ -48,7 +48,6 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                 if (project.TeamLeaderId != null)
                 {
                     var teamLeaders = _userDataRepository.FirstOrDefault(x => x.Id == project.TeamLeaderId);
-                    //var teamLeader = new UserAc();
                     teamLeader.FirstName = teamLeaders.FirstName;
                     teamLeader.LastName = teamLeaders.LastName;
                     teamLeader.Email = teamLeaders.Email;
@@ -56,9 +55,9 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                 else
                 {
 
-                    teamLeader.FirstName = "Not Assign";
-                    teamLeader.LastName = "Not Assign";
-                    teamLeader.Email = "Not Assign";
+                    teamLeader.FirstName = StringConstant.TeamLeaderNotAssign;
+                    teamLeader.LastName = StringConstant.TeamLeaderNotAssign;
+                    teamLeader.Email = StringConstant.TeamLeaderNotAssign;
                 }
                 var CreatedBy = _userDataRepository.FirstOrDefault(x => x.Id == project.CreatedBy)?.FirstName;
                 var UpdatedBy = _userDataRepository.FirstOrDefault(x => x.Id == project.UpdatedBy)?.FirstName;
@@ -66,11 +65,11 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                 if (project.UpdatedDateTime == null)
                 { UpdatedDate = ""; }
                 else
-                { UpdatedDate = project.UpdatedDateTime.ToString(); }
+                { UpdatedDate = Convert.ToDateTime(project.UpdatedDateTime).ToString(StringConstant.DateFormate); }
                 var projectObject = _mapperContext.Map<Project, ProjectAc>(project);
                 projectObject.TeamLeader = teamLeader;
                 projectObject.CreatedBy = CreatedBy;
-                projectObject.CreatedDate = project.CreatedDateTime.ToLocalTime().ToString("dd'/'MM'/'yyyy HH:mm");
+                projectObject.CreatedDate = project.CreatedDateTime.ToString(StringConstant.DateFormate);
                 projectObject.UpdatedBy = UpdatedBy;
                 projectObject.UpdatedDate = UpdatedDate;
                 projectAcs.Add(projectObject);
