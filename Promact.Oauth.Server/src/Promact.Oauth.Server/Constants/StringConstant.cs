@@ -87,5 +87,6 @@ namespace Promact.Oauth.Server.Constants
         public static string Format = "yyyy-MM-dd";
         public static string DateFormate = "dd'/'MM'/'yyyy";
         public static string TeamLeaderNotAssign = "Not Assigned";
+        public static string DomainAddress = "@promactinfo.com";
     }
 }
