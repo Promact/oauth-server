@@ -93,9 +93,9 @@ export class UserAddComponent {
         }
     }
 
-    goBack() {
-        this.redirectionRoute.navigate(['user/list']);
-    }
+goBack() {
+    this.redirectionRoute.navigate(['user/list']);
+}
 
 
 }
