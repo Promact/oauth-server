@@ -76,7 +76,7 @@ namespace Promact.Oauth.Server.Repository
                 var result = _userManager.CreateAsync(user, password);
                 var resultSuccess = await result;
                 result = _userManager.AddToRoleAsync(user, newUser.RoleName);
-                //SendEmail(user, password);
+                SendEmail(user, password);
                 resultSuccess = await result;
                 return user.Id;
             }
@@ -229,12 +229,12 @@ namespace Promact.Oauth.Server.Repository
 
             foreach (var user in employees)
             {
-                
+
                 var listItem = _mapperContext.Map<ApplicationUser, UserAc>(user);
-                
+
                 userList.Add(listItem);
             }
-            
+
             return userList.OrderBy(users => users.FirstName).ToList();
         }
 
@@ -404,7 +404,7 @@ namespace Promact.Oauth.Server.Repository
             {
                 _logger.LogInformation("Successfully Reset Password");
                 if (SendEmail(user, newPassword))
-                return true;
+                    return true;
             }
             return false;
         }
