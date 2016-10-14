@@ -27,10 +27,10 @@ namespace Promact.Oauth.Server
     public class Startup
     {
         private ILoggerFactory _loggerFactory { get; }
-        private IHostingEnvironment CurrentEnvironment { get; set; }
+        private IHostingEnvironment _currentEnvironment { get; set; }
         public Startup(IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            CurrentEnvironment = env;
+            _currentEnvironment = env;
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
@@ -98,9 +98,9 @@ namespace Promact.Oauth.Server
             //});
 
             // Add application services.
-            if (CurrentEnvironment.IsDevelopment())
+            if (_currentEnvironment.IsDevelopment())
                 services.AddTransient<IEmailSender, AuthMessageSender>();
-            else if (CurrentEnvironment.IsProduction())
+            else if (_currentEnvironment.IsProduction())
                 services.AddTransient<IEmailSender, SendGridEmailSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
 
