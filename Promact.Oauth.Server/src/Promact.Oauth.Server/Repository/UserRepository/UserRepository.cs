@@ -366,26 +366,23 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="email"></param>
         /// <returns> boolean: true if the email exists, false if does not exist</returns>
-        public async Task<bool> FindByEmail(string email)
+        public async Task<bool> CheckEmailIsExists(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null)
-            {
                 return false;
-            }
-            return true;
+            else
+                return true;
         }
 
 
-        public bool FindUserBySlackUserName(string slackUserName)
+        public bool CheckSlackUserNameIsExists(string slackUserName)
         {
             var user = _applicationUserDataRepository.FirstOrDefault(x => x.SlackUserName == slackUserName);
             if (user != null)
-            {
-                if (user.SlackUserName == slackUserName)
-                    return true;
-            }
-            return false;
+                return true;
+            else
+                return false;
         }
 
         /// <summary>

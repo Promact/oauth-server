@@ -78,7 +78,7 @@ namespace Promact.Oauth.Server.Tests
         /// This test case checks if a user exists with the specified Email
         /// </summary>
         [Fact, Trait("Category", "Required")]
-        public async Task FindByEmail()
+        public async Task CheckEmailIsExists()
         {
             UserAc _testUser = new UserAc()
             {
@@ -177,7 +177,7 @@ namespace Promact.Oauth.Server.Tests
         //    var id = await _userRepository.AddUser(_testUser, _stringConstant.RawFirstNameForTest);
         //    var user = await _userManager.FindByIdAsync(id);
 
-             
+
         //    var password = await _userRepository.ChangePassword(new ChangePasswordViewModel
         //    {
         //        OldPassword = _stringConstant.OldPassword,
@@ -325,7 +325,7 @@ namespace Promact.Oauth.Server.Tests
         /// Test case to check FindUserBySlackUserName of user Repository
         /// </summary>
         [Fact, Trait("Category", "Required")]
-        public async Task FindUserBySlackUserName()
+        public async Task CheckSlackUserNameIsAlreadyExists()
         {
               UserAc _testUser = new UserAc()
              {
