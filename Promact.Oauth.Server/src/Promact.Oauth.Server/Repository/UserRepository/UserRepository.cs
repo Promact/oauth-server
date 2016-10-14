@@ -381,11 +381,9 @@ namespace Promact.Oauth.Server.Repository
             if (user != null)
             {
                 if (user.SlackUserName == slackUserName)
-                {
-                    return false;
-                }
+                    return true;
             }
-            return true;
+            return false;
         }
 
         /// <summary>
