@@ -194,8 +194,8 @@ namespace Promact.Oauth.Server.Tests
         public async Task CheckSlackUserNameIsAlreadyExists()
         {
             var id = await _userRepository.AddUser(_testUser, StringConstant.RawFirstNameForTest);
-            var result = _userRepository.CheckSlackUserNameIsExists(StringConstant.RawFirstNameForTest);
-            Assert.Equal(result, true);
+            var result = _userRepository.FindUserBySlackUserName(StringConstant.RawFirstNameForTest);
+            Assert.NotNull(result);
         }
 
         /// <summary>
