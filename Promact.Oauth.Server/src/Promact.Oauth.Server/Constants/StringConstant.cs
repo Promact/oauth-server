@@ -35,6 +35,7 @@ namespace Promact.Oauth.Server.Constants
         public static string From = "From";
         public static string Password = "Password";
         public static string Host = "Host";
+        public static string PromactName = "Promact";
         public static string Port = "Port";
         public static string UserEmail = "${{Email}}$";
         public static string UserPassword = "${{Password}}$";

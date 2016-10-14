@@ -20,6 +20,7 @@ namespace Promact.Oauth.Server.Models
         public bool SslOnConnect { get; set; }
 
         public string ExceptionLessApiKey { get; set; }
+        public string SendGridApi { get; set; }
 
     }
 }

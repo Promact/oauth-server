@@ -76,7 +76,7 @@ namespace Promact.Oauth.Server.Repository
                 var result = _userManager.CreateAsync(user, password);
                 var resultSuccess = await result;
                 result = _userManager.AddToRoleAsync(user, newUser.RoleName);
-                //SendEmail(user, password);
+                SendEmail(user, password);
                 resultSuccess = await result;
                 return user.Id;
             }
@@ -393,16 +393,14 @@ namespace Promact.Oauth.Server.Repository
         /// <returns></returns>
         public async Task<bool> ReSendMail(string id)
         {
-            _logger.LogInformation("start Resend Mail Method in User Repository");
             var user = await _userManager.FindByIdAsync(id);
             string newPassword = GetRandomString();
             var code = await _userManager.GeneratePasswordResetTokenAsync(user);
             IdentityResult result = await _userManager.ResetPasswordAsync(user, code, newPassword);
             if (result.Succeeded)
             {
-                _logger.LogInformation("Successfully Reset Password");
                 if (SendEmail(user, newPassword))
-                return true;
+                    return true;
             }
             return false;
         }
@@ -570,14 +568,10 @@ namespace Promact.Oauth.Server.Repository
         /// <param name="user">Object of newly registered User</param>
         private bool SendEmail(ApplicationUser user, string password)
         {
-            _logger.LogInformation("Start Fetch Email Template");
             string path = _hostingEnvironment.ContentRootPath + StringConstant.UserDetialTemplateFolderPath;
-            _logger.LogInformation("ContentRootPath Path:" + _hostingEnvironment.ContentRootPath);
-            _logger.LogInformation("Full Path:" + _hostingEnvironment.ContentRootPath + StringConstant.UserDetialTemplateFolderPath);
             string finaleTemplate = "";
             if (System.IO.File.Exists(path))
             {
-                _logger.LogInformation("Email Template Featch successfully");
                 finaleTemplate = System.IO.File.ReadAllText(path);
                 finaleTemplate = finaleTemplate.Replace(StringConstant.UserEmail, user.Email).Replace(StringConstant.UserPassword, password).Replace(StringConstant.ResertPasswordUserName, user.FirstName);
                 _emailSender.SendEmail(user.Email, StringConstant.LoginCredentials, finaleTemplate);

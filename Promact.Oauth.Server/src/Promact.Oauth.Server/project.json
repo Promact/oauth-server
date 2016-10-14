@@ -52,7 +52,8 @@
     "Microsoft.IdentityModel.Protocols": "2.0.0",
     "Microsoft.TypeScript.MSBuild": "1.8.11",
     "NLog.Extensions.Logging": "1.0.0-*",
-    "NLog.Config": "4.3.9"
+    "NLog.Config": "4.3.9",
+    "SendGrid.NetCore": "1.0.0-rtm-00002"
   },
 
   "tools": {
