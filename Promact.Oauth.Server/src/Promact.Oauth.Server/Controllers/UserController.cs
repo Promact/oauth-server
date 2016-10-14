@@ -333,8 +333,8 @@ namespace Promact.Oauth.Server.Controllers
 
 
         [HttpGet]
-        [Route("checkSlackUserNameIsExists/{slackUserName}")]
-        public IActionResult CheckSlackUserNameIsExists(string slackUserName)
+        [Route("findUserBySlackUserName/{slackUserName}")]
+        public IActionResult FindUserBySlackUserName(string slackUserName)
         {
             try
             {
