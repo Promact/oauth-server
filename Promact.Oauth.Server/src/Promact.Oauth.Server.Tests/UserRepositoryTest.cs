@@ -45,7 +45,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public async Task GetUserById()
         {
-            var id = await _userRepository.AddUser(_testUser,StringConstant.RawFirstNameForTest);
+            var id = await _userRepository.AddUser(_testUser, StringConstant.RawFirstNameForTest);
             UserAc testUser = await _userRepository.GetById(id);
             Assert.Equal(testUser.Email, StringConstant.RawEmailIdForTest);
         }
@@ -54,10 +54,10 @@ namespace Promact.Oauth.Server.Tests
         /// This test case checks if a user exists with the specified Email
         /// </summary>
         [Fact, Trait("Category", "Required")]
-        public async Task FindByEmail()
+        public async Task CheckEmailIsExists()
         {
             var result = await _userRepository.AddUser(_testUser, StringConstant.RawFirstNameForTest);
-            var exists = await _userRepository.FindByEmail(StringConstant.RawEmailIdForTest);
+            var exists = await _userRepository.CheckEmailIsExists(StringConstant.RawEmailIdForTest);
             Assert.Equal(true, exists);
         }
 
@@ -109,7 +109,7 @@ namespace Promact.Oauth.Server.Tests
         //    var id = await _userRepository.AddUser(_testUser, StringConstant.RawFirstNameForTest);
         //    var user = await _userManager.FindByIdAsync(id);
 
-             
+
         //    var password = await _userRepository.ChangePassword(new ChangePasswordViewModel
         //    {
         //        OldPassword = StringConstant.OldPassword,
@@ -191,11 +191,11 @@ namespace Promact.Oauth.Server.Tests
         /// Test case to check FindUserBySlackUserName of user Repository
         /// </summary>
         [Fact, Trait("Category", "Required")]
-        public async Task FindUserBySlackUserName()
+        public async Task CheckSlackUserNameIsAlreadyExists()
         {
             var id = await _userRepository.AddUser(_testUser, StringConstant.RawFirstNameForTest);
-            var result = _userRepository.FindUserBySlackUserName(StringConstant.RawFirstNameForTest);
-            Assert.Equal(result, false);
+            var result = _userRepository.CheckSlackUserNameIsExists(StringConstant.RawFirstNameForTest);
+            Assert.Equal(result, true);
         }
 
         /// <summary>

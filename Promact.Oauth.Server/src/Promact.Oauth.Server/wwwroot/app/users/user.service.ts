@@ -37,11 +37,11 @@ export class UserService {
         return this.httpService.get(this.UserUrl + "/findbyusername/" + userName);
     }
 
-    findUserByEmail(email: string) {
-        return this.httpService.get(this.UserUrl + "/findbyemail/" + email);
+    checkEmailIsExists(email: string) {
+        return this.httpService.get(this.UserUrl + "/checkEmailIsExists/" + email);
     }
-    findUserBySlackUserName(slackUserName: string) {
-        return this.httpService.get(this.UserUrl + "/findUserBySlackUserName/" + slackUserName);
+    checkSlackUserNameIsExists(slackUserName: string) {
+        return this.httpService.get(this.UserUrl + "/checkSlackUserNameIsExists/" + slackUserName);
     }
     getRoles() {
         return this.httpService.get(this.UserUrl + "/getRole");

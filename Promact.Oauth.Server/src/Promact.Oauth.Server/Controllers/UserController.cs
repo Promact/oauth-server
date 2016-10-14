@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 using NLog;
+using Promact.Oauth.Server.Constants;
 
 namespace Promact.Oauth.Server.Controllers
 {
@@ -315,13 +316,13 @@ namespace Promact.Oauth.Server.Controllers
         /// <param name="email"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("findbyemail/{email}")]
+        [Route("checkEmailIsExists/{email}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> FindByEmail(string email)
+        public async Task<IActionResult> CheckEmailIsExists(string email)
         {
             try
             {
-                return Ok(await _userRepository.FindByEmail(email));
+                return Ok(await _userRepository.CheckEmailIsExists(email + StringConstant.DomainAddress));
             }
             catch (Exception ex)
             {
@@ -331,12 +332,12 @@ namespace Promact.Oauth.Server.Controllers
 
 
         [HttpGet]
-        [Route("findUserBySlackUserName/{slackUserName}")]
-        public IActionResult FindUserBySlackUserName(string slackUserName)
+        [Route("checkSlackUserNameIsExists/{slackUserName}")]
+        public IActionResult CheckSlackUserNameIsExists(string slackUserName)
         {
             try
             {
-                return Ok(_userRepository.FindUserBySlackUserName(slackUserName));
+                return Ok(_userRepository.CheckSlackUserNameIsExists(slackUserName));
             }
             catch (Exception ex)
             {
