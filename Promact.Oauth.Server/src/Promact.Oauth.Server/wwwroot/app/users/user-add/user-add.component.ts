@@ -24,6 +24,7 @@ export class UserAddComponent {
         this.userModel = new UserModel();
         this.listOfRoles = [];
         this.isEmailExist = false;
+        this.isSlackUserNameExist = false;
     }
 
 
@@ -45,14 +46,14 @@ export class UserAddComponent {
     addUser(userModel) {
         this.loader.loader = true;
         userModel.JoiningDate = new Date(userModel.JoiningDate);
-        if (this.isSlackUserNameExist == true) {
-            if (this.isEmailExist == false) {
+        if (this.isSlackUserNameExist === false) {
+            if (this.isEmailExist === false) {
                 this.userService.registerUser(this.userModel).subscribe((result) => {
-                    if (result == true) {
+                    if (result) {
                         this.toast.show('User added successfully.');
                         this.redirectionRoute.navigate(['user/list']);
                     }
-                    else if (result == false) {
+                    else if (!result) {
                         this.toast.show('User Name already exists.');
                     }
                     this.loader.loader = false;
@@ -71,31 +72,34 @@ export class UserAddComponent {
     }
 
     checkEmail(email) {
-        this.isEmailExist = false;
+        if (email !== "" && email !== undefined) {
+            this.isEmailExist = false;
+            this.userService.findUserByEmail(email + "@promactinfo.com").subscribe((isEmailExist) => {
+                if (isEmailExist) {
+                    this.isEmailExist = true;
+                }
+                else {
+                    this.isEmailExist = false;
 
-        this.userService.findUserByEmail(email + "@promactinfo.com").subscribe((isEmailExist) => {
-            if (isEmailExist) {
-                this.isEmailExist = true;
-            }
-            else {
-                this.isEmailExist = false;
-
-            }
-        }, err => {
-        });
+                }
+            }, err => {
+            });
+        }
     }
 
     checkSlackUserName(slackUserName) {
-        this.isSlackUserNameExist = false;
-        this.userService.findUserBySlackUserName(slackUserName).subscribe((isSlackUserNameExist) => {
-            if (isSlackUserNameExist) {
-                this.isSlackUserNameExist = true;
-            }
-            else {
-                this.isSlackUserNameExist = false;
-            }
-        }, err => {
-        });
+        if (slackUserName !== "" && slackUserName !== undefined) {
+            this.isSlackUserNameExist = false;
+            this.userService.findUserBySlackUserName(slackUserName).subscribe((isSlackUserNameExist) => {
+                if (isSlackUserNameExist) {
+                    this.isSlackUserNameExist = true;
+                }
+                else {
+                    this.isSlackUserNameExist = false;
+                }
+            }, err => {
+            });
+        }
     }
 
     goBack() {
