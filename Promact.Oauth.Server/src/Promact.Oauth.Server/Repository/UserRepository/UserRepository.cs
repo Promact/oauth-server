@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Promact.Oauth.Server.Exception_Handler;
 
 namespace Promact.Oauth.Server.Repository
 {
@@ -375,14 +376,13 @@ namespace Promact.Oauth.Server.Repository
                 return true;
         }
 
-
-        public bool CheckSlackUserNameIsExists(string slackUserName)
+        public ApplicationUser FindUserBySlackUserName(string slackUserName)
         {
             var user = _applicationUserDataRepository.FirstOrDefault(x => x.SlackUserName == slackUserName);
-            if (user != null)
-                return true;
+            if (user == null)
+                throw(new SlackUserNotFound());
             else
-                return false;
+                return user;
         }
 
         /// <summary>

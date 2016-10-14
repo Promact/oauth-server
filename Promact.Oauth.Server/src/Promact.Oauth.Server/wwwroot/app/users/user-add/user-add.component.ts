@@ -77,6 +77,7 @@ export class UserAddComponent {
             this.userService.checkEmailIsExists(email).subscribe((result) => {
                 this.isEmailExist = result;
             }, err => {
+                console.log(err);
             });
         }
     }
@@ -84,17 +85,17 @@ export class UserAddComponent {
     checkSlackUserName(slackUserName) {
         this.isSlackUserNameExist = false;
         if (slackUserName !== "" && slackUserName !== undefined) {
-            this.userService.checkSlackUserNameIsExists(slackUserName).subscribe((result) => {
-                this.isSlackUserNameExist = result;
-            }
-            , err => {
-        });
+            this.userService.findUserBySlackUserName(slackUserName).subscribe((result) => {
+                if (result.slackUserName !== undefined)
+                this.isSlackUserNameExist = true;
+            }, err => {
+                });
+        }
     }
-}
 
-goBack() {
-    this.redirectionRoute.navigate(['user/list']);
-}
+    goBack() {
+        this.redirectionRoute.navigate(['user/list']);
+    }
 
 
 }

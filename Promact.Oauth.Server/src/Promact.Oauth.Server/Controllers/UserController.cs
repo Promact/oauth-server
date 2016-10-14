@@ -21,7 +21,7 @@ namespace Promact.Oauth.Server.Controllers
         #region "Private Variable(s)"
         private readonly IUserRepository _userRepository;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly ILogger<UserController> _logger; 
+        private readonly ILogger<UserController> _logger;
 
 
         #endregion
@@ -326,25 +326,25 @@ namespace Promact.Oauth.Server.Controllers
             }
             catch (Exception ex)
             {
-                throw ex;
+                return Ok(ex);
             }
         }
 
 
         [HttpGet]
-        [Route("checkSlackUserNameIsExists/{slackUserName}")]
-        public IActionResult CheckSlackUserNameIsExists(string slackUserName)
+        [Route("findUserBySlackUserName/{slackUserName}")]
+        public IActionResult FindUserBySlackUserName(string slackUserName)
         {
             try
             {
-                return Ok(_userRepository.CheckSlackUserNameIsExists(slackUserName));
+                ApplicationUser slackUser = _userRepository.FindUserBySlackUserName(slackUserName);
+                return Ok(slackUser);
             }
             catch (Exception ex)
             {
-                throw ex;
+                return Ok(ex);
             }
         }
-
 
 
         /**

@@ -73,7 +73,7 @@ namespace Promact.Oauth.Server.Repository
         /// <returns> boolean: true if the email exists, false if does not exist</returns>
         Task<bool> CheckEmailIsExists(string email);
 
-        bool CheckSlackUserNameIsExists(string slackUserName);
+        ApplicationUser FindUserBySlackUserName(string slackUserName);
 
         /// <summary>
         /// This method is used to send email to the currently added user
