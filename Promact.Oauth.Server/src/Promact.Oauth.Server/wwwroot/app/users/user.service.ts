@@ -40,8 +40,8 @@ export class UserService {
     checkEmailIsExists(email: string) {
         return this.httpService.get(this.UserUrl + "/checkEmailIsExists/" + email);
     }
-    checkSlackUserNameIsExists(slackUserName: string) {
-        return this.httpService.get(this.UserUrl + "/checkSlackUserNameIsExists/" + slackUserName);
+    findUserBySlackUserName(slackUserName: string) {
+        return this.httpService.get(this.UserUrl + "/findUserBySlackUserName/" + slackUserName);
     }
     getRoles() {
         return this.httpService.get(this.UserUrl + "/getRole");
