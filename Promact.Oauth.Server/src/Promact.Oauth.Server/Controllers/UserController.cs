@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 using NLog;
 using Promact.Oauth.Server.Constants;
+using Promact.Oauth.Server.Exception_Handler;
 
 namespace Promact.Oauth.Server.Controllers
 {
@@ -340,7 +341,7 @@ namespace Promact.Oauth.Server.Controllers
                 ApplicationUser slackUser = _userRepository.FindUserBySlackUserName(slackUserName);
                 return Ok(slackUser);
             }
-            catch (Exception ex)
+            catch (SlackUserNotFound ex)
             {
                 return Ok(ex);
             }
