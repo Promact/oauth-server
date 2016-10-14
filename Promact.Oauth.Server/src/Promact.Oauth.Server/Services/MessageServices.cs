@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 using Promact.Oauth.Server.Models;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
-using System.Net.Mail;
-using Promact.Oauth.Server.Constants;
 
 namespace Promact.Oauth.Server.Services
 {
@@ -19,7 +17,7 @@ namespace Promact.Oauth.Server.Services
     {
         private readonly ILogger<AuthMessageSender> _logger;
         private readonly IOptions<AppSettings> _appSettings;
-        
+
         public AuthMessageSender(IOptions<AppSettings> appSettings, ILogger<AuthMessageSender> logger)
         {
             _logger = logger;
@@ -28,34 +26,25 @@ namespace Promact.Oauth.Server.Services
 
         public void SendEmail(string email, string subject, string message)
         {
-            if (string.IsNullOrEmpty(_appSettings.Value.SendGridApi))
+            _logger.LogInformation("Start Email Send Method in Message Service");
+            // Plug in your email service here to send an email.
+            var msg = new MimeMessage();
+            _logger.LogInformation("Email Credential 1");
+            msg.From.Add(new MailboxAddress("Promact", _appSettings.Value.From));
+            msg.To.Add(new MailboxAddress("User", email));
+            msg.Subject = subject;
+            var bodyBuilder = new BodyBuilder();
+            bodyBuilder.HtmlBody = message;
+            msg.Body = bodyBuilder.ToMessageBody();
+            using (var smtp = new SmtpClient())
             {
-                // Plug in your email service here to send an email.
-                var msg = new MimeMessage();
-                msg.From.Add(new MailboxAddress(StringConstant.PromactName, _appSettings.Value.From));
-                msg.To.Add(new MailboxAddress("User", email));
-                msg.Subject = subject;
-                var bodyBuilder = new BodyBuilder();
-                bodyBuilder.HtmlBody = message;
-                msg.Body = bodyBuilder.ToMessageBody();
-                using (var smtp = new SmtpClient())
-                {
-                    smtp.Connect(_appSettings.Value.Host, _appSettings.Value.Port, _appSettings.Value.SslOnConnect == true ? MailKit.Security.SecureSocketOptions.SslOnConnect : MailKit.Security.SecureSocketOptions.None);
-                    smtp.Authenticate(credentials: new NetworkCredential(_appSettings.Value.UserName, _appSettings.Value.Password));
-                    smtp.Send(msg, CancellationToken.None);
-                    smtp.Disconnect(true, CancellationToken.None);
-                }
-            }
-            else
-            {
-                var myMessage = new SendGrid.SendGridMessage();
-                myMessage.AddTo(email);
-                myMessage.From = new MailAddress(_appSettings.Value.From, StringConstant.PromactName);
-                myMessage.Subject = subject;
-                myMessage.Text = message;
-
-                var transportWeb = new SendGrid.Web(_appSettings.Value.SendGridApi);
-                transportWeb.DeliverAsync(myMessage);
+                _logger.LogInformation("Smtp Connect");
+                smtp.Connect(_appSettings.Value.Host, _appSettings.Value.Port, _appSettings.Value.SslOnConnect == true ? MailKit.Security.SecureSocketOptions.SslOnConnect : MailKit.Security.SecureSocketOptions.None);
+                _logger.LogInformation("Authenticate");
+                smtp.Authenticate(credentials: new NetworkCredential(_appSettings.Value.UserName, _appSettings.Value.Password));
+                smtp.Send(msg, CancellationToken.None);
+                smtp.Disconnect(true, CancellationToken.None);
+                _logger.LogInformation("SendEmail Mail Successfully");
             }
         }
 
