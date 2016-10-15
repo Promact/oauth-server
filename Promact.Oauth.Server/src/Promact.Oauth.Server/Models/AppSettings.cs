@@ -15,12 +15,10 @@ namespace Promact.Oauth.Server.Models
 
         public string Host { get; set; }
 
-        public int Port { get; set; }
+        public string Port { get; set; }
 
         public bool SslOnConnect { get; set; }
 
-        public string ExceptionLessApiKey { get; set; }
         public string SendGridApi { get; set; }
-
     }
 }
