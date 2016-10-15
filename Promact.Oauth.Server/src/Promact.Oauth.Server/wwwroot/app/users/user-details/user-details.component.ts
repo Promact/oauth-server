@@ -13,11 +13,12 @@ export class UserDetailsComponent {
     user: UserModel;
     id: any;
     errorMessage: string;
-    admin: any;
+    admin: boolean;
     userRole: any;
 
     constructor(private userService: UserService, private route: ActivatedRoute, private redirectRoute: Router, private loginService: LoginService) {
         this.user = new UserModel();
+        this.admin = true;
     }
     ngOnInit() {
         this.getRole();
