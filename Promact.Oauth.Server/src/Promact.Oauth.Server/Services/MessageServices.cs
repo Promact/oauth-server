@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Promact.Oauth.Server.Models;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
+using System;
 
 namespace Promact.Oauth.Server.Services
 {
@@ -16,12 +17,12 @@ namespace Promact.Oauth.Server.Services
     public class AuthMessageSender : IEmailSender, ISmsSender
     {
         private readonly ILogger<AuthMessageSender> _logger;
-        private readonly IOptions<AppSettings> _appSettings;
+        private readonly AppSettings _appSettings;
 
         public AuthMessageSender(IOptions<AppSettings> appSettings, ILogger<AuthMessageSender> logger)
         {
             _logger = logger;
-            _appSettings = appSettings;
+            _appSettings = appSettings.Value;
         }
 
         public void SendEmail(string email, string subject, string message)
@@ -30,7 +31,7 @@ namespace Promact.Oauth.Server.Services
             // Plug in your email service here to send an email.
             var msg = new MimeMessage();
             _logger.LogInformation("Email Credential 1");
-            msg.From.Add(new MailboxAddress("Promact", _appSettings.Value.From));
+            msg.From.Add(new MailboxAddress("Promact", _appSettings.From));
             msg.To.Add(new MailboxAddress("User", email));
             msg.Subject = subject;
             var bodyBuilder = new BodyBuilder();
@@ -39,9 +40,9 @@ namespace Promact.Oauth.Server.Services
             using (var smtp = new SmtpClient())
             {
                 _logger.LogInformation("Smtp Connect");
-                smtp.Connect(_appSettings.Value.Host, _appSettings.Value.Port, _appSettings.Value.SslOnConnect == true ? MailKit.Security.SecureSocketOptions.SslOnConnect : MailKit.Security.SecureSocketOptions.None);
+                smtp.Connect(_appSettings.Host, Convert.ToInt32(_appSettings.Port), _appSettings.SslOnConnect == true ? MailKit.Security.SecureSocketOptions.SslOnConnect : MailKit.Security.SecureSocketOptions.None);
                 _logger.LogInformation("Authenticate");
-                smtp.Authenticate(credentials: new NetworkCredential(_appSettings.Value.UserName, _appSettings.Value.Password));
+                smtp.Authenticate(credentials: new NetworkCredential(_appSettings.UserName, _appSettings.Password));
                 smtp.Send(msg, CancellationToken.None);
                 smtp.Disconnect(true, CancellationToken.None);
                 _logger.LogInformation("SendEmail Mail Successfully");
