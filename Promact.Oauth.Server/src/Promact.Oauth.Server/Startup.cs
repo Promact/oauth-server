@@ -21,6 +21,7 @@ using Promact.Oauth.Server.AutoMapper;
 using AutoMapper;
 using Exceptionless;
 using NLog.Extensions.Logging;
+using Promact.Oauth.Server.Constants;
 
 namespace Promact.Oauth.Server
 {
@@ -81,6 +82,7 @@ namespace Promact.Oauth.Server
             services.AddScoped(typeof(IDataRepository<>), typeof(DataRepository<>));
             services.AddScoped<IOAuthRepository, OAuthRepository>();
             services.AddScoped<HttpClient>();
+            services.AddScoped<StringConstant>();
             services.AddScoped<IHttpClientRepository, HttpClientRepository>();
 
 

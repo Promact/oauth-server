@@ -17,14 +17,15 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
 
         private readonly IDataRepository<ConsumerApps> _appsDataRepository;
         private readonly IMapper _mapperContext;
-
+        private readonly StringConstant _stringConstant;
         #endregion
 
         #region "Constructor"
-        public ConsumerAppRepository(IDataRepository<ConsumerApps> appsDataRepository, IMapper mapperContext)
+        public ConsumerAppRepository(IDataRepository<ConsumerApps> appsDataRepository, IMapper mapperContext, StringConstant stringConstant)
         {
             _appsDataRepository = appsDataRepository;
             _mapperContext = mapperContext;
+            _stringConstant = stringConstant;
         }
 
         #endregion
@@ -118,13 +119,13 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
             if (isAuthId)
             {
                 //const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-                return new string(Enumerable.Repeat(StringConstant.ATOZ0TO9, 15)
+                return new string(Enumerable.Repeat(_stringConstant.ATOZ0TO9, 15)
                   .Select(s => s[random.Next(s.Length)]).ToArray());
             }
             else
             {
                 //const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-                return new string(Enumerable.Repeat(StringConstant.ATOZaTOz0TO9, 30)
+                return new string(Enumerable.Repeat(_stringConstant.ATOZaTOz0TO9, 30)
                   .Select(s => s[random.Next(s.Length)]).ToArray());
             }
 
