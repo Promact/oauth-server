@@ -13,6 +13,7 @@ using Promact.Oauth.Server.Models.ApplicationClasses;
 using Promact.Oauth.Server.Constants;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
+using System;
 
 namespace Promact.Oauth.Server.Controllers
 {
@@ -265,29 +266,40 @@ namespace Promact.Oauth.Server.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var user = await _userManager.FindByNameAsync(model.Email);
-                if (user == null)
+                if (ModelState.IsValid)
                 {
-                    @ViewData["EmailNotExist"] = StringConstant.EmailNotExists;
-                    return View();
-                }
+                    var user = await _userManager.FindByNameAsync(model.Email);
+                    if (user == null)
+                    {
+                        @ViewData["EmailNotExist"] = StringConstant.EmailNotExists;
+                        return View();
+                    }
 
-                // Send an email with this link
-                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var resetPasswordLink = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                string path = _hostingEnvironment.ContentRootPath + StringConstant.ForgotPasswordTemplateFolderPath;
-                if (System.IO.File.Exists(path))
-                {
-                    string finaleTemplate = System.IO.File.ReadAllText(path);
-                    finaleTemplate = finaleTemplate.Replace(StringConstant.ResetPasswordLink, resetPasswordLink).Replace(StringConstant.ResertPasswordUserName, user.FirstName);
-                    _emailSender.SendEmail(model.Email, StringConstant.ForgotPassword, finaleTemplate);
-                    @ViewData["MailSentSuccessfully"] = StringConstant.SuccessfullySendMail.Replace("{{emailaddress}}", "'" + model.Email + "'");
+                    // Send an email with this link
+                    var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    var resetPasswordLink = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+                    string path = _hostingEnvironment.ContentRootPath + StringConstant.ForgotPasswordTemplateFolderPath;
+                    if (System.IO.File.Exists(path))
+                    {
+                        string finaleTemplate = System.IO.File.ReadAllText(path);
+                        finaleTemplate = finaleTemplate.Replace(StringConstant.ResetPasswordLink, resetPasswordLink).Replace(StringConstant.ResertPasswordUserName, user.FirstName);
+                        _emailSender.SendEmail(model.Email, StringConstant.ForgotPassword, finaleTemplate);
+                        @ViewData["MailSentSuccessfully"] = StringConstant.SuccessfullySendMail.Replace("{{emailaddress}}", "'" + model.Email + "'");
+                    }
                 }
+                // If we got this far, something failed, redisplay form
+                return View(model);
             }
-            // If we got this far, something failed, redisplay form
-            return View(model);
+            catch (ArgumentNullException argEx)
+            {
+                throw argEx;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         //
