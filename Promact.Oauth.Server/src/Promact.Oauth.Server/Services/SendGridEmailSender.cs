@@ -26,33 +26,19 @@ namespace Promact.Oauth.Server.Services
             _logger.LogInformation("SendGrid: SendGrid Initiation");
             myMessage.AddTo(email);
             _logger.LogInformation("SendGrid: SendGrid AddTo");
-            if (string.IsNullOrEmpty(_appSettings.Value.From))
-            {
-                _logger.LogInformation("SendGrid: From Email Address is  Empty");
-                throw new System.ArgumentNullException();
-            }
-            else
-            {
-                myMessage.From = new MailAddress(_appSettings.Value.From, StringConstant.PromactName);
-            }
+            myMessage.From = new MailAddress(_appSettings.Value.From, StringConstant.PromactName);
             _logger.LogInformation("SendGrid: SendGrid From");
             myMessage.Subject = subject;
             _logger.LogInformation("SendGrid: SendGrid Subject");
             myMessage.Text = message;
             _logger.LogInformation("SendGrid: SendGrid Message");
-            if (string.IsNullOrEmpty(_appSettings.Value.SendGridApi))
-            {
-                _logger.LogInformation("SendGrid: SendGrid Api Empty");
-                throw new System.ArgumentNullException();
-            }
-            else
-            {
-                _logger.LogInformation("SendGrid: SendGrid Api Not Empty");
-                var transportWeb = new SendGrid.Web(_appSettings.Value.SendGridApi);
-                _logger.LogInformation("SendGrid: SendGrid Api transport Web");
-                transportWeb.DeliverAsync(myMessage);
-                _logger.LogInformation("SendGrid: SendGrid mail send");
-            }
+
+            _logger.LogInformation("SendGrid: SendGrid Api Not Empty");
+            var transportWeb = new SendGrid.Web(_appSettings.Value.SendGridApi);
+            _logger.LogInformation("SendGrid: SendGrid Api transport Web");
+            transportWeb.DeliverAsync(myMessage);
+            _logger.LogInformation("SendGrid: SendGrid mail send");
+
         }
 
     }
