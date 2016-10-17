@@ -64,8 +64,8 @@ namespace Promact.Oauth.Server.Repository
         /// <param name="applicationUser">UserAc Application class object</param>
         public async Task<string> AddUser(UserAc newUser, string createdBy)
         {
-            try
-            {
+            //try
+            //{
                 LeaveCalculator LC = new LeaveCalculator();
                 LC = CalculateAllowedLeaves(Convert.ToDateTime(newUser.JoiningDate));
                 newUser.NumberOfCasualLeave = LC.CasualLeave;
@@ -81,11 +81,12 @@ namespace Promact.Oauth.Server.Repository
                 SendEmail(user, password);
                 resultSuccess = await result;
                 return user.Id;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            //}
+         
+            //catch (Exception ex)
+            //{
+            //    throw ex;
+            //}
         }
 
         /// <summary>
