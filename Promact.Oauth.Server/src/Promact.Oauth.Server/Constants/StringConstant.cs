@@ -36,7 +36,7 @@ namespace Promact.Oauth.Server.Constants
         public string From { get { return "From"; } }
         public string Password { get { return "Password"; } }
         public string Host { get { return "Host"; } }
-
+        public string PromactName { get { return "Promact"; } }
 
         public string Port{get{return "Port";}}
 
