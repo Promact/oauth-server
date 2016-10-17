@@ -27,7 +27,7 @@ namespace Promact.Oauth.Server.Services
             if (string.IsNullOrEmpty(_appSettings.Value.From))
             {
                 _logger.LogInformation("SendGrid: From Email Address is  Empty");
-                throw (new System.ArgumentNullException());
+                throw new System.ArgumentNullException();
             }
             else
             {
@@ -41,7 +41,7 @@ namespace Promact.Oauth.Server.Services
             if (string.IsNullOrEmpty(_appSettings.Value.SendGridApi))
             {
                 _logger.LogInformation("SendGrid: SendGrid Api Empty");
-                throw (new System.ArgumentNullException());
+                throw new System.ArgumentNullException();
             }
             else
             {
