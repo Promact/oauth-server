@@ -181,6 +181,10 @@ namespace Promact.Oauth.Server.Controllers
                 }
                 return Ok(false);
             }
+            catch (ArgumentNullException argEx)
+            {
+                throw argEx;
+            }
             catch (Exception ex)
             {
                 throw ex;
@@ -421,8 +425,19 @@ namespace Promact.Oauth.Server.Controllers
         [Route("reSendMail/{id}")]
         public async Task<IActionResult> ReSendMail(string id)
         {
-            _logger.LogInformation("Resend Mail");
-            return Ok(await _userRepository.ReSendMail(id));
+            try
+            {
+                _logger.LogInformation("Resend Mail");
+                return Ok(await _userRepository.ReSendMail(id));
+            }
+            catch(ArgumentNullException argEx)
+            {
+                throw argEx;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         #endregion
