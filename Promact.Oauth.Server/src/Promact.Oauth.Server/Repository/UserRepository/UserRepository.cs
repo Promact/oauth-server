@@ -33,11 +33,12 @@ namespace Promact.Oauth.Server.Repository
         private readonly IDataRepository<Project> _projectDataRepository;
         private readonly IOptions<AppSettingUtil> _appSettingUtil;
         private readonly ILogger<UserRepository> _logger;
+        private readonly StringConstant _stringConstant;
         #endregion
 
         #region "Constructor"
 
-        public UserRepository(IDataRepository<ApplicationUser> applicationUserDataRepository, IHostingEnvironment hostingEnvironment, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IMapper mapperContext, IDataRepository<ProjectUser> projectUserRepository, IProjectRepository projectRepository, IOptions<AppSettingUtil> appSettingUtil, IDataRepository<Project> projectDataRepository, ILogger<UserRepository> logger)
+        public UserRepository(IDataRepository<ApplicationUser> applicationUserDataRepository, IHostingEnvironment hostingEnvironment, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IMapper mapperContext, IDataRepository<ProjectUser> projectUserRepository, IProjectRepository projectRepository, IOptions<AppSettingUtil> appSettingUtil, IDataRepository<Project> projectDataRepository, ILogger<UserRepository> logger, StringConstant stringConstant)
         {
             _applicationUserDataRepository = applicationUserDataRepository;
             _hostingEnvironment = hostingEnvironment;
@@ -50,6 +51,7 @@ namespace Promact.Oauth.Server.Repository
             _projectDataRepository = projectDataRepository;
             _appSettingUtil = appSettingUtil;
             _logger = logger;
+            _stringConstant = stringConstant;
         }
 
         #endregion
@@ -224,7 +226,7 @@ namespace Promact.Oauth.Server.Repository
         /// <returns>List of all Employees</returns>
         public async Task<List<UserAc>> GetAllEmployees()
         {
-            var employees = await _userManager.GetUsersInRoleAsync(StringConstant.RoleEmployee);
+            var employees = await _userManager.GetUsersInRoleAsync(_stringConstant.RoleEmployee);
             var userList = new List<UserAc>();
 
             foreach (var user in employees)
@@ -500,7 +502,7 @@ namespace Promact.Oauth.Server.Repository
         public async Task<bool> IsAdmin(string userName)
         {
             var user = await _userManager.FindByNameAsync(userName);
-            var isAdmin = await _userManager.IsInRoleAsync(user, StringConstant.Admin);
+            var isAdmin = await _userManager.IsInRoleAsync(user, _stringConstant.Admin);
             return isAdmin;
         }
 
@@ -539,25 +541,25 @@ namespace Promact.Oauth.Server.Repository
             if (user != null)
             {
                 var Roles = _userManager.GetRolesAsync(user).Result.First();
-                if (Roles.Equals(StringConstant.Admin))
+                if (Roles.Equals(_stringConstant.Admin))
                 {
                     var newUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
                     newUser.Role = Roles;
                     return newUser;
                 }
-                if (Roles.Equals(StringConstant.Employee))
+                if (Roles.Equals(_stringConstant.Employee))
                 {
                     var project = _projectDataRepository.FirstOrDefault(x => x.TeamLeaderId.Equals(user.Id));
                     if (project != null)
                     {
                         var newUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
-                        newUser.Role = StringConstant.TeamLeader;
+                        newUser.Role = _stringConstant.TeamLeader;
                         return newUser;
                     }
                     else
                     {
                         var newUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
-                        newUser.Role = StringConstant.Employee;
+                        newUser.Role = _stringConstant.Employee;
                         return newUser;
                     }
                 }
@@ -573,16 +575,16 @@ namespace Promact.Oauth.Server.Repository
         private bool SendEmail(ApplicationUser user, string password)
         {
             _logger.LogInformation("Start Fetch Email Template");
-            string path = _hostingEnvironment.ContentRootPath + StringConstant.UserDetialTemplateFolderPath;
+            string path = _hostingEnvironment.ContentRootPath + _stringConstant.UserDetialTemplateFolderPath;
             _logger.LogInformation("ContentRootPath Path:" + _hostingEnvironment.ContentRootPath);
-            _logger.LogInformation("Full Path:" + _hostingEnvironment.ContentRootPath + StringConstant.UserDetialTemplateFolderPath);
+            _logger.LogInformation("Full Path:" + _hostingEnvironment.ContentRootPath + _stringConstant.UserDetialTemplateFolderPath);
             string finaleTemplate = "";
             if (System.IO.File.Exists(path))
             {
                 _logger.LogInformation("Email Template Featch successfully");
                 finaleTemplate = System.IO.File.ReadAllText(path);
-                finaleTemplate = finaleTemplate.Replace(StringConstant.UserEmail, user.Email).Replace(StringConstant.UserPassword, password).Replace(StringConstant.ResertPasswordUserName, user.FirstName);
-                _emailSender.SendEmail(user.Email, StringConstant.LoginCredentials, finaleTemplate);
+                finaleTemplate = finaleTemplate.Replace(_stringConstant.UserEmail, user.Email).Replace(_stringConstant.UserPassword, password).Replace(_stringConstant.ResertPasswordUserName, user.FirstName);
+                _emailSender.SendEmail(user.Email, _stringConstant.LoginCredentials, finaleTemplate);
                 return true;
             }
             return false;

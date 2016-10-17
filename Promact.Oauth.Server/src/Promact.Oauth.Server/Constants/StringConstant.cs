@@ -7,85 +7,92 @@ namespace Promact.Oauth.Server.Constants
 {
     public class StringConstant
     {
-        public const string ConsumerAppNameDemo = "Demo Name";
-        public const string ConsumerAppNameDemo1 = "Demo Name1";
-        public const string ConsumerAppNameDemo2 = "Demo Name2";
-        public const string ConsumerAppNameDemo3 = "Demo Name3";
-        public const string ConsumerAppNameDemo4 = "Demo Name4";
-        public const string ConsumerAppNameDemo5 = "Demo Name5";
-        public const string ConsumerAppNameDemo6 = "Demo Name6";
-        public const string ConsumerAppNameDemo7 = "Demo Name7";
-        public const string ConsumerAppNameDemo8 = "Demo Name8";
-        public const string TwitterName = "Twitter Name";
-        public const string FaceBookName = "FaceBook Name";
-        public const string ConsumerDescription = "Consumer Description";
-        public const string CallbackUrl = "https://promact.slack.com/messages/@roshni/";
-        public const string CreatedBy = "Ankit";
-        public const string UpdateBy = "Roshni";
-        public const string ATOZ0TO9 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        public const string ATOZaTOz0TO9 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        public const string EmailNotExists = "Email does not exist";
-        public const string ForgotPassword = "Forgot Password";
-        public const string LoginCredentials = "Login Credentials";
-        public const string SuccessfullySendMail = "We have sent you a link on {{emailaddress}} to reset password.Please check your email.";
-        public const string ResetPasswordLink = "${{RestPassWordLink}}$";
-        public const string ResertPasswordUserName = "${{Username}}$";
-        public const string ForgotPasswordTemplateFolderPath = "\\Template\\ForgotPassword.html";
-        public const string UserDetialTemplateFolderPath = "\\Template\\UserDetial.html";
-        public const string From = "From";
-        public const string Password = "Password";
-        public const string Host = "Host";
-        public const string Port = "Port";
-        public const string UserEmail = "${{Email}}$";
-        public const string UserPassword = "${{Password}}$";
-        public const string DefaultUserPassword = "User@123";
 
-        public const string Name = "Project Name";
-        public const string EditName = "Project Name Edit";
-        public const string SlackChannelName = "Slack Channel Name";
-        public const bool IsActive = true;
-        public const string TeamLeaderId = "1";
-        public const string UserIdSecond = "2";
-        public const string UserIdThird = "3";
-        public const string FirstNameSecond = "Secound First Name";
-        public const string FirstNameThird = "Third First Name";
-        public const string ProjectName = "Project Edit";
-        public const string ProjectSlackChannelName = "Slack Channel NameEdit";
+        public string ConsumerAppNameDemo { get { return "Demo Name"; } }
+        public string ConsumerAppNameDemo1 { get { return "Demo Name1"; } }
+        public string ConsumerAppNameDemo2 { get { return "Demo Name2"; } }
+        public string ConsumerAppNameDemo3 { get { return "Demo Name3"; } }
+        public string ConsumerAppNameDemo4 { get { return "Demo Name4"; } }
+        public string ConsumerAppNameDemo5 { get { return "Demo Name5"; } }
+        public string ConsumerAppNameDemo6 { get {return "Demo Name6"; } }
+        public string ConsumerAppNameDemo7 { get { return "Demo Name7"; } }
+        public string ConsumerAppNameDemo8 { get { return "Demo Name8"; } }
+        public string TwitterName { get { return "Twitter Name"; } }
+        public string FaceBookName { get { return "FaceBook Name"; } }
+        public string ConsumerDescription { get { return "Consumer Description"; } }
+        public string CallbackUrl { get { return "https://promact.slack.com/messages/@roshni/"; } }
+        public string CreatedBy { get { return "Ankit"; } }
+        public string UpdateBy{get { return "Roshni"; }}
+        public string ATOZ0TO9 { get { return "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"; } }
+        public string ATOZaTOz0TO9 { get { return "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"; } }
+        public string EmailNotExists { get { return "Email does not exist"; } }
+        public string ForgotPassword { get {return "Forgot Password"; } }
+        public string LoginCredentials { get { return "Login Credentials"; } }
+        public string SuccessfullySendMail { get { return "We have sent you a link on {{emailaddress}} to reset password.Please check your email."; } }
+        public string ResetPasswordLink { get { return "${{RestPassWordLink}}$"; } }
+        public string ResertPasswordUserName { get { return "${{Username}}$"; } }
+        public string ForgotPasswordTemplateFolderPath { get { return "\\Template\\ForgotPassword.html"; } }
+        public string UserDetialTemplateFolderPath { get { return "\\Template\\UserDetial.html"; } }
+        public string From { get { return "From"; } }
+        public string Password { get { return "Password"; } }
+        public string Host { get { return "Host"; } }
 
-        public const string FirstName = "First";
-        public const string LastName = "Last";
-        public const string Email = "test@promactinfo.com";
-        public const string UserId = "1";
-        public const string PasswordUser = "User@123";
-        public const string UserName = "testUser@pronactinfo.com";
-        public const string SlackUserName = "testSlackUserName";
-        public const string EmailUser = "testUsers@promactinfo.com";
-        public const string NewPassword = "User@1";
-        public const string ConfirmPassword = "User@1";
-        public const string UpadteFirstName = "Updated User";
-        public const string UpdateSlackUserName = "Updated test";
 
-        public const string Employee = "Employee";
-        public const string Admin = "Admin";
-        public const string TeamLeader = "TeamLeader";
-        public const string NormalizedName = "EMPLOYEE";
-        public const string NormalizedSecond = "ADMIN";
-        public const string AccessToken = "bcd34169-1434-40e9-abf5-c9e0e9d20cd8";
-        public const string ClientIdForTest = "adasfs21gv1drv1gd1sd";
-        public const string CallBackUrl = "http://www.example.com";
-        public const string PasswordForTest = "User@123";
-        public const string EmptyString = "";
-        public const string InvalidLogin = "Invalid login attempt.";
-        public const string RawEmailIdForTest = "siddhartha@promactinfo.com";
-        public const string RawFirstNameForTest = "Siddhartha";
-        public const string RawLastNameForTest = "Shaw";
-        public const string RoleEmployee = "Employee";
-        public const string RoleAdmin = "Admin";
-        public const string RoleTeamLeader = "TeamLeader";
-        public const string OldPassword = "User@123";
-        public const string Url = "Url";
-        public const string Format = "yyyy-MM-dd";
-        public const string DateFormate = "dd'/'MM'/'yyyy";
-        public const string TeamLeaderNotAssign = "Not Assigned";
+        public string Port{get{return "Port";}}
+
+        public string UserEmail { get { return "${{Email}}$"; } }
+
+        public string UserPassword { get { return "${{Password}}$"; } }
+        public string DefaultUserPassword { get { return "User@123"; } }
+
+        public string Name { get { return "Project Name"; } }
+        public string EditName { get { return "Project Name Edit"; } }
+        public string SlackChannelName { get { return "Slack Channel Name"; } }
+        public bool IsActive { get { return true; } }
+        public string TeamLeaderId { get { return "1"; } }
+        public string UserIdSecond {get{return "2"; } }
+        public string UserIdThird { get { return "3"; } }
+        public string FirstNameSecond {get{return "Secound First Name"; } }
+        public string FirstNameThird { get { return "Third First Name"; } }
+        public string ProjectName { get { return "Project Edit"; } }
+        public string ProjectSlackChannelName { get { return "Slack Channel NameEdit"; } }
+
+        public string FirstName {get{return "First"; } }
+        public string LastName { get { return "Last"; } }
+        public string Email {get{return "test@promactinfo.com"; } }
+        public string UserId { get { return "1"; } }
+        public string PasswordUser { get { return "User@123"; } }
+        public string UserName {get{return "testUser@pronactinfo.com"; } }
+        public string SlackUserName { get { return "testSlackUserName"; } }
+        public string EmailUser  { get{ return "testUsers@promactinfo.com"; } }
+        public string NewPassword { get { return "User@1"; } }
+        public string ConfirmPassword { get { return "User@1"; } }
+        public string UpadteFirstName { get { return "Updated User"; } }
+
+        public string UpdateSlackUserName { get { return "Updated test"; } }
+
+        public string Employee { get { return "Employee"; } }
+        public string Admin { get { return "Admin"; } }
+        public string TeamLeader { get { return "TeamLeader"; } }
+        public string NormalizedName { get { return "EMPLOYEE"; } }
+        public string NormalizedSecond { get { return "ADMIN";} }
+
+        public string AccessToken {get {return "bcd34169-1434-40e9-abf5-c9e0e9d20cd8"; } }
+        public string ClientIdForTest { get { return "adasfs21gv1drv1gd1sd"; } }
+        public string CallBackUrl { get { return "http://www.example.com"; } }
+        public string PasswordForTest { get { return "User@123"; } }
+        public string EmptyString { get { return ""; } }
+        public string InvalidLogin { get { return "Invalid login attempt."; } }
+        public string RawEmailIdForTest { get { return "siddhartha@promactinfo.com"; } }
+        public string RawFirstNameForTest { get { return "Siddhartha"; } }
+        public string RawLastNameForTest {get { return "Shaw"; }} 
+        public string RoleEmployee {get { return "Employee"; }}
+        public string RoleAdmin {get { return "Admin"; }}
+        public string RoleTeamLeader {get { return "TeamLeader"; }}
+        public string OldPassword {get { return "User@123"; }}
+        public string Url {get { return "Url"; }}
+        public string Format {get { return "yyyy-MM-dd"; }}
+        public string DateFormate{get { return "dd'/'MM'/'yyyy"; }}
+        public string TeamLeaderNotAssign {get { return "Not Assigned"; }}
     }
 }

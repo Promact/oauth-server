@@ -19,11 +19,13 @@ namespace Promact.Oauth.Server.Tests
         private readonly IUserRepository _userRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
+        private readonly StringConstant _stringConstant;
         public UserRepositoryTest() : base()
         {
             _userRepository = serviceProvider.GetService<IUserRepository>();
             _userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
             _mapper = serviceProvider.GetService<IMapper>();
+            _stringConstant = serviceProvider.GetService<StringConstant>();
         }
 
         #region Test Case
@@ -34,7 +36,18 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public async Task GetAllUser()
         {
-            var id = await _userRepository.AddUser(_testUser, StringConstant.RawFirstNameForTest);
+            UserAc _testUser = new UserAc()
+            {
+                Email = _stringConstant.RawEmailIdForTest,
+                FirstName = _stringConstant.RawFirstNameForTest,
+                LastName = _stringConstant.RawLastNameForTest,
+                IsActive = true,
+                UserName = _stringConstant.RawEmailIdForTest,
+                SlackUserName = _stringConstant.RawFirstNameForTest,
+                JoiningDate = DateTime.UtcNow,
+                RoleName = _stringConstant.Employee
+            };
+            var id = await _userRepository.AddUser(_testUser, _stringConstant.RawFirstNameForTest);
             IEnumerable<UserAc> users = _userRepository.GetAllUsers();
             Assert.Equal(1, users.Count());
         }
@@ -45,9 +58,20 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public async Task GetUserById()
         {
-            var id = await _userRepository.AddUser(_testUser,StringConstant.RawFirstNameForTest);
+            UserAc _testUser = new UserAc()
+            {
+                Email = _stringConstant.RawEmailIdForTest,
+                FirstName = _stringConstant.RawFirstNameForTest,
+                LastName = _stringConstant.RawLastNameForTest,
+                IsActive = true,
+                UserName = _stringConstant.RawEmailIdForTest,
+                SlackUserName = _stringConstant.RawFirstNameForTest,
+                JoiningDate = DateTime.UtcNow,
+                RoleName = _stringConstant.Employee
+            };
+            var id = await _userRepository.AddUser(_testUser,_stringConstant.RawFirstNameForTest);
             UserAc testUser = await _userRepository.GetById(id);
-            Assert.Equal(testUser.Email, StringConstant.RawEmailIdForTest);
+            Assert.Equal(testUser.Email, _stringConstant.RawEmailIdForTest);
         }
 
         /// <summary>
@@ -56,8 +80,19 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public async Task FindByEmail()
         {
-            var result = await _userRepository.AddUser(_testUser, StringConstant.RawFirstNameForTest);
-            var exists = await _userRepository.FindByEmail(StringConstant.RawEmailIdForTest);
+            UserAc _testUser = new UserAc()
+            {
+                Email = _stringConstant.RawEmailIdForTest,
+                FirstName = _stringConstant.RawFirstNameForTest,
+                LastName = _stringConstant.RawLastNameForTest,
+                IsActive = true,
+                UserName = _stringConstant.RawEmailIdForTest,
+                SlackUserName = _stringConstant.RawFirstNameForTest,
+                JoiningDate = DateTime.UtcNow,
+                RoleName = _stringConstant.Employee
+            };
+            var result = await _userRepository.AddUser(_testUser, _stringConstant.RawFirstNameForTest);
+            var exists = await _userRepository.FindByEmail(_stringConstant.RawEmailIdForTest);
             Assert.Equal(true, exists);
         }
 
@@ -67,8 +102,19 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public async Task FindByUserName()
         {
-            var id = await _userRepository.AddUser(_testUser, StringConstant.RawFirstNameForTest);
-            var exists = await _userRepository.FindByUserName(StringConstant.RawEmailIdForTest);
+            UserAc _testUser = new UserAc()
+            {
+                Email = _stringConstant.RawEmailIdForTest,
+                FirstName = _stringConstant.RawFirstNameForTest,
+                LastName = _stringConstant.RawLastNameForTest,
+                IsActive = true,
+                UserName = _stringConstant.RawEmailIdForTest,
+                SlackUserName = _stringConstant.RawFirstNameForTest,
+                JoiningDate = DateTime.UtcNow,
+                RoleName = _stringConstant.Employee
+            };
+            var id = await _userRepository.AddUser(_testUser, _stringConstant.RawFirstNameForTest);
+            var exists = await _userRepository.FindByUserName(_stringConstant.RawEmailIdForTest);
             Assert.Equal(true, exists);
         }
 
@@ -78,7 +124,18 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public async Task AddUser()
         {
-            string id = await _userRepository.AddUser(_testUser, StringConstant.CreatedBy);
+            UserAc _testUser = new UserAc()
+            {
+                Email = _stringConstant.RawEmailIdForTest,
+                FirstName = _stringConstant.RawFirstNameForTest,
+                LastName = _stringConstant.RawLastNameForTest,
+                IsActive = true,
+                UserName = _stringConstant.RawEmailIdForTest,
+                SlackUserName = _stringConstant.RawFirstNameForTest,
+                JoiningDate = DateTime.UtcNow,
+                RoleName = _stringConstant.Employee
+            };
+            string id = await _userRepository.AddUser(_testUser, _stringConstant.CreatedBy);
             var user = await _userManager.FindByIdAsync(id);
             Assert.NotNull(id);
         }
@@ -89,15 +146,26 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public async Task UpdateUser()
         {
-            var userId = await _userRepository.AddUser(_testUser, StringConstant.RawFirstNameForTest);
+            UserAc _testUser = new UserAc()
+            {
+                Email = _stringConstant.RawEmailIdForTest,
+                FirstName = _stringConstant.RawFirstNameForTest,
+                LastName = _stringConstant.RawLastNameForTest,
+                IsActive = true,
+                UserName = _stringConstant.RawEmailIdForTest,
+                SlackUserName = _stringConstant.RawFirstNameForTest,
+                JoiningDate = DateTime.UtcNow,
+                RoleName = _stringConstant.Employee
+            };
+            var userId = await _userRepository.AddUser(_testUser, _stringConstant.RawFirstNameForTest);
             var user = await _userManager.FindByIdAsync(userId);
             var newUser = _mapper.Map<ApplicationUser, UserAc>(user);
-            newUser.RoleName = StringConstant.Employee;
-            newUser.FirstName = StringConstant.FirstName;
-            newUser.SlackUserName = StringConstant.FirstName;
-            string id = await _userRepository.UpdateUserDetails(newUser, StringConstant.RawFirstNameForTest);
+            newUser.RoleName = _stringConstant.Employee;
+            newUser.FirstName = _stringConstant.FirstName;
+            newUser.SlackUserName = _stringConstant.FirstName;
+            string id = await _userRepository.UpdateUserDetails(newUser, _stringConstant.RawFirstNameForTest);
             var editedUser = _userManager.FindByIdAsync(id).Result;
-            Assert.Equal(StringConstant.FirstName, editedUser.FirstName);
+            Assert.Equal(_stringConstant.FirstName, editedUser.FirstName);
         }
 
         ///// <summary>
@@ -106,15 +174,15 @@ namespace Promact.Oauth.Server.Tests
         //[Fact, Trait("Category", "Required")]
         //public async Task ChangePassword()
         //{
-        //    var id = await _userRepository.AddUser(_testUser, StringConstant.RawFirstNameForTest);
+        //    var id = await _userRepository.AddUser(_testUser, _stringConstant.RawFirstNameForTest);
         //    var user = await _userManager.FindByIdAsync(id);
 
              
         //    var password = await _userRepository.ChangePassword(new ChangePasswordViewModel
         //    {
-        //        OldPassword = StringConstant.OldPassword,
-        //        NewPassword = StringConstant.NewPassword,
-        //        ConfirmPassword = StringConstant.NewPassword,
+        //        OldPassword = _stringConstant.OldPassword,
+        //        NewPassword = _stringConstant.NewPassword,
+        //        ConfirmPassword = _stringConstant.NewPassword,
         //        Email = user.Email
         //    });
         //    var passwordMatch = await _userManager.CheckPasswordAsync(user, password);
@@ -127,8 +195,19 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public async Task UserDetail()
         {
-            string id = await _userRepository.AddUser(_testUser, StringConstant.RawFirstNameForTest);
-            var user = _userRepository.UserDetialByUserSlackName(StringConstant.RawFirstNameForTest);
+            UserAc _testUser = new UserAc()
+            {
+                Email = _stringConstant.RawEmailIdForTest,
+                FirstName = _stringConstant.RawFirstNameForTest,
+                LastName = _stringConstant.RawLastNameForTest,
+                IsActive = true,
+                UserName = _stringConstant.RawEmailIdForTest,
+                SlackUserName = _stringConstant.RawFirstNameForTest,
+                JoiningDate = DateTime.UtcNow,
+                RoleName = _stringConstant.Employee
+            };
+            string id = await _userRepository.AddUser(_testUser, _stringConstant.RawFirstNameForTest);
+            var user = _userRepository.UserDetialByUserSlackName(_stringConstant.RawFirstNameForTest);
             Assert.Equal(user.Email, _testUser.Email);
         }
 
@@ -138,8 +217,19 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public async Task TeamLeaderByUserSlackName()
         {
-            string id = await _userRepository.AddUser(_testUser, StringConstant.RawFirstNameForTest);
-            var user = await _userRepository.TeamLeaderByUserSlackName(StringConstant.RawFirstNameForTest);
+            UserAc _testUser = new UserAc()
+            {
+                Email = _stringConstant.RawEmailIdForTest,
+                FirstName = _stringConstant.RawFirstNameForTest,
+                LastName = _stringConstant.RawLastNameForTest,
+                IsActive = true,
+                UserName = _stringConstant.RawEmailIdForTest,
+                SlackUserName = _stringConstant.RawFirstNameForTest,
+                JoiningDate = DateTime.UtcNow,
+                RoleName = _stringConstant.Employee
+            };
+            string id = await _userRepository.AddUser(_testUser, _stringConstant.RawFirstNameForTest);
+            var user = await _userRepository.TeamLeaderByUserSlackName(_stringConstant.RawFirstNameForTest);
             Assert.Equal(0, user.Count);
         }
 
@@ -149,8 +239,30 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public async Task ManagementDetails()
         {
-            string id = await _userRepository.AddUser(_testUser, StringConstant.RawFirstNameForTest);
-            id = await _userRepository.AddUser(userLocal, StringConstant.RawFirstNameForTest);
+            UserAc _testUser = new UserAc()
+            {
+                Email = _stringConstant.RawEmailIdForTest,
+                FirstName = _stringConstant.RawFirstNameForTest,
+                LastName = _stringConstant.RawLastNameForTest,
+                IsActive = true,
+                UserName = _stringConstant.RawEmailIdForTest,
+                SlackUserName = _stringConstant.RawFirstNameForTest,
+                JoiningDate = DateTime.UtcNow,
+                RoleName = _stringConstant.Employee
+            };
+            UserAc userLocal = new UserAc()
+            {
+                Email = _stringConstant.Email,
+                FirstName = _stringConstant.RawFirstNameForTest,
+                LastName = _stringConstant.RawLastNameForTest,
+                IsActive = true,
+                UserName = _stringConstant.Email,
+                SlackUserName = _stringConstant.RawFirstNameForTest,
+                JoiningDate = DateTime.UtcNow,
+                RoleName = _stringConstant.Admin
+            };
+            string id = await _userRepository.AddUser(_testUser, _stringConstant.RawFirstNameForTest);
+            id = await _userRepository.AddUser(userLocal, _stringConstant.RawFirstNameForTest);
             var user = await _userRepository.ManagementDetails();
             Assert.Equal(1, user.Count);
         }
@@ -161,7 +273,18 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public void GetUserCasualLeaveBySlackName()
         {
-            var id = _userRepository.AddUser(userLocal, StringConstant.RawFirstNameForTest);
+            UserAc userLocal = new UserAc()
+            {
+                Email = _stringConstant.Email,
+                FirstName = _stringConstant.RawFirstNameForTest,
+                LastName = _stringConstant.RawLastNameForTest,
+                IsActive = true,
+                UserName = _stringConstant.Email,
+                SlackUserName = _stringConstant.RawFirstNameForTest,
+                JoiningDate = DateTime.UtcNow,
+                RoleName = _stringConstant.Admin
+            };
+            var id = _userRepository.AddUser(userLocal, _stringConstant.RawFirstNameForTest);
             var casualLeave = _userRepository.GetUserAllowedLeaveBySlackName(userLocal.SlackUserName);
             Assert.NotNull(casualLeave);
         }
@@ -182,8 +305,19 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public async Task GetUserDetail()
         {
-            var id = await _userRepository.AddUser(_testUser, StringConstant.RawFirstNameForTest);
-            var user = await _userRepository.GetUserDetail(StringConstant.RawEmailIdForTest);
+            UserAc _testUser = new UserAc()
+            {
+                Email = _stringConstant.RawEmailIdForTest,
+                FirstName = _stringConstant.RawFirstNameForTest,
+                LastName = _stringConstant.RawLastNameForTest,
+                IsActive = true,
+                UserName = _stringConstant.RawEmailIdForTest,
+                SlackUserName = _stringConstant.RawFirstNameForTest,
+                JoiningDate = DateTime.UtcNow,
+                RoleName = _stringConstant.Employee
+            };
+            var id = await _userRepository.AddUser(_testUser, _stringConstant.RawFirstNameForTest);
+            var user = await _userRepository.GetUserDetail(_stringConstant.RawEmailIdForTest);
             Assert.Equal(id, user.Id);
         }
 
@@ -193,8 +327,19 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public async Task FindUserBySlackUserName()
         {
-            var id = await _userRepository.AddUser(_testUser, StringConstant.RawFirstNameForTest);
-            var result = _userRepository.FindUserBySlackUserName(StringConstant.RawFirstNameForTest);
+              UserAc _testUser = new UserAc()
+             {
+                 Email = _stringConstant.RawEmailIdForTest,
+                 FirstName = _stringConstant.RawFirstNameForTest,
+                 LastName = _stringConstant.RawLastNameForTest,
+                 IsActive = true,
+                 UserName = _stringConstant.RawEmailIdForTest,
+                 SlackUserName = _stringConstant.RawFirstNameForTest,
+                 JoiningDate = DateTime.UtcNow,
+                 RoleName = _stringConstant.Employee
+             };
+            var id = await _userRepository.AddUser(_testUser, _stringConstant.RawFirstNameForTest);
+            var result = _userRepository.FindUserBySlackUserName(_stringConstant.RawFirstNameForTest);
             Assert.Equal(result, false);
         }
 
@@ -204,35 +349,26 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public async Task IsAdmin()
         {
-            var id = await _userRepository.AddUser(_testUser, StringConstant.RawFirstNameForTest);
+            UserAc _testUser = new UserAc()
+            {
+                Email = _stringConstant.RawEmailIdForTest,
+                FirstName = _stringConstant.RawFirstNameForTest,
+                LastName = _stringConstant.RawLastNameForTest,
+                IsActive = true,
+                UserName = _stringConstant.RawEmailIdForTest,
+                SlackUserName = _stringConstant.RawFirstNameForTest,
+                JoiningDate = DateTime.UtcNow,
+                RoleName = _stringConstant.Employee
+            };
+            var id = await _userRepository.AddUser(_testUser, _stringConstant.RawFirstNameForTest);
             var result = await _userRepository.IsAdmin(_testUser.UserName);
             Assert.Equal(false, result);
         }
 
         #endregion
 
-        private UserAc _testUser = new UserAc()
-        {
-            Email = StringConstant.RawEmailIdForTest,
-            FirstName = StringConstant.RawFirstNameForTest,
-            LastName = StringConstant.RawLastNameForTest,
-            IsActive = true,
-            UserName = StringConstant.RawEmailIdForTest,
-            SlackUserName = StringConstant.RawFirstNameForTest,
-            JoiningDate = DateTime.UtcNow,
-            RoleName = StringConstant.Employee
-        };
+       
 
-        private UserAc userLocal = new UserAc()
-        {
-            Email = StringConstant.Email,
-            FirstName = StringConstant.RawFirstNameForTest,
-            LastName = StringConstant.RawLastNameForTest,
-            IsActive = true,
-            UserName = StringConstant.Email,
-            SlackUserName = StringConstant.RawFirstNameForTest,
-            JoiningDate = DateTime.UtcNow,
-            RoleName = StringConstant.Admin
-        };
+        
     }
 }
