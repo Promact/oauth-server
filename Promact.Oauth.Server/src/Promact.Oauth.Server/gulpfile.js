@@ -9,8 +9,9 @@ var gulp = require("gulp"),
     uglify = require("gulp-uglify"),
     sysBuilder = require('systemjs-builder'),
     remapIstanbul = require('remap-istanbul'),
-    Server = require('karma').Server;
-
+    Server = require('karma').Server,
+    tslint = require('gulp-tslint');
+   
 
 var paths = {
     webroot: "./wwwroot/"
@@ -130,5 +131,12 @@ gulp.task('coverage', function () {
         }
     }))
     .pipe(gulp.dest('./coverage'));
+});
+
+
+gulp.task('tslint', function (done) {
+    gulp.src("./wwwroot/app/**/*.ts")
+    .pipe(tslint({configuration:"./tslint.json"}))
+    .pipe(tslint.report());
 });
 
