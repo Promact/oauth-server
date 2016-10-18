@@ -183,10 +183,12 @@ namespace Promact.Oauth.Server.Controllers
             }
             catch (ArgumentNullException argEx)
             {
+                _logger.LogInformation("Add User unsuccessful " + argEx.Message + argEx.ToString());
                 throw argEx;
             }
             catch (Exception ex)
             {
+                _logger.LogInformation("Add User unsuccessful " + ex.Message + ex.ToString());
                 throw ex;
             }
         }
@@ -432,10 +434,12 @@ namespace Promact.Oauth.Server.Controllers
             }
             catch(ArgumentNullException argEx)
             {
+                _logger.LogInformation("Resend Mail unsuccessful "+argEx.Message+argEx.ToString());
                 throw argEx;
             }
             catch (Exception ex)
             {
+                _logger.LogInformation("Resend Mail unsuccessful " + ex.Message + ex.ToString());
                 throw ex;
             }
         }
