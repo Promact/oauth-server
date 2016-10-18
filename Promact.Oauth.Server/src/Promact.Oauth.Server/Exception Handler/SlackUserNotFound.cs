@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace Promact.Oauth.Server.Exception_Handler
 {
-    public class SlackUserNotFound : Exception
+    public class SlackUserNotFound : Exception 
     {
         /// <summary>
-        /// Default constructor
+        /// Initializes Exception For Slack User Not Found
         /// </summary>
         public SlackUserNotFound() : base()
         {
