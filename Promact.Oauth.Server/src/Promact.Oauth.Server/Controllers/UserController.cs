@@ -344,7 +344,7 @@ namespace Promact.Oauth.Server.Controllers
             }
             catch (SlackUserNotFound ex)
             {
-                throw ex;
+               throw ex;
             }
         }
 

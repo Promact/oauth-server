@@ -370,7 +370,7 @@ namespace Promact.Oauth.Server.Repository
         public async Task<bool> CheckEmailIsExists(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
-            return user == null ? true : false;
+            return user == null ? false : true;
         }
 
         public ApplicationUser FindUserBySlackUserName(string slackUserName)
