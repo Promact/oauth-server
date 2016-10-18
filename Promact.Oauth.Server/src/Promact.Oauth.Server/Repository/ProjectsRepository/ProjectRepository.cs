@@ -129,17 +129,10 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
 
             var projectObject = _mapperContext.Map<Project, ProjectAc>(project);
             if (project.TeamLeaderId != null)
-            {
-                var teamLeader = _userDataRepository.FirstOrDefault(x => x.Id == project.TeamLeaderId);
-                projectObject.TeamLeader = new UserAc { FirstName = teamLeader.FirstName, LastName = teamLeader.LastName, Email = teamLeader.Email };
-            }
-            else
-            {
-
-                projectObject.TeamLeader = null;
-            }
-
-            projectObject.ApplicationUsers = applicationUserList;
+            {var teamLeader = _userDataRepository.FirstOrDefault(x => x.Id == project.TeamLeaderId);
+             projectObject.TeamLeader = new UserAc { FirstName = teamLeader.FirstName, LastName = teamLeader.LastName, Email = teamLeader.Email };}
+            else{projectObject.TeamLeader = null;}
+            projectObject.ApplicationUsers = applicationUserList.OrderBy(y => y.FirstName).ToList();
             return projectObject;
         }
 
