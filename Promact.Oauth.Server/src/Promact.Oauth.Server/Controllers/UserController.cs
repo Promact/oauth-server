@@ -327,23 +327,24 @@ namespace Promact.Oauth.Server.Controllers
             }
             catch (Exception ex)
             {
-                return Ok(ex);
+                throw ex;
             }
         }
 
 
         [HttpGet]
-        [Route("findUserBySlackUserName/{slackUserName}")]
-        public IActionResult FindUserBySlackUserName(string slackUserName)
+        [Route("checkUserIsExistsBySlackUserName/{slackUserName}")]
+        public IActionResult CheckUserIsExistsBySlackUserName(string slackUserName)
         {
             try
             {
                 ApplicationUser slackUser = _userRepository.FindUserBySlackUserName(slackUserName);
-                return Ok(slackUser);
+                bool result = slackUser != null ? true : false;
+                return Ok(result);
             }
             catch (SlackUserNotFound ex)
             {
-                return Ok(ex);
+                throw ex;
             }
         }
 
