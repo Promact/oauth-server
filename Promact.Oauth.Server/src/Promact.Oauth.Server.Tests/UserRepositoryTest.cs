@@ -99,28 +99,7 @@ namespace Promact.Oauth.Server.Tests
             var editedUser = _userManager.FindByIdAsync(id).Result;
             Assert.Equal(StringConstant.FirstName, editedUser.FirstName);
         }
-
-        ///// <summary>
-        ///// This test case is used for changing the password of an user
-        ///// </summary>
-        //[Fact, Trait("Category", "Required")]
-        //public async Task ChangePassword()
-        //{
-        //    var id = await _userRepository.AddUser(_testUser, StringConstant.RawFirstNameForTest);
-        //    var user = await _userManager.FindByIdAsync(id);
-
-
-        //    var password = await _userRepository.ChangePassword(new ChangePasswordViewModel
-        //    {
-        //        OldPassword = StringConstant.OldPassword,
-        //        NewPassword = StringConstant.NewPassword,
-        //        ConfirmPassword = StringConstant.NewPassword,
-        //        Email = user.Email
-        //    });
-        //    var passwordMatch = await _userManager.CheckPasswordAsync(user, password);
-        //    Assert.Equal(true, passwordMatch);
-        //}
-
+        
         /// <summary>
         /// Test case use for getting user details by its slack name
         /// </summary>
