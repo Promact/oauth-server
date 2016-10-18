@@ -38,33 +38,6 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let user of mf.users">
-                <td>{{user.FirstName}}</td>
-                <td>{{user.LastName}}</td>
-                <td>{{user.Email}}</td>
-                <td *ngIf="user.IsActive">Active</td>
-                <td *ngIf="!user.IsActive">Inactive</td>
-                <td>{{user.SlackUserName}}</td>
-                <td>{{user.NumberOfCasualLeave}}</td>
-                <td>{{user.NumberOfSickLeave}}</td>
-                <td>{{user.JoiningDate |date:"dd/MM/yyyy"}}</td>
-                <td>
-                    <button md-raised-button class="btn-green custom-btn mr-5" (click)="userDetails(user.Id)">Details</button>
-                    <button md-raised-button class="custom-btn" (click)="userEdit(user.Id)">Edit</button>
-                    <button md-raised-button class="btn-green custom-btn mr-5" (click)="reSendMail(user)">ReSendMail</button>
-                </td>
-            </tr>
-        </tbody>
-        <tfoot>
-            <tr>
-                <td colspan="4">
-                    <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]" [rowsOnPage]="5"></mfBootstrapPaginator>
-                </td>
-            </tr>
-        </tfoot>
-    </table>
-    <!--<table class="table-bordered table-user">
-        <tbody>
             <tr *ngFor="let user of users">
                 <td>{{user.FirstName}}</td>
                 <td>{{user.LastName}}</td>
