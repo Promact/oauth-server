@@ -210,8 +210,7 @@ namespace Promact.Oauth.Server.Repository
         /// <returns>List of all users</returns>
         public IEnumerable<UserAc> GetAllUsers()
         {
-            var users = _userManager.Users.OrderByDescending(x=>x.CreatedDateTime);
-            //var users = await _applicationUserDataRepository.GetAll().ToListAsync();
+            var users = _userManager.Users.OrderByDescending(x => x.CreatedDateTime);
             var userList = new List<UserAc>();
             foreach (var user in users)
             {
