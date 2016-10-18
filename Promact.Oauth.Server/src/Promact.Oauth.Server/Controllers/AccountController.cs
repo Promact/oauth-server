@@ -297,10 +297,12 @@ namespace Promact.Oauth.Server.Controllers
             }
             catch (ArgumentNullException argEx)
             {
+                _logger.LogInformation("Forgot Password mail not send " + argEx.Message + argEx.ToString());
                 throw argEx;
             }
             catch (Exception ex)
             {
+                _logger.LogInformation("Forgot Password " + ex.Message + ex.ToString());
                 throw ex;
             }
         }
