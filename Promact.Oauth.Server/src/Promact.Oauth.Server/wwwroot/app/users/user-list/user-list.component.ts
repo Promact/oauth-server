@@ -7,19 +7,18 @@ import { LoaderService } from '../../shared/loader.service';
 
 @Component({
     templateUrl: "app/users/user-list/user-list.html",
-    
 })
 
 export class UserListComponent {
     users: Array<UserModel>;
     user: UserModel;
+    filterQuery: string;
     constructor(private userService: UserService, private router: Router, private toast: Md2Toast, private loader: LoaderService) {
         this.users = new Array<UserModel>();
         this.user = new UserModel();
+        this.filterQuery = "";
     }
-
-
-
+    
     getUsers() {
         this.loader.loader = true;
         this.userService.getUsers().subscribe((users) => {
