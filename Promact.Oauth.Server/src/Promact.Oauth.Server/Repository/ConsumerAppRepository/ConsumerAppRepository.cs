@@ -17,11 +17,11 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
 
         private readonly IDataRepository<ConsumerApps> _appsDataRepository;
         private readonly IMapper _mapperContext;
-        private readonly StringConstant _stringConstant;
+        private readonly IStringConstant _stringConstant;
         #endregion
 
         #region "Constructor"
-        public ConsumerAppRepository(IDataRepository<ConsumerApps> appsDataRepository, IMapper mapperContext, StringConstant stringConstant)
+        public ConsumerAppRepository(IDataRepository<ConsumerApps> appsDataRepository, IMapper mapperContext, IStringConstant stringConstant)
         {
             _appsDataRepository = appsDataRepository;
             _mapperContext = mapperContext;

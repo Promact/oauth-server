@@ -33,12 +33,12 @@ namespace Promact.Oauth.Server.Repository
         private readonly IDataRepository<Project> _projectDataRepository;
         private readonly IOptions<AppSettingUtil> _appSettingUtil;
         private readonly ILogger<UserRepository> _logger;
-        private readonly StringConstant _stringConstant;
+        private readonly IStringConstant _stringConstant;
         #endregion
 
         #region "Constructor"
 
-        public UserRepository(IDataRepository<ApplicationUser> applicationUserDataRepository, IHostingEnvironment hostingEnvironment, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IMapper mapperContext, IDataRepository<ProjectUser> projectUserRepository, IProjectRepository projectRepository, IOptions<AppSettingUtil> appSettingUtil, IDataRepository<Project> projectDataRepository, ILogger<UserRepository> logger, StringConstant stringConstant)
+        public UserRepository(IDataRepository<ApplicationUser> applicationUserDataRepository, IHostingEnvironment hostingEnvironment, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IMapper mapperContext, IDataRepository<ProjectUser> projectUserRepository, IProjectRepository projectRepository, IOptions<AppSettingUtil> appSettingUtil, IDataRepository<Project> projectDataRepository, ILogger<UserRepository> logger, IStringConstant stringConstant)
         {
             _applicationUserDataRepository = applicationUserDataRepository;
             _hostingEnvironment = hostingEnvironment;

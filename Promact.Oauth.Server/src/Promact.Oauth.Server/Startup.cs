@@ -82,8 +82,9 @@ namespace Promact.Oauth.Server
             services.AddScoped<IConsumerAppRepository, ConsumerAppRepository>();
             services.AddScoped(typeof(IDataRepository<>), typeof(DataRepository<>));
             services.AddScoped<IOAuthRepository, OAuthRepository>();
+            services.AddScoped<IStringConstant,StringConstant>();
             services.AddScoped<HttpClient>();
-            services.AddScoped<StringConstant>();
+            
             services.AddScoped<IHttpClientRepository, HttpClientRepository>();
 
 

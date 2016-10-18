@@ -20,14 +20,14 @@ namespace Promact.Oauth.Server.Tests
 
         private readonly IDataRepository<Project> _dataRepository;
         private readonly IDataRepository<ProjectUser> _dataRepositoryProjectUser;
-        private readonly StringConstant _stringConstant;
+        private readonly IStringConstant _stringConstant;
 
         public ProjectTests() : base()
         {
             _projectRepository = serviceProvider.GetService<IProjectRepository>();
             _dataRepository = serviceProvider.GetService<IDataRepository<Project>>();
             _dataRepositoryProjectUser = serviceProvider.GetService<IDataRepository<ProjectUser>>();
-            _stringConstant = serviceProvider.GetService<StringConstant>();
+            _stringConstant = serviceProvider.GetService<IStringConstant>();
 
         }
        

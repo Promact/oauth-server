@@ -20,13 +20,13 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         private readonly IDataRepository<ApplicationUser> _userDataRepository;
 
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly StringConstant _stringConstant;
+        private readonly IStringConstant _stringConstant;
         private readonly IMapper _mapperContext;
         #endregion
 
         #region "Constructor"
         public ProjectRepository(IDataRepository<Project> projectDataRepository, IDataRepository<ProjectUser> projectUserDataRepository, IDataRepository<ApplicationUser> userDataRepository, UserManager<ApplicationUser> userManager, 
-            IMapper mapperContext,StringConstant stringConstant)
+            IMapper mapperContext,IStringConstant stringConstant)
         {
             _projectDataRepository = projectDataRepository;
             _projectUserDataRepository = projectUserDataRepository;

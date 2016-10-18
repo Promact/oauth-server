@@ -59,7 +59,7 @@ namespace Promact.Oauth.Server.Tests
             services.AddScoped<IConsumerAppRepository, ConsumerAppRepository>();
             services.AddScoped<IOAuthRepository, OAuthRepository>();
             services.AddScoped<HttpClient>();
-            services.AddScoped<StringConstant>();
+            services.AddScoped<IStringConstant,StringConstant>();
             services.AddScoped<IHttpClientRepository, HttpClientRepository>();
             services.AddScoped(typeof(IDataRepository<>), typeof(DataRepository<>));
 
@@ -75,7 +75,7 @@ namespace Promact.Oauth.Server.Tests
         public void RoleSeedFake(IServiceProvider serviceProvider)
         {
             var _db = serviceProvider.GetService<PromactOauthDbContext>();
-            var _stringConstant = serviceProvider.GetService<StringConstant>();
+            var _stringConstant = serviceProvider.GetService<IStringConstant>();
             if (!_db.Roles.Any())
             {
                 List<IdentityRole> roles = new List<IdentityRole>();

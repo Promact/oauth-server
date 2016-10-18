@@ -25,7 +25,7 @@ namespace Promact.Oauth.Server.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
-        private readonly StringConstant _stringConstant;
+        private readonly IStringConstant _stringConstant;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
@@ -34,7 +34,7 @@ namespace Promact.Oauth.Server.Controllers
             ISmsSender smsSender,
             ILoggerFactory loggerFactory,
             IHostingEnvironment hostingEnvironment,
-            StringConstant stringConstant)
+            IStringConstant stringConstant)
         {
             _userManager = userManager;
             _hostingEnvironment = hostingEnvironment;

@@ -17,12 +17,12 @@ namespace Promact.Oauth.Server.Tests
     {
         private readonly IConsumerAppRepository _consumerAppRespository;
         private readonly IDataRepository<ConsumerApps> _consumerAppsContext;
-        private readonly StringConstant _stringConstant;
+        private readonly IStringConstant _stringConstant;
         public ConsumerAppRepositoryTest() : base()
         {
             _consumerAppRespository = serviceProvider.GetService<IConsumerAppRepository>();
             _consumerAppsContext = serviceProvider.GetService<IDataRepository<ConsumerApps>>();
-            _stringConstant = serviceProvider.GetService<StringConstant>();
+            _stringConstant = serviceProvider.GetService<IStringConstant>();
         }
 
         #region Test Case

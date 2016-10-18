@@ -18,14 +18,14 @@ namespace Promact.Oauth.Server.Tests
         private readonly IDataRepository<OAuth> _oAuthDataRepository;
         private readonly IUserRepository _userRepository;
         private readonly IConsumerAppRepository _appRepository;
-        private readonly StringConstant _stringConstant;
+        private readonly IStringConstant _stringConstant;
         public OAuthRepositoryTest() : base()
         {
             _oAuthRepository = serviceProvider.GetService<IOAuthRepository>();
             _oAuthDataRepository = serviceProvider.GetService<IDataRepository<OAuth>>();
             _userRepository = serviceProvider.GetService<IUserRepository>();
             _appRepository = serviceProvider.GetService<IConsumerAppRepository>();
-            _stringConstant = serviceProvider.GetService<StringConstant>();
+            _stringConstant = serviceProvider.GetService<IStringConstant>();
         }
 
         /// <summary>

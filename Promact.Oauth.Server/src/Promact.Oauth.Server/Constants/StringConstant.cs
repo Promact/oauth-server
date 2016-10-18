@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Promact.Oauth.Server.Constants
 {
-    public class StringConstant
+    public class StringConstant:IStringConstant
     {
 
         public string ConsumerAppNameDemo { get { return "Demo Name"; } }

@@ -19,13 +19,13 @@ namespace Promact.Oauth.Server.Tests
         private readonly IUserRepository _userRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
-        private readonly StringConstant _stringConstant;
+        private readonly IStringConstant _stringConstant;
         public UserRepositoryTest() : base()
         {
             _userRepository = serviceProvider.GetService<IUserRepository>();
             _userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
             _mapper = serviceProvider.GetService<IMapper>();
-            _stringConstant = serviceProvider.GetService<StringConstant>();
+            _stringConstant = serviceProvider.GetService<IStringConstant>();
         }
 
         #region Test Case

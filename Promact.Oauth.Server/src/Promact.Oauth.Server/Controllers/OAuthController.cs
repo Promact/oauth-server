@@ -19,10 +19,10 @@ namespace Promact.Oauth.Server.Controllers
         private readonly IConsumerAppRepository _appRepository;
         private readonly IOAuthRepository _oAuthRepository;
         private readonly IOptions<AppSettingUtil> _appSettingUtil;
-        private readonly StringConstant _stringConstant;
+        private readonly IStringConstant _stringConstant;
 
         public OAuthController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IConsumerAppRepository appRepository, IOAuthRepository oAuthRepository, IOptions<AppSettingUtil> appSettingUtil,
-            StringConstant stringConstant)
+            IStringConstant stringConstant)
         {
             _signInManager = signInManager;
             _userManager = userManager;
