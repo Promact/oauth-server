@@ -21,7 +21,7 @@ namespace Promact.Oauth.Server.Controllers
         #region "Private Variable(s)"
         private readonly IUserRepository _userRepository;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly ILogger<UserController> _logger; 
+        private readonly ILogger<UserController> _logger;
 
 
         #endregion
@@ -180,17 +180,17 @@ namespace Promact.Oauth.Server.Controllers
             }
             catch (InvalidApiRequestException apiEx)
             {
-                _logger.LogInformation("Forgot Password mail not send " + apiEx.Message + apiEx.ToString());
+                _logger.LogError("Forgot Password mail not send " + apiEx.Message + apiEx.ToString());
                 if (apiEx.Errors.Length > 0)
                 {
                     foreach (var error in apiEx.Errors)
-                        _logger.LogInformation("Forgot Password mail not send " + error);
+                        _logger.LogError("Forgot Password mail not send " + error);
                 }
                 throw apiEx;
             }
             catch (ArgumentNullException argEx)
             {
-                _logger.LogInformation("Add User unsuccessful " + argEx.Message + argEx.ToString());
+                _logger.LogError("Add User unsuccessful " + argEx.Message + argEx.ToString());
                 throw argEx;
             }
             catch (Exception ex)
@@ -439,7 +439,7 @@ namespace Promact.Oauth.Server.Controllers
             }
             catch (InvalidApiRequestException apiEx)
             {
-                _logger.LogInformation("Forgot Password mail not send " + apiEx.Message + apiEx.ToString());
+                _logger.LogError("Forgot Password mail not send " + apiEx.Message + apiEx.ToString());
                 if (apiEx.Errors.Length > 0)
                 {
                     foreach (var error in apiEx.Errors)
@@ -449,12 +449,12 @@ namespace Promact.Oauth.Server.Controllers
             }
             catch (ArgumentNullException argEx)
             {
-                _logger.LogInformation("Resend Mail unsuccessful "+argEx.Message+argEx.ToString());
+                _logger.LogError("Resend Mail unsuccessful " + argEx.Message + argEx.ToString());
                 throw argEx;
             }
             catch (Exception ex)
             {
-                _logger.LogInformation("Resend Mail unsuccessful " + ex.Message + ex.ToString());
+                _logger.LogError("Resend Mail unsuccessful " + ex.Message + ex.ToString());
                 throw ex;
             }
         }
