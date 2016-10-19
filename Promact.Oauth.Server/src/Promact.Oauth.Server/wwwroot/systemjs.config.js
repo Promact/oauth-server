@@ -84,7 +84,7 @@
             main: 'index.js',
             defaultExtension: 'js'
         },
-        'lodash': {
+        lodash: {
             main: 'lodash.js',
             defaultExtension: 'js'
         }
@@ -99,7 +99,7 @@
       'platform-browser',
       'platform-browser-dynamic',
       'router',
-      'upgrade',
+      'upgrade'
     ];
 
     var mdPackages = [
