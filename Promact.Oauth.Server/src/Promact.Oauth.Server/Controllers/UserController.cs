@@ -10,8 +10,10 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 using NLog;
+using Exceptions;
 using Promact.Oauth.Server.Constants;
 using Promact.Oauth.Server.Exception_Handler;
+
 
 namespace Promact.Oauth.Server.Controllers
 {
@@ -181,8 +183,24 @@ namespace Promact.Oauth.Server.Controllers
                 }
                 return Ok(false);
             }
+            catch (InvalidApiRequestException apiEx)
+            {
+                _logger.LogError("Forgot Password mail not send " + apiEx.Message + apiEx.ToString());
+                if (apiEx.Errors.Length > 0)
+                {
+                    foreach (var error in apiEx.Errors)
+                        _logger.LogError("Forgot Password mail not send " + error);
+                }
+                throw apiEx;
+            }
+            catch (ArgumentNullException argEx)
+            {
+                _logger.LogError("Add User unsuccessful " + argEx.Message + argEx.ToString());
+                throw argEx;
+            }
             catch (Exception ex)
             {
+                _logger.LogInformation("Add User unsuccessful " + ex.Message + ex.ToString());
                 throw ex;
             }
         }
@@ -421,8 +439,31 @@ namespace Promact.Oauth.Server.Controllers
         [Route("reSendMail/{id}")]
         public async Task<IActionResult> ReSendMail(string id)
         {
-            _logger.LogInformation("Resend Mail");
-            return Ok(await _userRepository.ReSendMail(id));
+            try
+            {
+                _logger.LogInformation("Resend Mail");
+                return Ok(await _userRepository.ReSendMail(id));
+            }
+            catch (InvalidApiRequestException apiEx)
+            {
+                _logger.LogError("Forgot Password mail not send " + apiEx.Message + apiEx.ToString());
+                if (apiEx.Errors.Length > 0)
+                {
+                    foreach (var error in apiEx.Errors)
+                        _logger.LogInformation("Forgot Password mail not send " + error);
+                }
+                throw apiEx;
+            }
+            catch (ArgumentNullException argEx)
+            {
+                _logger.LogError("Resend Mail unsuccessful " + argEx.Message + argEx.ToString());
+                throw argEx;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Resend Mail unsuccessful " + ex.Message + ex.ToString());
+                throw ex;
+            }
         }
 
         #endregion
