@@ -92,7 +92,7 @@ namespace Promact.Oauth.Server.Tests
                 RoleName = _stringConstant.Employee
             };
             var result = await _userRepository.AddUser(_testUser, _stringConstant.RawFirstNameForTest);
-            var exists = await _userRepository.FindByEmail(_stringConstant.RawEmailIdForTest);
+            var exists = await _userRepository.CheckEmailIsExists(_stringConstant.RawEmailIdForTest);
             Assert.Equal(true, exists);
         }
 
