@@ -15,8 +15,6 @@ using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using System;
 using Exceptions;
-using System;
-using Exceptions;
 
 namespace Promact.Oauth.Server.Controllers
 {
