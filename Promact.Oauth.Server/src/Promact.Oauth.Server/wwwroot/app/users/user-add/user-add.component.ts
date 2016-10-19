@@ -88,7 +88,7 @@ export class UserAddComponent {
             this.userService.checkUserIsExistsBySlackUserName(slackUserName).subscribe((result) => {
                 this.isSlackUserNameExist = result;
             }, err => {
-                console.log(err);
+                console.log(err.statusText);
             });
         }
     }

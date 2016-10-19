@@ -327,7 +327,7 @@ namespace Promact.Oauth.Server.Controllers
             }
             catch (Exception ex)
             {
-                throw ex;
+                return BadRequest();
             }
         }
 
@@ -340,11 +340,16 @@ namespace Promact.Oauth.Server.Controllers
             {
                 ApplicationUser slackUser = _userRepository.FindUserBySlackUserName(slackUserName);
                 bool result = slackUser != null ? true : false;
+             
                 return Ok(result);
             }
             catch (SlackUserNotFound ex)
             {
-               throw ex;
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
             }
         }
 
