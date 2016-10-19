@@ -93,5 +93,6 @@ namespace Promact.Oauth.Server.Constants
          string Format { get; }
         string DateFormate { get; }
         string TeamLeaderNotAssign { get; }
+        string DomainAddress { get; }
     }
 }

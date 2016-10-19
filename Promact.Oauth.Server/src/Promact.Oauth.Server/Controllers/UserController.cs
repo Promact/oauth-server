@@ -23,17 +23,19 @@ namespace Promact.Oauth.Server.Controllers
         private readonly IUserRepository _userRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<UserController> _logger;
+        private readonly IStringConstant _stringConstant;
 
 
         #endregion
 
         #region "Constructor"
 
-        public UserController(IUserRepository userRepository, UserManager<ApplicationUser> userManager, ILogger<UserController> logger)
+        public UserController(IUserRepository userRepository, UserManager<ApplicationUser> userManager, ILogger<UserController> logger, IStringConstant stringConstant)
         {
             _userRepository = userRepository;
             _logger = logger;
             _userManager = userManager;
+            _stringConstant = stringConstant;
         }
 
         #endregion
@@ -323,7 +325,7 @@ namespace Promact.Oauth.Server.Controllers
         {
             try
             {
-                return Ok(await _userRepository.CheckEmailIsExists(email + StringConstant.DomainAddress));
+                return Ok(await _userRepository.CheckEmailIsExists(email + _stringConstant.DomainAddress));
             }
             catch (Exception ex)
             {
