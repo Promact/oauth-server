@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 using NLog;
+using Exceptions;
 
 namespace Promact.Oauth.Server.Controllers
 {
@@ -176,6 +177,16 @@ namespace Promact.Oauth.Server.Controllers
                     return Ok(true);
                 }
                 return Ok(false);
+            }
+            catch (InvalidApiRequestException apiEx)
+            {
+                _logger.LogInformation("Forgot Password mail not send " + apiEx.Message + apiEx.ToString());
+                if (apiEx.Errors.Length > 0)
+                {
+                    foreach (var error in apiEx.Errors)
+                        _logger.LogInformation("Forgot Password mail not send " + error);
+                }
+                throw apiEx;
             }
             catch (ArgumentNullException argEx)
             {
@@ -426,7 +437,17 @@ namespace Promact.Oauth.Server.Controllers
                 _logger.LogInformation("Resend Mail");
                 return Ok(await _userRepository.ReSendMail(id));
             }
-            catch(ArgumentNullException argEx)
+            catch (InvalidApiRequestException apiEx)
+            {
+                _logger.LogInformation("Forgot Password mail not send " + apiEx.Message + apiEx.ToString());
+                if (apiEx.Errors.Length > 0)
+                {
+                    foreach (var error in apiEx.Errors)
+                        _logger.LogInformation("Forgot Password mail not send " + error);
+                }
+                throw apiEx;
+            }
+            catch (ArgumentNullException argEx)
             {
                 _logger.LogInformation("Resend Mail unsuccessful "+argEx.Message+argEx.ToString());
                 throw argEx;
