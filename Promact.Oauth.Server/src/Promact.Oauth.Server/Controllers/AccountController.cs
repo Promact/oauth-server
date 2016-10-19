@@ -14,6 +14,7 @@ using Promact.Oauth.Server.Constants;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using System;
+using Exceptions;
 
 namespace Promact.Oauth.Server.Controllers
 {
@@ -291,6 +292,16 @@ namespace Promact.Oauth.Server.Controllers
                 }
                 // If we got this far, something failed, redisplay form
                 return View(model);
+            }
+            catch (InvalidApiRequestException apiEx)
+            {
+                _logger.LogInformation("Forgot Password mail not send " + apiEx.Message + apiEx.ToString());
+                if (apiEx.Errors.Count() > 0)
+                {
+                    foreach (var error in apiEx.Errors)
+                        _logger.LogInformation("Forgot Password mail not send " + error);
+                }
+                throw apiEx;
             }
             catch (ArgumentNullException argEx)
             {
