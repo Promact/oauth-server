@@ -13,11 +13,9 @@ import { LoaderService } from '../../shared/loader.service';
 export class UserListComponent {
     users: Array<UserModel>;
     user: UserModel;
-    filterQuery: string;
     constructor(private userService: UserService, private router: Router, private toast: Md2Toast, private loader: LoaderService) {
         this.users = new Array<UserModel>();
         this.user = new UserModel();
-        this.filterQuery = "";
     }
     
     getUsers() {
