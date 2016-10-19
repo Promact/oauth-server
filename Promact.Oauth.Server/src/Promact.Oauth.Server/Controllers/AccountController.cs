@@ -300,7 +300,7 @@ namespace Promact.Oauth.Server.Controllers
             }
             catch (InvalidApiRequestException apiEx)
             {
-                _logger.LogInformation("Forgot Password mail not send " + apiEx.Message + apiEx.ToString());
+                _logger.LogError("Forgot Password mail not send " + apiEx.Message + apiEx.ToString());
                 if (apiEx.Errors.Count() > 0)
                 {
                     foreach (var error in apiEx.Errors)
@@ -310,12 +310,12 @@ namespace Promact.Oauth.Server.Controllers
             }
             catch (ArgumentNullException argEx)
             {
-                _logger.LogInformation("Forgot Password mail not send " + argEx.Message + argEx.ToString());
+                _logger.LogError("Forgot Password mail not send " + argEx.Message + argEx.ToString());
                 throw argEx;
             }
             catch (Exception ex)
             {
-                _logger.LogInformation("Forgot Password " + ex.Message + ex.ToString());
+                _logger.LogError("Forgot Password " + ex.Message + ex.ToString());
                 throw ex;
             }
         }
