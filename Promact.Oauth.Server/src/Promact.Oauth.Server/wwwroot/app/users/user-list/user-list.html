@@ -8,7 +8,7 @@
         </div>
     </div>
 
-    <table class="able-bordered table-user" [mfData]="users | dataFilter : filterQuery" #mf="mfDataTable" [mfRowsOnPage]="10">
+    <table class="able-bordered table-user"[mfData]="users" #mf="mfDataTable">
         <thead>
             <tr>
                 <th>
@@ -36,12 +36,6 @@
                     <mfDefaultSorter by="action">Action</mfDefaultSorter>
                 </th>
             </tr>
-            <tr>
-                <th>Filter by name:</th>
-                <th colspan="3">
-                    <input class="form-control" [(ngModel)]="filterQuery" />
-                </th>
-            </tr>
         </thead>
         <tbody>
             <tr *ngFor="let user of mf.users">
@@ -64,7 +58,7 @@
         <tfoot>
             <tr>
                 <td colspan="4">
-                    <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]"></mfBootstrapPaginator>
+                    <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]" [rowsOnPage]="5"></mfBootstrapPaginator>
                 </td>
             </tr>
         </tfoot>
