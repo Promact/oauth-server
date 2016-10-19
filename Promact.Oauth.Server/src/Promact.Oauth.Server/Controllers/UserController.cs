@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 using NLog;
+using Promact.Oauth.Server.Constants;
+using Promact.Oauth.Server.Exception_Handler;
 
 namespace Promact.Oauth.Server.Controllers
 {
@@ -20,18 +22,20 @@ namespace Promact.Oauth.Server.Controllers
         #region "Private Variable(s)"
         private readonly IUserRepository _userRepository;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly ILogger<UserController> _logger; 
+        private readonly ILogger<UserController> _logger;
+        private readonly IStringConstant _stringConstant;
 
 
         #endregion
 
         #region "Constructor"
 
-        public UserController(IUserRepository userRepository, UserManager<ApplicationUser> userManager, ILogger<UserController> logger)
+        public UserController(IUserRepository userRepository, UserManager<ApplicationUser> userManager, ILogger<UserController> logger, IStringConstant stringConstant)
         {
             _userRepository = userRepository;
             _logger = logger;
             _userManager = userManager;
+            _stringConstant = stringConstant;
         }
 
         #endregion
@@ -315,35 +319,37 @@ namespace Promact.Oauth.Server.Controllers
         /// <param name="email"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("findbyemail/{email}")]
+        [Route("checkEmailIsExists/{email}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> FindByEmail(string email)
+        public async Task<IActionResult> CheckEmailIsExists(string email)
         {
             try
             {
-                return Ok(await _userRepository.FindByEmail(email));
+                return Ok(await _userRepository.CheckEmailIsExists(email + _stringConstant.DomainAddress));
             }
             catch (Exception ex)
             {
-                throw ex;
+                return BadRequest();
             }
         }
 
 
         [HttpGet]
-        [Route("findUserBySlackUserName/{slackUserName}")]
-        public IActionResult FindUserBySlackUserName(string slackUserName)
+        [Route("checkUserIsExistsBySlackUserName/{slackUserName}")]
+        public IActionResult CheckUserIsExistsBySlackUserName(string slackUserName)
         {
             try
             {
-                return Ok(_userRepository.FindUserBySlackUserName(slackUserName));
+                ApplicationUser slackUser = _userRepository.FindUserBySlackUserName(slackUserName);
+                bool result = slackUser != null ? true : false;
+             
+                return Ok(result);
             }
-            catch (Exception ex)
+            catch (SlackUserNotFound ex)
             {
-                throw ex;
+                return NotFound();
             }
         }
-
 
 
         /**

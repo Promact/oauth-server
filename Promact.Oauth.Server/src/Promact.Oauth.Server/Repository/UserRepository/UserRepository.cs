@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Promact.Oauth.Server.Exception_Handler;
 
 namespace Promact.Oauth.Server.Repository
 {
@@ -366,28 +367,19 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="email"></param>
         /// <returns> boolean: true if the email exists, false if does not exist</returns>
-        public async Task<bool> FindByEmail(string email)
+        public async Task<bool> CheckEmailIsExists(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
-            if (user == null)
-            {
-                return false;
-            }
-            return true;
+            return user == null ? false : true;
         }
 
-
-        public bool FindUserBySlackUserName(string slackUserName)
+        public ApplicationUser FindUserBySlackUserName(string slackUserName)
         {
             var user = _applicationUserDataRepository.FirstOrDefault(x => x.SlackUserName == slackUserName);
-            if (user != null)
-            {
-                if (user.SlackUserName == slackUserName)
-                {
-                    return false;
-                }
-            }
-            return true;
+            if (user == null)
+                throw new SlackUserNotFound();
+            else
+                return user;
         }
 
         /// <summary>
