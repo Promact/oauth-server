@@ -18,14 +18,16 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
         private readonly IConsumerAppRepository _appRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IStringConstant _stringConstant;
 
-        public OAuthRepository(IDataRepository<OAuth> oAuthDataRepository, IHttpClientRepository httpClientRepository,IConsumerAppRepository appRepository, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        public OAuthRepository(IDataRepository<OAuth> oAuthDataRepository, IHttpClientRepository httpClientRepository,IConsumerAppRepository appRepository, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IStringConstant stringConstant)
         {
             _oAuthDataRepository = oAuthDataRepository;
             _httpClientRepository = httpClientRepository;
             _appRepository = appRepository;
             _userManager = userManager;
             _signInManager = signInManager;
+            _stringConstant = stringConstant;
         }
 
         /// <summary>
@@ -121,7 +123,7 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
                     }
                 }
             }
-            return StringConstant.EmptyString;
+            return _stringConstant.EmptyString;
         }
     }
 }

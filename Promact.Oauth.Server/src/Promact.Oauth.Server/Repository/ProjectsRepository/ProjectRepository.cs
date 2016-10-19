@@ -18,18 +18,22 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         private readonly IDataRepository<Project> _projectDataRepository;
         private readonly IDataRepository<ProjectUser> _projectUserDataRepository;
         private readonly IDataRepository<ApplicationUser> _userDataRepository;
+
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IStringConstant _stringConstant;
         private readonly IMapper _mapperContext;
         #endregion
 
         #region "Constructor"
-        public ProjectRepository(IDataRepository<Project> projectDataRepository, IDataRepository<ProjectUser> projectUserDataRepository, IDataRepository<ApplicationUser> userDataRepository, UserManager<ApplicationUser> userManager, IMapper mapperContext)
+        public ProjectRepository(IDataRepository<Project> projectDataRepository, IDataRepository<ProjectUser> projectUserDataRepository, IDataRepository<ApplicationUser> userDataRepository, UserManager<ApplicationUser> userManager, 
+            IMapper mapperContext,IStringConstant stringConstant)
         {
             _projectDataRepository = projectDataRepository;
             _projectUserDataRepository = projectUserDataRepository;
             _userDataRepository = userDataRepository;
             _mapperContext = mapperContext;
             _userManager = userManager;
+            _stringConstant = stringConstant;
         }
         #endregion
 
@@ -55,9 +59,9 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                 else
                 {
 
-                    teamLeader.FirstName = StringConstant.TeamLeaderNotAssign;
-                    teamLeader.LastName = StringConstant.TeamLeaderNotAssign;
-                    teamLeader.Email = StringConstant.TeamLeaderNotAssign;
+                    teamLeader.FirstName = _stringConstant.TeamLeaderNotAssign;
+                    teamLeader.LastName = _stringConstant.TeamLeaderNotAssign;
+                    teamLeader.Email = _stringConstant.TeamLeaderNotAssign;
                 }
                 var CreatedBy = _userDataRepository.FirstOrDefault(x => x.Id == project.CreatedBy)?.FirstName;
                 var UpdatedBy = _userDataRepository.FirstOrDefault(x => x.Id == project.UpdatedBy)?.FirstName;
@@ -65,11 +69,11 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                 if (project.UpdatedDateTime == null)
                 { UpdatedDate = ""; }
                 else
-                { UpdatedDate = Convert.ToDateTime(project.UpdatedDateTime).ToString(StringConstant.DateFormate); }
+                { UpdatedDate = Convert.ToDateTime(project.UpdatedDateTime).ToString(_stringConstant.DateFormate); }
                 var projectObject = _mapperContext.Map<Project, ProjectAc>(project);
                 projectObject.TeamLeader = teamLeader;
                 projectObject.CreatedBy = CreatedBy;
-                projectObject.CreatedDate = project.CreatedDateTime.ToString(StringConstant.DateFormate);
+                projectObject.CreatedDate = project.CreatedDateTime.ToString(_stringConstant.DateFormate);
                 projectObject.UpdatedBy = UpdatedBy;
                 projectObject.UpdatedDate = UpdatedDate;
                 projectAcs.Add(projectObject);
@@ -332,7 +336,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             var userRoles = new List<UserRoleAc>();
             var usersRole = new UserRoleAc();
             usersRole.UserName = user.UserName;
-            usersRole.Role = StringConstant.RoleTeamLeader;
+            usersRole.Role = _stringConstant.RoleTeamLeader;
             usersRole.Name = user.FirstName + " " + user.LastName;
             userRoles.Add(usersRole);
             var project = await _projectDataRepository.FirstOrDefaultAsync(x => x.TeamLeaderId.Equals(user.Id));
@@ -344,7 +348,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                 var users = _userDataRepository.FirstOrDefault(x => x.Id == projectUser.UserId);
                 usersRoles.UserName = users.UserName;
                 usersRoles.Name = users.FirstName + " " + users.LastName;
-                usersRoles.Role = StringConstant.RoleAdmin;
+                usersRoles.Role = _stringConstant.RoleAdmin;
                 userRoles.Add(usersRoles);
             }
             return userRoles;
@@ -360,8 +364,8 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             var role = await _userManager.GetRolesAsync(user);
             var userRole = role.First();
             var userRoles = new List<UserRoleAc>();
-            //userRole = StringConstant.RoleTeamLeader;
-            if (userRole == StringConstant.RoleAdmin)
+            //userRole = _stringConstant.RoleTeamLeader;
+            if (userRole == _stringConstant.RoleAdmin)
             {
                 var userRoleAdmin = new UserRoleAc();
                 userRoleAdmin.UserName = user.UserName;
@@ -372,7 +376,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                 foreach (var userDetails in userList)
                 {
                     var roles = await _userManager.GetRolesAsync(userDetails);
-                    if (roles.Count() != 0 && roles[0] == StringConstant.RoleEmployee)
+                    if (roles.Count() != 0 && roles[0] == _stringConstant.RoleEmployee)
                     {
                         var userRoleAc = new UserRoleAc();
                         userRoleAc.UserName = userDetails.UserName;
@@ -391,7 +395,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                 {
                     var usersRole = new UserRoleAc();
                     usersRole.UserName = user.UserName;
-                    usersRole.Role = StringConstant.RoleEmployee;
+                    usersRole.Role = _stringConstant.RoleEmployee;
                     usersRole.Name = user.FirstName + " " + user.LastName;
                     userRoles.Add(usersRole);
                 }
@@ -399,7 +403,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                 {
                     var usersRole = new UserRoleAc();
                     usersRole.UserName = user.UserName;
-                    usersRole.Role = StringConstant.RoleTeamLeader;
+                    usersRole.Role = _stringConstant.RoleTeamLeader;
                     usersRole.Name = user.FirstName + " " + user.LastName;
                     userRoles.Add(usersRole);
                 }
@@ -420,17 +424,17 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             {
                 ApplicationUser teamLeader = _userDataRepository.FirstOrDefault(x => x.Id == project.TeamLeaderId);
                 UserAc teamLead = _mapperContext.Map<ApplicationUser, UserAc>(teamLeader);
-                teamLead.Role = StringConstant.TeamLeader;
+                teamLead.Role = _stringConstant.TeamLeader;
 
                 List<ProjectUser> projectUsers = _projectUserDataRepository.Fetch(x => x.ProjectId == project.Id).ToList();
                 ProjectAc projectObject = _mapperContext.Map<Project, ProjectAc>(project);
                 projectObject.TeamLeader = teamLead;
-                projectObject.CreatedDate = project.CreatedDateTime.ToString(StringConstant.Format);
+                projectObject.CreatedDate = project.CreatedDateTime.ToString(_stringConstant.Format);
                 foreach (var projectUser in projectUsers)
                 {
                     ApplicationUser user = _userDataRepository.FirstOrDefault(x => x.Id == projectUser.UserId);
                     UserAc proUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
-                    proUser.Role = StringConstant.Employee;
+                    proUser.Role = _stringConstant.Employee;
                     projectObject.ApplicationUsers.Add(proUser);
                 }
                 projectAcs.Add(projectObject);
@@ -448,17 +452,17 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             Project project = _projectDataRepository.FirstOrDefault(x => x.Id == projectId);
             ApplicationUser teamLeader = _userDataRepository.FirstOrDefault(x => x.Id == project.TeamLeaderId);
             UserAc teamLead = _mapperContext.Map<ApplicationUser, UserAc>(teamLeader);
-            teamLead.Role = StringConstant.TeamLeader;
+            teamLead.Role = _stringConstant.TeamLeader;
             List<ProjectUser> projectUsers = await _projectUserDataRepository.Fetch(x => x.ProjectId == project.Id).ToListAsync();
             ProjectAc projectDetails = _mapperContext.Map<Project, ProjectAc>(project);
-            projectDetails.CreatedDate = project.CreatedDateTime.ToString(StringConstant.Format);
+            projectDetails.CreatedDate = project.CreatedDateTime.ToString(_stringConstant.Format);
             projectDetails.TeamLeader = teamLead;
             List<UserAc> projectUserList = new List<UserAc>();
             foreach (var projectUser in projectUsers)
             {
                 ApplicationUser user = _userDataRepository.FirstOrDefault(x => x.Id == projectUser.UserId);
                 UserAc proUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
-                proUser.Role = StringConstant.Employee;
+                proUser.Role = _stringConstant.Employee;
                 projectDetails.ApplicationUsers.Add(proUser);
             }
 

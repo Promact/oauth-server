@@ -8,17 +8,19 @@ namespace Promact.Oauth.Server.Services
     public class SendGridEmailSender : IEmailSender
     {
         private readonly IOptions<AppSettings> _appSettings;
+        private readonly StringConstant _stringConstant;
 
-        public SendGridEmailSender(IOptions<AppSettings> appSettings)
+        public SendGridEmailSender(IOptions<AppSettings> appSettings, StringConstant stringConstant)
         {
             _appSettings = appSettings;
+            _stringConstant = stringConstant;
         }
 
         public void SendEmail(string email, string subject, string message)
         {
             var myMessage = new SendGrid.SendGridMessage();
             myMessage.AddTo(email);
-            myMessage.From = new MailAddress(_appSettings.Value.From, StringConstant.PromactName);
+            myMessage.From = new MailAddress(_appSettings.Value.From, _stringConstant.PromactName);
             myMessage.Subject = subject;
             myMessage.Text = message;
 

@@ -19,14 +19,17 @@ namespace Promact.Oauth.Server.Controllers
         private readonly IConsumerAppRepository _appRepository;
         private readonly IOAuthRepository _oAuthRepository;
         private readonly IOptions<AppSettingUtil> _appSettingUtil;
+        private readonly IStringConstant _stringConstant;
 
-        public OAuthController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IConsumerAppRepository appRepository, IOAuthRepository oAuthRepository, IOptions<AppSettingUtil> appSettingUtil)
+        public OAuthController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IConsumerAppRepository appRepository, IOAuthRepository oAuthRepository, IOptions<AppSettingUtil> appSettingUtil,
+            IStringConstant stringConstant)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _appRepository = appRepository;
             _oAuthRepository = oAuthRepository;
             _appSettingUtil = appSettingUtil;
+            _stringConstant = stringConstant;
         }
 
         /**
@@ -58,7 +61,7 @@ namespace Promact.Oauth.Server.Controllers
                 if (ModelState.IsValid)
                 {
                     var redirectUrl = await _oAuthRepository.UserNotAlreadyLogin(login);
-                    if (redirectUrl != StringConstant.EmptyString)
+                    if (redirectUrl != _stringConstant.EmptyString)
                     {
                         return Redirect(redirectUrl);
                     }
@@ -67,7 +70,7 @@ namespace Promact.Oauth.Server.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, StringConstant.InvalidLogin);
+                    ModelState.AddModelError(string.Empty, _stringConstant.InvalidLogin);
                     return View(login);
                 }
             }

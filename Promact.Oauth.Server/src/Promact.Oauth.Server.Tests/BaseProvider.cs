@@ -31,6 +31,8 @@ namespace Promact.Oauth.Server.Tests
 
         private MapperConfiguration _mapperConfiguration { get; set; }
 
+        //private readonly StringConstant _stringConstant;
+
         public BaseProvider()
         {
 
@@ -57,6 +59,7 @@ namespace Promact.Oauth.Server.Tests
             services.AddScoped<IConsumerAppRepository, ConsumerAppRepository>();
             services.AddScoped<IOAuthRepository, OAuthRepository>();
             services.AddScoped<HttpClient>();
+            services.AddScoped<IStringConstant,StringConstant>();
             services.AddScoped<IHttpClientRepository, HttpClientRepository>();
             services.AddScoped(typeof(IDataRepository<>), typeof(DataRepository<>));
 
@@ -72,11 +75,12 @@ namespace Promact.Oauth.Server.Tests
         public void RoleSeedFake(IServiceProvider serviceProvider)
         {
             var _db = serviceProvider.GetService<PromactOauthDbContext>();
+            var _stringConstant = serviceProvider.GetService<IStringConstant>();
             if (!_db.Roles.Any())
             {
                 List<IdentityRole> roles = new List<IdentityRole>();
-                roles.Add(new IdentityRole { Name = StringConstant.Employee, NormalizedName = StringConstant.NormalizedName });
-                roles.Add(new IdentityRole { Name = StringConstant.Admin, NormalizedName = StringConstant.NormalizedSecond });
+                roles.Add(new IdentityRole { Name = _stringConstant.Employee, NormalizedName = _stringConstant.NormalizedName });
+                roles.Add(new IdentityRole { Name = _stringConstant.Admin, NormalizedName = _stringConstant.NormalizedSecond });
 
                 foreach (var role in roles)
                 {
