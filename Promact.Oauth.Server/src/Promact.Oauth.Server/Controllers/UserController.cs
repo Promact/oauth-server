@@ -347,10 +347,6 @@ namespace Promact.Oauth.Server.Controllers
             {
                 return NotFound();
             }
-            catch (Exception ex)
-            {
-                return BadRequest();
-            }
         }
 
 
