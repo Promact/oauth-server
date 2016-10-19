@@ -13,7 +13,7 @@ namespace Promact.Oauth.Server.Services
         private readonly StringConstant _stringConstant;
         private readonly ILogger<AuthMessageSender> _logger;
 
-        public SendGridEmailSender(IOptions<AppSettings> appSettings, ILogger<AuthMessageSender> logger)
+        public SendGridEmailSender(IOptions<AppSettings> appSettings, StringConstant stringConstant, ILogger<AuthMessageSender> logger)
         {
             _appSettings = appSettings;
             _stringConstant = stringConstant;
@@ -35,7 +35,7 @@ namespace Promact.Oauth.Server.Services
             else
             {
                 _logger.LogInformation("SendGrid: Email setting From obtained");
-                myMessage.From = new MailAddress(_appSettings.Value.From, StringConstant.PromactName);
+                myMessage.From = new MailAddress(_appSettings.Value.From, _stringConstant.PromactName);
             }
             myMessage.Subject = subject;
             _logger.LogInformation("SendGrid: SendGrid Subject");

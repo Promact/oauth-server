@@ -279,20 +279,20 @@ namespace Promact.Oauth.Server.Controllers
                     var user = await _userManager.FindByNameAsync(model.Email);
                     if (user == null)
                     {
-                        @ViewData["EmailNotExist"] = StringConstant.EmailNotExists;
+                        @ViewData["EmailNotExist"] = _stringConstant.EmailNotExists;
                         return View();
                     }
 
                     // Send an email with this link
                     var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                     var resetPasswordLink = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                    string path = _hostingEnvironment.ContentRootPath + StringConstant.ForgotPasswordTemplateFolderPath;
+                    string path = _hostingEnvironment.ContentRootPath + _stringConstant.ForgotPasswordTemplateFolderPath;
                     if (System.IO.File.Exists(path))
                     {
                         string finaleTemplate = System.IO.File.ReadAllText(path);
-                        finaleTemplate = finaleTemplate.Replace(StringConstant.ResetPasswordLink, resetPasswordLink).Replace(StringConstant.ResertPasswordUserName, user.FirstName);
-                        _emailSender.SendEmail(model.Email, StringConstant.ForgotPassword, finaleTemplate);
-                        @ViewData["MailSentSuccessfully"] = StringConstant.SuccessfullySendMail.Replace("{{emailaddress}}", "'" + model.Email + "'");
+                        finaleTemplate = finaleTemplate.Replace(_stringConstant.ResetPasswordLink, resetPasswordLink).Replace(_stringConstant.ResertPasswordUserName, user.FirstName);
+                        _emailSender.SendEmail(model.Email, _stringConstant.ForgotPassword, finaleTemplate);
+                        @ViewData["MailSentSuccessfully"] = _stringConstant.SuccessfullySendMail.Replace("{{emailaddress}}", "'" + model.Email + "'");
                     }
                 }
                 // If we got this far, something failed, redisplay form
