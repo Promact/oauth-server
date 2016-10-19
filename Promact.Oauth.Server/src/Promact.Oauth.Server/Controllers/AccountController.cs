@@ -13,6 +13,8 @@ using Promact.Oauth.Server.Models.ApplicationClasses;
 using Promact.Oauth.Server.Constants;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
+using System;
+using Exceptions;
 
 namespace Promact.Oauth.Server.Controllers
 {
@@ -268,29 +270,52 @@ namespace Promact.Oauth.Server.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var user = await _userManager.FindByNameAsync(model.Email);
-                if (user == null)
+                if (ModelState.IsValid)
                 {
-                    @ViewData["EmailNotExist"] = _stringConstant.EmailNotExists;
-                    return View();
-                }
+                    var user = await _userManager.FindByNameAsync(model.Email);
+                    if (user == null)
+                    {
+                        @ViewData["EmailNotExist"] = _stringConstant.EmailNotExists;
+                        return View();
+                    }
 
-                // Send an email with this link
-                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var resetPasswordLink = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                string path = _hostingEnvironment.ContentRootPath + _stringConstant.ForgotPasswordTemplateFolderPath;
-                if (System.IO.File.Exists(path))
-                {
-                    string finaleTemplate = System.IO.File.ReadAllText(path);
-                    finaleTemplate = finaleTemplate.Replace(_stringConstant.ResetPasswordLink, resetPasswordLink).Replace(_stringConstant.ResertPasswordUserName, user.FirstName);
-                    _emailSender.SendEmail(model.Email, _stringConstant.ForgotPassword, finaleTemplate);
-                    @ViewData["MailSentSuccessfully"] = _stringConstant.SuccessfullySendMail.Replace("{{emailaddress}}", "'" + model.Email + "'");
+                    // Send an email with this link
+                    var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    var resetPasswordLink = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+                    string path = _hostingEnvironment.ContentRootPath + _stringConstant.ForgotPasswordTemplateFolderPath;
+                    if (System.IO.File.Exists(path))
+                    {
+                        string finaleTemplate = System.IO.File.ReadAllText(path);
+                        finaleTemplate = finaleTemplate.Replace(_stringConstant.ResetPasswordLink, resetPasswordLink).Replace(_stringConstant.ResertPasswordUserName, user.FirstName);
+                        _emailSender.SendEmail(model.Email, _stringConstant.ForgotPassword, finaleTemplate);
+                        @ViewData["MailSentSuccessfully"] = _stringConstant.SuccessfullySendMail.Replace("{{emailaddress}}", "'" + model.Email + "'");
+                    }
                 }
+                // If we got this far, something failed, redisplay form
+                return View(model);
             }
-            // If we got this far, something failed, redisplay form
-            return View(model);
+            catch (InvalidApiRequestException apiEx)
+            {
+                _logger.LogError("Forgot Password mail not send " + apiEx.Message + apiEx.ToString());
+                if (apiEx.Errors.Count() > 0)
+                {
+                    foreach (var error in apiEx.Errors)
+                        _logger.LogInformation("Forgot Password mail not send " + error);
+                }
+                throw apiEx;
+            }
+            catch (ArgumentNullException argEx)
+            {
+                _logger.LogError("Forgot Password mail not send " + argEx.Message + argEx.ToString());
+                throw argEx;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Forgot Password " + ex.Message + ex.ToString());
+                throw ex;
+            }
         }
 
         //
