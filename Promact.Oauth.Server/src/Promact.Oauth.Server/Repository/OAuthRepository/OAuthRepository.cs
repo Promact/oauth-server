@@ -52,11 +52,11 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
             return oAuth;
         }
 
-        private OAuth OAuthClientChecking(string email,string clientId)
+        private async Task<OAuth> OAuthClientChecking(string email,string clientId)
         {
             //checking whether with this app email is register or not if  not new OAuth will be created.
             var oAuth = GetDetails(email, clientId);
-            var app = _appRepository.GetAppDetails(clientId).Result;
+            var app =  await _appRepository.GetAppDetails(clientId);
             if (oAuth == null && app!=null)
             {
                 oAuth = new OAuth();
@@ -96,7 +96,7 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
         public async Task<string> UserAlreadyLogin(string userName, string clientId, string callBackUrl)
         {
             var user = await _userManager.FindByNameAsync(userName);
-            var oAuth = OAuthClientChecking(user.Email, clientId);
+            var oAuth = await OAuthClientChecking(user.Email, clientId);
             var clientResponse = await GetAppDetailsFromClient(callBackUrl, oAuth.RefreshToken);
             var returnUrl = string.Format("{0}?accessToken={1}&email={2}&slackUserName={3}", clientResponse.ReturnUrl, oAuth.AccessToken, oAuth.userEmail, user.SlackUserName);
             return returnUrl;
@@ -107,7 +107,7 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
             var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, lockoutOnFailure: false);
             if (result.Succeeded)
             {
-                var oAuth = OAuthClientChecking(model.Email, model.ClientId);
+                var oAuth = await OAuthClientChecking(model.Email, model.ClientId);
                 var clientResponse = await GetAppDetailsFromClient(model.RedirectUrl, oAuth.RefreshToken);
                 // Checking whether request client is equal to response client
                 if (model.ClientId == clientResponse.ClientId)
