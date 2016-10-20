@@ -2,7 +2,7 @@
 import { LoginService } from './login.service';
 import { Router } from '@angular/router';
 import { LoaderService } from './shared/loader.service'
-import { MyService } from "./shared/globalVariable";
+
 
 @Component({
     selector: 'my-app',
@@ -11,7 +11,7 @@ import { MyService } from "./shared/globalVariable";
 export class AppComponent {
     user: any;
     admin: any;
-    constructor(private loginService: LoginService, private router: Router, private loader: LoaderService, private myService: MyService) {
+    constructor(private loginService: LoginService, private router: Router, private loader: LoaderService) {
         //debugger;
         this.getRole();
     }
@@ -21,11 +21,11 @@ export class AppComponent {
             this.user = result;
             if (this.user.role === "Admin") {
                 this.admin = true;
-                this.myService.setValue(true);
+               
             }
             else {
                 this.admin = false;
-                this.myService.setValue(false);
+              
             }
         }, err => {
         });
