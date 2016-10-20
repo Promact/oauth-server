@@ -114,13 +114,15 @@ if EXIST "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Promact.Oauth.Server\bowe
 call :ExecuteCmd nuget.exe restore "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\Promact.Oauth.Server.sln" -packagesavemode nuspec
 IF !ERRORLEVEL! NEQ 0 goto error
 
+call :ExecuteCmd dotnet restore "%DEPLOYMENT_SOURCE%\promact-oauth-server\Promact.Oauth.Server\src\Promact.Oauth.Server" 
+
 ::5. Build Project
-call :ExecuteCmd dotnet build "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\Promact.Oauth.Server.sln" --output "%DEPLOYMENT_TEMP%"  --configuration Release --framework netcoreapp1.0
+call :ExecuteCmd dotnet build "%DEPLOYMENT_SOURCE%\promact-oauth-server\Promact.Oauth.Server\src\Promact.Oauth.Server" --output "%DEPLOYMENT_TEMP%"  --configuration Release --framework netcoreapp1.0
 IF !ERRORLEVEL! NEQ 0 goto error
 
 
 ::6. Publish Project 
-call :ExecuteCmd dotnet publish "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\Promact.Oauth.Server.sln" --output "%DEPLOYMENT_TEMP%" --configuration Release --runtime win10-x64
+call :ExecuteCmd dotnet publish "%DEPLOYMENT_SOURCE%\promact-oauth-server\Promact.Oauth.Server\src\Promact.Oauth.Server" --output "%DEPLOYMENT_TEMP%" --configuration Release --runtime win10-x64
 IF !ERRORLEVEL! NEQ 0 goto error
 
 
