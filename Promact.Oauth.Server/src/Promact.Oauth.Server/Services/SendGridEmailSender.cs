@@ -10,9 +10,9 @@ namespace Promact.Oauth.Server.Services
     {
         private readonly IOptions<AppSettings> _appSettings;
         private readonly ILogger<AuthMessageSender> _logger;
-        private readonly StringConstant _stringConstant;
+        private readonly IStringConstant _stringConstant;
     
-        public SendGridEmailSender(IOptions<AppSettings> appSettings, StringConstant stringConstant, ILogger<AuthMessageSender> logger)
+        public SendGridEmailSender(IOptions<AppSettings> appSettings, IStringConstant stringConstant, ILogger<AuthMessageSender> logger)
         {
             _appSettings = appSettings;
             _stringConstant = stringConstant;
