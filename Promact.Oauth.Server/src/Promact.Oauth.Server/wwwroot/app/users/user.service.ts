@@ -1,9 +1,9 @@
 ﻿import { Injectable } from '@angular/core';
-import {HttpService} from "../http.service";
+import { HttpService } from "../http.service";
 import 'rxjs/add/operator/toPromise';
 
-import {UserModel} from './user.model';
-import {PasswordModel} from './user-password.model';
+import { UserModel } from './user.model';
+import { PasswordModel } from './user-password.model';
 
 @Injectable()
 export class UserService {
@@ -49,6 +49,9 @@ export class UserService {
 
     reSendMail(id: string) {
         return this.httpService.get(this.UserUrl + "/reSendMail" + "/" + id);
+    }
+    checkOldPasswordIsValid(oldPassword: string) {
+        return this.httpService.get(this.UserUrl + "/checkOldPasswordIsValid/" + oldPassword);
     }
 
 }
