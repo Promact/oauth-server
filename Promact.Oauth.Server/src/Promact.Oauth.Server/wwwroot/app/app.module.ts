@@ -14,6 +14,7 @@ import { LoginService } from "./login.service";
 import { MdSidenavModule } from "@angular2-material/sidenav";
 import { MdToolbarModule } from "@angular2-material/toolbar";
 import { LoaderService } from "./shared/loader.service";
+import { UserRole } from "./shared/userrole.model";
 
 
 @NgModule({
@@ -30,6 +31,6 @@ import { LoaderService } from "./shared/loader.service";
         ChangePasswordModule,
     ],
     bootstrap: [AppComponent],
-    providers: [HttpService, LoginService, LoaderService, { provide: LocationStrategy, useClass: HashLocationStrategy }],
+    providers: [HttpService, LoginService, LoaderService, { provide: LocationStrategy, useClass: HashLocationStrategy }, UserRole],
 })
 export class AppModule { }
