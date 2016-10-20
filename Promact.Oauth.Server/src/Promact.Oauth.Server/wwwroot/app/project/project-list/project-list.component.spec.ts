@@ -11,6 +11,7 @@ import { ProjectModule } from '../project.module';
 import { Md2Toast } from 'md2/toast/toast';
 import { LoaderService } from '../../shared/loader.service';
 import { RouterLinkStubDirective } from '../../shared/mocks/mock.routerLink';
+import { UserRole } from "../../shared/userrole.model";
 
 
 declare var describe, it, beforeEach, expect;
@@ -26,6 +27,7 @@ describe("Project List Test", () => {
     class Md2Toast { }
     class MockHttpService { }
     class MockLoaderService { }
+    class MockUserRole { }
     const routes: Routes = [];
     beforeEach(async(() => {
         this.promise = TestBed.configureTestingModule({
@@ -37,7 +39,8 @@ describe("Project List Test", () => {
                 { provide: ProjectService, useClass: MockProjectService },
                 { provide: Md2Toast, useClass: Md2Toast },
                 { provide: LoginService, useClass: McokLogin },
-                { provide: LoaderService, useClass: MockLoaderService }
+                { provide: LoaderService, useClass: MockLoaderService },
+                { provide: UserRole, useClass: MockUserRole }
                 
             ]
         }).compileComponents();
