@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { Md2Toast } from 'md2/toast/toast';
 import { LoginService } from '../../login.service';
 import { LoaderService } from '../../shared/loader.service';
-import { MyService } from "../../shared/globalVariable";
+
 
 @Component({
     templateUrl: 'app/project/project-list/project-list.html',
@@ -18,7 +18,7 @@ export class ProjectListComponent {
     user: any;
     admin: any;
     constructor(private router: Router, private projectService: ProjectService, private toast: Md2Toast, private loginService: LoginService,
-        private loader: LoaderService, private myService: MyService) {
+        private loader: LoaderService) {
         this.projects = new Array<projectModel>();
         this.project = new projectModel();
     }
@@ -33,8 +33,8 @@ export class ProjectListComponent {
     }
     ngOnInit() {
         this.getProjects();
-        this.admin = this.myService.getValue();
-        //this.getRole();
+       
+        this.getRole();
     }
     editProject(Id) {
         this.router.navigate(['/project/edit', Id]);
@@ -43,18 +43,18 @@ export class ProjectListComponent {
         this.router.navigate(['/project/view', Id]);
     }
 
-    //getRole() {
-    //    this.loginService.getRoleAsync().subscribe((result) => {
-    //        this.user = result;
-    //        if (this.user.role === "Admin") {
-    //            //this.router.navigate(['project/list']);
-    //            this.admin = true;
-    //        }
-    //        else {
-    //            //this.router.navigate(['project/list']);
-    //            this.admin = false;
-    //        }
-    //    }, err => {
-    //    });
-    //}
+    getRole() {
+        this.loginService.getRoleAsync().subscribe((result) => {
+            this.user = result;
+            if (this.user.role === "Admin") {
+                this.router.navigate(['project/list']);
+                this.admin = true;
+            }
+            else {
+                this.router.navigate(['project/list']);
+                this.admin = false;
+            }
+        }, err => {
+        });
+    }
 }
