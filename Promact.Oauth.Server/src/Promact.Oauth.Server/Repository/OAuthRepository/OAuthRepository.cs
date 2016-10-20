@@ -56,7 +56,7 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
         {
             //checking whether with this app email is register or not if  not new OAuth will be created.
             var oAuth = GetDetails(email, clientId);
-            var app = _appRepository.GetAppDetails(clientId);
+            var app = _appRepository.GetAppDetails(clientId).Result;
             if (oAuth == null && app!=null)
             {
                 oAuth = new OAuth();
