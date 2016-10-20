@@ -27,6 +27,7 @@ describe("User Details Test", () => {
     class MockLocation { }
     class MockLoaderService { }
     class McokLogin { }
+    class MockUserRole { }
     const routes: Routes = [];
     beforeEach(async(() => {
         this.promise = TestBed.configureTestingModule({
