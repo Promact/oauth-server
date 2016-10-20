@@ -1,22 +1,41 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Promact.Oauth.Server.Models;
+using Promact.Oauth.Server.Models.ApplicationClasses;
+using Promact.Oauth.Server.Constants;
 
 namespace Promact.Oauth.Server.Controllers
 {
     public class HomeController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        public HomeController(UserManager<ApplicationUser> userManager)
+        private readonly IStringConstant _stringConstant;
+        public HomeController(UserManager<ApplicationUser> userManager, IStringConstant stringConstant)
         {
             _userManager = userManager;
+            _stringConstant = stringConstant;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             if (User.Identity.IsAuthenticated)
             {
-                
-                return View("Index");
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
+                UserRoleAc userRole = new UserRoleAc();
+                if (User.IsInRole(_stringConstant.RoleAdmin))
+                {
+                    userRole.Role = _stringConstant.RoleAdmin;
+                    userRole.UserId = user.Id;
+                    ViewData["UserRole"] = userRole;
+                }
+                else
+                {
+                    userRole.Role = _stringConstant.RoleEmployee;
+                    userRole.UserId = user.Id;
+                    ViewData["UserRole"] = userRole;
+                    
+
+                }
+                    return View("Index");
             }
             return RedirectToAction("Login", "Account");
         }

@@ -17,20 +17,20 @@ export class ProjectComponent {
     admin: any;
     constructor(private loginService: LoginService, private router: Router) { }
 
-    getRole() {
-        this.loginService.getRoleAsync().subscribe((result) => {
-            this.user = result;
-            if (this.user.role === "Admin") {
-                this.router.navigate(['project/list']);
-            }
-            else {
-                this.router.navigate(['project/list']);
-            }
-        }, err => {
-        });
-    }
+    //getRole() {
+    //    this.loginService.getRoleAsync().subscribe((result) => {
+    //        this.user = result;
+    //        if (this.user.role === "Admin") {
+    //            this.router.navigate(['project/list']);
+    //        }
+    //        else {
+    //            this.router.navigate(['project/list']);
+    //        }
+    //    }, err => {
+    //    });
+    //}
 
     ngOnInit() {
-        this.getRole();
+        //this.getRole();
     }
 }
