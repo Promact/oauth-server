@@ -38,7 +38,7 @@ namespace Promact.Oauth.Server.Services
             }
             myMessage.Subject = subject;
             _logger.LogInformation("SendGrid: SendGrid Subject");
-            myMessage.Text = message;
+            myMessage.Html = message;
             _logger.LogInformation("SendGrid: SendGrid Message");
 
             _logger.LogInformation("SendGrid: SendGrid Api Not Empty");
