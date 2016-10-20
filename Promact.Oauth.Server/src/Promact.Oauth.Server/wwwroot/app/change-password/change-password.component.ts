@@ -1,8 +1,8 @@
-﻿import {Component, Input} from '@angular/core';
-import { UserService }   from '../users/user.service';
-import {PasswordModel} from '../users/user-password.model';
+﻿import { Component, Input } from '@angular/core';
+import { UserService } from '../users/user.service';
+import { PasswordModel } from '../users/user-password.model';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Router} from '@angular/router';
+import { Router } from '@angular/router';
 import { Md2Toast } from 'md2/toast/toast';
 import { Location } from "@angular/common";
 import { LoaderService } from '../shared/loader.service';
@@ -14,6 +14,7 @@ import { LoaderService } from '../shared/loader.service';
 export class ChangePasswordComponent {
     isNotMatch: boolean;
     isSame: boolean;
+    isInCorrect: boolean;
 
     @Input()
     passwordModel: PasswordModel;
@@ -21,45 +22,45 @@ export class ChangePasswordComponent {
     constructor(private userService: UserService, private redirectionRoute: Router, private toast: Md2Toast, private loader: LoaderService) {
         this.passwordModel = new PasswordModel();
         this.isNotMatch = false;
+        this.isInCorrect = true;
+    }
+
+    checkOldPasswordIsValid() {
+        if (this.passwordModel.OldPassword != undefined) {
+            this.userService.checkOldPasswordIsValid(this.passwordModel.OldPassword).subscribe((result) => {
+                this.isInCorrect = result;
+            }, err => {
+                console.log(err.statusText);
+            });
+        }
     }
 
     changePassword(passwordModel) {
-        this.loader.loader = true;
-        this.userService.changePassword(this.passwordModel).subscribe((result) => {
-            if (result == true) {
-                this.toast.show('Password changed successfully');
-                this.redirectionRoute.navigate(['']);
+        if (!this.isNotMatch) {
+            this.loader.loader = true;
+            this.userService.changePassword(this.passwordModel).subscribe((result) => {
+                if (result.response == this.passwordModel.NewPassword)
+                {
+                    this.toast.show('Password changed successfully');
+                    this.redirectionRoute.navigate(['']);
+                }
+                else {
+                    this.toast.show(result.response);
+                }
                 this.loader.loader = false;
-            }
-            else if (result == false) {
-                this.toast.show('Wrong password');
+            }, err => {
+                console.log(err.statusText);
                 this.loader.loader = false;
-            }
-        }, err => {
-        });
+            });
+        }
     }
 
     matchPassword(confirmPassword, newPassword) {
-        if (confirmPassword == undefined && newPassword == undefined) {
-            this.isNotMatch = false;
-        }
-        else {
-            if (confirmPassword == newPassword && (confirmPassword != undefined && newPassword != undefined)) {
+        if (confirmPassword != undefined && newPassword != undefined) {
+            if (confirmPassword == newPassword)
                 this.isNotMatch = false;
-            }
-            else {
+            else
                 this.isNotMatch = true;
-            }
-        }
-    }
-
-    newPasswordIsSame(newPassword, oldPassword, confirmPassword) {
-        // this.matchPassword(confirmPassword, newPassword);
-        if (newPassword == oldPassword && (oldPassword != undefined && newPassword != undefined)) {
-            this.isSame = true;
-        }
-        else {
-            this.isSame = false;
         }
     }
 
