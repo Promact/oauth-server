@@ -284,22 +284,34 @@ namespace Promact.Oauth.Server.Controllers
             try
             {
                 var user = await _userManager.GetUserAsync(User);
-                if (await _userManager.CheckPasswordAsync(user, passwordModel.OldPassword))
-                {
-                    passwordModel.Email = user.Email;
-                    if (ModelState.IsValid)
-                    {
-                        await _userRepository.ChangePassword(passwordModel);
-                        return Ok(true);
-                    }
-                }
-                return Ok(false);
+                passwordModel.Email = user.Email;
+                string response = await _userRepository.ChangePassword(passwordModel);
+                return Ok(new { response });
+            }
+            catch (UserNotFound ex)
+            {
+                return NotFound();
             }
             catch (Exception ex)
             {
-                throw ex;
+                return BadRequest();
             }
         }
+
+
+        [HttpGet]
+        [Route("checkOldPasswordIsValid/{oldPassword}")]
+        [Authorize(Roles = "Admin,Employee")]
+        public async Task<ActionResult> CheckOldPasswordIsValid(string oldPassword)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (await _userManager.CheckPasswordAsync(user, oldPassword))
+                return Ok(true);
+            else
+                return Ok(false);
+        }
+
+
         [HttpGet]
         [Route("findbyusername/{userName}")]
         [Authorize(Roles = "Admin")]
@@ -360,7 +372,7 @@ namespace Promact.Oauth.Server.Controllers
             {
                 ApplicationUser slackUser = _userRepository.FindUserBySlackUserName(slackUserName);
                 bool result = slackUser != null ? true : false;
-             
+
                 return Ok(result);
             }
             catch (SlackUserNotFound ex)
