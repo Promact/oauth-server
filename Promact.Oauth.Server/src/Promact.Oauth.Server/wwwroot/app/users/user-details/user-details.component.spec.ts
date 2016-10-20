@@ -19,6 +19,7 @@ import { LocationStrategy } from "@angular/common";
 import { LoginService } from '../../login.service';
 import { MockLoginService } from "../../shared/mocks/mock.login.service";
 import { ActivatedRouteStub } from "../../shared/mocks/mock.activatedroute";
+import { UserRole } from "../../shared/userrole.model";
 
 describe("User Details Test", () => {
     let userDetailsComponent: UserDetailsComponent;
@@ -28,6 +29,7 @@ describe("User Details Test", () => {
     class MockLocation { }
     class MockLoaderService { }
     class McokLogin { }
+    class MockUserRole { }
     const routes: Routes = [];
     beforeEach(async(() => {
         this.promise = TestBed.configureTestingModule({
@@ -42,7 +44,8 @@ describe("User Details Test", () => {
                 { provide: UserModel, useClass: UserModel },
                 { provide: LoaderService, useClass: MockLoaderService },
                 { provide: LoginService, useClass: MockLoginService },
-                { provide: Location, useClass: MockLocation }
+                { provide: Location, useClass: MockLocation },
+                { provide: UserRole, useClass: MockUserRole }
             ]
         }).compileComponents();
 

@@ -31,6 +31,6 @@ import { DataTableModule } from "angular2-datatable";
         ChangePasswordModule
     ],
     bootstrap: [AppComponent],
-    providers: [HttpService, LoginService, LoaderService, { provide: LocationStrategy, useClass: HashLocationStrategy }],
+    providers: [HttpService, LoginService, LoaderService, { provide: LocationStrategy, useClass: HashLocationStrategy }, UserRole],
 })
 export class AppModule { }

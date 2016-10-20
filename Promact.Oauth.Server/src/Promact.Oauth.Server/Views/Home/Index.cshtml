@@ -21,7 +21,9 @@
     <!-- 2. Configure SystemJS -->
     <script src="~/systemjs.config.js"></script>
     <script>
-      System.import('app').catch(function(err){ console.error(err); });
+        System.import('app').catch(function (err) { console.error(err); });
+        var user = @Html.Raw(Json.Serialize(@ViewData["UserRole"]));
+        var a="";
     </script>
     @*<script src="~/bundle.js"></script>*@
 </head>
