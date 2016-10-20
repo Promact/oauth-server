@@ -16,6 +16,7 @@ import { MdToolbarModule } from "@angular2-material/toolbar";
 import { LoaderService } from "./shared/loader.service";
 import { DataTableModule } from "angular2-datatable";
 
+
 @NgModule({
     declarations: [AppComponent],
     imports: [
@@ -30,7 +31,6 @@ import { DataTableModule } from "angular2-datatable";
         ChangePasswordModule
     ],
     bootstrap: [AppComponent],
-    providers: [HttpService, LoginService, LoaderService, { provide: LocationStrategy, useClass: HashLocationStrategy }
-        , MyService],
+    providers: [HttpService, LoginService, LoaderService, { provide: LocationStrategy, useClass: HashLocationStrategy }],
 })
 export class AppModule { }
