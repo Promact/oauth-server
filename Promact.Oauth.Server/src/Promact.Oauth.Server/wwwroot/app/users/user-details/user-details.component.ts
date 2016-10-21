@@ -4,6 +4,7 @@ import {UserModel} from '../user.model';
 import {UserService} from '../user.service';
 import { Router, ActivatedRoute }from '@angular/router';
 import { UserRole } from "../../shared/userrole.model";
+import { LoaderService } from '../../shared/loader.service';
 
 @Component({
     templateUrl: './app/users/user-details/user-details.html'   
@@ -28,13 +29,23 @@ export class UserDetailsComponent {
         else {
             this.admin = false;
         }
+        this.loader.loader = true;
+
         this.id = this.route.params.subscribe(params => {
             let id = this.route.snapshot.params['id'];
-
+            
+            //this.userService.getUserById(id)
+            //    .subscribe(
+            //    user => this.user = user,
+            //    error => this.errorMessage = <any>error)
             this.userService.getUserById(id)
-                .subscribe(
-                user => this.user = user,
-                error => this.errorMessage = <any>error)
+                .subscribe((user) => {
+                    this.user = user,
+                        this.loader.loader = false;
+                }, err => {
+                });
+
+
         });
     }
 

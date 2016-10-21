@@ -22,7 +22,7 @@ export class UserService {
     }
 
     getUserById(userId: string) {
-        return this.httpService.get(this.UserUrl + "/" + userId);
+        return this.httpService.get(this.UserUrl + "/getUserById/" + userId);
     }
 
     editUser(editedUser: UserModel) {
