@@ -5,7 +5,10 @@
             <div class="brand">Promact Oauth</div>
             <ul>
                 <li>
-                    <a routerLink="user" routerLinkActive="active"><i class="fa fa-users" aria-hidden="true"></i>Users</a>
+                    <a routerLink="user" routerLinkActive="active" *ngIf="admin==true"><i class="fa fa-users" aria-hidden="true"></i>Users</a>
+                </li>
+                <li>
+                    <a routerLink="/user/details/userId" routerLinkActive="active" *ngIf="admin==false"><i class="fa fa-users" aria-hidden="true"></i>User Details</a>
                 </li>
                 <li>
                     <a routerLink="project" routerLinkActive="active"><i class="fa fa-file-text" aria-hidden="true"></i>Projects</a>

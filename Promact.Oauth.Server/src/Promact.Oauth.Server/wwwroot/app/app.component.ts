@@ -11,6 +11,7 @@ import { UserRole } from "./shared/userrole.model";
 export class AppComponent {
     user: any;
     admin: any;
+    userId: string;
     constructor(private loginService: LoginService, private router: Router, private loader: LoaderService, private userRole: UserRole)
     { }
     ngOnInit() {
@@ -18,6 +19,7 @@ export class AppComponent {
             this.admin = true;
         }
         else {
+            this.userId = this.userRole.Id;
             this.admin = false;
         }
     }
