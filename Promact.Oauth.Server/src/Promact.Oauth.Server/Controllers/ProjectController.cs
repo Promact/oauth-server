@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using Exceptionless;
 using Promact.Oauth.Server.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
+
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -26,16 +28,18 @@ namespace Promact.Oauth.Server.Controllers
         private readonly IProjectRepository _projectRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUserRepository _userRepository;
-
+        private readonly ILogger<ProjectController> _logger;
         #endregion
 
         #region "Constructor"
-        public ProjectController(PromactOauthDbContext appContext, IProjectRepository projectRepository, UserManager<ApplicationUser> userManager, IUserRepository userRepository)
+        public ProjectController(PromactOauthDbContext appContext, IProjectRepository projectRepository,
+            UserManager<ApplicationUser> userManager, IUserRepository userRepository, ILogger<ProjectController> logger)
         {
             _projectRepository = projectRepository;
             _appDbContext = appContext;
             _userManager = userManager;
             _userRepository = userRepository;
+            _logger = logger;
         }
         #endregion
 
@@ -60,19 +64,23 @@ namespace Promact.Oauth.Server.Controllers
             {
                 var user = await _userManager.FindByNameAsync(User.Identity.Name);
                 var userRole = await _userManager.IsInRoleAsync(user, "Employee");
+                _logger.LogInformation("UserRole Employee  "+userRole);
                 if (userRole == true)
                 {
+                    _logger.LogInformation("call project repository for User");
                     return await _projectRepository.GetAllProjectForUser(user.Id);
                 }
                 else
                 {
+                    _logger.LogInformation("call project repository for projects");
                     return await _projectRepository.GetAllProjects();
                 }
             }
             catch (Exception ex)
             {
-                ex.ToExceptionless().Submit();
-                throw ex;
+               _logger.LogError("Exception " + ex.ToString());
+               ex.ToExceptionless().Submit();
+               throw ex;
             }
         }
         /**
