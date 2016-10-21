@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Promact.Oauth.Server.Constants;
+using Microsoft.Extensions.Logging;
 
 namespace Promact.Oauth.Server.Repository.ProjectsRepository
 {
@@ -22,11 +23,12 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IStringConstant _stringConstant;
         private readonly IMapper _mapperContext;
+        private readonly ILogger<ProjectRepository> _logger;
         #endregion
 
         #region "Constructor"
         public ProjectRepository(IDataRepository<Project> projectDataRepository, IDataRepository<ProjectUser> projectUserDataRepository, IDataRepository<ApplicationUser> userDataRepository, UserManager<ApplicationUser> userManager, 
-            IMapper mapperContext,IStringConstant stringConstant)
+            IMapper mapperContext,IStringConstant stringConstant, ILogger<ProjectRepository> logger)
         {
             _projectDataRepository = projectDataRepository;
             _projectUserDataRepository = projectUserDataRepository;
@@ -34,6 +36,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             _mapperContext = mapperContext;
             _userManager = userManager;
             _stringConstant = stringConstant;
+            _logger = logger;
         }
         #endregion
 
@@ -288,7 +291,9 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         public async Task<IEnumerable<ProjectAc>> GetAllProjectForUser(string userId)
         {
             var projects = _projectDataRepository.Fetch(x => x.TeamLeaderId == userId);
+            _logger.LogInformation("Total Projects " + projects.Count().ToString()); 
             var projectUser = _projectUserDataRepository.Fetch(x => x.UserId == userId);
+            _logger.LogInformation("Total UserProjects " + projectUser.Count().ToString());
             List<ProjectAc> recentProjects = new List<ProjectAc>();
             ProjectAc recentProject = new ProjectAc();
             if (projects != null)
@@ -316,6 +321,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                 recentProject.IsActive = projectDetails.IsActive;
                 recentProjects.Add(recentProject);
             }
+            _logger.LogInformation("Total recentProjects " + recentProjects.Count().ToString());
             return recentProjects;
         }
         /// <summary>
