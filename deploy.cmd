@@ -114,20 +114,11 @@ if EXIST "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Promact.Oauth.Server\bowe
 call :ExecuteCmd nuget.exe restore "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\Promact.Oauth.Server.sln" -packagesavemode nuspec
 IF !ERRORLEVEL! NEQ 0 goto error
 
-call :ExecuteCmd dotnet restore "%DEPLOYMENT_SOURCE%\promact-oauth-server\Promact.Oauth.Server\src\Promact.Oauth.Server" 
-
-::5. Build Project
-call :ExecuteCmd dotnet build "%DEPLOYMENT_SOURCE%\promact-oauth-server\Promact.Oauth.Server\src\Promact.Oauth.Server" --output "%DEPLOYMENT_TEMP%"  --configuration Release --framework netcoreapp1.0
+:: 5. Build and publish
+call :ExecuteCmd "%MSBUILD_PATH%" "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\Promact.Oauth.Server.sln" /nologo /verbosity:d /m /p:deployOnBuild=True;AutoParameterizationWebConfigConnectionStrings=false;Configuration=Release;UseSharedCompilation=false;publishUrl="%DEPLOYMENT_TEMP%" %SCM_BUILD_ARGS%
 IF !ERRORLEVEL! NEQ 0 goto error
 
-
-::6. Publish Project 
-call :ExecuteCmd dotnet publish "%DEPLOYMENT_SOURCE%\promact-oauth-server\Promact.Oauth.Server\src\Promact.Oauth.Server" --output "%DEPLOYMENT_TEMP%" --configuration Release --runtime win10-x64
-IF !ERRORLEVEL! NEQ 0 goto error
-
-
-
-:: 7. KuduSync
+:: 6. KuduSync
 call :ExecuteCmd "%KUDU_SYNC_CMD%" -v 50 -f "%DEPLOYMENT_TEMP%" -t "%DEPLOYMENT_TARGET%" -n "%NEXT_MANIFEST_PATH%" -p "%PREVIOUS_MANIFEST_PATH%" -i ".git;.hg;.deployment;deploy.cmd"
 IF !ERRORLEVEL! NEQ 0 goto error
 
