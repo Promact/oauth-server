@@ -7,38 +7,21 @@
             <button md-raised-button routerLink="/user/add" routerLinkActive="active" class="add-link btn-green"><i class="material-icons">add</i>Add User</button>
         </div>
     </div>
-
-    <table class="able-bordered table-user"[mfData]="users" #mf="mfDataTable">
+    <table class="table-bordered table-user" [md2-data]="users" #md2="Md2DataTable" [md2-page-length]="10">
         <thead>
             <tr>
-                <th>
-                    <mfDefaultSorter by="first name">First Name</mfDefaultSorter>
-                </th>
-                <th>
-                    <mfDefaultSorter by="last name">Last Name</mfDefaultSorter>
-                </th>
-                <th>
-                    <mfDefaultSorter by="email">Email</mfDefaultSorter>
-                </th>
-                <th>
-                    <mfDefaultSorter by="status">Status</mfDefaultSorter>
-                </th>
-                <th>
-                    <mfDefaultSorter by="numberOfCl">Number Of CL</mfDefaultSorter>
-                </th>
-                <th>
-                    <mfDefaultSorter by="numberOfSl">Number Of SL</mfDefaultSorter>
-                </th>
-                <th>
-                    <mfDefaultSorter by="date of joining">Date Of Joining</mfDefaultSorter>
-                </th>
-                <th>
-                    <mfDefaultSorter by="action">Action</mfDefaultSorter>
-                </th>
+                <th md2-sort-field="firstname">First Name</th>
+                <th md2-sort-field="lastname">Last Name</th>
+                <th md2-sort-field="email">Email</th>
+                <th md2-sort-field="status">Status</th>
+                <th md2-sort-field="slackusername">Slack User Name</th>
+                <th md2-sort-field="numberofcasualleave">Number Of Casual Leave</th>
+                <th md2-sort-field="numberofsickleave">Number Of Sick Leave</th>
+                <th md2-sort-field="joiningdate">Joining Date</th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let user of users">
+            <tr *ngFor="let user of md2.data">
                 <td>{{user.FirstName}}</td>
                 <td>{{user.LastName}}</td>
                 <td>{{user.Email}}</td>
@@ -55,5 +38,12 @@
                 </td>
             </tr>
         </tbody>
-    </table>-->
+        <tfoot>
+            <tr>
+                <td colspan="4">
+                    <md2-pagination [md2-rows]="[5,10,15]"></md2-pagination>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
 </section>

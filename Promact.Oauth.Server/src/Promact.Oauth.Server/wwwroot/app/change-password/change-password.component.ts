@@ -2,8 +2,8 @@
 import { UserService } from '../users/user.service';
 import { PasswordModel } from '../users/user-password.model';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Md2Toast } from 'md2/toast/toast';
+import { Router} from '@angular/router';
+import { Md2Toast } from 'md2';
 import { Location } from "@angular/common";
 import { LoaderService } from '../shared/loader.service';
 

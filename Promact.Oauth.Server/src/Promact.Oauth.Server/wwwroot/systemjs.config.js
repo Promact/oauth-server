@@ -10,9 +10,7 @@
         'angular2-in-memory-web-api': 'lib/angular2-in-memory-web-api',
         '@angular2-material': 'lib/@angular2-material',
         'rxjs': 'lib/rxjs',
-        'md2': 'lib/md2',
-        'angular2-datatable': 'lib/angular2-datatable',
-        'lodash': 'lib/lodash'
+        'md2': 'lib/md2'
     };
     // packages tells the System loader how to load when no filename and/or no extension
     var packages = {
@@ -72,20 +70,8 @@
             main: 'progress-circle.umd.js'
         },
         'md2': {
-            main: 'all.js',
-            defaultExtension: 'js'
-        },
-        'md2/toast': {
             format: 'cjs',
-            defaultExtension: 'js',
-            main: 'toast.js'
-        },
-        'angular2-datatable': {
-            main: 'index.js',
-            defaultExtension: 'js'
-        },
-        lodash: {
-            main: 'lodash.js',
+            main: 'md2.umd.js',
             defaultExtension: 'js'
         }
     };

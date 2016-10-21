@@ -6,7 +6,7 @@ import { MdToolbarModule } from "@angular2-material/toolbar";
 import { MdInputModule } from "@angular2-material/input";
 import { MdSidenavModule } from "@angular2-material/sidenav";
 import { MdCheckboxModule } from "@angular2-material/checkbox";
-import { Md2Module } from "md2/all";
+import { Md2Module } from 'md2';
 
 
 @NgModule({

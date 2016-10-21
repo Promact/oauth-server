@@ -14,7 +14,6 @@ import { LoginService } from "./login.service";
 import { MdSidenavModule } from "@angular2-material/sidenav";
 import { MdToolbarModule } from "@angular2-material/toolbar";
 import { LoaderService } from "./shared/loader.service";
-import { DataTableModule } from "angular2-datatable";
 
 @NgModule({
     declarations: [AppComponent],
@@ -27,8 +26,7 @@ import { DataTableModule } from "angular2-datatable";
         ProjectModule,
         ConsumerAppModule,
         UserModule,
-        ChangePasswordModule,
-        DataTableModule
+        ChangePasswordModule
     ],
     bootstrap: [AppComponent],
     providers: [HttpService, LoginService, LoaderService, { provide: LocationStrategy, useClass: HashLocationStrategy }

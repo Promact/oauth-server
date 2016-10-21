@@ -2,7 +2,7 @@
 import {ConsumerAppModel} from "../consumerapp-model";
 import { Router } from "@angular/router";
 import { ConsumerAppService} from "../consumerapp.service";
-import { Md2Toast } from 'md2/toast/toast';
+import { Md2Toast } from 'md2';
 import { LoaderService } from '../../shared/loader.service';
 
 @Component({

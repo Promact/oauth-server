@@ -2,9 +2,9 @@
 import { Router } from '@angular/router';
 import { UserService } from '../user.service';
 import { UserModel } from '../user.model';
-import { Md2Toast } from 'md2/toast/toast';
+import { Md2Toast } from 'md2';
 import { LoaderService } from '../../shared/loader.service';
-//import { DataTable } from 'angular2-datatable';
+
 
 @Component({
     templateUrl: "app/users/user-list/user-list.html"
