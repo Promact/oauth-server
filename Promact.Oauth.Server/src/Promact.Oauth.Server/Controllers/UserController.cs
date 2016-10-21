@@ -126,13 +126,13 @@ namespace Promact.Oauth.Server.Controllers
 
 
         [HttpGet]
-        [Route("{id}")]
+        [Route("getUserById/{userId}")]
         [Authorize(Roles = "Admin,Employee")]
-        public async Task<IActionResult> GetUserById(string id)
+        public async Task<IActionResult> GetUserById(string userId)
         {
             try
             {
-                var user = await _userRepository.GetById(id);
+                var user = await _userRepository.GetById(userId);
                 if (user == null)
                 {
                     return NotFound();
