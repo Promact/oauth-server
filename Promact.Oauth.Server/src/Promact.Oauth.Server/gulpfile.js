@@ -137,6 +137,6 @@ gulp.task('coverage', function () {
 gulp.task('tslint', function (done) {
     gulp.src("./wwwroot/app/**/*.ts")
     .pipe(tslint({configuration:"./tslint.json"}))
-    .pipe(tslint.report());
+    .pipe(tslint.report('prose', { emitError: false }));
 });
 
