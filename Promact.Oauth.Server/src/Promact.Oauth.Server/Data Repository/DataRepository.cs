@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Promact.Oauth.Server.Data;
-using Promact.Oauth.Server.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -9,7 +9,6 @@ using Promact.Oauth.Server.Models.ApplicationClasses;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
-using NLog;
 using Exceptions;
 using Promact.Oauth.Server.Constants;
 using Promact.Oauth.Server.Exception_Handler;

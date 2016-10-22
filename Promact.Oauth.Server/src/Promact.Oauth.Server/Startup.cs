@@ -27,8 +27,9 @@ namespace Promact.Oauth.Server
 {
     public class Startup
     {
-        private ILoggerFactory _loggerFactory { get; }
-        private IHostingEnvironment _currentEnvironment { get; set; }
+        private readonly ILoggerFactory _loggerFactory;
+        private readonly IHostingEnvironment _currentEnvironment;
+        public IConfigurationRoot Configuration { get; }
         public Startup(IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             _currentEnvironment = env;
@@ -47,18 +48,14 @@ namespace Promact.Oauth.Server
             Configuration = builder.Build();
 
 
-            _mapperConfiguration = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile(new AutoMapperProfileConfiguration());
-            });
+            
 
             _loggerFactory = loggerFactory;
 
         }
 
-        public IConfigurationRoot Configuration { get; }
-
-        private MapperConfiguration _mapperConfiguration { get; set; }
+        
+        
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -107,21 +104,17 @@ namespace Promact.Oauth.Server
                 services.AddTransient<IEmailSender, SendGridEmailSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
 
-            services.AddOptions();
-
-            // Configure AppSettingUtil using code
-            services.Configure<AppSettingUtil>(appSettingUtil =>
-            {
-                appSettingUtil.PromactOAuthUrl = "http://localhost:35716";
-                appSettingUtil.CasualLeave = "14";
-                appSettingUtil.SickLeave = "7";
-            });
+            services.AddOptions();            
 
             // Configure MyOptions using config by installing Microsoft.Extensions.Options.ConfigurationExtensions
             services.Configure<AppSettings>(Configuration);
 
             //Register Mapper
-            services.AddSingleton<IMapper>(sp => _mapperConfiguration.CreateMapper());
+            MapperConfiguration mapperConfiguration = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile(new AutoMapperProfileConfiguration());
+            });
+            services.AddSingleton<IMapper>(sp => mapperConfiguration.CreateMapper());
 
             services.AddMvc().AddMvcOptions(x => x.Filters.Add(new GlobalExceptionFilter(_loggerFactory)));
         }

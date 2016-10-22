@@ -6,8 +6,6 @@ using Promact.Oauth.Server.Data_Repository;
 using Promact.Oauth.Server.Models;
 using System.Threading.Tasks;
 using Promact.Oauth.Server.Repository;
-using System;
-using Promact.Oauth.Server.Models.ApplicationClasses;
 using Promact.Oauth.Server.Repository.ConsumerAppRepository;
 
 namespace Promact.Oauth.Server.Tests
