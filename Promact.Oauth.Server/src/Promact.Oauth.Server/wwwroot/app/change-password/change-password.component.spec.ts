@@ -16,8 +16,6 @@ import { LoaderService } from "../shared/loader.service";
 
 let promise: TestBed;
 
-declare var describe, it, beforeEach, expect;
-
 describe('Change Password', () => {
     class MockRouter { }
     class MockLoaderService { }
@@ -36,7 +34,7 @@ describe('Change Password', () => {
                 { provide: LoaderService, useClass: MockLoaderService }
             ]
         }).compileComponents();
-    }))
+    }));
     
     it("Change Password", () => done => {
         this.promise.then(() => {
@@ -50,7 +48,7 @@ describe('Change Password', () => {
             let result = changePasswordComponent.changePassword(passwordModel);
             expect(result).toBe(true);
             done();
-        })
+        });
     });
 });
 
