@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Promact.Oauth.Server.Models.ApplicationClasses;
 using Promact.Oauth.Server.Repository.ProjectsRepository;
 using Promact.Oauth.Server.Data_Repository;
@@ -10,7 +9,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
 using Promact.Oauth.Server.Constants;
-using Promact.Oauth.Server.Data;
 
 namespace Promact.Oauth.Server.Tests
 {

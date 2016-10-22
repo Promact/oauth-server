@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Models.ApplicationClasses;
 using Promact.Oauth.Server.Models.ManageViewModels;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Promact.Oauth.Server.Repository
 {

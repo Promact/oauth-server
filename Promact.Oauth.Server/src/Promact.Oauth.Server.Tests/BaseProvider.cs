@@ -17,11 +17,9 @@ using Promact.Oauth.Server.Services;
 using System;
 using System.Net.Http;
 using Microsoft.Extensions.FileProviders;
-using Microsoft.AspNetCore.Identity;
 using System.Linq;
 using System.Collections.Generic;
 using Promact.Oauth.Server.Constants;
-using System.Threading.Tasks;
 
 namespace Promact.Oauth.Server.Tests
 {

@@ -11,7 +11,6 @@ using Promact.Oauth.Server.Models.AccountViewModels;
 using Promact.Oauth.Server.Services;
 using Promact.Oauth.Server.Models.ApplicationClasses;
 using Promact.Oauth.Server.Constants;
-using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using System;
 using Exceptions;

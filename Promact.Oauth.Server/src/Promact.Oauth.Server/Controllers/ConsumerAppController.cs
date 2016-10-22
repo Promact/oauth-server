@@ -5,7 +5,6 @@ using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Models.ApplicationClasses;
 using Promact.Oauth.Server.Repository.ConsumerAppRepository;
 using Microsoft.AspNetCore.Identity;
-using AutoMapper;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Exceptionless;

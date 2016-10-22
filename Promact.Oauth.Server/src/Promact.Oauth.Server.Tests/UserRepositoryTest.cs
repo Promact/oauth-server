@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Promact.Oauth.Server.Constants;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Models.ApplicationClasses;
-using Promact.Oauth.Server.Models.ManageViewModels;
 using Promact.Oauth.Server.Repository;
 using System;
 using System.Collections.Generic;

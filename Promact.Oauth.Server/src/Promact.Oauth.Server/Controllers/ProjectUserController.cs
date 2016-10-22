@@ -1,14 +1,8 @@
 ﻿using Exceptionless;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Promact.Oauth.Server.Data;
 using Promact.Oauth.Server.Repository;
-using Promact.Oauth.Server.Repository.OAuthRepository;
 using Promact.Oauth.Server.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace Promact.Oauth.Server.Controllers
