@@ -26,7 +26,7 @@ export class ChangePasswordComponent {
     }
 
     checkOldPasswordIsValid() {
-        if (this.passwordModel.OldPassword != undefined) {
+        if (this.passwordModel.OldPassword !== undefined) {
             this.userService.checkOldPasswordIsValid(this.passwordModel.OldPassword).subscribe((result) => {
                 this.isInCorrect = result;
             }, err => {
@@ -39,8 +39,7 @@ export class ChangePasswordComponent {
         if (!this.isNotMatch) {
             this.loader.loader = true;
             this.userService.changePassword(this.passwordModel).subscribe((result) => {
-                if (result.response == this.passwordModel.NewPassword)
-                {
+                if (result.response === this.passwordModel.NewPassword) {
                     this.toast.show('Password changed successfully');
                     this.redirectionRoute.navigate(['']);
                 }
@@ -56,8 +55,8 @@ export class ChangePasswordComponent {
     }
 
     matchPassword(confirmPassword, newPassword) {
-        if (confirmPassword != undefined && newPassword != undefined) {
-            if (confirmPassword == newPassword)
+        if (confirmPassword !== undefined && newPassword !== undefined) {
+            if (confirmPassword === newPassword)
                 this.isNotMatch = false;
             else
                 this.isNotMatch = true;
@@ -65,8 +64,6 @@ export class ChangePasswordComponent {
     }
 
     goBack() {
-        //this.location.back();
         this.redirectionRoute.navigate(['user/list']);
-        //this.redirectionRoute.navigate(['admin/user']);
     }
 }
