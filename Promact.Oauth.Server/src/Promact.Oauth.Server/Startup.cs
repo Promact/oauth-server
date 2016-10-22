@@ -147,7 +147,7 @@ namespace Promact.Oauth.Server
             app.UseIdentity();
 
             //If staging or production then only use exceptionless
-            if (env.IsProduction() || env.IsStaging())
+            if (env.IsProduction())
             {
                 app.UseExceptionless(Configuration["ExceptionLess:ExceptionLessApiKey"]);
             }
