@@ -133,7 +133,6 @@ gulp.task('coverage', function () {
     .pipe(gulp.dest('./coverage'));
 });
 
-
 gulp.task('tslint', function (done) {
     gulp.src("./wwwroot/app/**/*.ts")
     .pipe(tslint({configuration:"./tslint.json"}))
