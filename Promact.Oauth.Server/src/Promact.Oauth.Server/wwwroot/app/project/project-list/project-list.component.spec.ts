@@ -2,7 +2,7 @@
 import { By } from "@angular/platform-browser";
 import { Provider } from "@angular/core";
 import { ProjectService }   from '../project.service';
-import {projectModel} from '../project.model';
+import {ProjectModel} from '../project.model';
 import { Router, RouterModule, Routes} from '@angular/router';
 import {ProjectListComponent} from './project-list.component';
 import {MockProjectService} from "../../shared/mocks/project/mock.project.service";
