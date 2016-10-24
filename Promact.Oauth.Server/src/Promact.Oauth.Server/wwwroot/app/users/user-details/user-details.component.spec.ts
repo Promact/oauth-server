@@ -24,12 +24,20 @@ import { UserRole } from "../../shared/userrole.model";
 describe("User Details Test", () => {
     let userDetailsComponent: UserDetailsComponent;
     let userService: UserService;
+    
     //class MockActivatedRoute { }
 
     class MockLocation { }
     class MockLoaderService { }
     class McokLogin { }
-    class MockUserRole { }
+
+    //class MockUserRole {
+    //    public Role: string;
+    //    constructor() {
+    //        this.Role = "Admin";
+            
+    //    }
+    //}
     const routes: Routes = [];
     beforeEach(async(() => {
         this.promise = TestBed.configureTestingModule({
@@ -45,7 +53,8 @@ describe("User Details Test", () => {
                 { provide: LoaderService, useClass: MockLoaderService },
                 { provide: LoginService, useClass: MockLoginService },
                 { provide: Location, useClass: MockLocation },
-                { provide: UserRole, useClass: MockUserRole }
+                { provide: UserRole, useValue: new UserRole(); }
+                
             ]
         }).compileComponents();
 
@@ -60,8 +69,11 @@ describe("User Details Test", () => {
             let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
             activatedRoute.testParams = { id: "1" };            
             let userDetailsComponent:UserDetailsComponent = fixture.componentInstance;
-            let expectedFirstName = "First Name"
-            let userModel = new UserModel();
+            //let userRole: UserRole;
+            let expectedFirstName = "First Name";
+            
+            //userRole.Role = "Admin";
+            //let Role = fixture.debugElement.injector.get(userRole.Role);
             fixture.detectChanges();
             expect(userDetailsComponent.user.FirstName).toBe(expectedFirstName);
             done();

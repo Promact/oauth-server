@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Models.ApplicationClasses;
 using Promact.Oauth.Server.Constants;
+using System.Threading.Tasks;
 
 namespace Promact.Oauth.Server.Controllers
 {
