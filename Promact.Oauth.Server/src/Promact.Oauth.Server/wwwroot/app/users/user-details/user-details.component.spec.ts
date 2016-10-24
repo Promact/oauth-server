@@ -27,14 +27,6 @@ describe("User Details Test", () => {
     class MockLocation { }
     class MockLoaderService { }
     class McokLogin { }
-
-    //class MockUserRole {
-    //    public Role: string;
-    //    constructor() {
-    //        this.Role = "Admin";
-            
-    //    }
-    //}
     const routes: Routes = [];
     beforeEach(async(() => {
         this.promise = TestBed.configureTestingModule({
