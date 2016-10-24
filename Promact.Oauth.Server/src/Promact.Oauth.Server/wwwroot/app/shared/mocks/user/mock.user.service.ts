@@ -43,7 +43,7 @@ export class MockUserService {
     }
 
     changePassword(newPassword: PasswordModel) {
-        let result = true;
+        let result = newPassword.NewPassword;
         return new BehaviorSubject(result).asObservable();
     }
 

@@ -11,7 +11,7 @@ import { MockUserService } from "../shared/mocks/user/mock.user.service";
 import { Md2Toast } from 'md2/toast/toast';
 import { MockToast } from "../shared/mocks/mock.toast";
 import { Observable } from "rxjs/Observable";
-import {  RouterLinkStubDirective } from "../shared/mocks/mock.routerLink";
+import { RouterLinkStubDirective } from "../shared/mocks/mock.routerLink";
 import { LoaderService } from "../shared/loader.service";
 
 let promise: TestBed;
@@ -35,7 +35,7 @@ describe('Change Password', () => {
             ]
         }).compileComponents();
     }));
-    
+
     it("Change Password", () => done => {
         this.promise.then(() => {
             let fixture = TestBed.createComponent(ChangePasswordComponent); //Create instance of component            
@@ -46,7 +46,7 @@ describe('Change Password', () => {
             passwordModel.ConfirmPassword = "test123";
             passwordModel.Email = "test@yahoo.com";
             let result = changePasswordComponent.changePassword(passwordModel);
-            expect(result).toBe(true);
+            expect(result).toBe(passwordModel.NewPassword);
             done();
         });
     });
@@ -62,6 +62,32 @@ describe('Change Password', () => {
         });
     });
 
+    it("Match Password", () => done => {
+        this.promise.then(() => {
+            let fixture = TestBed.createComponent(ChangePasswordComponent); //Create instance of component            
+            let changePasswordComponent = fixture.componentInstance;
+            let passwordModel = new PasswordModel();
+            passwordModel.NewPassword = "test123";
+            passwordModel.ConfirmPassword = "test123";
+            let result = changePasswordComponent.matchPassword(passwordModel.ConfirmPassword, passwordModel.NewPassword);
+            expect(result).toBe(true);
+            done();
+        });
+    });
+
+    it("Password Does Not Match", () => done => {
+        this.promise.then(() => {
+            let fixture = TestBed.createComponent(ChangePasswordComponent); //Create instance of component            
+            let changePasswordComponent = fixture.componentInstance;
+            let passwordModel = new PasswordModel();
+            passwordModel.NewPassword = "test123";
+            passwordModel.ConfirmPassword = "test1234";
+            let result = changePasswordComponent.matchPassword(passwordModel.ConfirmPassword, passwordModel.NewPassword);
+            expect(result).toBe(false);
+            done();
+        });
+    });
+   
 });
 
 
