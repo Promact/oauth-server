@@ -1,6 +1,7 @@
 /*global jasmine, __karma__, window*/
 Error.stackTraceLimit = Infinity;
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000;
+user= { role: "Admin" };
 
 __karma__.loaded = function () {
 };
