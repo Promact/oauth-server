@@ -50,6 +50,18 @@ describe('Change Password', () => {
             done();
         });
     });
+
+    it("Check Old Password", () => done => {
+        this.promise.then(() => {
+            let fixture = TestBed.createComponent(ChangePasswordComponent); //Create instance of component            
+            let changePasswordComponent = fixture.componentInstance;
+            let passwordModel = new PasswordModel();
+            let result = changePasswordComponent.checkOldPasswordIsValid();
+            expect(result).toBe(true);
+            done();
+        });
+    });
+
 });
 
 
