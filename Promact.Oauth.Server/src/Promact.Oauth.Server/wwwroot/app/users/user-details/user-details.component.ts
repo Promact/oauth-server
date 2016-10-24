@@ -15,9 +15,10 @@ export class UserDetailsComponent {
     id: any;
     errorMessage: string;
     admin: boolean;
-    userRole: any;
+    //userRole: UserRole;
 
-    constructor(private userService: UserService, private route: ActivatedRoute, private redirectRoute: Router, private loginService: LoginService) {
+    constructor(private userService: UserService, private route: ActivatedRoute, private redirectRoute: Router, private loginService: LoginService,
+        private loader: LoaderService, private userRole: UserRole) {
         this.user = new UserModel();
         this.admin = true;
     }
