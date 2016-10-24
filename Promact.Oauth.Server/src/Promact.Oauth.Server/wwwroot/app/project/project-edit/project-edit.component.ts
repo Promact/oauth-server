@@ -1,7 +1,7 @@
 ﻿import { Component, OnInit, EventEmitter, Output } from "@angular/core";
 import { Location } from "@angular/common";
 import { ProjectService } from '../project.service';
-import { projectModel } from '../project.model'
+import { ProjectModel } from '../project.model';
 import { UserModel } from '../../users/user.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Md2Toast } from 'md2';
@@ -12,8 +12,7 @@ import { LoaderService } from '../../shared/loader.service';
     
 })
 export class ProjectEditComponent implements OnInit {
-    project: projectModel;
-    private sub: any;
+    project: ProjectModel;
     Userlist: Array<UserModel>;
     @Output() close = new EventEmitter();
 
@@ -28,7 +27,7 @@ export class ProjectEditComponent implements OnInit {
      * Get Project details and user details 
      */
     ngOnInit() {
-        this.project = new projectModel();
+        this.project = new ProjectModel();
         this.project.listUsers = new Array<UserModel>();
         this.project.applicationUsers = new Array<UserModel>();
         this.route.params.subscribe(params => {
@@ -55,7 +54,7 @@ export class ProjectEditComponent implements OnInit {
                             }
                         }
                     }
-                })
+                });
             });
         });
     }
@@ -73,16 +72,17 @@ export class ProjectEditComponent implements OnInit {
      * edit project and nevigate back to project page after update
      * @param project project that need update.
      */
-    editProject(project: projectModel) {
-        var bool = 0;
+    editProject(project: ProjectModel) {
+        let bool = 0;
         for (let i = 0; i < project.applicationUsers.length; i++) {
             if (project.teamLeaderId === project.applicationUsers[i].Id) {
                 this.toast.show("Teamleader is selected as team member,Please select another team leader");
                 bool = 1;
             }
         }
-        if (project.name === null)
-        { this.toast.show("Project Name can not be blank"); }
+        if (project.name === null) {
+            this.toast.show("Project Name can not be blank");
+        }
 
 
         else {
@@ -100,7 +100,7 @@ export class ProjectEditComponent implements OnInit {
                     }
                     else {
                         this.toast.show("Project Successfully Updated.");
-                        this.router.navigate(['/project/list'])
+                        this.router.navigate(['/project/list']);
                     }
 
                     this.loader.loader = false;

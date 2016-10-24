@@ -1,6 +1,6 @@
-﻿import { Component } from "@angular/core";
+﻿import { Component, OnInit } from "@angular/core";
 import { ProjectService } from '../project.service';
-import { projectModel } from '../project.model'
+import { ProjectModel } from '../project.model';
 import { Router } from '@angular/router';
 import { Md2Toast } from 'md2';
 import { LoginService } from '../../login.service';
@@ -13,11 +13,11 @@ import { UserRole } from "../../shared/userrole.model";
     
 
 })
-export class ProjectListComponent {
-    projects: Array<projectModel>;
-    project: projectModel;
+export class ProjectListComponent implements OnInit {
+    projects: Array<ProjectModel>;
+    project: ProjectModel;
     user: any;
-    admin: any;
+    admin: boolean;
     constructor(private router: Router, private projectService: ProjectService, private toast: Md2Toast, private loginService: LoginService,
         private loader: LoaderService, private userRole: UserRole) {
         this.projects = new Array<projectModel>();

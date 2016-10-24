@@ -1,5 +1,5 @@
-﻿import { UserModel } from '../users/user.model'
-export class projectModel {
+﻿import { UserModel } from '../users/user.model';
+export class ProjectModel {
     id: number;
     name: string;
     slackChannelName: string;

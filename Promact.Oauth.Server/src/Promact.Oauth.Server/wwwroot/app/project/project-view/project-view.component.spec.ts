@@ -1,7 +1,7 @@
 ﻿declare var describe, it, beforeEach, expect;
 import { async, inject, TestBed, ComponentFixture } from '@angular/core/testing';
 import { Provider } from "@angular/core";
-import { projectModel } from "../project.model";
+import { ProjectModel } from "../project.model";
 import { ProjectViewComponent } from "../project-view/project-view.component";
 import { ProjectService } from "../project.service";
 import { UserModel } from '../../users/user.model';
@@ -42,7 +42,7 @@ describe('Project View Test', () => {
                 { provide: Router, useClass: MockRouter },
                 { provide: ProjectService, useClass: MockProjectService },
                 { provide: UserModel, useClass: UserModel },
-                { provide: projectModel, useClass: projectModel },
+                { provide: ProjectModel, useClass: ProjectModel },
                 { provide: Location, useClass: MockLocation }
             ]
         }).compileComponents();
@@ -51,12 +51,11 @@ describe('Project View Test', () => {
 
     it("should get default Project for company", done => {
         this.promise.then(() => {
-            //expect(projectAddComponent).toBeDefined();
             let fixture = TestBed.createComponent(ProjectViewComponent); //Create instance of component            
             let projectViewComponent = fixture.componentInstance;
             projectViewComponent.ngOnInit();
             expect(projectViewComponent.Userlist).not.toBeNull();
             done();
-        })
+        });
     });
 });
