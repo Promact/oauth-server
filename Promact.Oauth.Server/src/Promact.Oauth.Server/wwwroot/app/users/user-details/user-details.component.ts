@@ -34,11 +34,6 @@ export class UserDetailsComponent {
 
         this.id = this.route.params.subscribe(params => {
             let id = this.route.snapshot.params['id'];
-           
-            //this.userService.getUserById(id)
-            //    .subscribe(
-            //    user => this.user = user,
-            //    error => this.errorMessage = <any>error)
             this.userService.getUserById(id)
                 .subscribe((user) => {
                     this.user = user,
