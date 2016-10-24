@@ -1,6 +1,6 @@
-﻿import { Component } from "@angular/core";
+﻿import { Component, OnInit } from "@angular/core";
 import { ProjectService } from '../project.service';
-import { projectModel } from '../project.model'
+import { ProjectModel } from '../project.model';
 import { Router } from '@angular/router';
 import { Md2Toast } from 'md2/toast/toast';
 import { LoginService } from '../../login.service';
@@ -11,15 +11,15 @@ import { LoaderService } from '../../shared/loader.service';
     
 
 })
-export class ProjectListComponent {
-    projects: Array<projectModel>;
-    project: projectModel;
+export class ProjectListComponent implements OnInit {
+    projects: Array<ProjectModel>;
+    project: ProjectModel;
     user: any;
-    admin: any;
+    admin: boolean;
     constructor(private router: Router, private projectService: ProjectService, private toast: Md2Toast, private loginService: LoginService,
         private loader: LoaderService) {
-        this.projects = new Array<projectModel>();
-        this.project = new projectModel();
+        this.projects = new Array<ProjectModel>();
+        this.project = new ProjectModel();
     }
     getProjects() {
         this.loader.loader = true;
@@ -31,10 +31,8 @@ export class ProjectListComponent {
         });
     }
     ngOnInit() {
-        //this.loader.loader = true;
         this.getProjects();
         this.getRole();
-        //this.loader.loader = false;
     }
     editProject(Id) {
         this.router.navigate(['/project/edit', Id]);
@@ -47,11 +45,9 @@ export class ProjectListComponent {
         this.loginService.getRoleAsync().subscribe((result) => {
             this.user = result;
             if (this.user.role === "Admin") {
-                //this.router.navigate(['project/list']);
                 this.admin = true;
             }
             else {
-                //this.router.navigate(['project/list']);
                 this.admin = false;
             }
         }, err => {

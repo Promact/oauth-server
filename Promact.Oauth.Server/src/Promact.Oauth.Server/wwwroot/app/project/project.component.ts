@@ -8,13 +8,11 @@ import { LoginService } from '../login.service';
     template: `
     <router-outlet></router-outlet>
 `,
-    //directives: [ROUTER_DIRECTIVES],
     providers: [ProjectService]
 
 })
-export class ProjectComponent {
+export class ProjectComponent implements OnInit {
     user: any;
-    admin: any;
     constructor(private loginService: LoginService, private router: Router) { }
 
     getRole() {

@@ -1,6 +1,6 @@
 ﻿import { Component, OnInit } from "@angular/core";
 import { ProjectService } from '../project.service';
-import { projectModel } from '../project.model';
+import { ProjectModel } from '../project.model';
 import { UserModel } from '../../users/user.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from "@angular/common";
@@ -8,8 +8,7 @@ import { Location } from "@angular/common";
     templateUrl: "app/project/project-view/project-view.html",
 })
 export class ProjectViewComponent implements OnInit {
-    project: projectModel;
-    private sub: any;
+    project: ProjectModel;
     Userlist: Array<UserModel>;
     teamLeaderFirstName: string;
     teamLeaderEmail: string;
@@ -38,8 +37,9 @@ export class ProjectViewComponent implements OnInit {
                 }
                 this.service.getUsers().subscribe(ListUsers => {
                     this.project.listUsers = ListUsers;
-                    if (!this.project.applicationUsers)
+                    if (!this.project.applicationUsers) {
                         this.project.applicationUsers = new Array<UserModel>();
+                    }
                     for (let i = 0; i < this.project.listUsers.length; i++) {
                         for (let j = 0; j < this.project.applicationUsers.length; j++) {
                             if (this.project.listUsers[i].Id === this.project.applicationUsers[j].Id) {
@@ -55,13 +55,12 @@ export class ProjectViewComponent implements OnInit {
                             }
                         }
                     }
-                    if (this.project.applicationUsers.length === 0)
-                    {
-                        var user = new UserModel();
+                    if (this.project.applicationUsers.length === 0) {
+                        let user = new UserModel();
                         user.UniqueName = "-";
                         this.project.applicationUsers.push(user);
                     }
-                })
+                });
             });
         });
     }

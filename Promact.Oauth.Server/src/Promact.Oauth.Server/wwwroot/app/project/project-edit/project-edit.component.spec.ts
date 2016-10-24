@@ -1,7 +1,7 @@
 ﻿declare var describe, it, beforeEach, expect;
 import { async, inject, TestBed, ComponentFixture } from '@angular/core/testing';
 import { Provider } from "@angular/core";
-import { projectModel } from "../project.model";
+import { ProjectModel } from "../project.model";
 import { ProjectEditComponent } from "../project-edit/project-edit.component";
 import { ProjectService } from "../project.service";
 import { UserModel } from '../../users/user.model';
@@ -44,7 +44,7 @@ describe('Project Edit Test', () => {
                 { provide: ProjectService, useClass: MockProjectService },
                 { provide: Md2Toast, useClass: MockToast },
                 { provide: UserModel, useClass: UserModel },
-                { provide: projectModel, useClass: projectModel },
+                { provide: ProjectModel, useClass: ProjectModel },
                 { provide: LoaderService, useClass: MockLoaderService },
                 { provide: Location, useClass: MockLocation }
             ]
@@ -59,14 +59,14 @@ describe('Project Edit Test', () => {
             projectEditComponent.ngOnInit();
             expect(projectEditComponent.Userlist).not.toBeNull();
             done();
-        })
+        });
     });
 
     it("should check Project name and Slack Channel Name before update", done => {
         this.promise.then(() => {
             let fixture = TestBed.createComponent(ProjectEditComponent); //Create instance of component            
             let projectEditComponent = fixture.componentInstance;
-            let projectModels = new projectModel();
+            let projectModels = new ProjectModel();
             let expectedProjecteName = "Test Page2";
             projectModels.name = expectedProjecteName;
             let expectedSlackChannelName = "Test Slack Name";
@@ -84,7 +84,7 @@ describe('Project Edit Test', () => {
             projectEditComponent.editProject(projectModels);
             expect(projectModels.name).toBe(expectedProjecteName);
             done();
-        })
+        });
     });
    
 });    

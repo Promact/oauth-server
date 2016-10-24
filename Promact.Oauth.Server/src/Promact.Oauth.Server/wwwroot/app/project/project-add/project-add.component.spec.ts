@@ -1,7 +1,7 @@
-﻿declare var describe, it, beforeEach, expect;
+﻿declare let describe, it, beforeEach, expect;
 import { async, inject, TestBed, ComponentFixture } from '@angular/core/testing';
 import {Provider} from "@angular/core";
-import {projectModel} from "../project.model";
+import {ProjectModel} from "../project.model";
 import {ProjectAddComponent} from "../project-add/project-add.component";
 import {ProjectService} from "../project.service";
 import {UserModel} from '../../users/user.model';
@@ -20,8 +20,6 @@ let promise: TestBed;
 
 
 describe('Project Add Test', () => {
-    //let projectAddComponent: ProjectAddComponent;
-   
     class MockLoaderService { }
     const routes: Routes = [];
     class MockActivatedRoute extends ActivatedRoute {
@@ -30,8 +28,6 @@ describe('Project Add Test', () => {
             this.params = Observable.of({ });
         }
     }
-
-
     beforeEach(async(() => {
         this.promise = TestBed.configureTestingModule({
             declarations: [RouterLinkStubDirective], //Declaration of mock routerLink used on page.
@@ -43,7 +39,7 @@ describe('Project Add Test', () => {
                 { provide: ProjectService, useClass: MockProjectService },
                 { provide: Md2Toast, useClass: MockToast },
                 { provide: UserModel, useClass: UserModel },
-                { provide: projectModel, useClass: projectModel },
+                { provide: ProjectModel, useClass: ProjectModel },
                 { provide: LoaderService, useClass: MockLoaderService }
             ]
         }).compileComponents();
@@ -52,25 +48,21 @@ describe('Project Add Test', () => {
 
     it("should get user list for project", done => {
         this.promise.then(() => {
-            //expect(projectAddComponent).toBeDefined();
             let fixture = TestBed.createComponent(ProjectAddComponent); //Create instance of component            
             let projectAddComponent = fixture.componentInstance;
             let toast = fixture.debugElement.injector.get(Md2Toast);
             projectAddComponent.ngOnInit();
             expect(projectAddComponent.Userlist).not.toBeNull();
             done();
-        })
+        });
     });
     it("should be add new project", done => {
         this.promise.then(() => {
-            //expect(projectAddComponent).toBeDefined();
-            
             let fixture = TestBed.createComponent(ProjectAddComponent); //Create instance of component            
-           
             let projectAddComponent = fixture.componentInstance;
             let toast = fixture.debugElement.injector.get(Md2Toast);
             let expectedProjectName = "Tests Projects";
-            let projectModels = new projectModel();
+            let projectModels = new ProjectModel();
             projectModels.name = expectedProjectName;
             let expectedSlackChannelName = "Test Slack Name";
             projectModels.slackChannelName = expectedSlackChannelName;
@@ -87,23 +79,8 @@ describe('Project Add Test', () => {
             projectAddComponent.addProject(projectModels);
             expect(projectModels.name).toBe(expectedProjectName);
             done();
-        })
+        });
     });
-
-    //it("should get default page for Project", () => {
-    //    projectAddComponent.ngOnInit();
-    //    expect(projectAddComponent.Userlist).not.toBeNull();
-    //});
-
-    
-    //it("should check project name before add", inject([projectModel], (projectModel: projectModel) => {
-    //    let expectedProjectName = "Tests Projects";
-    //    projectModel.Name = expectedProjectName;
-    //    let expectedSlackChannelName = "Test Slack Name";
-    //    projectModel.SlackChannelName = expectedSlackChannelName;
-    //    projectAddComponent.addProject(projectModel);
-    //    expect(projectModel.Name).toBe(expectedProjectName);
-    //}));
 });    
 
 

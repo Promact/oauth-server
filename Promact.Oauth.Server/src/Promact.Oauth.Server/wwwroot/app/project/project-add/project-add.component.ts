@@ -1,6 +1,6 @@
-﻿import { Component } from "@angular/core";
+﻿import { Component, OnInit } from "@angular/core";
 import { ProjectService } from '../project.service';
-import { projectModel } from '../project.model'
+import { ProjectModel } from '../project.model';
 import { UserModel } from '../../users/user.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Md2Toast } from 'md2/toast/toast';
@@ -10,30 +10,25 @@ import { LoaderService } from '../../shared/loader.service';
 @Component({
     templateUrl: "app/project/project-add/project-add.html",
 })
-export class ProjectAddComponent {
+export class ProjectAddComponent implements OnInit {
 
     private disabled: boolean = false;
-    projects: Array<projectModel>;
+    projects: Array<ProjectModel>;
     item: Array<string> = [];
-    project: projectModel;
-    private sub: any
+    project: ProjectModel;
     Userlist: Array<UserModel>;
-    constructor(
-        private route: ActivatedRoute,
-        private router: Router,
-        private toast: Md2Toast,
-        private proService: ProjectService,
+    constructor(private route: ActivatedRoute,private router: Router,private toast: Md2Toast,private proService: ProjectService,
         private loader: LoaderService) {
-        this.projects = new Array<projectModel>();
-        this.project = new projectModel();
+        this.projects = new Array<ProjectModel>();
+        this.project = new ProjectModel();
 
     }
     /**
      * Project Added in database
-     * @param pro project table information pass
+     * @param project project table information pass
      */
-    addProject(project: projectModel) {
-        var bool = 0;
+    addProject(project: ProjectModel) {
+        let bool = 0;
         for (let i = 0; i < project.applicationUsers.length; i++) {
             if (project.teamLeaderId === project.applicationUsers[i].Id) {
                 this.toast.show("Teamleader is selected as team member,Please select another team leader");
@@ -41,12 +36,15 @@ export class ProjectAddComponent {
             }
         }
 
-        if (project.name === null && project.slackChannelName === null)
-        { this.toast.show("Project Name and Slack Channel Name can not be blank"); }
-        else if (project.name === null && project.slackChannelName !== null)
-        { this.toast.show("Project Name can not be blank "); }
-        else if (project.name !== null && project.slackChannelName === null)
-        { this.toast.show("Slack Channel Name can not be blank"); }
+        if (project.name === null && project.slackChannelName === null) {
+            this.toast.show("Project Name and Slack Channel Name can not be blank");
+        }
+        else if (project.name === null && project.slackChannelName !== null) {
+            this.toast.show("Project Name can not be blank ");
+        }
+        else if (project.name !== null && project.slackChannelName === null) {
+            this.toast.show("Slack Channel Name can not be blank");
+        }
         else {
             if (bool === 0) {
                 this.loader.loader = true;
@@ -79,7 +77,7 @@ export class ProjectAddComponent {
                     }
                     else {
                         this.toast.show("Project Successfully Added.");
-                        this.router.navigate(['/project/list'])
+                        this.router.navigate(['/project/list']);
                     }
                     this.loader.loader = false;
                 }, err => {
@@ -92,8 +90,8 @@ export class ProjectAddComponent {
      * getUser Method get User Information
      */
     ngOnInit() {
-        this.project = new projectModel();
-        this.sub = this.route.params.subscribe(params => {
+        this.project = new ProjectModel();
+        this.route.params.subscribe(params => {
             this.proService.getUsers().subscribe(listUsers => {
                 this.project.listUsers = listUsers;
                 this.project.applicationUsers = new Array<UserModel>();
