@@ -17,16 +17,20 @@ export class ProjectService {
         return this.httpService.get(this.UserUrl + "/getEmployees");
     }
     getProjects() {
-        return this.httpService.get(this.ProjectUrl);
+        return this.httpService.get(this.ProjectUrl + "/");
     }
     getProject(id: number) {
         return this.httpService.get(this.ProjectUrl+ "/" +id);
     }
     addProject(project: projectModel) {
-        return this.httpService.post(this.ProjectUrl, project);
+        return this.httpService.post(this.ProjectUrl + "/", project);
+    }
+
+    deleteProject(projectId: number) {
+        return this.httpService.delete(this.ProjectUrl + "/deleteProject/" + projectId);
     }
     editProject(project: projectModel)
     {
-        return this.httpService.put(this.ProjectUrl, project);
+        return this.httpService.put(this.ProjectUrl + "/", project);
     }
 }
