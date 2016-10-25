@@ -10,7 +10,7 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
         /// </summary>
         /// <param name="accessToken"></param>
         /// <returns>true if value is not null otherwise false</returns>
-        bool GetDetailsClientByAccessToken(string accessToken);
+        Task<bool> GetDetailsClientByAccessToken(string accessToken);
 
 
         /// <summary>

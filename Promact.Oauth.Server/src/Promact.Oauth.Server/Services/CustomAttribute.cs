@@ -16,7 +16,7 @@ namespace Promact.Oauth.Server.Services
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             var token = filterContext.HttpContext.Request.Headers["Authorization"].ToString();
-            var data = _oAuthRepository.GetDetailsClientByAccessToken(token);
+            var data = _oAuthRepository.GetDetailsClientByAccessToken(token).Result;
             if (data == false)
             {
                 base.OnActionExecuting(filterContext);

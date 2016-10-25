@@ -48,9 +48,9 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
         /// <param name="email"></param>
         /// <param name="clientId"></param>
         /// <returns></returns>
-        private OAuth GetDetails(string email, string clientId)
+        private async Task<OAuth> GetDetails(string email, string clientId)
         {
-            OAuth oAuth = _oAuthDataRepository.FirstOrDefault(x => x.userEmail == email && x.ClientId == clientId);
+            OAuth oAuth = await  _oAuthDataRepository.FirstOrDefaultAsync(x => x.userEmail == email && x.ClientId == clientId);
             return oAuth;
         }
 
@@ -64,7 +64,7 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
         private async Task<OAuth> OAuthClientChecking(string email, string clientId)
         {
             //checking whether with this app email is register or not if  not new OAuth will be created.
-            OAuth oAuth = GetDetails(email, clientId);
+            OAuth oAuth = await GetDetails(email, clientId);
             ConsumerApps consumerApp = await _appRepository.GetAppDetails(clientId);
             if (oAuth == null && consumerApp != null)
             {
@@ -101,9 +101,9 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
         /// </summary>
         /// <param name="accessToken"></param>
         /// <returns>true if value is not null otherwise false</returns>
-        public bool GetDetailsClientByAccessToken(string accessToken)
+        public async Task<bool> GetDetailsClientByAccessToken(string accessToken)
         {
-            OAuth value = _oAuthDataRepository.FirstOrDefault(x => x.AccessToken == accessToken);
+            OAuth value = await _oAuthDataRepository.FirstOrDefaultAsync(x => x.AccessToken == accessToken);
             if (value != null)
                 return true;
             else
