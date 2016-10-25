@@ -55,7 +55,7 @@ export class UserAddComponent {
                         this.redirectionRoute.navigate(['user/list']);
                     }
                     else if (!result) {
-                        this.toast.show('User Name already exists.');
+                        this.toast.show('Email is invalid.');
                     }
                     this.loader.loader = false;
                 }, err => {
