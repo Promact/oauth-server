@@ -58,7 +58,7 @@ namespace Promact.Oauth.Server.Controllers
         [Authorize]
         [HttpGet]
         [Route("")]
-        public async Task<IEnumerable<ProjectAc>> Projects()
+        public async Task<IEnumerable<ProjectAc>> GetAllProjects()
         {
            
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
@@ -95,7 +95,7 @@ namespace Promact.Oauth.Server.Controllers
         [Authorize]
         [HttpGet]
         [Route("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<ProjectAc> GetProjects(int id)
         {
             try
             {
@@ -135,7 +135,7 @@ namespace Promact.Oauth.Server.Controllers
       */
         [Authorize]
         [HttpPost]
-        [Route("")]
+        [Route("{project}")]
         public async Task<IActionResult> addProject([FromBody]ProjectAc project)
         {
             var createdBy = _userManager.GetUserId(User);
@@ -191,8 +191,8 @@ namespace Promact.Oauth.Server.Controllers
         */
         [Authorize]
         [HttpPut]
-        [Route("")]
-        public async Task<IActionResult> editProject([FromBody]ProjectAc project)
+        [Route("{project}")]
+        public async Task<IActionResult> editProject(int id, [FromBody]ProjectAc project)
         {
             var updatedBy = _userManager.GetUserId(User);
             if (ModelState.IsValid)
