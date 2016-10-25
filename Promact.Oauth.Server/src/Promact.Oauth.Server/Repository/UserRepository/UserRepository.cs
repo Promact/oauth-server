@@ -16,6 +16,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Promact.Oauth.Server.Exception_Handler;
+using System.Text;
 
 namespace Promact.Oauth.Server.Repository
 {
@@ -67,23 +68,23 @@ namespace Promact.Oauth.Server.Repository
         {
             //try
             //{
-                LeaveCalculator LC = new LeaveCalculator();
-                LC = CalculateAllowedLeaves(Convert.ToDateTime(newUser.JoiningDate));
-                newUser.NumberOfCasualLeave = LC.CasualLeave;
-                newUser.NumberOfSickLeave = LC.SickLeave;
-                var user = _mapperContext.Map<UserAc, ApplicationUser>(newUser);
-                user.UserName = user.Email;
-                user.CreatedBy = createdBy;
-                user.CreatedDateTime = DateTime.UtcNow;
-                string password = GetRandomString();
-                var result = _userManager.CreateAsync(user, password);
-                var resultSuccess = await result;
-                result = _userManager.AddToRoleAsync(user, newUser.RoleName);
-                SendEmail(user, password);
-                resultSuccess = await result;
-                return user.Id;
+            LeaveCalculator LC = new LeaveCalculator();
+            LC = CalculateAllowedLeaves(Convert.ToDateTime(newUser.JoiningDate));
+            newUser.NumberOfCasualLeave = LC.CasualLeave;
+            newUser.NumberOfSickLeave = LC.SickLeave;
+            var user = _mapperContext.Map<UserAc, ApplicationUser>(newUser);
+            user.UserName = user.Email;
+            user.CreatedBy = createdBy;
+            user.CreatedDateTime = DateTime.UtcNow;
+            string password = GetRandomString();
+            var result = _userManager.CreateAsync(user, password);
+            var resultSuccess = await result;
+            result = _userManager.AddToRoleAsync(user, newUser.RoleName);
+            SendEmail(user, password);
+            resultSuccess = await result;
+            return user.Id;
             //}
-         
+
             //catch (Exception ex)
             //{
             //    throw ex;
@@ -589,9 +590,13 @@ namespace Promact.Oauth.Server.Repository
         private string GetRandomString()
         {
             Random random = new Random();
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            string randomString = new string(Enumerable.Repeat(chars, 8).Select(s => s[random.Next(8)]).ToArray());
-            return "User00" + "_" + randomString;
+            const string chars = "abcdefghijklmnopqrstuvwxyz|ABCDEFGHIJKLMNOPQRSTUVWXYZ|012345789|@#$%^!&*()";
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < 4; i++)
+            {
+                sb.Append(new string(Enumerable.Repeat(chars.Split('|').ToArray()[i], 3).Select(s => s[random.Next(4)]).ToArray()));
+            }
+            return sb.ToString();
         }
 
         #endregion
