@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 using Exceptions;
 using Promact.Oauth.Server.Constants;
 using Promact.Oauth.Server.Exception_Handler;
-
+using Promact.Oauth.Server.Services;
 
 namespace Promact.Oauth.Server.Controllers
 {
@@ -411,6 +411,7 @@ namespace Promact.Oauth.Server.Controllers
           *     "description":"Object of type UserAc "
           * }
           */
+        [ServiceFilter(typeof(CustomAttribute))]
         [HttpGet]
         [Route("getByUserName/{userName}")]
         public async Task<IActionResult> GetByUserName(string userName)
