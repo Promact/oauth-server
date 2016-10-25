@@ -386,6 +386,7 @@ namespace Promact.Oauth.Server.Controllers
           *     "description":"Object of type UserAc "
           * }
           */
+        [ServiceFilter(typeof(CustomAttribute))]
         [HttpGet]
         [Route("userDetail/{userId}")]
         public IActionResult UserDetailById(string userId)
