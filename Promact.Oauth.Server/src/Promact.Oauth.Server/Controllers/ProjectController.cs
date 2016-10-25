@@ -53,8 +53,8 @@ namespace Promact.Oauth.Server.Controllers
      */
         [Authorize]
         [HttpGet]
-        [Route("getAllProjects")]
-        public async Task<IEnumerable<ProjectAc>> getAllProjects()
+        [Route("")]
+        public async Task<IEnumerable<ProjectAc>> GetAllProjects()
         {
             try
             {
@@ -96,8 +96,8 @@ namespace Promact.Oauth.Server.Controllers
       */
         [Authorize]
         [HttpGet]
-        [Route("getProjects/{id}")]
-        public async Task<ProjectAc> getProjects(int id)
+        [Route("{id}")]
+        public async Task<ProjectAc> GetProjects(int id)
         {
             try
             {
@@ -137,7 +137,7 @@ namespace Promact.Oauth.Server.Controllers
       */
         [Authorize]
         [HttpPost]
-        [Route("addProject")]
+        [Route("{project}")]
         public async Task<IActionResult> addProject([FromBody]ProjectAc project)
         {
             try
@@ -201,7 +201,7 @@ namespace Promact.Oauth.Server.Controllers
         */
         [Authorize]
         [HttpPut]
-        [Route("editProject")]
+        [Route("{project}")]
         public async Task<IActionResult> editProject(int id, [FromBody]ProjectAc project)
         {
             try
