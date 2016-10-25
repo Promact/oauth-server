@@ -17,13 +17,13 @@ export class ProjectService {
     }
     //
     getProjects() {
-        return this.httpService.get(this.ProjectUrl + "/getAllProjects");
+        return this.httpService.get(this.ProjectUrl + "/");
     }
     getProject(id: number) {
-        return this.httpService.get(this.ProjectUrl + "/getProjects/"+ id);
+        return this.httpService.get(this.ProjectUrl+ "/" +id);
     }
     addProject(project: projectModel) {
-        return this.httpService.post(this.ProjectUrl + "/addProject", project);
+        return this.httpService.post(this.ProjectUrl + "/", project);
     }
 
     deleteProject(projectId: number) {
@@ -31,6 +31,6 @@ export class ProjectService {
     }
     editProject(project: projectModel)
     {
-        return this.httpService.put(this.ProjectUrl + "/editProject/", project);
+        return this.httpService.put(this.ProjectUrl + "/", project);
     }
 }
