@@ -30,7 +30,7 @@ namespace Promact.Oauth.Server.Tests
         /// Test case to check GetDetailsClientByAccessToken for true value of Oauth Repository
         /// </summary>
         [Fact, Trait("Category", "Required")]
-        public void GetDetailsClientByAccessToken()
+        public async Task GetDetailsClientByAccessToken()
         {
              OAuth oAuth = new OAuth()
              {
@@ -41,7 +41,7 @@ namespace Promact.Oauth.Server.Tests
              };
             _oAuthDataRepository.Add(oAuth);
             _oAuthDataRepository.Save();
-            var result = _oAuthRepository.GetDetailsClientByAccessToken(_stringConstant.AccessToken);
+            var result = await _oAuthRepository.GetDetailsClientByAccessToken(_stringConstant.AccessToken);
             Assert.Equal(result, true);
         }
 
@@ -49,7 +49,7 @@ namespace Promact.Oauth.Server.Tests
         /// Test case to check GetDetailsClientByAccessToken for false value of Oauth Repository
         /// </summary>
         [Fact, Trait("Category", "Required")]
-        public void GetDetailsClientByAccessTokenForWrongValue()
+        public async Task GetDetailsClientByAccessTokenForWrongValue()
         {
             OAuth oAuth = new OAuth()
             {
@@ -60,7 +60,7 @@ namespace Promact.Oauth.Server.Tests
             };
             _oAuthDataRepository.Add(oAuth);
             _oAuthDataRepository.Save();
-            var result = _oAuthRepository.GetDetailsClientByAccessToken(_stringConstant.ClientIdForTest);
+            var result = await _oAuthRepository.GetDetailsClientByAccessToken(_stringConstant.ClientIdForTest);
             Assert.Equal(result, false);
         }
 

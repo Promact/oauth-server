@@ -7,11 +7,12 @@ using Promact.Oauth.Server.Models.ApplicationClasses;
 using Promact.Oauth.Server.Repository.ConsumerAppRepository;
 using Promact.Oauth.Server.Repository.HttpClientRepository;
 using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Promact.Oauth.Server.Repository.OAuthRepository
 {
-    public class OAuthRepository:IOAuthRepository
+    public class OAuthRepository : IOAuthRepository
     {
         private readonly IDataRepository<OAuth> _oAuthDataRepository;
         private readonly IHttpClientRepository _httpClientRepository;
@@ -20,7 +21,7 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IStringConstant _stringConstant;
 
-        public OAuthRepository(IDataRepository<OAuth> oAuthDataRepository, IHttpClientRepository httpClientRepository,IConsumerAppRepository appRepository, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IStringConstant stringConstant)
+        public OAuthRepository(IDataRepository<OAuth> oAuthDataRepository, IHttpClientRepository httpClientRepository, IConsumerAppRepository appRepository, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IStringConstant stringConstant)
         {
             _oAuthDataRepository = oAuthDataRepository;
             _httpClientRepository = httpClientRepository;
@@ -40,24 +41,32 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
             _oAuthDataRepository.Save();
         }
 
+
         /// <summary>
         /// To get details of a OAuth Access for an email and corresponding to app
         /// </summary>
         /// <param name="email"></param>
         /// <param name="clientId"></param>
         /// <returns></returns>
-        private OAuth GetDetails(string email,string clientId)
+        private async Task<OAuth> GetDetails(string email, string clientId)
         {
-            var oAuth = _oAuthDataRepository.FirstOrDefault(x => x.userEmail == email && x.ClientId == clientId);
+            OAuth oAuth = await  _oAuthDataRepository.FirstOrDefaultAsync(x => x.userEmail == email && x.ClientId == clientId);
             return oAuth;
         }
 
-        private async Task<OAuth> OAuthClientChecking(string email,string clientId)
+
+        /// <summary>
+        /// Checks whether with this app email is register or not if  not new OAuth will be created.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="clientId"></param>
+        /// <returns></returns>
+        private async Task<OAuth> OAuthClientChecking(string email, string clientId)
         {
             //checking whether with this app email is register or not if  not new OAuth will be created.
-            var oAuth = GetDetails(email, clientId);
-            var app =  await _appRepository.GetAppDetails(clientId);
-            if (oAuth == null && app!=null)
+            OAuth oAuth = await GetDetails(email, clientId);
+            ConsumerApps consumerApp = await _appRepository.GetAppDetails(clientId);
+            if (oAuth == null && consumerApp != null)
             {
                 oAuth = new OAuth();
                 oAuth.RefreshToken = Guid.NewGuid().ToString();
@@ -69,57 +78,77 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
             return oAuth;
         }
 
+
+        /// <summary>
+        /// Fetches the app details from the client.
+        /// </summary>
+        /// <param name="redirectUrl"></param>
+        /// <param name="refreshToken"></param>
+        /// <returns></returns>
         private async Task<OAuthApplication> GetAppDetailsFromClient(string redirectUrl, string refreshToken)
         {
             // Assigning Base Address with redirectUrl
-            var requestUrl = string.Format("?refreshToken={0}", refreshToken);
-            var response = await _httpClientRepository.GetAsync(redirectUrl, requestUrl);
-            var responseResult = response.Content.ReadAsStringAsync().Result;
+            string requestUrl = string.Format("?refreshToken={0}", refreshToken);
+            HttpResponseMessage response = await _httpClientRepository.GetAsync(redirectUrl, requestUrl);
+            string responseResult = response.Content.ReadAsStringAsync().Result;
             // Transforming Json String to object type OAuthApplication
-            var content = JsonConvert.DeserializeObject<OAuthApplication>(responseResult);
-            return content;
+            return JsonConvert.DeserializeObject<OAuthApplication>(responseResult);
         }
 
-        public bool GetDetailsClientByAccessToken(string accessToken)
+
+        /// <summary>
+        /// Fetches the details of Client using access token
+        /// </summary>
+        /// <param name="accessToken"></param>
+        /// <returns>true if value is not null otherwise false</returns>
+        public async Task<bool> GetDetailsClientByAccessToken(string accessToken)
         {
-            var value = _oAuthDataRepository.FirstOrDefault(x => x.AccessToken == accessToken);
+            OAuth value = await _oAuthDataRepository.FirstOrDefaultAsync(x => x.AccessToken == accessToken);
             if (value != null)
-            {
                 return true;
-            }
             else
-            {
                 return false;
-            }
         }
 
+
+        /// <summary>
+        /// Returns appropriate Url for the user to be redirected to
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <param name="clientId"></param>
+        /// <param name="callBackUrl"></param>
+        /// <returns>returUrl</returns>
         public async Task<string> UserAlreadyLogin(string userName, string clientId, string callBackUrl)
         {
-            var user = await _userManager.FindByNameAsync(userName);
-            var oAuth = await OAuthClientChecking(user.Email, clientId);
-            var clientResponse = await GetAppDetailsFromClient(callBackUrl, oAuth.RefreshToken);
-            var returnUrl = string.Format("{0}?accessToken={1}&email={2}&slackUserName={3}", clientResponse.ReturnUrl, oAuth.AccessToken, oAuth.userEmail, user.SlackUserName);
-            return returnUrl;
+            ApplicationUser user = await _userManager.FindByNameAsync(userName);
+            OAuth oAuth = await OAuthClientChecking(user.Email, clientId);
+            OAuthApplication clientResponse = await GetAppDetailsFromClient(callBackUrl, oAuth.RefreshToken);
+            return string.Format("{0}?accessToken={1}&email={2}&slackUserName={3}", clientResponse.ReturnUrl, oAuth.AccessToken, oAuth.userEmail, user.SlackUserName);
         }
 
+
+        /// <summary>
+        /// Signs in the user and redirects to the appropraite url.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>if not successfully signed-in then return empty string if successfully signed-in and credentials match then return redirect url</returns>
         public async Task<string> UserNotAlreadyLogin(OAuthLogin model)
         {
-            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, lockoutOnFailure: false);
+            SignInResult result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, lockoutOnFailure: false);
             if (result.Succeeded)
             {
-                var oAuth = await OAuthClientChecking(model.Email, model.ClientId);
-                var clientResponse = await GetAppDetailsFromClient(model.RedirectUrl, oAuth.RefreshToken);
+                OAuth oAuth = await OAuthClientChecking(model.Email, model.ClientId);
+                OAuthApplication clientResponse = await GetAppDetailsFromClient(model.RedirectUrl, oAuth.RefreshToken);
                 // Checking whether request client is equal to response client
                 if (model.ClientId == clientResponse.ClientId)
                 {
                     //Getting app details from clientId or AuthId
-                    var app = await _appRepository.GetAppDetails(clientResponse.ClientId);
+                    ConsumerApps consumerApp = await _appRepository.GetAppDetails(clientResponse.ClientId);
                     // Refresh token and app's secret is checking if match then accesstoken will be send
-                    if (app.AuthSecret == clientResponse.ClientSecret && clientResponse.RefreshToken == oAuth.RefreshToken)
+                    if (consumerApp.AuthSecret == clientResponse.ClientSecret && clientResponse.RefreshToken == oAuth.RefreshToken)
                     {
-                        var user = await _userManager.FindByEmailAsync(oAuth.userEmail);
-                        var returnUrl = string.Format("{0}?accessToken={1}&email={2}&slackUserName={3}", clientResponse.ReturnUrl, oAuth.AccessToken, oAuth.userEmail, user.SlackUserName);
-                        return returnUrl;
+                        ApplicationUser user = await _userManager.FindByEmailAsync(oAuth.userEmail);
+                        return string.Format("{0}?accessToken={1}&email={2}&slackUserName={3}", clientResponse.ReturnUrl, oAuth.AccessToken, oAuth.userEmail, user.SlackUserName);
                     }
                 }
             }
