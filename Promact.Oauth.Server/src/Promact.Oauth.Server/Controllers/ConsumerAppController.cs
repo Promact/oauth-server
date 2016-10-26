@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Exceptionless;
+using Promact.Oauth.Server.Exception_Handler;
 
 namespace Promact.Oauth.Server.Controllers
 {
@@ -64,10 +65,9 @@ namespace Promact.Oauth.Server.Controllers
                 else
                     return Ok(false);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                ex.ToExceptionless().Submit();
-                throw ex;
+                return BadRequest();
             }
         }
 
@@ -91,13 +91,12 @@ namespace Promact.Oauth.Server.Controllers
         {
             try
             {
-                List<ConsumerApps> listOfApps = await _consumerAppRepository.GetListOfApps();
+                List<ConsumerApps> listOfApps = await _consumerAppRepository.GetListOfConsumerApps();
                 return Ok(listOfApps);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                ex.ToExceptionless().Submit();
-                throw ex;
+                return BadRequest();
             }
         }
 
@@ -123,13 +122,16 @@ namespace Promact.Oauth.Server.Controllers
         {
             try
             {
-                var consumerApps = await _consumerAppRepository.GetConsumerAppsById(id);
+                ConsumerApps consumerApps = await _consumerAppRepository.GetConsumerAppById(id);
                 return Ok(consumerApps);
             }
-            catch (Exception ex)
+            catch (ConsumerAppNotFound)
             {
-                ex.ToExceptionless().Submit();
-                throw ex;
+                return NotFound();
+            }
+            catch (Exception)
+            {
+                return BadRequest();
             }
         }
 
@@ -157,24 +159,19 @@ namespace Promact.Oauth.Server.Controllers
         {
             try
             {
-                var oldAppsDetails = await _consumerAppRepository.GetConsumerAppsById(consumerAppsAc.Id);
-                if (oldAppsDetails != null)
-                {
-                    oldAppsDetails.Name = consumerAppsAc.Name;
-                    oldAppsDetails.CallbackUrl = consumerAppsAc.CallbackUrl;
-                    oldAppsDetails.Description = consumerAppsAc.Description;
-                    oldAppsDetails.UpdatedDateTime = DateTime.Now;
-                    if (await _consumerAppRepository.UpdateConsumerApps(oldAppsDetails) != 0)
-                        return Ok(true);
-                    else
-                        return Ok(false);
-                }
-                return Ok(oldAppsDetails);
+                ConsumerApps consumerApp = await _consumerAppRepository.GetConsumerAppById(consumerAppsAc.Id);
+                consumerApp.Name = consumerAppsAc.Name;
+                consumerApp.CallbackUrl = consumerAppsAc.CallbackUrl;
+                consumerApp.Description = consumerAppsAc.Description;
+                consumerApp.UpdatedDateTime = DateTime.Now;
+                if (await _consumerAppRepository.UpdateConsumerApps(consumerApp) != 0)
+                    return Ok(true);
+                else
+                    return Ok(false);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                ex.ToExceptionless().Submit();
-                throw ex;
+                return BadRequest();
             }
         }
 
