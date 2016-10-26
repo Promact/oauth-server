@@ -19,8 +19,6 @@ export class MockUserService {
         mockUser.LastName = "Last Name";
         mockUser.Email = "test@promactinfo.com";
         
-        //let connection = this.mockBaseService.getMockResponse(this.UserUrl, mockUser);
-        //return connection;
         return new BehaviorSubject(mockUser).asObservable();
         
     }
@@ -45,7 +43,7 @@ export class MockUserService {
     }
 
     changePassword(newPassword: PasswordModel) {
-        let result = true;
+        let result = newPassword.NewPassword;
         return new BehaviorSubject(result).asObservable();
     }
 
@@ -67,8 +65,10 @@ export class MockUserService {
         //let connection = this.mockBaseService.getMockResponse(this.UserUrl, listOfRole);
         return new BehaviorSubject(listOfRole).asObservable();
     }
-    
 
+    checkOldPasswordIsValid() {
+        return new BehaviorSubject(true).asObservable();
+    }
 }
 
 class MockRole extends UserModel {

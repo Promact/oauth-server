@@ -67,23 +67,23 @@ namespace Promact.Oauth.Server.Repository
         {
             //try
             //{
-                LeaveCalculator LC = new LeaveCalculator();
-                LC = CalculateAllowedLeaves(Convert.ToDateTime(newUser.JoiningDate));
-                newUser.NumberOfCasualLeave = LC.CasualLeave;
-                newUser.NumberOfSickLeave = LC.SickLeave;
-                var user = _mapperContext.Map<UserAc, ApplicationUser>(newUser);
-                user.UserName = user.Email;
-                user.CreatedBy = createdBy;
-                user.CreatedDateTime = DateTime.UtcNow;
-                string password = GetRandomString();
-                var result = _userManager.CreateAsync(user, password);
-                var resultSuccess = await result;
-                result = _userManager.AddToRoleAsync(user, newUser.RoleName);
-                SendEmail(user, password);
-                resultSuccess = await result;
-                return user.Id;
+            LeaveCalculator LC = new LeaveCalculator();
+            LC = CalculateAllowedLeaves(Convert.ToDateTime(newUser.JoiningDate));
+            newUser.NumberOfCasualLeave = LC.CasualLeave;
+            newUser.NumberOfSickLeave = LC.SickLeave;
+            var user = _mapperContext.Map<UserAc, ApplicationUser>(newUser);
+            user.UserName = user.Email;
+            user.CreatedBy = createdBy;
+            user.CreatedDateTime = DateTime.UtcNow;
+            string password = GetRandomString();
+            var result = _userManager.CreateAsync(user, password);
+            var resultSuccess = await result;
+            result = _userManager.AddToRoleAsync(user, newUser.RoleName);
+            SendEmail(user, password);
+            resultSuccess = await result;
+            return user.Id;
             //}
-         
+
             //catch (Exception ex)
             //{
             //    throw ex;
@@ -210,7 +210,7 @@ namespace Promact.Oauth.Server.Repository
         /// <returns>List of all users</returns>
         public IEnumerable<UserAc> GetAllUsers()
         {
-            var users = _userManager.Users;
+            var users = _userManager.Users.OrderByDescending(x => x.CreatedDateTime);
             var userList = new List<UserAc>();
             foreach (var user in users)
             {
@@ -314,9 +314,14 @@ namespace Promact.Oauth.Server.Repository
             var user = await _userManager.FindByEmailAsync(passwordModel.Email);
             if (user != null)
             {
-                await _userManager.ChangePasswordAsync(user, passwordModel.OldPassword, passwordModel.NewPassword);
+                IdentityResult result = await _userManager.ChangePasswordAsync(user, passwordModel.OldPassword, passwordModel.NewPassword);
+                if (result.Succeeded)
+                {
+                    return passwordModel.NewPassword;
+                }
+                return result.Errors.FirstOrDefault().Description.ToString();
             }
-            return passwordModel.NewPassword;
+            throw new UserNotFound();
         }
 
         /// <summary>
