@@ -16,10 +16,10 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
 
 
         /// <summary>
-        /// This method used for get list of apps. -An
+        /// This method used for get list of consumer apps. -An
         /// </summary>
         /// <returns></returns>
-        Task<List<ConsumerApps>> GetListOfApps();
+        Task<List<ConsumerApps>> GetListOfConsumerApps();
 
         /// <summary>
         /// This method used for get apps detail by client id. 
@@ -29,11 +29,11 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         Task<ConsumerApps> GetAppDetails(string clientId);
 
         /// <summary>
-        /// This method used fro get apps object by id. -An
+        /// This method used for get consumer app object by id. -An
         /// </summary>
         /// <param name="id">pass apps object primarykey</param>
         /// <returns></returns>
-        Task<ConsumerApps> GetConsumerAppsById(int id);
+        Task<ConsumerApps> GetConsumerAppById(int id);
 
         /// <summary>
         /// This method used for update consumer app and return primary key. -An
