@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Promact.Oauth.Server.Constants;
+using Promact.Oauth.Server.Exception_Handler;
 
 namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
 {
@@ -59,7 +60,8 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
                 await _appsDataRepository.SaveChangesAsync();
                 return consumerAppObject.Id;
             }
-            return 0;
+            else
+                return 0;
         }
 
 
@@ -67,19 +69,23 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// This method used for get list of apps. -An
         /// </summary>
         /// <returns></returns>
-        public async Task<List<ConsumerApps>> GetListOfApps()
+        public async Task<List<ConsumerApps>> GetListOfConsumerApps()
         {
             return await _appsDataRepository.GetAll().ToListAsync();
         }
 
         /// <summary>
-        /// This method used fro get apps object by id. -An
+        /// This method used foo get consumer app object by id. -An
         /// </summary>
         /// <param name="id">pass app object primary key</param>
         /// <returns></returns>
-        public async Task<ConsumerApps> GetConsumerAppsById(int id)
+        public async Task<ConsumerApps> GetConsumerAppById(int id)
         {
-            return await _appsDataRepository.FirstOrDefaultAsync(x => x.Id == id);
+            ConsumerApps consumerApps = await _appsDataRepository.FirstOrDefaultAsync(x => x.Id == id);
+            if (consumerApps != null)
+                return consumerApps;
+            else
+                throw new ConsumerAppNotFound(); 
             
         }
 
@@ -92,7 +98,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         public async Task<int> UpdateConsumerApps(ConsumerApps consumerApps)
         {
 
-            if (_appsDataRepository.FirstOrDefault(x => x.Name == consumerApps.Name && x.Id != consumerApps.Id) == null)
+            if (await _appsDataRepository.FirstOrDefaultAsync(x => x.Name == consumerApps.Name && x.Id != consumerApps.Id) == null)
             {
                 _appsDataRepository.UpdateAsync(consumerApps);
                 await _appsDataRepository.SaveChangesAsync();
