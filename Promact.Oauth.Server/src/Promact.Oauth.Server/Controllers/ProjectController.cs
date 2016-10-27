@@ -12,7 +12,6 @@ using Promact.Oauth.Server.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 using Promact.Oauth.Server.Exception_Handler;
-using Exceptionless;
 
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
@@ -59,7 +58,7 @@ namespace Promact.Oauth.Server.Controllers
         [Authorize]
         [HttpGet]
         [Route("")]
-        public async Task<IEnumerable<ProjectAc>> GetAllProjects()
+        public async Task<IEnumerable<ProjectAc>> Projects()
         {
             
                 var user = await _userManager.FindByNameAsync(User.Identity.Name);
@@ -100,11 +99,12 @@ namespace Promact.Oauth.Server.Controllers
         [Authorize]
         [HttpGet]
         [Route("{id}")]
-        public async Task<ProjectAc> GetProjects(int id)
+        public async Task<IActionResult> GetById(int id)
         {
             try
             {
-               return Ok(await _projectRepository.GetById(id));
+                ProjectAc project = await _projectRepository.GetById(id);
+                return Ok(project);
             }
             catch (ProjectNotFound)
             {
@@ -139,7 +139,7 @@ namespace Promact.Oauth.Server.Controllers
       */
         [Authorize]
         [HttpPost]
-        [Route("{project}")]
+        [Route("")]
         public async Task<IActionResult> addProject([FromBody]ProjectAc project)
         {
             var createdBy = _userManager.GetUserId(User);
@@ -195,29 +195,21 @@ namespace Promact.Oauth.Server.Controllers
         */
         [Authorize]
         [HttpPut]
-        [Route("{project}")]
-        public async Task<IActionResult> editProject(int id, [FromBody]ProjectAc project)
+        [Route("")]
+        public async Task<IActionResult> editProject([FromBody]ProjectAc project)
         {
-            try
+            var updatedBy = _userManager.GetUserId(User);
+            if (ModelState.IsValid)
             {
-                var updatedBy = _userManager.GetUserId(User);
-
-                if (ModelState.IsValid)
+                ProjectAc checkDuplicateProject = _projectRepository.checkDuplicateFromEditProject(project);
+                if (checkDuplicateProject.Name != null && checkDuplicateProject.SlackChannelName != null)
                 {
-                    ProjectAc projectAc = _projectRepository.checkDuplicateFromEditProject(project);
-                    if (projectAc.Name != null && projectAc.SlackChannelName != null)
-                    {
-                        await _projectRepository.EditProject(project, updatedBy);
-                    }
-                    else { return Ok(project); }
+                    await _projectRepository.EditProject(project, updatedBy);
                 }
-                return Ok(project);
+                else { return Ok(project); }
             }
-            catch (Exception ex)
-            {
-                ex.ToExceptionless().Submit();
-                throw ex;
-            }
+            return Ok(project);
+            
         }
 
         /**
@@ -246,7 +238,8 @@ namespace Promact.Oauth.Server.Controllers
         {
             try
             {
-                return Ok(_projectRepository.GetProjectByGroupName(name));
+                ProjectAc project= _projectRepository.GetProjectByGroupName(name);
+                return Ok(project);
             }
             catch (ProjectNotFound)
             {
@@ -274,18 +267,9 @@ namespace Promact.Oauth.Server.Controllers
         [ServiceFilter(typeof(CustomAttribute))]
         [HttpGet]
         [Route("featchUserRole/{name}")]
-        public async Task<IActionResult> GetUserRole(string name)
+        public async Task<List<UserRoleAc>> GetUserRole(string name)
         {
-            try
-            {
-                
-                return Ok(await _projectRepository.GetUserRole(name));
-            }
-            catch (UserRoleNotFound)
-            {
-                return NotFound();
-            }
-
+            return await _projectRepository.GetUserRole(name);
         }
         /**
         * @api {get} api/Project/GetListOfEmployee 
