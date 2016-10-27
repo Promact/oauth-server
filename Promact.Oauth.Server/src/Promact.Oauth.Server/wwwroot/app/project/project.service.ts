@@ -5,7 +5,8 @@ import { ProjectModel } from './project.model';
 @Injectable()
 export class ProjectService {
     private ProjectUrl = 'api/project';  // URL to web api
-    constructor(private httpService: HttpService<ProjectModel>) { }
+    private UserUrl = 'api/user';
+    constructor(private httpService: HttpService<projectModel>) { }
     //check duplicate
     checkDuplicate(project: ProjectModel) {
         return this.httpService.post(this.ProjectUrl + "/checkDuplicate", project);
@@ -13,24 +14,19 @@ export class ProjectService {
 
     //list of users
     getUsers() {
-        return this.httpService.get("api/user" + "/getEmployees");
+        return this.httpService.get(this.UserUrl + "/getEmployees");
     }
-    //
     getProjects() {
-        return this.httpService.get(this.ProjectUrl + "/");
+        return this.httpService.get(this.ProjectUrl);
     }
     getProject(id: number) {
         return this.httpService.get(this.ProjectUrl+ "/" +id);
     }
     addProject(project: projectModel) {
-        return this.httpService.post(this.ProjectUrl + "/", project);
-    }
-
-    deleteProject(projectId: number) {
-        return this.httpService.delete(this.ProjectUrl + "/deleteProject/" + projectId);
+        return this.httpService.post(this.ProjectUrl, project);
     }
     editProject(project: projectModel)
     {
-        return this.httpService.put(this.ProjectUrl + "/", project);
+        return this.httpService.put(this.ProjectUrl, project);
     }
 }
