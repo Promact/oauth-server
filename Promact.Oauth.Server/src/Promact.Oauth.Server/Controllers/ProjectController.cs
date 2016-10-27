@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Exceptionless;
 using Promact.Oauth.Server.Services;
 using Microsoft.AspNetCore.Authorization;
+using Promact.Oauth.Server.Exception_Handler;
 using Microsoft.Extensions.Logging;
 
 
@@ -58,7 +59,7 @@ namespace Promact.Oauth.Server.Controllers
         [Authorize]
         [HttpGet]
         [Route("")]
-        public async Task<IEnumerable<ProjectAc>> GetAllProjects()
+        public async Task<IEnumerable<ProjectAc>> Projects()
         {
             try
             {
@@ -105,16 +106,16 @@ namespace Promact.Oauth.Server.Controllers
         [Authorize]
         [HttpGet]
         [Route("{id}")]
-        public async Task<ProjectAc> GetProjects(int id)
+        public async Task<IActionResult> GetById(int id)
         {
             try
             {
-                return await _projectRepository.GetById(id);
+                ProjectAc project = await _projectRepository.GetById(id);
+                return Ok(project);
             }
-            catch (Exception ex)
+            catch (ProjectNotFound)
             {
-                ex.ToExceptionless().Submit();
-                throw ex;
+                return NotFound();
             }
         }
 
@@ -145,47 +146,39 @@ namespace Promact.Oauth.Server.Controllers
       */
         [Authorize]
         [HttpPost]
-        [Route("{project}")]
+        [Route("")]
         public async Task<IActionResult> addProject([FromBody]ProjectAc project)
         {
-            try
+            var createdBy = _userManager.GetUserId(User);
+            if (ModelState.IsValid)
             {
-                var createdBy = _userManager.GetUserId(User);
-                if (ModelState.IsValid)
+                ProjectAc checkDuplicateProject = _projectRepository.checkDuplicate(project);
+                if (checkDuplicateProject.Name != null && checkDuplicateProject.SlackChannelName != null)
                 {
-                    ProjectAc p = _projectRepository.checkDuplicate(project);
-                    if (p.Name != null && p.SlackChannelName != null)
+                    int id = await _projectRepository.AddProject(project, createdBy);
+                    foreach (var applicationUser in project.ApplicationUsers)
                     {
-                        int id = await _projectRepository.AddProject(project, createdBy);
-                        foreach (var applicationUser in project.ApplicationUsers)
-                        {
-                            ProjectUser projectUser = new ProjectUser();
-                            projectUser.ProjectId = id;
-                            projectUser.UserId = applicationUser.Id;
-                            projectUser.CreatedBy = createdBy;
-                            projectUser.CreatedDateTime = DateTime.UtcNow;
-                            _projectRepository.AddUserProject(projectUser);
-                        }
-                        return Ok(project);
+                        ProjectUser projectUser = new ProjectUser();
+                        projectUser.ProjectId = id;
+                        projectUser.UserId = applicationUser.Id;
+                        projectUser.CreatedBy = createdBy;
+                        projectUser.CreatedDateTime = DateTime.UtcNow;
+                        _projectRepository.AddUserProject(projectUser);
                     }
-                    else
-                    { return Ok(project); }
+                    return Ok(project);
                 }
-                return Ok(false);
+                else
+                { return Ok(project); }
             }
-            catch (Exception ex)
-            {
-                ex.ToExceptionless().Submit();
-                throw ex;
-            }
+            return Ok(false);
         }
-
+         
         /**
         * @api {put} api/Project/editProject 
         * @apiVersion 1.0.0
         * @apiName Project
         * @apiGroup Project
-        *  @apiParam {int} Id  Project Id
+        * @apiParam {int} Id  Project Id
         * @apiParam {string} Name  Project Name
         * @apiParam {string} SlackChannelName  Project SlackChannelName
         * @apiParam {bool} IsActive  Project IsActive
@@ -209,29 +202,21 @@ namespace Promact.Oauth.Server.Controllers
         */
         [Authorize]
         [HttpPut]
-        [Route("{project}")]
-        public async Task<IActionResult> editProject(int id, [FromBody]ProjectAc project)
+        [Route("")]
+        public async Task<IActionResult> editProject([FromBody]ProjectAc project)
         {
-            try
+            var updatedBy = _userManager.GetUserId(User);
+            if (ModelState.IsValid)
             {
-                var updatedBy = _userManager.GetUserId(User);
-
-                if (ModelState.IsValid)
+                ProjectAc checkDuplicateProject = _projectRepository.checkDuplicateFromEditProject(project);
+                if (checkDuplicateProject.Name != null && checkDuplicateProject.SlackChannelName != null)
                 {
-                    ProjectAc projectAc = _projectRepository.checkDuplicateFromEditProject(project);
-                    if (projectAc.Name != null && projectAc.SlackChannelName != null)
-                    {
-                        await _projectRepository.EditProject(project, updatedBy);
-                    }
-                    else { return Ok(project); }
+                    await _projectRepository.EditProject(project, updatedBy);
                 }
-                return Ok(project);
+                else { return Ok(project); }
             }
-            catch (Exception ex)
-            {
-                ex.ToExceptionless().Submit();
-                throw ex;
-            }
+            return Ok(project);
+            
         }
 
         /**
@@ -256,16 +241,16 @@ namespace Promact.Oauth.Server.Controllers
         [ServiceFilter(typeof(CustomAttribute))]
         [HttpGet]
         [Route("fetchProject/{name}")]
-        public ProjectAc Fetch(string name)
+        public IActionResult Fetch(string name)
         {
             try
             {
-                return _projectRepository.GetProjectByGroupName(name);
+                ProjectAc project= _projectRepository.GetProjectByGroupName(name);
+                return Ok(project);
             }
-            catch (Exception ex)
+            catch (ProjectNotFound)
             {
-                ex.ToExceptionless().Submit();
-                throw ex;
+                return NotFound();
             }
         }
 
@@ -294,10 +279,7 @@ namespace Promact.Oauth.Server.Controllers
         public async Task<List<UserRoleAc>> GetUserRole(string name)
         {
             return await _projectRepository.GetUserRole(name);
-
         }
-
-
         /**
         * @api {get} api/Project/GetListOfEmployee 
         * @apiVersion 1.0.0
