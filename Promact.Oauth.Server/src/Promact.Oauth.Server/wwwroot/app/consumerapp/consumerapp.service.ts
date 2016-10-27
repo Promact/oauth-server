@@ -15,14 +15,14 @@ export class ConsumerAppService {
      * @param consumerAppsAc
      */
     addConsumerApps(consumerAppsAc: ConsumerAppModel) {
-        return this.httpService.post(this.consumerAppUrl + "/addConsumer", consumerAppsAc);
+        return this.httpService.post(this.consumerAppUrl , consumerAppsAc);
     }
 
     /*This method used for get consumer apps list*
      * 
      */
     getConsumerApps() {
-        return this.httpService.get(this.consumerAppUrl + "/getConsumerApps");
+        return this.httpService.get(this.consumerAppUrl);
     }
 
     /*This method used for get consumer app object by id.*
@@ -30,7 +30,7 @@ export class ConsumerAppService {
      * @param id 
      */
     getConsumerAppById(id: number) {
-        return this.httpService.get(this.consumerAppUrl + "/getConsumerById/" + id);
+        return this.httpService.get(this.consumerAppUrl + "/" + id);
 
     }
 
@@ -39,6 +39,6 @@ export class ConsumerAppService {
      * @param consumerAppsAc
      */
     updateConsumerApps(consumerAppsAc: ConsumerAppModel) {
-        return this.httpService.post(this.consumerAppUrl + "/updateConsumer", consumerAppsAc);
+        return this.httpService.put(this.consumerAppUrl,consumerAppsAc);
     }
 }
