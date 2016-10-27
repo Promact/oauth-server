@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Exceptionless;
 using Promact.Oauth.Server.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 using Promact.Oauth.Server.Exception_Handler;
 
 
@@ -58,7 +59,7 @@ namespace Promact.Oauth.Server.Controllers
         [Authorize]
         [HttpGet]
         [Route("")]
-        public async Task<IEnumerable<ProjectAc>> GetAllProjects()
+        public async Task<IEnumerable<ProjectAc>> Projects()
         {
            
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
@@ -95,7 +96,7 @@ namespace Promact.Oauth.Server.Controllers
         [Authorize]
         [HttpGet]
         [Route("{id}")]
-        public async Task<ProjectAc> GetProjects(int id)
+        public async Task<IActionResult> GetById(int id)
         {
             try
             {
@@ -135,7 +136,7 @@ namespace Promact.Oauth.Server.Controllers
       */
         [Authorize]
         [HttpPost]
-        [Route("{project}")]
+        [Route("")]
         public async Task<IActionResult> addProject([FromBody]ProjectAc project)
         {
             var createdBy = _userManager.GetUserId(User);
@@ -191,8 +192,8 @@ namespace Promact.Oauth.Server.Controllers
         */
         [Authorize]
         [HttpPut]
-        [Route("{project}")]
-        public async Task<IActionResult> editProject(int id, [FromBody]ProjectAc project)
+        [Route("")]
+        public async Task<IActionResult> editProject([FromBody]ProjectAc project)
         {
             var updatedBy = _userManager.GetUserId(User);
             if (ModelState.IsValid)
