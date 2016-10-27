@@ -35,7 +35,7 @@ namespace Promact.Oauth.Server.Controllers
 
 
         /**
-        * @api {post} api/consumerApp/AddConsumerApp 
+        * @api {post} api/consumerapp 
         * @apiVersion 1.0.0
         * @apiName ConsumerApp
         * @apiGroup ConsumerApp
@@ -54,7 +54,7 @@ namespace Promact.Oauth.Server.Controllers
         * }
         */
         [HttpPost]
-        [Route("addConsumer")]
+        [Route("")]
         public async Task<IActionResult> AddConsumerApp([FromBody]ConsumerAppsAc consumerAppsAc)
         {
             try
@@ -73,7 +73,7 @@ namespace Promact.Oauth.Server.Controllers
 
 
         /**
-        * @api {get} api/consumerApp/GetConsumerApps 
+        * @api {get} api/consumerapp 
         * @apiVersion 1.0.0
         * @apiName ConsumerApp
         * @apiGroup ConsumerApp
@@ -86,7 +86,7 @@ namespace Promact.Oauth.Server.Controllers
         * }
         */
         [HttpGet]
-        [Route("getConsumerApps")]
+        [Route("")]
         public async Task<IActionResult> GetConsumerApps()
         {
             try
@@ -102,7 +102,7 @@ namespace Promact.Oauth.Server.Controllers
 
 
         /**
-       * @api {get} api/consumerApp/GetConsumerById 
+       * @api {get} api/consumerapp/id 
        * @apiVersion 1.0.0
        * @apiName ConsumerApp
        * @apiGroup ConsumerApp
@@ -117,8 +117,8 @@ namespace Promact.Oauth.Server.Controllers
        * }
        */
         [HttpGet]
-        [Route("getConsumerById/{id}")]
-        public async Task<IActionResult> GetConsumerById(int id)
+        [Route("{id}")]
+        public async Task<IActionResult> GetConsumerAppById(int id)
         {
             try
             {
@@ -136,7 +136,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-        * @api {post} api/consumerApp/UpdateConsumerApps 
+        * @api {put} api/consumerapp 
         * @apiVersion 1.0.0
         * @apiName ConsumerApp
         * @apiGroup ConsumerApp
@@ -153,9 +153,9 @@ namespace Promact.Oauth.Server.Controllers
         *   "description":"retun true if succesfully consumer updated If any problem in updte consumer mehtod or not update consumer apps so return false."
         * }
         */
-        [HttpPost]
-        [Route("updateConsumer")]
-        public async Task<IActionResult> UpdateConsumerApps([FromBody]ConsumerAppsAc consumerAppsAc)
+        [HttpPut]
+        [Route("")]
+        public async Task<IActionResult> UpdateConsumerApp([FromBody]ConsumerAppsAc consumerAppsAc)
         {
             try
             {
