@@ -13,6 +13,7 @@ using Promact.Oauth.Server.Services;
 using Microsoft.AspNetCore.Authorization;
 using Promact.Oauth.Server.Exception_Handler;
 using Microsoft.Extensions.Logging;
+using Promact.Oauth.Server.Exception_Handler;
 
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
