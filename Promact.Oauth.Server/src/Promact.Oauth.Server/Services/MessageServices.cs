@@ -39,8 +39,9 @@ namespace Promact.Oauth.Server.Services
             msg.Body = bodyBuilder.ToMessageBody();
             using (var smtp = new SmtpClient())
             {
+                int port = Convert.ToInt32(_appSettings.Port);
                 _logger.LogInformation("Smtp Connect");
-                smtp.Connect(_appSettings.Host, Convert.ToInt32(_appSettings.Port), _appSettings.SslOnConnect == true ? MailKit.Security.SecureSocketOptions.SslOnConnect : MailKit.Security.SecureSocketOptions.None);
+                smtp.Connect(_appSettings.Host, port, _appSettings.SslOnConnect == true ? MailKit.Security.SecureSocketOptions.SslOnConnect : MailKit.Security.SecureSocketOptions.None);
                 _logger.LogInformation("Authenticate");
                 smtp.Authenticate(credentials: new NetworkCredential(_appSettings.UserName, _appSettings.Password));
                 smtp.Send(msg, CancellationToken.None);
