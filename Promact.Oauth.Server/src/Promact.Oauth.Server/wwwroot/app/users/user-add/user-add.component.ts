@@ -48,6 +48,7 @@ export class UserAddComponent {
         userModel.JoiningDate = new Date(userModel.JoiningDate);
         if (!this.isSlackUserNameExist) {
             if (!this.isEmailExist) {
+                this.userModel.FirstName = this.userModel.FirstName.trim();
                 this.userService.registerUser(this.userModel).subscribe((result) => {
                     if (result) {
                         this.toast.show('User added successfully.');
