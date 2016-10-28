@@ -63,10 +63,6 @@ gulp.task("copytowwwroot", function () {
     ]).pipe(gulp.dest('./wwwroot/lib/rxjs'));
 
     gulp.src([
-          'node_modules/angular2-datatable/**/*.js'
-    ]).pipe(gulp.dest('./wwwroot/lib/angular2-datatable'));
-
-    gulp.src([
       'node_modules/lodash/**/*.js'
     ]).pipe(gulp.dest('./wwwroot/lib/lodash'));
 
