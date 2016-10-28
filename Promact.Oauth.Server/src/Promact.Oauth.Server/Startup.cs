@@ -37,6 +37,7 @@ namespace Promact.Oauth.Server
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
+                //.AddJsonFile("StringConstant.json", optional: false, reloadOnChange: true);
 
             if (env.IsDevelopment())
             {
@@ -81,7 +82,7 @@ namespace Promact.Oauth.Server
             services.AddScoped<IOAuthRepository, OAuthRepository>();
             services.AddScoped<IStringConstant,StringConstant>();
             services.AddScoped<HttpClient>();
-            
+            //services.Configure<StringConstants>(Configuration.GetSection("StringConstant"));
             services.AddScoped<IHttpClientRepository, HttpClientRepository>();
 
 

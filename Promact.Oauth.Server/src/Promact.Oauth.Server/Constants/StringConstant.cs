@@ -18,8 +18,8 @@
         public string CallbackUrl { get { return "https://promact.slack.com/messages/@roshni/"; } }
         public string CreatedBy { get { return "Ankit"; } }
         public string UpdateBy { get { return "Roshni"; } }
-        public string ATOZ0TO9 { get { return "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"; } }
-        public string ATOZaTOz0TO9 { get { return "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"; } }
+        public string SecretKeyGeneratorString { get { return "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"; } }
+        public string SecureKeyGeneratorString { get { return "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"; } }
         public string EmailNotExists { get { return "Email does not exist"; } }
         public string ForgotPassword { get { return "Forgot Password"; } }
         public string LoginCredentials { get { return "Login Credentials"; } }
