@@ -60,7 +60,8 @@ export class UserEditComponent {
 
     editUser(user: UserModel) {
         this.loader.loader = true;
-        user.FirstName = user.FirstName.trim();
+        //if (this.isSlackUserNameExist == true) {
+        this.user.FirstName = this.user.FirstName.trim();
         this.userService.editUser(user).subscribe((result) => {
             if (result == true) {
                 this.toast.show('User updated successfully.');
