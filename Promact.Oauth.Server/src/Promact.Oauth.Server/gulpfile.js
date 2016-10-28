@@ -118,7 +118,7 @@ gulp.task("min", ["min:js", "min:css"]);
 gulp.task('test', function (done) {
     new Server({
         configFile: __dirname + '/karma.conf.js',
-        singleRun: false,
+        singleRun: true,
     }, function () { done(); }).start();
 });
 
