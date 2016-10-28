@@ -142,7 +142,7 @@ namespace Promact.Oauth.Server
             //If staging or production then only use exceptionless
             if (env.IsProduction())
             {
-                app.UseExceptionless(Configuration["ExceptionLess:ExceptionLessApiKey"]);
+                app.UseExceptionless(Configuration["AppSettings:ExceptionLess:ExceptionLessApiKey"]);
             }
 
             app.UseMvc(routes =>
