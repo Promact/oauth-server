@@ -6,7 +6,7 @@ import { UserService }   from '../user.service';
 import {UserModel} from '../user.model';
 import { Router, ActivatedRoute, RouterModule, Routes } from '@angular/router';
 import { Component } from '@angular/core';
-import {Md2Toast} from 'md2/toast';
+import { Md2Toast } from 'md2';
 import {UserListComponent} from '../user-list/user-list.component';
 import {MockToast} from "../../shared/mocks/mock.toast";
 import {MockUserService} from "../../shared/mocks/user/mock.user.service";

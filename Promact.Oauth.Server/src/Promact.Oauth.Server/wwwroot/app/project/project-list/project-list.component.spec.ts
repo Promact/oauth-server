@@ -8,7 +8,7 @@ import {ProjectListComponent} from './project-list.component';
 import {MockProjectService} from "../../shared/mocks/project/mock.project.service";
 import { LoginService } from '../../login.service';
 import { ProjectModule } from '../project.module';
-import { Md2Toast } from 'md2/toast/toast';
+import { Md2Toast } from 'md2';
 import { LoaderService } from '../../shared/loader.service';
 import { RouterLinkStubDirective } from '../../shared/mocks/mock.routerLink';
 

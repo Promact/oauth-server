@@ -18,6 +18,7 @@
                 <th md2-sort-field="numberofcasualleave">Number Of Casual Leave</th>
                 <th md2-sort-field="numberofsickleave">Number Of Sick Leave</th>
                 <th md2-sort-field="joiningdate">Joining Date</th>
+                <th md2-sort-field="action">Action</th>
             </tr>
         </thead>
         <tbody>
@@ -38,6 +39,12 @@
                 </td>
             </tr>
         </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="9">
+                    <md2-pagination [md2-rows]="[5,10,15]"></md2-pagination>
+                </td>
+            </tr>
+        </tfoot>
     </table>
-      
 </section>

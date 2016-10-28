@@ -62,9 +62,6 @@ gulp.task("copytowwwroot", function () {
            'node_modules/rxjs/**/*.js'
     ]).pipe(gulp.dest('./wwwroot/lib/rxjs'));
 
-    gulp.src([
-      'node_modules/lodash/**/*.js'
-    ]).pipe(gulp.dest('./wwwroot/lib/lodash'));
 
     if (environment.isProduction()) {
         gulp.src([

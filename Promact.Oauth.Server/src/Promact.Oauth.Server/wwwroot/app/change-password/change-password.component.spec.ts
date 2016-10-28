@@ -8,7 +8,7 @@ import { ChangePasswordComponent } from "../change-password/change-password.comp
 import { TestConnection } from "../shared/mocks/test.connection";
 import { UserService } from '../users/user.service';
 import { MockUserService } from "../shared/mocks/user/mock.user.service";
-import { Md2Toast } from 'md2/toast/toast';
+import { Md2Toast } from 'md2';
 import { MockToast } from "../shared/mocks/mock.toast";
 import { Observable } from "rxjs/Observable";
 import { RouterLinkStubDirective } from "../shared/mocks/mock.routerLink";

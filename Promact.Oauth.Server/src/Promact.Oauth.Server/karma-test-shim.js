@@ -88,22 +88,21 @@ System.config({
             defaultExtension: 'js',
             main: 'progress-circle.umd.js'
         },
-        'md2': {
-            format: 'cjs',
-            main: 'md2.umd.js',
-            defaultExtension: 'js'
-        },
         'angular2-in-memory-web-api': {
             main: 'index.js',
             defaultExtension: 'js'
         },
+        'md2': {
+            format: 'cjs',
+            main: 'md2.umd.js',
+            defaultExtension: 'js'
+        }
     },
 
     map: {
         'rxjs': 'node_modules/rxjs',
         '@angular': 'node_modules/@angular',
         '@angular2-material': 'node_modules/@angular2-material',
-        'lodash': 'node_modules/lodash',
         'app': 'wwwroot/app',
         '@angular2-material': 'node_modules/@angular2-material',
         'md2': 'node_modules/md2',
@@ -116,7 +115,6 @@ System.config({
         '@angular/router': 'node_modules/@angular/router/bundles/router.umd.js',
         '@angular/forms': 'node_modules/@angular/forms/bundles/forms.umd.js',
         '@angular/upgrade': 'node_modules/@angular/upgrade/bundles/upgrade.umd.js',
-
         '@angular/core/testing': 'node_modules/@angular/core/bundles/core-testing.umd.js',
         '@angular/platform-browser-dynamic/testing': 'node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic-testing.umd.js',
         '@angular/compiler/testing': 'node_modules/@angular/compiler/bundles/compiler-testing.umd.js',
@@ -125,9 +123,6 @@ System.config({
         '@angular/http/testing': 'node_modules/@angular/http/bundles/http-testing.umd.js',
         '@angular/router/testing': 'node_modules/@angular/router/bundles/router-testing.umd.js',
         '@angular/forms/testing': 'node_modules/@angular/forms/bundles/forms-testing.umd.js',
-
-
-        
     }
 });
 
