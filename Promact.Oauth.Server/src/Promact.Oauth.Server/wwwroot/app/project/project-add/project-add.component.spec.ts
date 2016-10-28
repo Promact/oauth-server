@@ -89,21 +89,6 @@ describe('Project Add Test', () => {
             done();
         })
     });
-
-    //it("should get default page for Project", () => {
-    //    projectAddComponent.ngOnInit();
-    //    expect(projectAddComponent.Userlist).not.toBeNull();
-    //});
-
-    
-    //it("should check project name before add", inject([projectModel], (projectModel: projectModel) => {
-    //    let expectedProjectName = "Tests Projects";
-    //    projectModel.Name = expectedProjectName;
-    //    let expectedSlackChannelName = "Test Slack Name";
-    //    projectModel.SlackChannelName = expectedSlackChannelName;
-    //    projectAddComponent.addProject(projectModel);
-    //    expect(projectModel.Name).toBe(expectedProjectName);
-    //}));
 });    
 
 
