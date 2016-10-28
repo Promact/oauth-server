@@ -118,14 +118,12 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
             var random = new Random();
             if (isAuthId)
             {
-                //const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-                return new string(Enumerable.Repeat(_stringConstant.ATOZ0TO9, 15)
+                return new string(Enumerable.Repeat(_stringConstant.SecretKeyGeneratorString, 15)
                   .Select(s => s[random.Next(s.Length)]).ToArray());
             }
             else
             {
-                //const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-                return new string(Enumerable.Repeat(_stringConstant.ATOZaTOz0TO9, 30)
+                return new string(Enumerable.Repeat(_stringConstant.SecureKeyGeneratorString, 30)
                   .Select(s => s[random.Next(s.Length)]).ToArray());
             }
 

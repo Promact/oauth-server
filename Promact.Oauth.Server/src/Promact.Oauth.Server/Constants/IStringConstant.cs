@@ -17,8 +17,8 @@
          string CallbackUrl { get; }
          string CreatedBy { get; }
          string UpdateBy { get; }
-         string ATOZ0TO9 { get; }
-         string ATOZaTOz0TO9 { get; }
+         string SecretKeyGeneratorString { get; }
+         string SecureKeyGeneratorString { get; }
          string EmailNotExists { get; }
          string ForgotPassword { get; }
          string LoginCredentials { get; }

@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Promact.Oauth.Server.Constants;
+using System.IO;
+using Exceptionless.Json;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
 
 namespace Promact.Oauth.Server.Repository.ProjectsRepository
@@ -16,6 +20,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
     public class ProjectRepository : IProjectRepository
     {
         #region "Private Variable(s)"
+        private readonly IHostingEnvironment _hostingEnvironment;
         private readonly IDataRepository<Project> _projectDataRepository;
         private readonly IDataRepository<ProjectUser> _projectUserDataRepository;
         private readonly IDataRepository<ApplicationUser> _userDataRepository;
@@ -28,7 +33,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
 
         #region "Constructor"
         public ProjectRepository(IDataRepository<Project> projectDataRepository, IDataRepository<ProjectUser> projectUserDataRepository, IDataRepository<ApplicationUser> userDataRepository, UserManager<ApplicationUser> userManager, 
-            IMapper mapperContext,IStringConstant stringConstant, ILogger<ProjectRepository> logger)
+            IMapper mapperContext,IStringConstant stringConstant, IHostingEnvironment hostingEnvironment, ILogger<ProjectRepository> logger)//, IOptions<StringConstants> options)
         {
             _projectDataRepository = projectDataRepository;
             _projectUserDataRepository = projectUserDataRepository;
@@ -36,6 +41,8 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             _mapperContext = mapperContext;
             _userManager = userManager;
             _stringConstant = stringConstant;
+            _hostingEnvironment = hostingEnvironment;
+            //_appSettings = options.Value;
             _logger = logger;
         }
         #endregion
@@ -61,10 +68,26 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                 }
                 else
                 {
+                    //teamLeader.FirstName = _appSettings.TeamLeaderNotAssign;
+                    //teamLeader.LastName = _appSettings.TeamLeaderNotAssign;
+                    //teamLeader.Email = _appSettings.TeamLeaderNotAssign;
 
-                    teamLeader.FirstName = _stringConstant.TeamLeaderNotAssign;
-                    teamLeader.LastName = _stringConstant.TeamLeaderNotAssign;
-                    teamLeader.Email = _stringConstant.TeamLeaderNotAssign;
+
+                    string path = _hostingEnvironment.ContentRootPath + "\\Constants\\StringConstant.json";
+                    using (StreamReader r = File.OpenText(path))
+                    //using (StreamReader r = File.OpenText(@"D:\New Task Mail Report\promact-oauth-server\Promact.Oauth.Server\src\Promact.Oauth.Server\Constants\StringConstant.json"))
+                    {
+                        string json = r.ReadToEnd();
+                        dynamic array = JsonConvert.DeserializeObject(json);
+                        foreach (var item in array)
+                        {
+                            teamLeader.FirstName = item.TeamLeaderNotAssign;
+                            teamLeader.LastName = item.TeamLeaderNotAssign;
+                            teamLeader.Email = item.TeamLeaderNotAssign;
+                            //Console.WriteLine("{0} {1}", item.temp, item.vcc);
+                        }
+                    }
+
                 }
                 var CreatedBy = _userDataRepository.FirstOrDefault(x => x.Id == project.CreatedBy)?.FirstName;
                 var UpdatedBy = _userDataRepository.FirstOrDefault(x => x.Id == project.UpdatedBy)?.FirstName;
