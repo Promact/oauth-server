@@ -53,8 +53,7 @@ export class UserEditComponent {
 
     editUser(user: UserModel) {
         this.loader.loader = true;
-        //if (this.isSlackUserNameExist == true) {
-        this.user.FirstName = this.user.FirstName.trim();
+        user.FirstName = user.FirstName.trim();
         this.userService.editUser(user).subscribe((result) => {
             if (result == true) {
                 this.toast.show('User updated successfully.');
@@ -67,28 +66,9 @@ export class UserEditComponent {
 
         }, err => {
         });
-        //}
-        //else {
-        //    this.toast.show('Slack User Name  already exists.');
-        //}
+        
     }
-
-    //checkSlackUserName(slackUserName) {
-    //    this.isSlackUserNameExist = false;
-    //    this.userService.findUserBySlackUserName(slackUserName).subscribe((isSlackUserNameExist) => {
-    //        if (isSlackUserNameExist) {
-    //            this.isSlackUserNameExist = true;
-    //        }
-    //        else {
-    //            this.isSlackUserNameExist = false;
-    //        }
-    //    }, err => {
-    //    });
-    //}
-
-
-    goBack() {
-        //this.location.back();
+     goBack() {
         this.redirectionRoute.navigate(['user/list']);
     }
 
