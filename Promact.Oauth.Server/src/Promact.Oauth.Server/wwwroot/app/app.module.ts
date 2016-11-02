@@ -17,7 +17,7 @@ import { LoaderService } from "./shared/loader.service";
 import { UserRole } from "./shared/userrole.model";
 
 import { DataTableModule } from "angular2-datatable";
-import { UserRole } from "./shared/userrole.model";
+
 
 
 @NgModule({
