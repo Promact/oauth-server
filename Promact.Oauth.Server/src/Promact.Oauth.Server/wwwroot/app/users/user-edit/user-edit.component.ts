@@ -53,7 +53,7 @@ export class UserEditComponent {
             }
         }, err => {
             console.log(err.statusText);
-            this.loader.loader = false;
+            
         });
     }
 
