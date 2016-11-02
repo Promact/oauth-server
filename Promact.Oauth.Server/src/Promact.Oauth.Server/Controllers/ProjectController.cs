@@ -45,14 +45,14 @@ namespace Promact.Oauth.Server.Controllers
 
         #region public Methods
         /**
-         * @api {get} api/Project/projects 
+         * @api {get} api/Project 
          * @apiVersion 1.0.0
          * @apiName Project
          * @apiGroup Project
          * @apiSuccessExample {json} Success-Response:
          * HTTP/1.1 200 OK 
          * {
-         *     "description":"Get List of Projects"
+         *     "description":"return list of projects"
          * }
          */
         [Authorize]
@@ -74,7 +74,7 @@ namespace Promact.Oauth.Server.Controllers
            
         }
         /**
-      * @api {get} api/Project/getProjects/:id 
+      * @api {get} api/Project/:id 
       * @apiVersion 1.0.0
       * @apiName Project
       * @apiGroup Project
@@ -83,13 +83,13 @@ namespace Promact.Oauth.Server.Controllers
       *      
       *        {
       *             "id": "1"
-      *             "description":"get the ProjectAc Object"
+      *             "description":"return the project details of the given id"
       *        }      
       * @apiSuccessExample {json} Success-Response:
       * HTTP/1.1 200 OK 
       * {
       *     "id":"1"
-      *     "description":"get the ProjectAc Object"
+      *     "description":"return the project details of the given id"
       * }
       */
         [Authorize]
@@ -109,7 +109,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-      * @api {post} api/Project/addProject 
+      * @api {post} api/Project 
       * @apiVersion 1.0.0
       * @apiName Project
       * @apiGroup Project
@@ -130,7 +130,7 @@ namespace Promact.Oauth.Server.Controllers
       * @apiSuccessExample {json} Success-Response:
       * HTTP/1.1 200 OK 
       * {
-      *     "description":"Add Project in ProjectTable"
+      *     "description":"Add new project"
       * }
       */
         [Authorize]
@@ -163,7 +163,7 @@ namespace Promact.Oauth.Server.Controllers
         }
          
         /**
-        * @api {put} api/Project/editProject 
+        * @api {put} api/Project 
         * @apiVersion 1.0.0
         * @apiName Project
         * @apiGroup Project
@@ -186,7 +186,7 @@ namespace Promact.Oauth.Server.Controllers
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
         * {
-        *     "description":"edit Project in ProjectTable"
+        *     "description":"Update project information"
         * }
         */
         [Authorize]
@@ -224,7 +224,7 @@ namespace Promact.Oauth.Server.Controllers
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
         * {
-        *     "description":"Object of ProjectAc"
+        *     "description":"Method to return list of users/employees of the given group name"
         * }
         */
         [ServiceFilter(typeof(CustomAttribute))]
@@ -257,7 +257,7 @@ namespace Promact.Oauth.Server.Controllers
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
         * {
-        *     "description":"Object of UserRoleAc"
+        *     "description":"Method to return user role"
         * }
         */
         [ServiceFilter(typeof(CustomAttribute))]
@@ -284,7 +284,7 @@ namespace Promact.Oauth.Server.Controllers
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
         * {
-        *     "description":"Get List of Users"
+        *     "description":"Method return list of users"
         * }
         */
         [ServiceFilter(typeof(CustomAttribute))]
@@ -312,7 +312,7 @@ namespace Promact.Oauth.Server.Controllers
       * @apiSuccessExample {json} Success-Response:
       * HTTP/1.1 200 OK 
       * {
-      *     "description":"List of Object of UserAc"
+      *     "description":"method return list of users"
       * }
       */
         [ServiceFilter(typeof(CustomAttribute))]
@@ -329,9 +329,6 @@ namespace Promact.Oauth.Server.Controllers
             {
                 return NotFound();
             }
-           
-            
-            
         }
 
         /**
@@ -342,7 +339,7 @@ namespace Promact.Oauth.Server.Controllers
       * @apiSuccessExample {json} Success-Response:
       * HTTP/1.1 200 OK 
       * {
-      *     "description":"List of Object of ProjectAc"
+      *     "description":"Method return list of Project"
       * }
       */
         [HttpGet]
@@ -367,7 +364,7 @@ namespace Promact.Oauth.Server.Controllers
       * @apiSuccessExample {json} Success-Response:
       * HTTP/1.1 200 OK 
       * {
-      *     "description":"Object of type ProjectAc "
+      *     "description":"return list of projects"
       * }
       */
         [HttpGet]
