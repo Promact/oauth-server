@@ -25,9 +25,10 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         private readonly IDataRepository<ApplicationUser> _userDataRepository;
 
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IStringConstant _stringConstant;
+        private  IStringConstant _stringConstant;
         private readonly IMapper _mapperContext;
-
+        private readonly dynamic array;
+        //private Constant con=new Constant();
         //private readonly StringConstants _appSettings;
         #endregion
 
@@ -42,7 +43,19 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             _userManager = userManager;
             _stringConstant = stringConstant;
             _hostingEnvironment = hostingEnvironment;
-            //_appSettings = options.Value;
+            
+            string path = _hostingEnvironment.ContentRootPath + "\\Constants\\StringConstant.json";
+            using (StreamReader r = File.OpenText(path))
+            {
+                string json = r.ReadToEnd();
+                array = JsonConvert.DeserializeObject(json);
+                foreach (var item in array)
+                {
+                    _stringConstant.TeamLeaderNotAssign= item.TeamLeaderNotAssign;
+                    _stringConstant.DateFormate = item.DateFormate;
+                }
+
+            }
         }
         #endregion
 
@@ -67,26 +80,9 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                 }
                 else
                 {
-                    //teamLeader.FirstName = _appSettings.TeamLeaderNotAssign;
-                    //teamLeader.LastName = _appSettings.TeamLeaderNotAssign;
-                    //teamLeader.Email = _appSettings.TeamLeaderNotAssign;
-
-
-                    string path = _hostingEnvironment.ContentRootPath + "\\Constants\\StringConstant.json";
-                    using (StreamReader r = File.OpenText(path))
-                    //using (StreamReader r = File.OpenText(@"D:\New Task Mail Report\promact-oauth-server\Promact.Oauth.Server\src\Promact.Oauth.Server\Constants\StringConstant.json"))
-                    {
-                        string json = r.ReadToEnd();
-                        dynamic array = JsonConvert.DeserializeObject(json);
-                        foreach (var item in array)
-                        {
-                            teamLeader.FirstName = item.TeamLeaderNotAssign;
-                            teamLeader.LastName = item.TeamLeaderNotAssign;
-                            teamLeader.Email = item.TeamLeaderNotAssign;
-                            //Console.WriteLine("{0} {1}", item.temp, item.vcc);
-                        }
-                    }
-
+                    teamLeader.FirstName = _stringConstant.TeamLeaderNotAssign;
+                    teamLeader.LastName = _stringConstant.LastName;
+                    teamLeader.Email = _stringConstant.Email;
                 }
                 var CreatedBy = _userDataRepository.FirstOrDefault(x => x.Id == project.CreatedBy)?.FirstName;
                 var UpdatedBy = _userDataRepository.FirstOrDefault(x => x.Id == project.UpdatedBy)?.FirstName;
@@ -354,6 +350,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             var userRoles = new List<UserRoleAc>();
             var usersRole = new UserRoleAc();
             usersRole.UserName = user.UserName;
+
             usersRole.Role = _stringConstant.RoleTeamLeader;
             usersRole.Name = user.FirstName + " " + user.LastName;
             userRoles.Add(usersRole);
