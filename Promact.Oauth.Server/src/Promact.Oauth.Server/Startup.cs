@@ -60,20 +60,22 @@ namespace Promact.Oauth.Server
             // Configure AppSettings using config by installing Microsoft.Extensions.Options.ConfigurationExtensions
             //services.Configure<AppSettings>(Configuration);
 
-            //Configure AppSettings using config by installing Microsoft.Extensions.Options.ConfigurationExtensions
-            services.Configure<AppSettings>(myOptions =>
+            //Configure EmailCrednetials using config by installing Microsoft.Extensions.Options.ConfigurationExtensions
+            services.Configure<EmailCrednetials>(myOptions =>
             {
                 myOptions.From = Configuration["EmailCredential:From"];
                 myOptions.Host = Configuration["EmailCredential:Host"];
                 myOptions.Password = Configuration["EmailCredential:Password"];
                 myOptions.Port = Convert.ToInt32(Configuration["EmailCredential:Port"]);
                 myOptions.SslOnConnect = Convert.ToBoolean(Configuration["EmailCredential:SslOnConnect"]);
-                myOptions.SendGridApi = Configuration["SendGridAPI:SendGridApiKey"];
                 myOptions.UserName = Configuration["EmailCredential:UserName"];
             });
-            
-            // Add framework services.
-            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+
+            //Configure SendGridAPI
+            services.Configure<SendGridAPI>(myOptions =>
+            {
+                myOptions.SendGridApi = Configuration["SendGridAPI:SendGridApiKey"];
+            });
 
             // Add framework services.
             services.AddDbContext<PromactOauthDbContext>(options =>
