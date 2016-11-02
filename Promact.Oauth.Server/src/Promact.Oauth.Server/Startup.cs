@@ -73,6 +73,9 @@ namespace Promact.Oauth.Server
             });
             
             // Add framework services.
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+
+            // Add framework services.
             services.AddDbContext<PromactOauthDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
