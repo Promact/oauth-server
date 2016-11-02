@@ -39,6 +39,8 @@ export class UserDetailsComponent {
                     this.user = user,
                         this.loader.loader = false;
                 }, err => {
+                    console.log(err.statusText);
+                    this.loader.loader = false;
                 });
 
 
