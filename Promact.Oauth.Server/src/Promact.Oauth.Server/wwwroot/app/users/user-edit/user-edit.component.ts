@@ -52,6 +52,7 @@ export class UserEditComponent {
                 }
             }
         }, err => {
+            console.log(err);
         });
     }
 
@@ -69,6 +70,8 @@ export class UserEditComponent {
             this.loader.loader = false;
 
         }, err => {
+            console.log(err.statusText);
+            this.loader.loader = false;
         });
         
     }
