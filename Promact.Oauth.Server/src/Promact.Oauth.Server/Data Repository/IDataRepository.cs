@@ -116,5 +116,12 @@ namespace Promact.Oauth.Server.Data_Repository
         /// <param name="predicate"></param>
         /// <returns></returns>
         Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate);
+
+        /// <summary>
+        ///  Find object by specified expression.
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        Task<IEnumerable<T>> FetchAsync(Expression<Func<T, bool>> predicate);
     }
 }
