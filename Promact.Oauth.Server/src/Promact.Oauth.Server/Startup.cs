@@ -47,22 +47,25 @@ namespace Promact.Oauth.Server
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
 
-
-            
-
             _loggerFactory = loggerFactory;
 
         }
 
-        
-        
+
+
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //var builder = new ContainerBuilder();
-            //builder.RegisterType<AuthMessageSender>().As<IEmailSender>().InstancePerDependency();
-            //builder.RegisterType<AuthMessageSender>().As<ISmsSender>().InstancePerDependency();
+            // Configure AppSettings using config by installing Microsoft.Extensions.Options.ConfigurationExtensions
+            //services.Configure<AppSettings>(Configuration);
+
+            //Configure EmailCrednetials using config by installing Microsoft.Extensions.Options.ConfigurationExtensions
+            services.Configure<EmailCrednetials>(Configuration.GetSection("EmailCrednetials"));
+
+            //Configure SendGridAPI
+            services.Configure<SendGridAPI>(Configuration.GetSection("SendGridAPI"));
+
 
             // Add framework services.
             services.AddDbContext<PromactOauthDbContext>(options =>
@@ -79,23 +82,15 @@ namespace Promact.Oauth.Server
             services.AddScoped<IConsumerAppRepository, ConsumerAppRepository>();
             services.AddScoped(typeof(IDataRepository<>), typeof(DataRepository<>));
             services.AddScoped<IOAuthRepository, OAuthRepository>();
-            services.AddScoped<IStringConstant,StringConstant>();
+            services.AddScoped<IStringConstant, StringConstant>();
             services.AddScoped<HttpClient>();
-            
+
             services.AddScoped<IHttpClientRepository, HttpClientRepository>();
 
 
             services.AddMvc();
             services.AddScoped<CustomAttribute>();
-            //.AddJsonOptions(opt =>
-            //{
-            //    var resolver = opt.SerializerSettings.ContractResolver;
-            //    if (resolver != null)
-            //    {
-            //        var res = resolver as DefaultContractResolver;
-            //        res.NamingStrategy = null;  // <<!-- this removes the camelcasing
-            //    }
-            //});
+
 
             // Add application services.
             if (_currentEnvironment.IsDevelopment())
@@ -104,10 +99,7 @@ namespace Promact.Oauth.Server
                 services.AddTransient<IEmailSender, SendGridEmailSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
 
-            services.AddOptions();            
-
-            // Configure MyOptions using config by installing Microsoft.Extensions.Options.ConfigurationExtensions
-            services.Configure<AppSettings>(Configuration);
+            services.AddOptions();
 
             //Register Mapper
             MapperConfiguration mapperConfiguration = new MapperConfiguration(cfg =>
@@ -118,8 +110,6 @@ namespace Promact.Oauth.Server
 
             services.AddMvc().AddMvcOptions(x => x.Filters.Add(new GlobalExceptionFilter(_loggerFactory)));
         }
-
-
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IEnsureSeedData seeder, IServiceProvider serviceProvider)
@@ -150,9 +140,11 @@ namespace Promact.Oauth.Server
 
             app.UseIdentity();
 
-            // Add Exceptionless Api_key and will be used on project for throwing exception
-            app.UseExceptionless(Environment.GetEnvironmentVariable("ExceptionLessApiKey"));
-            // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
+            //If staging or production then only use exceptionless
+            if (env.IsProduction())
+            {
+                app.UseExceptionless(Configuration["ExceptionLess:ExceptionLessApiKey"]);
+            }
 
             app.UseMvc(routes =>
             {
