@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using Promact.Oauth.Server.Repository;
 using System.Threading.Tasks;
-using Exceptionless;
 using Promact.Oauth.Server.Services;
 using Microsoft.AspNetCore.Authorization;
 using Promact.Oauth.Server.Exception_Handler;
@@ -47,16 +46,16 @@ namespace Promact.Oauth.Server.Controllers
 
         #region public Methods
         /**
-     * @api {get} api/Project/projects 
-     * @apiVersion 1.0.0
-     * @apiName Project
-     * @apiGroup Project
-     * @apiSuccessExample {json} Success-Response:
-     * HTTP/1.1 200 OK 
-     * {
-     *     "description":"Get List of Projects"
-     * }
-     */
+         * @api {get} api/Project/projects 
+         * @apiVersion 1.0.0
+         * @apiName Project
+         * @apiGroup Project
+         * @apiSuccessExample {json} Success-Response:
+         * HTTP/1.1 200 OK 
+         * {
+         *     "description":"Get List of Projects"
+         * }
+         */
         [Authorize]
         [HttpGet]
         [Route("")]
@@ -264,9 +263,7 @@ namespace Promact.Oauth.Server.Controllers
         * @apiParamExample {json} Request-Example:
         *      
         *        {
-        *             
-        *             "Name":"UserName"
-        *            
+                    "Name":"UserName"    
         *        }      
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
@@ -277,9 +274,18 @@ namespace Promact.Oauth.Server.Controllers
         [ServiceFilter(typeof(CustomAttribute))]
         [HttpGet]
         [Route("featchUserRole/{name}")]
-        public async Task<List<UserRoleAc>> GetUserRole(string name)
+        public async Task<IActionResult> GetUserRole(string name)
         {
-            return await _projectRepository.GetUserRole(name);
+            try
+            {
+                List<UserRoleAc> userRole = await _projectRepository.GetUserRole(name);
+                return Ok(userRole);
+            }
+            catch (UserRoleNotFound)
+            {
+                return NotFound();
+            }
+
         }
         /**
         * @api {get} api/Project/GetListOfEmployee 
@@ -323,17 +329,20 @@ namespace Promact.Oauth.Server.Controllers
         [ServiceFilter(typeof(CustomAttribute))]
         [HttpGet]
         [Route("fetchProjectUsers/{groupName}")]
-        public List<UserAc> FetchUsers(string groupName)
+        public async Task<IActionResult> FetchUsers(string groupName)
         {
             try
             {
-                return _projectRepository.GetProjectUserByGroupName(groupName);
+                List<UserAc> userAc =await _projectRepository.GetProjectUserByGroupName(groupName);
+                return Ok(userAc);
             }
-            catch (Exception ex)
+            catch (UserNotFound)
             {
-                ex.ToExceptionless().Submit();
-                throw ex;
+                return NotFound();
             }
+           
+            
+            
         }
 
         /**
