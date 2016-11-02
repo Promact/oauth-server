@@ -10,8 +10,8 @@
 
         public string Host { get; set; }
 
-        public string Port { get; set; }
-
+        public int Port { get; set; }
+        
         public bool SslOnConnect { get; set; }
 
         public string SendGridApi { get; set; }

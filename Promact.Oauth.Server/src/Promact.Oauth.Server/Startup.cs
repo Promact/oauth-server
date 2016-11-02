@@ -46,10 +46,7 @@ namespace Promact.Oauth.Server
 
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
-
-
             
-
             _loggerFactory = loggerFactory;
 
         }
@@ -61,11 +58,20 @@ namespace Promact.Oauth.Server
         public void ConfigureServices(IServiceCollection services)
         {
             // Configure AppSettings using config by installing Microsoft.Extensions.Options.ConfigurationExtensions
-            services.Configure<AppSettings>(Configuration);
+            //services.Configure<AppSettings>(Configuration);
 
-            // Add framework services.
-            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
-
+            //Configure AppSettings using config by installing Microsoft.Extensions.Options.ConfigurationExtensions
+            services.Configure<AppSettings>(myOptions =>
+            {
+                myOptions.From = Configuration["EmailCredential:From"];
+                myOptions.Host = Configuration["EmailCredential:Host"];
+                myOptions.Password = Configuration["EmailCredential:Password"];
+                myOptions.Port = Convert.ToInt32(Configuration["EmailCredential:Port"]);
+                myOptions.SslOnConnect = Convert.ToBoolean(Configuration["EmailCredential:SslOnConnect"]);
+                myOptions.SendGridApi = Configuration["SendGridAPI:SendGridApiKey"];
+                myOptions.UserName = Configuration["EmailCredential:UserName"];
+            });
+            
             // Add framework services.
             services.AddDbContext<PromactOauthDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
