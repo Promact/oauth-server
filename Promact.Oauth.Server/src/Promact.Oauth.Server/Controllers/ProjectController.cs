@@ -267,9 +267,18 @@ namespace Promact.Oauth.Server.Controllers
         [ServiceFilter(typeof(CustomAttribute))]
         [HttpGet]
         [Route("featchUserRole/{name}")]
-        public async Task<List<UserRoleAc>> GetUserRole(string name)
+        public async Task<IActionResult> GetUserRole(string name)
         {
-            return await _projectRepository.GetUserRole(name);
+            try
+            {
+                List<UserRoleAc> userRole = await _projectRepository.GetUserRole(name);
+                return Ok(userRole);
+            }
+            catch (UserRoleNotFound)
+            {
+                return NotFound();
+            }
+
         }
         /**
         * @api {get} api/Project/GetListOfEmployee 
@@ -323,6 +332,9 @@ namespace Promact.Oauth.Server.Controllers
             {
                 return NotFound();
             }
+           
+            
+            
         }
 
         /**
