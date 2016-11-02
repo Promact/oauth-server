@@ -70,14 +70,10 @@
             main: 'progress-circle.umd.js'
         },
         'md2': {
-            main: 'all.js',
-            defaultExtension: 'js'
-        },
-        'md2/toast': {
             format: 'cjs',
-            defaultExtension: 'js',
-            main: 'toast.js'
-        },
+            main: 'md2.umd.js',
+            defaultExtension: 'js'
+        }
     };
 
     var ngPackageNames = [
@@ -89,7 +85,7 @@
       'platform-browser',
       'platform-browser-dynamic',
       'router',
-      'upgrade',
+      'upgrade'
     ];
 
     var mdPackages = [

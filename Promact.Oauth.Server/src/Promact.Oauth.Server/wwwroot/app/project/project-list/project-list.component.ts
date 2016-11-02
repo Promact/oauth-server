@@ -2,7 +2,7 @@
 import { ProjectService } from '../project.service';
 import { projectModel } from '../project.model'
 import { Router } from '@angular/router';
-import { Md2Toast } from 'md2/toast/toast';
+import { Md2Toast } from 'md2';
 import { LoginService } from '../../login.service';
 import { LoaderService } from '../../shared/loader.service';
 

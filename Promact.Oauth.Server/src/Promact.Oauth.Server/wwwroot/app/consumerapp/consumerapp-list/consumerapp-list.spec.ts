@@ -5,7 +5,7 @@ import { ConsumerAppModel } from "../consumerapp-model";
 import { ConsumerappListComponent } from "../consumerapp-list/consumerapp-list.component";
 import { ConsumerAppService } from "../consumerapp.service";
 import { Router, ActivatedRoute, RouterModule, Routes } from '@angular/router';
-import { Md2Toast } from 'md2/toast/toast';
+import { Md2Toast } from 'md2';
 import { MockToast } from "../../shared/mocks/mock.toast";
 import { MockConsumerappService } from "../../shared/mocks/consumerapp/mock.consumerapp.service";
 import { MockRouter } from '../../shared/mocks/mock.router';

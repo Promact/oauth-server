@@ -6,7 +6,7 @@ import { UserEditComponent } from "../user-edit/user-edit.component";
 import { UserService } from "../user.service";
 import { UserModule } from '../user.module';
 import { Router, ActivatedRoute, RouterModule, Routes } from '@angular/router';
-import { Md2Toast } from 'md2/toast/toast';
+import { Md2Toast } from 'md2';
 import { MockToast } from "../../shared/mocks/mock.toast";
 import { Md2Multiselect } from 'md2/multiselect';
 import { MockUserService } from "../../shared/mocks/user/mock.user.service";

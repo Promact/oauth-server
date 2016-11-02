@@ -2,12 +2,13 @@
 import { Router } from '@angular/router';
 import { UserService } from '../user.service';
 import { UserModel } from '../user.model';
-import { Md2Toast } from 'md2/toast/toast';
+import { Md2Toast } from 'md2';
 import { LoaderService } from '../../shared/loader.service';
 
+
+
 @Component({
-    templateUrl: "app/users/user-list/user-list.html",
-    
+    templateUrl: "app/users/user-list/user-list.html"
 })
 
 export class UserListComponent {
@@ -17,9 +18,7 @@ export class UserListComponent {
         this.users = new Array<UserModel>();
         this.user = new UserModel();
     }
-
-
-
+    
     getUsers() {
         this.loader.loader = true;
         this.userService.getUsers().subscribe((users) => {

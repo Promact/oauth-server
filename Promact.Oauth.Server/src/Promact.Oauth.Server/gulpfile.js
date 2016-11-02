@@ -47,33 +47,34 @@ gulp.task("copytowwwroot", function () {
          'node_modules/systemjs/dist/system.src.js',
          'node_modules/core-js/client/shim.min.js'
     ]).pipe(gulp.dest('./wwwroot/lib/'));
-        
-   gulp.src([
-        'node_modules/@angular/**/*.js'
-        ]).pipe(gulp.dest('./wwwroot/lib/@angular'));
+
+    gulp.src([
+         'node_modules/@angular/**/*.js'
+    ]).pipe(gulp.dest('./wwwroot/lib/@angular'));
 
 
-   gulp.src([
-        'node_modules/@angular2-material/**/*.js'
-        ]).pipe(gulp.dest('./wwwroot/lib/@angular2-material'));
+    gulp.src([
+         'node_modules/@angular2-material/**/*.js'
+    ]).pipe(gulp.dest('./wwwroot/lib/@angular2-material'));
 
 
-   gulp.src([
-          'node_modules/rxjs/**/*.js'
-        ]).pipe(gulp.dest('./wwwroot/lib/rxjs'));
-   
-   if (environment.isProduction()) {
-         gulp.src([
-                'node_modules/md2/**/*.js'
-            ]).pipe(gulp.dest('./wwwroot/lib/md2'));
-   }
-   else{
-           gulp.src([
-           'node_modules/md2/**/*.js',
-           'node_modules/md2/**/*.js.map'
-            ]).pipe(gulp.dest('./wwwroot/lib/md2'));
-   }
- 
+    gulp.src([
+           'node_modules/rxjs/**/*.js'
+    ]).pipe(gulp.dest('./wwwroot/lib/rxjs'));
+
+
+    if (environment.isProduction()) {
+        gulp.src([
+               'node_modules/md2/**/*.js'
+        ]).pipe(gulp.dest('./wwwroot/lib/md2'));
+    }
+    else {
+        gulp.src([
+        'node_modules/md2/**/*.js',
+        'node_modules/md2/**/*.js.map'
+        ]).pipe(gulp.dest('./wwwroot/lib/md2'));
+    }
+
 });
 
 
