@@ -86,8 +86,10 @@
          string OldPassword { get; }
          string Url { get; }
          string Format { get; }
-        string DateFormate { get; }
-        string TeamLeaderNotAssign { get; }
+       
         string DomainAddress { get; }
+
+        string DateFormate { get; set; }
+        string TeamLeaderNotAssign { get; set; }
     }
 }

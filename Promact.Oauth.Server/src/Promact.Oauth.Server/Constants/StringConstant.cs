@@ -87,8 +87,11 @@
         public string OldPassword { get { return "User@123"; } }
         public string Url { get { return "Url"; } }
         public string Format { get { return "yyyy-MM-dd"; } }
-        public string DateFormate { get { return "dd'/'MM'/'yyyy"; } }
-        public string TeamLeaderNotAssign { get { return "Not Assigned"; } }
+        
         public string DomainAddress { get { return "@promactinfo.com"; } }
+
+        public string DateFormate { get; set; }
+        public string TeamLeaderNotAssign { get; set; }
     }
+
 }
