@@ -46,13 +46,13 @@ namespace Promact.Oauth.Server
 
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
-            
+
             _loggerFactory = loggerFactory;
 
         }
 
-        
-        
+
+
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -61,21 +61,11 @@ namespace Promact.Oauth.Server
             //services.Configure<AppSettings>(Configuration);
 
             //Configure EmailCrednetials using config by installing Microsoft.Extensions.Options.ConfigurationExtensions
-            services.Configure<EmailCrednetials>(myOptions =>
-            {
-                myOptions.From = Configuration["EmailCredential:From"];
-                myOptions.Host = Configuration["EmailCredential:Host"];
-                myOptions.Password = Configuration["EmailCredential:Password"];
-                myOptions.Port = Convert.ToInt32(Configuration["EmailCredential:Port"]);
-                myOptions.SslOnConnect = Convert.ToBoolean(Configuration["EmailCredential:SslOnConnect"]);
-                myOptions.UserName = Configuration["EmailCredential:UserName"];
-            });
+            services.Configure<EmailCrednetials>(Configuration.GetSection("EmailCrednetials"));
 
             //Configure SendGridAPI
-            services.Configure<SendGridAPI>(myOptions =>
-            {
-                myOptions.SendGridApi = Configuration["SendGridAPI:SendGridApiKey"];
-            });
+            services.Configure<SendGridAPI>(Configuration.GetSection("SendGridAPI"));
+
 
             // Add framework services.
             services.AddDbContext<PromactOauthDbContext>(options =>
@@ -92,9 +82,9 @@ namespace Promact.Oauth.Server
             services.AddScoped<IConsumerAppRepository, ConsumerAppRepository>();
             services.AddScoped(typeof(IDataRepository<>), typeof(DataRepository<>));
             services.AddScoped<IOAuthRepository, OAuthRepository>();
-            services.AddScoped<IStringConstant,StringConstant>();
+            services.AddScoped<IStringConstant, StringConstant>();
             services.AddScoped<HttpClient>();
-            
+
             services.AddScoped<IHttpClientRepository, HttpClientRepository>();
 
 
@@ -109,7 +99,7 @@ namespace Promact.Oauth.Server
                 services.AddTransient<IEmailSender, SendGridEmailSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
 
-            services.AddOptions();            
+            services.AddOptions();
 
             //Register Mapper
             MapperConfiguration mapperConfiguration = new MapperConfiguration(cfg =>
