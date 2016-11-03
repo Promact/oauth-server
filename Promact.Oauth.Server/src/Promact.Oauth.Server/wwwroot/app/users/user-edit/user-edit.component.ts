@@ -60,6 +60,7 @@ export class UserEditComponent {
 
     editUser(user: UserModel) {
         this.loader.loader = true;
+        user.FirstName = user.FirstName.trim();
         this.userService.editUser(user).subscribe((result) => {
             if (result == true) {
                 this.toast.show('User updated successfully.');
@@ -76,10 +77,7 @@ export class UserEditComponent {
         });
         
     }
-
-    
-
-    goBack() {
+     goBack() {
         this.redirectionRoute.navigate(['user/list']);
     }
 
