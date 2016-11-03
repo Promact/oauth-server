@@ -2,6 +2,7 @@
 import { LoginService } from './login.service';
 import { Router } from '@angular/router';
 import { LoaderService } from './shared/loader.service'
+import { UserRole } from "./shared/userrole.model";
 
 @Component({
     selector: 'my-app',
@@ -10,23 +11,17 @@ import { LoaderService } from './shared/loader.service'
 export class AppComponent {
     user: any;
     admin: any;
-    constructor(private loginService: LoginService, private router: Router, private loader: LoaderService) { }
-
-    getRole() {
-        this.loginService.getRoleAsync().subscribe((result) => {
-            this.user = result;
-            if (this.user.role === "Admin") {
-                this.admin = true;
-            }
-            else {
-                this.admin = false;
-            }
-        }, err => {
-        });
-    }
-
+    userId: string;
+    constructor(private loginService: LoginService, private router: Router, private loader: LoaderService, private userRole: UserRole)
+    { }
     ngOnInit() {
-        this.getRole();
+        if (this.userRole.Role === "Admin") {
+            this.admin = true;
+        }
+        else {
+            this.userId = this.userRole.Id;
+            this.admin = false;
+        }
     }
 }
 

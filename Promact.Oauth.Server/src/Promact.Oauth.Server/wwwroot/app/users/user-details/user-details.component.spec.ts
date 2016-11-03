@@ -19,12 +19,11 @@ import { LocationStrategy } from "@angular/common";
 import { LoginService } from '../../login.service';
 import { MockLoginService } from "../../shared/mocks/mock.login.service";
 import { ActivatedRouteStub } from "../../shared/mocks/mock.activatedroute";
+import { UserRole } from "../../shared/userrole.model";
 
 describe("User Details Test", () => {
     let userDetailsComponent: UserDetailsComponent;
     let userService: UserService;
-    //class MockActivatedRoute { }
-
     class MockLocation { }
     class MockLoaderService { }
     class McokLogin { }
@@ -42,7 +41,9 @@ describe("User Details Test", () => {
                 { provide: UserModel, useClass: UserModel },
                 { provide: LoaderService, useClass: MockLoaderService },
                 { provide: LoginService, useClass: MockLoginService },
-                { provide: Location, useClass: MockLocation }
+                { provide: Location, useClass: MockLocation },
+                { provide: UserRole, useValue: new UserRole() }
+                
             ]
         }).compileComponents();
 
@@ -57,15 +58,10 @@ describe("User Details Test", () => {
             let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
             activatedRoute.testParams = { id: "1" };            
             let userDetailsComponent:UserDetailsComponent = fixture.componentInstance;
-            let expectedFirstName = "First Name"
-            let userModel = new UserModel();
+            let expectedFirstName = "First Name";
             fixture.detectChanges();
             expect(userDetailsComponent.user.FirstName).toBe(expectedFirstName);
             done();
         });
     });
-
-
-   
-   
 });
