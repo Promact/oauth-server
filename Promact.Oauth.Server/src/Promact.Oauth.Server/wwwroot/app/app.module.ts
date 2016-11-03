@@ -14,7 +14,7 @@ import { LoginService } from "./login.service";
 import { MdSidenavModule } from "@angular2-material/sidenav";
 import { MdToolbarModule } from "@angular2-material/toolbar";
 import { LoaderService } from "./shared/loader.service";
-import { DataTableModule } from "angular2-datatable";
+
 
 @NgModule({
     declarations: [AppComponent],
