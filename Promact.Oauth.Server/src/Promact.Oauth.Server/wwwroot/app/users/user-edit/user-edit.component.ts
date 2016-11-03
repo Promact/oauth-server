@@ -71,7 +71,7 @@ export class UserEditComponent {
             this.loader.loader = false;
 
         }, err => {
-            console.log(err.statusText);
+            this.toast.show('User detail could not be edited successfully.');
             this.loader.loader = false;
         });
         
