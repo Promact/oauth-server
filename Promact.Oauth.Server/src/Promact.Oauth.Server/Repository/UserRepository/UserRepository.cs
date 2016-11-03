@@ -1,22 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Promact.Oauth.Server.Models;
-using Promact.Oauth.Server.Data_Repository;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Promact.Oauth.Server.Constants;
+using Promact.Oauth.Server.Data_Repository;
+using Promact.Oauth.Server.Exception_Handler;
+using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Models.ApplicationClasses;
 using Promact.Oauth.Server.Models.ManageViewModels;
-using Promact.Oauth.Server.Services;
-using AutoMapper;
 using Promact.Oauth.Server.Repository.ProjectsRepository;
-using Promact.Oauth.Server.Constants;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Options;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using Promact.Oauth.Server.Exception_Handler;
-using Microsoft.EntityFrameworkCore;
+using Promact.Oauth.Server.Services;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Promact.Oauth.Server.Repository
 {
@@ -579,15 +580,21 @@ namespace Promact.Oauth.Server.Repository
         }
 
         /// <summary>
-        /// This method used for genrate random string. 
+        /// This method used for genrate random string with alphanumeric words and special characters. 
         /// </summary>
         /// <returns></returns>
         private string GetRandomString()
         {
             Random random = new Random();
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            string randomString = new string(Enumerable.Repeat(chars, 8).Select(s => s[random.Next(8)]).ToArray());
-            return "User00" + "_" + randomString;
+            //Initialize static Ato,atoz,0to9 and special characters seprated by '|'.
+            const string chars = "abcdefghijklmnopqrstuvwxyz|ABCDEFGHIJKLMNOPQRSTUVWXYZ|012345789|@#$%^!&*()";
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < 4; i++)
+            {
+                //Get random 4 characters from diffrent portion and append on stringbuilder. 
+                sb.Append(new string(Enumerable.Repeat(chars.Split('|').ToArray()[i], 3).Select(s => s[random.Next(4)]).ToArray()));
+            }
+            return sb.ToString();
         }
 
         #endregion
