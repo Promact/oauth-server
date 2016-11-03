@@ -49,13 +49,13 @@ export class UserAddComponent {
         if (!this.isSlackUserNameExist) {
             if (!this.isEmailExist) {
                 userModel.FirstName = userModel.FirstName.trim();
-                this.userService.registerUser(this.userModel).subscribe((result) => {
+                this.userService.registerUser(userModel).subscribe((result) => {
                     if (result) {
                         this.toast.show('User added successfully.');
                         this.redirectionRoute.navigate(['user/list']);
                     }
                     else if (!result) {
-                        this.toast.show('User Name already exists.');
+                        this.toast.show('Email is invalid.');
                     }
                     this.loader.loader = false;
                 }, err => {

@@ -1,9 +1,9 @@
 ﻿
-import {Injectable} from '@angular/core';
-import {ResponseOptions, Response} from "@angular/http";
+import { Injectable } from '@angular/core';
+import { ResponseOptions, Response } from "@angular/http";
 import { UserModel } from "../../../users/user.model";
-import {PasswordModel} from "../../../users/user-password.model";
-import {Subject} from 'rxjs/Rx';
+import { PasswordModel } from "../../../users/user-password.model";
+import { Subject } from 'rxjs/Rx';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 
@@ -18,13 +18,16 @@ export class MockUserService {
         mockUser.FirstName = "First Name";
         mockUser.LastName = "Last Name";
         mockUser.Email = "test@promactinfo.com";
-        
+
         return new BehaviorSubject(mockUser).asObservable();
-        
+
     }
 
     registerUser(newUser: UserModel) {
-        return new BehaviorSubject(newUser).asObservable();
+        if (newUser.Email === "ankit@promactinfo.com")
+            return new BehaviorSubject(newUser.Email).asObservable();
+        else
+            return new BehaviorSubject(newUser.FirstName).asObservable();
     }
 
     getUserById(userId: string) {
