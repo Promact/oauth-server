@@ -16,6 +16,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Promact.Oauth.Server.Exception_Handler;
+using Microsoft.EntityFrameworkCore;
 
 namespace Promact.Oauth.Server.Repository
 {
@@ -227,18 +228,8 @@ namespace Promact.Oauth.Server.Repository
         /// <returns>List of all Employees</returns>
         public async Task<List<UserAc>> GetAllEmployees()
         {
-            var employees = await _userManager.GetUsersInRoleAsync(_stringConstant.RoleEmployee);
-            var userList = new List<UserAc>();
-
-            foreach (var user in employees)
-            {
-
-                var listItem = _mapperContext.Map<ApplicationUser, UserAc>(user);
-
-                userList.Add(listItem);
-            }
-
-            return userList.OrderBy(users => users.FirstName).ToList();
+            var users =await _userManager.Users.Where(user=>user.IsActive).OrderBy(user => user.FirstName).ToListAsync() ;
+            return _mapperContext.Map<List<ApplicationUser>,List<UserAc>>(users);
         }
 
 
