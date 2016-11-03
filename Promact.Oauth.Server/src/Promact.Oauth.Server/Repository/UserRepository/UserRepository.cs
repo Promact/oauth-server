@@ -229,8 +229,8 @@ namespace Promact.Oauth.Server.Repository
         public async Task<List<UserAc>> GetAllEmployees()
         {
             var users =await _userManager.Users.Where(user=>user.IsActive).ToListAsync() ;
-            var userAc= _mapperContext.Map<List<ApplicationUser>,List<UserAc>>(users);
-            return userAc.OrderBy(user => user.FirstName).ToList();
+            var userAclist = _mapperContext.Map<List<ApplicationUser>,List<UserAc>>(users);
+            return userAclist.OrderBy(user => user.FirstName).ToList();
         }
 
 
