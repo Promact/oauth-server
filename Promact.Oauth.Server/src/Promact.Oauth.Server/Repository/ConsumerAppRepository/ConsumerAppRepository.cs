@@ -114,23 +114,22 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         #region "Private Method(s)"
 
         /// <summary>
-        /// This method used for created random number For AuthId and Auth Secreate. -An
+        /// This method used for get random number For AuthId and Auth Secreate. -An
         /// </summary>
-        /// <param name="isAuthId"></param>
+        /// <param name="isAuthId">isAuthId = true (get random number for auth id.) and 
+        /// isAuthId = false (get random number for auth secreate)</param>
         /// <returns></returns>
-        private string CreatedRandomNumer(bool isAuthId)
+        private string GetRandomNumber(bool isAuthId)
         {
 
             var random = new Random();
             if (isAuthId)
             {
-                //const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
                 return new string(Enumerable.Repeat(_stringConstant.ATOZ0TO9, 15)
                   .Select(s => s[random.Next(s.Length)]).ToArray());
             }
             else
             {
-                //const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
                 return new string(Enumerable.Repeat(_stringConstant.ATOZaTOz0TO9, 30)
                   .Select(s => s[random.Next(s.Length)]).ToArray());
             }
