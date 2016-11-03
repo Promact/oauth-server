@@ -18,28 +18,13 @@
         public string CallbackUrl { get { return "https://promact.slack.com/messages/@roshni/"; } }
         public string CreatedBy { get { return "Ankit"; } }
         public string UpdateBy { get { return "Roshni"; } }
-        public string SecretKeyGeneratorString { get { return "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"; } }
         public string SecureKeyGeneratorString { get { return "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"; } }
-        public string EmailNotExists { get { return "Email does not exist"; } }
-        public string ForgotPassword { get { return "Forgot Password"; } }
-        public string LoginCredentials { get { return "Login Credentials"; } }
-        public string SuccessfullySendMail { get { return "We have sent you a link on {{emailaddress}} to reset password.Please check your email."; } }
-        public string ResetPasswordLink { get { return "${{RestPassWordLink}}$"; } }
-        public string ResertPasswordUserName { get { return "${{Username}}$"; } }
-        public string ForgotPasswordTemplateFolderPath { get { return "\\Template\\ForgotPassword.html"; } }
-        public string UserDetialTemplateFolderPath { get { return "\\Template\\UserDetial.html"; } }
         public string From { get { return "From"; } }
         public string Password { get { return "Password"; } }
         public string Host { get { return "Host"; } }
         public string PromactName { get { return "Promact"; } }
-
         public string Port { get { return "Port"; } }
-
-        public string UserEmail { get { return "${{Email}}$"; } }
-
-        public string UserPassword { get { return "${{Password}}$"; } }
         public string DefaultUserPassword { get { return "User@123"; } }
-
         public string Name { get { return "Project Name"; } }
         public string EditName { get { return "Project Name Edit"; } }
         public string SlackChannelName { get { return "Slack Channel Name"; } }
@@ -52,9 +37,9 @@
         public string ProjectName { get { return "Project Edit"; } }
         public string ProjectSlackChannelName { get { return "Slack Channel NameEdit"; } }
 
-        public string FirstName { get { return "First"; } }
-        public string LastName { get { return "Last"; } }
-        public string Email { get { return "test@promactinfo.com"; } }
+        
+        
+        
         public string UserId { get { return "1"; } }
         public string PasswordUser { get { return "User@123"; } }
         public string UserName { get { return "testUser@pronactinfo.com"; } }
@@ -77,19 +62,57 @@
         public string CallBackUrl { get { return "http://www.example.com"; } }
         public string PasswordForTest { get { return "User@123"; } }
         public string EmptyString { get { return ""; } }
-        public string InvalidLogin { get { return "Invalid login attempt."; } }
+        
         public string RawEmailIdForTest { get { return "siddhartha@promactinfo.com"; } }
         public string RawFirstNameForTest { get { return "Siddhartha"; } }
         public string RawLastNameForTest { get { return "Shaw"; } }
-        public string RoleEmployee { get { return "Employee"; } }
-        public string RoleAdmin { get { return "Admin"; } }
-        public string RoleTeamLeader { get { return "TeamLeader"; } }
+        
+        
+        
         public string OldPassword { get { return "User@123"; } }
         public string Url { get { return "Url"; } }
-        public string Format { get { return "yyyy-MM-dd"; } }
-        
-        public string DomainAddress { get { return "@promactinfo.com"; } }
 
+        //public string UserEmail { get { return "${{Email}}$"; } }
+        //public string UserDetialTemplateFolderPath { get { return "\\Template\\UserDetial.html"; } }
+        //public string DomainAddress { get { return "@promactinfo.com"; } }
+        //public string EmailNotExists { get { return "Email does not exist"; } }
+        //public string ForgotPasswordTemplateFolderPath { get { return "\\Template\\ForgotPassword.html"; } }
+        //public string ResetPasswordLink { get { return "${{RestPassWordLink}}$"; } }
+        //public string ResertPasswordUserName { get { return "${{Username}}$"; } }
+        //public string ForgotPassword { get { return "Forgot Password"; } }
+        //public string SuccessfullySendMail { get { return "We have sent you a link on {{emailaddress}} to reset password.Please check your email."; } }
+        //public string InvalidLogin { get { return "Invalid login attempt."; } }
+        //public string SecretKeyGeneratorString { get { return "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"; } }
+        //public string FirstName { get { return "First"; } }
+        //public string LastName { get { return "Last"; } }
+        //public string Email { get { return "test@promactinfo.com"; } }
+        //public string RoleAdmin { get { return "Admin"; } }
+        //public string RoleTeamLeader { get { return "TeamLeader"; } }
+        //public string RoleEmployee { get { return "Employee"; } }
+        //public string Format { get { return "yyyy-MM-dd"; } }
+        //public string UserPassword { get { return "${{Password}}$"; } }
+        //public string LoginCredentials { get { return "Login Credentials"; } }
+
+        public string LoginCredentials { get; set; }
+        public string UserPassword { get; set; }
+        public string UserEmail { get; set; }
+        public string UserDetialTemplateFolderPath { get; set; }
+        public string Format { get; set; }
+        public string RoleEmployee { get; set; }
+        public string RoleTeamLeader { get;set; }
+        public string RoleAdmin { get; set; }
+        public string Email { get; set; }
+        public string LastName { get; set; }
+        public string FirstName { get; set; }
+        public string SecretKeyGeneratorString { get; set; }
+        public string InvalidLogin { get; set; }
+        public string SuccessfullySendMail { get; set; }
+        public string ForgotPassword { get; set; }
+        public string ResertPasswordUserName { get; set; }
+        public string ResetPasswordLink { get; set; }
+        public string ForgotPasswordTemplateFolderPath { get; set; }
+        public string EmailNotExists { get; set; }
+        public string DomainAddress { get; set; }
         public string DateFormate { get; set; }
         public string TeamLeaderNotAssign { get; set; }
     }

@@ -17,28 +17,13 @@
          string CallbackUrl { get; }
          string CreatedBy { get; }
          string UpdateBy { get; }
-         string SecretKeyGeneratorString { get; }
          string SecureKeyGeneratorString { get; }
-         string EmailNotExists { get; }
-         string ForgotPassword { get; }
-         string LoginCredentials { get; }
-         string SuccessfullySendMail { get; }
-         string ResetPasswordLink { get; }
-         string ResertPasswordUserName { get; }
-         string ForgotPasswordTemplateFolderPath { get; }
-         string UserDetialTemplateFolderPath { get; }
          string From { get; }
          string Password { get; }
          string Host { get; }
          string PromactName { get; }
-
          string Port { get; }
-
-         string UserEmail { get; }
-
-         string UserPassword { get; }
          string DefaultUserPassword { get; }
-
          string Name { get; }
          string EditName { get; }
          string SlackChannelName { get; }
@@ -50,10 +35,6 @@
          string FirstNameThird { get; }
          string ProjectName { get; }
          string ProjectSlackChannelName { get; }
-
-         string FirstName { get; }
-         string LastName { get; }
-         string Email { get; }
          string UserId { get; }
          string PasswordUser { get; }
          string UserName { get; }
@@ -62,34 +43,50 @@
          string NewPassword { get; }
          string ConfirmPassword { get; }
          string UpadteFirstName { get; }
-
          string UpdateSlackUserName { get; }
-
          string Employee { get; }
          string Admin { get; }
          string TeamLeader { get; }
          string NormalizedName { get; }
          string NormalizedSecond { get; }
-
          string AccessToken { get; }
          string ClientIdForTest { get; }
          string CallBackUrl { get; }
          string PasswordForTest { get; }
          string EmptyString { get; }
-         string InvalidLogin { get; }
          string RawEmailIdForTest { get; }
          string RawFirstNameForTest { get; }
          string RawLastNameForTest { get; }
-         string RoleEmployee { get; }
-         string RoleAdmin { get; }
-         string RoleTeamLeader { get; }
+         
+         
+         
          string OldPassword { get; }
          string Url { get; }
-         string Format { get; }
+         
        
-        string DomainAddress { get; }
+        
 
-        string DateFormate { get; set; }
-        string TeamLeaderNotAssign { get; set; }
+        string LoginCredentials { get; set; }
+        string UserPassword { get; set; }
+        string UserEmail { get; set; }
+        string UserDetialTemplateFolderPath { get; set; }
+        string Format { get; set; }
+        string RoleEmployee { get; set; }
+        string RoleTeamLeader { get; set; }
+        string RoleAdmin { get; set; }
+        string Email { get; set; }
+        string LastName { get; set; }
+        string FirstName { get; set; }
+        string SecretKeyGeneratorString { get; set; }
+         string InvalidLogin { get; set; }
+         string SuccessfullySendMail { get; set; }
+         string ForgotPassword { get; set; }
+         string ResertPasswordUserName { get; set; }
+         string ResetPasswordLink { get; set; }
+         string ForgotPasswordTemplateFolderPath { get; set; }
+         string EmailNotExists { get; set; }
+         string DomainAddress { get; set; }
+         string DateFormate { get; set; }
+         string TeamLeaderNotAssign { get; set; }
     }
 }
