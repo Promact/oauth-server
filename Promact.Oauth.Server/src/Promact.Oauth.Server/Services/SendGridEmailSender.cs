@@ -42,7 +42,7 @@ namespace Promact.Oauth.Server.Services
             _logger.LogInformation("SendGrid: SendGrid Message");
 
             _logger.LogInformation("SendGrid: SendGrid Api Not Empty");
-            if (string.IsNullOrEmpty(_sendGridAPI.Value.SendGridApi))
+            if (string.IsNullOrEmpty(_sendGridAPI.Value.SendGridApiKey))
             {
                 _logger.LogInformation("SendGrid: SendGrid Api is empty");
                 throw new System.ArgumentNullException("SendGrid Api is null");
@@ -51,7 +51,7 @@ namespace Promact.Oauth.Server.Services
             {
                 _logger.LogInformation("SendGrid: SendGrid Api is obtained");
             }
-            var transportWeb = new SendGrid.Web(_sendGridAPI.Value.SendGridApi);
+            var transportWeb = new SendGrid.Web(_sendGridAPI.Value.SendGridApiKey);
             _logger.LogInformation("SendGrid: SendGrid Api transport Web");
             transportWeb.DeliverAsync(myMessage);
             _logger.LogInformation("SendGrid: SendGrid mail send");

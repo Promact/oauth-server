@@ -20,7 +20,7 @@
     {
         public string From { get; set; }
 
-        public string SendGridApi { get; set; }
+        public string SendGridApiKey { get; set; }
     }
     
 }
