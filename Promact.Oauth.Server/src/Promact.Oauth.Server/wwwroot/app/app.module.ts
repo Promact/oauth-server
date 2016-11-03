@@ -16,7 +16,7 @@ import { MdToolbarModule } from "@angular2-material/toolbar";
 import { LoaderService } from "./shared/loader.service";
 import { UserRole } from "./shared/userrole.model";
 
-import { DataTableModule } from "angular2-datatable";
+
 
 
 
