@@ -580,16 +580,18 @@ namespace Promact.Oauth.Server.Repository
         }
 
         /// <summary>
-        /// This method used for genrate random string. 
+        /// This method used for genrate random string with alphanumeric words and special characters. 
         /// </summary>
         /// <returns></returns>
         private string GetRandomString()
         {
             Random random = new Random();
+            //Initialize static Ato,atoz,0to9 and special characters seprated by '|'.
             const string chars = "abcdefghijklmnopqrstuvwxyz|ABCDEFGHIJKLMNOPQRSTUVWXYZ|012345789|@#$%^!&*()";
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < 4; i++)
             {
+                //Get random 4 characters from diffrent portion and append on stringbuilder. 
                 sb.Append(new string(Enumerable.Repeat(chars.Split('|').ToArray()[i], 3).Select(s => s[random.Next(4)]).ToArray()));
             }
             return sb.ToString();
