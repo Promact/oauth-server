@@ -41,8 +41,10 @@ describe('User Add Test', () => {
             let fixture = TestBed.createComponent(UserAddComponent); //Create instance of component            
             let userAddComponent = fixture.componentInstance;
             let userModel = new UserModel();
-            let result = userAddComponent.addUser(userModel);
-            expect(result).toBe(true);
+            let expected = "Ankit";
+            userModel.FirstName = expected;
+            userAddComponent.addUser(userModel);
+            expect(userModel.FirstName).toBe(expected);
             done();
         });
 
@@ -53,16 +55,15 @@ describe('User Add Test', () => {
             let fixture = TestBed.createComponent(UserAddComponent); //Create instance of component            
             let userAddComponent = fixture.componentInstance;
             let userModel = new UserModel();
-            userModel.Email = "ankit@promactinfo.com";
-            let result = userAddComponent.addUser(userModel);
-            expect(result).toBe(true);
+            let expected = "ankit@promactinfo.com";
+            userModel.FirstName = "Ankit"
+            userModel.Email = expected;
+            userAddComponent.addUser(userModel)
+            expect(userModel.Email).toBe(expected);
             done();
         });
 
     });
-
-
-
 
 });
 

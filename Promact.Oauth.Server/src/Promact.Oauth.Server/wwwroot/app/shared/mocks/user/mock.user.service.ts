@@ -24,10 +24,10 @@ export class MockUserService {
     }
 
     registerUser(newUser: UserModel) {
-        if (newUser.Email == "ankit@proactinfo.com")
-            return new BehaviorSubject(false).asObservable();
+        if (newUser.Email === "ankit@promactinfo.com")
+            return new BehaviorSubject(newUser.Email).asObservable();
         else
-            return new BehaviorSubject(true).asObservable();
+            return new BehaviorSubject(newUser.FirstName).asObservable();
     }
 
     getUserById(userId: string) {
