@@ -1,4 +1,3 @@
-[
   {
     "DateFormate": "dd/MM/yyyy",
     "TeamLeaderNotAssign": "Not Assigned",
@@ -23,10 +22,29 @@
     "UserPassword": "${{Password}}$",
     "LoginCredentials": "Login Credentials"
   }
-]
 //{
 //  "stringconstant": {
 //    "DateFormate": "dd/MM/yyyy",
-//    "TeamLeaderNotAssign": "Not Assigned"
+//    "TeamLeaderNotAssign": "Not Assigned",
+//    "DomainAddress": "@promactinfo.com",
+//    "EmailNotExists": "Email does not exist",
+//    "ForgotPasswordTemplateFolderPath": "\\Template\\ForgotPassword.html",
+//    "ResetPasswordLink": "${{RestPassWordLink}}$",
+//    "ResertPasswordUserName": "${{Username}}$",
+//    "ForgotPassword": "Forgot Password",
+//    "SuccessfullySendMail": "We have sent you a link on {{emailaddress}} to reset password.Please check your email.",
+//    "InvalidLogin": "Invalid login attempt.",
+//    "SecretKeyGeneratorString": "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+//    "FirstName": "First",
+//    "LastName": "Last",
+//    "Email": "test@promactinfo.com",
+//    "RoleAdmin": "Admin",
+//    "RoleTeamLeader": "TeamLeader",
+//    "RoleEmployee": "Employee",
+//    "Format": "yyyy-MM-dd",
+//    "UserDetialTemplateFolderPath": "\\Template\\UserDetial.html",
+//    "UserEmail": "${{Email}}$",
+//    "UserPassword": "${{Password}}$",
+//    "LoginCredentials": "Login Credentials"
 //  }
 //}

@@ -72,49 +72,49 @@
         public string OldPassword { get { return "User@123"; } }
         public string Url { get { return "Url"; } }
 
-        //public string UserEmail { get { return "${{Email}}$"; } }
-        //public string UserDetialTemplateFolderPath { get { return "\\Template\\UserDetial.html"; } }
-        //public string DomainAddress { get { return "@promactinfo.com"; } }
-        //public string EmailNotExists { get { return "Email does not exist"; } }
-        //public string ForgotPasswordTemplateFolderPath { get { return "\\Template\\ForgotPassword.html"; } }
-        //public string ResetPasswordLink { get { return "${{RestPassWordLink}}$"; } }
-        //public string ResertPasswordUserName { get { return "${{Username}}$"; } }
-        //public string ForgotPassword { get { return "Forgot Password"; } }
-        //public string SuccessfullySendMail { get { return "We have sent you a link on {{emailaddress}} to reset password.Please check your email."; } }
-        //public string InvalidLogin { get { return "Invalid login attempt."; } }
-        //public string SecretKeyGeneratorString { get { return "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"; } }
-        //public string FirstName { get { return "First"; } }
-        //public string LastName { get { return "Last"; } }
-        //public string Email { get { return "test@promactinfo.com"; } }
-        //public string RoleAdmin { get { return "Admin"; } }
-        //public string RoleTeamLeader { get { return "TeamLeader"; } }
-        //public string RoleEmployee { get { return "Employee"; } }
-        //public string Format { get { return "yyyy-MM-dd"; } }
-        //public string UserPassword { get { return "${{Password}}$"; } }
-        //public string LoginCredentials { get { return "Login Credentials"; } }
+        public string UserEmail { get { return "${{Email}}$"; } }
+        public string UserDetialTemplateFolderPath { get { return "\\Template\\UserDetial.html"; } }
+        public string DomainAddress { get { return "@promactinfo.com"; } }
+        public string EmailNotExists { get { return "Email does not exist"; } }
+        public string ForgotPasswordTemplateFolderPath { get { return "\\Template\\ForgotPassword.html"; } }
+        public string ResetPasswordLink { get { return "${{RestPassWordLink}}$"; } }
+        public string ResertPasswordUserName { get { return "${{Username}}$"; } }
+        public string ForgotPassword { get { return "Forgot Password"; } }
+        public string SuccessfullySendMail { get { return "We have sent you a link on {{emailaddress}} to reset password.Please check your email."; } }
+        public string InvalidLogin { get { return "Invalid login attempt."; } }
+        public string SecretKeyGeneratorString { get { return "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"; } }
+        public string FirstName { get { return "First"; } }
+        public string LastName { get { return "Last"; } }
+        public string Email { get { return "test@promactinfo.com"; } }
+        public string RoleAdmin { get { return "Admin"; } }
+        public string RoleTeamLeader { get { return "TeamLeader"; } }
+        public string RoleEmployee { get { return "Employee"; } }
+        public string Format { get { return "yyyy-MM-dd"; } }
+        public string UserPassword { get { return "${{Password}}$"; } }
+        public string LoginCredentials { get { return "Login Credentials"; } }
 
-        public string LoginCredentials { get; set; }
-        public string UserPassword { get; set; }
-        public string UserEmail { get; set; }
-        public string UserDetialTemplateFolderPath { get; set; }
-        public string Format { get; set; }
-        public string RoleEmployee { get; set; }
-        public string RoleTeamLeader { get;set; }
-        public string RoleAdmin { get; set; }
-        public string Email { get; set; }
-        public string LastName { get; set; }
-        public string FirstName { get; set; }
-        public string SecretKeyGeneratorString { get; set; }
-        public string InvalidLogin { get; set; }
-        public string SuccessfullySendMail { get; set; }
-        public string ForgotPassword { get; set; }
-        public string ResertPasswordUserName { get; set; }
-        public string ResetPasswordLink { get; set; }
-        public string ForgotPasswordTemplateFolderPath { get; set; }
-        public string EmailNotExists { get; set; }
-        public string DomainAddress { get; set; }
-        public string DateFormate { get; set; }
-        public string TeamLeaderNotAssign { get; set; }
+        //public string LoginCredentials { get; set; }
+        //public string UserPassword { get; set; }
+        //public string UserEmail { get; set; }
+        //public string UserDetialTemplateFolderPath { get; set; }
+        //public string Format { get; set; }
+        //public string RoleEmployee { get; set; }
+        //public string RoleTeamLeader { get;set; }
+        //public string RoleAdmin { get; set; }
+        //public string Email { get; set; }
+        //public string LastName { get; set; }
+        //public string FirstName { get; set; }
+        //public string SecretKeyGeneratorString { get; set; }
+        //public string InvalidLogin { get; set; }
+        //public string SuccessfullySendMail { get; set; }
+        //public string ForgotPassword { get; set; }
+        //public string ResertPasswordUserName { get; set; }
+        //public string ResetPasswordLink { get; set; }
+        //public string ForgotPasswordTemplateFolderPath { get; set; }
+        //public string EmailNotExists { get; set; }
+        //public string DomainAddress { get; set; }
+        //public string DateFormate { get; set; }
+        //public string TeamLeaderNotAssign { get; set; }
     }
 
 }

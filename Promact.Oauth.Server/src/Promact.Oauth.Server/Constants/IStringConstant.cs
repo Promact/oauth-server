@@ -62,31 +62,50 @@
          
          string OldPassword { get; }
          string Url { get; }
-         
-       
-        
 
-        string LoginCredentials { get; set; }
-        string UserPassword { get; set; }
-        string UserEmail { get; set; }
-        string UserDetialTemplateFolderPath { get; set; }
-        string Format { get; set; }
-        string RoleEmployee { get; set; }
-        string RoleTeamLeader { get; set; }
-        string RoleAdmin { get; set; }
-        string Email { get; set; }
-        string LastName { get; set; }
-        string FirstName { get; set; }
-        string SecretKeyGeneratorString { get; set; }
-         string InvalidLogin { get; set; }
-         string SuccessfullySendMail { get; set; }
-         string ForgotPassword { get; set; }
-         string ResertPasswordUserName { get; set; }
-         string ResetPasswordLink { get; set; }
-         string ForgotPasswordTemplateFolderPath { get; set; }
-         string EmailNotExists { get; set; }
-         string DomainAddress { get; set; }
-         string DateFormate { get; set; }
-         string TeamLeaderNotAssign { get; set; }
+
+
+        string LoginCredentials { get;}
+        string UserPassword { get;  }
+        string UserEmail { get;  }
+        string UserDetialTemplateFolderPath { get;  }
+        string Format { get;  }
+        string RoleEmployee { get; }
+        string RoleTeamLeader { get;  }
+        string RoleAdmin { get; }
+        string Email { get;  }
+        string LastName { get; }
+        string FirstName { get;  }
+        string SecretKeyGeneratorString { get;  }
+        string InvalidLogin { get; }
+        string SuccessfullySendMail { get; }
+        string ForgotPassword { get;  }
+        string ResertPasswordUserName { get; }
+        string ResetPasswordLink { get;  }
+        string ForgotPasswordTemplateFolderPath { get;  }
+        string EmailNotExists { get; }
+        string DomainAddress { get;  }
+        //string LoginCredentials { get; set; }
+        //string UserPassword { get; set; }
+        //string UserEmail { get; set; }
+        //string UserDetialTemplateFolderPath { get; set; }
+        //string Format { get; set; }
+        //string RoleEmployee { get; set; }
+        //string RoleTeamLeader { get; set; }
+        //string RoleAdmin { get; set; }
+        //string Email { get; set; }
+        //string LastName { get; set; }
+        //string FirstName { get; set; }
+        //string SecretKeyGeneratorString { get; set; }
+        // string InvalidLogin { get; set; }
+        // string SuccessfullySendMail { get; set; }
+        // string ForgotPassword { get; set; }
+        // string ResertPasswordUserName { get; set; }
+        // string ResetPasswordLink { get; set; }
+        // string ForgotPasswordTemplateFolderPath { get; set; }
+        // string EmailNotExists { get; set; }
+        // string DomainAddress { get; set; }
+        //string DateFormate { get;  }
+        // string TeamLeaderNotAssign { get; }
     }
 }

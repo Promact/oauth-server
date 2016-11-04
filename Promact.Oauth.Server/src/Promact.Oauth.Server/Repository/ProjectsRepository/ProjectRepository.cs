@@ -50,13 +50,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             using (StreamReader r = File.OpenText(path))
             {
                 string json = r.ReadToEnd();
-                array = JsonConvert.DeserializeObject(json);
-                foreach (var item in array)
-                {
-                    _stringConstant.TeamLeaderNotAssign= item.TeamLeaderNotAssign;
-                    _stringConstant.DateFormate = item.DateFormate;
-                }
-
+                array = JsonConvert.DeserializeObject<MyConstant>(json);
             }
         }
             //_appSettings = options.Value;
@@ -85,7 +79,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                 }
                 else
                 {
-                    teamLeader.FirstName = _stringConstant.TeamLeaderNotAssign;
+                    teamLeader.FirstName = array.TeamLeaderNotAssign;
                     teamLeader.LastName = _stringConstant.LastName;
                     teamLeader.Email = _stringConstant.Email;
                 }
@@ -95,11 +89,11 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                 if (project.UpdatedDateTime == null)
                 { UpdatedDate = ""; }
                 else
-                { UpdatedDate = Convert.ToDateTime(project.UpdatedDateTime).ToString(_stringConstant.DateFormate); }
+                { UpdatedDate = Convert.ToDateTime(project.UpdatedDateTime).ToString(array.DateFormate); }
                 var projectObject = _mapperContext.Map<Project, ProjectAc>(project);
                 projectObject.TeamLeader = teamLeader;
                 projectObject.CreatedBy = CreatedBy;
-                projectObject.CreatedDate = project.CreatedDateTime.ToString(_stringConstant.DateFormate);
+                projectObject.CreatedDate = project.CreatedDateTime.ToString(array.DateFormate);
                 projectObject.UpdatedBy = UpdatedBy;
                 projectObject.UpdatedDate = UpdatedDate;
                 projectAcs.Add(projectObject);
