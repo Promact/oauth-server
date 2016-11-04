@@ -229,8 +229,8 @@ namespace Promact.Oauth.Server.Repository
         /// <returns>List of all Employees</returns>
         public async Task<List<UserAc>> GetAllEmployees()
         {
-            var users =await _userManager.Users.Where(user=>user.IsActive).OrderBy(user => user.FirstName).ToListAsync() ;
-            return _mapperContext.Map<List<ApplicationUser>,List<UserAc>>(users);
+            var users = await _userManager.Users.Where(user => user.IsActive).OrderBy(user => user.FirstName).ToListAsync();
+            return _mapperContext.Map<List<ApplicationUser>, List<UserAc>>(users);
         }
 
 
@@ -529,25 +529,23 @@ namespace Promact.Oauth.Server.Repository
         {
             if (user != null)
             {
-                var Roles = _userManager.GetRolesAsync(user).Result.First();
-                if (Roles.Equals(_stringConstant.Admin))
+                string roles = _userManager.GetRolesAsync(user).Result.First();
+                UserAc newUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
+                if (String.Compare(roles, _stringConstant.Admin, true) == 0)
                 {
-                    var newUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
-                    newUser.Role = Roles;
+                    newUser.Role = roles;
                     return newUser;
                 }
-                if (Roles.Equals(_stringConstant.Employee))
+                if (String.Compare(roles, _stringConstant.Employee, true) == 0)
                 {
-                    var project = _projectDataRepository.FirstOrDefault(x => x.TeamLeaderId.Equals(user.Id));
+                    Project project = _projectDataRepository.FirstOrDefault(x => x.TeamLeaderId.Equals(user.Id));
                     if (project != null)
                     {
-                        var newUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
                         newUser.Role = _stringConstant.TeamLeader;
                         return newUser;
                     }
                     else
                     {
-                        var newUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
                         newUser.Role = _stringConstant.Employee;
                         return newUser;
                     }
