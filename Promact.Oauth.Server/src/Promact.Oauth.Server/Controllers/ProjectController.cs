@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 using Promact.Oauth.Server.Exception_Handler;
 using Microsoft.Extensions.Logging;
 using Promact.Oauth.Server.Exception_Handler;
+using Exceptionless;
 
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
@@ -61,12 +62,11 @@ namespace Promact.Oauth.Server.Controllers
         [Route("")]
         public async Task<IEnumerable<ProjectAc>> Projects()
         {
-            try
-            {
+            
                 var user = await _userManager.FindByNameAsync(User.Identity.Name);
                 var userRole = await _userManager.IsInRoleAsync(user, "Employee");
                 _logger.LogInformation("UserRole Employee  "+userRole);
-                if (userRole == true)
+                if (userRole)
                 {
                     _logger.LogInformation("call project repository for User");
                     return await _projectRepository.GetAllProjectForUser(user.Id);
@@ -76,13 +76,8 @@ namespace Promact.Oauth.Server.Controllers
                     _logger.LogInformation("call project repository for projects");
                     return await _projectRepository.GetAllProjects();
                 }
-            }
-            catch (Exception ex)
-            {
-               _logger.LogError("Exception " + ex.ToString());
-               ex.ToExceptionless().Submit();
-               throw ex;
-            }
+            
+           
         }
         /**
       * @api {get} api/Project/:id 
@@ -110,8 +105,7 @@ namespace Promact.Oauth.Server.Controllers
         {
             try
             {
-               
-                return Ok(await _projectRepository.GetById(id));
+               return Ok(await _projectRepository.GetById(id));
             }
             catch (ProjectNotFound)
             {
@@ -245,8 +239,7 @@ namespace Promact.Oauth.Server.Controllers
         {
             try
             {
-                ProjectAc project= _projectRepository.GetProjectByGroupName(name);
-                return Ok(project);
+                return Ok(_projectRepository.GetProjectByGroupName(name));
             }
             catch (ProjectNotFound)
             {
@@ -278,8 +271,8 @@ namespace Promact.Oauth.Server.Controllers
         {
             try
             {
-                List<UserRoleAc> userRole = await _projectRepository.GetUserRole(name);
-                return Ok(userRole);
+                
+                return Ok(await _projectRepository.GetUserRole(name));
             }
             catch (UserRoleNotFound)
             {
@@ -333,8 +326,7 @@ namespace Promact.Oauth.Server.Controllers
         {
             try
             {
-                List<UserAc> userAc =await _projectRepository.GetProjectUserByGroupName(groupName);
-                return Ok(userAc);
+                return Ok(await _projectRepository.GetProjectUserByGroupName(groupName));
             }
             catch (UserNotFound)
             {
