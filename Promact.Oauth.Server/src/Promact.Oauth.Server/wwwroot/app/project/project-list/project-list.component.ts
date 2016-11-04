@@ -16,12 +16,11 @@ import { UserRole } from "../../shared/userrole.model";
 export class ProjectListComponent implements OnInit {
     projects: Array<ProjectModel>;
     project: ProjectModel;
-    user: any;
     admin: boolean;
     constructor(private router: Router, private projectService: ProjectService, private toast: Md2Toast, private loginService: LoginService,
         private loader: LoaderService, private userRole: UserRole) {
-        this.projects = new Array<projectModel>();
-        this.project = new projectModel();
+        this.projects = new Array<ProjectModel>();
+        this.project = new ProjectModel();
     }
     getProjects() {
         this.loader.loader = true;

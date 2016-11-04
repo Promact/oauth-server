@@ -11,7 +11,7 @@ import { UserRole } from "../shared/userrole.model";
     providers: [ProjectService]
 
 })
-export class ProjectComponent {
+export class ProjectComponent implements OnInit {
     admin: boolean;
     constructor(private loginService: LoginService, private router: Router, private userRole: UserRole) { }
     ngOnInit() {
