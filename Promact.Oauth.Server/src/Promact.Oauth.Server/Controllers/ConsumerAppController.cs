@@ -50,7 +50,7 @@ namespace Promact.Oauth.Server.Controllers
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
         * {
-        *     "description":"retun true when added succesfully.If any problem in addconsumer mehtod or not added consumer apps so return false."
+        *     "description":"return true if succesfully consumer app has been added else return false."
         * }
         */
         [HttpPost]
@@ -150,7 +150,7 @@ namespace Promact.Oauth.Server.Controllers
         * HTTP/1.1 200 OK 
         * {
         *
-        *   "description":"retun true if succesfully consumer updated If any problem in updte consumer mehtod or not update consumer apps so return false."
+        *   "description":"return true if succesfully consumer app has been updated else return false."
         * }
         */
         [HttpPut]
