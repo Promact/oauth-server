@@ -53,8 +53,8 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
             if (_appsDataRepository.FirstOrDefault(x => x.Name == consumerApps.Name) == null)
             {
                 var consumerAppObject = _mapperContext.Map<ConsumerAppsAc, ConsumerApps>(consumerApps);
-                consumerAppObject.AuthId = CreatedRandomNumer(true);
-                consumerAppObject.AuthSecret = CreatedRandomNumer(false);
+                consumerAppObject.AuthId = GetRandomNumber(true);
+                consumerAppObject.AuthSecret = GetRandomNumber(false);
                 consumerAppObject.CreatedDateTime = DateTime.Now;
                 _appsDataRepository.AddAsync(consumerAppObject);
                 await _appsDataRepository.SaveChangesAsync();
@@ -121,7 +121,6 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// <returns></returns>
         private string GetRandomNumber(bool isAuthId)
         {
-
             var random = new Random();
             if (isAuthId)
             {
