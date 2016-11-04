@@ -529,25 +529,23 @@ namespace Promact.Oauth.Server.Repository
         {
             if (user != null)
             {
-                var roles = _userManager.GetRolesAsync(user).Result.First();
+                string roles = _userManager.GetRolesAsync(user).Result.First();
+                UserAc newUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
                 if (String.Compare(roles, _stringConstant.Admin, true).Equals(0))
                 {
-                    var newUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
                     newUser.Role = roles;
                     return newUser;
                 }
                 if (String.Compare(roles, _stringConstant.Employee, true).Equals(0))
                 {
-                    var project = _projectDataRepository.FirstOrDefault(x => x.TeamLeaderId.Equals(user.Id));
+                    Project project = _projectDataRepository.FirstOrDefault(x => x.TeamLeaderId.Equals(user.Id));
                     if (project != null)
                     {
-                        var newUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
                         newUser.Role = _stringConstant.TeamLeader;
                         return newUser;
                     }
                     else
                     {
-                        var newUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
                         newUser.Role = _stringConstant.Employee;
                         return newUser;
                     }
