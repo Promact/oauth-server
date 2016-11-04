@@ -110,8 +110,8 @@ namespace Promact.Oauth.Server.Controllers
         {
             try
             {
-                ProjectAc project = await _projectRepository.GetById(id);
-                return Ok(project);
+               
+                return Ok(await _projectRepository.GetById(id));
             }
             catch (ProjectNotFound)
             {
