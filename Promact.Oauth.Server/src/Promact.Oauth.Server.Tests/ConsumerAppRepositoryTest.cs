@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using Promact.Oauth.Server.Models.ApplicationClasses;
 using System.Threading.Tasks;
 using Promact.Oauth.Server.Constants;
+using Promact.Oauth.Server.Exception_Handler;
 
 namespace Promact.Oauth.Server.Tests
 {
@@ -104,8 +105,7 @@ namespace Promact.Oauth.Server.Tests
             ConsumerAppsAc consumerApp = GetConsumerApp();
             consumerApp.Name = _stringConstant.ConsumerAppNameDemo5;
             _consumerAppRespository.AddConsumerApps(consumerApp);
-            ConsumerApps getApplication = _consumerAppRespository.GetConsumerAppById(23213).Result;
-            Assert.Null(getApplication);
+            Assert.Throws<AggregateException>(() => _consumerAppRespository.GetConsumerAppById(23213).Result);
         }
 
 
