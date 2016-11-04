@@ -12,6 +12,7 @@ using Promact.Oauth.Server.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 using Promact.Oauth.Server.Exception_Handler;
+using Exceptionless;
 
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
@@ -103,8 +104,7 @@ namespace Promact.Oauth.Server.Controllers
         {
             try
             {
-               
-                return Ok(await _projectRepository.GetById(id));
+               return Ok(await _projectRepository.GetById(id));
             }
             catch (ProjectNotFound)
             {
@@ -238,8 +238,7 @@ namespace Promact.Oauth.Server.Controllers
         {
             try
             {
-                ProjectAc project= _projectRepository.GetProjectByGroupName(name);
-                return Ok(project);
+                return Ok(_projectRepository.GetProjectByGroupName(name));
             }
             catch (ProjectNotFound)
             {
@@ -271,8 +270,8 @@ namespace Promact.Oauth.Server.Controllers
         {
             try
             {
-                List<UserRoleAc> userRole = await _projectRepository.GetUserRole(name);
-                return Ok(userRole);
+                
+                return Ok(await _projectRepository.GetUserRole(name));
             }
             catch (UserRoleNotFound)
             {
