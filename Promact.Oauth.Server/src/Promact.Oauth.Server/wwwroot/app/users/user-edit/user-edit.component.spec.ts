@@ -1,4 +1,4 @@
-﻿declare var describe, it, beforeEach, expect;
+﻿declare let describe, it, beforeEach, expect;
 import { async, inject, TestBed, ComponentFixture } from '@angular/core/testing';
 import { Provider } from "@angular/core";
 import { UserModel } from '../../users/user.model';
@@ -59,7 +59,7 @@ describe("User Edit Test", () => {
             let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
             activatedRoute.testParams = { id: "1" };        
             let userEditComponent = fixture.componentInstance;
-            let expectedFirstName = "First Name"
+            let expectedFirstName = "First Name";
             
             userEditComponent.ngOnInit();
             expect(userEditComponent.user.FirstName).toBe(expectedFirstName);

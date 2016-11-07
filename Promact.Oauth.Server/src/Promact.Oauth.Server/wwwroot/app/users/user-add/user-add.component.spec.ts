@@ -56,9 +56,9 @@ describe('User Add Test', () => {
             let userAddComponent = fixture.componentInstance;
             let userModel = new UserModel();
             let expected = "ankit@promactinfo.com";
-            userModel.FirstName = "Ankit"
+            userModel.FirstName = "Ankit";
             userModel.Email = expected;
-            userAddComponent.addUser(userModel)
+            userAddComponent.addUser(userModel);
             expect(userModel.Email).toBe(expected);
             done();
         });
