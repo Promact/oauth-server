@@ -12,7 +12,7 @@ using Promact.Oauth.Server.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 using Promact.Oauth.Server.Exception_Handler;
-using Exceptionless;
+
 
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
@@ -145,8 +145,8 @@ namespace Promact.Oauth.Server.Controllers
             var createdBy = _userManager.GetUserId(User);
             if (ModelState.IsValid)
             {
-                ProjectAc checkDuplicateProject = _projectRepository.checkDuplicate(project);
-                if (checkDuplicateProject.Name != null && checkDuplicateProject.SlackChannelName != null)
+                ProjectAc projectAc = _projectRepository.checkDuplicate(project);
+                if (projectAc.Name != null && projectAc.SlackChannelName != null)
                 {
                     int id = await _projectRepository.AddProject(project, createdBy);
                     foreach (var applicationUser in project.ApplicationUsers)
