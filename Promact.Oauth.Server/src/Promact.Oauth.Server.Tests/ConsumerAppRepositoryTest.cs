@@ -48,8 +48,7 @@ namespace Promact.Oauth.Server.Tests
             ConsumerAppsAc consumerApp = GetConsumerApp();
             consumerApp.Name = _stringConstant.ConsumerAppNameDemo1;
             _consumerAppRespository.AddConsumerApps(consumerApp);
-            int newId = _consumerAppRespository.AddConsumerApps(consumerApp).Result;
-            Assert.Equal(0, newId);
+            Assert.Throws<AggregateException>(() => _consumerAppRespository.AddConsumerApps(consumerApp).Result);
         }
 
         /// <summary>
@@ -153,8 +152,7 @@ namespace Promact.Oauth.Server.Tests
             int id = _consumerAppRespository.AddConsumerApps(newConsumerApp).Result;
             ConsumerApps oldConsumerApp = _consumerAppRespository.GetConsumerAppById(id).Result;
             oldConsumerApp.Name = _stringConstant.TwitterName;
-            int newId = _consumerAppRespository.UpdateConsumerApps(oldConsumerApp).Result;
-            Assert.Equal(0, newId);
+            Assert.Throws<AggregateException>(() => _consumerAppRespository.UpdateConsumerApps(oldConsumerApp).Result);
         }
 
 

@@ -60,12 +60,9 @@ namespace Promact.Oauth.Server.Controllers
             try
             {
                 consumerAppsAc.CreatedBy = _userManager.GetUserId(User);
-                if (await _consumerAppRepository.AddConsumerApps(consumerAppsAc) != 0)
-                    return Ok(true);
-                else
-                    return Ok(false);
+                return Ok(await _consumerAppRepository.AddConsumerApps(consumerAppsAc));
             }
-            catch (Exception)
+            catch (ConsumerAppNameIsAlreadyExists)
             {
                 return BadRequest();
             }
@@ -129,10 +126,6 @@ namespace Promact.Oauth.Server.Controllers
             {
                 return NotFound();
             }
-            catch (Exception)
-            {
-                return BadRequest();
-            }
         }
 
         /**
@@ -164,12 +157,9 @@ namespace Promact.Oauth.Server.Controllers
                 consumerApp.CallbackUrl = consumerAppsAc.CallbackUrl;
                 consumerApp.Description = consumerAppsAc.Description;
                 consumerApp.UpdatedDateTime = DateTime.Now;
-                if (await _consumerAppRepository.UpdateConsumerApps(consumerApp) != 0)
-                    return Ok(true);
-                else
-                    return Ok(false);
+                return Ok(await _consumerAppRepository.UpdateConsumerApps(consumerApp));
             }
-            catch (Exception)
+            catch (ConsumerAppNameIsAlreadyExists)
             {
                 return BadRequest();
             }
