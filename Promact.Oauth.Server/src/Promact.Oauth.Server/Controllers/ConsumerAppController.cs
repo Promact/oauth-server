@@ -86,15 +86,8 @@ namespace Promact.Oauth.Server.Controllers
         [Route("")]
         public async Task<IActionResult> GetConsumerApps()
         {
-            try
-            {
-                List<ConsumerApps> listOfApps = await _consumerAppRepository.GetListOfConsumerApps();
-                return Ok(listOfApps);
-            }
-            catch (Exception)
-            {
-                return BadRequest();
-            }
+            List<ConsumerApps> listOfApps = await _consumerAppRepository.GetListOfConsumerApps();
+            return Ok(listOfApps);
         }
 
 
