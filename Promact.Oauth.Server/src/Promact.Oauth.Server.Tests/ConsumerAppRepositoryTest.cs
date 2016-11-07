@@ -47,7 +47,7 @@ namespace Promact.Oauth.Server.Tests
         {
             ConsumerAppsAc consumerApp = GetConsumerApp();
             consumerApp.Name = _stringConstant.ConsumerAppNameDemo1;
-            _consumerAppRespository.AddConsumerApps(consumerApp);
+            int id = _consumerAppRespository.AddConsumerApps(consumerApp).Result;
             Assert.Throws<AggregateException>(() => _consumerAppRespository.AddConsumerApps(consumerApp).Result);
         }
 
@@ -73,7 +73,7 @@ namespace Promact.Oauth.Server.Tests
         {
             ConsumerAppsAc consumerApp = GetConsumerApp();
             consumerApp.Name = _stringConstant.ConsumerAppNameDemo3;
-            _consumerAppRespository.AddConsumerApps(consumerApp);
+            int id = _consumerAppRespository.AddConsumerApps(consumerApp).Result;
             ConsumerApps getApplication = _consumerAppRespository.GetAppDetails("ABEDNGdeMR1234568F").Result;
             Assert.Null(getApplication);
         }
