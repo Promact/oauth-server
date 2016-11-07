@@ -86,8 +86,15 @@ namespace Promact.Oauth.Server.Controllers
         [Route("")]
         public async Task<IActionResult> GetConsumerApps()
         {
-            List<ConsumerApps> listOfApps = await _consumerAppRepository.GetListOfConsumerApps();
-            return Ok(listOfApps);
+            try
+            {
+                List<ConsumerApps> listOfApps = await _consumerAppRepository.GetListOfConsumerApps();
+                return Ok(listOfApps);
+            }
+            catch (FailedToFetchDataException)
+            {
+                return BadRequest();
+            }
         }
 
 

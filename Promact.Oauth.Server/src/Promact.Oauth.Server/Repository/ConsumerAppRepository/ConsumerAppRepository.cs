@@ -71,7 +71,11 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// <returns></returns>
         public async Task<List<ConsumerApps>> GetListOfConsumerApps()
         {
-            return await _appsDataRepository.GetAll().ToListAsync();
+            List<ConsumerApps> listOfConsumerApps = await _appsDataRepository.GetAll().ToListAsync();
+            if (listOfConsumerApps.Count > 0)
+                return listOfConsumerApps;
+            else
+                throw new FailedToFetchDataException();
         }
 
         /// <summary>
