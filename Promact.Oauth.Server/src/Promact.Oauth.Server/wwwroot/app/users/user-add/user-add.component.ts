@@ -1,6 +1,7 @@
-﻿import { Component, Input } from "@angular/core";
+﻿import { Component, Input,OnInit } from "@angular/core";
 import { UserService } from '../user.service';
 import { UserModel } from '../user.model';
+import { UserRoleModel } from '../userrole.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Md2Toast } from 'md2';
 import { LoaderService } from '../../shared/loader.service';
@@ -12,17 +13,17 @@ import { LoaderService } from '../../shared/loader.service';
 
 })
 
-export class UserAddComponent {
+export class UserAddComponent implements OnInit {
     isEmailExist: boolean;
     isUserNameExist: boolean;
     isSlackUserNameExist: boolean;
     @Input()
     userModel: UserModel;
-    listOfRoles: any;
+    listOfRoles: Array<UserRoleModel>;
 
     constructor(private userService: UserService, private redirectionRoute: Router, private route: ActivatedRoute, private toast: Md2Toast, private loader: LoaderService) {
         this.userModel = new UserModel();
-        this.listOfRoles = [];
+        this.listOfRoles = new Array<UserRoleModel>();
         this.isEmailExist = false;
         this.isSlackUserNameExist = false;
     }
@@ -34,8 +35,8 @@ export class UserAddComponent {
 
     getRoles() {
         this.userService.getRoles().subscribe((result) => {
-            if (result != null) {
-                for (var i = 0; i < result.length; i++) {
+            if (result !== null) {
+                for (let i = 0; i < result.length; i++) {
                     this.listOfRoles.push(result[i]);
                 }
             }

@@ -11,9 +11,8 @@ import { UserRole } from "../shared/userrole.model";
     providers: [UserService, LoginService]
 })
 
-export class UserComponent {
-    user: any;
-    admin: any;
+export class UserComponent implements OnInit {
+    admin: boolean;
     constructor(private loginService: LoginService, private router: Router, private userRole: UserRole) { }
 
    

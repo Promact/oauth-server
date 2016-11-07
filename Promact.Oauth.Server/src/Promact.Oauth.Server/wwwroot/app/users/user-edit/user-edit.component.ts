@@ -1,10 +1,10 @@
-﻿import {Component} from "@angular/core";
+﻿import {Component , OnInit} from "@angular/core";
 import {Router, ActivatedRoute } from "@angular/router";
 import {Location} from "@angular/common";
 import { LoginService } from '../../login.service';
-
 import { UserService }   from '../user.service';
-import {UserModel} from '../user.model';
+import { UserModel } from '../user.model';
+import { UserRoleModel } from '../userrole.model';
 import { Md2Toast } from 'md2';
 import { LoaderService } from '../../shared/loader.service';
 import { UserRole } from "../../shared/userrole.model";
@@ -14,17 +14,16 @@ import { UserRole } from "../../shared/userrole.model";
     
 })
 
-export class UserEditComponent {
+export class UserEditComponent implements OnInit {
     user: UserModel;
-    id: any;
     errorMessage: string;
     isSlackUserNameExist: boolean;
-    listOfRoles: any;
-    admin: any;
+    listOfRoles: Array<UserRoleModel>;
+    admin: boolean;
 
     constructor(private userService: UserService, private route: ActivatedRoute, private redirectionRoute: Router, private toast: Md2Toast, private loginService: LoginService, private loader: LoaderService, private userRole: UserRole) {
         this.user = new UserModel();
-        this.listOfRoles = [];
+        this.listOfRoles = new Array<UserRoleModel>();
     }
 
     ngOnInit() {
@@ -35,19 +34,19 @@ export class UserEditComponent {
             this.admin = false;
         }
         this.getRoles();
-        this.id = this.route.params.subscribe(params => {
+        this.route.params.subscribe(params => {
             let id = this.route.snapshot.params['id'];
             this.userService.getUserById(id)
                 .subscribe(
                 user => this.user = user,
-                error => this.errorMessage = <any>error)
+                error => { console.log(error.statusText);});
         });
     }
 
     getRoles() {
         this.userService.getRoles().subscribe((result) => {
-            if (result != null) {
-                for (var i = 0; i < result.length; i++) {
+            if (result !== null) {
+                for (let i = 0; i < result.length; i++) {
                     this.listOfRoles.push(result[i]);
                 }
             }
@@ -62,11 +61,11 @@ export class UserEditComponent {
         this.loader.loader = true;
         user.FirstName = user.FirstName.trim();
         this.userService.editUser(user).subscribe((result) => {
-            if (result == true) {
+            if (result === true) {
                 this.toast.show('User updated successfully.');
                 this.redirectionRoute.navigate(['']);
             }
-            else if (result == false) {
+            else if (result === false) {
                 this.toast.show('User Name or Slack User Name already exists.');
             }
             this.loader.loader = false;
