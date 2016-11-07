@@ -12,7 +12,8 @@
     "tsc": "tsc",
     "tsc:w": "tsc -w",
     "typings": "typings",
-    "tslint": "gulp tslint"
+    "tslint": "gulp tslint",
+    "bundle": "gulp bundle"
   },
   "license": "ISC",
   "dependencies": {
