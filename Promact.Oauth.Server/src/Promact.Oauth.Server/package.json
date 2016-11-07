@@ -13,7 +13,8 @@
     "tsc:w": "tsc -w",
     "typings": "typings",
     "tslint": "gulp tslint",
-    "bundle": "gulp bundle"
+    "bundle": "gulp bundle",
+    "copytowwwroot": "gulp copytowwwroot"
   },
   "license": "ISC",
   "dependencies": {
