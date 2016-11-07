@@ -20,7 +20,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// Adds UserId and ProjectId in UserProject table
         /// </summary>
         /// <param name="newProjectUser"></param>ProjectId and UserId information that need to be added
-        void AddUserProject(ProjectUser newUserProject);
+        Task AddUserProject(ProjectUser newUserProject);
 
         /// <summary>
         /// Get All Projects list from the database
