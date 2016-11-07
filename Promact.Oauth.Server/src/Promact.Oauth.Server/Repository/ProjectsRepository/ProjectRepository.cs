@@ -67,7 +67,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                 var CreatedBy =(await _userDataRepository.FirstOrDefaultAsync(x => x.Id == project.CreatedBy))?.FirstName;
                 var UpdatedBy =(await _userDataRepository.FirstOrDefaultAsync(x => x.Id == project.UpdatedBy))?.FirstName;
                 string UpdatedDate;
-                if (project.UpdatedDateTime.Equals(null))
+                if (project.UpdatedDateTime==null)
                 { UpdatedDate = ""; }
                 else
                 { UpdatedDate = Convert.ToDateTime(project.UpdatedDateTime).ToString(_stringConstant.DateFormate); }
