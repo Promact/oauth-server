@@ -1,7 +1,7 @@
-﻿import {Component} from "@angular/core";
-import {ConsumerAppModel} from "../consumerapp-model";
+﻿import { Component } from "@angular/core";
+import { ConsumerAppModel } from "../consumerapp-model";
 import { Router } from "@angular/router";
-import { ConsumerAppService} from "../consumerapp.service";
+import { ConsumerAppService } from "../consumerapp.service";
 import { Md2Toast } from 'md2';
 import { LoaderService } from '../../shared/loader.service';
 
@@ -17,16 +17,11 @@ export class ConsumerappAddComponent {
     submitApps(consumerModel) {
         this.loader.loader = true;
         this.consumerAppService.addConsumerApps(consumerModel).subscribe((result) => {
-            if (result == true) {
-                this.toast.show('Consumer App is added successfully.');
-                this.cancel();
-            }
-            else if (result == false) {
-                this.toast.show('Consumer App Name is already exists.');
-            }
-            this.loader.loader = false;
+            this.toast.show('Consumer App is added successfully.');
+            this.cancel();
         }, err => {
-
+            this.toast.show('Consumer App Name is already exists.');
+            this.loader.loader = false;
         });
     }
 
@@ -34,5 +29,5 @@ export class ConsumerappAddComponent {
         this.router.navigate(['/consumerapp']);
     }
 
-   
+
 }

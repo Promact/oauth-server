@@ -18,7 +18,6 @@ let promise: TestBed;
 
 
 describe('Consumer Add Test', () => {
-    class MockRouter { }
     class MockLoaderService { }
     const routes: Routes = [];
 

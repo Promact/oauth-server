@@ -16,7 +16,6 @@ export class MockConsumerappService {
     * @param consumerAppsAc
     */
     addConsumerApps(consumerAppModel: ConsumerAppModel) {
-        let result = true;
         return new BehaviorSubject(consumerAppModel).asObservable();
     }
 

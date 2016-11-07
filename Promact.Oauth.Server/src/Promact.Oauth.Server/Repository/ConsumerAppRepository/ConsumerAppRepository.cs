@@ -50,7 +50,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// <returns></returns>
         public async Task<int> AddConsumerApps(ConsumerAppsAc consumerApps)
         {
-            if (_appsDataRepository.FirstOrDefault(x => x.Name == consumerApps.Name) == null)
+            if (await _appsDataRepository.FirstOrDefaultAsync(x => x.Name == consumerApps.Name) == null)
             {
                 var consumerAppObject = _mapperContext.Map<ConsumerAppsAc, ConsumerApps>(consumerApps);
                 consumerAppObject.AuthId = GetRandomNumber(true);
@@ -61,7 +61,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
                 return consumerAppObject.Id;
             }
             else
-                return 0;
+                throw new ConsumerAppNameIsAlreadyExists();
         }
 
 
@@ -75,9 +75,9 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         }
 
         /// <summary>
-        /// This method used foo get consumer app object by id. -An
+        /// This method used for get consumer app object by id. -An
         /// </summary>
-        /// <param name="id">pass app object primary key</param>
+        /// <param name="id">app object primary key</param>
         /// <returns></returns>
         public async Task<ConsumerApps> GetConsumerAppById(int id)
         {
@@ -104,9 +104,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
                 await _appsDataRepository.SaveChangesAsync();
                 return consumerApps.Id;
             }
-            return 0;
-
-
+            throw new ConsumerAppNameIsAlreadyExists();
         }
 
         #endregion
