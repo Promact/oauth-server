@@ -116,7 +116,7 @@ namespace Promact.Oauth.Server.Tests
         {
             ConsumerAppsAc consumerApp = GetConsumerApp();
             consumerApp.Name = _stringConstant.ConsumerAppNameDemo6;
-            _consumerAppRespository.AddConsumerApps(consumerApp);
+            int id = _consumerAppRespository.AddConsumerApps(consumerApp).Result;
             List<ConsumerApps> listOfApps = _consumerAppRespository.GetListOfConsumerApps().Result;
             Assert.NotEmpty(listOfApps);
         }
