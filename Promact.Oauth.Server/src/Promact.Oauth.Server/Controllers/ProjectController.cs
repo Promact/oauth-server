@@ -157,7 +157,7 @@ namespace Promact.Oauth.Server.Controllers
                         projectUser.UserId = applicationUser.Id;
                         projectUser.CreatedBy = createdBy;
                         projectUser.CreatedDateTime = DateTime.UtcNow;
-                        _projectRepository.AddUserProject(projectUser);
+                        await _projectRepository.AddUserProject(projectUser);
                     }
                     return Ok(project);
                 }
