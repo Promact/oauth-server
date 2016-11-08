@@ -258,20 +258,20 @@ namespace Promact.Oauth.Server.Tests
         /// <summary>
         /// Fetch the project of the given slack channel name 
         /// </summary>
-        [Fact, Trait("Category", "A")]
-        public void GetProjectByGroupName()
-        {
-            ProjectAc projectac = new ProjectAc();
-            projectac.Name = _stringConstant.Name;
-            projectac.SlackChannelName = _stringConstant.SlackChannelName;
-            projectac.IsActive = _stringConstant.IsActive;
-            projectac.TeamLeader = new UserAc { FirstName = _stringConstant.FirstName };
-            projectac.TeamLeaderId = _stringConstant.TeamLeaderId;
-            projectac.CreatedBy = _stringConstant.CreatedBy;
-            _projectRepository.AddProject(projectac, _stringConstant.CreatedBy);
-            var project = _projectRepository.GetProjectByGroupName(projectac.SlackChannelName);
-            Assert.Equal(projectac.TeamLeaderId, project.TeamLeaderId);
-        }
+        //[Fact, Trait("Category", "A")]
+        //public void GetProjectByGroupName()
+        //{
+        //    ProjectAc projectac = new ProjectAc();
+        //    projectac.Name = _stringConstant.Name;
+        //    projectac.SlackChannelName = _stringConstant.SlackChannelName;
+        //    projectac.IsActive = _stringConstant.IsActive;
+        //    projectac.TeamLeader = new UserAc { FirstName = _stringConstant.FirstName };
+        //    projectac.TeamLeaderId = _stringConstant.TeamLeaderId;
+        //    projectac.CreatedBy = _stringConstant.CreatedBy;
+        //    _projectRepository.AddProject(projectac, _stringConstant.CreatedBy);
+        //    var project = _projectRepository.GetProjectByGroupName(projectac.SlackChannelName);
+        //    Assert.Equal(projectac.TeamLeaderId, project.TeamLeaderId);
+        //}
 
     }
 }
