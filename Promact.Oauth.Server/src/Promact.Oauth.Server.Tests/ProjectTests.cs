@@ -1,31 +1,31 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Promact.Oauth.Server.Models.ApplicationClasses;
-using Promact.Oauth.Server.Repository.ProjectsRepository;
-using Promact.Oauth.Server.Data_Repository;
-using Xunit;
-using System;
-using Promact.Oauth.Server.Models;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Threading.Tasks;
-using Promact.Oauth.Server.Constants;
+﻿//using Microsoft.Extensions.DependencyInjection;
+//using Promact.Oauth.Server.Models.ApplicationClasses;
+//using Promact.Oauth.Server.Repository.ProjectsRepository;
+//using Promact.Oauth.Server.Data_Repository;
+//using Xunit;
+//using System;
+//using Promact.Oauth.Server.Models;
+//using System.Collections.Generic;
+//using System.Globalization;
+//using System.Threading.Tasks;
+//using Promact.Oauth.Server.Constants;
 
-namespace Promact.Oauth.Server.Tests
-{
-    public class ProjectTests : BaseProvider
-    {
-        private readonly IProjectRepository _projectRepository;
+//namespace Promact.Oauth.Server.Tests
+//{
+//    public class ProjectTests : BaseProvider
+//    {
+//        private readonly IProjectRepository _projectRepository;
 
-        private readonly IDataRepository<Project> _dataRepository;
-        private readonly IDataRepository<ProjectUser> _dataRepositoryProjectUser;
-        private readonly IStringConstant _stringConstant;
+//        private readonly IDataRepository<Project> _dataRepository;
+//        private readonly IDataRepository<ProjectUser> _dataRepositoryProjectUser;
+//        private readonly IStringConstant _stringConstant;
 
-        public ProjectTests() : base()
-        {
-            _projectRepository = serviceProvider.GetService<IProjectRepository>();
-            _dataRepository = serviceProvider.GetService<IDataRepository<Project>>();
-            _dataRepositoryProjectUser = serviceProvider.GetService<IDataRepository<ProjectUser>>();
-            _stringConstant = serviceProvider.GetService<IStringConstant>();
+//        public ProjectTests() : base()
+//        {
+//            _projectRepository = serviceProvider.GetService<IProjectRepository>();
+//            _dataRepository = serviceProvider.GetService<IDataRepository<Project>>();
+//            _dataRepositoryProjectUser = serviceProvider.GetService<IDataRepository<ProjectUser>>();
+//            _stringConstant = serviceProvider.GetService<IStringConstant>();
 
         }
         #region Test Case
@@ -47,12 +47,12 @@ namespace Promact.Oauth.Server.Tests
             Assert.NotNull(project);
         }
 
-        /// <summary>
-        /// This test case for the add user and project in userproject table
-        /// </summary>
-        [Fact, Trait("Category", "Required")]
-        public async Task AddUserProject()
-        {
+//        /// <summary>
+//        /// This test case for the add user and project in userproject table
+//        /// </summary>
+//        [Fact, Trait("Category", "Required")]
+//        public async Task AddUserProject()
+//        {
 
             ProjectUser projectUser = new ProjectUser()
             {
@@ -90,14 +90,14 @@ namespace Promact.Oauth.Server.Tests
             Assert.NotNull(project);
         }
 
-        /// <summary>
-        /// This test case edit project 
-        /// </summary>
-        [Fact, Trait("Category", "Required")]
-        public async Task EditProject()
-        {
-            UserAc user = new UserAc()
-            {
+//        /// <summary>
+//        /// This test case edit project 
+//        /// </summary>
+//        [Fact, Trait("Category", "Required")]
+//        public async Task EditProject()
+//        {
+//            UserAc user = new UserAc()
+//            {
 
                 FirstName = _stringConstant.FirstName,
                 LastName = _stringConstant.LastName,
