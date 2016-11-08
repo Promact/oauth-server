@@ -149,20 +149,20 @@ namespace Promact.Oauth.Server.Tests
         ///// <summary>
         ///// This test case for the check duplicate project
         ///// </summary>
-        //[Fact, Trait("Category", "Required")]
-        //public async Task checkDuplicateNegative()
-        //{
-        //    ProjectAc projectac = new ProjectAc();
-        //    projectac.Name = _stringConstant.Name;
-        //    projectac.SlackChannelName = _stringConstant.SlackChannelName;
-        //    projectac.IsActive = _stringConstant.IsActive;
-        //    projectac.TeamLeader = new UserAc { FirstName = _stringConstant.FirstName };
-        //    projectac.TeamLeaderId = _stringConstant.TeamLeaderId;
-        //    projectac.CreatedBy = _stringConstant.CreatedBy;
-        //    await _projectRepository.AddProject(projectac, _stringConstant.CreatedBy);
-        //    var project = _projectRepository.checkDuplicate(projectac);
-        //    Assert.Null(project.Name);
-        //}
+        [Fact, Trait("Category", "Required")]
+        public async Task checkDuplicateNegative()
+        {
+            ProjectAc projectac = new ProjectAc();
+            projectac.Name = _stringConstant.Name;
+            projectac.SlackChannelName = _stringConstant.SlackChannelName;
+            projectac.IsActive = _stringConstant.IsActive;
+            projectac.TeamLeader = new UserAc { FirstName = _stringConstant.FirstName };
+            projectac.TeamLeaderId = _stringConstant.TeamLeaderId;
+            projectac.CreatedBy = _stringConstant.CreatedBy;
+            await _projectRepository.AddProject(projectac, _stringConstant.CreatedBy);
+            var project = _projectRepository.checkDuplicate(projectac);
+            Assert.Null(project.Name);
+        }
 
         ///// <summary>
         ///// This test case for the check duplicate project
