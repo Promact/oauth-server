@@ -8,10 +8,10 @@ import { MdSidenavModule } from "@angular2-material/sidenav";
 import { MdCheckboxModule } from "@angular2-material/checkbox";
 import { Md2Module } from 'md2';
 
-
 @NgModule({
     imports: [
         CommonModule,
+        FormsModule,
         MdButtonModule.forRoot(),
         MdToolbarModule.forRoot(),
         MdSidenavModule.forRoot(),
@@ -19,6 +19,7 @@ import { Md2Module } from 'md2';
         MdCheckboxModule.forRoot(),
         Md2Module.forRoot()
     ],
-    exports: [CommonModule, FormsModule, MdButtonModule, MdToolbarModule, MdInputModule, MdCheckboxModule, Md2Module]
+    declarations: [],
+    exports: [CommonModule, FormsModule, MdButtonModule, MdToolbarModule, MdSidenavModule, MdInputModule, MdCheckboxModule, Md2Module]
 })
 export class SharedModule { }
