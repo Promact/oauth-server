@@ -55,7 +55,7 @@ namespace Promact.Oauth.Server.Controllers
          * @apiSuccessExample {json} Success-Response:
          * HTTP/1.1 200 OK 
          * {
-         *     "description":"return list of projects"
+         *     "description":"return list of projects."
          * }
          */
         [Authorize]
