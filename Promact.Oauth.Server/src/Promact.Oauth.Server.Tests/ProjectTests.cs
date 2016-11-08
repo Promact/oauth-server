@@ -93,11 +93,11 @@ namespace Promact.Oauth.Server.Tests
         ///// <summary>
         ///// This test case edit project 
         ///// </summary>
-        //[Fact, Trait("Category", "Required")]
-        //public async Task EditProject()
-        //{
-        //    UserAc user = new UserAc()
-        //    {
+        [Fact, Trait("Category", "Required")]
+        public async Task EditProject()
+        {
+            UserAc user = new UserAc()
+            {
 
                 FirstName = _stringConstant.FirstName,
                 LastName = _stringConstant.LastName,
