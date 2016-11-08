@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using Promact.Oauth.Server.Models.ApplicationClasses;
 using System.Threading.Tasks;
 using Promact.Oauth.Server.Constants;
+using Promact.Oauth.Server.Exception_Handler;
 
 namespace Promact.Oauth.Server.Tests
 {
@@ -46,9 +47,8 @@ namespace Promact.Oauth.Server.Tests
         {
             ConsumerAppsAc consumerApp = GetConsumerApp();
             consumerApp.Name = _stringConstant.ConsumerAppNameDemo1;
-            _consumerAppRespository.AddConsumerApps(consumerApp);
-            int newId = _consumerAppRespository.AddConsumerApps(consumerApp).Result;
-            Assert.Equal(0, newId);
+            int id = _consumerAppRespository.AddConsumerApps(consumerApp).Result;
+            Assert.Throws<AggregateException>(() => _consumerAppRespository.AddConsumerApps(consumerApp).Result);
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace Promact.Oauth.Server.Tests
         {
             ConsumerAppsAc consumerApp = GetConsumerApp();
             consumerApp.Name = _stringConstant.ConsumerAppNameDemo3;
-            _consumerAppRespository.AddConsumerApps(consumerApp);
+            int id = _consumerAppRespository.AddConsumerApps(consumerApp).Result;
             ConsumerApps getApplication = _consumerAppRespository.GetAppDetails("ABEDNGdeMR1234568F").Result;
             Assert.Null(getApplication);
         }
@@ -89,7 +89,7 @@ namespace Promact.Oauth.Server.Tests
             ConsumerAppsAc consumerApp = GetConsumerApp();
             consumerApp.Name = _stringConstant.ConsumerAppNameDemo4;
             int id = _consumerAppRespository.AddConsumerApps(consumerApp).Result;
-            Task<ConsumerApps> getApplication = _consumerAppRespository.GetConsumerAppsById(id);
+            Task<ConsumerApps> getApplication = _consumerAppRespository.GetConsumerAppById(id);
             Assert.NotNull(getApplication.Result);
         }
 
@@ -104,8 +104,7 @@ namespace Promact.Oauth.Server.Tests
             ConsumerAppsAc consumerApp = GetConsumerApp();
             consumerApp.Name = _stringConstant.ConsumerAppNameDemo5;
             _consumerAppRespository.AddConsumerApps(consumerApp);
-            ConsumerApps getApplication = _consumerAppRespository.GetConsumerAppsById(23213).Result;
-            Assert.Null(getApplication);
+            Assert.Throws<AggregateException>(() => _consumerAppRespository.GetConsumerAppById(23213).Result);
         }
 
 
@@ -117,8 +116,8 @@ namespace Promact.Oauth.Server.Tests
         {
             ConsumerAppsAc consumerApp = GetConsumerApp();
             consumerApp.Name = _stringConstant.ConsumerAppNameDemo6;
-            _consumerAppRespository.AddConsumerApps(consumerApp);
-            List<ConsumerApps> listOfApps = _consumerAppRespository.GetListOfApps().Result;
+            int id = _consumerAppRespository.AddConsumerApps(consumerApp).Result;
+            List<ConsumerApps> listOfApps = _consumerAppRespository.GetListOfConsumerApps().Result;
             Assert.NotEmpty(listOfApps);
         }
 
@@ -131,7 +130,7 @@ namespace Promact.Oauth.Server.Tests
             ConsumerAppsAc consumerApp = GetConsumerApp();
             consumerApp.Name = _stringConstant.ConsumerAppNameDemo7;
             int id = _consumerAppRespository.AddConsumerApps(consumerApp).Result;
-            ConsumerApps consumerApps = _consumerAppRespository.GetConsumerAppsById(id).Result;
+            ConsumerApps consumerApps = _consumerAppRespository.GetConsumerAppById(id).Result;
             consumerApps.Description = _stringConstant.ConsumerDescription;
             consumerApps.UpdatedDateTime = DateTime.Now;
             consumerApps.UpdatedBy = _stringConstant.UpdateBy;
@@ -145,16 +144,15 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public void CheckConsumerAppNameUnique()
         {
-            var consumer = GetConsumerApp();
-            consumer.Name = _stringConstant.TwitterName;
-            _consumerAppRespository.AddConsumerApps(consumer);
-            var consumerNew = GetConsumerApp();
-            consumerNew.Name = _stringConstant.FaceBookName;
-            int idOfConsumer = _consumerAppRespository.AddConsumerApps(consumerNew).Result;
-            ConsumerApps oldConsumerApp = _consumerAppRespository.GetConsumerAppsById(idOfConsumer).Result;
+            ConsumerAppsAc consumerApp = GetConsumerApp();
+            consumerApp.Name = _stringConstant.TwitterName;
+            _consumerAppRespository.AddConsumerApps(consumerApp);
+            ConsumerAppsAc newConsumerApp = GetConsumerApp();
+            newConsumerApp.Name = _stringConstant.FaceBookName;
+            int id = _consumerAppRespository.AddConsumerApps(newConsumerApp).Result;
+            ConsumerApps oldConsumerApp = _consumerAppRespository.GetConsumerAppById(id).Result;
             oldConsumerApp.Name = _stringConstant.TwitterName;
-            int newId = _consumerAppRespository.UpdateConsumerApps(oldConsumerApp).Result;
-            Assert.Equal(0, newId);
+            Assert.Throws<AggregateException>(() => _consumerAppRespository.UpdateConsumerApps(oldConsumerApp).Result);
         }
 
 

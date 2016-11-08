@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Exceptionless;
+using Promact.Oauth.Server.Exception_Handler;
 
 namespace Promact.Oauth.Server.Controllers
 {
@@ -34,7 +35,7 @@ namespace Promact.Oauth.Server.Controllers
 
 
         /**
-        * @api {post} api/consumerApp/AddConsumerApp 
+        * @api {post} api/consumerapp 
         * @apiVersion 1.0.0
         * @apiName ConsumerApp
         * @apiGroup ConsumerApp
@@ -49,31 +50,27 @@ namespace Promact.Oauth.Server.Controllers
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
         * {
-        *     "description":"retun true when added succesfully.If any problem in addconsumer mehtod or not added consumer apps so return false."
+        *     "description":"return true if succesfully consumer app has been added else return false."
         * }
         */
         [HttpPost]
-        [Route("addConsumer")]
+        [Route("")]
         public async Task<IActionResult> AddConsumerApp([FromBody]ConsumerAppsAc consumerAppsAc)
         {
             try
             {
                 consumerAppsAc.CreatedBy = _userManager.GetUserId(User);
-                if (await _consumerAppRepository.AddConsumerApps(consumerAppsAc) != 0)
-                    return Ok(true);
-                else
-                    return Ok(false);
+                return Ok(await _consumerAppRepository.AddConsumerApps(consumerAppsAc));
             }
-            catch (Exception ex)
+            catch (ConsumerAppNameIsAlreadyExists)
             {
-                ex.ToExceptionless().Submit();
-                throw ex;
+                return BadRequest();
             }
         }
 
 
         /**
-        * @api {get} api/consumerApp/GetConsumerApps 
+        * @api {get} api/consumerapp 
         * @apiVersion 1.0.0
         * @apiName ConsumerApp
         * @apiGroup ConsumerApp
@@ -86,24 +83,23 @@ namespace Promact.Oauth.Server.Controllers
         * }
         */
         [HttpGet]
-        [Route("getConsumerApps")]
+        [Route("")]
         public async Task<IActionResult> GetConsumerApps()
         {
             try
             {
-                List<ConsumerApps> listOfApps = await _consumerAppRepository.GetListOfApps();
+                List<ConsumerApps> listOfApps = await _consumerAppRepository.GetListOfConsumerApps();
                 return Ok(listOfApps);
             }
-            catch (Exception ex)
+            catch (FailedToFetchDataException)
             {
-                ex.ToExceptionless().Submit();
-                throw ex;
+                return BadRequest();
             }
         }
 
 
         /**
-       * @api {get} api/consumerApp/GetConsumerById 
+       * @api {get} api/consumerapp/id 
        * @apiVersion 1.0.0
        * @apiName ConsumerApp
        * @apiGroup ConsumerApp
@@ -118,23 +114,22 @@ namespace Promact.Oauth.Server.Controllers
        * }
        */
         [HttpGet]
-        [Route("getConsumerById/{id}")]
-        public async Task<IActionResult> GetConsumerById(int id)
+        [Route("{id}")]
+        public async Task<IActionResult> GetConsumerAppById(int id)
         {
             try
             {
-                var consumerApps = await _consumerAppRepository.GetConsumerAppsById(id);
+                ConsumerApps consumerApps = await _consumerAppRepository.GetConsumerAppById(id);
                 return Ok(consumerApps);
             }
-            catch (Exception ex)
+            catch (ConsumerAppNotFound)
             {
-                ex.ToExceptionless().Submit();
-                throw ex;
+                return NotFound();
             }
         }
 
         /**
-        * @api {post} api/consumerApp/UpdateConsumerApps 
+        * @api {put} api/consumerapp 
         * @apiVersion 1.0.0
         * @apiName ConsumerApp
         * @apiGroup ConsumerApp
@@ -148,33 +143,25 @@ namespace Promact.Oauth.Server.Controllers
         * HTTP/1.1 200 OK 
         * {
         *
-        *   "description":"retun true if succesfully consumer updated If any problem in updte consumer mehtod or not update consumer apps so return false."
+        *   "description":"return true if succesfully consumer app has been updated else return false."
         * }
         */
-        [HttpPost]
-        [Route("updateConsumer")]
-        public async Task<IActionResult> UpdateConsumerApps([FromBody]ConsumerAppsAc consumerAppsAc)
+        [HttpPut]
+        [Route("")]
+        public async Task<IActionResult> UpdateConsumerApp([FromBody]ConsumerAppsAc consumerAppsAc)
         {
             try
             {
-                var oldAppsDetails = await _consumerAppRepository.GetConsumerAppsById(consumerAppsAc.Id);
-                if (oldAppsDetails != null)
-                {
-                    oldAppsDetails.Name = consumerAppsAc.Name;
-                    oldAppsDetails.CallbackUrl = consumerAppsAc.CallbackUrl;
-                    oldAppsDetails.Description = consumerAppsAc.Description;
-                    oldAppsDetails.UpdatedDateTime = DateTime.Now;
-                    if (await _consumerAppRepository.UpdateConsumerApps(oldAppsDetails) != 0)
-                        return Ok(true);
-                    else
-                        return Ok(false);
-                }
-                return Ok(oldAppsDetails);
+                ConsumerApps consumerApp = await _consumerAppRepository.GetConsumerAppById(consumerAppsAc.Id);
+                consumerApp.Name = consumerAppsAc.Name;
+                consumerApp.CallbackUrl = consumerAppsAc.CallbackUrl;
+                consumerApp.Description = consumerAppsAc.Description;
+                consumerApp.UpdatedDateTime = DateTime.Now;
+                return Ok(await _consumerAppRepository.UpdateConsumerApps(consumerApp));
             }
-            catch (Exception ex)
+            catch (ConsumerAppNameIsAlreadyExists)
             {
-                ex.ToExceptionless().Submit();
-                throw ex;
+                return BadRequest();
             }
         }
 
