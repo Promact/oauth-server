@@ -47,24 +47,24 @@ namespace Promact.Oauth.Server.Tests
             Assert.NotNull(project);
         }
 
-        ///// <summary>
-        ///// This test case for the add user and project in userproject table
-        ///// </summary>
-        //[Fact, Trait("Category", "Required")]
-        //public async Task AddUserProject()
-        //{
+        /// <summary>
+        /// This test case for the add user and project in userproject table
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task AddUserProject()
+        {
 
-        //    ProjectUser projectUser = new ProjectUser()
-        //    {
-        //        ProjectId = 1,
-        //        Project = new Project { Name = _stringConstant.Name },
-        //        UserId = _stringConstant.UserId,
-        //        User = new ApplicationUser { FirstName = _stringConstant.FirstName }
-        //    };
-        //    await _projectRepository.AddUserProject(projectUser);
-        //    var ProjectUser = _dataRepositoryProjectUser.Fetch(x => x.ProjectId == 1);
-        //    Assert.NotNull(ProjectUser);
-        //}
+            ProjectUser projectUser = new ProjectUser()
+            {
+                ProjectId = 1,
+                Project = new Project { Name = _stringConstant.Name },
+                UserId = _stringConstant.UserId,
+                User = new ApplicationUser { FirstName = _stringConstant.FirstName }
+            };
+            await _projectRepository.AddUserProject(projectUser);
+            var ProjectUser = _dataRepositoryProjectUser.Fetch(x => x.ProjectId == 1);
+            Assert.NotNull(ProjectUser);
+        }
 
         ///// <summary>
         ///// This test case for gets project By Id
