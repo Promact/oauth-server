@@ -205,28 +205,28 @@ namespace Promact.Oauth.Server.Tests
         ///// <summary>
         ///// This test case for the get all projects
         ///// </summary>
-        //[Fact, Trait("Category", "Required")]
-        //public async Task GetAllProject()
-        //{
-        //    ProjectUser projectUser = new ProjectUser()
-        //    {
-        //        ProjectId = 1,
-        //        Project = new Project { Name = _stringConstant.Name },
-        //        UserId = _stringConstant.UserId,
-        //        User = new ApplicationUser { FirstName = _stringConstant.FirstName }
-        //    };
-        //    ProjectAc projectac = new ProjectAc();
-        //    projectac.Name = _stringConstant.Name;
-        //    projectac.SlackChannelName = _stringConstant.SlackChannelName;
-        //    projectac.IsActive = _stringConstant.IsActive;
-        //    projectac.TeamLeader = new UserAc { FirstName = _stringConstant.FirstName };
-        //    projectac.TeamLeaderId = _stringConstant.TeamLeaderId;
-        //    projectac.CreatedBy = _stringConstant.CreatedBy;
-        //    await _projectRepository.AddProject(projectac, _stringConstant.CreatedBy);
-        //    await _projectRepository.AddUserProject(projectUser);
-        //    Task<IEnumerable<ProjectAc>> projects = _projectRepository.GetAllProjects();
-        //    Assert.NotNull(projects);
-        //}
+        [Fact, Trait("Category", "Required")]
+        public async Task GetAllProject()
+        {
+            ProjectUser projectUser = new ProjectUser()
+            {
+                ProjectId = 1,
+                Project = new Project { Name = _stringConstant.Name },
+                UserId = _stringConstant.UserId,
+                User = new ApplicationUser { FirstName = _stringConstant.FirstName }
+            };
+            ProjectAc projectac = new ProjectAc();
+            projectac.Name = _stringConstant.Name;
+            projectac.SlackChannelName = _stringConstant.SlackChannelName;
+            projectac.IsActive = _stringConstant.IsActive;
+            projectac.TeamLeader = new UserAc { FirstName = _stringConstant.FirstName };
+            projectac.TeamLeaderId = _stringConstant.TeamLeaderId;
+            projectac.CreatedBy = _stringConstant.CreatedBy;
+            await _projectRepository.AddProject(projectac, _stringConstant.CreatedBy);
+            await _projectRepository.AddUserProject(projectUser);
+            Task<IEnumerable<ProjectAc>> projects = _projectRepository.GetAllProjects();
+            Assert.NotNull(projects);
+        }
 
         ///// <summary>
         ///// Fetches Users of the given Project Name(slack channel name)
