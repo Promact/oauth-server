@@ -167,40 +167,40 @@ namespace Promact.Oauth.Server.Tests
         ///// <summary>
         ///// This test case for the check duplicate project
         ///// </summary>
-        //[Fact, Trait("Category", "Required")]
-        //public async Task checkDuplicatePositive()
-        //{
-        //    UserAc userSecound = new UserAc()
-        //    { Id = _stringConstant.UserIdSecond, FirstName = _stringConstant.FirstNameSecond };
-        //    UserAc userThird = new UserAc()
-        //    { Id = _stringConstant.UserIdThird, FirstName = _stringConstant.FirstNameThird };
-        //    ProjectAc projectac = new ProjectAc();
-        //    projectac.Name = _stringConstant.Name;
-        //    projectac.SlackChannelName = _stringConstant.SlackChannelName;
-        //    projectac.IsActive = _stringConstant.IsActive;
-        //    projectac.TeamLeader = new UserAc { FirstName = _stringConstant.FirstName };
-        //    projectac.TeamLeaderId = _stringConstant.TeamLeaderId;
-        //    projectac.CreatedBy = _stringConstant.CreatedBy;
-        //    await _projectRepository.AddProject(projectac, _stringConstant.CreatedBy);
-        //    List<UserAc> userlist = new List<UserAc>();
-        //    userlist.Add(userSecound);
-        //    userlist.Add(userThird);
-        //    ProjectAc projectacSecound = new ProjectAc()
-        //    {
-        //        Id = 2,
-        //        Name = _stringConstant.ProjectName,
-        //        SlackChannelName = _stringConstant.SlackChannelName,
-        //        IsActive = true,
-        //        TeamLeader = new UserAc { FirstName = _stringConstant.FirstName },
-        //        TeamLeaderId = _stringConstant.TeamLeaderId,
-        //        CreatedBy = _stringConstant.CreatedBy,
-        //        CreatedDate = DateTime.Now.ToString(CultureInfo.InvariantCulture),
-        //        ApplicationUsers = userlist
-        //    };
-        //    await _projectRepository.AddProject(projectacSecound, _stringConstant.CreatedBy);
-        //    var project = _projectRepository.checkDuplicate(projectacSecound);
-        //    Assert.Null(project.Name);
-        //}
+        [Fact, Trait("Category", "Required")]
+        public async Task checkDuplicatePositive()
+        {
+            UserAc userSecound = new UserAc()
+            { Id = _stringConstant.UserIdSecond, FirstName = _stringConstant.FirstNameSecond };
+            UserAc userThird = new UserAc()
+            { Id = _stringConstant.UserIdThird, FirstName = _stringConstant.FirstNameThird };
+            ProjectAc projectac = new ProjectAc();
+            projectac.Name = _stringConstant.Name;
+            projectac.SlackChannelName = _stringConstant.SlackChannelName;
+            projectac.IsActive = _stringConstant.IsActive;
+            projectac.TeamLeader = new UserAc { FirstName = _stringConstant.FirstName };
+            projectac.TeamLeaderId = _stringConstant.TeamLeaderId;
+            projectac.CreatedBy = _stringConstant.CreatedBy;
+            await _projectRepository.AddProject(projectac, _stringConstant.CreatedBy);
+            List<UserAc> userlist = new List<UserAc>();
+            userlist.Add(userSecound);
+            userlist.Add(userThird);
+            ProjectAc projectacSecound = new ProjectAc()
+            {
+                Id = 2,
+                Name = _stringConstant.ProjectName,
+                SlackChannelName = _stringConstant.SlackChannelName,
+                IsActive = true,
+                TeamLeader = new UserAc { FirstName = _stringConstant.FirstName },
+                TeamLeaderId = _stringConstant.TeamLeaderId,
+                CreatedBy = _stringConstant.CreatedBy,
+                CreatedDate = DateTime.Now.ToString(CultureInfo.InvariantCulture),
+                ApplicationUsers = userlist
+            };
+            await _projectRepository.AddProject(projectacSecound, _stringConstant.CreatedBy);
+            var project = _projectRepository.checkDuplicate(projectacSecound);
+            Assert.Null(project.Name);
+        }
 
         ///// <summary>
         ///// This test case for the get all projects
