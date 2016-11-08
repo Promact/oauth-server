@@ -85,27 +85,7 @@
         string ForgotPasswordTemplateFolderPath { get;  }
         string EmailNotExists { get; }
         string DomainAddress { get;  }
-        //string LoginCredentials { get; set; }
-        //string UserPassword { get; set; }
-        //string UserEmail { get; set; }
-        //string UserDetialTemplateFolderPath { get; set; }
-        //string Format { get; set; }
-        //string RoleEmployee { get; set; }
-        //string RoleTeamLeader { get; set; }
-        //string RoleAdmin { get; set; }
-        //string Email { get; set; }
-        //string LastName { get; set; }
-        //string FirstName { get; set; }
-        //string SecretKeyGeneratorString { get; set; }
-        // string InvalidLogin { get; set; }
-        // string SuccessfullySendMail { get; set; }
-        // string ForgotPassword { get; set; }
-        // string ResertPasswordUserName { get; set; }
-        // string ResetPasswordLink { get; set; }
-        // string ForgotPasswordTemplateFolderPath { get; set; }
-        // string EmailNotExists { get; set; }
-        // string DomainAddress { get; set; }
-        //string DateFormate { get;  }
-        // string TeamLeaderNotAssign { get; }
+
+        AppConstant JsonDeserializeObject();
     }
 }

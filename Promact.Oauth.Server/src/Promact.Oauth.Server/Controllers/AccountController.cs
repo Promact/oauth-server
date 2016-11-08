@@ -27,6 +27,7 @@ namespace Promact.Oauth.Server.Controllers
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
         private readonly IStringConstant _stringConstant;
+        private readonly AppConstant _appConstant;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
@@ -44,6 +45,7 @@ namespace Promact.Oauth.Server.Controllers
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
             _stringConstant = stringConstant;
+            _appConstant = _stringConstant.JsonDeserializeObject();
         }
 
         //
@@ -276,20 +278,32 @@ namespace Promact.Oauth.Server.Controllers
                     var user = await _userManager.FindByNameAsync(model.Email);
                     if (user == null)
                     {
-                        @ViewData["EmailNotExist"] = _stringConstant.EmailNotExists;
+                        string EmailNotExist;
+                        _appConstant.Account.TryGetValue("EmailNotExist", out EmailNotExist);
+                        @ViewData["EmailNotExist"] = EmailNotExist;
                         return View();
                     }
 
                     // Send an email with this link
                     var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                     var resetPasswordLink = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                    string path = _hostingEnvironment.ContentRootPath + _stringConstant.ForgotPasswordTemplateFolderPath;
+                    string ForgotPasswordTemplateFolderPath;
+                    _appConstant.Account.TryGetValue("ForgotPasswordTemplateFolderPath", out ForgotPasswordTemplateFolderPath);
+                    string path = _hostingEnvironment.ContentRootPath + ForgotPasswordTemplateFolderPath;
                     if (System.IO.File.Exists(path))
                     {
                         string finaleTemplate = System.IO.File.ReadAllText(path);
-                        finaleTemplate = finaleTemplate.Replace(_stringConstant.ResetPasswordLink, resetPasswordLink).Replace(_stringConstant.ResertPasswordUserName, user.FirstName);
-                        _emailSender.SendEmail(model.Email, _stringConstant.ForgotPassword, finaleTemplate);
-                        @ViewData["MailSentSuccessfully"] = _stringConstant.SuccessfullySendMail.Replace("{{emailaddress}}", "'" + model.Email + "'");
+                        string ResetPasswordLink;
+                        _appConstant.Account.TryGetValue("ResetPasswordLink", out ResetPasswordLink);
+                        string ResertPasswordUserName;
+                        _appConstant.Account.TryGetValue("ResetPasswordLink", out ResertPasswordUserName);
+                        finaleTemplate = finaleTemplate.Replace(ResetPasswordLink, resetPasswordLink).Replace(ResertPasswordUserName, user.FirstName);
+                        string ForgotPassword;
+                        _appConstant.Account.TryGetValue("ForgotPassword", out ForgotPassword);
+                        _emailSender.SendEmail(model.Email, ForgotPassword, finaleTemplate);
+                        string SuccessfullySendMail;
+                        _appConstant.Account.TryGetValue("SuccessfullySendMail", out SuccessfullySendMail);
+                        @ViewData["MailSentSuccessfully"] = SuccessfullySendMail.Replace("{{emailaddress}}", "'" + model.Email + "'");
                     }
                 }
                 // If we got this far, something failed, redisplay form

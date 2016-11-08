@@ -11,10 +11,12 @@ namespace Promact.Oauth.Server.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IStringConstant _stringConstant;
+        private readonly AppConstant _appConstant;
         public HomeController(UserManager<ApplicationUser> userManager, IStringConstant stringConstant)
         {
             _userManager = userManager;
             _stringConstant = stringConstant;
+            _appConstant = _stringConstant.JsonDeserializeObject();
         }
         public async Task<IActionResult> Index()
         {
@@ -22,15 +24,19 @@ namespace Promact.Oauth.Server.Controllers
             {
                 var user = await _userManager.FindByNameAsync(User.Identity.Name);
                 UserRoleAc userRole = new UserRoleAc();
-                if (User.IsInRole(_stringConstant.RoleAdmin))
+                string roleAdmin;
+                _appConstant.CommanStringConstant.TryGetValue("RoleAdmin", out roleAdmin);
+                if (User.IsInRole(roleAdmin))
                 {
-                    userRole.Role = _stringConstant.RoleAdmin;
+                    userRole.Role = roleAdmin;
                     userRole.UserId = user.Id;
                     ViewData["UserRole"] = userRole;
                 }
                 else
                 {
-                    userRole.Role = _stringConstant.RoleEmployee;
+                    string roleEmployee;
+                    _appConstant.CommanStringConstant.TryGetValue("RoleAdmin", out roleEmployee);
+                    userRole.Role = roleEmployee;
                     userRole.UserId = user.Id;
                     ViewData["UserRole"] = userRole;
                     

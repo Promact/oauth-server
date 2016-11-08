@@ -1,8 +1,13 @@
-﻿namespace Promact.Oauth.Server.Constants
+﻿using Exceptionless.Json;
+using Microsoft.AspNetCore.Hosting;
+using System.Collections.Generic;
+using System.IO;
+
+namespace Promact.Oauth.Server.Constants
 {
     public class StringConstant : IStringConstant
     {
-
+        private readonly IHostingEnvironment _hostingEnvironment;
         public string ConsumerAppNameDemo { get { return "Demo Name"; } }
         public string ConsumerAppNameDemo1 { get { return "Demo Name1"; } }
         public string ConsumerAppNameDemo2 { get { return "Demo Name2"; } }
@@ -93,28 +98,19 @@
         public string UserPassword { get { return "${{Password}}$"; } }
         public string LoginCredentials { get { return "Login Credentials"; } }
 
-        //public string LoginCredentials { get; set; }
-        //public string UserPassword { get; set; }
-        //public string UserEmail { get; set; }
-        //public string UserDetialTemplateFolderPath { get; set; }
-        //public string Format { get; set; }
-        //public string RoleEmployee { get; set; }
-        //public string RoleTeamLeader { get;set; }
-        //public string RoleAdmin { get; set; }
-        //public string Email { get; set; }
-        //public string LastName { get; set; }
-        //public string FirstName { get; set; }
-        //public string SecretKeyGeneratorString { get; set; }
-        //public string InvalidLogin { get; set; }
-        //public string SuccessfullySendMail { get; set; }
-        //public string ForgotPassword { get; set; }
-        //public string ResertPasswordUserName { get; set; }
-        //public string ResetPasswordLink { get; set; }
-        //public string ForgotPasswordTemplateFolderPath { get; set; }
-        //public string EmailNotExists { get; set; }
-        //public string DomainAddress { get; set; }
-        //public string DateFormate { get; set; }
-        //public string TeamLeaderNotAssign { get; set; }
+       public StringConstant(IHostingEnvironment hostingEnvironment)
+        {
+             _hostingEnvironment = hostingEnvironment;
+        }
+        public AppConstant JsonDeserializeObject()
+        {
+            string path = _hostingEnvironment.ContentRootPath + "\\Constants\\AppConstant.json";
+            using (StreamReader r = File.OpenText(path))
+            {
+                string json = r.ReadToEnd();
+                return JsonConvert.DeserializeObject<AppConstant>(json);
+            }
+        }
     }
 
 }

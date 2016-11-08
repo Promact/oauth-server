@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 using Exceptions;
 using Promact.Oauth.Server.Constants;
 using Promact.Oauth.Server.Exception_Handler;
-
+using Promact.Oauth.Server.Data_Repository;
 
 namespace Promact.Oauth.Server.Controllers
 {
@@ -25,8 +25,8 @@ namespace Promact.Oauth.Server.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<UserController> _logger;
         private readonly IStringConstant _stringConstant;
-
-
+        private readonly AppConstant _appConstant;
+        
         #endregion
 
         #region "Constructor"
@@ -37,6 +37,7 @@ namespace Promact.Oauth.Server.Controllers
             _logger = logger;
             _userManager = userManager;
             _stringConstant = stringConstant;
+            _appConstant = _stringConstant.JsonDeserializeObject();
         }
 
         #endregion
@@ -354,7 +355,9 @@ namespace Promact.Oauth.Server.Controllers
         {
             try
             {
-                return Ok(await _userRepository.CheckEmailIsExists(email + _stringConstant.DomainAddress));
+                string DomainAddress;
+                _appConstant.ConsumerApp.TryGetValue("DomainAddress", out DomainAddress);
+                return Ok(await _userRepository.CheckEmailIsExists(email + DomainAddress));
             }
             catch (Exception ex)
             {

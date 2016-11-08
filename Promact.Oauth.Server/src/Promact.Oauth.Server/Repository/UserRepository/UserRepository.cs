@@ -37,6 +37,7 @@ namespace Promact.Oauth.Server.Repository
         private readonly IOptions<AppSettingUtil> _appSettingUtil;
         private readonly ILogger<UserRepository> _logger;
         private readonly IStringConstant _stringConstant;
+        private readonly AppConstant _appConstant;
         #endregion
 
         #region "Constructor"
@@ -55,6 +56,7 @@ namespace Promact.Oauth.Server.Repository
             _appSettingUtil = appSettingUtil;
             _logger = logger;
             _stringConstant = stringConstant;
+            _appConstant = _stringConstant.JsonDeserializeObject();
         }
 
         #endregion
@@ -491,7 +493,7 @@ namespace Promact.Oauth.Server.Repository
         public async Task<bool> IsAdmin(string userName)
         {
             var user = await _userManager.FindByNameAsync(userName);
-            var isAdmin = await _userManager.IsInRoleAsync(user, _stringConstant.Admin);
+            var isAdmin = await _userManager.IsInRoleAsync(user, _appConstant.CommanStringConstant.FirstOrDefault(o=>o.Key== "RoleAdmin").Value);
             return isAdmin;
         }
 
@@ -531,22 +533,22 @@ namespace Promact.Oauth.Server.Repository
             {
                 string roles = _userManager.GetRolesAsync(user).Result.First();
                 UserAc newUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
-                if (String.Compare(roles, _stringConstant.Admin, true) == 0)
+                if (String.Compare(roles, _appConstant.CommanStringConstant.FirstOrDefault(o => o.Key == "RoleAdmin").Value, true) == 0)
                 {
                     newUser.Role = roles;
                     return newUser;
                 }
-                if (String.Compare(roles, _stringConstant.Employee, true) == 0)
+                if (String.Compare(roles, _appConstant.CommanStringConstant.FirstOrDefault(o => o.Key == "RoleEmployee").Value, true) == 0)
                 {
                     Project project = _projectDataRepository.FirstOrDefault(x => x.TeamLeaderId.Equals(user.Id));
                     if (project != null)
                     {
-                        newUser.Role = _stringConstant.TeamLeader;
+                        newUser.Role = _appConstant.CommanStringConstant.FirstOrDefault(o => o.Key == "RoleTeamLeader").Value;
                         return newUser;
                     }
                     else
                     {
-                        newUser.Role = _stringConstant.Employee;
+                        newUser.Role = _appConstant.CommanStringConstant.FirstOrDefault(o => o.Key == "RoleEmployee").Value;
                         return newUser;
                     }
                 }
@@ -562,16 +564,16 @@ namespace Promact.Oauth.Server.Repository
         private bool SendEmail(ApplicationUser user, string password)
         {
             _logger.LogInformation("Start Fetch Email Template");
-            string path = _hostingEnvironment.ContentRootPath + _stringConstant.UserDetialTemplateFolderPath;
+            string path = _hostingEnvironment.ContentRootPath + _appConstant.CommanStringConstant.FirstOrDefault(o => o.Key == "UserDetialTemplateFolderPath").Value;
             _logger.LogInformation("ContentRootPath Path:" + _hostingEnvironment.ContentRootPath);
-            _logger.LogInformation("Full Path:" + _hostingEnvironment.ContentRootPath + _stringConstant.UserDetialTemplateFolderPath);
+            _logger.LogInformation("Full Path:" + _hostingEnvironment.ContentRootPath + _appConstant.CommanStringConstant.FirstOrDefault(o => o.Key == "UserDetialTemplateFolderPath").Value);
             string finaleTemplate = "";
             if (System.IO.File.Exists(path))
             {
                 _logger.LogInformation("Email Template Featch successfully");
                 finaleTemplate = System.IO.File.ReadAllText(path);
-                finaleTemplate = finaleTemplate.Replace(_stringConstant.UserEmail, user.Email).Replace(_stringConstant.UserPassword, password).Replace(_stringConstant.ResertPasswordUserName, user.FirstName);
-                _emailSender.SendEmail(user.Email, _stringConstant.LoginCredentials, finaleTemplate);
+                finaleTemplate = finaleTemplate.Replace(_appConstant.CommanStringConstant.FirstOrDefault(o => o.Key == "UserEmail").Value, user.Email).Replace(_appConstant.CommanStringConstant.FirstOrDefault(o => o.Key == "UserPassword").Value, password).Replace(_appConstant.CommanStringConstant.FirstOrDefault(o => o.Key == "ResertPasswordUserName").Value, user.FirstName);
+                _emailSender.SendEmail(user.Email, _appConstant.CommanStringConstant.FirstOrDefault(o => o.Key == "LoginCredentials").Value, finaleTemplate);
                 return true;
             }
             return false;

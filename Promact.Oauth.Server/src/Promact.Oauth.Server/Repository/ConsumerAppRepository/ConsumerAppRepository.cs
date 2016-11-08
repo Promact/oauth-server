@@ -18,6 +18,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         private readonly IDataRepository<ConsumerApps> _appsDataRepository;
         private readonly IMapper _mapperContext;
         private readonly IStringConstant _stringConstant;
+        private readonly AppConstant _appConstant;
         #endregion
 
         #region "Constructor"
@@ -26,6 +27,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
             _appsDataRepository = appsDataRepository;
             _mapperContext = mapperContext;
             _stringConstant = stringConstant;
+            _appConstant = _stringConstant.JsonDeserializeObject();
         }
 
         #endregion
@@ -118,12 +120,12 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
             var random = new Random();
             if (isAuthId)
             {
-                return new string(Enumerable.Repeat(_stringConstant.SecretKeyGeneratorString, 15)
+                return new string(Enumerable.Repeat(_appConstant.Project.FirstOrDefault(o => o.Key == "SecretKeyGeneratorString").Value, 15)
                   .Select(s => s[random.Next(s.Length)]).ToArray());
             }
             else
             {
-                return new string(Enumerable.Repeat(_stringConstant.SecureKeyGeneratorString, 30)
+                return new string(Enumerable.Repeat(_appConstant.Project.FirstOrDefault(o => o.Key == "SecretKeyGeneratorString").Value, 30)
                   .Select(s => s[random.Next(s.Length)]).ToArray());
             }
 

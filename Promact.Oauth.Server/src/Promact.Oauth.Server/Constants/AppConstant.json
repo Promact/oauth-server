@@ -1,0 +1,41 @@
+{
+  "Project": {
+    "title": "Project Related String Constant",
+    "DateFormate": "dd/MM/yyyy",
+    "TeamLeaderNotAssign": "Not Assigned"
+  },
+  "User": {
+    "title": "User Related String Constant",
+    "UserDetialTemplateFolderPath": "\\Template\\UserDetial.html",
+    "UserPassword": "${{Password}}$",
+    "UserEmail": "${{Email}}$",
+    "ResertPasswordUserName": "${{Username}}$",
+    "LoginCredentials": "Login Credentials",
+    "DomainAddress": "@promactinfo.com"
+  },
+  "ConsumerApp": {
+    "title": "ConsumerApp Related String Constant",
+    "SecretKeyGeneratorString": "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+  },
+  "Account": {
+    "title": "Account Related String Constant",
+    "EmailNotExists": "Email does not exist",
+    "ForgotPasswordTemplateFolderPath": "\\Template\\ForgotPassword.html",
+    "ForgotPassword": "Forgot Password",
+    "SuccessfullySendMail": "We have sent you a link on {{emailaddress}} to reset password.Please check your email.",
+    "ResetPasswordLink": "${{RestPassWordLink}}$",
+    "ResertPasswordUserName": "${{Username}}$"
+  },
+  "Oauth": {
+    "title": "Oauth Related String Constant",
+    "InvalidLogin": "Invalid login attempt."
+  },
+  "CommanStringConstant": {
+    "title": "Comman String Constant",
+    "RoleAdmin": "Admin",
+    "RoleTeamLeader": "TeamLeader",
+    "RoleEmployee": "Employee",
+    "Format": "yyyy-MM-dd",
+    "EmptyString": ""
+  }
+}
