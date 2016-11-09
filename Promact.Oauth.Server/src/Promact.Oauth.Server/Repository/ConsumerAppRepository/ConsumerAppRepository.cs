@@ -120,12 +120,13 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
             var random = new Random();
             if (isAuthId)
             {
-                return new string(Enumerable.Repeat(_appConstant.Project.FirstOrDefault(o => o.Key == "SecretKeyGeneratorString").Value, 15)
+                
+                return new string(Enumerable.Repeat(_appConstant.ConsumerApp.FirstOrDefault(o => o.Key == "SecretKeyGeneratorString").Value, 15)
                   .Select(s => s[random.Next(s.Length)]).ToArray());
             }
             else
             {
-                return new string(Enumerable.Repeat(_appConstant.Project.FirstOrDefault(o => o.Key == "SecretKeyGeneratorString").Value, 30)
+                return new string(Enumerable.Repeat(_appConstant.ConsumerApp.FirstOrDefault(o => o.Key == "SecretKeyGeneratorString").Value, 30)
                   .Select(s => s[random.Next(s.Length)]).ToArray());
             }
 

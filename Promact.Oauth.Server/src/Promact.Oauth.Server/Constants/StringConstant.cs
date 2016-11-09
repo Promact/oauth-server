@@ -1,5 +1,6 @@
 ﻿using Exceptionless.Json;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.PlatformAbstractions;
 using System.Collections.Generic;
 using System.IO;
 
@@ -104,7 +105,16 @@ namespace Promact.Oauth.Server.Constants
         }
         public AppConstant JsonDeserializeObject()
         {
-            string path = _hostingEnvironment.ContentRootPath + "\\Constants\\AppConstant.json";
+            string path;
+            if (_hostingEnvironment.ContentRootPath != "test")
+            {
+                path = _hostingEnvironment.ContentRootPath + "\\Constants\\AppConstant.json";
+            }
+            else
+            {
+                path = Directory.GetCurrentDirectory().Replace("Promact.Oauth.Server.Tests", "Promact.Oauth.Server\\Constants\\AppConstant.json");
+                
+            }
             using (StreamReader r = File.OpenText(path))
             {
                 string json = r.ReadToEnd();
