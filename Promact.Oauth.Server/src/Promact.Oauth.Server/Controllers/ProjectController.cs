@@ -12,7 +12,6 @@ using Promact.Oauth.Server.Services;
 using Microsoft.AspNetCore.Authorization;
 using Promact.Oauth.Server.Exception_Handler;
 using Microsoft.Extensions.Logging;
-using Promact.Oauth.Server.Exception_Handler;
 
 
 
@@ -142,13 +141,14 @@ namespace Promact.Oauth.Server.Controllers
         [Authorize]
         [HttpPost]
         [Route("")]
-        public async Task<IActionResult> addProject([FromBody]ProjectAc project)
+        public async Task<IActionResult> AddProject([FromBody]ProjectAc project)
         {
             var createdBy = _userManager.GetUserId(User);
             if (ModelState.IsValid)
             {
                 ProjectAc projectAc = _projectRepository.checkDuplicate(project);
-                if (projectAc.Name != null && projectAc.SlackChannelName != null)
+                
+                if (!string.IsNullOrEmpty(projectAc.Name) && !string.IsNullOrEmpty(projectAc.SlackChannelName))
                 {
                     int id = await _projectRepository.AddProject(project, createdBy);
                     foreach (var applicationUser in project.ApplicationUsers)
@@ -198,13 +198,13 @@ namespace Promact.Oauth.Server.Controllers
         [Authorize]
         [HttpPut]
         [Route("")]
-        public async Task<IActionResult> editProject([FromBody]ProjectAc project)
+        public async Task<IActionResult> EditProject([FromBody]ProjectAc project)
         {
             var updatedBy = _userManager.GetUserId(User);
             if (ModelState.IsValid)
             {
                 ProjectAc checkDuplicateProject = _projectRepository.checkDuplicateFromEditProject(project);
-                if (checkDuplicateProject.Name != null && checkDuplicateProject.SlackChannelName != null)
+                if (!string.IsNullOrEmpty(checkDuplicateProject.Name) && !string.IsNullOrEmpty(checkDuplicateProject.SlackChannelName))
                 {
                     await _projectRepository.EditProject(project, updatedBy);
                 }
@@ -230,17 +230,17 @@ namespace Promact.Oauth.Server.Controllers
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
         * {
-        *     "description":"Method to return list of users/employees of the given group name"
+        *     "description":"Method to return project details of the given group name"
         * }
         */
         [ServiceFilter(typeof(CustomAttribute))]
         [HttpGet]
-        [Route("fetchProject/{name}")]
-        public IActionResult Fetch(string name)
+        [Route("project/{name}")]
+        public async Task<IActionResult> GetProjectByGroupName(string name)
         {
             try
             {
-                return Ok(_projectRepository.GetProjectByGroupName(name));
+                return Ok(await _projectRepository.GetProjectByGroupName(name));
             }
             catch (ProjectNotFound)
             {
@@ -267,7 +267,7 @@ namespace Promact.Oauth.Server.Controllers
         */
         [ServiceFilter(typeof(CustomAttribute))]
         [HttpGet]
-        [Route("featchUserRole/{name}")]
+        [Route("role/{name}")]
         public async Task<IActionResult> GetUserRole(string name)
         {
             try
@@ -281,6 +281,7 @@ namespace Promact.Oauth.Server.Controllers
             }
 
         }
+
         /**
         * @api {get} api/Project/GetListOfEmployee 
         * @apiVersion 1.0.0
@@ -322,8 +323,8 @@ namespace Promact.Oauth.Server.Controllers
       */
         [ServiceFilter(typeof(CustomAttribute))]
         [HttpGet]
-        [Route("fetchProjectUsers/{groupName}")]
-        public async Task<IActionResult> FetchUsers(string groupName)
+        [Route("user/{groupName}")]
+        public async Task<IActionResult> GetProjectUserByGroupName(string groupName)
         {
             try
             {
@@ -347,7 +348,7 @@ namespace Promact.Oauth.Server.Controllers
       * }
       */
         [HttpGet]
-        [Route("allProjects")]
+        [Route("projects")]
         public async Task<IEnumerable<ProjectAc>> AllProjects()
         {
             return await _projectRepository.GetProjectsWithUsers();
@@ -372,7 +373,7 @@ namespace Promact.Oauth.Server.Controllers
       * }
       */
         [HttpGet]
-        [Route("projectDetails/{projectId}")]
+        [Route("projects/{projectId}")]
         public async Task<ProjectAc> ProjectDetails(int projectId)
         {
             return await _projectRepository.GetProjectDetails(projectId);

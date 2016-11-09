@@ -60,7 +60,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// </summary>
         /// <param name="GroupName"></param>
         /// <returns>object of ProjectAc</returns>
-        ProjectAc GetProjectByGroupName(string GroupName);
+        Task<ProjectAc> GetProjectByGroupName(string GroupName);
 
         /// <summary>
         /// This method is used to fetch list of users/employees of the given group name. - JJ
