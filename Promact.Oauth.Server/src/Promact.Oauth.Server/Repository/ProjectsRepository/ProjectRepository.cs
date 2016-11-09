@@ -50,25 +50,24 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             var projects = await _projectDataRepository.GetAll().ToListAsync();
             var projectAcList = new List<ProjectAc>();
 
-            projects.ForEach(project =>
+            foreach(var project in projects)
             {
                 var userAc = new UserAc();
-                if (project.TeamLeaderId != null)
+                if (!string.IsNullOrEmpty(project.TeamLeaderId))
                 {
                     var user = _userDataRepository.FirstOrDefault(x => x.Id.Equals(project.TeamLeaderId));
                     userAc = _mapperContext.Map<ApplicationUser, UserAc>(user);
                 }
                 else
                 {
-
                     userAc.FirstName = _stringConstant.TeamLeaderNotAssign;
                     userAc.LastName = _stringConstant.TeamLeaderNotAssign;
                     userAc.Email = _stringConstant.TeamLeaderNotAssign;
                 }
-                var CreatedBy =_userDataRepository.FirstOrDefault(x => x.Id==project.CreatedBy)?.FirstName;
-                var UpdatedBy = _userDataRepository.FirstOrDefault(x => x.Id==project.UpdatedBy)?.FirstName;
+                var CreatedBy = _userDataRepository.FirstOrDefault(x => x.Id == project.CreatedBy)?.FirstName;
+                var UpdatedBy = _userDataRepository.FirstOrDefault(x => x.Id == project.UpdatedBy)?.FirstName;
                 string UpdatedDate;
-                if (project.UpdatedDateTime==null)
+                if (project.UpdatedDateTime == null)
                 { UpdatedDate = ""; }
                 else
                 { UpdatedDate = Convert.ToDateTime(project.UpdatedDateTime).ToString(_stringConstant.DateFormate); }
@@ -80,7 +79,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                 projectAc.UpdatedDate = UpdatedDate;
                 projectAcList.Add(projectAc);
 
-            });
+            }
             return projectAcList;
         }
 
@@ -135,7 +134,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                 });
             }
             var projectAc = _mapperContext.Map<Project, ProjectAc>(project);
-            if (project.TeamLeaderId != null)
+            if (!string.IsNullOrEmpty(project.TeamLeaderId))
             {var teamLeader =await _userDataRepository.FirstOrDefaultAsync(x => x.Id.Equals(project.TeamLeaderId));
             projectAc.TeamLeader = new UserAc { FirstName = teamLeader.FirstName, LastName = teamLeader.LastName, Email = teamLeader.Email };}
             else{ projectAc.TeamLeader = null;}
@@ -169,7 +168,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             _projectUserDataRepository.Delete(x => x.ProjectId==projectId);
             await _projectUserDataRepository.SaveChangesAsync();
 
-            editProject.ApplicationUsers.ForEach(x =>
+            foreach (var user in editProject.ApplicationUsers)
             {
                 _projectUserDataRepository.AddAsync(new ProjectUser
                 {
@@ -178,11 +177,10 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                     UpdatedBy = updatedBy,
                     CreatedBy = project.CreatedBy,
                     CreatedDateTime = project.CreatedDateTime,
-                    UserId = x.Id
-                }
-
-                );
-            });
+                    UserId = user.Id,
+                });
+            }
+            
             await _projectDataRepository.SaveChangesAsync();
             return editProject.Id;
         }
@@ -231,9 +229,9 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// </summary>
         /// <param name="GroupName"></param>
         /// <returns>object of Project</returns>
-        public ProjectAc GetProjectByGroupName(string GroupName)
+        public async Task<ProjectAc> GetProjectByGroupName(string GroupName)
         {
-                var project = _projectDataRepository.FirstOrDefault(x => x.SlackChannelName==GroupName);
+                var project =await _projectDataRepository.FirstOrDefaultAsync(x => x.SlackChannelName==GroupName);
                 var projectAc = new ProjectAc();
                 if (project != null)
                 {
@@ -427,25 +425,25 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             List<ProjectAc> projectAcList = new List<ProjectAc>();
             var projects = await _projectDataRepository.GetAll().ToListAsync();
 
-            projects.ForEach(async project =>
+            foreach(var project in projects)
             {
-                ApplicationUser applicationUser =await _userDataRepository.FirstOrDefaultAsync(x => x.Id==project.TeamLeaderId);
+                ApplicationUser applicationUser = await _userDataRepository.FirstOrDefaultAsync(x => x.Id == project.TeamLeaderId);
                 UserAc teamLeader = _mapperContext.Map<ApplicationUser, UserAc>(applicationUser);
                 teamLeader.Role = _stringConstant.TeamLeader;
 
-                List<ProjectUser> projectUsers =await _projectUserDataRepository.Fetch(x => x.ProjectId==project.Id).ToListAsync();
+                List<ProjectUser> projectUsers = await _projectUserDataRepository.Fetch(x => x.ProjectId == project.Id).ToListAsync();
                 ProjectAc projectAc = _mapperContext.Map<Project, ProjectAc>(project);
                 projectAc.TeamLeader = teamLeader;
                 projectAc.CreatedDate = project.CreatedDateTime.ToString(_stringConstant.Format);
                 foreach (var projectUser in projectUsers)
                 {
-                    ApplicationUser user =await _userDataRepository.FirstOrDefaultAsync(x => x.Id==projectUser.UserId);
+                    ApplicationUser user = await _userDataRepository.FirstOrDefaultAsync(x => x.Id == projectUser.UserId);
                     UserAc userAc = _mapperContext.Map<ApplicationUser, UserAc>(user);
                     userAc.Role = _stringConstant.Employee;
                     projectAc.ApplicationUsers.Add(userAc);
                 }
                 projectAcList.Add(projectAc);
-            });
+            }
             return projectAcList;
         }
 
