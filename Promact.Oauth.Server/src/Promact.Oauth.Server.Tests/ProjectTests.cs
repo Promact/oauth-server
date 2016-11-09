@@ -231,28 +231,28 @@ namespace Promact.Oauth.Server.Tests
         ///// <summary>
         ///// Fetches Users of the given Project Name(slack channel name)
         ///// </summary>
-        //[Fact, Trait("Category", "A")]
-        //public async Task GetProjectUserByGroupName()
-        //{
-        //    ProjectUser projectUser = new ProjectUser()
-        //    {
-        //        ProjectId = 1,
-        //        Project = new Project { Name = _stringConstant.Name },
-        //        UserId = _stringConstant.UserId,
-        //        User = new ApplicationUser { FirstName = _stringConstant.FirstName }
-        //    };
-        //    ProjectAc projectac = new ProjectAc();
-        //    projectac.Name = _stringConstant.Name;
-        //    projectac.SlackChannelName = _stringConstant.SlackChannelName;
-        //    projectac.IsActive = _stringConstant.IsActive;
-        //    projectac.TeamLeader = new UserAc { FirstName = _stringConstant.FirstName };
-        //    projectac.TeamLeaderId = _stringConstant.TeamLeaderId;
-        //    projectac.CreatedBy = _stringConstant.CreatedBy;
-        //    await _projectRepository.AddProject(projectac, _stringConstant.CreatedBy);
-        //    await _projectRepository.AddUserProject(projectUser);
-        //    var projectUsers = _projectRepository.GetProjectUserByGroupName(projectac.SlackChannelName);
-        //    Assert.NotEqual(projectUsers.Result.Count, 2);
-        //}
+        [Fact, Trait("Category", "A")]
+        public async Task GetProjectUserByGroupName()
+        {
+            ProjectUser projectUser = new ProjectUser()
+            {
+                ProjectId = 1,
+                Project = new Project { Name = _stringConstant.Name },
+                UserId = _stringConstant.UserId,
+                User = new ApplicationUser { FirstName = _stringConstant.FirstName }
+            };
+            ProjectAc projectac = new ProjectAc();
+            projectac.Name = _stringConstant.Name;
+            projectac.SlackChannelName = _stringConstant.SlackChannelName;
+            projectac.IsActive = _stringConstant.IsActive;
+            projectac.TeamLeader = new UserAc { FirstName = _stringConstant.FirstName };
+            projectac.TeamLeaderId = _stringConstant.TeamLeaderId;
+            projectac.CreatedBy = _stringConstant.CreatedBy;
+            await _projectRepository.AddProject(projectac, _stringConstant.CreatedBy);
+            await _projectRepository.AddUserProject(projectUser);
+            var projectUsers = _projectRepository.GetProjectUserByGroupName(projectac.SlackChannelName);
+            Assert.NotEqual(projectUsers.Result.Count, 2);
+        }
 
 
         /// <summary>
