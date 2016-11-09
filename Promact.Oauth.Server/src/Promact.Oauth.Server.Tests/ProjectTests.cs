@@ -28,7 +28,7 @@ namespace Promact.Oauth.Server.Tests
             _stringConstant = serviceProvider.GetService<IStringConstant>();
 
         }
-
+        #region Test Case
         /// <summary>
         /// This test case to add a new project
         /// </summary>
@@ -272,6 +272,6 @@ namespace Promact.Oauth.Server.Tests
             var project = _projectRepository.GetProjectByGroupName(projectac.SlackChannelName);
             Assert.Equal(projectac.TeamLeaderId, project.TeamLeaderId);
         }
-
+        #endregion
     }
 }
