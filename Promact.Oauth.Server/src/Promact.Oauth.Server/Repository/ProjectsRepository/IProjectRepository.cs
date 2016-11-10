@@ -46,14 +46,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// </summary>
         /// <param name="project"></param> pass the project parameter
         /// <returns>projectAc object</returns>
-        ProjectAc checkDuplicate(ProjectAc project);
-
-        /// <summary>
-        /// Check Project and SlackChannelName is already exists or not 
-        /// </summary>
-        /// <param name="project"></param> pass the project parameter
-        /// <returns>projectAc object</returns>
-        ProjectAc checkDuplicateFromEditProject(ProjectAc project);
+        ProjectAc CheckDuplicate(ProjectAc project);
 
         /// <summary>
         /// Fetches the project details of the given GroupName

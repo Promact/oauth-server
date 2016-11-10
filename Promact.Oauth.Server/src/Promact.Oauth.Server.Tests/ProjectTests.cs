@@ -160,7 +160,7 @@ namespace Promact.Oauth.Server.Tests
             projectac.TeamLeaderId = _stringConstant.TeamLeaderId;
             projectac.CreatedBy = _stringConstant.CreatedBy;
             await _projectRepository.AddProject(projectac, _stringConstant.CreatedBy);
-            var project = _projectRepository.checkDuplicate(projectac);
+            var project = _projectRepository.CheckDuplicate(projectac);
             Assert.Null(project.Name);
         }
 
@@ -198,8 +198,8 @@ namespace Promact.Oauth.Server.Tests
                 ApplicationUsers = userlist
             };
             await _projectRepository.AddProject(projectacSecound, _stringConstant.CreatedBy);
-            var project = _projectRepository.checkDuplicate(projectacSecound);
-            Assert.Null(project.Name);
+            var project = _projectRepository.CheckDuplicate(projectacSecound);
+            Assert.Null(project.SlackChannelName);
         }
 
         ///// <summary>
