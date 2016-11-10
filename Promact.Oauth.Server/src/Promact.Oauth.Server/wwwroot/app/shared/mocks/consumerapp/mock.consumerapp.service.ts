@@ -38,7 +38,7 @@ export class MockConsumerappService {
      */
     getConsumerAppById(id: number) {
         let mockConsumerApp = new MockConsumer(id);
-        if (id == 1) {
+        if (id === 1) {
             mockConsumerApp.Name = "slack";
             mockConsumerApp.Description = "slack Description";
             mockConsumerApp.CallbackUrl = "www.google.com";
