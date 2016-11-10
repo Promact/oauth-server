@@ -12,7 +12,7 @@
 
         public int Port { get; set; }
 
-        public bool SslOnConnect { get; set; }
+        public string SetSmtpProtocol { get; set; }
 
     }
 
