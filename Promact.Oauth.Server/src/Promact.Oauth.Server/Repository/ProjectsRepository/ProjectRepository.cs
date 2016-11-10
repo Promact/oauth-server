@@ -186,42 +186,32 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         }
 
         /// <summary>
-        /// Method to check project and slackChannelName is already exists or not 
-        /// </summary>
-        /// <param name="project"></param> pass the project parameter
-        /// <returns>projectAc object</returns>
-        public ProjectAc checkDuplicateFromEditProject(ProjectAc project)
-        {
-            var projectName = _projectDataRepository.FirstOrDefault(x => x.Id != project.Id && x.Name==project.Name);
-            var slackChannelName = _projectDataRepository.FirstOrDefault(x => x.Id != project.Id && x.SlackChannelName==project.SlackChannelName);
-            if (projectName==null && slackChannelName==null)
-            { return project; }
-            else if (projectName != null && slackChannelName==null)
-            { project.Name = null; return project; }
-            else if (projectName==null && slackChannelName==null)
-            { project.SlackChannelName = null; return project; }
-            else
-            { project.Name = null; project.SlackChannelName = null; return project; }
-
-        }
-
-        /// <summary>
         /// Method to check Project and SlackChannelName is already exists or not 
         /// </summary>
         /// <param name="project"></param> pass the project parameter
         /// <returns>projectAc object</returns>
-        public ProjectAc checkDuplicate(ProjectAc project)
+        public ProjectAc CheckDuplicate(ProjectAc projectAc)
         {
-            var projectName = _projectDataRepository.FirstOrDefault(x => x.Name == project.Name);
-            var slackChannelName = _projectDataRepository.FirstOrDefault(x => x.SlackChannelName==project.SlackChannelName);
-            if (projectName==null && slackChannelName==null)
-            { return project; }
-            else if (projectName != null && slackChannelName==null)
-            { project.Name = null; return project; }
-            else if (projectName==null && slackChannelName != null)
-            { project.SlackChannelName = null; return project; }
+            var projectName=new Project();
+            var slackChannelName=new Project();
+            if (projectAc.Id==0)
+            {
+                projectName = _projectDataRepository.FirstOrDefault(x => x.Name == projectAc.Name );
+                slackChannelName = _projectDataRepository.FirstOrDefault(x => x.SlackChannelName == projectAc.SlackChannelName);
+            }
             else
-            { project.Name = null; project.SlackChannelName = null; return project; }
+            {
+                projectName = _projectDataRepository.FirstOrDefault(x => x.Id != projectAc.Id && x.Name == projectAc.Name);
+                slackChannelName = _projectDataRepository.FirstOrDefault(x => x.Id != projectAc.Id && x.SlackChannelName == projectAc.SlackChannelName);
+            }
+            if (projectName==null && slackChannelName==null)
+            { return projectAc; }
+            else if (projectName != null && slackChannelName==null)
+            { projectAc.Name = null; return projectAc; }
+            else if (projectName==null && slackChannelName != null)
+            { projectAc.SlackChannelName = null; return projectAc; }
+            else
+            { projectAc.Name = null; projectAc.SlackChannelName = null; return projectAc; }
         }
 
         /// <summary>
@@ -248,7 +238,6 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                 else
                     return projectAc;
           }
-
 
         /// <summary>
         /// Method to return list of users/employees of the given group name. - JJ

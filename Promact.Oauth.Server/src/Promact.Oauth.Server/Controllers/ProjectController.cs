@@ -46,6 +46,7 @@ namespace Promact.Oauth.Server.Controllers
         #endregion
 
         #region public Methods
+
         /**
          * @api {get} api/Project 
          * @apiVersion 1.0.0
@@ -79,6 +80,7 @@ namespace Promact.Oauth.Server.Controllers
             
            
         }
+
         /**
       * @api {get} api/Project/:id 
       * @apiVersion 1.0.0
@@ -146,7 +148,7 @@ namespace Promact.Oauth.Server.Controllers
             var createdBy = _userManager.GetUserId(User);
             if (ModelState.IsValid)
             {
-                ProjectAc projectAc = _projectRepository.checkDuplicate(project);
+                ProjectAc projectAc = _projectRepository.CheckDuplicate(project);
                 
                 if (!string.IsNullOrEmpty(projectAc.Name) && !string.IsNullOrEmpty(projectAc.SlackChannelName))
                 {
@@ -203,7 +205,7 @@ namespace Promact.Oauth.Server.Controllers
             var updatedBy = _userManager.GetUserId(User);
             if (ModelState.IsValid)
             {
-                ProjectAc checkDuplicateProject = _projectRepository.checkDuplicateFromEditProject(project);
+                ProjectAc checkDuplicateProject = _projectRepository.CheckDuplicate(project);
                 if (!string.IsNullOrEmpty(checkDuplicateProject.Name) && !string.IsNullOrEmpty(checkDuplicateProject.SlackChannelName))
                 {
                     await _projectRepository.EditProject(project, updatedBy);
@@ -213,6 +215,61 @@ namespace Promact.Oauth.Server.Controllers
             return Ok(project);
             
         }
+
+        /**
+       * @api {get} api/Project/GetUserRole 
+       * @apiVersion 1.0.0
+       * @apiName Project
+       * @apiGroup Project
+       * @apiParam {string} name UserName
+       * @apiParamExample {json} Request-Example:
+       *      
+       *        {
+                   "Name":"UserName"    
+       *        }      
+       * @apiSuccessExample {json} Success-Response:
+       * HTTP/1.1 200 OK 
+       * {
+       *     "description":"Method to return user role"
+       * }
+       */
+        [ServiceFilter(typeof(CustomAttribute))]
+        [HttpGet]
+        [Route("role/{name}")]
+        public async Task<IActionResult> GetUserRole(string name)
+        {
+            try
+            {
+
+                return Ok(await _projectRepository.GetUserRole(name));
+            }
+            catch (UserRoleNotFound)
+            {
+                return NotFound();
+            }
+
+        }
+
+        /**
+        * @api {get} api/Project/GetListOfEmployee 
+        * @apiVersion 1.0.0
+        * @apiName Project
+        * @apiGroup Project
+        * @apiSuccessExample {json} Success-Response:
+        * HTTP/1.1 200 OK 
+        * {
+        *     "description":"Method return list of users"
+        * }
+        */
+        [ServiceFilter(typeof(CustomAttribute))]
+        [HttpGet]
+        [Route("user/{name}")]
+        public async Task<List<UserRoleAc>> GetListOfEmployee(string name)
+        {
+            return await _projectRepository.GetListOfEmployee(name);
+
+        }
+
 
         /**
         * @api {get} api/Project/fetchProject 
@@ -248,61 +305,7 @@ namespace Promact.Oauth.Server.Controllers
             }
         }
 
-        /**
-        * @api {get} api/Project/GetUserRole 
-        * @apiVersion 1.0.0
-        * @apiName Project
-        * @apiGroup Project
-        * @apiParam {string} name UserName
-        * @apiParamExample {json} Request-Example:
-        *      
-        *        {
-                    "Name":"UserName"    
-        *        }      
-        * @apiSuccessExample {json} Success-Response:
-        * HTTP/1.1 200 OK 
-        * {
-        *     "description":"Method to return user role"
-        * }
-        */
-        [ServiceFilter(typeof(CustomAttribute))]
-        [HttpGet]
-        [Route("role/{name}")]
-        public async Task<IActionResult> GetUserRole(string name)
-        {
-            try
-            {
-                
-                return Ok(await _projectRepository.GetUserRole(name));
-            }
-            catch (UserRoleNotFound)
-            {
-                return NotFound();
-            }
-
-        }
-
-        /**
-        * @api {get} api/Project/GetListOfEmployee 
-        * @apiVersion 1.0.0
-        * @apiName Project
-        * @apiGroup Project
-        * @apiSuccessExample {json} Success-Response:
-        * HTTP/1.1 200 OK 
-        * {
-        *     "description":"Method return list of users"
-        * }
-        */
-        [ServiceFilter(typeof(CustomAttribute))]
-        [HttpGet]
-        [Route("employee/{name}")]
-        public async Task<List<UserRoleAc>> GetListOfEmployee(string name)
-        {
-            return await _projectRepository.GetListOfEmployee(name);
-
-        }
-
-        /**
+       /**
       * @api {get} api/Project/fetchProject 
       * @apiVersion 1.0.0
       * @apiName Project
