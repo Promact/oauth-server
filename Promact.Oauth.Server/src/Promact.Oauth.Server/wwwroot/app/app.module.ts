@@ -17,13 +17,16 @@ import { LoaderService } from "./shared/loader.service";
 import { UserRole } from "./shared/userrole.model";
 
 
+
+
+
 @NgModule({
     declarations: [AppComponent],
     imports: [
         BrowserModule,
         HttpModule,
-        MdToolbarModule.forRoot(),
-        MdSidenavModule.forRoot(),
+        MdToolbarModule,
+        MdSidenavModule,
         routing,
         ProjectModule,
         ConsumerAppModule,
