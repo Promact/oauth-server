@@ -89,6 +89,7 @@ namespace Promact.Oauth.Server.Controllers
             try
             {
                 List<ConsumerApps> listOfApps = await _consumerAppRepository.GetListOfConsumerApps();
+
                 return Ok(listOfApps);
             }
             catch (FailedToFetchDataException)

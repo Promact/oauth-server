@@ -9,4 +9,4 @@ import { UserService }   from '../users/user.service';
     providers: [UserService]
 
 })
-export class ChangePassword { }
+export class ChangePasswordMainComponent { }

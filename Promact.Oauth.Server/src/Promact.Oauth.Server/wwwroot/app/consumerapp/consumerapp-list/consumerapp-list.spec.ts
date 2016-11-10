@@ -16,8 +16,6 @@ import { Md2Toast } from 'md2';
 
 let promise: TestBed;
 
-declare var describe, it, beforeEach, expect;
-
 describe('Consumer List Test', () => {
     class MockRouter { }
     class MockLoaderService { }
@@ -36,7 +34,7 @@ describe('Consumer List Test', () => {
                 { provide: LoaderService, useClass: MockLoaderService }
             ]
         }).compileComponents();
-    }))
+    }));
 
     it("Get Consumer Apps", () => done => {
         this.promise.then(() => {
@@ -45,7 +43,7 @@ describe('Consumer List Test', () => {
             consumerappListComponent.getConsumerApps();
             expect(consumerappListComponent.listOfConsumerApps.length).toEqual(1);
             done();
-        })
+        });
     });
 });
 

@@ -34,7 +34,7 @@ describe('Consumer Add Test', () => {
                 { provide: LoaderService, useClass: MockLoaderService }
             ]
         }).compileComponents();
-    }))
+    }));
 
     it("Added consumer app", done => {
         this.promise.then(() => {
@@ -42,7 +42,7 @@ describe('Consumer Add Test', () => {
             let consumerappAddComponent = fixture.componentInstance;
             let toast = fixture.debugElement.injector.get(Md2Toast);
             let consumerAppModel = new ConsumerAppModel();
-            let expectedconsumerappname = "slack"
+            let expectedconsumerappname = "slack";
             consumerAppModel.Name = expectedconsumerappname;
             consumerAppModel.Description = "slack description";
             consumerAppModel.CallbackUrl = "www.google.com";
@@ -51,6 +51,6 @@ describe('Consumer Add Test', () => {
             consumerappAddComponent.submitApps(consumerAppModel);
             expect(consumerAppModel.Name).toBe(expectedconsumerappname);
             done();
-        })
+        });
     });
 });

@@ -1,5 +1,4 @@
-﻿export class ConsumerAppModel
-{
+﻿export class ConsumerAppModel {
         Id: number;
         Name: string;
         Description: string;

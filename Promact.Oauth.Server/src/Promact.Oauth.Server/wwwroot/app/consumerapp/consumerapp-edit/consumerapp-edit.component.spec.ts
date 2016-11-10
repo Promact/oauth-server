@@ -16,9 +16,6 @@ import { LoaderService } from '../../shared/loader.service';
 
 
 let promise: TestBed;
-
-declare var describe, it, beforeEach, expect;
-
 describe('Consumer Edit Test', () => {
     class MockRouter { }
     class MockLoaderService { }
@@ -44,7 +41,7 @@ describe('Consumer Edit Test', () => {
                 { provide: LoaderService, useClass: MockLoaderService }
             ]
         }).compileComponents();
-    }))
+    }));
 
     it("Get consumerApp by id", done => {
         this.promise.then(() => {
@@ -53,7 +50,7 @@ describe('Consumer Edit Test', () => {
             consumerappEditComponent.ngOnInit();
             expect(consumerappEditComponent.consumerModel).not.toBeNull();
             done();
-        })
+        });
     });
 
     it("Edit consumer app", done => {
@@ -71,7 +68,7 @@ describe('Consumer Edit Test', () => {
             consumerappEditComponent.updateApps(consumerAppModel);
             expect(consumerAppModel.Name).toBe(expectedconsumerappname);
             done();
-        })
+        });
 
     });
 

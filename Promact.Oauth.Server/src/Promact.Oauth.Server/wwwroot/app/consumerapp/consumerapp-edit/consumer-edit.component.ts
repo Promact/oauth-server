@@ -1,4 +1,4 @@
-﻿import { Component } from "@angular/core";
+﻿import { Component, OnInit } from "@angular/core";
 import { ConsumerAppModel } from '../consumerapp-model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ConsumerAppService } from '../consumerapp.service';
@@ -9,9 +9,8 @@ import { LoaderService } from '../../shared/loader.service';
 @Component({
     templateUrl: "app/consumerapp/consumerapp-edit/consumerapp-edit.html",
 })
-export class ConsumerappEditComponent {
+export class ConsumerappEditComponent implements OnInit {
     consumerModel: ConsumerAppModel;
-    private sub: any;
     constructor(private router: Router, private consumerAppService: ConsumerAppService, private route: ActivatedRoute, private toast: Md2Toast, private location: Location, private loader: LoaderService) {
         this.consumerModel = new ConsumerAppModel();
     }
