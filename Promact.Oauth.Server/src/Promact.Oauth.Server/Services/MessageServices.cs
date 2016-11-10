@@ -7,6 +7,7 @@ using Promact.Oauth.Server.Models;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
 using System;
+using Promact.Oauth.Server.Constants;
 
 namespace Promact.Oauth.Server.Services
 {
@@ -17,11 +18,13 @@ namespace Promact.Oauth.Server.Services
     public class AuthMessageSender : IEmailSender, ISmsSender
     {
         private readonly ILogger<AuthMessageSender> _logger;
+        private readonly IStringConstant _stringConstant;
         private readonly IOptions<EmailCrednetials> _emailCrednetials;
 
-        public AuthMessageSender(IOptions<EmailCrednetials> emailCrednetials, ILogger<AuthMessageSender> logger)
+        public AuthMessageSender(IOptions<EmailCrednetials> emailCrednetials, ILogger<AuthMessageSender> logger, IStringConstant stringConstant)
         {
             _logger = logger;
+            _stringConstant = stringConstant;
             _emailCrednetials = emailCrednetials;
         }
 
@@ -40,7 +43,7 @@ namespace Promact.Oauth.Server.Services
             using (var smtp = new SmtpClient())
             {
                 _logger.LogInformation("Smtp Connect");
-                 smtp.Connect(_emailCrednetials.Value.Host, _emailCrednetials.Value.Port, _emailCrednetials.Value.SetSmtpProtocol == "Unsecured" ? MailKit.Security.SecureSocketOptions.None : _emailCrednetials.Value.SetSmtpProtocol == "SSL" ? MailKit.Security.SecureSocketOptions.SslOnConnect : MailKit.Security.SecureSocketOptions.StartTls);
+                smtp.Connect(_emailCrednetials.Value.Host, _emailCrednetials.Value.Port, _emailCrednetials.Value.SetSmtpProtocol.ToLower() == _stringConstant.SetSmtpUnSecure ? MailKit.Security.SecureSocketOptions.None : _emailCrednetials.Value.SetSmtpProtocol.ToLower() == _stringConstant.SetSmtpSSL ? MailKit.Security.SecureSocketOptions.SslOnConnect : MailKit.Security.SecureSocketOptions.StartTls);
                 _logger.LogInformation("Authenticate");
                 smtp.Authenticate(credentials: new NetworkCredential(_emailCrednetials.Value.UserName, _emailCrednetials.Value.Password));
                 smtp.Send(msg, CancellationToken.None);
