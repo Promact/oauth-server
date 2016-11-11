@@ -263,14 +263,13 @@ namespace Promact.Oauth.Server.Controllers
         */
         [ServiceFilter(typeof(CustomAttribute))]
         [HttpGet]
-        [Route("user/{name}")]
+        [Route("users/{name}")]
         public async Task<List<UserRoleAc>> GetListOfEmployee(string name)
         {
             return await _projectRepository.GetListOfEmployee(name);
 
         }
-
-
+        
         /**
         * @api {get} api/Project/fetchProject 
         * @apiVersion 1.0.0
