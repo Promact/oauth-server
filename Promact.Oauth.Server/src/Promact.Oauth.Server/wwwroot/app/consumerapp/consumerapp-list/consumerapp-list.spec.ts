@@ -36,6 +36,10 @@ describe('Consumer List Test', () => {
         }).compileComponents();
     }));
 
+    it("Consumerapp list Component", () => done => {
+        expect(ConsumerappListComponent).toBeDefined();
+    });
+
     it("Get Consumer Apps", () => done => {
         this.promise.then(() => {
             let fixture = TestBed.createComponent(ConsumerappListComponent); //Create instance of component            
