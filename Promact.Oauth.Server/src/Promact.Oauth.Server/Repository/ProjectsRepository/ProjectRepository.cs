@@ -192,23 +192,23 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// <returns>projectAc object</returns>
         public ProjectAc CheckDuplicate(ProjectAc projectAc)
         {
-            var projectName=new Project();
-            var slackChannelName=new Project();
-            if (projectAc.Id==0)
+            Project project = new Project();
+            var newProject=new Project();
+            if (projectAc.Id == 0)
             {
-                projectName = _projectDataRepository.FirstOrDefault(x => x.Name == projectAc.Name );
-                slackChannelName = _projectDataRepository.FirstOrDefault(x => x.SlackChannelName == projectAc.SlackChannelName);
+                project = _projectDataRepository.FirstOrDefault(x => x.Name == projectAc.Name );
+                newProject = _projectDataRepository.FirstOrDefault(x => x.SlackChannelName == projectAc.SlackChannelName);
             }
             else
             {
-                projectName = _projectDataRepository.FirstOrDefault(x => x.Id != projectAc.Id && x.Name == projectAc.Name);
-                slackChannelName = _projectDataRepository.FirstOrDefault(x => x.Id != projectAc.Id && x.SlackChannelName == projectAc.SlackChannelName);
+                project = _projectDataRepository.FirstOrDefault(x => x.Id != projectAc.Id && x.Name == projectAc.Name);
+                newProject = _projectDataRepository.FirstOrDefault(x => x.Id != projectAc.Id && x.SlackChannelName == projectAc.SlackChannelName);
             }
-            if (projectName==null && slackChannelName==null)
+            if (project==null && newProject == null)
             { return projectAc; }
-            else if (projectName != null && slackChannelName==null)
+            else if (project != null && newProject == null)
             { projectAc.Name = null; return projectAc; }
-            else if (projectName==null && slackChannelName != null)
+            else if (project == null && newProject != null)
             { projectAc.SlackChannelName = null; return projectAc; }
             else
             { projectAc.Name = null; projectAc.SlackChannelName = null; return projectAc; }
