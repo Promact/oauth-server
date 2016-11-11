@@ -2,13 +2,14 @@
 import { Router }from '@angular/router';
 import { ConsumerAppService } from '../consumerapp.service';
 import { LoaderService } from '../../shared/loader.service';
+import { Md2Toast } from 'md2';
 
 @Component({
     templateUrl: "app/consumerapp/consumerapp-list/consumerapp-list.html"
 })
 export class ConsumerappListComponent {
     listOfConsumerApps: any;
-    constructor(private router: Router, private consumerAppService: ConsumerAppService, private loader :LoaderService) {
+    constructor(private router: Router, private consumerAppService: ConsumerAppService, private toast: Md2Toast, private loader :LoaderService) {
 
     }
     
@@ -20,12 +21,13 @@ export class ConsumerappListComponent {
     {
         this.loader.loader = true;
         this.consumerAppService.getConsumerApps().subscribe((result) => {
-            if (result.length > 0)
-                this.listOfConsumerApps = result;
+            this.listOfConsumerApps = result;
+            this.loader.loader = false;
         }, err => {
-
+            this.toast.show('Consumer App list empty.');
+            this.loader.loader = false;
         });
-        this.loader.loader = false;
+        
     }
 
 

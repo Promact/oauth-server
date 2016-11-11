@@ -1,9 +1,9 @@
-﻿import {Component} from "@angular/core";
-import {ConsumerAppModel} from '../consumerapp-model';
+﻿import { Component } from "@angular/core";
+import { ConsumerAppModel } from '../consumerapp-model';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ConsumerAppService} from '../consumerapp.service';
+import { ConsumerAppService } from '../consumerapp.service';
 import { Md2Toast } from 'md2';
-import {Location} from "@angular/common";
+import { Location } from "@angular/common";
 import { LoaderService } from '../../shared/loader.service';
 
 @Component({
@@ -31,7 +31,8 @@ export class ConsumerappEditComponent {
                 this.loader.loader = false;
             }
                 , err => {
-
+                    this.toast.show('Consumer App dose not exists.');
+                    this.loader.loader = false;
                 });
         });
     }
@@ -39,17 +40,12 @@ export class ConsumerappEditComponent {
     updateApps(consumerModel) {
         this.loader.loader = true;
         this.consumerAppService.updateConsumerApps(consumerModel).subscribe((result) => {
-            if (result == true) {
-                this.toast.show('Consumer App is updated successfully.');
-                this.cancel();
-                this.loader.loader = false;
-            }
-            else if (result == false) {
-                this.toast.show('Consumer App Name is already exists.');
-                this.loader.loader = false;
-            }
+            this.toast.show('Consumer App is updated successfully.');
+            this.cancel();
+            this.loader.loader = false;
         }, err => {
-
+            this.toast.show('Consumer App Name is already exists.');
+            this.loader.loader = false;
         });
     }
 
