@@ -1,8 +1,13 @@
-﻿using Exceptionless;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Promact.Oauth.Server.Data;
 using Promact.Oauth.Server.Repository;
+using Promact.Oauth.Server.Repository.OAuthRepository;
 using Promact.Oauth.Server.Services;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Promact.Oauth.Server.Controllers
@@ -23,19 +28,11 @@ namespace Promact.Oauth.Server.Controllers
         /// <param name="userFirstname"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("userDetails/{userSlackName}")]
-        public IActionResult UserDetialByFirstName(string userSlackName)
+        [Route("userDetails/{userFirstname}")]
+        public IActionResult UserDetialByFirstName(string userFirstName)
         {
-            try
-            {
-                var user = _userRepository.UserDetialByUserSlackName(userSlackName);
-                return Ok(user);
-            }
-            catch (Exception ex)
-            {
-                ex.ToExceptionless().Submit();
-                throw ex;
-            }
+            var user = _userRepository.UserDetialByFirstName(userFirstName);
+            return Ok(user);
         }
 
         /// <summary>
@@ -44,69 +41,37 @@ namespace Promact.Oauth.Server.Controllers
         /// <param name="userId"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("teamLeaderDetails/{userSlackName}")]
-        public async Task<IActionResult> TeamLeaderByUserId(string userSlackName)
+        [Route("teamLeaderDetails/{userFirstName}")]
+        public async Task<IActionResult> TeamLeaderByUserId(string userFirstName)
         {
-            try
-            {
-                var user = await _userRepository.TeamLeaderByUserSlackName(userSlackName);
-                return Ok(user);
-            }
-            catch (Exception ex)
-            {
-                ex.ToExceptionless().Submit();
-                throw ex;
-            }
+            var user = await _userRepository.TeamLeaderByUserId(userFirstName);
+            return Ok(user);
         }
 
         /// <summary>
         /// Method is used to get list of management people
         /// </summary>
+        /// <param name="userId"></param>
         /// <returns></returns>
         [HttpGet]
         [Route("managementDetails")]
-        public async Task<IActionResult> ManagementDetails()
+        public async Task<IActionResult> ManagementByUserId(string userId)
         {
-            try
-            {
-                var user = await _userRepository.ManagementDetails();
-                return Ok(user);
-            }
-            catch (Exception ex)
-            {
-                ex.ToExceptionless().Submit();
-                throw ex;
-            }
+            var user = await _userRepository.ManagementByUserId();
+            return Ok(user);
         }
 
-
-        /// <summary>
-        /// Method to get the number of casual leave allowed to a user by slack user name
-        /// </summary>
-        /// <param name="slackUserName"></param>
-        /// <returns>number of casual leave</returns>
-        [HttpGet]
-        [Route("casual/leave/{slackUserName}")]
-        public IActionResult GetUserCasualLeaveBySlackName(string slackUserName)
-        {
-            try
-            {
-                var casualLeave = _userRepository.GetUserAllowedLeaveBySlackName(slackUserName);
-                return Ok(casualLeave);
-            }
-            catch (Exception ex)
-            {
-                ex.ToExceptionless().Submit();
-                throw ex;
-            }
-        }
-
-        [HttpGet]
-        [Route("userIsAdmin/{userName}")]
-        public async Task<IActionResult> UserIsAdmin(string userName)
-        {
-            var result = await _userRepository.IsAdmin(userName);
-            return Ok(result);
-        }
+        ///// <summary>
+        ///// Method to get User details by user Id
+        ///// </summary>
+        ///// <param name="employeeId"></param>
+        ///// <returns></returns>
+        //[HttpGet]
+        //[Route("userDetail/{employeeId}")]
+        //public IActionResult UserDetailById(string employeeId)
+        //{
+        //    var user = _userRepository.UserDetailById(employeeId);
+        //    return Ok(user);
+        //}
     }
 }
