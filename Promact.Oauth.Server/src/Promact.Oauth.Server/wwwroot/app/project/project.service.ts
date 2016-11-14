@@ -4,7 +4,7 @@ import 'rxjs/add/operator/toPromise';
 import { ProjectModel } from './project.model';
 @Injectable()
 export class ProjectService {
-    private ProjectUrl = 'api/project';  // URL to web api
+    private ProjectUrl = 'api/projects';  // URL to web api
     private UserUrl = 'api/user';
     constructor(private httpService: HttpService<ProjectModel>) { }
     //check duplicate

@@ -23,7 +23,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         Task AddUserProject(ProjectUser newUserProject);
 
         /// <summary>
-        /// Get All Projects list from the database
+        /// getting the list of all projects
         /// </summary>
         /// <returns></returns>List of Projects
         Task<IEnumerable<ProjectAc>> GetAllProjects();
@@ -33,7 +33,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// </summary>
         /// <param name="id"></param>Project id that need to be featch the Project and list of users
         /// <returns></returns>Project and User/Users infromation 
-        Task<ProjectAc> GetById(int id);
+        Task<ProjectAc> GetProjectById(int id);
 
         /// <summary>
         /// Update Project information and User list information In Project table and Project User Table

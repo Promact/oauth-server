@@ -70,7 +70,7 @@ namespace Promact.Oauth.Server.Tests
         ///// This test case for gets project By Id
         ///// </summary>
         [Fact, Trait("Category", "Required")]
-        public async Task GetById()
+        public async Task GetProjectById()
         {
             ProjectUser projectUser = new ProjectUser()
             {
@@ -86,7 +86,7 @@ namespace Promact.Oauth.Server.Tests
             projectac.CreatedBy = _stringConstant.CreatedBy;
             var id = await _projectRepository.AddProject(projectac, _stringConstant.CreatedBy);
             await _projectRepository.AddUserProject(projectUser);
-            ProjectAc project = await _projectRepository.GetById(id);
+            ProjectAc project = await _projectRepository.GetProjectById(id);
             Assert.NotNull(project);
         }
 

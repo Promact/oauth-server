@@ -42,7 +42,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         #endregion
 
         /// <summary>
-        /// Method to return list of projects 
+        /// getting the list of all projects
         /// </summary>
         /// <returns>list of projects</returns>
         public async Task<IEnumerable<ProjectAc>> GetAllProjects()
@@ -84,7 +84,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         }
 
         /// <summary>
-        /// Method to add new project in the database
+        /// This method is used to add new project
         /// </summary>
         /// <param name="newProject">project that need to be added</param>
         /// <param name="createdBy">login user id</param>
@@ -117,7 +117,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// <param name="id"></param>Project id that need to be fetch the Project and list of users
         /// <returns></returns>Project and User/Users infromation 
         /// 
-        public async Task<ProjectAc> GetById(int id)
+        public async Task<ProjectAc> GetProjectById(int id)
         {
             List<UserAc> userAcList = new List<UserAc>();
             var project = await _projectDataRepository.FirstOrDefaultAsync(x => x.Id==id);
@@ -192,23 +192,23 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// <returns>projectAc object</returns>
         public ProjectAc CheckDuplicate(ProjectAc projectAc)
         {
-            Project project = new Project();
-            var newProject=new Project();
+            string projectName;
+            string slackChannelName;
             if (projectAc.Id == 0)
             {
-                project = _projectDataRepository.FirstOrDefault(x => x.Name == projectAc.Name );
-                newProject = _projectDataRepository.FirstOrDefault(x => x.SlackChannelName == projectAc.SlackChannelName);
+                projectName = _projectDataRepository.FirstOrDefault(x => x.Name == projectAc.Name)?.Name;
+                slackChannelName = _projectDataRepository.FirstOrDefault(x => x.SlackChannelName == projectAc.SlackChannelName)?.SlackChannelName;
             }
             else
             {
-                project = _projectDataRepository.FirstOrDefault(x => x.Id != projectAc.Id && x.Name == projectAc.Name);
-                newProject = _projectDataRepository.FirstOrDefault(x => x.Id != projectAc.Id && x.SlackChannelName == projectAc.SlackChannelName);
+                projectName = _projectDataRepository.FirstOrDefault(x => x.Id != projectAc.Id && x.Name == projectAc.Name)?.Name;
+                slackChannelName = _projectDataRepository.FirstOrDefault(x => x.Id != projectAc.Id && x.SlackChannelName == projectAc.SlackChannelName)?.SlackChannelName;
             }
-            if (project==null && newProject == null)
+            if (string.IsNullOrEmpty(projectName) && string.IsNullOrEmpty(slackChannelName))
             { return projectAc; }
-            else if (project != null && newProject == null)
+            else if (!string.IsNullOrEmpty(projectName) && string.IsNullOrEmpty(slackChannelName))
             { projectAc.Name = null; return projectAc; }
-            else if (project == null && newProject != null)
+            else if (string.IsNullOrEmpty(projectName) && !string.IsNullOrEmpty(slackChannelName))
             { projectAc.SlackChannelName = null; return projectAc; }
             else
             { projectAc.Name = null; projectAc.SlackChannelName = null; return projectAc; }
