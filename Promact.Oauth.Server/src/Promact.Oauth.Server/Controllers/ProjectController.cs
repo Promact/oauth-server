@@ -20,9 +20,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Promact.Oauth.Server.Controllers
 {
-
-    //[Authorize]
-    [Route("api/[controller]")]
+    [Route("api/projects")]
     public class ProjectController : Controller
     {
         #region "Private Variable(s)"
@@ -48,10 +46,11 @@ namespace Promact.Oauth.Server.Controllers
         #region public Methods
 
         /**
-         * @api {get} api/Project 
+         * @api {get} api/projects 
          * @apiVersion 1.0.0
-         * @apiName Project
+         * @apiName GetProjects
          * @apiGroup Project
+         * @apiParam {null} no parameter
          * @apiSuccessExample {json} Success-Response:
          * HTTP/1.1 200 OK 
          * {
@@ -61,7 +60,7 @@ namespace Promact.Oauth.Server.Controllers
         [Authorize]
         [HttpGet]
         [Route("")]
-        public async Task<IEnumerable<ProjectAc>> Projects()
+        public async Task<IEnumerable<ProjectAc>> GetProjects()
         {
             
                 var user = await _userManager.FindByNameAsync(User.Identity.Name);
@@ -77,37 +76,41 @@ namespace Promact.Oauth.Server.Controllers
                     _logger.LogInformation("call project repository for projects");
                     return await _projectRepository.GetAllProjects();
                 }
-            
-           
+
+
         }
 
         /**
-      * @api {get} api/Project/:id 
-      * @apiVersion 1.0.0
-      * @apiName Project
-      * @apiGroup Project
-      * @apiParam {int} id  project Id
-      * @apiParamExample {json} Request-Example:
-      *      
-      *        {
-      *             "id": "1"
-      *             "description":"return the project details of the given id"
-      *        }      
-      * @apiSuccessExample {json} Success-Response:
-      * HTTP/1.1 200 OK 
-      * {
-      *     "id":"1"
-      *     "description":"return the project details of the given id"
-      * }
-      */
+        * @api {get} api/projects/:id Request Project information
+        * @apiVersion 1.0.0
+        * @apiName GetProjectById
+        * @apiGroup Project
+        * @apiParam {int} id  project Id
+        * @apiParamExample {json} Request-Example:
+        * {
+        *   "id": "1"
+        * }      
+        * @apiSuccessExample {json} Success-Response:
+        * HTTP/1.1 200 OK 
+        * {
+        *     "description":"return the project details of the given id"
+        * }
+        * @apiError ProjectNotFound The id of the Project was not found.
+        * @apiErrorExample {json} Error-Response:
+        * HTTP/1.1 404 Not Found
+        * {
+        *   "error": "ProjectNotFound"
+        * }
+        */
+
         [Authorize]
         [HttpGet]
         [Route("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetProjectById(int id)
         {
             try
             {
-               return Ok(await _projectRepository.GetById(id));
+               return Ok(await _projectRepository.GetProjectById(id));
             }
             catch (ProjectNotFound)
             {
@@ -116,24 +119,19 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-      * @api {post} api/Project 
+      * @api {post} api/projects 
       * @apiVersion 1.0.0
-      * @apiName Project
+      * @apiName AddProject
       * @apiGroup Project
-      * @apiParam {string} Name  Project Name
-      * @apiParam {string} SlackChannelName  Project SlackChannelName
-      * @apiParam {bool} IsActive  Project IsActive
-      * @apiParam {int} TeamLeaderId  Project TeamLeaderId
-      * @apiParam {UserAc} ApplicationUsers  Project ApplicationUsers
+      * @apiParam {object} ProjectAc object 
       * @apiParamExample {json} Request-Example:
-      *      
-      *        {
-      *             "Name":"ProjectName",
-      *             "SlackChannelName":"SlackChannelName",
-      *             "IsActive":"True",
-      *             "TeamLeaderId":"1",
-      *             "ApplicationUsers":"List of Users"
-      *        }      
+      * {
+      *   "Name":"ProjectName",
+      *   "SlackChannelName":"SlackChannelName",
+      *   "IsActive":"True",
+      *   "TeamLeaderId":"1",
+      *   "ApplicationUsers":"List of Users"
+      * }      
       * @apiSuccessExample {json} Success-Response:
       * HTTP/1.1 200 OK 
       * {
@@ -169,28 +167,22 @@ namespace Promact.Oauth.Server.Controllers
             }
             return Ok(false);
         }
-         
+
         /**
-        * @api {put} api/Project 
+        * @api {put} api/projects 
         * @apiVersion 1.0.0
-        * @apiName Project
+        * @apiName EditProject
         * @apiGroup Project
-        * @apiParam {int} Id  Project Id
-        * @apiParam {string} Name  Project Name
-        * @apiParam {string} SlackChannelName  Project SlackChannelName
-        * @apiParam {bool} IsActive  Project IsActive
-        * @apiParam {int} TeamLeaderId  Project TeamLeaderId
-        * @apiParam {UserAc} ApplicationUsers  Project ApplicationUsers
+        * @apiParam {object} ProjectAc object 
         * @apiParamExample {json} Request-Example:
-        *      
-        *        {
-        *             "Id":"1",
-        *             "Name":"ProjectName",
-        *             "SlackChannelName":"SlackChannelName",
-        *             "IsActive":"True",
-        *             "TeamLeaderId":"1",
-        *             "ApplicationUsers":"List of Users"
-        *        }      
+        * {
+        *   "Id":"1",
+        *   "Name":"ProjectName",
+        *   "SlackChannelName":"SlackChannelName",
+        *   "IsActive":"True",
+        *   "TeamLeaderId":"1",
+        *   "ApplicationUsers":"List of Users"
+        * }      
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
         * {
@@ -213,26 +205,32 @@ namespace Promact.Oauth.Server.Controllers
                 else { return Ok(project); }
             }
             return Ok(project);
-            
+
         }
 
         /**
-       * @api {get} api/Project/GetUserRole 
+       * @api {get} api/projects/role/:name 
        * @apiVersion 1.0.0
-       * @apiName Project
-       * @apiGroup Project
+       * @apiName GetUserRole
+       * @apiGroup projects
        * @apiParam {string} name UserName
        * @apiParamExample {json} Request-Example:
-       *      
-       *        {
-                   "Name":"UserName"    
-       *        }      
+       * {
+            "Name":"UserName"    
+       * }      
        * @apiSuccessExample {json} Success-Response:
        * HTTP/1.1 200 OK 
        * {
        *     "description":"Method to return user role"
        * }
+       * @apiError UserRoleNotFound The role of the user not found.
+       * @apiErrorExample {json} Error-Response:
+       * HTTP/1.1 404 Not Found
+       * {
+       *  "error": "UserRoleNotFound"
+       * }
        */
+
         [ServiceFilter(typeof(CustomAttribute))]
         [HttpGet]
         [Route("role/{name}")]
@@ -251,25 +249,30 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-        * @api {get} api/Project/GetListOfEmployee 
+        * @api {get} api/projects/users/:name 
         * @apiVersion 1.0.0
-        * @apiName Project
-        * @apiGroup Project
+        * @apiName GetUsers
+        * @apiGroup projects
+        * @apiParam {string} name UserName
+        * @apiParamExample {json} Request-Example:
+        * {
+        *   "Name":"UserName"    
+        * }
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
         * {
-        *     "description":"Method return list of users"
+        *   "description":"Method return list of users"
         * }
         */
         [ServiceFilter(typeof(CustomAttribute))]
         [HttpGet]
         [Route("users/{name}")]
-        public async Task<List<UserRoleAc>> GetListOfEmployee(string name)
+        public async Task<List<UserRoleAc>> GetUsers(string name)
         {
-            return await _projectRepository.GetListOfEmployee(name);
+            return await _projectRepository.GetUsers(name);
 
         }
-        
+       
         /**
         * @api {get} api/Project/fetchProject 
         * @apiVersion 1.0.0
@@ -277,12 +280,9 @@ namespace Promact.Oauth.Server.Controllers
         * @apiGroup Project
         * @apiParam {string} name project Name
         * @apiParamExample {json} Request-Example:
-        *      
-        *        {
-        *             
-        *             "Name":"ProjectName"
-        *            
-        *        }      
+        * {
+        *   "Name":"ProjectName"
+        * }      
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
         * {
@@ -311,12 +311,9 @@ namespace Promact.Oauth.Server.Controllers
       * @apiGroup Project
       * @apiParam {string} groupName as a SlackChannelName
       * @apiParamExample {json} Request-Example:
-      *      
-      *        {
-      *             
-      *               "groupName":"SlackChannelName",
-      *            
-      *        }      
+      * {
+      *   "groupName":"SlackChannelName",
+      * }      
       * @apiSuccessExample {json} Success-Response:
       * HTTP/1.1 200 OK 
       * {

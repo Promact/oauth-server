@@ -432,7 +432,7 @@ namespace Promact.Oauth.Server.Repository
             List<ApplicationUser> teamLeaders = new List<ApplicationUser>();
             foreach (var project in projects)
             {
-                var teamLeaderId = await _projectRepository.GetById(project.Id);
+                var teamLeaderId = await _projectRepository.GetProjectById(project.Id);
                 var teamLeader = teamLeaderId.TeamLeaderId;
                 user = await _userManager.FindByIdAsync(teamLeader);
                 //user = _userManager.Users.FirstOrDefault(x => x.Id == teamLeader);
