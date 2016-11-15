@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using Promact.Oauth.Server.Repository.OAuthRepository;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace Promact.Oauth.Server.Services
 {
@@ -13,10 +14,10 @@ namespace Promact.Oauth.Server.Services
             _oAuthRepository = oAuthRepository;
         }
 
-        public override void OnActionExecuting(ActionExecutingContext filterContext)
+        public override async Task OnActionExecutionAsync(ActionExecutingContext filterContext, ActionExecutionDelegate next)
         {
             var token = filterContext.HttpContext.Request.Headers["Authorization"].ToString();
-            var data = _oAuthRepository.GetDetailsClientByAccessToken(token).Result;
+            var data = await _oAuthRepository.GetDetailsClientByAccessToken(token);
             if (data == false)
             {
                 base.OnActionExecuting(filterContext);
