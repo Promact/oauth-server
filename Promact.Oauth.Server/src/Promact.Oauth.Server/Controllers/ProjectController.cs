@@ -20,7 +20,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Promact.Oauth.Server.Controllers
 {
-    [Route("api/projects")]
+    [Route("api/[controller]")]
     public class ProjectController : Controller
     {
         #region "Private Variable(s)"
@@ -341,7 +341,7 @@ namespace Promact.Oauth.Server.Controllers
       * }
       */
         [HttpGet]
-        [Route("projects")]
+        [Route("list")]
         public async Task<IEnumerable<ProjectAc>> AllProjects()
         {
             return await _projectRepository.GetProjectsWithUsers();
@@ -366,7 +366,7 @@ namespace Promact.Oauth.Server.Controllers
       * }
       */
         [HttpGet]
-        [Route("projects/{projectId}")]
+        [Route("{projectId}/detail")]
         public async Task<ProjectAc> ProjectDetails(int projectId)
         {
             return await _projectRepository.GetProjectDetails(projectId);
