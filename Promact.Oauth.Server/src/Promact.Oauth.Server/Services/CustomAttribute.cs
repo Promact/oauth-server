@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Promact.Oauth.Server.Services
 {
+
     public class CustomAttribute : ActionFilterAttribute
     {
         private readonly IOAuthRepository _oAuthRepository;
@@ -18,10 +19,10 @@ namespace Promact.Oauth.Server.Services
         public override async Task OnActionExecutionAsync(ActionExecutingContext filterContext, ActionExecutionDelegate next)
         {
             var token = filterContext.HttpContext.Request.Headers["Authorization"].ToString();
-            var data = await _oAuthRepository.GetDetailsClientByAccessToken(token);
+            var data = _oAuthRepository.GetDetailsClientByAccessToken(token).Result;
             if (data == false)
             {
-                base.OnActionExecuting(filterContext);
+                await base.OnActionExecutionAsync(filterContext, next);
                 filterContext.HttpContext.Response.StatusCode = (int)HttpStatusCode.Forbidden;
                 filterContext.Result = new JsonResult("Forbidden");
             }
