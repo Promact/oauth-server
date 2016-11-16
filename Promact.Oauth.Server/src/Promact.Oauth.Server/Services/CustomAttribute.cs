@@ -14,6 +14,7 @@ namespace Promact.Oauth.Server.Services
             _oAuthRepository = oAuthRepository;
         }
 
+
         public override async Task OnActionExecutionAsync(ActionExecutingContext filterContext, ActionExecutionDelegate next)
         {
             var token = filterContext.HttpContext.Request.Headers["Authorization"].ToString();
