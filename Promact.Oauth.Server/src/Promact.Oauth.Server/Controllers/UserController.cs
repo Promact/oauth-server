@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 using Exceptions;
 using Promact.Oauth.Server.Constants;
 using Promact.Oauth.Server.Exception_Handler;
-
+using Promact.Oauth.Server.Services;
 
 namespace Promact.Oauth.Server.Controllers
 {
@@ -477,6 +477,101 @@ namespace Promact.Oauth.Server.Controllers
             }
         }
 
+        /**
+       * @api {get} api/user/:userid/role 
+       * @apiVersion 1.0.0
+       * @apiName GetUserRole
+       * @apiGroup User
+       * @apiParam {string} name UserName
+       * @apiParamExample {json} Request-Example:
+       * {
+            "Email":"UserEmail@xyz.com"    
+       * }      
+       * @apiSuccessExample {json} Success-Response:
+       * HTTP/1.1 200 OK 
+       * {
+       *     "description":"Method to return user role"
+       * }
+       * @apiError UserRoleNotFound The role of the user not found.
+       * @apiErrorExample {json} Error-Response:
+       * HTTP/1.1 404 Not Found
+       * {
+       *  "error": "UserRoleNotFound"
+       * }
+       */
+
+        [ServiceFilter(typeof(CustomAttribute))]
+        [HttpGet]
+        [Route("{userid}/role")]
+        public async Task<IActionResult> GetUserRole(string userId)
+        {
+            try
+            {
+
+                return Ok(await _userRepository.GetUserRole(userId));
+            }
+            catch (UserRoleNotFound)
+            {
+                return NotFound();
+            }
+
+        }
+
+        /**
+        * @api {get} api/user/:uerid/teammeber 
+        * @apiVersion 1.0.0
+        * @apiName GetTeamMembers
+        * @apiGroup User
+        * @apiParam {string} name UserName
+        * @apiParamExample {json} Request-Example:
+        * {
+        *   "Email":"UserEmail"    
+        * }
+        * @apiSuccessExample {json} Success-Response:
+        * HTTP/1.1 200 OK 
+        * {
+        *   "description":"Method return list of users"
+        * }
+        */
+        [ServiceFilter(typeof(CustomAttribute))]
+        [HttpGet]
+        [Route("{uerid}/teammebers")]
+        public async Task<List<UserRoleAc>> GetTeamMembers(string userid)
+        {
+            return await _userRepository.GetTeamMembers(userid);
+
+        }
+
+        /**
+        * @api {get} api/user/slackChannel/:name 
+        * @apiVersion 1.0.0
+        * @apiName GetProjectUserByGroupName
+        * @apiGroup User
+        * @apiParam {string} groupName as a SlackChannelName
+        * @apiParamExample {json} Request-Example:
+        * {
+        *   "groupName":"SlackChannelName",
+        * }      
+        * @apiSuccessExample {json} Success-Response:
+        * HTTP/1.1 200 OK 
+        * {
+        *     "description":"method return list of users"
+        * }
+        */
+        [ServiceFilter(typeof(CustomAttribute))]
+        [HttpGet]
+        [Route("slackChannel/{name}")]
+        public async Task<IActionResult> GetProjectUserByGroupName(string groupName)
+        {
+            try
+            {
+                return Ok(await _userRepository.GetProjectUserByGroupName(groupName));
+            }
+            catch (UserNotFound)
+            {
+                return NotFound();
+            }
+        }
         #endregion
     }
 }
