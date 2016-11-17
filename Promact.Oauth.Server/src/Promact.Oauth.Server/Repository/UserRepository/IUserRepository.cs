@@ -113,7 +113,7 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="userId"></param>
         /// <returns>details of user</returns>
-        UserAc UserDetailById(string userId);
+        Task<UserAc> UserDetailById(string userId);
 
         /// <summary>
         /// Method is used to get the details of user by using their username
@@ -148,7 +148,7 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="teamLeaderId"></param>
         /// <returns>list of projects with users for a specific teamleader</returns>
-        List<UserAc> GetProjectUsersByTeamLeaderId(string teamLeaderId);
+        Task<List<UserAc>> GetProjectUsersByTeamLeaderId(string teamLeaderId);
 
     }
 }
