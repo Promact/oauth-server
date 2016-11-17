@@ -544,7 +544,7 @@ namespace Promact.Oauth.Server.Controllers
             return Ok(slackUserList);
         }
 
-    
+
 
         /**
         * @api {get} api/user/:uerid/teammeber 
@@ -650,6 +650,33 @@ namespace Promact.Oauth.Server.Controllers
                 return NotFound();
             }
         }
+
+
+        /**
+        * @api {get} api/User/projectUsersById/{teamLeaderId}
+        * @apiVersion 1.0.0
+        * @apiName User
+        * @apiGroup User
+        * @apiParam {string}  teamLeaderId
+        * @apiParamExample {json} Request-Example:
+        *      
+        *        {
+        *             "id": "asd1"
+        *        }      
+        * @apiSuccessExample {json} Success-Response:   
+        * HTTP/1.1 200 OK 
+        * {
+        *     "description":"list of projects with users for that specific teamleader"
+        * }
+        */
+        [HttpGet]
+        [Route("projectUsersById/{teamLeaderId}")]
+        public List<UserAc> GetProjectUsersByTeamLeaderId(string teamLeaderId)
+        {
+            List<UserAc> projectUsers = _userRepository.GetProjectUsersByTeamLeaderId(teamLeaderId);
+            return projectUsers;
+        }
+
         #endregion
     }
 }
