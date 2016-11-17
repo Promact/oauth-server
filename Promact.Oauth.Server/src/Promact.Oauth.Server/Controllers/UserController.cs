@@ -416,10 +416,19 @@ namespace Promact.Oauth.Server.Controllers
           */
         [HttpGet]
         [Route("userDetail/{userId}")]
-        public IActionResult UserDetailById(string userId)
+        public async Task<IActionResult> UserDetailById(string userId)
         {
-            var user = _userRepository.UserDetailById(userId);
-            return Ok(user);
+            try
+            {
+                var user = await _userRepository.UserDetailById(userId);
+                return Ok(user);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
 
         /**
@@ -671,10 +680,10 @@ namespace Promact.Oauth.Server.Controllers
         */
         [HttpGet]
         [Route("projectUsersById/{teamLeaderId}")]
-        public List<UserAc> GetProjectUsersByTeamLeaderId(string teamLeaderId)
+        public async Task<IActionResult> GetProjectUsersByTeamLeaderId(string teamLeaderId)
         {
-            List<UserAc> projectUsers = _userRepository.GetProjectUsersByTeamLeaderId(teamLeaderId);
-            return projectUsers;
+            List<UserAc> projectUsers = await _userRepository.GetProjectUsersByTeamLeaderId(teamLeaderId);
+            return Ok(projectUsers);
         }
 
         #endregion
