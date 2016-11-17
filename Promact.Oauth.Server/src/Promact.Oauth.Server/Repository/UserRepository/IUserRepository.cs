@@ -175,10 +175,6 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <returns></returns>
         Task<List<SlackUserDetailAc>> GetSlackUserDetails();
-    }
-
-
-}
 
         /// <summary>
         /// The method is used to get list of projects along with its users for a specific teamleader 
