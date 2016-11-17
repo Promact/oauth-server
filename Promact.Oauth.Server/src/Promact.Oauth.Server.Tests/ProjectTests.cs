@@ -90,9 +90,9 @@ namespace Promact.Oauth.Server.Tests
             Assert.NotNull(project);
         }
 
-        ///// <summary>
-        ///// This test case edit project 
-        ///// </summary>
+        /// <summary>
+        /// This test case edit project 
+        /// </summary>
         [Fact, Trait("Category", "Required")]
         public async Task EditProject()
         {

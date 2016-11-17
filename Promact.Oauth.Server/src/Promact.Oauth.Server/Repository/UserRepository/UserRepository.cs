@@ -547,6 +547,64 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="userName"></param>
         /// <returns></returns>
+        public async Task<List<UserRoleAc>> GetUserRole(string userId)
+        {
+            ApplicationUser applicationUser = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.Id == userId);
+            var userRole = (await _userManager.GetRolesAsync(applicationUser)).First();
+            var UserRoleAcList = new List<UserRoleAc>();
+            if (userRole == _stringConstant.RoleAdmin)
+            {
+                var userRoleAdmin = new UserRoleAc();
+                userRoleAdmin.UserName = applicationUser.UserName;
+                userRoleAdmin.Name = applicationUser.FirstName + " " + applicationUser.LastName;
+                userRoleAdmin.Role = userRole;
+                UserRoleAcList.Add(userRoleAdmin);
+                var userList = await _applicationUserDataRepository.GetAll().ToListAsync();
+                foreach (var userDetails in userList)
+                {
+                  var roles = (await _userManager.GetRolesAsync(userDetails)).First();
+                  if (roles != null && roles == _stringConstant.RoleEmployee)
+                    {
+                        var userRoleAc = new UserRoleAc();
+                        userRoleAc.UserName = userDetails.UserName;
+                        userRoleAc.Name = userDetails.FirstName + " " + userDetails.LastName;
+                        userRoleAc.Role = userRole;
+                        UserRoleAcList.Add(userRoleAc);
+                    }
+                }
+            }
+            else
+            {
+                var project = await _projectDataRepository.FirstOrDefaultAsync(x => x.TeamLeaderId == applicationUser.Id);
+                if (project == null)
+                {
+                    var usersRolesAc = new UserRoleAc();
+                    usersRolesAc.UserName = applicationUser.UserName;
+                    usersRolesAc.Role = _stringConstant.RoleEmployee;
+                    usersRolesAc.Name = applicationUser.FirstName + " " + applicationUser.LastName;
+                    UserRoleAcList.Add(usersRolesAc);
+                }
+                else
+                {
+                    var usersRoleAc = new UserRoleAc();
+                    usersRoleAc.UserName = applicationUser.UserName;
+                    usersRoleAc.Role = _stringConstant.RoleTeamLeader;
+                    usersRoleAc.Name = applicationUser.FirstName + " " + applicationUser.LastName;
+                    UserRoleAcList.Add(usersRoleAc);
+                }
+            }
+            if (UserRoleAcList == null)
+                throw new UserRoleNotFound();
+            else
+                return UserRoleAcList;
+
+        }
+
+        /// <summary>
+        /// Method to return user role
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
         public async Task<List<UserRoleAc>> GetUserRoleAsync(string userId)
         {
             ApplicationUser applicationUser = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.Id == userId);
