@@ -23,20 +23,20 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         Task AddUserProject(ProjectUser newUserProject);
 
         /// <summary>
-        /// getting the list of all projects
+        /// Getting the list of all projects
         /// </summary>
         /// <returns></returns>List of Projects
         Task<IEnumerable<ProjectAc>> GetAllProjects();
 
         /// <summary>
-        /// Get the single project and list of users related project Id from the database(project and ProjectUser Table)
+        /// Get the Project details by project id. 
         /// </summary>
         /// <param name="id"></param>Project id that need to be featch the Project and list of users
         /// <returns></returns>Project and User/Users infromation 
         Task<ProjectAc> GetProjectById(int id);
 
         /// <summary>
-        /// Update Project information and User list information In Project table and Project User Table
+        /// Should be update Project ,Team leader and Team member information. 
         /// </summary>
         /// <param name="editProject"></param>Updated information in editProject Parmeter
         Task<int> EditProject(ProjectAc editProject,string updatedBy);
@@ -46,7 +46,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// </summary>
         /// <param name="project"></param> pass the project parameter
         /// <returns>projectAc object</returns>
-        ProjectAc CheckDuplicate(ProjectAc project);
+        Task<ProjectAc> CheckDuplicateProject(ProjectAc project);
 
         /// <summary>
         /// Fetches the project details of the given GroupName
@@ -54,34 +54,12 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// <param name="GroupName"></param>
         /// <returns>object of ProjectAc</returns>
         Task<ProjectAc> GetProjectByGroupName(string GroupName);
-
-        /// <summary>
-        /// This method is used to fetch list of users/employees of the given group name. - JJ
-        /// </summary>
-        /// <param name="GroupName"></param>
-            /// <returns>object of UserAc</returns>
-        Task<List<UserAc>> GetProjectUserByGroupName(string GroupName);
-
-
+        
         /// <summary>
         /// Method to get list of project in which current user is envolved
         /// </summary>
         /// <returns></returns>
         Task<IEnumerable<ProjectAc>> GetAllProjectForUser(string userId);
-
-        /// <summary>
-        /// Method to get User Role
-        /// </summary>
-        /// <param name="slackUserId"></param>
-        /// <returns></returns>
-        Task<List<UserRoleAc>> GetUserRole(string slackUserId);
-        /// <summary>
-        /// Method to get list of Users
-        /// </summary>
-        /// <param name="slackUserId"></param>
-        /// <returns></returns>
-        Task<List<UserRoleAc>> GetListOfEmployee(string slackUserId);
-        //Task<List<UserRoleAc>> GetUserRole(string name);
 
         /// <summary>
         /// Method to return list of projects along with the users and teamleader in a project

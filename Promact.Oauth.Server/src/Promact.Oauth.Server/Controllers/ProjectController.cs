@@ -46,7 +46,7 @@ namespace Promact.Oauth.Server.Controllers
         #region public Methods
 
         /**
-         * @api {get} api/projects 
+         * @api {get} api/project 
          * @apiVersion 1.0.0
          * @apiName GetProjects
          * @apiGroup Project
@@ -81,7 +81,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-        * @api {get} api/projects/:id Request Project information
+        * @api {get} api/project/:id Request Project information
         * @apiVersion 1.0.0
         * @apiName GetProjectById
         * @apiGroup Project
@@ -119,7 +119,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-      * @api {post} api/projects 
+      * @api {post} api/project 
       * @apiVersion 1.0.0
       * @apiName AddProject
       * @apiGroup Project
@@ -146,15 +146,15 @@ namespace Promact.Oauth.Server.Controllers
             var createdBy = _userManager.GetUserId(User);
             if (ModelState.IsValid)
             {
-                ProjectAc projectAc = _projectRepository.CheckDuplicate(project);
+                ProjectAc projectAc =await _projectRepository.CheckDuplicateProject(project);
                 
                 if (!string.IsNullOrEmpty(projectAc.Name) && !string.IsNullOrEmpty(projectAc.SlackChannelName))
                 {
-                    int id = await _projectRepository.AddProject(project, createdBy);
+                    int projectId = await _projectRepository.AddProject(project, createdBy);
                     foreach (var applicationUser in project.ApplicationUsers)
                     {
                         ProjectUser projectUser = new ProjectUser();
-                        projectUser.ProjectId = id;
+                        projectUser.ProjectId = projectId;
                         projectUser.UserId = applicationUser.Id;
                         projectUser.CreatedBy = createdBy;
                         projectUser.CreatedDateTime = DateTime.UtcNow;
@@ -169,7 +169,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-        * @api {put} api/projects 
+        * @api {put} api/project 
         * @apiVersion 1.0.0
         * @apiName EditProject
         * @apiGroup Project
@@ -197,8 +197,8 @@ namespace Promact.Oauth.Server.Controllers
             var updatedBy = _userManager.GetUserId(User);
             if (ModelState.IsValid)
             {
-                ProjectAc checkDuplicateProject = _projectRepository.CheckDuplicate(project);
-                if (!string.IsNullOrEmpty(checkDuplicateProject.Name) && !string.IsNullOrEmpty(checkDuplicateProject.SlackChannelName))
+                ProjectAc projectAc = await _projectRepository.CheckDuplicateProject(project);
+                if (!string.IsNullOrEmpty(projectAc.Name) && !string.IsNullOrEmpty(projectAc.SlackChannelName))
                 {
                     await _projectRepository.EditProject(project, updatedBy);
                 }
@@ -209,72 +209,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-       * @api {get} api/projects/role/:name 
-       * @apiVersion 1.0.0
-       * @apiName GetUserRole
-       * @apiGroup projects
-       * @apiParam {string} name UserName
-       * @apiParamExample {json} Request-Example:
-       * {
-            "Name":"UserName"    
-       * }      
-       * @apiSuccessExample {json} Success-Response:
-       * HTTP/1.1 200 OK 
-       * {
-       *     "description":"Method to return user role"
-       * }
-       * @apiError UserRoleNotFound The role of the user not found.
-       * @apiErrorExample {json} Error-Response:
-       * HTTP/1.1 404 Not Found
-       * {
-       *  "error": "UserRoleNotFound"
-       * }
-       */
-
-        [ServiceFilter(typeof(CustomAttribute))]
-        [HttpGet]
-        [Route("role/{name}")]
-        public async Task<IActionResult> GetUserRole(string name)
-        {
-            try
-            {
-
-                return Ok(await _projectRepository.GetUserRole(name));
-            }
-            catch (UserRoleNotFound)
-            {
-                return NotFound();
-            }
-
-        }
-
-        /**
-        * @api {get} api/projects/users/:name 
-        * @apiVersion 1.0.0
-        * @apiName GetUsers
-        * @apiGroup projects
-        * @apiParam {string} name UserName
-        * @apiParamExample {json} Request-Example:
-        * {
-        *   "Name":"UserName"    
-        * }
-        * @apiSuccessExample {json} Success-Response:
-        * HTTP/1.1 200 OK 
-        * {
-        *   "description":"Method return list of users"
-        * }
-        */
-        [ServiceFilter(typeof(CustomAttribute))]
-        [HttpGet]
-        [Route("users/{name}")]
-        public async Task<List<UserRoleAc>> GetUsers(string name)
-        {
-            return await _projectRepository.GetUsers(name);
-
-        }
-       
-        /**
-        * @api {get} api/Project/fetchProject 
+        * @api {get} api/project/slackChannel/:name 
         * @apiVersion 1.0.0
         * @apiName Project
         * @apiGroup Project
@@ -297,38 +232,7 @@ namespace Promact.Oauth.Server.Controllers
             return await _projectRepository.GetListOfEmployee(slackUserId);
 
         }
-
-       /**
-      * @api {get} api/Project/fetchProject 
-      * @apiVersion 1.0.0
-      * @apiName Project
-      * @apiGroup Project
-      * @apiParam {string} groupName as a SlackChannelName
-      * @apiParamExample {json} Request-Example:
-      * {
-      *   "groupName":"SlackChannelName",
-      * }      
-      * @apiSuccessExample {json} Success-Response:
-      * HTTP/1.1 200 OK 
-      * {
-      *     "description":"method return list of users"
-      * }
-      */
-        [ServiceFilter(typeof(CustomAttribute))]
-        [HttpGet]
-        [Route("user/{groupName}")]
-        public async Task<IActionResult> GetProjectUserByGroupName(string groupName)
-        {
-            try
-            {
-                return Ok(await _projectRepository.GetProjectUserByGroupName(groupName));
-            }
-            catch (UserNotFound)
-            {
-                return NotFound();
-            }
-        }
-
+        
         /**
       * @api {get} api/Project/allProjects 
       * @apiVersion 1.0.0

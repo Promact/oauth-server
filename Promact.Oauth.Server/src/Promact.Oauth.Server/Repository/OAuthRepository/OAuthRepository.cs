@@ -123,14 +123,8 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
         {
             ApplicationUser user = await _userManager.FindByNameAsync(userName);
             OAuth oAuth = await OAuthClientChecking(user.Email, clientId);
-            OAuthApplication clientResponse = await GetAppDetailsFromClient(callBackUrl, oAuth.RefreshToken, user.SlackUserName);
-            if (!String.IsNullOrEmpty(clientResponse.UserId))
-            {
-                user.SlackUserId = clientResponse.UserId;
-                await _userManager.UpdateAsync(user);
-                return string.Format("{0}?accessToken={1}&email={2}&slackUserId={3}", clientResponse.ReturnUrl, oAuth.AccessToken, oAuth.userEmail, user.SlackUserId);
-            }
-            return _stringConstant.EmptyString;
+            OAuthApplication clientResponse = await GetAppDetailsFromClient(callBackUrl, oAuth.RefreshToken);
+            return string.Format("{0}?accessToken={1}&email={2}&slackUserName={3}&userId={4}", clientResponse.ReturnUrl, oAuth.AccessToken, oAuth.userEmail, user.SlackUserName,user.Id);
         }
 
 
@@ -146,22 +140,17 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
             {
                 ApplicationUser appUser = await _userManager.FindByEmailAsync(model.Email);
                 OAuth oAuth = await OAuthClientChecking(model.Email, model.ClientId);
-                OAuthApplication clientResponse = await GetAppDetailsFromClient(model.RedirectUrl, oAuth.RefreshToken, appUser.SlackUserName);
-                if (!String.IsNullOrEmpty(clientResponse.UserId))
+                OAuthApplication clientResponse = await GetAppDetailsFromClient(model.RedirectUrl, oAuth.RefreshToken);
+                // Checking whether request client is equal to response client
+                if (model.ClientId == clientResponse.ClientId)
                 {
-                    appUser.SlackUserId = clientResponse.UserId;
-                    await _userManager.UpdateAsync(appUser);
-                    // Checking whether request client is equal to response client
-                    if (model.ClientId == clientResponse.ClientId)
+                    //Getting app details from clientId or AuthId
+                    ConsumerApps consumerApp = await _appRepository.GetAppDetails(clientResponse.ClientId);
+                    // Refresh token and app's secret is checking if match then accesstoken will be send
+                    if (consumerApp.AuthSecret == clientResponse.ClientSecret && clientResponse.RefreshToken == oAuth.RefreshToken)
                     {
-                        //Getting app details from clientId or AuthId
-                        ConsumerApps consumerApp = await _appRepository.GetAppDetails(clientResponse.ClientId);
-                        // Refresh token and app's secret is checking if match then accesstoken will be send
-                        if (consumerApp.AuthSecret == clientResponse.ClientSecret && clientResponse.RefreshToken == oAuth.RefreshToken)
-                        {
-                            ApplicationUser user = await _userManager.FindByEmailAsync(oAuth.userEmail);
-                            return string.Format("{0}?accessToken={1}&email={2}&slackUserId={3}", clientResponse.ReturnUrl, oAuth.AccessToken, oAuth.userEmail, user.SlackUserId);
-                        }
+                        ApplicationUser user = await _userManager.FindByEmailAsync(oAuth.userEmail);
+                        return string.Format("{0}?accessToken={1}&email={2}&slackUserName={3}&userId={4}", clientResponse.ReturnUrl, oAuth.AccessToken, oAuth.userEmail, user.SlackUserName,user.Id);
                     }
                 }
             }

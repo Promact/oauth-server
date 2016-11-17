@@ -149,11 +149,25 @@ namespace Promact.Oauth.Server.Repository
         /// <returns></returns>
         Task<bool> ReSendMail(string id);
 
+        /// <summary>
+        /// Method to get User Role
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        Task<List<UserRoleAc>> GetUserRole(string userId);
 
         /// <summary>
-        /// Fetches the list of Slack User Details
+        /// Method to get list of TeamMember By TeamLeaderId
         /// </summary>
+        /// <param name="name"></param>
         /// <returns></returns>
-        Task<List<SlackUserDetailAc>> GetSlackUserDetails();
-     }
+        Task<List<UserRoleAc>> GetTeamMembers(string userId);
+
+        /// <summary>
+        /// This method is used to fetch list of users/employees of the given group name. - JJ
+        /// </summary>
+        /// <param name="GroupName"></param>
+        /// <returns>object of UserAc</returns>
+        Task<List<UserAc>> GetProjectUserByGroupName(string GroupName);
+    }
 }
