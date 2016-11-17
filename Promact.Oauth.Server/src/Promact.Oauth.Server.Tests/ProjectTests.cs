@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
 using Promact.Oauth.Server.Constants;
+using Promact.Oauth.Server.Repository;
 
 namespace Promact.Oauth.Server.Tests
 {
@@ -19,6 +20,7 @@ namespace Promact.Oauth.Server.Tests
         private readonly IDataRepository<Project> _dataRepository;
         private readonly IDataRepository<ProjectUser> _dataRepositoryProjectUser;
         private readonly IStringConstant _stringConstant;
+        private readonly IUserRepository _userRepository;
 
         public ProjectTests() : base()
         {
@@ -26,7 +28,7 @@ namespace Promact.Oauth.Server.Tests
             _dataRepository = serviceProvider.GetService<IDataRepository<Project>>();
             _dataRepositoryProjectUser = serviceProvider.GetService<IDataRepository<ProjectUser>>();
             _stringConstant = serviceProvider.GetService<IStringConstant>();
-
+            _userRepository = serviceProvider.GetService<IUserRepository>();
         }
         #region Test Case
         /// <summary>
@@ -247,6 +249,68 @@ namespace Promact.Oauth.Server.Tests
             await _projectRepository.AddProjectAsync(projectac, _stringConstant.CreatedBy);
             var project =await _projectRepository.GetProjectByGroupNameAsync(projectac.SlackChannelName);
             Assert.Equal(projectac.TeamLeaderId, project.TeamLeaderId);
+        }
+
+        /// <summary>
+        /// Test case to check GetProjectsWithUsers 
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async void TestGetProjectsWithUsers()
+        {
+            UserAc _testUser = new UserAc()
+            {
+                Email = _stringConstant.RawEmailIdForTest,
+                FirstName = _stringConstant.RawFirstNameForTest,
+                LastName = _stringConstant.RawLastNameForTest,
+                IsActive = true,
+                UserName = _stringConstant.RawEmailIdForTest,
+                SlackUserName = _stringConstant.RawFirstNameForTest,
+                JoiningDate = DateTime.UtcNow,
+                RoleName = _stringConstant.Employee
+            };
+            string id = await _userRepository.AddUser(_testUser, _stringConstant.CreatedBy);
+            ProjectAc project = new ProjectAc()
+            {
+                Name = _stringConstant.Name,
+                SlackChannelName = _stringConstant.SlackChannelName,
+                IsActive = _stringConstant.IsActive,
+                TeamLeaderId = id,
+                CreatedBy = _stringConstant.CreatedBy,
+            };
+            await _projectRepository.AddProject(project, _stringConstant.CreatedBy);
+            var projectUsers =await  _projectRepository.GetProjectsWithUsers();
+            Assert.NotNull(projectUsers);
+        }
+
+        /// <summary>
+        /// Test case to check GetProjectDetails
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async void TestGetProjectDetails()
+        {
+            UserAc _testUser = new UserAc()
+            {
+                Email = _stringConstant.RawEmailIdForTest,
+                FirstName = _stringConstant.RawFirstNameForTest,
+                LastName = _stringConstant.RawLastNameForTest,
+                IsActive = true,
+                UserName = _stringConstant.RawEmailIdForTest,
+                SlackUserName = _stringConstant.RawFirstNameForTest,
+                JoiningDate = DateTime.UtcNow,
+                RoleName = _stringConstant.Employee
+            };
+            string id = await _userRepository.AddUser(_testUser, _stringConstant.CreatedBy);
+            ProjectAc project = new ProjectAc()
+            {
+                Name = _stringConstant.Name,
+                SlackChannelName = _stringConstant.SlackChannelName,
+                IsActive = _stringConstant.IsActive,
+                TeamLeaderId = id,
+                CreatedBy = _stringConstant.CreatedBy,
+            };
+            var projectId = await _projectRepository.AddProject(project, _stringConstant.CreatedBy);
+            var projectDetails = await _projectRepository.GetProjectDetails(projectId);
+            Assert.Equal(projectDetails.Name, _stringConstant.Name);
         }
         #endregion
     }
