@@ -518,9 +518,9 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="userId"></param>
         /// <returns>details of user</returns>
-        public UserAc UserDetailById(string userId)
+        public async Task<UserAc> UserDetailById(string userId)
         {
-            var user = _userManager.Users.FirstOrDefault(x => x.Id == userId);
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == userId);
             return GetUser(user);
         }
 
@@ -690,16 +690,16 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="teamLeaderId"></param>
         /// <returns>list of projects with users for a specific teamleader</returns>
-        public List<UserAc> GetProjectUsersByTeamLeaderId(string teamLeaderId)
+        public async Task<List<UserAc>> GetProjectUsersByTeamLeaderId(string teamLeaderId)
         {
             List<UserAc> projectUsers = new List<UserAc>();
             //Get projects for that specific teamleader
-            List<Project> projects = _projectDataRepository.Fetch(x => x.TeamLeaderId.Equals(teamLeaderId)).ToList();
+            List<Project> projects =  _projectDataRepository.Fetch(x => x.TeamLeaderId.Equals(teamLeaderId)).ToList();
 
             if (projects != null)
             {
                 //Get details of teamleader
-                ApplicationUser teamLeader = _applicationUserDataRepository.FirstOrDefault(x => x.Id.Equals(teamLeaderId));
+                ApplicationUser teamLeader = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.Id.Equals(teamLeaderId));
                 if (teamLeader != null)
                 {
                     UserAc projectTeamLeader = _mapperContext.Map<ApplicationUser, UserAc>(teamLeader);
@@ -716,7 +716,7 @@ namespace Promact.Oauth.Server.Repository
                         ApplicationUser user = _applicationUserDataRepository.FirstOrDefault(x => x.Id.Equals(projectUser.UserId));
                         if (user != null)
                         {
-                            var Roles = _userManager.GetRolesAsync(user).Result.First();
+                            var Roles =  _userManager.GetRolesAsync(user).Result.First();
                             UserAc employee = _mapperContext.Map<ApplicationUser, UserAc>(user);
                             employee.Role = Roles;
                             //Checking if employee is already present in the list or not
@@ -804,7 +804,7 @@ namespace Promact.Oauth.Server.Repository
                     }
                 }
             }
-            return null;
+            throw new UserNotFound();
         }
 
 
