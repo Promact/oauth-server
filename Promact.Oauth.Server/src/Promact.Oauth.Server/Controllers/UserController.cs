@@ -423,12 +423,10 @@ namespace Promact.Oauth.Server.Controllers
                 var user = await _userRepository.UserDetailById(userId);
                 return Ok(user);
             }
-            catch (Exception)
+            catch (UserNotFound)
             {
-
-                throw;
-            }
-            
+                return NotFound();
+            }            
         }
 
         /**
@@ -452,7 +450,15 @@ namespace Promact.Oauth.Server.Controllers
         [Route("getByUserName/{userName}")]
         public async Task<IActionResult> GetByUserName(string userName)
         {
-            return Ok(await _userRepository.GetUserDetailByUserName(userName));
+            try
+            {
+                return Ok(await _userRepository.GetUserDetailByUserName(userName));
+            }
+            catch (UserNotFound)
+            {
+                return NotFound();
+            }
+            
         }
 
         /**
