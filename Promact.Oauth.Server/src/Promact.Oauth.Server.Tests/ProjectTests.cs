@@ -49,11 +49,11 @@ namespace Promact.Oauth.Server.Tests
             Assert.NotNull(project);
         }
 
-        //        /// <summary>
-        //        /// This test case for the add user and project in userproject table
-        //        /// </summary>
-        //        [Fact, Trait("Category", "Required")]
-        public async Task AddUserProject()
+        /// <summary>
+        /// This test case for the add user and project in userproject table
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public void AddUserProject()
         {
 
             ProjectUser projectUser = new ProjectUser()

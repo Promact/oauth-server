@@ -552,7 +552,5 @@ namespace Promact.Oauth.Server.Tests
         #endregion
 
 
-
-
     }
 }
