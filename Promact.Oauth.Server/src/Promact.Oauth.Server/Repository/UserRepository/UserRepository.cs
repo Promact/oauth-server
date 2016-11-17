@@ -529,7 +529,7 @@ namespace Promact.Oauth.Server.Repository
             //Get projects for that specific teamleader
             List<Project> projects =  _projectDataRepository.Fetch(x => x.TeamLeaderId.Equals(teamLeaderId)).ToList();
 
-            if (projects != null)
+            if (projects.Count > 0)
             {
                 //Get details of teamleader
                 ApplicationUser teamLeader = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.Id.Equals(teamLeaderId));
