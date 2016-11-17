@@ -471,9 +471,30 @@ namespace Promact.Oauth.Server.Tests
             Assert.NotEqual(projectUsers.Count, 2);
         }
 
+
+        /// <summary>
+        /// Test case to check UserDetailById of User Repository
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task UserDetailById()
+        {
+            UserAc _testUser = new UserAc()
+            {
+                Email = _stringConstant.RawEmailIdForTest,
+                FirstName = _stringConstant.RawFirstNameForTest,
+                LastName = _stringConstant.RawLastNameForTest,
+                IsActive = true,
+                UserName = _stringConstant.RawEmailIdForTest,
+                SlackUserName = _stringConstant.RawFirstNameForTest,
+                JoiningDate = DateTime.UtcNow,
+                RoleName = _stringConstant.Employee
+            };
+            var id = await _userRepository.AddUser(_testUser, _stringConstant.RawFirstNameForTest);
+            var user = _userRepository.UserDetailById(_stringConstant.TeamLeaderId);
+            Assert.Equal(user.FirstName, _stringConstant.RawFirstNameForTest);
+        }
+
         #endregion
-
-
 
 
     }
