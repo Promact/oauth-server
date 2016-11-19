@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Exceptionless.Json;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -11,11 +12,13 @@ using Promact.Oauth.Server.Exception_Handler;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Models.ApplicationClasses;
 using Promact.Oauth.Server.Models.ManageViewModels;
+using Promact.Oauth.Server.Repository.HttpClientRepository;
 using Promact.Oauth.Server.Repository.ProjectsRepository;
 using Promact.Oauth.Server.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,7 +26,9 @@ namespace Promact.Oauth.Server.Repository
 {
     public class UserRepository : IUserRepository
     {
+
         #region "Private Variable(s)"
+
 
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly IDataRepository<ApplicationUser> _applicationUserDataRepository;
@@ -37,11 +42,16 @@ namespace Promact.Oauth.Server.Repository
         private readonly IOptions<AppSettingUtil> _appSettingUtil;
         private readonly ILogger<UserRepository> _logger;
         private readonly IStringConstant _stringConstant;
+        private readonly IHttpClientRepository _httpClientRepository;
+
+
         #endregion
+
 
         #region "Constructor"
 
-        public UserRepository(IDataRepository<ApplicationUser> applicationUserDataRepository, IHostingEnvironment hostingEnvironment, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IMapper mapperContext, IDataRepository<ProjectUser> projectUserRepository, IProjectRepository projectRepository, IOptions<AppSettingUtil> appSettingUtil, IDataRepository<Project> projectDataRepository, ILogger<UserRepository> logger, IStringConstant stringConstant)
+
+        public UserRepository(IDataRepository<ApplicationUser> applicationUserDataRepository, IHostingEnvironment hostingEnvironment, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IMapper mapperContext, IDataRepository<ProjectUser> projectUserRepository, IProjectRepository projectRepository, IOptions<AppSettingUtil> appSettingUtil, IDataRepository<Project> projectDataRepository, ILogger<UserRepository> logger, IStringConstant stringConstant, IHttpClientRepository httpClientRepository)
         {
             _applicationUserDataRepository = applicationUserDataRepository;
             _hostingEnvironment = hostingEnvironment;
@@ -55,9 +65,11 @@ namespace Promact.Oauth.Server.Repository
             _appSettingUtil = appSettingUtil;
             _logger = logger;
             _stringConstant = stringConstant;
+            _httpClientRepository = httpClientRepository;
         }
 
         #endregion
+
 
         #region "Public Method(s)"
 
@@ -518,6 +530,23 @@ namespace Promact.Oauth.Server.Repository
         }
 
 
+        /// <summary>
+        /// Fetches the list of Slack User Details
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<SlackUserDetailAc>> GetSlackUserDetails()
+        {
+            HttpResponseMessage response = await _httpClientRepository.GetAsync("http://localhost:28182//", "slack/GetSlackUserDetails");
+            string responseResult = response.Content.ReadAsStringAsync().Result;
+            // Transforming Json String to object type List of SlackUserDetailAc
+            var data = JsonConvert.DeserializeObject<List<SlackUserDetailAc>>(responseResult);
+            return data;
+        }
+
+
+        #endregion
+
+
         #region Private Methods
 
         /// <summary>
@@ -597,6 +626,6 @@ namespace Promact.Oauth.Server.Repository
 
         #endregion
 
-        #endregion
+      
     }
 }

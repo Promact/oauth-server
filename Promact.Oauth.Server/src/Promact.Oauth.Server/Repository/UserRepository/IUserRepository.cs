@@ -142,5 +142,12 @@ namespace Promact.Oauth.Server.Repository
         /// <param name="id"></param>
         /// <returns></returns>
         Task<bool> ReSendMail(string id);
+
+
+        /// <summary>
+        /// Fetches the list of Slack User Details
+        /// </summary>
+        /// <returns></returns>
+        Task<List<SlackUserDetailAc>> GetSlackUserDetails();
      }
 }

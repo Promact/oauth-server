@@ -32,6 +32,10 @@ namespace Promact.Oauth.Server.Models
         [StringLength(255)]
         public string SlackUserName { get; set; }
 
+        //[Required]
+        //[StringLength(255)]
+        //public string SlackUserId { get; set; }
+
         [NotMapped]
         public virtual ICollection<Project> Projects { get; set; }
 

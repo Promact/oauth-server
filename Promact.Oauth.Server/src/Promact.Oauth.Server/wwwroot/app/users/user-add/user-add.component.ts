@@ -1,6 +1,7 @@
 ﻿import { Component, Input } from "@angular/core";
 import { UserService } from '../user.service';
 import { UserModel } from '../user.model';
+import { SlackUserModel } from '../slackUser.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Md2Toast } from 'md2';
 import { LoaderService } from '../../shared/loader.service';
@@ -18,11 +19,15 @@ export class UserAddComponent {
     isSlackUserNameExist: boolean;
     @Input()
     userModel: UserModel;
+    slackUserModel: SlackUserModel;
     listOfRoles: any;
+    listOfSlackUser: any;
 
     constructor(private userService: UserService, private redirectionRoute: Router, private route: ActivatedRoute, private toast: Md2Toast, private loader: LoaderService) {
         this.userModel = new UserModel();
+        this.slackUserModel = new SlackUserModel();
         this.listOfRoles = [];
+        this.listOfSlackUser = [];
         this.isEmailExist = false;
         this.isSlackUserNameExist = false;
     }
@@ -30,6 +35,19 @@ export class UserAddComponent {
 
     ngOnInit() {
         this.getRoles();
+        this.fetchSlackUserDetails();
+    }
+
+    fetchSlackUserDetails() {
+        this.userService.fetchSlackUserDetails().subscribe((result) => {
+            if (result != null) {
+                for (var i = 0; i < result.length; i++) {
+                    this.listOfSlackUser.push(result[i]);
+                }
+            }
+        }, err => {
+            console.log(err);
+        });
     }
 
     getRoles() {

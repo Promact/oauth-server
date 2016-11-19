@@ -477,6 +477,17 @@ namespace Promact.Oauth.Server.Controllers
             }
         }
 
+
+        [HttpGet]
+        [Route("slackUserDetails")]
+        [Authorize(Roles = "Admin,Employee")]
+        public async Task<ActionResult> FetchSlackUserDetails(string oldPassword)
+        {
+            List<SlackUserDetailAc> slackUserList = await _userRepository.GetSlackUserDetails();
+            return Ok(slackUserList);
+        }
+
+
         #endregion
     }
 }
