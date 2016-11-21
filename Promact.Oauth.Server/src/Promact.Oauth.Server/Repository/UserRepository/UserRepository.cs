@@ -547,7 +547,7 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="userName"></param>
         /// <returns></returns>
-        public async Task<List<UserRoleAc>> GetUserRole(string userId)
+        public async Task<List<UserRoleAc>> GetUserRoleAsync(string userId)
         {
             ApplicationUser applicationUser = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.Id == userId);
             var userRole = (await _userManager.GetRolesAsync(applicationUser)).First();
