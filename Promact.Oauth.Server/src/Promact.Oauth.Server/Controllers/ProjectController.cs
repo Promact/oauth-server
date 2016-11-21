@@ -58,26 +58,26 @@ namespace Promact.Oauth.Server.Controllers
           *   "Name":"Slack",
           *   "SlackChannelName":"SlackChannelName",
           *   "IsActive":"True",
-          *   TeamLeaderId:"34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
+          *   "TeamLeaderId":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
           *   "CreatedBy" : "Smith",
           *   "CreatedDate" : "10/02/2016",
           *   "UpdatedBy": "Smith",
           *   "UpdatedDate" : "10/02/2016"
           *   "TeamLeader": 
           *   {
-          *         Id:"34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
-          *         FirstName : "John",
-          *         Email : "jone@promactinfo.com",
-          *         LastName : "Doe",
-          *         SlackUserName :"John",
-          *         IsActive : "True",
-          *         JoiningDate :"10-02-2016",
-          *         NumberOfCasualLeave:"0",
-          *         NumberOfSickLeave:"0",
-          *         UniqueName:null,
-          *         Role:null,
-          *         Password:null,
-          *         UserName: null
+          *         "Id":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
+          *         "FirstName" : "John",
+          *         "Email" : "jone@promactinfo.com",
+          *         "LastName" : "Doe",
+          *         "SlackUserName" :"John",
+          *         "IsActive" : "True",
+          *         "JoiningDate" :"10-02-2016",
+          *         "NumberOfCasualLeave":0,
+          *         "NumberOfSickLeave":0,
+          *         "UniqueName":null,
+          *         "Role":null,
+          *         "Password":null,
+          *         "UserName": null
           *         
           *     } 
           * }  
@@ -123,60 +123,59 @@ namespace Promact.Oauth.Server.Controllers
         *   "Name":"Slack",
         *   "SlackChannelName":"SlackChannelName",
         *   "IsActive":"True",
-        *   TeamLeaderId:"34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
+        *   "TeamLeaderId":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
         *   "CreatedBy" : "Smith",
         *   "CreatedDate" : "10/02/2016",
         *   "UpdatedBy": "Smith",
         *   "UpdatedDate" : "10/02/2016"
         *   "TeamLeader":
         *     {
-        *         Id:"34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
-        *         FirstName : "John",
-        *         Email : "jone@promactinfo.com",
-        *         LastName : "Doe",
-        *         RoleName: null,
-        *         SlackUserName :"John",
-        *         IsActive : "True",
-        *         JoiningDate :"10-02-2016",
-        *         NumberOfCasualLeave:"0",
-        *         NumberOfSickLeave:"0",
-        *         UniqueName:null,
-        *         Role:null,
-        *         Password:null,
-        *         UserName: null
+        *         "Id":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
+        *         "FirstName" : "John",
+        *         "Email" : "jone@promactinfo.com",
+        *         "LastName" : "Doe",
+        *         "SlackUserName" :"John",
+        *         "IsActive" : "True",
+        *         "JoiningDate" :"10-02-2016",
+        *         "NumberOfCasualLeave":0,
+        *         "NumberOfSickLeave":0,
+        *         "UniqueName":null,
+        *         "Role":null,
+        *         "Password":null,
+        *         "UserName": null
         *     } 
         *   "ApplicationUsers" :[
         *     {
-        *         Id:"abcd1af3d-062f-4bcd-b6f9-b8fd5165e367",
-        *         FirstName : "Smith",
-        *         Email : "Smith@promactinfo.com",
-        *         LastName : "Doe",
-        *         SlackUserName :"Smith",
-        *         IsActive : "True",
-        *         JoiningDate :"10-02-2016",
-        *         NumberOfCasualLeave:"0",
-        *         NumberOfSickLeave:"0",
-        *         UniqueName:null,
-        *         Role:null,
-        *         Password:null,
-        *         UserName: null,
-        *         RoleName: null
+        *         "Id":"abcd1af3d-062f-4bcd-b6f9-b8fd5165e367",
+        *         "FirstName" : "Smith",
+        *         "Email" : "Smith@promactinfo.com",
+        *         "LastName" : "Doe",
+        *         "SlackUserName" :"Smith",
+        *         "IsActive" : "True",
+        *         "JoiningDate" :"10-02-2016",
+        *         "NumberOfCasualLeave":0,
+        *         "NumberOfSickLeave":0,
+        *         "UniqueName":null,
+        *         "Role":null,
+        *         "Password":null,
+        *         "UserName": null,
+        *         "RoleName": null
         *     },
         *     {
-        *         Id:"abcd1af3d-062f-4bcd-b6f9-b8fd5165e367",
-        *         FirstName : "White",
-        *         Email : "White@promactinfo.com",
-        *         LastName : "Doe",
-        *         SlackUserName :"White",
-        *         IsActive : "True",
-        *         JoiningDate :"18-02-2016",
-        *         NumberOfCasualLeave:"0",
-        *         NumberOfSickLeave:"0",
-        *         UniqueName:null,
-        *         Role:null,
-        *         Password:null,
-        *         UserName: null,
-        *         RoleName: null
+        *         "Id:"abcd1af3d-062f-4bcd-b6f9-b8fd5165e367",
+        *         "FirstName" : "White",
+        *         "Email" : "White@promactinfo.com",
+        *         "LastName" : "Doe",
+        *         "SlackUserName" :"White",
+        *         "IsActive" : "True",
+        *         "JoiningDate" :"18-02-2016",
+        *         "NumberOfCasualLeave":0,
+        *         "NumberOfSickLeave":0,
+        *         "UniqueName":null,
+        *         "Role":null,
+        *         "Password":null,
+        *         "UserName": null,
+        *         "RoleName": null
         *     }
         *   ]   
         * }
@@ -217,38 +216,38 @@ namespace Promact.Oauth.Server.Controllers
           *   "TeamLeader": null,
           *   "ApplicationUsers" :[
           *     {
-          *         Id:"abcd1af3d-062f-4bcd-b6f9-b8fd5165e367",
-          *         FirstName : "Smith",
-          *         Email : "Smith@promactinfo.com",
-          *         LastName : "Doe",
-          *         SlackUserName :"Smith",
-          *         IsActive : "True",
-          *         JoiningDate :"10-02-2016",
-          *         NumberOfCasualLeave:"0",
-          *         NumberOfSickLeave:"0",
-          *         UniqueName:null,
-          *         Role:null,
-          *         Password:null,
-          *         UserName: null,
-          *         RoleName: null
+          *         "Id":"abcd1af3d-062f-4bcd-b6f9-b8fd5165e367",
+          *         "FirstName" : "Smith",
+          *         "Email" : "Smith@promactinfo.com",
+          *         "LastName" : "Doe",
+          *         "SlackUserName" :"Smith",
+          *         "IsActive" : "True",
+          *         "JoiningDate" :"10-02-2016",
+          *         "NumberOfCasualLeave":0,
+          *         "NumberOfSickLeave":0,
+          *         "UniqueName":null,
+          *         "Role":null,
+          *         "Password":null,
+          *         "UserName": null,
+          *         "RoleName": null
           *     },
           *     {
-          *         Id:"abcd1af3d-062f-4bcd-b6f9-b8fd5165e367",
-          *         FirstName : "White",
-          *         Email : "White@promactinfo.com",
-          *         LastName : "Doe",
-          *         SlackUserName :"White",
-          *         IsActive : "True",
-          *         JoiningDate :"18-02-2016",
-          *         NumberOfCasualLeave:"0",
-          *         NumberOfSickLeave:"0",
-          *         UniqueName:null,
-          *         Role:null,
-          *         Password:null,
-          *         UserName: null,
-          *         RoleName: null
+          *         "Id:"abcd1af3d-062f-4bcd-b6f9-b8fd5165e367",
+          *         "FirstName" : "White",
+          *         "Email" : "White@promactinfo.com",
+          *         "LastName" : "Doe",
+          *         "SlackUserName" :"White",
+          *         "IsActive" : "True",
+          *         "JoiningDate" :"18-02-2016",
+          *         "NumberOfCasualLeave":"0",
+          *         "NumberOfSickLeave":"0",
+          *         "UniqueName":null,
+          *         "Role":null,
+          *         "Password":null,
+          *         "UserName": null,
+          *         "RoleName": null
           *     }
-          *   ]   
+          *   ]  
           * }      
           * @apiSuccessExample {json} Success-Response:
           * HTTP/1.1 200 OK 
@@ -258,57 +257,41 @@ namespace Promact.Oauth.Server.Controllers
           *   "TeamLeaderId":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
           *   "IsActive":"True",
           *   "TeamLeaderId":"1",
-          *   "TeamLeader": 
-          *     {
-          *         Id:"34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
-          *         FirstName : "John",
-          *         Email : "jone@promactinfo.com",
-          *         LastName : "Doe",
-          *         SlackUserName :"John",
-          *         IsActive : "True",
-          *         JoiningDate :"10-02-2016",
-          *         NumberOfCasualLeave:"0",
-          *         NumberOfSickLeave:"0",
-          *         UniqueName:null,
-          *         Role:null,
-          *         Password:null,
-          *         UserName: null
-          *         
-          *     } 
+          *   "TeamLeader": null,
           *   "ApplicationUsers" :[
           *     {
-          *         Id:"abcd1af3d-062f-4bcd-b6f9-b8fd5165e367",
-          *         FirstName : "Smith",
-          *         Email : "Smith@promactinfo.com",
-          *         LastName : "Doe",
-          *         SlackUserName :"Smith",
-          *         IsActive : "True",
-          *         JoiningDate :"10-02-2016",
-          *         NumberOfCasualLeave:"0",
-          *         NumberOfSickLeave:"0",
-          *         UniqueName:null,
-          *         Role:null,
-          *         Password:null,
-          *         UserName: null,
-          *         RoleName: null
+          *         "Id":"abcd1af3d-062f-4bcd-b6f9-b8fd5165e367",
+          *         "FirstName" : "Smith",
+          *         "Email" : "Smith@promactinfo.com",
+          *         "LastName" : "Doe",
+          *         "SlackUserName" :"Smith",
+          *         "IsActive" : "True",
+          *         "JoiningDate" :"10-02-2016",
+          *         "NumberOfCasualLeave":0,
+          *         "NumberOfSickLeave":0,
+          *         "UniqueName":null,
+          *         "Role":null,
+          *         "Password":null,
+          *         "UserName": null,
+          *         "RoleName": null
           *     },
           *     {
-          *         Id:"abcd1af3d-062f-4bcd-b6f9-b8fd5165e367",
-          *         FirstName : "White",
-          *         Email : "White@promactinfo.com",
-          *         LastName : "Doe",
-          *         SlackUserName :"White",
-          *         IsActive : "True",
-          *         JoiningDate :"18-02-2016",
-          *         NumberOfCasualLeave:"0",
-          *         NumberOfSickLeave:"0",
-          *         UniqueName:null,
-          *         Role:null,
-          *         Password:null,
-          *         UserName: null,
-          *         RoleName: null
+          *         "Id:"abcd1af3d-062f-4bcd-b6f9-b8fd5165e367",
+          *         "FirstName" : "White",
+          *         "Email" : "White@promactinfo.com",
+          *         "LastName" : "Doe",
+          *         "SlackUserName" :"White",
+          *         "IsActive" : "True",
+          *         "JoiningDate" :"18-02-2016",
+          *         "NumberOfCasualLeave":0,
+          *         "NumberOfSickLeave":0,
+          *         "UniqueName":null,
+          *         "Role":null,
+          *         "Password":null,
+          *         "UserName": null,
+          *         "RoleName": null
           *     }
-          *   ]   
+          *   ]  
           * }  
           * @apiError BadRequest
           * @apiErrorExample {json} Error-Response:
@@ -366,20 +349,20 @@ namespace Promact.Oauth.Server.Controllers
         *   "TeamLeader":null,
         *   "ApplicationUsers" : [
         *     {
-        *         Id:"abcd1af3d-062f-4bcd-b6f9-b8fd5165e367",
-        *         FirstName : "Smith",
-        *         Email : "Smith@promactinfo.com",
-        *         LastName : "Doe",
-        *         SlackUserName :"Smith",
-        *         IsActive : "True",
-        *         JoiningDate :"10-02-2016",
-        *         NumberOfCasualLeave:"0",
-        *         NumberOfSickLeave:"0",
-        *         UniqueName:null,
-        *         Role:null,
-        *         Password:null,
-        *         UserName: null,
-        *         RoleName: null
+        *         "Id":"abcd1af3d-062f-4bcd-b6f9-b8fd5165e367",
+        *         "FirstName" : "Smith",
+        *         "Email" : "Smith@promactinfo.com",
+        *         "LastName" : "Doe",
+        *         "SlackUserName" :"Smith",
+        *         "IsActive" : "True",
+        *         "JoiningDate" :"10-02-2016",
+        *         "NumberOfCasualLeave":0,
+        *         "NumberOfSickLeave":0,
+        *         "UniqueName":null,
+        *         "Role":null,
+        *         "Password":null,
+        *         "UserName": null,
+        *         "RoleName": null
         *     }
         *  ]
         * }      
@@ -394,20 +377,20 @@ namespace Promact.Oauth.Server.Controllers
         *   "TeamLeader": null,
         *   "ApplicationUsers" : [
         *     {
-        *         Id:"abcd1af3d-062f-4bcd-b6f9-b8fd5165e367",
-        *         FirstName : "Smith",
-        *         Email : "Smith@promactinfo.com",
-        *         LastName : "Doe",
-        *         SlackUserName :"Smith",
-        *         IsActive : "True",
-        *         JoiningDate :"10-02-2016",
-        *         NumberOfCasualLeave:"0",
-        *         NumberOfSickLeave:"0",
-        *         UniqueName:null,
-        *         Role:null,
-        *         Password:null,
-        *         UserName: null,
-        *         RoleName: null
+        *         "Id":"abcd1af3d-062f-4bcd-b6f9-b8fd5165e367",
+        *         "FirstName" : "Smith",
+        *         "Email" : "Smith@promactinfo.com",
+        *         "LastName" : "Doe",
+        *         "SlackUserName" :"Smith",
+        *         "IsActive" : "True",
+        *         "JoiningDate" :"10-02-2016",
+        *         "NumberOfCasualLeave":0,
+        *         "NumberOfSickLeave":0,
+        *         "UniqueName":null,
+        *         "Role":null,
+        *         "Password":null,
+        *         "UserName": null,
+        *         "RoleName": null
         *     }
         *  ]
         * }

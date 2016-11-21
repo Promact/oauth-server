@@ -491,10 +491,9 @@ namespace Promact.Oauth.Server.Controllers
        * HTTP/1.1 200 OK 
        * [
        *        {
-       *            UserId: "34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
-       *            UserName: "smith@promactinfo.com",
-       *            Name:"Smith",
-       *            Role:"Admin"
+       *            "UserName": "smith@promactinfo.com",
+       *            "Name":"Smith",
+       *            "Role":"Admin"
        *        }
        *]
        * @apiError UserRoleNotFound The role of the user not found.
@@ -536,16 +535,16 @@ namespace Promact.Oauth.Server.Controllers
        * HTTP/1.1 200 OK 
        * [
        *        {
-       *            UserId: "34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
-       *            UserName: "smith@promactinfo.com",
-       *            Name:"Smith",
-       *            Role:"Admin"
+       *            "UserId": "34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
+       *            "UserName": "smith@promactinfo.com",
+       *            "Name":"Smith",
+       *            "Role":"Admin"
        *        },
        *        {
-       *            UserId: "avd1af3d-062f-4bcd-b6f9-b8fd5165e367",
-       *            UserName: "john@promactinfo.com",
-       *            Name:"John",
-       *            Role:"Employee"
+       *            "UserId": "avd1af3d-062f-4bcd-b6f9-b8fd5165e367",
+       *            "UserName": "john@promactinfo.com",
+       *            "Name":"John",
+       *            "Role":"Employee"
        *        },
        *    ]
        * @apiError UserRoleNotFound The role of the user not found.
@@ -585,24 +584,24 @@ namespace Promact.Oauth.Server.Controllers
         * HTTP/1.1 200 OK 
         * [
         *     {
-        *         Id:"abcd1af3d-062f-4bcd-b6f9-b8fd5165e367",
-        *         FirstName : "Smith",
-        *         Email : "Smith@promactinfo.com",
-        *         LastName : "Doe",
-        *         SlackUserName :"Smith",
-        *         IsActive : "True",
-        *         JoiningDate :"10-02-2016",
-        *         Password : null
+        *         "Id:"abcd1af3d-062f-4bcd-b6f9-b8fd5165e367",
+        *         "FirstName" : "Smith",
+        *         "Email" : "Smith@promactinfo.com",
+        *         "LastName" : "Doe",
+        *         "SlackUserName" :"Smith",
+        *         "IsActive" : "True",
+        *         "JoiningDate" :"10-02-2016",
+        *         "Password" : null
         *     },
         *     {
-        *         Id:"abcd1af3d-062f-4bcd-b6f9-b8fd5165e367",
-        *         FirstName : "White",
-        *         Email : "White@promactinfo.com",
-        *         LastName : "Doe",
-        *         SlackUserName :"White",
-        *         IsActive : "True",
-        *         JoiningDate :"18-02-2016",
-        *         Password : null
+        *         "Id":"abcd1af3d-062f-4bcd-b6f9-b8fd5165e367",
+        *         "FirstName" : "White",
+        *         "Email" : "White@promactinfo.com",
+        *         "LastName" : "Doe",
+        *         "SlackUserName" :"White",
+        *         "IsActive" : "True",
+        *         "JoiningDate" :"18-02-2016",
+        *         "Password" : null
         *     }
         *   ]   
         * @apiError UserNotFound The User not found.
