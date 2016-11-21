@@ -154,20 +154,20 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        Task<List<UserRoleAc>> GetUserRole(string userId);
+        Task<List<UserRoleAc>> GetUserRoleAsync(string userId);
 
         /// <summary>
         /// Method to get list of TeamMember By TeamLeaderId
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        Task<List<UserRoleAc>> GetTeamMembers(string userId);
+        Task<List<UserRoleAc>> GetTeamMembersAsync(string userId);
 
         /// <summary>
         /// This method is used to fetch list of users/employees of the given group name. - JJ
         /// </summary>
         /// <param name="GroupName"></param>
         /// <returns>object of UserAc</returns>
-        Task<List<UserAc>> GetProjectUserByGroupName(string GroupName);
+        Task<List<UserAc>> GetProjectUserByGroupNameAsync(string GroupName);
     }
 }

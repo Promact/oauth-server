@@ -374,7 +374,7 @@ namespace Promact.Oauth.Server.Tests
         /// Test case to get the user role by username
         /// </summary>
         [Fact, Trait("Category", "Required")]
-        public async Task GetUserRole()
+        public async Task GetUserRoleAsync()
         {
             UserAc _testUser = new UserAc()
             {
@@ -388,7 +388,7 @@ namespace Promact.Oauth.Server.Tests
                 RoleName = _stringConstant.Employee
             };
             string id = await _userRepository.AddUser(_testUser, _stringConstant.CreatedBy);
-            var userRole = await _userRepository.GetUserRole(_testUser.Id);
+            var userRole = await _userRepository.GetUserRoleAsync(_testUser.Id);
             Assert.Equal(1, userRole.Count());
         }
 
@@ -410,12 +410,12 @@ namespace Promact.Oauth.Server.Tests
                 RoleName = _stringConstant.Admin
             };
             string id = await _userRepository.AddUser(_testUser, _stringConstant.CreatedBy);
-            var userRole = await _userRepository.GetUserRole(_testUser.Id);
+            var userRole = await _userRepository.GetUserRoleAsync(_testUser.Id);
             Assert.Equal(1, userRole.Count());
         }
 
         [Fact, Trait("Category", "Required")]
-        public async Task GetTeamMembers()
+        public async Task GetTeamMembersAsync()
         {
             UserAc _testUser = new UserAc()
             {
@@ -440,8 +440,8 @@ namespace Promact.Oauth.Server.Tests
                 CreatedBy = _stringConstant.CreatedBy
 
             };
-            var projectId = await _projectRepository.AddProject(projectac, _stringConstant.CreatedBy);
-            var userRole = await _userRepository.GetTeamMembers(_testUser.Id);
+            var projectId = await _projectRepository.AddProjectAsync(projectac, _stringConstant.CreatedBy);
+            var userRole = await _userRepository.GetTeamMembersAsync(_testUser.Id);
             Assert.Equal(1, userRole.Count());
         }
 
@@ -449,7 +449,7 @@ namespace Promact.Oauth.Server.Tests
         /// Fetches Users of the given Project Name(slack channel name)
         /// </summary>
         [Fact, Trait("Category", "A")]
-        public async Task GetProjectUserByGroupName()
+        public async Task GetProjectUserByGroupNameAsync()
         {
             ProjectUser projectUser = new ProjectUser()
             {
@@ -465,9 +465,9 @@ namespace Promact.Oauth.Server.Tests
             projectac.TeamLeader = new UserAc { FirstName = _stringConstant.FirstName };
             projectac.TeamLeaderId = _stringConstant.TeamLeaderId;
             projectac.CreatedBy = _stringConstant.CreatedBy;
-            await _projectRepository.AddProject(projectac, _stringConstant.CreatedBy);
-            await _projectRepository.AddUserProject(projectUser);
-            var projectUsers = await _userRepository.GetProjectUserByGroupName(projectac.SlackChannelName);
+            await _projectRepository.AddProjectAsync(projectac, _stringConstant.CreatedBy);
+            await _projectRepository.AddUserProjectAsync(projectUser);
+            var projectUsers = await _userRepository.GetProjectUserByGroupNameAsync(projectac.SlackChannelName);
             Assert.NotEqual(projectUsers.Count, 2);
         }
 
