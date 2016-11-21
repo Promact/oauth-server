@@ -45,7 +45,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// getting the list of all projects
         /// </summary>
         /// <returns>list of projects</returns>
-        public async Task<IEnumerable<ProjectAc>> GetAllProjects()
+        public async Task<IEnumerable<ProjectAc>> GetAllProjectsAsync()
         {
             var projects = await _projectDataRepository.GetAll().ToListAsync();
             var projectAcList = new List<ProjectAc>();
@@ -89,7 +89,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// <param name="newProject">project that need to be added</param>
         /// <param name="createdBy">login user id</param>
         /// <returns>project id of newly created project</returns>
-        public async Task<int> AddProject(ProjectAc newProject, string createdBy)
+        public async Task<int> AddProjectAsync(ProjectAc newProject, string createdBy)
         {
             var projectAc = _mapperContext.Map<ProjectAc, Project>(newProject);
             projectAc.CreatedDateTime = DateTime.UtcNow;
@@ -104,7 +104,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// Method to add user id and project id in userproject table
         /// </summary>
         /// <param name="newProjectUser"></param>ProjectId and UserId information that need to be added
-        public async Task AddUserProject(ProjectUser newProjectUser)
+        public async Task AddUserProjectAsync(ProjectUser newProjectUser)
         {
             _projectUserDataRepository.AddAsync(newProjectUser);
             await _projectDataRepository.SaveChangesAsync();
@@ -117,7 +117,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// <param name="id"></param>Project id that need to be fetch the Project and list of users
         /// <returns></returns>Project and User/Users infromation 
         /// 
-        public async Task<ProjectAc> GetProjectById(int id)
+        public async Task<ProjectAc> GetProjectByIdAsync(int id)
         {
             List<UserAc> userAcList = new List<UserAc>();
             var project = await _projectDataRepository.FirstOrDefaultAsync(x => x.Id==id);
@@ -151,38 +151,44 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// </summary>
         /// <param name="editProject"></param>Updated information in editProject Parmeter
         /// <param name="updatedBy"></param>Login User Id
-        public async Task<int> EditProject(ProjectAc editProject, string updatedBy)
+        public async Task<int> EditProjectAsync(int id, ProjectAc editProject, string updatedBy)
         {
-            var projectId = editProject.Id;
-            var project = await _projectDataRepository.FirstOrDefaultAsync(x => x.Id==projectId);
-            project.IsActive = editProject.IsActive;
-            project.Name = editProject.Name;
-            project.TeamLeaderId = editProject.TeamLeaderId;
-            project.SlackChannelName = editProject.SlackChannelName;
-            project.UpdatedDateTime = DateTime.UtcNow;
-            project.UpdatedBy = updatedBy;
-            _projectDataRepository.UpdateAsync(project);
-            await _projectDataRepository.SaveChangesAsync();
-
-            //Delete old users from project user table
-            _projectUserDataRepository.Delete(x => x.ProjectId==projectId);
-            await _projectUserDataRepository.SaveChangesAsync();
-
-            foreach (var user in editProject.ApplicationUsers)
+            var project = await _projectDataRepository.FirstOrDefaultAsync(x => x.Id == id);
+            if (project != null)
             {
-                _projectUserDataRepository.AddAsync(new ProjectUser
+                project.IsActive = editProject.IsActive;
+                project.Name = editProject.Name;
+                project.TeamLeaderId = editProject.TeamLeaderId;
+                project.SlackChannelName = editProject.SlackChannelName;
+                project.UpdatedDateTime = DateTime.UtcNow;
+                project.UpdatedBy = updatedBy;
+                _projectDataRepository.UpdateAsync(project);
+                await _projectDataRepository.SaveChangesAsync();
+
+                //Delete old users from project user table
+                _projectUserDataRepository.Delete(x => x.ProjectId == id);
+                await _projectUserDataRepository.SaveChangesAsync();
+
+                foreach (var user in editProject.ApplicationUsers)
                 {
-                    ProjectId = project.Id,
-                    UpdatedDateTime = DateTime.UtcNow,
-                    UpdatedBy = updatedBy,
-                    CreatedBy = project.CreatedBy,
-                    CreatedDateTime = project.CreatedDateTime,
-                    UserId = user.Id,
-                });
+                    _projectUserDataRepository.AddAsync(new ProjectUser
+                    {
+                        ProjectId = project.Id,
+                        UpdatedDateTime = DateTime.UtcNow,
+                        UpdatedBy = updatedBy,
+                        CreatedBy = project.CreatedBy,
+                        CreatedDateTime = project.CreatedDateTime,
+                        UserId = user.Id,
+                    });
+                }
+
+                await _projectDataRepository.SaveChangesAsync();
+                return editProject.Id;
             }
-            
-            await _projectDataRepository.SaveChangesAsync();
-            return editProject.Id;
+            else
+            {
+                throw new ProjectNotFound();
+            }
         }
 
         /// <summary>
@@ -190,7 +196,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// </summary>
         /// <param name="project"></param> pass the project parameter
         /// <returns>projectAc object</returns>
-        public async Task<ProjectAc> CheckDuplicateProject(ProjectAc projectAc)
+        public async Task<ProjectAc> CheckDuplicateProjectAsync(ProjectAc projectAc)
         {
             string projectName;
             string slackChannelName;
@@ -220,7 +226,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// </summary>
         /// <param name="GroupName"></param>
         /// <returns>object of Project</returns>
-        public async Task<ProjectAc> GetProjectByGroupName(string GroupName)
+        public async Task<ProjectAc> GetProjectByGroupNameAsync(string GroupName)
         {
                 var project =await _projectDataRepository.FirstOrDefaultAsync(x => x.SlackChannelName==GroupName);
                 var projectAc = new ProjectAc();
@@ -246,7 +252,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<ProjectAc>> GetAllProjectForUser(string userId)
+        public async Task<IEnumerable<ProjectAc>> GetAllProjectForUserAsync(string userId)
         {
             var projects =await _projectDataRepository.FetchAsync(x => x.TeamLeaderId == userId);
             _logger.LogInformation("Total Projects " + projects.Count().ToString()); 
@@ -287,7 +293,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// Method to return list of projects along with the users and teamleader in a project
         /// </summary>
         /// <returns>List of projects along with users</returns>
-        public async Task<IList<ProjectAc>> GetProjectsWithUsers()
+        public async Task<IList<ProjectAc>> GetProjectsWithUsersAsync()
         {
             List<ProjectAc> projectAcList = new List<ProjectAc>();
             var projects = await _projectDataRepository.GetAll().ToListAsync();
@@ -319,26 +325,32 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// </summary>
         /// <param name="projectId"></param>
         /// <returns>Project details along with users</returns>
-        public async Task<ProjectAc> GetProjectDetails(int projectId)
+        public async Task<ProjectAc> GetProjectDetailsAsync(int projectId)
         {
             Project project =await _projectDataRepository.FirstOrDefaultAsync(x => x.Id==projectId);
-            ApplicationUser applicationUser =await _userDataRepository.FirstOrDefaultAsync(x => x.Id==project.TeamLeaderId);
-            UserAc teamLeader = _mapperContext.Map<ApplicationUser, UserAc>(applicationUser);
-            teamLeader.Role = _stringConstant.TeamLeader;
-            IEnumerable<ProjectUser> projectUsers = await _projectUserDataRepository.FetchAsync(x => x.ProjectId==project.Id);
-            ProjectAc projectAc = _mapperContext.Map<Project, ProjectAc>(project);
-            projectAc.CreatedDate = project.CreatedDateTime.ToString(_stringConstant.Format);
-            projectAc.TeamLeader = teamLeader;
-            List<UserAc> projectUserList = new List<UserAc>();
-            foreach (var projectUser in projectUsers)
+            if (project != null)
             {
-                ApplicationUser user =await _userDataRepository.FirstOrDefaultAsync(x => x.Id==projectUser.UserId);
-                UserAc userAc = _mapperContext.Map<ApplicationUser, UserAc>(user);
-                userAc.Role = _stringConstant.Employee;
-                projectAc.ApplicationUsers.Add(userAc);
-            }
+                ApplicationUser applicationUser = await _userDataRepository.FirstOrDefaultAsync(x => x.Id == project.TeamLeaderId);
+                UserAc teamLeader = _mapperContext.Map<ApplicationUser, UserAc>(applicationUser);
+                teamLeader.Role = _stringConstant.TeamLeader;
+                IEnumerable<ProjectUser> projectUsers = await _projectUserDataRepository.FetchAsync(x => x.ProjectId == project.Id);
+                ProjectAc projectAc = _mapperContext.Map<Project, ProjectAc>(project);
+                projectAc.CreatedDate = project.CreatedDateTime.ToString(_stringConstant.Format);
+                projectAc.TeamLeader = teamLeader;
+                List<UserAc> projectUserList = new List<UserAc>();
+                foreach (var projectUser in projectUsers)
+                {
+                    ApplicationUser user = await _userDataRepository.FirstOrDefaultAsync(x => x.Id == projectUser.UserId);
+                    UserAc userAc = _mapperContext.Map<ApplicationUser, UserAc>(user);
+                    userAc.Role = _stringConstant.Employee;
+                    projectAc.ApplicationUsers.Add(userAc);
+                }
 
-            return projectAc;
+                return projectAc;
+            }
+            else {
+                throw new ProjectNotFound();
+            }
         }
     }
 }
