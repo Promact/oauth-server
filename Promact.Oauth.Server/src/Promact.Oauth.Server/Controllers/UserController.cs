@@ -508,10 +508,9 @@ namespace Promact.Oauth.Server.Controllers
        * HTTP/1.1 200 OK 
        * [
        *        {
-       *            UserId: "34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
-       *            UserName: "smith@promactinfo.com",
-       *            Name:"Smith",
-       *            Role:"Admin"
+       *            "UserName": "smith@promactinfo.com",
+       *            "Name":"Smith",
+       *            "Role":"Admin"
        *        }
        *]
        * @apiError UserRoleNotFound The role of the user not found.
