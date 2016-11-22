@@ -105,7 +105,8 @@ export class ProjectEditComponent implements OnInit {
 
                     this.loader.loader = false;
                 }, err => {
-
+                    this.toast.show("Project not found.");
+                    this.loader.loader = false;
                 });
             }
         }
