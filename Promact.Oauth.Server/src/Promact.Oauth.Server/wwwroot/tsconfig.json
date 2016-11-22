@@ -1,4 +1,5 @@
 ﻿{
+  "compileOnSave": true,
   "compilerOptions": {
     "target": "es6",
     "module": "commonjs",
@@ -7,7 +8,10 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "removeComments": false,
-    "noImplicitAny": false
-  }
+    "noImplicitAny": false,
 
+    "types": [
+      "hammerjs"
+    ]
+  }
 }

@@ -4,24 +4,37 @@
 
 <html>
 <head>
+    <base href="/">
     <title>Home Page</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="css/styles.css">
+    <link href="~/css/app-seagreen.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet"> 
+
     <!-- 1. Load libraries -->
     <!-- Polyfill(s) for older browsers -->
-    <script src="lib/shim.min.js"></script>
-    <script src="lib/zone.js"></script>
-    <script src="lib/Reflect.js"></script>
-    <script src="lib/system.src.js"></script>
+    <script src="~/lib/shim.min.js"></script>
+    <script src="~/lib/zone.js"></script>
+    <script src="~/lib/Reflect.js"></script>
+    <script src="~/lib/system.src.js"></script>
     <!-- 2. Configure SystemJS -->
     <script src="~/systemjs.config.js"></script>
     <script>
-      System.import('app').catch(function(err){ console.error(err); });
+        System.import('app').catch(function (err) { console.error(err); });
+        var user = @Html.Raw(Json.Serialize(@ViewData["UserRole"]));
     </script>
+    @*<script src="~/bundle.js"></script>*@
 </head>
 <!-- 3. Display the application -->
 <body>
-    <my-app>Loading...</my-app>
+    <my-app>
+        <div class="loader">
+            <svg width="1em" height="1em"><circle cx="0.5em" cy="0.5em" r="0.45em" /></svg>
+        </div>
+   </my-app>
 </body>
 </html>
+
+
+

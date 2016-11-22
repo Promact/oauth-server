@@ -1,0 +1,40 @@
+﻿@model OAuthLogin
+@inject SignInManager<ApplicationUser> SignInManager
+
+@{
+    ViewData["Title"] = "Log in";
+    Layout = null;
+}
+<h2>@ViewData["Title"].</h2>
+<div>
+    <div>
+        <section>
+            <form asp-controller="OAuth" asp-action="Login" method="post">
+                <input type="hidden" name="RedirectUrl" value="@ViewBag.returnUrl"/>
+                <input type="hidden" name="ClientId" value="@ViewBag.clientId" />
+                <h4>Use a Promact account to log in.</h4>
+                <hr />
+                <div asp-validation-summary="All"></div>
+                <div>
+                    <label asp-for="Email"></label>
+                    <div>
+                        <input asp-for="Email" />
+                        <span asp-validation-for="Email"></span>
+                    </div>
+                </div>
+                <div>
+                    <label asp-for="Password"></label>
+                    <div>
+                        <input asp-for="Password" />
+                        <span asp-validation-for="Password"></span>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <button type="submit">Log in</button>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>

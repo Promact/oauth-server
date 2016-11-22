@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -11,30 +9,41 @@ using Microsoft.Extensions.Logging;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Models.AccountViewModels;
 using Promact.Oauth.Server.Services;
+using Promact.Oauth.Server.Models.ApplicationClasses;
+using Promact.Oauth.Server.Constants;
+using Microsoft.AspNetCore.Hosting;
+using System;
+using Exceptions;
 
 namespace Promact.Oauth.Server.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+        private readonly IHostingEnvironment _hostingEnvironment;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
+        private readonly IStringConstant _stringConstant;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
             ISmsSender smsSender,
-            ILoggerFactory loggerFactory)
+            ILoggerFactory loggerFactory,
+            IHostingEnvironment hostingEnvironment,
+            IStringConstant stringConstant)
         {
             _userManager = userManager;
+            _hostingEnvironment = hostingEnvironment;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
+            _stringConstant = stringConstant;
         }
 
         //
@@ -76,11 +85,11 @@ namespace Promact.Oauth.Server.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    @ViewData["ReturnError"] = "Invalid login attempt.";
                     return View(model);
                 }
             }
-            
+
             //If we got this far, something failed, redisplay form
             return View(model);
         }
@@ -128,8 +137,8 @@ namespace Promact.Oauth.Server.Controllers
 
         //
         // POST: /Account/LogOff
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> LogOff()
         {
             await _signInManager.SignOutAsync();
@@ -260,26 +269,52 @@ namespace Promact.Oauth.Server.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var user = await _userManager.FindByNameAsync(model.Email);
-                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+                if (ModelState.IsValid)
                 {
-                    // Don't reveal that the user does not exist or is not confirmed
-                    return View("ForgotPasswordConfirmation");
+                    var user = await _userManager.FindByNameAsync(model.Email);
+                    if (user == null)
+                    {
+                        @ViewData["EmailNotExist"] = _stringConstant.EmailNotExists;
+                        return View();
+                    }
+
+                    // Send an email with this link
+                    var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    var resetPasswordLink = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+                    string path = _hostingEnvironment.ContentRootPath + _stringConstant.ForgotPasswordTemplateFolderPath;
+                    if (System.IO.File.Exists(path))
+                    {
+                        string finaleTemplate = System.IO.File.ReadAllText(path);
+                        finaleTemplate = finaleTemplate.Replace(_stringConstant.ResetPasswordLink, resetPasswordLink).Replace(_stringConstant.ResertPasswordUserName, user.FirstName);
+                        _emailSender.SendEmail(model.Email, _stringConstant.ForgotPassword, finaleTemplate);
+                        @ViewData["MailSentSuccessfully"] = _stringConstant.SuccessfullySendMail.Replace("{{emailaddress}}", "'" + model.Email + "'");
+                    }
                 }
-
-                // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
-                // Send an email with this link
-                //var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                //var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                //await _emailSender.SendEmailAsync(model.Email, "Reset Password",
-                //   $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>");
-                //return View("ForgotPasswordConfirmation");
+                // If we got this far, something failed, redisplay form
+                return View(model);
             }
-
-            // If we got this far, something failed, redisplay form
-            return View(model);
+            catch (InvalidApiRequestException apiEx)
+            {
+                _logger.LogError("Forgot Password mail not send " + apiEx.Message + apiEx.ToString());
+                if (apiEx.Errors.Count() > 0)
+                {
+                    foreach (var error in apiEx.Errors)
+                        _logger.LogInformation("Forgot Password mail not send " + error);
+                }
+                throw apiEx;
+            }
+            catch (ArgumentNullException argEx)
+            {
+                _logger.LogError("Forgot Password mail not send " + argEx.Message + argEx.ToString());
+                throw argEx;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Forgot Password " + ex.Message + ex.ToString());
+                throw ex;
+            }
         }
 
         //
@@ -295,9 +330,19 @@ namespace Promact.Oauth.Server.Controllers
         // GET: /Account/ResetPassword
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult ResetPassword(string code = null)
+        public IActionResult ResetPassword(string code = null, string userId = null)
         {
-            return code == null ? View("Error") : View();
+            if (code != null && userId != null)
+            {
+                ResetPasswordViewModel model = new ResetPasswordViewModel();
+                var user = _userManager.FindByIdAsync(userId);
+                if (user.Result != null)
+                {
+                    model.Email = user.Result.Email;
+                    return View(model);
+                }
+            }
+            return View("Error");
         }
 
         //
@@ -307,23 +352,23 @@ namespace Promact.Oauth.Server.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return View(model);
+                var user = await _userManager.FindByIdAsync(model.UserId);
+                if (user == null)
+                {
+                    // Don't reveal that the user does not exist
+                    return RedirectToAction(nameof(AccountController.ResetPasswordConfirmation), "Account");
+                }
+                var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction(nameof(AccountController.ResetPasswordConfirmation), "Account");
+                }
+                @ViewData["Error"] = result.Errors.FirstOrDefault().Description;
+                model.Email = user.Email;
             }
-            var user = await _userManager.FindByNameAsync(model.Email);
-            if (user == null)
-            {
-                // Don't reveal that the user does not exist
-                return RedirectToAction(nameof(AccountController.ResetPasswordConfirmation), "Account");
-            }
-            var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
-            if (result.Succeeded)
-            {
-                return RedirectToAction(nameof(AccountController.ResetPasswordConfirmation), "Account");
-            }
-            AddErrors(result);
-            return View();
+            return View(model);
         }
 
         //
@@ -379,7 +424,7 @@ namespace Promact.Oauth.Server.Controllers
             var message = "Your security code is: " + code;
             if (model.SelectedProvider == "Email")
             {
-                await _emailSender.SendEmailAsync(await _userManager.GetEmailAsync(user), "Security Code", message);
+                //await _emailSender.SendEmailAsync(await _userManager.GetEmailAsync(user), "Security Code", message);
             }
             else if (model.SelectedProvider == "Phone")
             {
@@ -433,6 +478,28 @@ namespace Promact.Oauth.Server.Controllers
             {
                 ModelState.AddModelError(string.Empty, "Invalid code.");
                 return View(model);
+            }
+        }
+
+        /// <summary>
+        /// Method to check & get the role of current user
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> IsInRole()
+        {
+            LoginAsync user = new LoginAsync();
+            var newUser = await _userManager.FindByNameAsync(User.Identity.Name);
+            user.UserId = newUser.Id;
+            if (User.IsInRole("Admin"))
+            {
+                user.Role = "Admin";
+                return Ok(user);
+            }
+            else
+            {
+                user.Role = "Employee";
+                return Ok(user);
             }
         }
 

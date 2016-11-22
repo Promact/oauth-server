@@ -1,0 +1,49 @@
+﻿<div class="consumer-edit">
+
+    <div class="card-title-block">
+        <div class="title in_block items">
+            <h3>Edit Consumer App</h3>
+        </div>
+        <div class="text-right items">
+            <button md-raised-button type="submit" class="btn-back btn-green" (click)="cancel()"> <i class="material-icons">arrow_back</i>Back</button>
+        </div>
+    </div>
+
+    <form #consumerappEditForm="ngForm">
+
+        <div class="form-group d-flex">
+            <div class="half-width mr-25">
+                <md-input class="full-width" placeholder="Auth Id" [(ngModel)]="consumerModel.AuthId" [disabled]="true" name="AuthId"></md-input>
+            </div>
+
+            <div class="half-width">
+                <md-input class="full-width" placeholder="Auth Secret" [(ngModel)]="consumerModel.AuthSecret" [disabled]="true" name="AuthSecret"></md-input>
+            </div>
+
+        </div>
+
+
+        <div class="form-group d-flex">
+            <div class="half-width mr-25">
+                <md-input class="full-width" name="name" placeholder="Name" [(ngModel)]="consumerModel.Name" maxlength="255" required #name="ngModel"></md-input>
+                <div [hidden]="!(name.touched && !name.valid && name.errors.required)" class="error">Name is required</div>
+
+            </div>
+            <div class="half-width ">
+                <md-input class="full-width" placeholder="Call Back Url" type="text" name="callbackUrl" [(ngModel)]="consumerModel.CallbackUrl" maxlength="255" required #callbackUrl="ngModel"></md-input>
+                <div [hidden]="!(callbackUrl.touched && !callbackUrl.valid && callbackUrl.errors.required)" class="error">Call Back Url is required</div>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <md-input class="full-width" placeholder="Description" name="description" [(ngModel)]="consumerModel.Description" maxlength="1000" required #description="ngModel"></md-input>
+            <div [hidden]="!(description.touched && !description.valid && description.errors.required)" class="error">Description is required</div>
+        </div>
+
+        <div class="form-group" id="group-btn">
+            <button md-raised-button class="btn-green mr-15"  type="submit" (click)="updateApps(consumerModel)" [disabled]="!consumerappEditForm.form.valid">Update</button>
+            <!--<button  md-raised-button (click)="cancel()">Cancel</button>-->
+        </div>
+    </form>
+</div>
