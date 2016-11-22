@@ -86,6 +86,33 @@ describe('Project Edit Test', () => {
             done();
         });
     });
+
+
+    it("should check Project name before update", done => {
+        this.promise.then(() => {
+            let fixture = TestBed.createComponent(ProjectEditComponent); //Create instance of component            
+            let projectEditComponent = fixture.componentInstance;
+            let projectModels = new ProjectModel();
+            let expectedProjecteName = null;
+            projectModels.name = expectedProjecteName;
+            let expectedSlackChannelName = "Test Slack Name";
+            projectModels.slackChannelName = expectedSlackChannelName;
+            let mockUser = new UserModel();
+            mockUser.FirstName = "Ronak";
+            mockUser.LastName = "Shah";
+            mockUser.Email = "rshah@Promactinfo.com";
+            mockUser.IsActive = true;
+            mockUser.Id = "1";
+            let mockList = new Array<UserModel>();
+            mockList.push(mockUser);
+            projectModels.applicationUsers = mockList;
+            projectModels.teamLeaderId = "2";
+            projectEditComponent.editProject(projectModels);
+            expect(projectModels.name).toBe(null);
+            done();
+        });
+    });
+
    
 });    
 
