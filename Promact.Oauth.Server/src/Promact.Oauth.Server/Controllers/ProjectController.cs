@@ -290,10 +290,10 @@ namespace Promact.Oauth.Server.Controllers
         */
         [ServiceFilter(typeof(CustomAttribute))]
         [HttpGet]
-        [Route("featchUserRole/{name}")]
-        public async Task<List<UserRoleAc>> GetUserRole(string name)
+        [Route("featchUserRole/{slackUserId}")]
+        public async Task<List<UserRoleAc>> GetUserRole(string slackUserId)
         {
-            return await _projectRepository.GetUserRole(name);
+            return await _projectRepository.GetUserRole(slackUserId);
 
         }
 
@@ -311,10 +311,10 @@ namespace Promact.Oauth.Server.Controllers
         */
         [ServiceFilter(typeof(CustomAttribute))]
         [HttpGet]
-        [Route("featchListOfUser/{name}")]
-        public async Task<List<UserRoleAc>> GetListOfEmployee(string name)
+        [Route("featchListOfUser/{slackUserId}")]
+        public async Task<List<UserRoleAc>> GetListOfEmployee(string slackUserId)
         {
-            return await _projectRepository.GetListOfEmployee(name);
+            return await _projectRepository.GetListOfEmployee(slackUserId);
 
         }
 

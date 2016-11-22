@@ -70,7 +70,13 @@ namespace Promact.Oauth.Server.Repository
         /// <returns> boolean: true if the email exists, false if does not exist</returns>
         Task<bool> CheckEmailIsExists(string email);
 
-        ApplicationUser FindUserBySlackUserName(string slackUserName);
+
+        /// <summary>
+        /// Fetches user with the given Slack User Id
+        /// </summary>
+        /// <param name="slackUserId"></param>
+        /// <returns></returns>
+        ApplicationUser FindUserBySlackUserId(string slackUserId);
 
         /// <summary>
         /// This method is used to send email to the currently added user
@@ -79,18 +85,18 @@ namespace Promact.Oauth.Server.Repository
         //void SendEmail(ApplicationUser user);
 
         /// <summary>
-        /// Method is used to Get User details by firstname
+        /// Method is used to Get User details by slack user id
         /// </summary>
-        /// <param name="firstname"></param>
+        /// <param name="userSlackId"></param>
         /// <returns></returns>
-        ApplicationUser UserDetialByUserSlackName(string userSlackName);
+        ApplicationUser UserDetialByUserSlackId(string userSlackId);
 
         /// <summary>
         /// Method is used to get team leader's list
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        Task<List<ApplicationUser>> TeamLeaderByUserSlackName(string userSlackName);
+        Task<List<ApplicationUser>> TeamLeaderByUserSlackId(string userSlackName);
 
         /// <summary>
         /// Method to get list of management people
@@ -121,20 +127,20 @@ namespace Promact.Oauth.Server.Repository
         /// <param name="userName"></param>
         /// <returns>details of user</returns>
         Task<UserAc> GetUserDetailByUserName(string UserName);
-        
+
         /// <summary>
-        /// Method to get the number of casual leave allowed to a user by slack user name
+        /// Method to get the number of casual leave allowed to a user by slackUserId
         /// </summary>
-        /// <param name="slackUserName"></param>
+        /// <param name="slackUserId"></param>
         /// <returns>number of casual leave</returns>
-        LeaveAllowed GetUserAllowedLeaveBySlackName(string slackUserName);
+        LeaveAllowed GetUserAllowedLeaveBySlackId(string slackUserId);
 
         /// <summary>
         /// Method to check whether user is admin or not
         /// </summary>
-        /// <param name="userName"></param>
+        /// <param name="slackUserId"></param>
         /// <returns>true or false</returns>
-        Task<bool> IsAdmin(string userName);
+        Task<bool> IsAdmin(string slackUserId);
 
         /// <summary>
         /// This method used for re -send mail for user credentails

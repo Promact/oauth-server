@@ -274,7 +274,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                         userAc.IsActive = user.IsActive;
                         userAc.LastName = user.LastName;
                         userAc.UserName = user.UserName;
-                        userAc.SlackUserName = user.SlackUserName;
+                        userAc.SlackUserId = user.SlackUserId;
                         userProjects.Add(userAc);
                     }
 
@@ -327,11 +327,11 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// <summary>
         /// This Method get the list of Users.
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="slackUserId"></param>
         /// <returns></returns>
-        public async Task<List<UserRoleAc>> GetListOfEmployee(string name)
+        public async Task<List<UserRoleAc>> GetListOfEmployee(string slackUserId)
         {
-            ApplicationUser user = _userDataRepository.FirstOrDefault(x => x.UserName == name);
+            ApplicationUser user = _userDataRepository.FirstOrDefault(x => x.SlackUserId == slackUserId);
             var userRoles = new List<UserRoleAc>();
             var usersRole = new UserRoleAc();
             usersRole.UserName = user.UserName;
@@ -355,11 +355,11 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// <summary>
         /// This Method use to featch user role
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="slackUserId"></param>
         /// <returns></returns>
-        public async Task<List<UserRoleAc>> GetUserRole(string name)
+        public async Task<List<UserRoleAc>> GetUserRole(string slackUserId)
         {
-            ApplicationUser user = _userDataRepository.FirstOrDefault(x => x.UserName == name);
+            ApplicationUser user = _userDataRepository.FirstOrDefault(x => x.SlackUserId == slackUserId);
             var role = await _userManager.GetRolesAsync(user);
             var userRole = role.First();
             var userRoles = new List<UserRoleAc>();

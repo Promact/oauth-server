@@ -101,10 +101,10 @@ export class UserAddComponent {
         }
     }
 
-    checkSlackUserName(slackUserName) {
+    checkSlackUserId(slackUserId) {
         this.isSlackUserNameExist = false;
-        if (slackUserName !== "" && slackUserName !== undefined) {
-            this.userService.checkUserIsExistsBySlackUserName(slackUserName).subscribe((result) => {
+        if (slackUserId !== "" && slackUserId !== undefined) {
+            this.userService.checkUserIsExistsBySlackUserId(slackUserId).subscribe((result) => {
                 this.isSlackUserNameExist = result;
             }, err => {
                 console.log(err.statusText);

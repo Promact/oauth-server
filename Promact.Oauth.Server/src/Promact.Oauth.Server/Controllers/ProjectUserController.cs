@@ -18,17 +18,17 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /// <summary>
-        /// Method to get User details by user first name
+        /// Method to get User details by slack user Id
         /// </summary>
         /// <param name="userFirstname"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("userDetails/{userSlackName}")]
-        public IActionResult UserDetialByFirstName(string userSlackName)
+        [Route("userDetails/{slackUserId}")]
+        public IActionResult UserDetialBySlackUserId(string slackUserId)
         {
             try
             {
-                var user = _userRepository.UserDetialByUserSlackName(userSlackName);
+                var user = _userRepository.UserDetialByUserSlackId(slackUserId);
                 return Ok(user);
             }
             catch (Exception ex)
@@ -39,17 +39,17 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /// <summary>
-        /// Method is used to get list of teamLeader for an employee first name
+        /// Method is used to get list of teamLeader for an employee slack user Id
         /// </summary>
-        /// <param name="userId"></param>
+        /// <param name="slackUserId"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("teamLeaderDetails/{userSlackName}")]
-        public async Task<IActionResult> TeamLeaderByUserId(string userSlackName)
+        [Route("teamLeaderDetails/{slackUserId}")]
+        public async Task<IActionResult> TeamLeaderByUserId(string slackUserId)
         {
             try
             {
-                var user = await _userRepository.TeamLeaderByUserSlackName(userSlackName);
+                var user = await _userRepository.TeamLeaderByUserSlackId(slackUserId);
                 return Ok(user);
             }
             catch (Exception ex)
@@ -81,17 +81,17 @@ namespace Promact.Oauth.Server.Controllers
 
 
         /// <summary>
-        /// Method to get the number of casual leave allowed to a user by slack user name
+        /// Method to get the number of casual leave allowed to a user by slack user Id
         /// </summary>
-        /// <param name="slackUserName"></param>
+        /// <param name="slackUserId"></param>
         /// <returns>number of casual leave</returns>
         [HttpGet]
-        [Route("casual/leave/{slackUserName}")]
-        public IActionResult GetUserCasualLeaveBySlackName(string slackUserName)
+        [Route("casual/leave/{slackUserId}")]
+        public IActionResult GetUserCasualLeaveBySlackId(string slackUserId)
         {
             try
             {
-                var casualLeave = _userRepository.GetUserAllowedLeaveBySlackName(slackUserName);
+                var casualLeave = _userRepository.GetUserAllowedLeaveBySlackId(slackUserId);
                 return Ok(casualLeave);
             }
             catch (Exception ex)
@@ -102,10 +102,10 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         [HttpGet]
-        [Route("userIsAdmin/{userName}")]
-        public async Task<IActionResult> UserIsAdmin(string userName)
+        [Route("userIsAdmin/{slackUserId}")]
+        public async Task<IActionResult> UserIsAdmin(string slackUserId)
         {
-            var result = await _userRepository.IsAdmin(userName);
+            var result = await _userRepository.IsAdmin(slackUserId);
             return Ok(result);
         }
     }

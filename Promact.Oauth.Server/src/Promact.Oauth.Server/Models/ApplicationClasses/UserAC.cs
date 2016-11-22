@@ -42,6 +42,9 @@ namespace Promact.Oauth.Server.Models.ApplicationClasses
         [JsonProperty("SlackUserName")]
         public string SlackUserName { get; set; }
 
+        [JsonProperty("SlackUserId")]
+        public string SlackUserId { get; set; }
+
         [Required]
         [EmailAddress]
         [JsonProperty("Email")]
