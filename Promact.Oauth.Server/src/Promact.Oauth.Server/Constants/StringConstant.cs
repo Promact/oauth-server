@@ -51,7 +51,8 @@
         public string FirstNameThird { get { return "Third First Name"; } }
         public string ProjectName { get { return "Project Edit"; } }
         public string ProjectSlackChannelName { get { return "Slack Channel NameEdit"; } }
-
+        public string SlackUsersUrl { get { return "/oAuth/SlackUserDetails"; } }
+        public string SlackUserByIdUrl { get { return "/oAuth/SlackUserDetails/"; } }
         public string FirstName { get { return "First"; } }
         public string LastName { get { return "Last"; } }
         public string Email { get { return "test@promactinfo.com"; } }

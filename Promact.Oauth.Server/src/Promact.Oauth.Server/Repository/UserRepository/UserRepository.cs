@@ -548,7 +548,7 @@ namespace Promact.Oauth.Server.Repository
         public async Task<List<SlackUserDetailAc>> GetSlackUserDetails()
         {
             _logger.LogInformation("User Repository: GetSlackUserDetails. Url: " + _appSettingUtil.Value.PromactErpUrl);
-            HttpResponseMessage response = await _httpClientRepository.GetAsync(_appSettingUtil.Value.PromactErpUrl, "/slack/GetSlackUserDetails");
+            HttpResponseMessage response = await _httpClientRepository.GetAsync(_appSettingUtil.Value.PromactErpUrl, _stringConstant.SlackUsersUrl);
             string responseResult = response.Content.ReadAsStringAsync().Result;
             _logger.LogInformation("User Repository: GetSlackUserDetails. ReponseResult: " + responseResult);
             // Transforming Json String to object type List of SlackUserDetailAc
@@ -571,7 +571,7 @@ namespace Promact.Oauth.Server.Repository
         private async Task<SlackUserDetailAc> GetSlackUserById(string slackUserId)
         {
             _logger.LogInformation("User Repository - GetSlackUserByI. Url: " + _appSettingUtil.Value.PromactErpUrl);
-            HttpResponseMessage response = await _httpClientRepository.GetAsync(_appSettingUtil.Value.PromactErpUrl, "/slack/GetSlackUserBySlackId/" + slackUserId);
+            HttpResponseMessage response = await _httpClientRepository.GetAsync(_appSettingUtil.Value.PromactErpUrl, _stringConstant.SlackUserByIdUrl + slackUserId);
             string responseResult = response.Content.ReadAsStringAsync().Result;
             _logger.LogInformation("User Repository: GetSlackUserById. ReponseResult: " + responseResult);
             // Transforming Json String to object type List of SlackUserDetailAc
