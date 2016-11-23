@@ -290,9 +290,9 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
 
         public async Task<IEnumerable<ProjectAc>> GetAllProjectForUser(string userId)
         {
-            var projects = _projectDataRepository.Fetch(x => x.TeamLeaderId == userId);
+            var projects = _projectDataRepository.Fetch(x => x.TeamLeaderId == userId).ToList();
             _logger.LogInformation("Total Projects " + projects.Count().ToString()); 
-            var projectUser = _projectUserDataRepository.Fetch(x => x.UserId == userId);
+            var projectUser = _projectUserDataRepository.Fetch(x => x.UserId == userId).ToList();
             _logger.LogInformation("Total UserProjects " + projectUser.Count().ToString());
             List<ProjectAc> recentProjects = new List<ProjectAc>();
             ProjectAc recentProject = new ProjectAc();

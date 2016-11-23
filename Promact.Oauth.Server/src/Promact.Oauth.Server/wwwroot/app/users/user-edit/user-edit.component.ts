@@ -78,7 +78,7 @@ export class UserEditComponent {
         
     }
      goBack() {
-        this.redirectionRoute.navigate(['user/list']);
+        this.redirectionRoute.navigate(['']);
     }
 
    
