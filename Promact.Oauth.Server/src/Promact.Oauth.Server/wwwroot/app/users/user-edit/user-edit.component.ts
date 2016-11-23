@@ -74,8 +74,8 @@ export class UserEditComponent {
         });
 
     }
-    goBack() {
-        this.redirectionRoute.navigate(['user/list']);
+     goBack() {
+        this.redirectionRoute.navigate(['']);
     }
 
 
