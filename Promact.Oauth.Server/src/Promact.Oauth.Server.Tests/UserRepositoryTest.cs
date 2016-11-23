@@ -214,7 +214,7 @@ namespace Promact.Oauth.Server.Tests
         /// Test case use for getting TeamLeader's details by users slack name
         /// </summary>
         [Fact, Trait("Category", "Required")]
-        public async Task TeamLeaderByUserSlackName()
+        public async Task TeamLeaderByUserSlackId()
         {
             UserAc _testUser = new UserAc()
             {
@@ -326,7 +326,7 @@ namespace Promact.Oauth.Server.Tests
         /// Test case to check FindUserBySlackUserName of user Repository
         /// </summary>
         [Fact, Trait("Category", "Required")]
-        public async Task CheckSlackUserNameIsAlreadyExists()
+        public async Task CheckSlackUserIdIsAlreadyExists()
         {
             UserAc _testUser = new UserAc()
             {
