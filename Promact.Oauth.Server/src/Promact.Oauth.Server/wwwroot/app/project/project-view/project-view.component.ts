@@ -4,6 +4,8 @@ import { ProjectModel } from '../project.model';
 import { UserModel } from '../../users/user.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from "@angular/common";
+import { Md2Toast } from 'md2';
+
 @Component({
     templateUrl: "app/project/project-view/project-view.html",
 })
@@ -16,7 +18,8 @@ export class ProjectViewComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private service: ProjectService,
-        private location: Location) { }
+        private location: Location,
+        private toast: Md2Toast) { }
     /**
      * getporject feching the list of projects and getUser feching list of Users
      */
@@ -61,7 +64,10 @@ export class ProjectViewComponent implements OnInit {
                         this.project.applicationUsers.push(user);
                     }
                 });
+            }, err => {
+                this.toast.show("Project dose not exists.");
             });
+
         });
     }
 

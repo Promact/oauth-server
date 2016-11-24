@@ -87,22 +87,28 @@ namespace Promact.Oauth.Server.Controllers
         [Authorize]
         [HttpGet]
         [Route("")]
-        public async Task<IEnumerable<ProjectAc>> GetProjectsAsync()
+        public async Task<IActionResult> GetProjectsAsync()
         {
-            
+            try
+            {
                 var user = await _userManager.FindByNameAsync(User.Identity.Name);
                 var userRole = await _userManager.IsInRoleAsync(user, "Employee");
-                _logger.LogInformation("UserRole Employee  "+userRole);
+                _logger.LogInformation("UserRole Employee  " + userRole);
                 if (userRole)
                 {
                     _logger.LogInformation("call project repository for User");
-                    return await _projectRepository.GetAllProjectForUserAsync(user.Id);
+                    return Ok(await _projectRepository.GetAllProjectForUserAsync(user.Id));
                 }
                 else
                 {
                     _logger.LogInformation("call project repository for projects");
-                    return await _projectRepository.GetAllProjectsAsync();
+                    return Ok(await _projectRepository.GetAllProjectsAsync());
                 }
+            }
+            catch (FailedToFetchDataException)
+            {
+                return BadRequest();
+            }
 
 
         }

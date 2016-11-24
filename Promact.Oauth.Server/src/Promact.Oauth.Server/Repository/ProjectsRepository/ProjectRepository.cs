@@ -78,9 +78,15 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                 projectAc.UpdatedBy = UpdatedBy;
                 projectAc.UpdatedDate = UpdatedDate;
                 projectAcList.Add(projectAc);
-
             }
-            return projectAcList;
+            if (projectAcList.Count() > 0)
+            {
+                return projectAcList;
+            }
+            else
+            {
+                throw new FailedToFetchDataException();
+            }
         }
 
         /// <summary>
@@ -286,7 +292,13 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                 projectAcList.Add(projectAc);
             }
             _logger.LogInformation("Total recentProjects " + projectAcList.Count().ToString());
-            return projectAcList;
+            if (projectAcList.Count() > 0)
+            {
+                return projectAcList;
+            }
+            else {
+                throw new FailedToFetchDataException();
+            }
         }
         
         /// <summary>
