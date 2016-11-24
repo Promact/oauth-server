@@ -1,17 +1,17 @@
-﻿import {Component} from "@angular/core";
-import {Router, ActivatedRoute } from "@angular/router";
-import {Location} from "@angular/common";
+﻿import { Component } from "@angular/core";
+import { Router, ActivatedRoute } from "@angular/router";
+import { Location } from "@angular/common";
 import { LoginService } from '../../login.service';
 
-import { UserService }   from '../user.service';
-import {UserModel} from '../user.model';
+import { UserService } from '../user.service';
+import { UserModel } from '../user.model';
 import { Md2Toast } from 'md2';
 import { LoaderService } from '../../shared/loader.service';
 import { UserRole } from "../../shared/userrole.model";
 
 @Component({
     templateUrl: './app/users/user-edit/user-edit.html'
-    
+
 })
 
 export class UserEditComponent {
@@ -44,6 +44,7 @@ export class UserEditComponent {
         });
     }
 
+
     getRoles() {
         this.userService.getRoles().subscribe((result) => {
             if (result != null) {
@@ -53,7 +54,7 @@ export class UserEditComponent {
             }
         }, err => {
             console.log(err.statusText);
-            
+
         });
     }
 
@@ -62,25 +63,21 @@ export class UserEditComponent {
         this.loader.loader = true;
         user.FirstName = user.FirstName.trim();
         this.userService.editUser(user).subscribe((result) => {
-            if (result == true) {
-                this.toast.show('User updated successfully.');
-                this.redirectionRoute.navigate(['']);
-            }
-            else if (result == false) {
-                this.toast.show('User Name or Slack User Name already exists.');
-            }
+            this.toast.show('User updated successfully.');
+            this.redirectionRoute.navigate(['']);
             this.loader.loader = false;
 
         }, err => {
+            console.log(err.statusText);
             this.toast.show('User detail could not be edited successfully.');
             this.loader.loader = false;
         });
-        
+
     }
-     goBack() {
+    goBack() {
         this.redirectionRoute.navigate(['user/list']);
     }
 
-   
+
 }
 

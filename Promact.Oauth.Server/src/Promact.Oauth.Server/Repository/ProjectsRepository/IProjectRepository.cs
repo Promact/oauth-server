@@ -79,15 +79,15 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// <summary>
         /// Method to get User Role
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="slackUserId"></param>
         /// <returns></returns>
-        Task<List<UserRoleAc>> GetUserRole(string name);
+        Task<List<UserRoleAc>> GetUserRole(string slackUserId);
         /// <summary>
         /// Method to get list of Users
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="slackUserId"></param>
         /// <returns></returns>
-        Task<List<UserRoleAc>> GetListOfEmployee(string name);
+        Task<List<UserRoleAc>> GetListOfEmployee(string slackUserId);
         //Task<List<UserRoleAc>> GetUserRole(string name);
 
         /// <summary>

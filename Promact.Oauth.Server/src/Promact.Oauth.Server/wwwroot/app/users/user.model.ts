@@ -12,4 +12,5 @@
     JoiningDate: Date;
     SlackUserName: string;
     RoleName: string;
+    SlackUserId: string;
 }

@@ -40,8 +40,8 @@ export class UserService {
     checkEmailIsExists(email: string) {
         return this.httpService.get(this.UserUrl + "/checkEmailIsExists/" + email);
     }
-    checkUserIsExistsBySlackUserName(slackUserName: string) {
-        return this.httpService.get(this.UserUrl + "/checkUserIsExistsBySlackUserName/" + slackUserName);
+    checkUserIsExistsBySlackUserId(slackUserId: string) {
+        return this.httpService.get(this.UserUrl + "/checkUserIsExistsBySlackUserId/" + slackUserId);
     }
     getRoles() {
         return this.httpService.get(this.UserUrl + "/getRole");
@@ -52,6 +52,10 @@ export class UserService {
     }
     checkOldPasswordIsValid(oldPassword: string) {
         return this.httpService.get(this.UserUrl + "/checkOldPasswordIsValid/" + oldPassword);
+    }
+
+   fetchSlackUserDetails() {
+       return this.httpService.get(this.UserUrl + "/slackUserDetails");
     }
 
 }

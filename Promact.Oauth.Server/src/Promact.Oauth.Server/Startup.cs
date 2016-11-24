@@ -66,6 +66,9 @@ namespace Promact.Oauth.Server
             //Configure SendGridAPI
             services.Configure<SendGridAPI>(Configuration.GetSection("SendGridAPI"));
 
+            //Configure AppSettingUtil
+            services.Configure<AppSettingUtil>(Configuration.GetSection("AppSettingUtil"));
+
 
             // Add framework services.
             services.AddDbContext<PromactOauthDbContext>(options =>

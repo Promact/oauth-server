@@ -95,6 +95,23 @@ namespace Promact.Oauth.Server.Controllers
             }
         }
 
+
+        /**
+     * @api {get} api/User/GetRole 
+     * @apiVersion 1.0.0
+     * @apiName User
+     * @apiGroup User
+     * @apiSuccessExample {json} Success-Response:
+     * HTTP/1.1 200 OK 
+     * {
+     *     [
+     *      {
+     *          Id: 452dsf34,
+     *          Name: abc
+     *      },
+     *     ]
+     * }
+     */
         [HttpGet]
         [Route("getRole")]
         public IActionResult GetRole()
@@ -123,8 +140,6 @@ namespace Promact.Oauth.Server.Controllers
         *     "description":"get the UserAc Object"
         * }
         */
-
-
         [HttpGet]
         [Route("{id}")]
         [Authorize(Roles = "Admin,Employee")]
@@ -145,6 +160,7 @@ namespace Promact.Oauth.Server.Controllers
             }
         }
 
+
         /**
          * @api {post} api/User/RegisterUser 
          * @apiVersion 1.0.0
@@ -157,7 +173,7 @@ namespace Promact.Oauth.Server.Controllers
          *             "LastName":"SlackChannelName",
          *             "IsActive":"True",
          *             "JoiningDate":"01-01-2016"
-         *             "SlackUserName":"SlackUserName"
+         *             "SlackUserId":"SlackUserId"
          *        }      
          * @apiSuccessExample {json} Success-Response:
          * HTTP/1.1 200 OK 
@@ -165,8 +181,6 @@ namespace Promact.Oauth.Server.Controllers
          *     "description":"Add User in Application User Table"
          * }
          */
-
-
         [HttpPost]
         [Route("add")]
         [Authorize(Roles = "Admin")]
@@ -206,27 +220,27 @@ namespace Promact.Oauth.Server.Controllers
 
 
         /**
-     * @api {put} api/User/editProject 
-     * @apiVersion 1.0.0
-     * @apiName User
-     * @apiGroup User
-     * @apiParam {int} id  User Id
-     * @apiParamExample {json} Request-Example:
-     *      
-     *        {
-     *             "Id":"1",
-     *             "FirstName":"ProjectName",
-     *             "LastName":"SlackChannelName",
-     *             "IsActive":"True",
-     *             "JoiningDate":"01-01-2016"
-     *             "SlackUserName":"SlackUserName"
-     *        }      
-     * @apiSuccessExample {json} Success-Response:
-     * HTTP/1.1 200 OK 
-     * {
-     *     "description":"edit User in User Table"
-     * }
-     */
+        * @api {put} api/User/editProject 
+        * @apiVersion 1.0.0
+        * @apiName User
+        * @apiGroup User
+        * @apiParam {int} id  User Id
+        * @apiParamExample {json} Request-Example:
+        *      
+        *        {
+        *             "Id":"1",
+        *             "FirstName":"ProjectName",
+        *             "LastName":"SlackChannelName",
+        *             "IsActive":"True",
+        *             "JoiningDate":"01-01-2016"
+        *             "SlackUserName":"SlackUserName"
+        *        }      
+        * @apiSuccessExample {json} Success-Response:
+        * HTTP/1.1 200 OK 
+        * {
+        *     "description":"edit User in User Table"
+        * }
+        */
         [HttpPut]
         [Route("edit")]
         [Authorize(Roles = "Admin,Employee")]
@@ -240,13 +254,14 @@ namespace Promact.Oauth.Server.Controllers
                     string id = await _userRepository.UpdateUserDetails(editedUser, updatedBy);
                     if (id != "")
                     { return Ok(true); }
-                    else { return Ok(false); }
+                    //else { return Ok(false); }
                 }
                 return Ok(false);
             }
-            catch (Exception ex)
+            catch (SlackUserNotFound ex)
             {
-                throw ex;
+                _logger.LogInformation("User not Found");
+                return NotFound();
             }
         }
 
@@ -364,18 +379,19 @@ namespace Promact.Oauth.Server.Controllers
 
 
         [HttpGet]
-        [Route("checkUserIsExistsBySlackUserName/{slackUserName}")]
-        public IActionResult CheckUserIsExistsBySlackUserName(string slackUserName)
+        [Route("checkUserIsExistsBySlackUserId/{slackUserId}")]
+        public IActionResult CheckUserIsExistsBySlackUserId(string slackUserId)
         {
             try
             {
-                ApplicationUser slackUser = _userRepository.FindUserBySlackUserName(slackUserName);
+                ApplicationUser slackUser = _userRepository.FindUserBySlackUserId(slackUserId);
                 bool result = slackUser != null ? true : false;
 
                 return Ok(result);
             }
             catch (SlackUserNotFound ex)
             {
+                _logger.LogInformation("User not Found");
                 return NotFound();
             }
         }
@@ -476,6 +492,33 @@ namespace Promact.Oauth.Server.Controllers
                 throw ex;
             }
         }
+
+
+        /**
+         * @api {get} api/User/slackUserDetails 
+         * @apiVersion 1.0.0
+         * @apiName User
+         * @apiGroup User   
+         * @apiSuccessExample {json} Success-Response:
+         * HTTP/1.1 200 OK 
+         * {
+         *    [
+         *      {
+         *          userId: U879798,
+         *          name: abc
+         *      },
+         *    ]
+         * }
+         */
+        [HttpGet]
+        [Route("slackUserDetails")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult> FetchSlackUserDetails()
+        {
+            List<SlackUserDetailAc> slackUserList = await _userRepository.GetSlackUserDetails();
+            return Ok(slackUserList);
+        }
+
 
         #endregion
     }
