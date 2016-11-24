@@ -81,6 +81,58 @@ describe('Project Add Test', () => {
             done();
         });
     });
+
+    it("should be check project name before Added", done => {
+        this.promise.then(() => {
+            let fixture = TestBed.createComponent(ProjectAddComponent); //Create instance of component            
+            let projectAddComponent = fixture.componentInstance;
+            let toast = fixture.debugElement.injector.get(Md2Toast);
+            let expectedProjectName = null;
+            let projectModels = new ProjectModel();
+            projectModels.name = expectedProjectName;
+            let expectedSlackChannelName = "Test Slack Name";
+            projectModels.slackChannelName = expectedSlackChannelName;
+            let mockUser = new UserModel();
+            mockUser.FirstName = "Ronak";
+            mockUser.LastName = "Shah";
+            mockUser.Email = "rshah@Promactinfo.com";
+            mockUser.IsActive = true;
+            mockUser.Id = "1";
+            let mockList = new Array<UserModel>();
+            mockList.push(mockUser);
+            projectModels.applicationUsers = mockList;
+            projectModels.teamLeaderId = "2";
+            projectAddComponent.addProject(projectModels);
+            expect(projectModels.name).toBe(null);
+            done();
+        });
+    });
+
+    it("should be check Slack Channel Name before Added", done => {
+        this.promise.then(() => {
+            let fixture = TestBed.createComponent(ProjectAddComponent); //Create instance of component            
+            let projectAddComponent = fixture.componentInstance;
+            let toast = fixture.debugElement.injector.get(Md2Toast);
+            let expectedProjectName = "test project";
+            let projectModels = new ProjectModel();
+            projectModels.name = expectedProjectName;
+            let expectedSlackChannelName = null;
+            projectModels.slackChannelName = expectedSlackChannelName;
+            let mockUser = new UserModel();
+            mockUser.FirstName = "Ronak";
+            mockUser.LastName = "Shah";
+            mockUser.Email = "rshah@Promactinfo.com";
+            mockUser.IsActive = true;
+            mockUser.Id = "1";
+            let mockList = new Array<UserModel>();
+            mockList.push(mockUser);
+            projectModels.applicationUsers = mockList;
+            projectModels.teamLeaderId = "2";
+            projectAddComponent.addProject(projectModels);
+            expect(projectModels.slackChannelName).toBe(null);
+            done();
+        });
+    });
 });    
 
 

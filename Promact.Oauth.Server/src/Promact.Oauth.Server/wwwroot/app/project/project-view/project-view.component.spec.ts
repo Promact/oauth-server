@@ -52,4 +52,40 @@ describe('Project View Test', () => {
             done();
         });
     });
+
+    it("should get default Project for company", done => {
+        this.promise.then(() => {
+            let fixture = TestBed.createComponent(ProjectViewComponent); //Create instance of component  
+            let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
+            activatedRoute.testParams = { id: "1" };
+            let projectViewComponent = fixture.componentInstance;
+            projectViewComponent.ngOnInit();
+            expect(projectViewComponent.project).not.toBeNull();
+            done();
+        });
+    });
+
+    it("should check Team Leader Name", done => {
+        this.promise.then(() => {
+            let fixture = TestBed.createComponent(ProjectViewComponent); //Create instance of component  
+            let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
+            activatedRoute.testParams = { id: "1" };
+            let projectViewComponent = fixture.componentInstance;
+            projectViewComponent.ngOnInit();
+            expect(projectViewComponent.teamLeaderFirstName).not.toBeNull();
+            done();
+        });
+    });
+
+    it("should check Team Leader Email", done => {
+        this.promise.then(() => {
+            let fixture = TestBed.createComponent(ProjectViewComponent); //Create instance of component  
+            let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
+            activatedRoute.testParams = { id: "1" };
+            let projectViewComponent = fixture.componentInstance;
+            projectViewComponent.ngOnInit();
+            expect(projectViewComponent.teamLeaderEmail).not.toBeNull();
+            done();
+        });
+    });
 });
