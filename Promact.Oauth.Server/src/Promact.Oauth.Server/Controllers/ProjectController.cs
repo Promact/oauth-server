@@ -76,7 +76,6 @@ namespace Promact.Oauth.Server.Controllers
           *         "NumberOfSickLeave":0,
           *         "UniqueName":null,
           *         "Role":null,
-          *         "Password":null,
           *         "UserName": null
           *         
           *     } 
@@ -147,7 +146,6 @@ namespace Promact.Oauth.Server.Controllers
         *         "NumberOfSickLeave":0,
         *         "UniqueName":null,
         *         "Role":null,
-        *         "Password":null,
         *         "UserName": null
         *     } 
         *   "ApplicationUsers" :[
@@ -163,7 +161,6 @@ namespace Promact.Oauth.Server.Controllers
         *         "NumberOfSickLeave":0,
         *         "UniqueName":null,
         *         "Role":null,
-        *         "Password":null,
         *         "UserName": null,
         *         "RoleName": null
         *     },
@@ -179,7 +176,6 @@ namespace Promact.Oauth.Server.Controllers
         *         "NumberOfSickLeave":0,
         *         "UniqueName":null,
         *         "Role":null,
-        *         "Password":null,
         *         "UserName": null,
         *         "RoleName": null
         *     }
@@ -277,7 +273,6 @@ namespace Promact.Oauth.Server.Controllers
           *         "NumberOfSickLeave":0,
           *         "UniqueName":null,
           *         "Role":null,
-          *         "Password":null,
           *         "UserName": null,
           *         "RoleName": null
           *     },
@@ -293,7 +288,6 @@ namespace Promact.Oauth.Server.Controllers
           *         "NumberOfSickLeave":0,
           *         "UniqueName":null,
           *         "Role":null,
-          *         "Password":null,
           *         "UserName": null,
           *         "RoleName": null
           *     }
@@ -311,9 +305,10 @@ namespace Promact.Oauth.Server.Controllers
         [Route("")]
         public async Task<IActionResult> AddProjectAsync([FromBody]ProjectAc project)
         {
-            var createdBy = _userManager.GetUserId(User);
+            
             if (ModelState.IsValid)
             {
+                var createdBy = _userManager.GetUserId(User);
                 ProjectAc projectAc = await _projectRepository.CheckDuplicateProjectAsync(project);
 
                 if (!string.IsNullOrEmpty(projectAc.Name) && !string.IsNullOrEmpty(projectAc.SlackChannelName))
@@ -394,7 +389,6 @@ namespace Promact.Oauth.Server.Controllers
         *         "NumberOfSickLeave":0,
         *         "UniqueName":null,
         *         "Role":null,
-        *         "Password":null,
         *         "UserName": null,
         *         "RoleName": null
         *     }
@@ -414,9 +408,10 @@ namespace Promact.Oauth.Server.Controllers
         {
             try
             {
-                var updatedBy = _userManager.GetUserId(User);
+                
                 if (ModelState.IsValid)
                 {
+                    var updatedBy = _userManager.GetUserId(User);
                     ProjectAc projectAc = await _projectRepository.CheckDuplicateProjectAsync(project);
                     if (!string.IsNullOrEmpty(projectAc.Name) && !string.IsNullOrEmpty(projectAc.SlackChannelName))
                     {
