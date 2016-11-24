@@ -28,7 +28,8 @@ export class ProjectListComponent implements OnInit {
             this.projects = projects;
             this.loader.loader = false;
         }, err => {
-
+            this.toast.show('Project list is empty.');
+            this.loader.loader = false;
         });
     }
     ngOnInit() {
