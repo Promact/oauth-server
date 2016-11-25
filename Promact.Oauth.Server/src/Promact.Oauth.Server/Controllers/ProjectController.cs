@@ -89,8 +89,7 @@ namespace Promact.Oauth.Server.Controllers
         [Route("")]
         public async Task<IActionResult> GetProjectsAsync()
         {
-            try
-            {
+           
                 var user = await _userManager.FindByNameAsync(User.Identity.Name);
                 var isRoleExists = await _userManager.IsInRoleAsync(user, "Employee");
                 _logger.LogInformation("UserRole Employee  " + isRoleExists);
@@ -105,10 +104,7 @@ namespace Promact.Oauth.Server.Controllers
                     return Ok(await _projectRepository.GetAllProjectsAsync());
                 }
             }
-            catch 
-            {
-                return BadRequest();
-            }
+            
 
 
         }
