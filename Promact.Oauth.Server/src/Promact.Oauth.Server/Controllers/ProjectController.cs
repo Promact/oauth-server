@@ -8,18 +8,19 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using Promact.Oauth.Server.Repository;
 using System.Threading.Tasks;
-using Exceptionless;
 using Promact.Oauth.Server.Services;
 using Microsoft.AspNetCore.Authorization;
+using Promact.Oauth.Server.Exception_Handler;
 using Microsoft.Extensions.Logging;
+
+
+
 
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Promact.Oauth.Server.Controllers
 {
-
-    //[Authorize]
     [Route("api/[controller]")]
     public class ProjectController : Controller
     {
@@ -44,356 +45,489 @@ namespace Promact.Oauth.Server.Controllers
         #endregion
 
         #region public Methods
+
         /**
-     * @api {get} api/Project/projects 
-     * @apiVersion 1.0.0
-     * @apiName Project
-     * @apiGroup Project
-     * @apiSuccessExample {json} Success-Response:
-     * HTTP/1.1 200 OK 
-     * {
-     *     "description":"Get List of Projects"
-     * }
-     */
+         * @api {get} api/project 
+         * @apiVersion 1.0.0
+         * @apiName GetProjectsAsync
+         * @apiGroup Project
+         * @apiParam {null} no parameter
+         * @apiSuccessExample {json} Success-Response:
+         * HTTP/1.1 200 OK 
+         * [
+          * {
+          *   "Name":"Slack",
+          *   "SlackChannelName":"SlackChannelName",
+          *   "IsActive":"True",
+          *   "TeamLeaderId":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
+          *   "CreatedBy" : "Smith",
+          *   "CreatedDate" : "10/02/2016",
+          *   "UpdatedBy": "Smith",
+          *   "UpdatedDate" : "10/02/2016"
+          *   "TeamLeader": 
+          *   {
+          *         "Id":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
+          *         "FirstName" : "John",
+          *         "Email" : "jone@promactinfo.com",
+          *         "LastName" : "Doe",
+          *         "SlackUserName" :"John",
+          *         "IsActive" : "True",
+          *         "JoiningDate" :"10-02-2016",
+          *         "NumberOfCasualLeave":0,
+          *         "NumberOfSickLeave":0,
+          *         "UniqueName":null,
+          *         "Role":null,
+          *         "UserName": null
+          *         
+          *     } 
+          * }  
+          *]
+          *    
+         */
         [Authorize]
         [HttpGet]
-        [Route("getAllProjects")]
-        public async Task<IEnumerable<ProjectAc>> getAllProjects()
+        [Route("")]
+        public async Task<IActionResult> GetProjectsAsync()
         {
-            try
-            {
+           
                 var user = await _userManager.FindByNameAsync(User.Identity.Name);
-                var userRole = await _userManager.IsInRoleAsync(user, "Employee");
-                _logger.LogInformation("UserRole Employee  "+userRole);
-                if (userRole == true)
+                var isRoleExists = await _userManager.IsInRoleAsync(user, "Employee");
+                _logger.LogInformation("UserRole Employee  " + isRoleExists);
+                if (isRoleExists)
                 {
                     _logger.LogInformation("call project repository for User");
-                    return await _projectRepository.GetAllProjectForUser(user.Id);
+                    return Ok(await _projectRepository.GetAllProjectForUserAsync(user.Id));
                 }
                 else
                 {
                     _logger.LogInformation("call project repository for projects");
-                    return await _projectRepository.GetAllProjects();
+                    return Ok(await _projectRepository.GetAllProjectsAsync());
                 }
             }
-            catch (Exception ex)
-            {
-               _logger.LogError("Exception " + ex.ToString());
-               ex.ToExceptionless().Submit();
-               throw ex;
-            }
-        }
-        /**
-      * @api {get} api/Project/getProjects/:id 
-      * @apiVersion 1.0.0
-      * @apiName Project
-      * @apiGroup Project
-      * @apiParam {int} id  project Id
-      * @apiParamExample {json} Request-Example:
-      *      
-      *        {
-      *             "id": "1"
-      *             "description":"get the ProjectAc Object"
-      *        }      
-      * @apiSuccessExample {json} Success-Response:
-      * HTTP/1.1 200 OK 
-      * {
-      *     "id":"1"
-      *     "description":"get the ProjectAc Object"
-      * }
-      */
-        [Authorize]
-        [HttpGet]
-        [Route("getProjects/{id}")]
-        public async Task<ProjectAc> getProjects(int id)
-        {
-            try
-            {
-                return await _projectRepository.GetById(id);
-            }
-            catch (Exception ex)
-            {
-                ex.ToExceptionless().Submit();
-                throw ex;
-            }
-        }
+            
+
+
+        
 
         /**
-      * @api {post} api/Project/addProject 
-      * @apiVersion 1.0.0
-      * @apiName Project
-      * @apiGroup Project
-      * @apiParam {string} Name  Project Name
-      * @apiParam {string} SlackChannelName  Project SlackChannelName
-      * @apiParam {bool} IsActive  Project IsActive
-      * @apiParam {int} TeamLeaderId  Project TeamLeaderId
-      * @apiParam {UserAc} ApplicationUsers  Project ApplicationUsers
-      * @apiParamExample {json} Request-Example:
-      *      
-      *        {
-      *             "Name":"ProjectName",
-      *             "SlackChannelName":"SlackChannelName",
-      *             "IsActive":"True",
-      *             "TeamLeaderId":"1",
-      *             "ApplicationUsers":"List of Users"
-      *        }      
-      * @apiSuccessExample {json} Success-Response:
-      * HTTP/1.1 200 OK 
-      * {
-      *     "description":"Add Project in ProjectTable"
-      * }
-      */
-        [Authorize]
-        [HttpPost]
-        [Route("addProject")]
-        public async Task<IActionResult> addProject([FromBody]ProjectAc project)
-        {
-            try
-            {
-                var createdBy = _userManager.GetUserId(User);
-                if (ModelState.IsValid)
-                {
-                    ProjectAc p = _projectRepository.checkDuplicate(project);
-                    if (p.Name != null && p.SlackChannelName != null)
-                    {
-                        int id = await _projectRepository.AddProject(project, createdBy);
-                        foreach (var applicationUser in project.ApplicationUsers)
-                        {
-                            ProjectUser projectUser = new ProjectUser();
-                            projectUser.ProjectId = id;
-                            projectUser.UserId = applicationUser.Id;
-                            projectUser.CreatedBy = createdBy;
-                            projectUser.CreatedDateTime = DateTime.UtcNow;
-                            _projectRepository.AddUserProject(projectUser);
-                        }
-                        return Ok(project);
-                    }
-                    else
-                    { return Ok(project); }
-                }
-                return Ok(false);
-            }
-            catch (Exception ex)
-            {
-                ex.ToExceptionless().Submit();
-                throw ex;
-            }
-        }
-
-        /**
-        * @api {put} api/Project/editProject 
+        * @api {get} api/project/:id Request Project information
         * @apiVersion 1.0.0
-        * @apiName Project
+        * @apiName GetProjectByIdAsync
         * @apiGroup Project
-        *  @apiParam {int} Id  Project Id
-        * @apiParam {string} Name  Project Name
-        * @apiParam {string} SlackChannelName  Project SlackChannelName
-        * @apiParam {bool} IsActive  Project IsActive
-        * @apiParam {int} TeamLeaderId  Project TeamLeaderId
-        * @apiParam {UserAc} ApplicationUsers  Project ApplicationUsers
+        * @apiParam {int} id  project Id
         * @apiParamExample {json} Request-Example:
-        *      
-        *        {
-        *             "Id":"1",
-        *             "Name":"ProjectName",
-        *             "SlackChannelName":"SlackChannelName",
-        *             "IsActive":"True",
-        *             "TeamLeaderId":"1",
-        *             "ApplicationUsers":"List of Users"
-        *        }      
+        * {
+        *   "id": 1
+        * }      
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
         * {
-        *     "description":"edit Project in ProjectTable"
+        *   "Name":"Slack",
+        *   "SlackChannelName":"SlackChannelName",
+        *   "IsActive":"True",
+        *   "TeamLeaderId":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
+        *   "CreatedBy" : "Smith",
+        *   "CreatedDate" : "10/02/2016",
+        *   "UpdatedBy": "Smith",
+        *   "UpdatedDate" : "10/02/2016"
+        *   "TeamLeader":
+        *     {
+        *         "Id":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
+        *         "FirstName" : "John",
+        *         "Email" : "jone@promactinfo.com",
+        *         "LastName" : "Doe",
+        *         "SlackUserName" :"John",
+        *         "IsActive" : "True",
+        *         "JoiningDate" :"10-02-2016",
+        *         "NumberOfCasualLeave":0,
+        *         "NumberOfSickLeave":0,
+        *         "UniqueName":null,
+        *         "Role":null,
+        *         "UserName": null
+        *     } 
+        *   "ApplicationUsers" :[
+        *     {
+        *         "Id":"abcd1af3d-062f-4bcd-b6f9-b8fd5165e367",
+        *         "FirstName" : "Smith",
+        *         "Email" : "Smith@promactinfo.com",
+        *         "LastName" : "Doe",
+        *         "SlackUserName" :"Smith",
+        *         "IsActive" : "True",
+        *         "JoiningDate" :"10-02-2016",
+        *         "NumberOfCasualLeave":0,
+        *         "NumberOfSickLeave":0,
+        *         "UniqueName":null,
+        *         "Role":null,
+        *         "UserName": null,
+        *         "RoleName": null
+        *     },
+        *     {
+        *         "Id:"abcd1af3d-062f-4bcd-b6f9-b8fd5165e367",
+        *         "FirstName" : "White",
+        *         "Email" : "White@promactinfo.com",
+        *         "LastName" : "Doe",
+        *         "SlackUserName" :"White",
+        *         "IsActive" : "True",
+        *         "JoiningDate" :"18-02-2016",
+        *         "NumberOfCasualLeave":0,
+        *         "NumberOfSickLeave":0,
+        *         "UniqueName":null,
+        *         "Role":null,
+        *         "UserName": null,
+        *         "RoleName": null
+        *     }
+        *   ]   
+        * }
+        * @apiError ProjectNotFound The id of the Project was not found.
+        * @apiErrorExample {json} Error-Response:
+        * HTTP/1.1 404 Not Found
+        * {
+        *   "error": "ProjectNotFound"
         * }
         */
         [Authorize]
-        [HttpPut]
-        [Route("editProject")]
-        public async Task<IActionResult> editProject(int id, [FromBody]ProjectAc project)
+        [HttpGet]
+        [Route("{id:int}")]
+        public async Task<IActionResult> GetProjectByIdAsync(int id)
         {
             try
             {
-                var updatedBy = _userManager.GetUserId(User);
+               return Ok(await _projectRepository.GetProjectByIdAsync(id));
+            }
+            catch (ProjectNotFound)
+            {
+                return NotFound();
+            }
+        }
 
+        /**
+          * @api {post} api/project 
+          * @apiVersion 1.0.0
+          * @apiName AddProjectAsync
+          * @apiGroup Project
+          * @apiParam {object} ProjectAc object 
+          * @apiParamExample {json} Request-Example:
+          * {
+          *   "Name":"ProjectName",
+          *   "TeamLeaderId":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
+          *   "SlackChannelName":"SlackChannelName",
+          *   "IsActive":"True",
+          *   "TeamLeader": null,
+          *   "ApplicationUsers" :[
+          *     {
+          *         "Id":"abcd1af3d-062f-4bcd-b6f9-b8fd5165e367",
+          *         "FirstName" : "Smith",
+          *         "Email" : "Smith@promactinfo.com",
+          *         "LastName" : "Doe",
+          *         "SlackUserName" :"Smith",
+          *         "IsActive" : "True",
+          *         "JoiningDate" :"10-02-2016",
+          *         "NumberOfCasualLeave":0,
+          *         "NumberOfSickLeave":0,
+          *         "UniqueName":null,
+          *         "Role":null,
+          *         "UserName": null,
+          *         "RoleName": null
+          *     },
+          *     {
+          *         "Id:"abcd1af3d-062f-4bcd-b6f9-b8fd5165e367",
+          *         "FirstName" : "White",
+          *         "Email" : "White@promactinfo.com",
+          *         "LastName" : "Doe",
+          *         "SlackUserName" :"White",
+          *         "IsActive" : "True",
+          *         "JoiningDate" :"18-02-2016",
+          *         "NumberOfCasualLeave":"0",
+          *         "NumberOfSickLeave":"0",
+          *         "UniqueName":null,
+          *         "Role":null,
+          *         "UserName": null,
+          *         "RoleName": null
+          *     }
+          *   ]  
+          * }      
+          * @apiSuccessExample {json} Success-Response:
+          * HTTP/1.1 200 OK 
+          * {
+          *   "Name":"ProjectName",
+          *   "SlackChannelName":"SlackChannelName",
+          *   "TeamLeaderId":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
+          *   "IsActive":"True",
+          *   "TeamLeaderId":"1",
+          *   "TeamLeader": null,
+          *   "ApplicationUsers" :[
+          *     {
+          *         "Id":"abcd1af3d-062f-4bcd-b6f9-b8fd5165e367",
+          *         "FirstName" : "Smith",
+          *         "Email" : "Smith@promactinfo.com",
+          *         "LastName" : "Doe",
+          *         "SlackUserName" :"Smith",
+          *         "IsActive" : "True",
+          *         "JoiningDate" :"10-02-2016",
+          *         "NumberOfCasualLeave":0,
+          *         "NumberOfSickLeave":0,
+          *         "UniqueName":null,
+          *         "Role":null,
+          *         "UserName": null,
+          *         "RoleName": null
+          *     },
+          *     {
+          *         "Id:"abcd1af3d-062f-4bcd-b6f9-b8fd5165e367",
+          *         "FirstName" : "White",
+          *         "Email" : "White@promactinfo.com",
+          *         "LastName" : "Doe",
+          *         "SlackUserName" :"White",
+          *         "IsActive" : "True",
+          *         "JoiningDate" :"18-02-2016",
+          *         "NumberOfCasualLeave":0,
+          *         "NumberOfSickLeave":0,
+          *         "UniqueName":null,
+          *         "Role":null,
+          *         "UserName": null,
+          *         "RoleName": null
+          *     }
+          *   ]  
+          * }  
+          * @apiError BadRequest
+          * @apiErrorExample {json} Error-Response:
+          * HTTP/1.1 400 Bad Request
+          * {
+          *   "error": "Problems parsing JSON"
+          * }    
+          */
+        [Authorize]
+        [HttpPost]
+        [Route("")]
+        public async Task<IActionResult> AddProjectAsync([FromBody]ProjectAc project)
+        {
+            
+            if (ModelState.IsValid)
+            {
+                var createdBy = _userManager.GetUserId(User);
+                ProjectAc projectAc = await _projectRepository.CheckDuplicateProjectAsync(project);
+
+                if (!string.IsNullOrEmpty(projectAc.Name) && !string.IsNullOrEmpty(projectAc.SlackChannelName))
+                {
+                    int projectId = await _projectRepository.AddProjectAsync(project, createdBy);
+                    foreach (var applicationUser in project.ApplicationUsers)
+                    {
+                        ProjectUser projectUser = new ProjectUser();
+                        projectUser.ProjectId = projectId;
+                        projectUser.UserId = applicationUser.Id;
+                        projectUser.CreatedBy = createdBy;
+                        projectUser.CreatedDateTime = DateTime.UtcNow;
+                        await _projectRepository.AddUserProjectAsync(projectUser);
+                    }
+                    return Ok(project);
+                }
+                else
+                { return Ok(project); }
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        /**
+        * @api {put} api/project 
+        * @apiVersion 1.0.0
+        * @apiName EditProjectAsync
+        * @apiGroup Project
+        * @apiParam {object} ProjectAc object 
+        * @apiParamExample {json} Request-Example:
+        * {
+        *   "Id":"1",
+        *   "Name":"ProjectName",
+        *   "TeamLeaderId":"1",
+        *   "SlackChannelName":"SlackChannelName",
+        *   "IsActive":"True",
+        *   "TeamLeader":null,
+        *   "ApplicationUsers" : [
+        *     {
+        *         "Id":"abcd1af3d-062f-4bcd-b6f9-b8fd5165e367",
+        *         "FirstName" : "Smith",
+        *         "Email" : "Smith@promactinfo.com",
+        *         "LastName" : "Doe",
+        *         "SlackUserName" :"Smith",
+        *         "IsActive" : "True",
+        *         "JoiningDate" :"10-02-2016",
+        *         "NumberOfCasualLeave":0,
+        *         "NumberOfSickLeave":0,
+        *         "UniqueName":null,
+        *         "Role":null,
+        *         "UserName": null,
+        *         "RoleName": null
+        *     }
+        *  ]
+        * }      
+        * @apiSuccessExample {json} Success-Response:
+        * HTTP/1.1 200 OK 
+        * {
+        *   "Id":"1",
+        *   "Name":"ProjectName",
+        *   "TeamLeaderId":"1",
+        *   "SlackChannelName":"SlackChannelName",
+        *   "IsActive":"True",
+        *   "TeamLeader": null,
+        *   "ApplicationUsers" : [
+        *     {
+        *         "Id":"abcd1af3d-062f-4bcd-b6f9-b8fd5165e367",
+        *         "FirstName" : "Smith",
+        *         "Email" : "Smith@promactinfo.com",
+        *         "LastName" : "Doe",
+        *         "SlackUserName" :"Smith",
+        *         "IsActive" : "True",
+        *         "JoiningDate" :"10-02-2016",
+        *         "NumberOfCasualLeave":0,
+        *         "NumberOfSickLeave":0,
+        *         "UniqueName":null,
+        *         "Role":null,
+        *         "UserName": null,
+        *         "RoleName": null
+        *     }
+        *  ]
+        * }
+        * @apiError BadRequest
+        * @apiErrorExample {json} Error-Response:
+        * HTTP/1.1 404 ProjectNotFound Project Not Found
+        * {
+        *   "error": "ProjectNotFound"
+        * }    
+        */
+        [Authorize]
+        [HttpPut]
+        [Route("{id:int}")]
+        public async Task<IActionResult> EditProjectAsync(int id,[FromBody]ProjectAc project)
+        {
+            try
+            {
+                
                 if (ModelState.IsValid)
                 {
-                    ProjectAc projectAc = _projectRepository.checkDuplicateFromEditProject(project);
-                    if (projectAc.Name != null && projectAc.SlackChannelName != null)
+                    var updatedBy = _userManager.GetUserId(User);
+                    ProjectAc projectAc = await _projectRepository.CheckDuplicateProjectAsync(project);
+                    if (!string.IsNullOrEmpty(projectAc.Name) && !string.IsNullOrEmpty(projectAc.SlackChannelName))
                     {
-                        await _projectRepository.EditProject(project, updatedBy);
+                        await _projectRepository.EditProjectAsync(id, project, updatedBy);
                     }
                     else { return Ok(project); }
                 }
                 return Ok(project);
             }
-            catch (Exception ex)
+            catch (ProjectNotFound)
             {
-                ex.ToExceptionless().Submit();
-                throw ex;
+                return NotFound();
             }
+
         }
 
         /**
-        * @api {get} api/Project/fetchProject 
+        * @api {get} api/project/:name 
         * @apiVersion 1.0.0
-        * @apiName Project
+        * @apiName GetProjectByGroupNameAsync
         * @apiGroup Project
         * @apiParam {string} name project Name
         * @apiParamExample {json} Request-Example:
-        *      
-        *        {
-        *             
-        *             "Name":"ProjectName"
-        *            
-        *        }      
+        * {
+        *   "Name":"ProjectName"
+        * }      
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
         * {
-        *     "description":"Object of ProjectAc"
+        *    
+        *   "Name":"ProjectName",
+        *   "SlackChannelName":"SlackChannelName",
+        *   "IsActive":"True",
+        *   "TeamLeaderId":"1",
+        *   "ApplicationUsers":null
+        * }
+        * @apiError ProjectNotFound The id of the Project was not found.
+        * @apiErrorExample {json} Error-Response:
+        * HTTP/1.1 404 Not Found
+        * {
+        *   "error": "ProjectNotFound"
         * }
         */
         [ServiceFilter(typeof(CustomAttribute))]
         [HttpGet]
-        [Route("fetchProject/{name}")]
-        public ProjectAc Fetch(string name)
+        [Route("{name}")]
+        public async Task<IActionResult> GetProjectByGroupNameAsync(string name)
         {
             try
             {
-                return _projectRepository.GetProjectByGroupName(name);
+                return Ok(await _projectRepository.GetProjectByGroupNameAsync(name));
             }
-            catch (Exception ex)
+            catch (ProjectNotFound)
             {
-                ex.ToExceptionless().Submit();
-                throw ex;
-            }
-        }
-
-        /**
-        * @api {get} api/Project/GetUserRole 
-        * @apiVersion 1.0.0
-        * @apiName Project
-        * @apiGroup Project
-        * @apiParam {string} name UserName
-        * @apiParamExample {json} Request-Example:
-        *      
-        *        {
-        *             
-        *             "Name":"UserName"
-        *            
-        *        }      
-        * @apiSuccessExample {json} Success-Response:
-        * HTTP/1.1 200 OK 
-        * {
-        *     "description":"Object of UserRoleAc"
-        * }
-        */
-        [ServiceFilter(typeof(CustomAttribute))]
-        [HttpGet]
-        [Route("featchUserRole/{slackUserId}")]
-        public async Task<List<UserRoleAc>> GetUserRole(string slackUserId)
-        {
-            return await _projectRepository.GetUserRole(slackUserId);
-
-        }
-
-
-        /**
-        * @api {get} api/Project/GetListOfEmployee 
-        * @apiVersion 1.0.0
-        * @apiName Project
-        * @apiGroup Project
-        * @apiSuccessExample {json} Success-Response:
-        * HTTP/1.1 200 OK 
-        * {
-        *     "description":"Get List of Users"
-        * }
-        */
-        [ServiceFilter(typeof(CustomAttribute))]
-        [HttpGet]
-        [Route("featchListOfUser/{slackUserId}")]
-        public async Task<List<UserRoleAc>> GetListOfEmployee(string slackUserId)
-        {
-            return await _projectRepository.GetListOfEmployee(slackUserId);
-
-        }
-
-        /**
-      * @api {get} api/Project/fetchProject 
-      * @apiVersion 1.0.0
-      * @apiName Project
-      * @apiGroup Project
-      * @apiParam {string} groupName as a SlackChannelName
-      * @apiParamExample {json} Request-Example:
-      *      
-      *        {
-      *             
-      *               "groupName":"SlackChannelName",
-      *            
-      *        }      
-      * @apiSuccessExample {json} Success-Response:
-      * HTTP/1.1 200 OK 
-      * {
-      *     "description":"List of Object of UserAc"
-      * }
-      */
-        [ServiceFilter(typeof(CustomAttribute))]
-        [HttpGet]
-        [Route("fetchProjectUsers/{groupName}")]
-        public List<UserAc> FetchUsers(string groupName)
-        {
-            try
-            {
-                return _projectRepository.GetProjectUserByGroupName(groupName);
-            }
-            catch (Exception ex)
-            {
-                ex.ToExceptionless().Submit();
-                throw ex;
+                return NotFound();
             }
         }
 
         /**
       * @api {get} api/Project/allProjects 
       * @apiVersion 1.0.0
-      * @apiName Project
+      * @apiName AllProjectsAsync
       * @apiGroup Project  
       * @apiSuccessExample {json} Success-Response:
       * HTTP/1.1 200 OK 
-      * {
-      *     "description":"List of Object of ProjectAc"
-      * }
+      * [
+      *  {
+      *   "Name":"ProjectName",
+      *   "SlackChannelName":"SlackChannelName",
+      *   "IsActive":"True",
+      *   "TeamLeaderId":"1",
+      *   "ApplicationUsers":null
+      *  }
+      * ]
       */
         [HttpGet]
-        [Route("allProjects")]
-        public async Task<IEnumerable<ProjectAc>> AllProjects()
+        [Route("list")]
+        public async Task<IEnumerable<ProjectAc>> AllProjectsAsync()
         {
-            return await _projectRepository.GetProjectsWithUsers();
+            return await _projectRepository.GetProjectsWithUsersAsync();
         }
 
-
         /**
-      * @api {get} api/Project/projectDetails/:projectId 
-      * @apiVersion 1.0.0
-      * @apiName Project
-      * @apiGroup Project
-      * @apiParam {int} id  projectId
-      * @apiParamExample {json} Request-Example:
-      *      
-      *        {
-      *             "id": "1"
-      *        }      
-      * @apiSuccessExample {json} Success-Response:
-      * HTTP/1.1 200 OK 
-      * {
-      *     "description":"Object of type ProjectAc "
-      * }
-      */
+        * @api {get} api/Project/projectDetails/:projectId 
+        * @apiVersion 1.0.0
+        * @apiName ProjectDetailsAsync
+        * @apiGroup Project
+        * @apiParam {int} id  projectId
+        * @apiParamExample {json} Request-Example:
+        *      
+        *        {
+        *             "id": "1"
+        *        }      
+        * @apiSuccessExample {json} Success-Response:
+        * HTTP/1.1 200 OK 
+        *  {
+        *   "Name":"ProjectName",
+        *   "SlackChannelName":"SlackChannelName",
+        *   "IsActive":"True",
+        *   "TeamLeaderId":"1",
+        *   "ApplicationUsers":null
+        *  }
+        * @apiError ProjectNotFound The id of the Project was not found.
+        * @apiErrorExample {json} Error-Response:
+        * HTTP/1.1 404 Not Found
+        * {
+        *   "error": "ProjectNotFound"
+        * }
+        */
         [HttpGet]
-        [Route("projectDetails/{projectId}")]
-        public async Task<ProjectAc> ProjectDetails(int projectId)
+        [Route("{projectId:int}/detail")]
+        public async Task<IActionResult> ProjectDetailsAsync(int projectId)
         {
-            return await _projectRepository.GetProjectDetails(projectId);
+            try
+            {
+                return Ok(await _projectRepository.GetProjectDetailsAsync(projectId));
+            }
+            catch (ProjectNotFound)
+            {
+                return NotFound();
+            }
+
         }
         #endregion
     }

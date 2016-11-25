@@ -150,6 +150,21 @@ namespace Promact.Oauth.Server.Data_Repository
             return _dbSet.Where(predicate).AsQueryable();
         }
 
+
+        /// <summary>
+        /// Method fetches the IQueryable based on expression.
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        
+
+        public async Task<IEnumerable<T>> FetchAsync(Expression<Func<T, bool>> predicate)
+        {
+          
+                return await _dbSet.Where(predicate).ToListAsync();
+            
+        }
+
         /// <summary>
         /// Method fetches the first or default item from the datacontext based on the the supplied function.
         /// </summary>
@@ -255,7 +270,7 @@ namespace Promact.Oauth.Server.Data_Repository
             }
             catch (Exception)
             {
-                return null;
+                throw;
             }
         }
 

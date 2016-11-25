@@ -128,10 +128,11 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
             {
                 user.SlackUserId = clientResponse.UserId;
                 await _userManager.UpdateAsync(user);
-                return string.Format("{0}?accessToken={1}&email={2}&slackUserId={3}", clientResponse.ReturnUrl, oAuth.AccessToken, oAuth.userEmail, user.SlackUserId);
+                return string.Format("{0}?accessToken={1}&email={2}&slackUserId={3}&userId={4}", clientResponse.ReturnUrl, oAuth.AccessToken, oAuth.userEmail, user.SlackUserId,user.Id);
             }
             return _stringConstant.EmptyString;
         }
+
 
 
         /// <summary>
@@ -160,7 +161,7 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
                         if (consumerApp.AuthSecret == clientResponse.ClientSecret && clientResponse.RefreshToken == oAuth.RefreshToken)
                         {
                             ApplicationUser user = await _userManager.FindByEmailAsync(oAuth.userEmail);
-                            return string.Format("{0}?accessToken={1}&email={2}&slackUserId={3}", clientResponse.ReturnUrl, oAuth.AccessToken, oAuth.userEmail, user.SlackUserId);
+                            return string.Format("{0}?accessToken={1}&email={2}&slackUserId={3}&userId={4}", clientResponse.ReturnUrl, oAuth.AccessToken, oAuth.userEmail, user.SlackUserId, user.Id);
                         }
                     }
                 }

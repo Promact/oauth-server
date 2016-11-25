@@ -42,9 +42,8 @@ namespace Promact.Oauth.Server.Repository
         private readonly IOptions<AppSettingUtil> _appSettingUtil;
         private readonly ILogger<UserRepository> _logger;
         private readonly IStringConstant _stringConstant;
+        private readonly IDataRepository<ProjectUser> _projectUserDataRepository;
         private readonly IHttpClientRepository _httpClientRepository;
-
-
         #endregion
 
 
@@ -58,7 +57,7 @@ namespace Promact.Oauth.Server.Repository
             IProjectRepository projectRepository, IOptions<AppSettingUtil> appSettingUtil,
             IDataRepository<Project> projectDataRepository,
             ILogger<UserRepository> logger, IStringConstant stringConstant,
-            IHttpClientRepository httpClientRepository)
+            IHttpClientRepository httpClientRepository, IDataRepository<ProjectUser> projectUserDataRepository)
         {
             _applicationUserDataRepository = applicationUserDataRepository;
             _hostingEnvironment = hostingEnvironment;
@@ -72,8 +71,8 @@ namespace Promact.Oauth.Server.Repository
             _appSettingUtil = appSettingUtil;
             _logger = logger;
             _stringConstant = stringConstant;
+            _projectUserDataRepository = projectUserDataRepository;
             _httpClientRepository = httpClientRepository;
-
         }
 
         #endregion
@@ -451,7 +450,7 @@ namespace Promact.Oauth.Server.Repository
             List<ApplicationUser> teamLeaders = new List<ApplicationUser>();
             foreach (var project in projects)
             {
-                var teamLeaderId = await _projectRepository.GetById(project.ProjectId);
+                var teamLeaderId = await _projectRepository.GetProjectByIdAsync(project.ProjectId);
                 var teamLeader = teamLeaderId.TeamLeaderId;
                 user = await _userManager.FindByIdAsync(teamLeader);
                 //user = _userManager.Users.FirstOrDefault(x => x.Id == teamLeader);
@@ -552,6 +551,135 @@ namespace Promact.Oauth.Server.Repository
             return data;
         }
 
+        
+
+        /// <summary>
+        /// Method to return user role
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        public async Task<List<UserRoleAc>> GetUserRoleAsync(string userId)
+        {
+            ApplicationUser applicationUser = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.Id == userId);
+            var userRole = (await _userManager.GetRolesAsync(applicationUser)).First();
+            var UserRoleAcList = new List<UserRoleAc>();
+            if (userRole == _stringConstant.RoleAdmin)
+            {
+                var userRoleAdmin = new UserRoleAc();
+                userRoleAdmin.UserName = applicationUser.UserName;
+                userRoleAdmin.Name = applicationUser.FirstName + " " + applicationUser.LastName;
+                userRoleAdmin.Role = userRole;
+                UserRoleAcList.Add(userRoleAdmin);
+                var userList = await _applicationUserDataRepository.GetAll().ToListAsync();
+                foreach (var userDetails in userList)
+                {
+                  var roles = (await _userManager.GetRolesAsync(userDetails)).First();
+                  if (roles != null && roles == _stringConstant.RoleEmployee)
+                    {
+                        var userRoleAc = new UserRoleAc();
+                        userRoleAc.UserName = userDetails.UserName;
+                        userRoleAc.Name = userDetails.FirstName + " " + userDetails.LastName;
+                        userRoleAc.Role = userRole;
+                        UserRoleAcList.Add(userRoleAc);
+                    }
+                }
+            }
+            else
+            {
+                var project = await _projectDataRepository.FirstOrDefaultAsync(x => x.TeamLeaderId == applicationUser.Id);
+                if (project == null)
+                {
+                    var usersRolesAc = new UserRoleAc();
+                    usersRolesAc.UserName = applicationUser.UserName;
+                    usersRolesAc.Role = _stringConstant.RoleEmployee;
+                    usersRolesAc.Name = applicationUser.FirstName + " " + applicationUser.LastName;
+                    UserRoleAcList.Add(usersRolesAc);
+                }
+                else
+                {
+                    var usersRoleAc = new UserRoleAc();
+                    usersRoleAc.UserName = applicationUser.UserName;
+                    usersRoleAc.Role = _stringConstant.RoleTeamLeader;
+                    usersRoleAc.Name = applicationUser.FirstName + " " + applicationUser.LastName;
+                    UserRoleAcList.Add(usersRoleAc);
+                }
+            }
+            if (UserRoleAcList == null)
+                throw new UserRoleNotFound();
+            else
+                return UserRoleAcList;
+
+        }
+
+        /// <summary>
+        /// Method to return list of users.
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        public async Task<List<UserRoleAc>> GetTeamMembersAsync(string userId)
+        {
+            ApplicationUser applicationUser = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.Id == userId);
+            if (applicationUser != null)
+            {
+                var userRolesAcList = new List<UserRoleAc>();
+                var usersRoleAc = new UserRoleAc();
+                usersRoleAc.UserName = applicationUser.UserName;
+                usersRoleAc.Role = _stringConstant.RoleTeamLeader;
+                usersRoleAc.Name = applicationUser.FirstName + " " + applicationUser.LastName;
+                userRolesAcList.Add(usersRoleAc);
+                var project = await _projectDataRepository.FirstOrDefaultAsync(x => x.TeamLeaderId == applicationUser.Id);
+                var projectUserList = await _projectUserDataRepository.FetchAsync(x => x.ProjectId == project.Id);
+
+                foreach (var projectUser in projectUserList)
+                {
+                    var usersRolesAc = new UserRoleAc();
+                    var users = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.Id == projectUser.UserId);
+                    usersRolesAc.UserName = users.UserName;
+                    usersRolesAc.Name = users.FirstName + " " + users.LastName;
+                    usersRolesAc.Role = _stringConstant.RoleAdmin;
+                    userRolesAcList.Add(usersRolesAc);
+                }
+                return userRolesAcList;
+            }
+            else {
+                throw new UserRoleNotFound();
+            }
+        }
+
+        /// <summary>
+        /// Method to return list of users/employees of the given group name. - JJ
+        /// </summary>
+        /// <param name="GroupName"></param>
+        /// <param name="UserName"></param>
+        /// <returns>list of object of UserAc</returns>
+        public async Task<List<UserAc>> GetProjectUserByGroupNameAsync(string GroupName)
+        {
+
+            var project = await _projectDataRepository.FirstOrDefaultAsync(x => x.SlackChannelName == GroupName);
+            var userAcList = new List<UserAc>();
+            if (project != null)
+            {
+                var projectUserList = await _projectUserDataRepository.FetchAsync(x => x.ProjectId == project.Id);
+                foreach (var projectUser in projectUserList)
+                {
+                    var user = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.Id == projectUser.UserId);
+                    var userAc = new UserAc();
+                    userAc.Id = user.Id;
+                    userAc.Email = user.Email;
+                    userAc.FirstName = user.FirstName;
+                    userAc.IsActive = user.IsActive;
+                    userAc.LastName = user.LastName;
+                    userAc.UserName = user.UserName;
+                    userAc.SlackUserId = user.SlackUserId;
+                    userAcList.Add(userAc);
+                }
+
+            }
+            if (userAcList == null)
+                throw new UserNotFound();
+            else
+                return userAcList;
+        }
 
         #endregion
 

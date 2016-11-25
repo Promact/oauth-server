@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 using Exceptions;
 using Promact.Oauth.Server.Constants;
 using Promact.Oauth.Server.Exception_Handler;
-
+using Promact.Oauth.Server.Services;
 
 namespace Promact.Oauth.Server.Controllers
 {
@@ -495,22 +495,47 @@ namespace Promact.Oauth.Server.Controllers
 
 
         /**
-         * @api {get} api/User/slackUserDetails 
-         * @apiVersion 1.0.0
-         * @apiName User
-         * @apiGroup User   
-         * @apiSuccessExample {json} Success-Response:
-         * HTTP/1.1 200 OK 
-         * {
-         *    [
-         *      {
-         *          userId: U879798,
-         *          name: abc
-         *      },
-         *    ]
-         * }
-         */
+       * @api {get} api/user/:userid/role 
+       * @apiVersion 1.0.0
+       * @apiName GetUserRoleAsync
+       * @apiGroup User
+       * @apiParam {string} name UserName
+       * @apiParamExample {json} Request-Example:
+       * {
+            "Id":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367"    
+       * }      
+       * @apiSuccessExample {json} Success-Response:
+       * HTTP/1.1 200 OK 
+       * [
+       *        {
+       *            "UserName": "smith@promactinfo.com",
+       *            "Name":"Smith",
+       *            "Role":"Admin"
+       *        }
+       *]
+       * @apiError UserRoleNotFound The role of the user not found.
+       * @apiErrorExample {json} Error-Response:
+       * HTTP/1.1 404 Not Found
+       * {
+       *  "error": "UserRoleNotFound"
+       * }
+       */
+
+        [ServiceFilter(typeof(CustomAttribute))]
         [HttpGet]
+        [Route("{userid}/role")]
+        public async Task<IActionResult> GetUserRoleAsync(string userId)
+        {
+            try
+            {
+
+                return Ok(await _userRepository.GetUserRoleAsync(userId));
+            }
+            catch (UserRoleNotFound)
+            {
+                return NotFound();
+            }
+        }
         [Route("slackUserDetails")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> FetchSlackUserDetails()
@@ -519,7 +544,112 @@ namespace Promact.Oauth.Server.Controllers
             return Ok(slackUserList);
         }
 
+    
 
+        /**
+        * @api {get} api/user/:uerid/teammeber 
+        * @apiVersion 1.0.0
+        * @apiName GetTeamMembersAsync
+        * @apiGroup User
+        * @apiParam {string} name UserName
+        * @apiParamExample {json} Request-Example:
+        * {
+        *   "Id":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367"    
+        * }
+        * @apiSuccessExample {json} Success-Response:
+       * HTTP/1.1 200 OK 
+       * [
+       *        {
+       *            "UserId": "34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
+       *            "UserName": "smith@promactinfo.com",
+       *            "Name":"Smith",
+       *            "Role":"Admin"
+       *        },
+       *        {
+       *            "UserId": "avd1af3d-062f-4bcd-b6f9-b8fd5165e367",
+       *            "UserName": "john@promactinfo.com",
+       *            "Name":"John",
+       *            "Role":"Employee"
+       *        },
+       *    ]
+       * @apiError UserRoleNotFound The role of the user not found.
+       * @apiErrorExample {json} Error-Response:
+       * HTTP/1.1 404 Not Found
+       * {
+       *  "error": "UserRoleNotFound"
+       * }
+       */
+        [ServiceFilter(typeof(CustomAttribute))]
+        [HttpGet]
+        [Route("{uerid}/teammebers")]
+        public async Task<IActionResult> GetTeamMembersAsync(string userid)
+        {
+            try
+            {
+                return Ok(await _userRepository.GetTeamMembersAsync(userid));
+            }
+            catch (UserRoleNotFound)
+            {
+                return NotFound();
+            }
+
+        }
+
+        /**
+        * @api {get} api/user/slackChannel/:name 
+        * @apiVersion 1.0.0
+        * @apiName GetProjectUserByGroupName
+        * @apiGroup User
+        * @apiParam {string} groupName as a SlackChannelName
+        * @apiParamExample {json} Request-Example:
+        * {
+        *   "groupName":"SlackChannelName",
+        * }      
+        * @apiSuccessExample {json} Success-Response:
+        * HTTP/1.1 200 OK 
+        * [
+        *     {
+        *         "Id:"abcd1af3d-062f-4bcd-b6f9-b8fd5165e367",
+        *         "FirstName" : "Smith",
+        *         "Email" : "Smith@promactinfo.com",
+        *         "LastName" : "Doe",
+        *         "SlackUserName" :"Smith",
+        *         "IsActive" : "True",
+        *         "JoiningDate" :"10-02-2016",
+        *         "Password" : null
+        *     },
+        *     {
+        *         "Id":"abcd1af3d-062f-4bcd-b6f9-b8fd5165e367",
+        *         "FirstName" : "White",
+        *         "Email" : "White@promactinfo.com",
+        *         "LastName" : "Doe",
+        *         "SlackUserName" :"White",
+        *         "IsActive" : "True",
+        *         "JoiningDate" :"18-02-2016",
+        *         "Password" : null
+        *     }
+        *   ]   
+        * @apiError UserNotFound The User not found.
+        * @apiErrorExample {json} Error-Response:
+        * HTTP/1.1 404 Not Found
+        * {
+        *  "error": "UserNotFound"
+        * }
+        */
+        [ServiceFilter(typeof(CustomAttribute))]
+        [HttpGet]
+        [Route("slackChannel/{name}")]
+        public async Task<IActionResult> GetProjectUserByGroupNameAsync(string groupName)
+        {
+            try
+            {
+                return Ok(await _userRepository.GetProjectUserByGroupNameAsync(groupName));
+            }
+            catch (UserNotFound)
+            {
+                return NotFound();
+            }
+        }
         #endregion
     }
 }

@@ -13,7 +13,7 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="applicationUser">UserAc Application class object</param>
         Task<string> AddUser(UserAc newUser, string createdBy);
-        
+
 
         /// <summary>
         /// This method used for get user detail by user id 
@@ -111,7 +111,7 @@ namespace Promact.Oauth.Server.Repository
         /// <param name="UserName"></param>
         /// <returns>object of UserAc</returns>
         Task<UserAc> GetUserDetail(string UserName);
-       
+
 
 
         /// <summary>
@@ -149,11 +149,33 @@ namespace Promact.Oauth.Server.Repository
         /// <returns></returns>
         Task<bool> ReSendMail(string id);
 
+        /// <summary>
+        /// Method to get User Role
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        Task<List<UserRoleAc>> GetUserRoleAsync(string userId);
+
+        /// <summary>
+        /// Method to get list of TeamMember By TeamLeaderId
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        Task<List<UserRoleAc>> GetTeamMembersAsync(string userId);
+
+        /// <summary>
+        /// This method is used to fetch list of users/employees of the given group name. - JJ
+        /// </summary>
+        /// <param name="GroupName"></param>
+        /// <returns>object of UserAc</returns>
+        Task<List<UserAc>> GetProjectUserByGroupNameAsync(string GroupName);
 
         /// <summary>
         /// Fetches the list of Slack User Details
         /// </summary>
         /// <returns></returns>
         Task<List<SlackUserDetailAc>> GetSlackUserDetails();
-     }
+    }
+
+
 }

@@ -81,7 +81,8 @@ export class ProjectAddComponent implements OnInit {
                     }
                     this.loader.loader = false;
                 }, err => {
-
+                    this.toast.show("Project could not be Successfully Added.");
+                    this.loader.loader = false;
                 });
             }
         }

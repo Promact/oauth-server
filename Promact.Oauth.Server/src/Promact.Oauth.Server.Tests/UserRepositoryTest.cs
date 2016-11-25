@@ -5,6 +5,7 @@ using Promact.Oauth.Server.Constants;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Models.ApplicationClasses;
 using Promact.Oauth.Server.Repository;
+using Promact.Oauth.Server.Repository.ProjectsRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,12 +20,14 @@ namespace Promact.Oauth.Server.Tests
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
         private readonly IStringConstant _stringConstant;
+        private readonly IProjectRepository _projectRepository;
         public UserRepositoryTest() : base()
         {
             _userRepository = serviceProvider.GetService<IUserRepository>();
             _userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
             _mapper = serviceProvider.GetService<IMapper>();
             _stringConstant = serviceProvider.GetService<IStringConstant>();
+            _projectRepository = serviceProvider.GetService<IProjectRepository>();
         }
 
         #region Test Case
@@ -365,6 +368,107 @@ namespace Promact.Oauth.Server.Tests
             var id = await _userRepository.AddUser(_testUser, _stringConstant.RawFirstNameForTest);
             var result = await _userRepository.IsAdmin(_testUser.SlackUserId);
             Assert.Equal(false, result);
+        }
+
+        /// <summary>
+        /// Test case to get the user role by username
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task GetUserRoleAsync()
+        {
+            UserAc _testUser = new UserAc()
+            {
+                Email = _stringConstant.RawEmailIdForTest,
+                FirstName = _stringConstant.RawFirstNameForTest,
+                LastName = _stringConstant.RawLastNameForTest,
+                IsActive = true,
+                UserName = _stringConstant.RawEmailIdForTest,
+                SlackUserName = _stringConstant.RawFirstNameForTest,
+                JoiningDate = DateTime.UtcNow,
+                RoleName = _stringConstant.Employee
+            };
+            string id = await _userRepository.AddUser(_testUser, _stringConstant.CreatedBy);
+            var userRole = await _userRepository.GetUserRoleAsync(_testUser.Id);
+            Assert.Equal(1, userRole.Count());
+        }
+
+        /// <summary>
+        /// Test case to get the user role by username
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task GetUserRoleAdmin()
+        {
+            UserAc _testUser = new UserAc()
+            {
+                Email = _stringConstant.RawEmailIdForTest,
+                FirstName = _stringConstant.RawFirstNameForTest,
+                LastName = _stringConstant.RawLastNameForTest,
+                IsActive = true,
+                UserName = _stringConstant.RawEmailIdForTest,
+                SlackUserName = _stringConstant.RawFirstNameForTest,
+                JoiningDate = DateTime.UtcNow,
+                RoleName = _stringConstant.Admin
+            };
+            string id = await _userRepository.AddUser(_testUser, _stringConstant.CreatedBy);
+            var userRole = await _userRepository.GetUserRoleAsync(_testUser.Id);
+            Assert.Equal(1, userRole.Count());
+        }
+
+        [Fact, Trait("Category", "Required")]
+        public async Task GetTeamMembersAsync()
+        {
+            UserAc _testUser = new UserAc()
+            {
+                Email = _stringConstant.RawEmailIdForTest,
+                FirstName = _stringConstant.RawFirstNameForTest,
+                LastName = _stringConstant.RawLastNameForTest,
+                IsActive = true,
+                UserName = _stringConstant.RawEmailIdForTest,
+                SlackUserName = _stringConstant.RawFirstNameForTest,
+                JoiningDate = DateTime.UtcNow,
+                RoleName = _stringConstant.Employee
+            };
+           
+            string userId = await _userRepository.AddUser(_testUser, _stringConstant.CreatedBy);
+            ProjectAc projectac = new ProjectAc()
+            {
+                Name = _stringConstant.Name,
+                SlackChannelName = _stringConstant.SlackChannelName,
+                IsActive = _stringConstant.IsActive,
+                TeamLeader = new UserAc { FirstName = _stringConstant.FirstName },
+                TeamLeaderId = userId,
+                CreatedBy = _stringConstant.CreatedBy
+
+            };
+            var projectId = await _projectRepository.AddProjectAsync(projectac, _stringConstant.CreatedBy);
+            var userRole = await _userRepository.GetTeamMembersAsync(_testUser.Id);
+            Assert.Equal(1, userRole.Count());
+        }
+
+        /// <summary>
+        /// Fetches Users of the given Project Name(slack channel name)
+        /// </summary>
+        [Fact, Trait("Category", "A")]
+        public async Task GetProjectUserByGroupNameAsync()
+        {
+            ProjectUser projectUser = new ProjectUser()
+            {
+                ProjectId = 1,
+                Project = new Project { Name = _stringConstant.Name },
+                UserId = _stringConstant.UserId,
+                User = new ApplicationUser { FirstName = _stringConstant.FirstName }
+            };
+            ProjectAc projectac = new ProjectAc();
+            projectac.Name = _stringConstant.Name;
+            projectac.SlackChannelName = _stringConstant.SlackChannelName;
+            projectac.IsActive = _stringConstant.IsActive;
+            projectac.TeamLeader = new UserAc { FirstName = _stringConstant.FirstName };
+            projectac.TeamLeaderId = _stringConstant.TeamLeaderId;
+            projectac.CreatedBy = _stringConstant.CreatedBy;
+            await _projectRepository.AddProjectAsync(projectac, _stringConstant.CreatedBy);
+            await _projectRepository.AddUserProjectAsync(projectUser);
+            var projectUsers = await _userRepository.GetProjectUserByGroupNameAsync(projectac.SlackChannelName);
+            Assert.NotEqual(projectUsers.Count, 2);
         }
 
         #endregion

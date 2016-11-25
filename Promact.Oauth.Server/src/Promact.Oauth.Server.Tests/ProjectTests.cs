@@ -28,12 +28,12 @@ namespace Promact.Oauth.Server.Tests
             _stringConstant = serviceProvider.GetService<IStringConstant>();
 
         }
-       
+        #region Test Case
         /// <summary>
         /// This test case to add a new project
         /// </summary>
         [Fact, Trait("Category", "Required")]
-        public void AddProject()
+        public async Task AddProjectAsync()
         {
             ProjectAc projectac = new ProjectAc();
             projectac.Name = _stringConstant.Name;
@@ -42,16 +42,16 @@ namespace Promact.Oauth.Server.Tests
             projectac.TeamLeader = new UserAc { FirstName = _stringConstant.FirstName };
             projectac.TeamLeaderId = _stringConstant.TeamLeaderId;
             projectac.CreatedBy = _stringConstant.CreatedBy;
-            Task<int> id = _projectRepository.AddProject(projectac, _stringConstant.CreatedBy);
-            var project = _dataRepository.FirstOrDefault(x => x.Id == id.Result);
+            var id = await _projectRepository.AddProjectAsync(projectac, _stringConstant.CreatedBy);
+            var project = _dataRepository.FirstOrDefault(x => x.Id == id);
             Assert.NotNull(project);
         }
 
-        /// <summary>
-        /// This test case for the add user and project in userproject table
-        /// </summary>
-        [Fact, Trait("Category", "Required")]
-        public void AddUserProject()
+        //        /// <summary>
+        //        /// This test case for the add user and project in userproject table
+        //        /// </summary>
+        //        [Fact, Trait("Category", "Required")]
+        public async Task AddUserProject()
         {
 
             ProjectUser projectUser = new ProjectUser()
@@ -61,7 +61,7 @@ namespace Promact.Oauth.Server.Tests
                 UserId = _stringConstant.UserId,
                 User = new ApplicationUser { FirstName = _stringConstant.FirstName }
             };
-            _projectRepository.AddUserProject(projectUser);
+            await _projectRepository.AddUserProjectAsync(projectUser);
             var ProjectUser = _dataRepositoryProjectUser.Fetch(x => x.ProjectId == 1);
             Assert.NotNull(ProjectUser);
         }
@@ -70,7 +70,7 @@ namespace Promact.Oauth.Server.Tests
         /// This test case for gets project By Id
         /// </summary>
         [Fact, Trait("Category", "Required")]
-        public void GetById()
+        public async Task GetProjectById()
         {
             ProjectUser projectUser = new ProjectUser()
             {
@@ -83,12 +83,10 @@ namespace Promact.Oauth.Server.Tests
             projectac.Name = _stringConstant.Name;
             projectac.SlackChannelName = _stringConstant.SlackChannelName;
             projectac.IsActive = _stringConstant.IsActive;
-            projectac.TeamLeader = new UserAc { FirstName = _stringConstant.FirstName };
-            projectac.TeamLeaderId = _stringConstant.TeamLeaderId;
             projectac.CreatedBy = _stringConstant.CreatedBy;
-            Task<int> id = _projectRepository.AddProject(projectac, _stringConstant.CreatedBy);
-            _projectRepository.AddUserProject(projectUser);
-            Task<ProjectAc> project = _projectRepository.GetById(id.Result);
+            var id = await _projectRepository.AddProjectAsync(projectac, _stringConstant.CreatedBy);
+            await _projectRepository.AddUserProjectAsync(projectUser);
+            ProjectAc project = await _projectRepository.GetProjectByIdAsync(id);
             Assert.NotNull(project);
         }
 
@@ -96,7 +94,7 @@ namespace Promact.Oauth.Server.Tests
         /// This test case edit project 
         /// </summary>
         [Fact, Trait("Category", "Required")]
-        public void EditProject()
+        public async Task EditProject()
         {
             UserAc user = new UserAc()
             {
@@ -128,11 +126,11 @@ namespace Promact.Oauth.Server.Tests
             projectac.TeamLeader = new UserAc { FirstName = _stringConstant.FirstName };
             projectac.TeamLeaderId = _stringConstant.TeamLeaderId;
             projectac.CreatedBy = _stringConstant.CreatedBy;
-            Task<int> id = _projectRepository.AddProject(projectac, _stringConstant.FirstName);
-            _projectRepository.AddUserProject(projectUser);
+            var id = await _projectRepository.AddProjectAsync(projectac, _stringConstant.FirstName);
+            await _projectRepository.AddUserProjectAsync(projectUser);
             ProjectAc projectacSecound = new ProjectAc()
             {
-                Id = id.Result,
+                Id = id,
                 Name = _stringConstant.EditName,
                 SlackChannelName = _stringConstant.SlackChannelName,
                 IsActive = _stringConstant.IsActive,
@@ -142,7 +140,7 @@ namespace Promact.Oauth.Server.Tests
                 CreatedDate = DateTime.Now.ToString(CultureInfo.InvariantCulture),
                 ApplicationUsers = userlist
             };
-            _projectRepository.EditProject(projectacSecound, _stringConstant.CreatedBy);
+            await _projectRepository.EditProjectAsync(id,projectacSecound, _stringConstant.CreatedBy);
             var project = _dataRepository.Fetch(x => x.Id == 1);
             _dataRepositoryProjectUser.Fetch(x => x.ProjectId == 1);
             Assert.NotNull(project);
@@ -152,7 +150,7 @@ namespace Promact.Oauth.Server.Tests
         /// This test case for the check duplicate project
         /// </summary>
         [Fact, Trait("Category", "Required")]
-        public void checkDuplicateNegative()
+        public async Task CheckDuplicateNegative()
         {
             ProjectAc projectac = new ProjectAc();
             projectac.Name = _stringConstant.Name;
@@ -161,8 +159,8 @@ namespace Promact.Oauth.Server.Tests
             projectac.TeamLeader = new UserAc { FirstName = _stringConstant.FirstName };
             projectac.TeamLeaderId = _stringConstant.TeamLeaderId;
             projectac.CreatedBy = _stringConstant.CreatedBy;
-            _projectRepository.AddProject(projectac, _stringConstant.CreatedBy);
-            var project = _projectRepository.checkDuplicate(projectac);
+            await _projectRepository.AddProjectAsync(projectac, _stringConstant.CreatedBy);
+            var project =await _projectRepository.CheckDuplicateProjectAsync(projectac);
             Assert.Null(project.Name);
         }
 
@@ -170,7 +168,7 @@ namespace Promact.Oauth.Server.Tests
         /// This test case for the check duplicate project
         /// </summary>
         [Fact, Trait("Category", "Required")]
-        public void checkDuplicatePositive()
+        public async Task CheckDuplicatePositive()
         {
             UserAc userSecound = new UserAc()
             { Id = _stringConstant.UserIdSecond, FirstName = _stringConstant.FirstNameSecond };
@@ -183,13 +181,13 @@ namespace Promact.Oauth.Server.Tests
             projectac.TeamLeader = new UserAc { FirstName = _stringConstant.FirstName };
             projectac.TeamLeaderId = _stringConstant.TeamLeaderId;
             projectac.CreatedBy = _stringConstant.CreatedBy;
-            _projectRepository.AddProject(projectac, _stringConstant.CreatedBy);
+            await _projectRepository.AddProjectAsync(projectac, _stringConstant.CreatedBy);
             List<UserAc> userlist = new List<UserAc>();
             userlist.Add(userSecound);
             userlist.Add(userThird);
             ProjectAc projectacSecound = new ProjectAc()
             {
-                Id = 2,
+                Id = 4,
                 Name = _stringConstant.ProjectName,
                 SlackChannelName = _stringConstant.SlackChannelName,
                 IsActive = true,
@@ -199,16 +197,16 @@ namespace Promact.Oauth.Server.Tests
                 CreatedDate = DateTime.Now.ToString(CultureInfo.InvariantCulture),
                 ApplicationUsers = userlist
             };
-            _projectRepository.AddProject(projectacSecound, _stringConstant.CreatedBy);
-            var project = _projectRepository.checkDuplicate(projectacSecound);
-            Assert.Null(project.Name);
+            await _projectRepository.AddProjectAsync(projectacSecound, _stringConstant.CreatedBy);
+            var project =await _projectRepository.CheckDuplicateProjectAsync(projectacSecound);
+            Assert.Null(project.SlackChannelName);
         }
 
         /// <summary>
         /// This test case for the get all projects
         /// </summary>
         [Fact, Trait("Category", "Required")]
-        public void GetAllProject()
+        public async Task GetAllProject()
         {
             ProjectUser projectUser = new ProjectUser()
             {
@@ -224,44 +222,20 @@ namespace Promact.Oauth.Server.Tests
             projectac.TeamLeader = new UserAc { FirstName = _stringConstant.FirstName };
             projectac.TeamLeaderId = _stringConstant.TeamLeaderId;
             projectac.CreatedBy = _stringConstant.CreatedBy;
-            _projectRepository.AddProject(projectac, _stringConstant.CreatedBy);
-            _projectRepository.AddUserProject(projectUser);
-            Task<IEnumerable<ProjectAc>> projects = _projectRepository.GetAllProjects();
+            await _projectRepository.AddProjectAsync(projectac, _stringConstant.CreatedBy);
+            await _projectRepository.AddUserProjectAsync(projectUser);
+            IEnumerable<ProjectAc> projects =await _projectRepository.GetAllProjectsAsync();
             Assert.NotNull(projects);
         }
 
-        /// <summary>
-        /// Fetches Users of the given Project Name(slack channel name)
-        /// </summary>
-        [Fact, Trait("Category", "A")]
-        public void GetProjectUserByGroupName()
-        {
-            ProjectUser projectUser = new ProjectUser()
-            {
-                ProjectId = 1,
-                Project = new Project { Name = _stringConstant.Name },
-                UserId = _stringConstant.UserId,
-                User = new ApplicationUser { FirstName = _stringConstant.FirstName }
-            };
-            ProjectAc projectac = new ProjectAc();
-            projectac.Name = _stringConstant.Name;
-            projectac.SlackChannelName = _stringConstant.SlackChannelName;
-            projectac.IsActive = _stringConstant.IsActive;
-            projectac.TeamLeader = new UserAc { FirstName = _stringConstant.FirstName };
-            projectac.TeamLeaderId = _stringConstant.TeamLeaderId;
-            projectac.CreatedBy = _stringConstant.CreatedBy;
-            _projectRepository.AddProject(projectac, _stringConstant.CreatedBy);
-            _projectRepository.AddUserProject(projectUser);
-            var projectUsers = _projectRepository.GetProjectUserByGroupName(projectac.SlackChannelName);
-            Assert.NotEqual(projectUsers.Count, 2);
-        }
-
        
+
+
         /// <summary>
         /// Fetch the project of the given slack channel name 
         /// </summary>
         [Fact, Trait("Category", "A")]
-        public void GetProjectByGroupName()
+        public async Task GetProjectByGroupName()
         {
             ProjectAc projectac = new ProjectAc();
             projectac.Name = _stringConstant.Name;
@@ -270,10 +244,10 @@ namespace Promact.Oauth.Server.Tests
             projectac.TeamLeader = new UserAc { FirstName = _stringConstant.FirstName };
             projectac.TeamLeaderId = _stringConstant.TeamLeaderId;
             projectac.CreatedBy = _stringConstant.CreatedBy;
-            _projectRepository.AddProject(projectac, _stringConstant.CreatedBy);
-            var project = _projectRepository.GetProjectByGroupName(projectac.SlackChannelName);
+            await _projectRepository.AddProjectAsync(projectac, _stringConstant.CreatedBy);
+            var project =await _projectRepository.GetProjectByGroupNameAsync(projectac.SlackChannelName);
             Assert.Equal(projectac.TeamLeaderId, project.TeamLeaderId);
-        }     
-           
+        }
+        #endregion
     }
 }
