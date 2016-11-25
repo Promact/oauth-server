@@ -639,11 +639,11 @@ namespace Promact.Oauth.Server.Controllers
         [ServiceFilter(typeof(CustomAttribute))]
         [HttpGet]
         [Route("slackChannel/{name}")]
-        public async Task<IActionResult> GetProjectUserByGroupNameAsync(string groupName)
+        public async Task<IActionResult> GetProjectUserByGroupNameAsync(string name)
         {
             try
             {
-                return Ok(await _userRepository.GetProjectUserByGroupNameAsync(groupName));
+                return Ok(await _userRepository.GetProjectUserByGroupNameAsync(name));
             }
             catch (UserNotFound)
             {
