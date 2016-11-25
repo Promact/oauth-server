@@ -107,7 +107,7 @@ namespace Promact.Oauth.Server.Controllers
             
 
 
-        }
+        
 
         /**
         * @api {get} api/project/:id Request Project information
