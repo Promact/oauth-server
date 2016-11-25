@@ -270,7 +270,7 @@ namespace Promact.Oauth.Server.Data_Repository
             }
             catch (Exception)
             {
-                return null;
+                throw;
             }
         }
 

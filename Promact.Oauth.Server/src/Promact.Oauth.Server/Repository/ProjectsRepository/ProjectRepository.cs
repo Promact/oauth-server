@@ -79,14 +79,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                 projectAc.UpdatedDate = UpdatedDate;
                 projectAcList.Add(projectAc);
             }
-            if (projectAcList.Count() > 0)
-            {
-                return projectAcList;
-            }
-            else
-            {
-                throw new FailedToFetchDataException();
-            }
+            return projectAcList;
         }
 
         /// <summary>

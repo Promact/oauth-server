@@ -544,49 +544,7 @@ namespace Promact.Oauth.Server.Controllers
             return Ok(slackUserList);
         }
 
-        /**
-       * @api {get} api/user/:userid/role 
-       * @apiVersion 1.0.0
-       * @apiName GetUserRoleAsync
-       * @apiGroup User
-       * @apiParam {string} name UserName
-       * @apiParamExample {json} Request-Example:
-       * {
-            "Id":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367"    
-       * }      
-       * @apiSuccessExample {json} Success-Response:
-       * HTTP/1.1 200 OK 
-       * [
-       *        {
-       *            "UserName": "smith@promactinfo.com",
-       *            "Name":"Smith",
-       *            "Role":"Admin"
-       *        }
-       *]
-       * @apiError UserRoleNotFound The role of the user not found.
-       * @apiErrorExample {json} Error-Response:
-       * HTTP/1.1 404 Not Found
-       * {
-       *  "error": "UserRoleNotFound"
-       * }
-       */
-
-        [ServiceFilter(typeof(CustomAttribute))]
-        [HttpGet]
-        [Route("{userid}/role")]
-        public async Task<IActionResult> GetUserRoleAsync(string userId)
-        {
-            try
-            {
-
-                return Ok(await _userRepository.GetUserRoleAsync(userId));
-            }
-            catch (UserRoleNotFound)
-            {
-                return NotFound();
-            }
-
-        }
+    
 
         /**
         * @api {get} api/user/:uerid/teammeber 

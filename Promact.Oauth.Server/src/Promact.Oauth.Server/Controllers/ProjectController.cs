@@ -92,9 +92,9 @@ namespace Promact.Oauth.Server.Controllers
             try
             {
                 var user = await _userManager.FindByNameAsync(User.Identity.Name);
-                var userRole = await _userManager.IsInRoleAsync(user, "Employee");
-                _logger.LogInformation("UserRole Employee  " + userRole);
-                if (userRole)
+                var isRoleExists = await _userManager.IsInRoleAsync(user, "Employee");
+                _logger.LogInformation("UserRole Employee  " + isRoleExists);
+                if (isRoleExists)
                 {
                     _logger.LogInformation("call project repository for User");
                     return Ok(await _projectRepository.GetAllProjectForUserAsync(user.Id));
@@ -105,7 +105,7 @@ namespace Promact.Oauth.Server.Controllers
                     return Ok(await _projectRepository.GetAllProjectsAsync());
                 }
             }
-            catch (FailedToFetchDataException)
+            catch 
             {
                 return BadRequest();
             }
@@ -230,7 +230,6 @@ namespace Promact.Oauth.Server.Controllers
           *         "NumberOfSickLeave":0,
           *         "UniqueName":null,
           *         "Role":null,
-          *         "Password":null,
           *         "UserName": null,
           *         "RoleName": null
           *     },
@@ -246,7 +245,6 @@ namespace Promact.Oauth.Server.Controllers
           *         "NumberOfSickLeave":"0",
           *         "UniqueName":null,
           *         "Role":null,
-          *         "Password":null,
           *         "UserName": null,
           *         "RoleName": null
           *     }
@@ -362,7 +360,6 @@ namespace Promact.Oauth.Server.Controllers
         *         "NumberOfSickLeave":0,
         *         "UniqueName":null,
         *         "Role":null,
-        *         "Password":null,
         *         "UserName": null,
         *         "RoleName": null
         *     }
