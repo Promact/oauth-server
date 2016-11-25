@@ -33,13 +33,26 @@
             Email already exists!
         </div>
            
-        <div class="form-group">
+        <!--<div class="form-group">
             <div class="half-width" style="position:relative">
                 <md2-select class="field" name="SlackUserId" (blur)="checkSlackUserId(userModel.SlackUserId)" [(ngModel)]="userModel.SlackUserId" placeholder="Slack User Name" required #SlackUserId="ngModel">
                     <md2-option [value]="user.userId"   *ngFor="let user of listOfSlackUser">{{user.name}}</md2-option>
                 </md2-select>
             </div>
             <div [hidden]="!(SlackUserId.touched && !SlackUserId.valid && SlackUserId.errors.required)" class="error">Please Select Slack User Name</div>
+        </div>
+        <div [hidden]="!isSlackUserNameExist" class="error">
+            Slack User Name already exists!
+        </div>-->
+
+
+        <div class="form-group">
+            <div class="half-width">
+                <md-input type="text" class="full-width" placeholder="Slack User Name" name="SlackUserName"
+                          (blur)="checkSlackUserName(userModel.SlackUserName)"
+                          [(ngModel)]="userModel.SlackUserName" maxlength="255" required #SlackUserName="ngModel"></md-input>
+                <div [hidden]="!(SlackUserName.touched && !SlackUserName.valid && SlackUserName.errors.required)" class="error">Slack User Name is required</div>
+            </div>
         </div>
         <div [hidden]="!isSlackUserNameExist" class="error">
             Slack User Name already exists!

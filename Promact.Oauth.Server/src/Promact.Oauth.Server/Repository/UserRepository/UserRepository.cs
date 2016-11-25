@@ -234,13 +234,11 @@ namespace Promact.Oauth.Server.Repository
         {
             IOrderedQueryable<ApplicationUser> users = _userManager.Users.OrderByDescending(x => x.CreatedDateTime);
             List<UserAc> userList = new List<UserAc>();
-            List<SlackUserDetailAc> slackUserDetails = GetSlackUserDetails().Result;
-
+      
             foreach (var user in users)
             {
                 UserAc listItem = _mapperContext.Map<ApplicationUser, UserAc>(user);
-                listItem.SlackUserName = GetSlackName(slackUserDetails, listItem.SlackUserId);
-                userList.Add(listItem);
+                              userList.Add(listItem);
             }
             return userList;
         }
@@ -262,29 +260,29 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="editedUser">UserAc Application class object</param>
         public async Task<string> UpdateUserDetails(UserAc editedUser, string updatedBy)
-        {            
-                var user = _userManager.Users.FirstOrDefault(x => x.SlackUserId == editedUser.SlackUserId && x.Id != editedUser.Id);
-                if (user == null)
-                {
-                    user = await _userManager.FindByIdAsync(editedUser.Id);
-                    user.FirstName = editedUser.FirstName;
-                    user.LastName = editedUser.LastName;
-                    user.Email = editedUser.Email;
-                    user.IsActive = editedUser.IsActive;
-                    user.UpdatedBy = updatedBy;
-                    user.UpdatedDateTime = DateTime.UtcNow;
-                    user.NumberOfCasualLeave = editedUser.NumberOfCasualLeave;
-                    user.NumberOfSickLeave = editedUser.NumberOfSickLeave;
-                    user.SlackUserId = editedUser.SlackUserId;
-                    var userPreviousInfo = await _userManager.FindByEmailAsync(editedUser.Email);
-                    await _userManager.UpdateAsync(user);
-                    IList<string> listofUserRole = await _userManager.GetRolesAsync(user);
-                    var removeFromRole = await _userManager.RemoveFromRoleAsync(user, listofUserRole.FirstOrDefault());
-                    var addNewRole = await _userManager.AddToRoleAsync(user, editedUser.RoleName);
-                    return user.Id;
+        {
+            var user = _userManager.Users.FirstOrDefault(x => x.SlackUserName == editedUser.SlackUserName && x.Id != editedUser.Id);
+            if (user == null)
+            {
+                user = await _userManager.FindByIdAsync(editedUser.Id);
+                user.FirstName = editedUser.FirstName;
+                user.LastName = editedUser.LastName;
+                user.Email = editedUser.Email;
+                user.IsActive = editedUser.IsActive;
+                user.UpdatedBy = updatedBy;
+                user.UpdatedDateTime = DateTime.UtcNow;
+                user.NumberOfCasualLeave = editedUser.NumberOfCasualLeave;
+                user.NumberOfSickLeave = editedUser.NumberOfSickLeave;
+                user.SlackUserName = editedUser.SlackUserName;
+                var userPreviousInfo = await _userManager.FindByEmailAsync(editedUser.Email);
+                await _userManager.UpdateAsync(user);
+                IList<string> listofUserRole = await _userManager.GetRolesAsync(user);
+                var removeFromRole = await _userManager.RemoveFromRoleAsync(user, listofUserRole.FirstOrDefault());
+                var addNewRole = await _userManager.AddToRoleAsync(user, editedUser.RoleName);
+                return user.Id;
 
-                }
-                throw new SlackUserNotFound();                     
+            }
+            throw new SlackUserNotFound();
         }
 
 
@@ -302,8 +300,6 @@ namespace Promact.Oauth.Server.Repository
                 UserAc requiredUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
                 IList<string> identityUserRole = await _userManager.GetRolesAsync(user);
                 requiredUser.RoleName = identityUserRole.FirstOrDefault();
-                SlackUserDetailAc slackUser = GetSlackUserById(requiredUser.SlackUserId).Result;
-                requiredUser.SlackUserName = slackUser.Name;
                 return requiredUser;
             }
             catch (Exception exception)
@@ -391,11 +387,11 @@ namespace Promact.Oauth.Server.Repository
         /// <summary>
         /// Fetches user with the given Slack User Id
         /// </summary>
-        /// <param name="slackUserId"></param>
+        /// <param name="slackUserName"></param>
         /// <returns></returns>
-        public ApplicationUser FindUserBySlackUserId(string slackUserId)
+        public ApplicationUser FindUserBySlackUserName(string slackUserName)
         {
-            var user = _applicationUserDataRepository.FirstOrDefault(x => x.SlackUserId == slackUserId);
+            var user = _applicationUserDataRepository.FirstOrDefault(x => x.SlackUserName == slackUserName);
             if (user == null)
                 throw new SlackUserNotFound();
             else

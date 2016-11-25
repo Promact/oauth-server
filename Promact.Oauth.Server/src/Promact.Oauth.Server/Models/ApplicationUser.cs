@@ -27,11 +27,15 @@ namespace Promact.Oauth.Server.Models
 
         [DataType(DataType.DateTime)]
         public DateTime JoiningDate {get;set;}
-        
-               
-        [Required]
+             
+       
         [StringLength(255)]
         public string SlackUserId { get; set; }
+
+
+        [Required]
+        [StringLength(255)]
+        public string SlackUserName { get; set; }
 
         [NotMapped]
         public virtual ICollection<Project> Projects { get; set; }

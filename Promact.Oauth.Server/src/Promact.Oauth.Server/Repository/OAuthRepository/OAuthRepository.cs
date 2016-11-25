@@ -50,7 +50,7 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
         /// <returns></returns>
         private async Task<OAuth> GetDetails(string email, string clientId)
         {
-            OAuth oAuth = await  _oAuthDataRepository.FirstOrDefaultAsync(x => x.userEmail == email && x.ClientId == clientId);
+            OAuth oAuth = await _oAuthDataRepository.FirstOrDefaultAsync(x => x.userEmail == email && x.ClientId == clientId);
             return oAuth;
         }
 
@@ -68,12 +68,13 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
             ConsumerApps consumerApp = await _appRepository.GetAppDetails(clientId);
             if (oAuth == null && consumerApp != null)
             {
-                oAuth = new OAuth();
-                oAuth.RefreshToken = Guid.NewGuid().ToString();
-                oAuth.userEmail = email;
-                oAuth.AccessToken = Guid.NewGuid().ToString();
-                oAuth.ClientId = clientId;
-                Add(oAuth);
+                OAuth newOAuth = new OAuth();
+                newOAuth.RefreshToken = Guid.NewGuid().ToString();
+                newOAuth.userEmail = email;
+                newOAuth.AccessToken = Guid.NewGuid().ToString();
+                newOAuth.ClientId = clientId;
+                Add(newOAuth);
+                return newOAuth;
             }
             return oAuth;
         }
@@ -85,10 +86,10 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
         /// <param name="redirectUrl"></param>
         /// <param name="refreshToken"></param>
         /// <returns></returns>
-        private async Task<OAuthApplication> GetAppDetailsFromClient(string redirectUrl, string refreshToken)
+        private async Task<OAuthApplication> GetAppDetailsFromClient(string redirectUrl, string refreshToken, string slackUserName)
         {
             // Assigning Base Address with redirectUrl
-            string requestUrl = string.Format("?refreshToken={0}", refreshToken);
+            string requestUrl = string.Format("?refreshToken={0}&slackUserName={1}", refreshToken, slackUserName);
             HttpResponseMessage response = await _httpClientRepository.GetAsync(redirectUrl, requestUrl);
             string responseResult = response.Content.ReadAsStringAsync().Result;
             // Transforming Json String to object type OAuthApplication
@@ -122,8 +123,14 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
         {
             ApplicationUser user = await _userManager.FindByNameAsync(userName);
             OAuth oAuth = await OAuthClientChecking(user.Email, clientId);
-            OAuthApplication clientResponse = await GetAppDetailsFromClient(callBackUrl, oAuth.RefreshToken);
-            return string.Format("{0}?accessToken={1}&email={2}&slackUserId={3}", clientResponse.ReturnUrl, oAuth.AccessToken, oAuth.userEmail, user.SlackUserId);
+            OAuthApplication clientResponse = await GetAppDetailsFromClient(callBackUrl, oAuth.RefreshToken, user.SlackUserName);
+            if (!String.IsNullOrEmpty(clientResponse.UserId))
+            {
+                user.SlackUserId = clientResponse.UserId;
+                await _userManager.UpdateAsync(user);
+                return string.Format("{0}?accessToken={1}&email={2}&slackUserId={3}", clientResponse.ReturnUrl, oAuth.AccessToken, oAuth.userEmail, user.SlackUserId);
+            }
+            return _stringConstant.EmptyString;
         }
 
 
@@ -137,22 +144,30 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
             SignInResult result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, lockoutOnFailure: false);
             if (result.Succeeded)
             {
+                ApplicationUser appUser = await _userManager.FindByEmailAsync(model.Email);
                 OAuth oAuth = await OAuthClientChecking(model.Email, model.ClientId);
-                OAuthApplication clientResponse = await GetAppDetailsFromClient(model.RedirectUrl, oAuth.RefreshToken);
-                // Checking whether request client is equal to response client
-                if (model.ClientId == clientResponse.ClientId)
+                OAuthApplication clientResponse = await GetAppDetailsFromClient(model.RedirectUrl, oAuth.RefreshToken, appUser.SlackUserName);
+                if (!String.IsNullOrEmpty(clientResponse.UserId))
                 {
-                    //Getting app details from clientId or AuthId
-                    ConsumerApps consumerApp = await _appRepository.GetAppDetails(clientResponse.ClientId);
-                    // Refresh token and app's secret is checking if match then accesstoken will be send
-                    if (consumerApp.AuthSecret == clientResponse.ClientSecret && clientResponse.RefreshToken == oAuth.RefreshToken)
+                    appUser.SlackUserId = clientResponse.UserId;
+                    await _userManager.UpdateAsync(appUser);
+                    // Checking whether request client is equal to response client
+                    if (model.ClientId == clientResponse.ClientId)
                     {
-                        ApplicationUser user = await _userManager.FindByEmailAsync(oAuth.userEmail);
-                        return string.Format("{0}?accessToken={1}&email={2}&slackUserId={3}", clientResponse.ReturnUrl, oAuth.AccessToken, oAuth.userEmail, user.SlackUserId);
+                        //Getting app details from clientId or AuthId
+                        ConsumerApps consumerApp = await _appRepository.GetAppDetails(clientResponse.ClientId);
+                        // Refresh token and app's secret is checking if match then accesstoken will be send
+                        if (consumerApp.AuthSecret == clientResponse.ClientSecret && clientResponse.RefreshToken == oAuth.RefreshToken)
+                        {
+                            ApplicationUser user = await _userManager.FindByEmailAsync(oAuth.userEmail);
+                            return string.Format("{0}?accessToken={1}&email={2}&slackUserId={3}", clientResponse.ReturnUrl, oAuth.AccessToken, oAuth.userEmail, user.SlackUserId);
+                        }
                     }
                 }
             }
             return _stringConstant.EmptyString;
         }
+
+
     }
 }
