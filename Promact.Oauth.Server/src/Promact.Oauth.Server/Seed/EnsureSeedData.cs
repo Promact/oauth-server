@@ -57,7 +57,8 @@ namespace Promact.Oauth.Server.Seed
                     LastName = "Promact",
                     IsActive = true,
                     CreatedDateTime = DateTime.UtcNow,
-                    SlackUserId="U7800454"
+                    SlackUserId = "U7800454",
+                    SlackUserName = "roshni"
                 };
                 userManager.CreateAsync(newAdmin, "Admin@123").Wait();
 

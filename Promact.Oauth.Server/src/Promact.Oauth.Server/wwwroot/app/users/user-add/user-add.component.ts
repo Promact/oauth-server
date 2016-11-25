@@ -1,7 +1,7 @@
 ﻿import { Component, Input } from "@angular/core";
 import { UserService } from '../user.service';
 import { UserModel } from '../user.model';
-import { SlackUserModel } from '../slackUser.model';
+
 import { Router, ActivatedRoute } from '@angular/router';
 import { Md2Toast } from 'md2';
 import { LoaderService } from '../../shared/loader.service';
@@ -19,13 +19,13 @@ export class UserAddComponent {
     isSlackUserNameExist: boolean;
     @Input()
     userModel: UserModel;
-    slackUserModel: SlackUserModel;
+ 
     listOfRoles: any;
     listOfSlackUser: any;
 
     constructor(private userService: UserService, private redirectionRoute: Router, private route: ActivatedRoute, private toast: Md2Toast, private loader: LoaderService) {
         this.userModel = new UserModel();
-        this.slackUserModel = new SlackUserModel();
+   
         this.listOfRoles = [];
         this.listOfSlackUser = [];
         this.isEmailExist = false;
@@ -35,20 +35,10 @@ export class UserAddComponent {
 
     ngOnInit() {
         this.getRoles();
-        this.fetchSlackUserDetails();
+    
     }
 
-    fetchSlackUserDetails() {
-        this.userService.fetchSlackUserDetails().subscribe((result) => {
-            if (result != null) {
-                for (var i = 0; i < result.length; i++) {
-                    this.listOfSlackUser.push(result[i]);
-                }
-            }
-        }, err => {
-            console.log(err);
-        });
-    }
+  
 
     getRoles() {
         this.userService.getRoles().subscribe((result) => {
@@ -101,10 +91,10 @@ export class UserAddComponent {
         }
     }
 
-    checkSlackUserId(slackUserId) {
+    checkSlackUserName(slackUserName) {
         this.isSlackUserNameExist = false;
-        if (slackUserId !== "" && slackUserId !== undefined) {
-            this.userService.checkUserIsExistsBySlackUserId(slackUserId).subscribe((result) => {
+        if (slackUserName !== "" && slackUserName !== undefined) {
+            this.userService.checkUserIsExistsBySlackUserName(slackUserName).subscribe((result) => {
                 this.isSlackUserNameExist = result;
             }, err => {
                 console.log(err.statusText);

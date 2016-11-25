@@ -335,12 +335,12 @@ namespace Promact.Oauth.Server.Tests
                 LastName = _stringConstant.RawLastNameForTest,
                 IsActive = true,
                 UserName = _stringConstant.RawEmailIdForTest,
-                SlackUserId = _stringConstant.RawFirstNameForTest,
+                SlackUserName = _stringConstant.RawFirstNameForTest,
                 JoiningDate = DateTime.UtcNow,
                 RoleName = _stringConstant.Employee
             };
             var id = await _userRepository.AddUser(_testUser, _stringConstant.RawFirstNameForTest);
-            var result = _userRepository.FindUserBySlackUserId(_stringConstant.RawFirstNameForTest);
+            var result = _userRepository.FindUserBySlackUserName(_stringConstant.RawFirstNameForTest);
             Assert.NotNull(result);
         }
 

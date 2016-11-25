@@ -72,11 +72,11 @@ namespace Promact.Oauth.Server.Repository
 
 
         /// <summary>
-        /// Fetches user with the given Slack User Id
+        /// Fetches user with the given Slack User Name
         /// </summary>
-        /// <param name="slackUserId"></param>
+        /// <param name="slackUserName"></param>
         /// <returns></returns>
-        ApplicationUser FindUserBySlackUserId(string slackUserId);
+        ApplicationUser FindUserBySlackUserName(string slackUserName);
 
         /// <summary>
         /// This method is used to send email to the currently added user
