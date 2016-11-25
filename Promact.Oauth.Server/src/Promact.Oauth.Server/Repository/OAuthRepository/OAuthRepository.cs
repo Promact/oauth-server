@@ -124,7 +124,7 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
             ApplicationUser user = await _userManager.FindByNameAsync(userName);
             OAuth oAuth = await OAuthClientChecking(user.Email, clientId);
             OAuthApplication clientResponse = await GetAppDetailsFromClient(callBackUrl, oAuth.RefreshToken);
-            return string.Format("{0}?accessToken={1}&email={2}&slackUserName={3}&userId={4}", clientResponse.ReturnUrl, oAuth.AccessToken, oAuth.userEmail, user.SlackUserName,user.Id);
+            return string.Format("{0}?accessToken={1}&email={2}&slackUserId={3}&userId={4}", clientResponse.ReturnUrl, oAuth.AccessToken, oAuth.userEmail, user.SlackUserId,user.Id);
         }
 
 
@@ -150,7 +150,7 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
                     if (consumerApp.AuthSecret == clientResponse.ClientSecret && clientResponse.RefreshToken == oAuth.RefreshToken)
                     {
                         ApplicationUser user = await _userManager.FindByEmailAsync(oAuth.userEmail);
-                        return string.Format("{0}?accessToken={1}&email={2}&slackUserName={3}&userId={4}", clientResponse.ReturnUrl, oAuth.AccessToken, oAuth.userEmail, user.SlackUserName,user.Id);
+                        return string.Format("{0}?accessToken={1}&email={2}&slackUserId={3}&userId={4}", clientResponse.ReturnUrl, oAuth.AccessToken, oAuth.userEmail, user.SlackUserId,user.Id);
                     }
                 }
             }

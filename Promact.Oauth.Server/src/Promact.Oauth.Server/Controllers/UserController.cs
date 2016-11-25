@@ -535,7 +535,7 @@ namespace Promact.Oauth.Server.Controllers
             {
                 return NotFound();
             }
-
+        }
         [Route("slackUserDetails")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> FetchSlackUserDetails()

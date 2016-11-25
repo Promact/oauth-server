@@ -48,8 +48,15 @@ namespace Promact.Oauth.Server.Repository
 
         #region "Constructor"
 
-        public UserRepository(IDataRepository<ApplicationUser> applicationUserDataRepository, IHostingEnvironment hostingEnvironment, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IMapper mapperContext, IDataRepository<ProjectUser> projectUserRepository, IProjectRepository projectRepository, IOptions<AppSettingUtil> appSettingUtil, IDataRepository<Project> projectDataRepository, ILogger<UserRepository> logger, 
-            IStringConstant stringConstant, IDataRepository<ProjectUser> projectUserDataRepository)
+
+        public UserRepository(IDataRepository<ApplicationUser> applicationUserDataRepository,
+            IHostingEnvironment hostingEnvironment, RoleManager<IdentityRole> roleManager,
+            UserManager<ApplicationUser> userManager, IEmailSender emailSender,
+            IMapper mapperContext, IDataRepository<ProjectUser> projectUserRepository,
+            IProjectRepository projectRepository, IOptions<AppSettingUtil> appSettingUtil,
+            IDataRepository<Project> projectDataRepository,
+            ILogger<UserRepository> logger, IStringConstant stringConstant,
+            IHttpClientRepository httpClientRepository, IDataRepository<ProjectUser> projectUserDataRepository)
         {
             _applicationUserDataRepository = applicationUserDataRepository;
             _hostingEnvironment = hostingEnvironment;
@@ -441,7 +448,7 @@ namespace Promact.Oauth.Server.Repository
             List<ApplicationUser> teamLeaders = new List<ApplicationUser>();
             foreach (var project in projects)
             {
-                var teamLeaderId = await _projectRepository.GetProjectByIdAsync(project.Id);
+                var teamLeaderId = await _projectRepository.GetProjectByIdAsync(project.ProjectId);
                 var teamLeader = teamLeaderId.TeamLeaderId;
                 user = await _userManager.FindByIdAsync(teamLeader);
                 //user = _userManager.Users.FirstOrDefault(x => x.Id == teamLeader);
@@ -717,7 +724,7 @@ namespace Promact.Oauth.Server.Repository
                     userAc.IsActive = user.IsActive;
                     userAc.LastName = user.LastName;
                     userAc.UserName = user.UserName;
-                    userAc.SlackUserName = user.SlackUserName;
+                    userAc.SlackUserId = user.SlackUserId;
                     userAcList.Add(userAc);
                 }
 
