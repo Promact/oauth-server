@@ -662,16 +662,19 @@ namespace Promact.Oauth.Server.Repository
                 var projectUserList = await _projectUserDataRepository.FetchAsync(x => x.ProjectId == project.Id);
                 foreach (var projectUser in projectUserList)
                 {
-                    var user = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.Id == projectUser.UserId);
-                    var userAc = new UserAc();
-                    userAc.Id = user.Id;
-                    userAc.Email = user.Email;
-                    userAc.FirstName = user.FirstName;
-                    userAc.IsActive = user.IsActive;
-                    userAc.LastName = user.LastName;
-                    userAc.UserName = user.UserName;
-                    userAc.SlackUserId = user.SlackUserId;
-                    userAcList.Add(userAc);
+                    var user = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.Id == projectUser.UserId && x.SlackUserId!=null);
+                    if (user != null)
+                    {
+                        var userAc = new UserAc();
+                        userAc.Id = user.Id;
+                        userAc.Email = user.Email;
+                        userAc.FirstName = user.FirstName;
+                        userAc.IsActive = user.IsActive;
+                        userAc.LastName = user.LastName;
+                        userAc.UserName = user.UserName;
+                        userAc.SlackUserId = user.SlackUserId;
+                        userAcList.Add(userAc);
+                    }
                 }
 
             }
