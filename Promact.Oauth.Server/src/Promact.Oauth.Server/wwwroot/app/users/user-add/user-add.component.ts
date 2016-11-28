@@ -20,12 +20,9 @@ export class UserAddComponent implements OnInit {
     @Input()
     userModel: UserModel;
     listOfRoles: Array<UserRoleModel>;
-    listOfSlackUser: any;
-
     constructor(private userService: UserService, private redirectionRoute: Router, private route: ActivatedRoute, private toast: Md2Toast, private loader: LoaderService) {
         this.userModel = new UserModel();
         this.listOfRoles = new Array<UserRoleModel>();
-        this.listOfSlackUser = [];
         this.isEmailExist = false;
         this.isSlackUserNameExist = false;
     }
