@@ -406,17 +406,33 @@ namespace Promact.Oauth.Server.Controllers
           * @apiParamExample {json} Request-Example:
           *      
           *        {
-          *             "id": "1"
+          *             "id": "95151b57-42c5-48d5-84b6-6d20e2fb05cd"
           *        }      
           * @apiSuccessExample {json} Success-Response:
           * HTTP/1.1 200 OK 
           * {
           *     "description":"Object of type UserAc "
+          *     
+          *     {
+          *         "Id": "95151b57-42c5-48d5-84b6-6d20e2fb05cd",
+          *         "FirstName": "Admin",
+          *         "LastName": "Promact",
+          *         "IsActive": true,
+          *         "Role": "Admin",
+          *         "NumberOfCasualLeave": 0,
+          *         "NumberOfSickLeave": 0,
+          *         "JoiningDate": "0001-01-01T00:00:00",
+          *         "SlackUserName": "roshni",
+          *         "SlackUserId": "U70787887",
+          *         "Email": "roshni@promactinfo.com",
+          *         "UserName": "roshni@promactinfo.com",
+          *         "UniqueName": "Admin-roshni@promactinfo.com",
+          *     }
           * }
           */
         [ServiceFilter(typeof(CustomAttribute))]
         [HttpGet]
-        [Route("{userId}/detail")]
+        [Route("{userId:string}/detail")]
         public async Task<IActionResult> UserDetailByIdAsync(string userId)
         {
             try
@@ -426,8 +442,9 @@ namespace Promact.Oauth.Server.Controllers
             }
             catch (UserNotFound)
             {
+                _logger.LogInformation("User not Found");
                 return NotFound();
-            }            
+            }
         }
 
         /**
@@ -439,17 +456,33 @@ namespace Promact.Oauth.Server.Controllers
           * @apiParamExample {json} Request-Example:
           *      
           *        {
-          *             "userName": "abc"
+          *             "userName": "roshni@promactinfo.com"
           *        }      
           * @apiSuccessExample {json} Success-Response:
           * HTTP/1.1 200 OK 
           * {
           *     "description":"Object of type UserAc "
+          *     
+          *     {
+          *         "Id": "95151b57-42c5-48d5-84b6-6d20e2fb05cd",
+          *         "FirstName": "Admin",
+          *         "LastName": "Promact",
+          *         "IsActive": true,
+          *         "Role": "Admin",
+          *         "NumberOfCasualLeave": 0,
+          *         "NumberOfSickLeave": 0,
+          *         "JoiningDate": "0001-01-01T00:00:00",
+          *         "SlackUserName": "roshni",
+          *         "SlackUserId": "U70787887",
+          *         "Email": "roshni@promactinfo.com",
+          *         "UserName": "roshni@promactinfo.com",
+          *         "UniqueName": "Admin-roshni@promactinfo.com",
+          *     }
           * }
           */
         [ServiceFilter(typeof(CustomAttribute))]
         [HttpGet]
-        [Route("{userName}/details")]
+        [Route("{userName:string}/details")]
         public async Task<IActionResult> GetByUserNameAsync(string userName)
         {
             try
@@ -458,9 +491,10 @@ namespace Promact.Oauth.Server.Controllers
             }
             catch (UserNotFound)
             {
+                _logger.LogInformation("User not Found");
                 return NotFound();
             }
-            
+
         }
 
         /**
@@ -668,21 +702,60 @@ namespace Promact.Oauth.Server.Controllers
         * @apiParamExample {json} Request-Example:
         *      
         *        {
-        *             "id": "asd1"
+        *             "id": "95151b57-42c5-48d5-84b6-6d20e2fb05cd"
         *        }      
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
         * {
         *     "description":"list of projects with users for that specific teamleader"
+        *     
+        *     [
+        *       {
+        *           "Id": "95151b57-42c5-48d5-84b6-6d20e2fb05cd",
+        *           "FirstName": "Admin",
+        *           "LastName": "Promact",
+        *           "IsActive": true,
+        *           "Role": "TeamLeader",
+        *           "NumberOfCasualLeave": 0,
+        *           "NumberOfSickLeave": 0,
+        *           "JoiningDate": "0001-01-01T00:00:00",
+        *           "SlackUserName": "roshni",
+        *           "SlackUserId": "U70787887",
+        *           "Email": "roshni@promactinfo.com",
+        *           "UserName": "roshni@promactinfo.com",
+        *           "UniqueName": "Admin-roshni@promactinfo.com",
+        *        },
+        *        {
+        *           "Id": "bbd66866-8e35-430a-9f66-8cb550e72f9e",
+        *           "FirstName": "gourav",
+        *           "LastName": "gourav",
+        *           "IsActive": true,
+        *           "Role": "Employee",
+        *           "NumberOfCasualLeave": 0,
+        *           "NumberOfSickLeave": 0,
+        *           "JoiningDate": "2016-07-20T18:30:00",
+        *           "SlackUserName": "gourav",
+        *           "Email": "gourav@promactinfo.com",
+        *           "UserName": "gourav@promactinfo.com",
+        *           "UniqueName": "gourav-gourav@promactinfo.com",
+        *        }
+        *      ]
         * }
         */
         [ServiceFilter(typeof(CustomAttribute))]
         [HttpGet]
-        [Route("{teamLeaderId}/project")]
+        [Route("{teamLeaderId:string}/project")]
         public async Task<IActionResult> GetProjectUsersByTeamLeaderIdAsync(string teamLeaderId)
         {
-            List<UserAc> projectUsers = await _userRepository.GetProjectUsersByTeamLeaderIdAsync(teamLeaderId);
-            return Ok(projectUsers);
+            if (teamLeaderId != null)
+            {
+                List<UserAc> projectUsers = await _userRepository.GetProjectUsersByTeamLeaderIdAsync(teamLeaderId);
+                return Ok(projectUsers);
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
         #endregion
     }
