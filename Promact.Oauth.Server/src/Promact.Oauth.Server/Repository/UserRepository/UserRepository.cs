@@ -518,7 +518,7 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="userId"></param>
         /// <returns>details of user</returns>
-        public async Task<UserAc> UserDetailById(string userId)
+        public async Task<UserAc> UserDetailByIdAsync(string userId)
         {
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == userId);
             return GetUser(user);
@@ -529,7 +529,7 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="userName"></param>
         /// <returns>details of user</returns>
-        public async Task<UserAc> GetUserDetailByUserName(string userName)
+        public async Task<UserAc> GetUserDetailByUserNameAsync(string userName)
         {
             var user = await _userManager.FindByNameAsync(userName);
             return GetUser(user);
@@ -691,7 +691,7 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="teamLeaderId"></param>
         /// <returns>list of projects with users for a specific teamleader</returns>
-        public async Task<List<UserAc>> GetProjectUsersByTeamLeaderId(string teamLeaderId)
+        public async Task<List<UserAc>> GetProjectUsersByTeamLeaderIdAsync(string teamLeaderId)
         {
             List<UserAc> projectUsers = new List<UserAc>();
             //Get projects for that specific teamleader

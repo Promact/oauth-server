@@ -21,7 +21,6 @@ namespace Promact.Oauth.Server.Tests
         private readonly IMapper _mapper;
         private readonly IStringConstant _stringConstant;
         private readonly IProjectRepository _projectRepository;
-
         public UserRepositoryTest() : base()
         {
             _userRepository = serviceProvider.GetService<IUserRepository>();
@@ -191,28 +190,28 @@ namespace Promact.Oauth.Server.Tests
         //    Assert.Equal(true, passwordMatch);
         //}
 
-        /// <summary>
-        /// Test case use for getting user details by its slack name
-        /// </summary>
-        [Fact, Trait("Category", "Required")]
-        public async Task UserDetail()
-        {
-            UserAc _testUser = new UserAc()
-            {
-                Email = _stringConstant.RawEmailIdForTest,
-                FirstName = _stringConstant.RawFirstNameForTest,
-                LastName = _stringConstant.RawLastNameForTest,
-                IsActive = true,
-                UserName = _stringConstant.RawEmailIdForTest,
-                SlackUserName = _stringConstant.RawFirstNameForTest,
-                SlackUserId = _stringConstant.RawFirstNameForTest,
-                JoiningDate = DateTime.UtcNow,
-                RoleName = _stringConstant.Employee
-            };
-            string id = await _userRepository.AddUser(_testUser, _stringConstant.RawFirstNameForTest);
-            var user = _userRepository.UserDetailById(id);
-            Assert.Equal(user.Email, _testUser.Email);
-        }
+        ///// <summary>
+        ///// Test case use for getting user details by its slack name
+        ///// </summary>
+        //[Fact, Trait("Category", "Required")]
+        //public async Task UserDetail()
+        //{
+        //    UserAc _testUser = new UserAc()
+        //    {
+        //        Email = _stringConstant.RawEmailIdForTest,
+        //        FirstName = _stringConstant.RawFirstNameForTest,
+        //        LastName = _stringConstant.RawLastNameForTest,
+        //        IsActive = true,
+        //        UserName = _stringConstant.RawEmailIdForTest,
+        //        SlackUserName = _stringConstant.RawFirstNameForTest,
+        //        SlackUserId = _stringConstant.RawFirstNameForTest,
+        //        JoiningDate = DateTime.UtcNow,
+        //        RoleName = _stringConstant.Employee
+        //    };
+        //    string id = await _userRepository.AddUser(_testUser, _stringConstant.RawFirstNameForTest);
+        //    var user = _userRepository.UserDetailById(id);
+        //    Assert.Equal(user.Email, _testUser.Email);
+        //}
 
         /// <summary>
         /// Test case use for getting TeamLeader's details by users slack name
@@ -491,7 +490,7 @@ namespace Promact.Oauth.Server.Tests
                 RoleName = _stringConstant.Employee
             };
             var id = await _userRepository.AddUser(_testUser, _stringConstant.RawFirstNameForTest);
-            var user = await _userRepository.UserDetailById(id);
+            var user = await _userRepository.UserDetailByIdAsync(id);
             Assert.Equal(user.FirstName, _stringConstant.RawFirstNameForTest);
         }
 
@@ -513,7 +512,7 @@ namespace Promact.Oauth.Server.Tests
                 RoleName = _stringConstant.Employee
             };
             var id = await _userRepository.AddUser(_testUser, _stringConstant.RawFirstNameForTest);
-            var user = await _userRepository.GetUserDetailByUserName(_stringConstant.RawEmailIdForTest);
+            var user = await _userRepository.GetUserDetailByUserNameAsync(_stringConstant.RawEmailIdForTest);
             Assert.Equal(user.FirstName, _stringConstant.RawFirstNameForTest);
         }
 
@@ -545,14 +544,12 @@ namespace Promact.Oauth.Server.Tests
                 CreatedBy = _stringConstant.CreatedBy,
             };
 
-            await _projectRepository.AddProject(project, _stringConstant.CreatedBy);
-            var projectUsers = await _userRepository.GetProjectUsersByTeamLeaderId(id);
+            await _projectRepository.AddProjectAsync(project, _stringConstant.CreatedBy);
+            var projectUsers = await _userRepository.GetProjectUsersByTeamLeaderIdAsync(id);
             Assert.NotNull(projectUsers.Count);
         }
 
         #endregion
-
-
 
 
     }
