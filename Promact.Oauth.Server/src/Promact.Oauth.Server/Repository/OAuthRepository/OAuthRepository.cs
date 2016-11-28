@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Promact.Oauth.Server.Constants;
 using Promact.Oauth.Server.Data_Repository;
@@ -20,8 +21,11 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IStringConstant _stringConstant;
-
-        public OAuthRepository(IDataRepository<OAuth> oAuthDataRepository, IHttpClientRepository httpClientRepository, IConsumerAppRepository appRepository, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IStringConstant stringConstant)
+        private readonly IOptions<AppSettingUtil> _appSettingUtil;
+        public OAuthRepository(IDataRepository<OAuth> oAuthDataRepository,
+            IHttpClientRepository httpClientRepository, IConsumerAppRepository appRepository,
+            UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
+            IOptions<AppSettingUtil> appSettingUtil, IStringConstant stringConstant)
         {
             _oAuthDataRepository = oAuthDataRepository;
             _httpClientRepository = httpClientRepository;
@@ -29,6 +33,7 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
             _userManager = userManager;
             _signInManager = signInManager;
             _stringConstant = stringConstant;
+            _appSettingUtil = appSettingUtil;
         }
 
         /// <summary>
@@ -128,7 +133,7 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
             {
                 user.SlackUserId = clientResponse.UserId;
                 await _userManager.UpdateAsync(user);
-                return string.Format("{0}?accessToken={1}&email={2}&slackUserId={3}&userId={4}", clientResponse.ReturnUrl, oAuth.AccessToken, oAuth.userEmail, user.SlackUserId,user.Id);
+                return string.Format("{0}?accessToken={1}&email={2}&slackUserId={3}&userId={4}", clientResponse.ReturnUrl, oAuth.AccessToken, oAuth.userEmail, user.SlackUserId, user.Id);
             }
             return _stringConstant.EmptyString;
         }
@@ -164,6 +169,13 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
                             return string.Format("{0}?accessToken={1}&email={2}&slackUserId={3}&userId={4}", clientResponse.ReturnUrl, oAuth.AccessToken, oAuth.userEmail, user.SlackUserId, user.Id);
                         }
                     }
+                }
+                else
+                {
+                    await _signInManager.SignOutAsync();
+                    string returnUrl = _appSettingUtil.Value.PromactErpUrl + _stringConstant.ErpAuthorizeUrl;
+                    returnUrl += "?message="+_stringConstant.InCorrectSlackName;
+                    return returnUrl;
                 }
             }
             return _stringConstant.EmptyString;
