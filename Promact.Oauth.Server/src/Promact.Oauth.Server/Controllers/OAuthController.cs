@@ -21,7 +21,9 @@ namespace Promact.Oauth.Server.Controllers
         private readonly IOptions<AppSettingUtil> _appSettingUtil;
         private readonly IStringConstant _stringConstant;
 
-        public OAuthController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IConsumerAppRepository appRepository, IOAuthRepository oAuthRepository, IOptions<AppSettingUtil> appSettingUtil,
+        public OAuthController(UserManager<ApplicationUser> userManager, 
+            SignInManager<ApplicationUser> signInManager, IConsumerAppRepository appRepository,
+            IOAuthRepository oAuthRepository, IOptions<AppSettingUtil> appSettingUtil,
             IStringConstant stringConstant)
         {
             _signInManager = signInManager;
@@ -98,6 +100,7 @@ namespace Promact.Oauth.Server.Controllers
         *     "Description":"Redirect to Promact OAuth server external login page"
         * }
         */
+
         public async Task<IActionResult> ExternalLogin(string clientId)
         {
             try
@@ -109,6 +112,11 @@ namespace Promact.Oauth.Server.Controllers
                     {
                         // If already login it will return a redirect url and will be redirect back to another server with access token 
                         var returnUrl = await _oAuthRepository.UserAlreadyLogin(User.Identity.Name, clientId, result.CallbackUrl);
+                        if (String.IsNullOrEmpty(returnUrl))
+                        {
+                            returnUrl = _appSettingUtil.Value.PromactErpUrl + _stringConstant.ErpAuthorizeUrl;
+                            returnUrl += "?message="+_stringConstant.InCorrectSlackName;
+                        }
                         return Redirect(returnUrl);
                     }
                     else
