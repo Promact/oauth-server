@@ -398,9 +398,9 @@ namespace Promact.Oauth.Server.Controllers
 
 
         /**
-          * @api {get} api/User/userDetail/:userId 
+          * @api {get} api/User/{userId}/detail
           * @apiVersion 1.0.0
-          * @apiName User
+          * @apiName GetUserDetails
           * @apiGroup User
           * @apiParam {string} id userId
           * @apiParamExample {json} Request-Example:
@@ -414,13 +414,14 @@ namespace Promact.Oauth.Server.Controllers
           *     "description":"Object of type UserAc "
           * }
           */
+        [ServiceFilter(typeof(CustomAttribute))]
         [HttpGet]
-        [Route("userDetail/{userId}")]
-        public async Task<IActionResult> UserDetailById(string userId)
+        [Route("{userId}/detail")]
+        public async Task<IActionResult> UserDetailByIdAsync(string userId)
         {
             try
             {
-                var user = await _userRepository.UserDetailById(userId);
+                var user = await _userRepository.UserDetailByIdAsync(userId);
                 return Ok(user);
             }
             catch (UserNotFound)
@@ -430,7 +431,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-          * @api {get} api/User/getByUserName/:userName 
+          * @api {get} api/User/{userName}/details 
           * @apiVersion 1.0.0
           * @apiName User
           * @apiGroup User
@@ -446,13 +447,14 @@ namespace Promact.Oauth.Server.Controllers
           *     "description":"Object of type UserAc "
           * }
           */
+        [ServiceFilter(typeof(CustomAttribute))]
         [HttpGet]
-        [Route("getByUserName/{userName}")]
-        public async Task<IActionResult> GetByUserName(string userName)
+        [Route("{userName}/details")]
+        public async Task<IActionResult> GetByUserNameAsync(string userName)
         {
             try
             {
-                return Ok(await _userRepository.GetUserDetailByUserName(userName));
+                return Ok(await _userRepository.GetUserDetailByUserNameAsync(userName));
             }
             catch (UserNotFound)
             {
@@ -668,9 +670,9 @@ namespace Promact.Oauth.Server.Controllers
 
 
         /**
-        * @api {get} api/User/projectUsersById/{teamLeaderId}
+        * @api {get} api/User/{teamLeaderId}/project
         * @apiVersion 1.0.0
-        * @apiName User
+        * @apiName GetProject
         * @apiGroup User
         * @apiParam {string}  teamLeaderId
         * @apiParamExample {json} Request-Example:
@@ -684,11 +686,12 @@ namespace Promact.Oauth.Server.Controllers
         *     "description":"list of projects with users for that specific teamleader"
         * }
         */
+        [ServiceFilter(typeof(CustomAttribute))]
         [HttpGet]
-        [Route("projectUsersById/{teamLeaderId}")]
-        public async Task<IActionResult> GetProjectUsersByTeamLeaderId(string teamLeaderId)
+        [Route("{teamLeaderId}/project")]
+        public async Task<IActionResult> GetProjectUsersByTeamLeaderIdAsync(string teamLeaderId)
         {
-            List<UserAc> projectUsers = await _userRepository.GetProjectUsersByTeamLeaderId(teamLeaderId);
+            List<UserAc> projectUsers = await _userRepository.GetProjectUsersByTeamLeaderIdAsync(teamLeaderId);
             return Ok(projectUsers);
         }
 

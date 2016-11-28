@@ -119,14 +119,14 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="userId"></param>
         /// <returns>details of user</returns>
-        Task<UserAc> UserDetailById(string userId);
+        Task<UserAc> UserDetailByIdAsync(string userId);
 
         /// <summary>
         /// Method is used to get the details of user by using their username
         /// </summary>
         /// <param name="userName"></param>
         /// <returns>details of user</returns>
-        Task<UserAc> GetUserDetailByUserName(string UserName);
+        Task<UserAc> GetUserDetailByUserNameAsync(string UserName);
 
         /// <summary>
         /// Method to get the number of casual leave allowed to a user by slackUserId
@@ -182,7 +182,7 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="teamLeaderId"></param>
         /// <returns>list of projects with users for a specific teamleader</returns>
-        Task<List<UserAc>> GetProjectUsersByTeamLeaderId(string teamLeaderId);
+        Task<List<UserAc>> GetProjectUsersByTeamLeaderIdAsync(string teamLeaderId);
 
     }
 }
