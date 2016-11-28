@@ -465,9 +465,9 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-      * @api {get} api/Project/allProjects 
+      * @api {get} api/Project/list 
       * @apiVersion 1.0.0
-      * @apiName AllProjectsAsync
+      * @apiName GetProjectList
       * @apiGroup Project  
       * @apiSuccessExample {json} Success-Response:
       * HTTP/1.1 200 OK 
@@ -481,6 +481,7 @@ namespace Promact.Oauth.Server.Controllers
       *  }
       * ]
       */
+        [ServiceFilter(typeof(CustomAttribute))]
         [HttpGet]
         [Route("list")]
         public async Task<IEnumerable<ProjectAc>> AllProjectsAsync()
@@ -489,9 +490,9 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-        * @api {get} api/Project/projectDetails/:projectId 
+        * @api {get} api/Project/{projectId}/detail
         * @apiVersion 1.0.0
-        * @apiName ProjectDetailsAsync
+        * @apiName GetProjectDetail
         * @apiGroup Project
         * @apiParam {int} id  projectId
         * @apiParamExample {json} Request-Example:
@@ -515,6 +516,7 @@ namespace Promact.Oauth.Server.Controllers
         *   "error": "ProjectNotFound"
         * }
         */
+        [ServiceFilter(typeof(CustomAttribute))]
         [HttpGet]
         [Route("{projectId:int}/detail")]
         public async Task<IActionResult> ProjectDetailsAsync(int projectId)
@@ -527,7 +529,6 @@ namespace Promact.Oauth.Server.Controllers
             {
                 return NotFound();
             }
-
         }
         #endregion
     }
