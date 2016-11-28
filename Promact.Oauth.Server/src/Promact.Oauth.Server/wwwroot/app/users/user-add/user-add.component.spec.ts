@@ -56,14 +56,43 @@ describe('User Add Test', () => {
             let userAddComponent = fixture.componentInstance;
             let userModel = new UserModel();
             let expected = "ankit@promactinfo.com";
-            userModel.FirstName = "Ankit"
+            userModel.FirstName = "Ankit";
             userModel.Email = expected;
-            userAddComponent.addUser(userModel)
+            userAddComponent.addUser(userModel);
             expect(userModel.Email).toBe(expected);
             done();
         });
 
     });
 
+    it("should check user email", done => {
+        this.promise.then(() => {
+            let fixture = TestBed.createComponent(UserAddComponent); //Create instance of component            
+            let userAddComponent = fixture.componentInstance;
+            let email = "";
+            let expected = "";
+            userAddComponent.checkEmail(expected);
+            expect(email).toBe(expected);
+            done();
+        });
+
+    });
+
+   
+    it("should check user Slack User Name", done => {
+        this.promise.then(() => {
+            let fixture = TestBed.createComponent(UserAddComponent); //Create instance of component            
+            let userAddComponent = fixture.componentInstance;
+            let SlackUserName = "";
+            let expected = "";
+            userAddComponent.checkSlackUserName(expected);
+            expect(SlackUserName).toBe(expected);
+            done();
+        });
+
+    });
+
+
+  
 });
 
