@@ -253,9 +253,9 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// <returns></returns>
         public async Task<IEnumerable<ProjectAc>> GetAllProjectForUserAsync(string userId)
         {
-            var projects = _projectDataRepository.Fetch(x => x.TeamLeaderId == userId).ToList();
+            var projects =(await _projectDataRepository.FetchAsync(x => x.TeamLeaderId == userId)).ToList();
             _logger.LogInformation("Total Projects " + projects.Count().ToString()); 
-            var projectUser = _projectUserDataRepository.Fetch(x => x.UserId == userId).ToList();
+            var projectUser =(await _projectUserDataRepository.FetchAsync(x => x.UserId == userId)).ToList();
             _logger.LogInformation("Total UserProjects " + projectUser.Count().ToString());
             List<ProjectAc> projectAcList = new List<ProjectAc>();
             ProjectAc projectAc = new ProjectAc();
