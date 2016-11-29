@@ -63,7 +63,7 @@ namespace Promact.Oauth.Server.Tests
                 UserId = _stringConstant.UserId,
                 User = new ApplicationUser { FirstName = _stringConstant.FirstName }
             };
-            await _projectRepository.AddUserProjectAsync(projectUser);
+             _projectRepository.AddUserProjectAsync(projectUser);
             var ProjectUser = _dataRepositoryProjectUser.Fetch(x => x.ProjectId == 1);
             Assert.NotNull(ProjectUser);
         }
@@ -277,8 +277,8 @@ namespace Promact.Oauth.Server.Tests
                 TeamLeaderId = id,
                 CreatedBy = _stringConstant.CreatedBy,
             };
-            await _projectRepository.AddProject(project, _stringConstant.CreatedBy);
-            var projectUsers =await  _projectRepository.GetProjectsWithUsers();
+            await _projectRepository.AddProjectAsync(project, _stringConstant.CreatedBy);
+            var projectUsers =await  _projectRepository.GetProjectsWithUsersAsync();
             Assert.NotNull(projectUsers);
         }
 
@@ -308,8 +308,8 @@ namespace Promact.Oauth.Server.Tests
                 TeamLeaderId = id,
                 CreatedBy = _stringConstant.CreatedBy,
             };
-            var projectId = await _projectRepository.AddProject(project, _stringConstant.CreatedBy);
-            var projectDetails = await _projectRepository.GetProjectDetails(projectId);
+            var projectId = await _projectRepository.AddProjectAsync(project, _stringConstant.CreatedBy);
+            var projectDetails = await _projectRepository.GetProjectDetailsAsync(projectId);
             Assert.Equal(projectDetails.Name, _stringConstant.Name);
         }
         #endregion
