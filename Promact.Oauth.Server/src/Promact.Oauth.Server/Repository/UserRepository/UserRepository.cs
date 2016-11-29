@@ -694,7 +694,7 @@ namespace Promact.Oauth.Server.Repository
         {
             List<UserAc> projectUsers = new List<UserAc>();
             //Get projects for that specific teamleader
-            List<Project> projects =  _projectDataRepository.Fetch(x => x.TeamLeaderId.Equals(teamLeaderId)).ToList();
+            List<Project> projects = (await _projectDataRepository.FetchAsync(x => x.TeamLeaderId.Equals(teamLeaderId))).ToList();
 
             if (projects.Count > 0)
             {
@@ -710,10 +710,10 @@ namespace Promact.Oauth.Server.Repository
                 //Get details of employees for projects with that particular teamleader 
                 foreach (var project in projects)
                 {
-                    List<ProjectUser> projectUsersList = _projectUserRepository.Fetch(x => x.ProjectId == project.Id).ToList();
+                    List<ProjectUser> projectUsersList = (await _projectUserRepository.FetchAsync(x => x.ProjectId == project.Id)).ToList();
                     foreach (var projectUser in projectUsersList)
                     {
-                        ApplicationUser user = _applicationUserDataRepository.FirstOrDefault(x => x.Id.Equals(projectUser.UserId));
+                        ApplicationUser user = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.Id.Equals(projectUser.UserId));
                         if (user != null)
                         {
                             var Roles =  _userManager.GetRolesAsync(user).Result.First();

@@ -432,7 +432,7 @@ namespace Promact.Oauth.Server.Controllers
           */
         [ServiceFilter(typeof(CustomAttribute))]
         [HttpGet]
-        [Route("{userId:string}/detail")]
+        [Route("{userId}/detail")]
         public async Task<IActionResult> UserDetailByIdAsync(string userId)
         {
             try
@@ -482,7 +482,7 @@ namespace Promact.Oauth.Server.Controllers
           */
         [ServiceFilter(typeof(CustomAttribute))]
         [HttpGet]
-        [Route("{userName:string}/details")]
+        [Route("{userName}/details")]
         public async Task<IActionResult> GetByUserNameAsync(string userName)
         {
             try
@@ -752,7 +752,7 @@ namespace Promact.Oauth.Server.Controllers
         */
         [ServiceFilter(typeof(CustomAttribute))]
         [HttpGet]
-        [Route("{teamLeaderId:string}/project")]
+        [Route("{teamLeaderId}/project")]
         public async Task<IActionResult> GetProjectUsersByTeamLeaderIdAsync(string teamLeaderId)
         {
             if (teamLeaderId != null)
