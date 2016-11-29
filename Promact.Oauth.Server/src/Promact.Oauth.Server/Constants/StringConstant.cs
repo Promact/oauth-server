@@ -59,7 +59,7 @@
         public string UserId { get { return "1"; } }
         public string PasswordUser { get { return "User@123"; } }
         public string UserName { get { return "testUser@pronactinfo.com"; } }
-        public string SlackUserName { get { return "testSlackUserName"; } }
+        public string SlackUserName { get {  return "testSlackUserName"; } }
         public string EmailUser { get { return "testUsers@promactinfo.com"; } }
         public string NewPassword { get { return "User@1"; } }
         public string ConfirmPassword { get { return "User@1"; } }
