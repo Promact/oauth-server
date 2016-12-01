@@ -762,6 +762,7 @@ namespace Promact.Oauth.Server.Controllers
             }
             else
             {
+                _logger.LogInformation("Teamleader Id does not exist ");
                 return BadRequest();
             }
         }
