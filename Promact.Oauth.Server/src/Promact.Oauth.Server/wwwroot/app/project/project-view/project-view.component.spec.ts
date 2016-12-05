@@ -18,7 +18,6 @@ import { ActivatedRouteStub } from "../../shared/mocks/mock.activatedroute";
 import { StringConstant } from '../../shared/stringconstant';
 
 
-
 describe('Project View Test', () => {
     class MockLocation { }
     class MockStringConstant { }
