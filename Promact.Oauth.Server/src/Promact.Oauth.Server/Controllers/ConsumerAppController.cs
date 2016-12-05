@@ -36,20 +36,25 @@ namespace Promact.Oauth.Server.Controllers
         /**
         * @api {post} api/consumerapp 
         * @apiVersion 1.0.0
-        * @apiName ConsumerApp
+        * @apiName AddConsumerApp
         * @apiGroup ConsumerApp
         * @apiParam {object} consumerAppsAc  object
-        * @apiParamExample {json} Request-Example:
-        *      
-        *        {
-        *             "Name":"ProjectName",
-        *             "Description":"True",
-        *             "CallbackUrl":"1",
-        *        }      
+        * @apiParamExample {json} Request-Example:  
+        *  {
+        *     "Name":"ProjectName",
+        *     "Description":"True",
+        *     "CallbackUrl":"1",
+        *  }      
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
         * {
-        *     "description":"return true if succesfully consumer app has been added else return false."
+        *    true
+        * }
+        * @apiError ConsumerAppNameIsAlreadyExists The ConsumerApp Name is Already Exists
+        * @apiErrorExample {json} Error-Response:
+        * HTTP/1.1 400 Bad Request 
+        * {
+        *   "error": "ConsumerAppNameIsAlreadyExists"
         * }
         */
         [HttpPost]
@@ -71,14 +76,18 @@ namespace Promact.Oauth.Server.Controllers
         /**
         * @api {get} api/consumerapp 
         * @apiVersion 1.0.0
-        * @apiName ConsumerApp
+        * @apiName GetConsumerApps
         * @apiGroup ConsumerApp
-        * @apiParam {null} no parameter
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
         * {
-        * 
-        *   "description":"retun consumer app list"
+        *   {
+        *   "Name":"ProjectName",
+        *   "Description":"SlackChannelName",
+        *   "CallbackUrl ":"localhost:35716/oAuth/RefreshToken",
+        *   "AuthId ":"XyzDemo123DSQWE",
+        *   "AuthSecret ":"XyzWERTCDSwasaswre232_e322"
+        *   }
         * }
         */
         [HttpGet]
@@ -93,16 +102,29 @@ namespace Promact.Oauth.Server.Controllers
         /**
        * @api {get} api/consumerapp/id 
        * @apiVersion 1.0.0
-       * @apiName ConsumerApp
+       * @apiName GetConsumerAppById
        * @apiGroup ConsumerApp
-       * @apiParam {int} id 
+       * @apiParam {int} id
+       * @apiParamExample {json} Request-Example:  
+       *        {
+       *            "id":"1"
+       *        }     
        * @apiSuccessExample {json} Success-Response:
-       * {
-       *   "id":"1",
-       * }
        * HTTP/1.1 200 OK 
        * {
-       *   "description":"retun consumer app object"
+       *  {
+       *   "Name":"ProjectName",
+       *   "Description":"SlackChannelName",
+       *   "CallbackUrl ":"localhost:35716/oAuth/RefreshToken",
+       *   "AuthId ":"XyzDemo123DSQWE",
+       *   "AuthSecret ":"XyzWERTCDSwasaswre232_e322"
+       *   }
+       * }
+       * @apiError ConsumerAppNotFound The id of the ConsumerApp was not found.
+       * @apiErrorExample {json} Error-Response:
+       * HTTP/1.1 404 Not Found
+       * {
+       *   "error": "ConsumerAppNotFound"
        * }
        */
         [HttpGet]
@@ -123,19 +145,25 @@ namespace Promact.Oauth.Server.Controllers
         /**
         * @api {put} api/consumerapp 
         * @apiVersion 1.0.0
-        * @apiName ConsumerApp
+        * @apiName UpdateConsumerApp
         * @apiGroup ConsumerApp
         * @apiParam {object} consumerAppsAc object
         * @apiParamExample {json} Request-Example:  
-          *        {
-          *             "Name":"ProjectName",
-          *             "Description":"True",
-          *             "CallbackUrl":"1",
-          *        } 
+        *       {
+        *             "Name":"ProjectName",
+        *             "Description":"True",
+        *             "CallbackUrl":"1"
+        *       } 
+        * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
         * {
-        *
-        *   "description":"return true if succesfully consumer app has been updated else return false."
+        *   true
+        * }
+        * @apiError ConsumerAppNameIsAlreadyExists The ConsumerApp Name is Already Exists
+        * @apiErrorExample {json} Error-Response:
+        * HTTP/1.1 400 Bad Request
+        * {
+        *   "error": "ConsumerAppNameIsAlreadyExists"
         * }
         */
         [HttpPut]
