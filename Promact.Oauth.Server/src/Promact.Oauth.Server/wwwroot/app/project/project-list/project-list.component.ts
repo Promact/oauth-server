@@ -6,6 +6,7 @@ import { Md2Toast } from 'md2';
 import { LoginService } from '../../login.service';
 import { LoaderService } from '../../shared/loader.service';
 import { UserRole } from "../../shared/userrole.model";
+import { StringConstant } from '../../shared/stringconstant';
 import { DatePipe } from '@angular/common';
 
 @Component({
