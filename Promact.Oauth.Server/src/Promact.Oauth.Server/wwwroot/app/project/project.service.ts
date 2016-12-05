@@ -6,11 +6,15 @@ import { StringConstant } from '../shared/stringconstant';
 
 @Injectable()
 export class ProjectService {
-    private ProjectUrl = 'api/project';  // URL to web api
-    private UserUrl = 'api/users';
-    constructor(private httpService: HttpService<ProjectModel>) { }
+   
+    constructor(private httpService: HttpService<ProjectModel>, private stringConstant: StringConstant) { }
+   
+    checkDuplicate(project: ProjectModel) {
+        return this.httpService.post(this.stringConstant.projectUrl + this.stringConstant.checkDuplicate, project);
+    }
+
     getUsers() {
-        return this.httpService.get(this.UserUrl + "/orderby/name");
+        return this.httpService.get(this.stringConstant.userUrl + this.stringConstant.getEmployees);
     }
     getProjects() {
         return this.httpService.get(this.stringConstant.projectUrl);
@@ -21,7 +25,8 @@ export class ProjectService {
     addProject(project: ProjectModel) {
         return this.httpService.post(this.stringConstant.projectUrl, project);
     }
-    editProject(project: ProjectModel) {
-        return this.httpService.put(this.ProjectUrl+"/"+ project.id, project);
+    editProject(project: ProjectModel)
+    {
+        return this.httpService.put(this.stringConstant.projectUrl + this.stringConstant.slash+ project.id, project);
     }
 }
