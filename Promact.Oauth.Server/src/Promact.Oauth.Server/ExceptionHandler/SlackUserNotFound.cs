@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Promact.Oauth.Server.Exception_Handler
+namespace Promact.Oauth.Server.ExceptionHandler
 {
     public class SlackUserNotFound : Exception 
     {

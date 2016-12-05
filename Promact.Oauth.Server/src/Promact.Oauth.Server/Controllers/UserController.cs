@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 using Exceptions;
 using Promact.Oauth.Server.Constants;
-using Promact.Oauth.Server.Exception_Handler;
+using Promact.Oauth.Server.ExceptionHandler;
 using Promact.Oauth.Server.Services;
 
 namespace Promact.Oauth.Server.Controllers

@@ -7,8 +7,7 @@ using Promact.Oauth.Server.Repository.ConsumerAppRepository;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Exceptionless;
-using Promact.Oauth.Server.Exception_Handler;
+using Promact.Oauth.Server.ExceptionHandler;
 
 namespace Promact.Oauth.Server.Controllers
 {

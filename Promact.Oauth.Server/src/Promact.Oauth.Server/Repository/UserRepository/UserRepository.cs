@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Promact.Oauth.Server.Constants;
 using Promact.Oauth.Server.Data_Repository;
-using Promact.Oauth.Server.Exception_Handler;
+using Promact.Oauth.Server.ExceptionHandler;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Models.ApplicationClasses;
 using Promact.Oauth.Server.Models.ManageViewModels;
