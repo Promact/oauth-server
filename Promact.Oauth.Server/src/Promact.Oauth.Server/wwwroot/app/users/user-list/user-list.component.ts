@@ -4,7 +4,7 @@ import { UserService } from '../user.service';
 import { UserModel } from '../user.model';
 import { Md2Toast } from 'md2';
 import { LoaderService } from '../../shared/loader.service';
-
+import { StringConstant } from '../../shared/stringconstant';
 
 
 @Component({
@@ -14,11 +14,10 @@ import { LoaderService } from '../../shared/loader.service';
 export class UserListComponent implements OnInit {
     users: Array<UserModel>;
     user: UserModel;
-    constructor(private userService: UserService, private router: Router, private toast: Md2Toast, private loader: LoaderService) {
+    constructor(private userService: UserService, private router: Router, private toast: Md2Toast, private loader: LoaderService, private stringConstant: StringConstant) {
         this.users = new Array<UserModel>();
         this.user = new UserModel();
     }
-    
     getUsers() {
         this.loader.loader = true;
         this.userService.getUsers().subscribe((users) => {
@@ -29,11 +28,11 @@ export class UserListComponent implements OnInit {
     }
 
     userDetails(id) {
-        this.router.navigate(['/user/details', id]);
+        this.router.navigate([this.stringConstant.userDetail, id]);
     }
 
     userEdit(id) {
-        this.router.navigate(['/user/edit', id]);
+        this.router.navigate([this.stringConstant.userEdit, id]);
     }
 
     ngOnInit() {

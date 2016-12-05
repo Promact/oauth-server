@@ -5,6 +5,7 @@ import {UserService} from '../user.service';
 import { Router, ActivatedRoute }from '@angular/router';
 import { UserRole } from "../../shared/userrole.model";
 import { LoaderService } from '../../shared/loader.service';
+import { StringConstant } from '../../shared/stringconstant';
 
 @Component({
     templateUrl: './app/users/user-details/user-details.html'   
@@ -17,7 +18,7 @@ export class UserDetailsComponent implements OnInit {
     
 
     constructor(private userService: UserService, private route: ActivatedRoute, private redirectRoute: Router, private loginService: LoginService,
-        private loader: LoaderService, private userRole: UserRole) {
+        private loader: LoaderService, private userRole: UserRole, private stringConstant: StringConstant) {
         this.user = new UserModel();
         this.admin = true;
     }
@@ -47,11 +48,11 @@ export class UserDetailsComponent implements OnInit {
     }
 
     goBack() {
-        this.redirectRoute.navigate(['/user/list']);
+        this.redirectRoute.navigate([this.stringConstant.userList]);
     }
 
     edit(id: number) {
-        this.redirectRoute.navigate(['/user/edit/' + id]);
+        this.redirectRoute.navigate([this.stringConstant.userEdit + id]);
     }
 
     

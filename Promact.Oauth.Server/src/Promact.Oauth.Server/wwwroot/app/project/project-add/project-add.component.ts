@@ -5,7 +5,7 @@ import { UserModel } from '../../users/user.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Md2Toast } from 'md2';
 import { LoaderService } from '../../shared/loader.service';
-
+import { StringConstant } from '../../shared/stringconstant';
 
 @Component({
     templateUrl: "app/project/project-add/project-add.html",
@@ -18,7 +18,7 @@ export class ProjectAddComponent implements OnInit {
     project: ProjectModel;
     Userlist: Array<UserModel>;
     constructor(private route: ActivatedRoute,private router: Router,private toast: Md2Toast,private proService: ProjectService,
-        private loader: LoaderService) {
+        private loader: LoaderService,private stringConstant: StringConstant) {
         this.projects = new Array<ProjectModel>();
         this.project = new ProjectModel();
 
@@ -77,7 +77,7 @@ export class ProjectAddComponent implements OnInit {
                     }
                     else {
                         this.toast.show("Project Successfully Added.");
-                        this.router.navigate(['/project/list']);
+                        this.router.navigate([this.stringConstant.projectList]);
                     }
                     this.loader.loader = false;
                 }, err => {
@@ -103,7 +103,7 @@ export class ProjectAddComponent implements OnInit {
     }
 
     gotoProjects() {
-        this.router.navigate(['project/list']);
+        this.router.navigate([this.stringConstant.projectList]);
     }
 
 }

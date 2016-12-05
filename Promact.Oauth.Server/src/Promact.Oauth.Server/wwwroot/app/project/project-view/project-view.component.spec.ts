@@ -16,13 +16,15 @@ import { RouterLinkStubDirective } from '../../shared/mocks/mock.routerLink';
 import { ProjectModule } from '../project.module';
 import { LoaderService } from '../../shared/loader.service';
 import { ActivatedRouteStub } from "../../shared/mocks/mock.activatedroute";
+import { StringConstant } from '../../shared/stringconstant';
 
 let promise: TestBed;
 
-
 describe('Project View Test', () => {
     class MockLocation { }
+    class MockStringConstant { }
     const routes: Routes = [];
+   
     beforeEach(async(() => {
         this.promise = TestBed.configureTestingModule({
             declarations: [RouterLinkStubDirective], //Declaration of mock routerLink used on page.
@@ -35,7 +37,8 @@ describe('Project View Test', () => {
                 { provide: UserModel, useClass: UserModel },
                 { provide: ProjectModel, useClass: ProjectModel },
                 { provide: Location, useClass: MockLocation },
-                { provide: Md2Toast, useClass: MockToast }
+                { provide: Md2Toast, useClass: MockToast },
+                { provide: StringConstant, useClass: StringConstant }
             ]
         }).compileComponents();
 

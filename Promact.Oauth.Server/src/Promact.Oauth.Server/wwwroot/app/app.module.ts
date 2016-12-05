@@ -15,7 +15,7 @@ import { MdSidenavModule } from "@angular2-material/sidenav";
 import { MdToolbarModule } from "@angular2-material/toolbar";
 import { LoaderService } from "./shared/loader.service";
 import { UserRole } from "./shared/userrole.model";
-
+import { StringConstant } from './shared/stringconstant';
 
 
 
@@ -34,6 +34,6 @@ import { UserRole } from "./shared/userrole.model";
         ChangePasswordModule
     ],
     bootstrap: [AppComponent],
-    providers: [HttpService, LoginService, LoaderService, { provide: LocationStrategy, useClass: HashLocationStrategy }, UserRole],
+    providers: [StringConstant,HttpService, LoginService, LoaderService, { provide: LocationStrategy, useClass: HashLocationStrategy }, UserRole],
 })
 export class AppModule { }

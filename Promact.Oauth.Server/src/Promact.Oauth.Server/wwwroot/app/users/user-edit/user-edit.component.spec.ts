@@ -20,6 +20,7 @@ import { LoginService } from '../../login.service';
 import { MockLoginService } from "../../shared/mocks/mock.login.service";
 import { ActivatedRouteStub } from "../../shared/mocks/mock.activatedroute";
 import { UserRole } from "../../shared/userrole.model";
+import { StringConstant } from '../../shared/stringconstant';
 
 describe("User Edit Test", () => {
     let userEditComponent: UserEditComponent;
@@ -45,7 +46,8 @@ describe("User Edit Test", () => {
                 { provide: LoaderService, useClass: MockLoaderService },
                 { provide: LoginService, useClass: MockLoginService },
                 { provide: Location, useClass: MockLocation },
-                { provide: UserRole, useClass: MockUserRole }
+                { provide: UserRole, useClass: MockUserRole },
+                { provide: StringConstant, useClass: StringConstant }
             ]
         }).compileComponents();
        
