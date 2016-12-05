@@ -17,7 +17,7 @@ import { LoaderService } from '../../shared/loader.service';
 import { StringConstant } from '../../shared/stringconstant';
 import { ActivatedRouteStub } from "../../shared/mocks/mock.activatedroute";
 
-let promise: TestBed;
+
 let stringConstant = new StringConstant();
 
 let mockUser = new UserModel();
