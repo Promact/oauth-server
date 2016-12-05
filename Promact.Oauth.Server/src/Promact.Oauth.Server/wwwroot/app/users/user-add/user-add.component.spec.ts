@@ -12,6 +12,8 @@ import { MockRouter } from '../../shared/mocks/mock.router';
 import { UserModule } from '../user.module';
 import { RouterLinkStubDirective } from '../../shared/mocks/mock.routerLink';
 import { LoaderService } from '../../shared/loader.service';
+import { StringConstant } from '../../shared/stringconstant';
+
 let promise: TestBed;
 
 describe('User Add Test', () => {
@@ -32,7 +34,8 @@ describe('User Add Test', () => {
                 { provide: UserService, useClass: MockUserService },
                 { provide: Md2Toast, useClass: MockToast },
                 { provide: UserModel, useClass: UserModel },
-                { provide: LoaderService, useClass: MockLoaderService }]
+                { provide: LoaderService, useClass: MockLoaderService },
+                { provide: StringConstant, useClass: StringConstant }]
         }).compileComponents();
 
     }));
