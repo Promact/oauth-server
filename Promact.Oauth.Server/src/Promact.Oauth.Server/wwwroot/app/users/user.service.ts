@@ -51,5 +51,8 @@ export class UserService {
         return this.httpService.get(this.UserUrl + "/" + password +"/available");
     }
 
-   
+   fetchSlackUserDetails() {
+       return this.httpService.get(this.stringConstant.userUrl + "/slackUserDetails");
+    }
+
 }
