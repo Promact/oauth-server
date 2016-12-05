@@ -15,7 +15,7 @@ import { LoaderService } from '../../shared/loader.service';
 import { MockRouter } from '../../shared/mocks/mock.router';
 import { RouterLinkStubDirective } from '../../shared/mocks/mock.routerLink';
 import { Observable } from 'rxjs/Observable';
-
+import { StringConstant } from '../../shared/stringconstant';
 
 let comp: UserListComponent;
 let fixture: ComponentFixture<UserListComponent>;
@@ -31,7 +31,8 @@ describe("User List Test", () => {
                 { provide: UserService, useClass: MockUserService },
                 { provide: Router, useClass: MockRouter },
                 { provide: Md2Toast, useClass: MockToast },
-                { provide: LoaderService, useClass: MockLoaderService }
+                { provide: LoaderService, useClass: MockLoaderService },
+                { provide: StringConstant, useClass: StringConstant }
 
             ]
         }).compileComponents();

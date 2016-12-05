@@ -4,12 +4,13 @@ import 'rxjs/add/operator/toPromise';
 
 import { UserModel } from './user.model';
 import { PasswordModel } from './user-password.model';
+import { StringConstant } from '../shared/stringconstant';
 
 @Injectable()
 export class UserService {
     private UserUrl = 'api/users';
 
-    constructor(private httpService: HttpService<UserModel>, private httpServiceForPassword: HttpService<PasswordModel>) { }
+    constructor(private httpService: HttpService<UserModel>, private httpServiceForPassword: HttpService<PasswordModel>, private stringConstant: StringConstant) { }
 
     getUsers() {
         return this.httpService.get(this.UserUrl);
@@ -22,7 +23,7 @@ export class UserService {
     }
 
     getUserById(userId: string) {
-        return this.httpService.get(this.UserUrl + "/" + userId);
+        return this.httpService.get(this.stringConstant.userUrl + this.stringConstant.slash + userId);
     }
 
     editUser(editedUser: UserModel) {

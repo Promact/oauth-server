@@ -5,7 +5,7 @@ import { UserRoleModel } from '../userrole.model';
 import { Router } from '@angular/router';
 import { Md2Toast } from 'md2';
 import { LoaderService } from '../../shared/loader.service';
-
+import { StringConstant } from '../../shared/stringconstant';
 
 
 @Component({
@@ -91,7 +91,7 @@ export class UserAddComponent implements OnInit {
     }
 
     goBack() {
-        this.redirectionRoute.navigate(['user/list']);
+        this.redirectionRoute.navigate([this.stringConstant.userList]);
     }
 
 

@@ -14,6 +14,7 @@ import { MockRouter } from '../../shared/mocks/mock.router';
 import { Observable } from 'rxjs/Observable';
 import { ProjectModule } from '../project.module';
 import { LoaderService } from '../../shared/loader.service';
+import { StringConstant } from '../../shared/stringconstant';
 
 
 
@@ -41,7 +42,8 @@ describe('Project Edit Test', () => {
                 { provide: UserModel, useClass: UserModel },
                 { provide: ProjectModel, useClass: ProjectModel },
                 { provide: LoaderService, useClass: MockLoaderService },
-                { provide: Location, useClass: MockLocation }
+                { provide: Location, useClass: MockLocation },
+                { provide: StringConstant, useClass: StringConstant }
             ]
         }).compileComponents();
     }));
