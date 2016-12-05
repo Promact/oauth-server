@@ -83,11 +83,7 @@ namespace Promact.Oauth.Server.Controllers
             }
         }
 
-        /// <summary>
-        /// Call will hit here at everytime for external Login with clientId and it will check for 
-        /// </summary>
-        /// <param name="clientId"></param>
-        /// <returns></returns>
+      
         /**
         * @api {post} OAuth/ExternalLogin
         * @apiVersion 1.0.0
