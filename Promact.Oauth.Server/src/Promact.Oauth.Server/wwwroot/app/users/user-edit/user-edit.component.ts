@@ -6,6 +6,7 @@ import { UserRoleModel } from '../userrole.model';
 import { Md2Toast } from 'md2';
 import { LoaderService } from '../../shared/loader.service';
 import { UserRole } from "../../shared/userrole.model";
+import { StringConstant } from '../../shared/stringconstant';
 
 @Component({
     templateUrl: './app/users/user-edit/user-edit.html'
@@ -17,13 +18,14 @@ export class UserEditComponent implements OnInit {
     listOfRoles: Array<UserRoleModel>;
     admin: boolean;
 
-    constructor(private userService: UserService, private route: ActivatedRoute, private redirectionRoute: Router, private toast: Md2Toast, private loader: LoaderService, private userRole: UserRole) {
+    constructor(private userService: UserService, private route: ActivatedRoute, private redirectionRoute: Router, private toast: Md2Toast, private loginService: LoginService,
+        private loader: LoaderService, private userRole: UserRole, private stringConstant: StringConstant) {
         this.user = new UserModel();
         this.listOfRoles = new Array<UserRoleModel>();
     }
 
     ngOnInit() {
-        if (this.userRole.Role === "Admin") {
+        if (this.userRole.Role === this.stringConstant.admin) {
             this.admin = true;
         }
         else {
@@ -31,7 +33,7 @@ export class UserEditComponent implements OnInit {
         }
         this.getRoles();
         this.route.params.subscribe(params => {
-            let id = this.route.snapshot.params['id'];
+            let id = this.route.snapshot.params[this.stringConstant.paramsId];
             this.userService.getUserById(id)
                 .subscribe(
                 user => this.user = user,

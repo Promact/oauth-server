@@ -13,6 +13,7 @@ import { MockRouter } from '../../shared/mocks/mock.router';
 import { LoaderService } from '../../shared/loader.service';
 import { ActivatedRouteStub } from "../../shared/mocks/mock.activatedroute";
 import { UserRole } from "../../shared/userrole.model";
+import { StringConstant } from '../../shared/stringconstant';
 
 describe("User Edit Test", () => {
     let userService: UserService;

@@ -6,8 +6,8 @@ import { Md2Toast } from 'md2';
 import { LoginService } from '../../login.service';
 import { LoaderService } from '../../shared/loader.service';
 import { UserRole } from "../../shared/userrole.model";
+import { StringConstant } from '../../shared/stringconstant';
 import { DatePipe } from '@angular/common';
-
 
 @Component({
     templateUrl: 'app/project/project-list/project-list.html',
@@ -19,7 +19,7 @@ export class ProjectListComponent implements OnInit {
     project: ProjectModel;
     admin: boolean;
     constructor(private router: Router, private projectService: ProjectService, private toast: Md2Toast, private loginService: LoginService,
-        private loader: LoaderService, private userRole: UserRole) {
+        private loader: LoaderService, private userRole: UserRole, private stringConstant: StringConstant) {
         this.projects = new Array<ProjectModel>();
         this.project = new ProjectModel();
     }
@@ -39,19 +39,15 @@ export class ProjectListComponent implements OnInit {
         });
     }
     ngOnInit() {
-        if (this.userRole.Role === "Admin") {
+        if (this.userRole.Role === this.stringConstant.admin) {
             this.admin = true;}
         else {this.admin = false;}
         this.getProjects();
-       
-        
     }
     editProject(Id) {
-        this.router.navigate(['/project/edit', Id]);
+        this.router.navigate([this.stringConstant.projectEdit, Id]);
     }
     viewProject(Id) {
-        this.router.navigate(['/project/view', Id]);
+        this.router.navigate([this.stringConstant.projectView, Id]);
     }
-
-    
 }

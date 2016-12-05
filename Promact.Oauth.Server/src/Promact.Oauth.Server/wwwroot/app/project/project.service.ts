@@ -2,24 +2,31 @@
 import {HttpService} from "../http.service";
 import 'rxjs/add/operator/toPromise';
 import { ProjectModel } from './project.model';
+import { StringConstant } from '../shared/stringconstant';
+
 @Injectable()
 export class ProjectService {
-    private ProjectUrl = 'api/project';  // URL to web api
-    private UserUrl = 'api/users';
-    constructor(private httpService: HttpService<ProjectModel>) { }
+   
+    constructor(private httpService: HttpService<ProjectModel>, private stringConstant: StringConstant) { }
+   
+    checkDuplicate(project: ProjectModel) {
+        return this.httpService.post(this.stringConstant.projectUrl + this.stringConstant.checkDuplicate, project);
+    }
+
     getUsers() {
-        return this.httpService.get(this.UserUrl + "/orderby/name");
+        return this.httpService.get(this.stringConstant.userUrl + this.stringConstant.getEmployees);
     }
     getProjects() {
-        return this.httpService.get(this.ProjectUrl);
+        return this.httpService.get(this.stringConstant.projectUrl);
     }
     getProject(id: number) {
-        return this.httpService.get(this.ProjectUrl+ "/" +id);
+        return this.httpService.get(this.stringConstant.projectUrl + this.stringConstant.slash + id);
     }
     addProject(project: ProjectModel) {
-        return this.httpService.post(this.ProjectUrl, project);
+        return this.httpService.post(this.stringConstant.projectUrl, project);
     }
-    editProject(project: ProjectModel) {
-        return this.httpService.put(this.ProjectUrl+"/"+ project.id, project);
+    editProject(project: ProjectModel)
+    {
+        return this.httpService.put(this.stringConstant.projectUrl + this.stringConstant.slash+ project.id, project);
     }
 }
