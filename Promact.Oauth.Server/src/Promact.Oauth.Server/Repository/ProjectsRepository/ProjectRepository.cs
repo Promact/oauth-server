@@ -227,7 +227,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// <returns>object of Project</returns>
         public async Task<ProjectAc> GetProjectByGroupNameAsync(string GroupName)
         {
-                var project =await _projectDataRepository.FirstOrDefaultAsync(x => x.SlackChannelName==GroupName);
+                var project =await _projectDataRepository.FirstOrDefaultAsync(x => x.SlackChannelName==GroupName && x.IsActive);
                 var projectAc = new ProjectAc();
                 if (project != null)
                 {
