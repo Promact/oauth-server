@@ -12,7 +12,7 @@ import { Md2Toast } from 'md2';
 import { LoaderService } from '../../shared/loader.service';
 import { RouterLinkStubDirective } from '../../shared/mocks/mock.routerLink';
 import { UserRole } from "../../shared/userrole.model";
-
+import { StringConstant } from '../../shared/stringconstant';
 
 declare var describe, it, beforeEach, expect;
 let comp: ProjectListComponent;
@@ -40,8 +40,8 @@ describe("Project List Test", () => {
                 { provide: Md2Toast, useClass: Md2Toast },
                 { provide: LoginService, useClass: McokLogin },
                 { provide: LoaderService, useClass: MockLoaderService },
-                { provide: UserRole, useClass: MockUserRole }
-                
+                { provide: UserRole, useClass: MockUserRole },
+                { provide: StringConstant, useClass: StringConstant }
             ]
         }).compileComponents();
     }));
