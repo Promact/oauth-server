@@ -536,15 +536,7 @@ namespace Promact.Oauth.Server.Controllers
                 return NotFound();
             }
         }
-        [Route("slackUserDetails")]
-        [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> FetchSlackUserDetails()
-        {
-            List<SlackUserDetailAc> slackUserList = await _userRepository.GetSlackUserDetails();
-            return Ok(slackUserList);
-        }
-
-    
+          
 
         /**
         * @api {get} api/user/:uerid/teammeber 

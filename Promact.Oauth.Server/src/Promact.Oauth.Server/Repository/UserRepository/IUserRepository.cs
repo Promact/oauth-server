@@ -170,11 +170,6 @@ namespace Promact.Oauth.Server.Repository
         /// <returns>object of UserAc</returns>
         Task<List<UserAc>> GetProjectUserByGroupNameAsync(string GroupName);
 
-        /// <summary>
-        /// Fetches the list of Slack User Details
-        /// </summary>
-        /// <returns></returns>
-        Task<List<SlackUserDetailAc>> GetSlackUserDetails();
     }
 
 
