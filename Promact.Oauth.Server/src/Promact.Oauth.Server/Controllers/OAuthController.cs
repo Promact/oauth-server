@@ -102,7 +102,7 @@ namespace Promact.Oauth.Server.Controllers
         {
             try
             {
-                var result = await _appRepository.GetAppDetails(clientId);
+                var result = await _appRepository.GetAppDetailsAsync(clientId);
                 if (result != null)
                 {
                     if (User.Identity.IsAuthenticated)

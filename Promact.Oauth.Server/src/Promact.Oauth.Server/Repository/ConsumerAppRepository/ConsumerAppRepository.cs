@@ -38,7 +38,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// </summary>
         /// <param name="clientId"></param>
         /// <returns></returns>
-        public async Task<ConsumerApps> GetAppDetails(string clientId)
+        public async Task<ConsumerApps> GetAppDetailsAsync(string clientId)
         {
             return await _appsDataRepository.FirstOrDefaultAsync(x => x.AuthId == clientId);
         }
@@ -48,7 +48,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// </summary>
         /// <param name="aapsObject"></param>
         /// <returns></returns>
-        public async Task<int> AddConsumerApps(ConsumerAppsAc consumerApps)
+        public async Task<int> AddConsumerAppsAsync(ConsumerAppsAc consumerApps)
         {
             if (await _appsDataRepository.FirstOrDefaultAsync(x => x.Name == consumerApps.Name) == null)
             {
@@ -69,13 +69,9 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// This method used for get list of apps. -An
         /// </summary>
         /// <returns></returns>
-        public async Task<List<ConsumerApps>> GetListOfConsumerApps()
+        public async Task<List<ConsumerApps>> GetListOfConsumerAppsAsync()
         {
-            List<ConsumerApps> listOfConsumerApps = await _appsDataRepository.GetAll().ToListAsync();
-            if (listOfConsumerApps.Count > 0)
-                return listOfConsumerApps;
-            else
-                throw new FailedToFetchDataException();
+           return await _appsDataRepository.GetAll().ToListAsync(); 
         }
 
         /// <summary>
@@ -83,7 +79,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// </summary>
         /// <param name="id">app object primary key</param>
         /// <returns></returns>
-        public async Task<ConsumerApps> GetConsumerAppById(int id)
+        public async Task<ConsumerApps> GetConsumerAppByIdAsync(int id)
         {
             ConsumerApps consumerApps = await _appsDataRepository.FirstOrDefaultAsync(x => x.Id == id);
             if (consumerApps != null)
@@ -99,7 +95,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// </summary>
         /// <param name="apps"></param>
         /// <returns></returns>
-        public async Task<int> UpdateConsumerApps(ConsumerApps consumerApps)
+        public async Task<int> UpdateConsumerAppsAsync(ConsumerApps consumerApps)
         {
 
             if (await _appsDataRepository.FirstOrDefaultAsync(x => x.Name == consumerApps.Name && x.Id != consumerApps.Id) == null)

@@ -60,7 +60,7 @@ namespace Promact.Oauth.Server.Controllers
             try
             {
                 consumerAppsAc.CreatedBy = _userManager.GetUserId(User);
-                return Ok(await _consumerAppRepository.AddConsumerApps(consumerAppsAc));
+                return Ok(await _consumerAppRepository.AddConsumerAppsAsync(consumerAppsAc));
             }
             catch (ConsumerAppNameIsAlreadyExists)
             {
@@ -86,16 +86,8 @@ namespace Promact.Oauth.Server.Controllers
         [Route("")]
         public async Task<IActionResult> GetConsumerApps()
         {
-            try
-            {
-                List<ConsumerApps> listOfApps = await _consumerAppRepository.GetListOfConsumerApps();
-
-                return Ok(listOfApps);
-            }
-            catch (FailedToFetchDataException)
-            {
-                return BadRequest();
-            }
+            List<ConsumerApps> listOfApps = await _consumerAppRepository.GetListOfConsumerAppsAsync();
+            return Ok(listOfApps);
         }
 
 
@@ -120,7 +112,7 @@ namespace Promact.Oauth.Server.Controllers
         {
             try
             {
-                ConsumerApps consumerApps = await _consumerAppRepository.GetConsumerAppById(id);
+                ConsumerApps consumerApps = await _consumerAppRepository.GetConsumerAppByIdAsync(id);
                 return Ok(consumerApps);
             }
             catch (ConsumerAppNotFound)
@@ -153,12 +145,12 @@ namespace Promact.Oauth.Server.Controllers
         {
             try
             {
-                ConsumerApps consumerApp = await _consumerAppRepository.GetConsumerAppById(consumerAppsAc.Id);
+                ConsumerApps consumerApp = await _consumerAppRepository.GetConsumerAppByIdAsync(consumerAppsAc.Id);
                 consumerApp.Name = consumerAppsAc.Name;
                 consumerApp.CallbackUrl = consumerAppsAc.CallbackUrl;
                 consumerApp.Description = consumerAppsAc.Description;
                 consumerApp.UpdatedDateTime = DateTime.Now;
-                return Ok(await _consumerAppRepository.UpdateConsumerApps(consumerApp));
+                return Ok(await _consumerAppRepository.UpdateConsumerAppsAsync(consumerApp));
             }
             catch (ConsumerAppNameIsAlreadyExists)
             {
