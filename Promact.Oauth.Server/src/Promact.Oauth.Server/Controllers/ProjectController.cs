@@ -10,7 +10,7 @@ using Promact.Oauth.Server.Repository;
 using System.Threading.Tasks;
 using Promact.Oauth.Server.Services;
 using Microsoft.AspNetCore.Authorization;
-using Promact.Oauth.Server.Exception_Handler;
+using Promact.Oauth.Server.ExceptionHandler;
 using Microsoft.Extensions.Logging;
 
 

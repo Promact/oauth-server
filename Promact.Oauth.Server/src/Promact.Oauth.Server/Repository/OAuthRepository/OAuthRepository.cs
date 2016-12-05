@@ -65,7 +65,7 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
         {
             //checking whether with this app email is register or not if  not new OAuth will be created.
             OAuth oAuth = await GetDetails(email, clientId);
-            ConsumerApps consumerApp = await _appRepository.GetAppDetails(clientId);
+            ConsumerApps consumerApp = await _appRepository.GetAppDetailsAsync(clientId);
             if (oAuth == null && consumerApp != null)
             {
                 OAuth newOAuth = new OAuth();
@@ -156,7 +156,7 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
                     if (model.ClientId == clientResponse.ClientId)
                     {
                         //Getting app details from clientId or AuthId
-                        ConsumerApps consumerApp = await _appRepository.GetAppDetails(clientResponse.ClientId);
+                        ConsumerApps consumerApp = await _appRepository.GetAppDetailsAsync(clientResponse.ClientId);
                         // Refresh token and app's secret is checking if match then accesstoken will be send
                         if (consumerApp.AuthSecret == clientResponse.ClientSecret && clientResponse.RefreshToken == oAuth.RefreshToken)
                         {

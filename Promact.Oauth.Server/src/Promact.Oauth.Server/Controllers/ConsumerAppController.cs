@@ -7,8 +7,7 @@ using Promact.Oauth.Server.Repository.ConsumerAppRepository;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Exceptionless;
-using Promact.Oauth.Server.Exception_Handler;
+using Promact.Oauth.Server.ExceptionHandler;
 
 namespace Promact.Oauth.Server.Controllers
 {
@@ -37,20 +36,25 @@ namespace Promact.Oauth.Server.Controllers
         /**
         * @api {post} api/consumerapp 
         * @apiVersion 1.0.0
-        * @apiName ConsumerApp
+        * @apiName AddConsumerApp
         * @apiGroup ConsumerApp
         * @apiParam {object} consumerAppsAc  object
-        * @apiParamExample {json} Request-Example:
-        *      
-        *        {
-        *             "Name":"ProjectName",
-        *             "Description":"True",
-        *             "CallbackUrl":"1",
-        *        }      
+        * @apiParamExample {json} Request-Example:  
+        *  {
+        *     "Name":"ProjectName",
+        *     "Description":"True",
+        *     "CallbackUrl":"1",
+        *  }      
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
         * {
-        *     "description":"return true if succesfully consumer app has been added else return false."
+        *    true
+        * }
+        * @apiError ConsumerAppNameIsAlreadyExists The ConsumerApp Name is Already Exists
+        * @apiErrorExample {json} Error-Response:
+        * HTTP/1.1 400 Bad Request 
+        * {
+        *   "error": "ConsumerAppNameIsAlreadyExists"
         * }
         */
         [HttpPost]
@@ -60,7 +64,7 @@ namespace Promact.Oauth.Server.Controllers
             try
             {
                 consumerAppsAc.CreatedBy = _userManager.GetUserId(User);
-                return Ok(await _consumerAppRepository.AddConsumerApps(consumerAppsAc));
+                return Ok(await _consumerAppRepository.AddConsumerAppsAsync(consumerAppsAc));
             }
             catch (ConsumerAppNameIsAlreadyExists)
             {
@@ -72,45 +76,55 @@ namespace Promact.Oauth.Server.Controllers
         /**
         * @api {get} api/consumerapp 
         * @apiVersion 1.0.0
-        * @apiName ConsumerApp
+        * @apiName GetConsumerApps
         * @apiGroup ConsumerApp
-        * @apiParam {null} no parameter
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
         * {
-        * 
-        *   "description":"retun consumer app list"
+        *   {
+        *   "Name":"ProjectName",
+        *   "Description":"SlackChannelName",
+        *   "CallbackUrl ":"localhost:35716/oAuth/RefreshToken",
+        *   "AuthId ":"XyzDemo123DSQWE",
+        *   "AuthSecret ":"XyzWERTCDSwasaswre232_e322"
+        *   }
         * }
         */
         [HttpGet]
         [Route("")]
         public async Task<IActionResult> GetConsumerApps()
         {
-            try
-            {
-                List<ConsumerApps> listOfApps = await _consumerAppRepository.GetListOfConsumerApps();
-                return Ok(listOfApps);
-            }
-            catch (FailedToFetchDataException)
-            {
-                return BadRequest();
-            }
+            List<ConsumerApps> listOfApps = await _consumerAppRepository.GetListOfConsumerAppsAsync();
+            return Ok(listOfApps);
         }
 
 
         /**
        * @api {get} api/consumerapp/id 
        * @apiVersion 1.0.0
-       * @apiName ConsumerApp
+       * @apiName GetConsumerAppById
        * @apiGroup ConsumerApp
-       * @apiParam {int} id 
+       * @apiParam {int} id
+       * @apiParamExample {json} Request-Example:  
+       *        {
+       *            "id":"1"
+       *        }     
        * @apiSuccessExample {json} Success-Response:
-       * {
-       *   "id":"1",
-       * }
        * HTTP/1.1 200 OK 
        * {
-       *   "description":"retun consumer app object"
+       *  {
+       *   "Name":"ProjectName",
+       *   "Description":"SlackChannelName",
+       *   "CallbackUrl ":"localhost:35716/oAuth/RefreshToken",
+       *   "AuthId ":"XyzDemo123DSQWE",
+       *   "AuthSecret ":"XyzWERTCDSwasaswre232_e322"
+       *   }
+       * }
+       * @apiError ConsumerAppNotFound The id of the ConsumerApp was not found.
+       * @apiErrorExample {json} Error-Response:
+       * HTTP/1.1 404 Not Found
+       * {
+       *   "error": "ConsumerAppNotFound"
        * }
        */
         [HttpGet]
@@ -119,7 +133,7 @@ namespace Promact.Oauth.Server.Controllers
         {
             try
             {
-                ConsumerApps consumerApps = await _consumerAppRepository.GetConsumerAppById(id);
+                ConsumerApps consumerApps = await _consumerAppRepository.GetConsumerAppByIdAsync(id);
                 return Ok(consumerApps);
             }
             catch (ConsumerAppNotFound)
@@ -131,19 +145,25 @@ namespace Promact.Oauth.Server.Controllers
         /**
         * @api {put} api/consumerapp 
         * @apiVersion 1.0.0
-        * @apiName ConsumerApp
+        * @apiName UpdateConsumerApp
         * @apiGroup ConsumerApp
         * @apiParam {object} consumerAppsAc object
         * @apiParamExample {json} Request-Example:  
-          *        {
-          *             "Name":"ProjectName",
-          *             "Description":"True",
-          *             "CallbackUrl":"1",
-          *        } 
+        *       {
+        *             "Name":"ProjectName",
+        *             "Description":"True",
+        *             "CallbackUrl":"1"
+        *       } 
+        * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
         * {
-        *
-        *   "description":"return true if succesfully consumer app has been updated else return false."
+        *   true
+        * }
+        * @apiError ConsumerAppNameIsAlreadyExists The ConsumerApp Name is Already Exists
+        * @apiErrorExample {json} Error-Response:
+        * HTTP/1.1 400 Bad Request
+        * {
+        *   "error": "ConsumerAppNameIsAlreadyExists"
         * }
         */
         [HttpPut]
@@ -152,12 +172,12 @@ namespace Promact.Oauth.Server.Controllers
         {
             try
             {
-                ConsumerApps consumerApp = await _consumerAppRepository.GetConsumerAppById(consumerAppsAc.Id);
+                ConsumerApps consumerApp = await _consumerAppRepository.GetConsumerAppByIdAsync(consumerAppsAc.Id);
                 consumerApp.Name = consumerAppsAc.Name;
                 consumerApp.CallbackUrl = consumerAppsAc.CallbackUrl;
                 consumerApp.Description = consumerAppsAc.Description;
                 consumerApp.UpdatedDateTime = DateTime.Now;
-                return Ok(await _consumerAppRepository.UpdateConsumerApps(consumerApp));
+                return Ok(await _consumerAppRepository.UpdateConsumerAppsAsync(consumerApp));
             }
             catch (ConsumerAppNameIsAlreadyExists)
             {

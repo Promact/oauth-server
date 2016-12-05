@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Promact.Oauth.Server.Constants;
 using Microsoft.Extensions.Logging;
-using Promact.Oauth.Server.Exception_Handler;
+using Promact.Oauth.Server.ExceptionHandler;
 
 namespace Promact.Oauth.Server.Repository.ProjectsRepository
 {
