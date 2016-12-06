@@ -49,7 +49,7 @@ namespace Promact.Oauth.Server.Tests
                 JoiningDate = DateTime.UtcNow,
                 RoleName = _stringConstant.Employee
             };
-            var id = await _userRepository.AddUser(_testUser, _stringConstant.RawFirstNameForTest);
+            var id = await _userRepository.AddUserAsync(_testUser, _stringConstant.RawFirstNameForTest);
             Assert.NotEqual(string.Empty, id);
         }
 
@@ -92,8 +92,8 @@ namespace Promact.Oauth.Server.Tests
                 JoiningDate = DateTime.UtcNow,
                 RoleName = _stringConstant.Employee
             };
-            var result = await _userRepository.AddUser(_testUser, _stringConstant.RawFirstNameForTest);
-            var exists = await _userRepository.CheckEmailIsExists(_stringConstant.RawEmailIdForTest);
+            var result = await _userRepository.AddUserAsync(_testUser, _stringConstant.RawFirstNameForTest);
+            var exists = await _userRepository.CheckEmailIsExistsAsync(_stringConstant.RawEmailIdForTest);
             Assert.Equal(true, exists);
         }
 
@@ -114,8 +114,8 @@ namespace Promact.Oauth.Server.Tests
                 JoiningDate = DateTime.UtcNow,
                 RoleName = _stringConstant.Employee
             };
-            var id = await _userRepository.AddUser(_testUser, _stringConstant.RawFirstNameForTest);
-            var exists = await _userRepository.FindByUserName(_stringConstant.RawEmailIdForTest);
+            var id = await _userRepository.AddUserAsync(_testUser, _stringConstant.RawFirstNameForTest);
+            var exists = await _userRepository.FindByUserNameAsync(_stringConstant.RawEmailIdForTest);
             Assert.Equal(true, exists);
         }
 
@@ -136,7 +136,7 @@ namespace Promact.Oauth.Server.Tests
                 JoiningDate = DateTime.UtcNow,
                 RoleName = _stringConstant.Employee
             };
-            string id = await _userRepository.AddUser(_testUser, _stringConstant.CreatedBy);
+            string id = await _userRepository.AddUserAsync(_testUser, _stringConstant.CreatedBy);
             var user = await _userManager.FindByIdAsync(id);
             Assert.NotNull(id);
         }
@@ -158,13 +158,13 @@ namespace Promact.Oauth.Server.Tests
                 JoiningDate = DateTime.UtcNow,
                 RoleName = _stringConstant.Employee
             };
-            var userId = await _userRepository.AddUser(_testUser, _stringConstant.RawFirstNameForTest);
+            var userId = await _userRepository.AddUserAsync(_testUser, _stringConstant.RawFirstNameForTest);
             var user = await _userManager.FindByIdAsync(userId);
             var newUser = _mapper.Map<ApplicationUser, UserAc>(user);
             newUser.RoleName = _stringConstant.Employee;
             newUser.FirstName = _stringConstant.FirstName;
             newUser.SlackUserName = _stringConstant.FirstName;
-            string id = await _userRepository.UpdateUserDetails(newUser, _stringConstant.RawFirstNameForTest);
+            string id = await _userRepository.UpdateUserDetailsAsync(newUser, _stringConstant.RawFirstNameForTest);
             var editedUser = _userManager.FindByIdAsync(id).Result;
             Assert.Equal(_stringConstant.FirstName, editedUser.FirstName);
         }
@@ -231,8 +231,8 @@ namespace Promact.Oauth.Server.Tests
                 JoiningDate = DateTime.UtcNow,
                 RoleName = _stringConstant.Employee
             };
-            string id = await _userRepository.AddUser(_testUser, _stringConstant.RawFirstNameForTest);
-            var user = await _userRepository.TeamLeaderByUserSlackId(_stringConstant.RawFirstNameForTest);
+            string id = await _userRepository.AddUserAsync(_testUser, _stringConstant.RawFirstNameForTest);
+            var user = await _userRepository.TeamLeaderByUserSlackIdAsync(_stringConstant.RawFirstNameForTest);
             Assert.Equal(0, user.Count);
         }
 
@@ -264,9 +264,9 @@ namespace Promact.Oauth.Server.Tests
                 JoiningDate = DateTime.UtcNow,
                 RoleName = _stringConstant.Admin
             };
-            string id = await _userRepository.AddUser(_testUser, _stringConstant.RawFirstNameForTest);
-            id = await _userRepository.AddUser(userLocal, _stringConstant.RawFirstNameForTest);
-            var user = await _userRepository.ManagementDetails();
+            string id = await _userRepository.AddUserAsync(_testUser, _stringConstant.RawFirstNameForTest);
+            id = await _userRepository.AddUserAsync(userLocal, _stringConstant.RawFirstNameForTest);
+            var user = await _userRepository.ManagementDetailsAsync();
             Assert.Equal(1, user.Count);
         }
 
@@ -320,8 +320,8 @@ namespace Promact.Oauth.Server.Tests
                 JoiningDate = DateTime.UtcNow,
                 RoleName = _stringConstant.Employee
             };
-            var id = await _userRepository.AddUser(_testUser, _stringConstant.RawFirstNameForTest);
-            var user = await _userRepository.GetUserDetail(_stringConstant.RawEmailIdForTest);
+            var id = await _userRepository.AddUserAsync(_testUser, _stringConstant.RawFirstNameForTest);
+            var user = await _userRepository.GetUserDetailAsync(_stringConstant.RawEmailIdForTest);
             Assert.Equal(id, user.Id);
         }
 
@@ -342,8 +342,8 @@ namespace Promact.Oauth.Server.Tests
                 JoiningDate = DateTime.UtcNow,
                 RoleName = _stringConstant.Employee
             };
-            var id = await _userRepository.AddUser(_testUser, _stringConstant.RawFirstNameForTest);
-            var result = _userRepository.FindUserBySlackUserName(_stringConstant.RawFirstNameForTest);
+            var id = await _userRepository.AddUserAsync(_testUser, _stringConstant.RawFirstNameForTest);
+            var result = _userRepository.FindUserBySlackUserNameAsync(_stringConstant.RawFirstNameForTest);
             Assert.NotNull(result);
         }
 
@@ -365,8 +365,8 @@ namespace Promact.Oauth.Server.Tests
                 JoiningDate = DateTime.UtcNow,
                 RoleName = _stringConstant.Employee
             };
-            var id = await _userRepository.AddUser(_testUser, _stringConstant.RawFirstNameForTest);
-            var result = await _userRepository.IsAdmin(_testUser.SlackUserId);
+            var id = await _userRepository.AddUserAsync(_testUser, _stringConstant.RawFirstNameForTest);
+            var result = await _userRepository.IsAdminAsync(_testUser.SlackUserId);
             Assert.Equal(false, result);
         }
 
@@ -387,7 +387,7 @@ namespace Promact.Oauth.Server.Tests
                 JoiningDate = DateTime.UtcNow,
                 RoleName = _stringConstant.Employee
             };
-            string id = await _userRepository.AddUser(_testUser, _stringConstant.CreatedBy);
+            string id = await _userRepository.AddUserAsync(_testUser, _stringConstant.CreatedBy);
             var userRole = await _userRepository.GetUserRoleAsync(_testUser.Id);
             Assert.Equal(1, userRole.Count());
         }
@@ -409,7 +409,7 @@ namespace Promact.Oauth.Server.Tests
                 JoiningDate = DateTime.UtcNow,
                 RoleName = _stringConstant.Admin
             };
-            string id = await _userRepository.AddUser(_testUser, _stringConstant.CreatedBy);
+            string id = await _userRepository.AddUserAsync(_testUser, _stringConstant.CreatedBy);
             var userRole = await _userRepository.GetUserRoleAsync(_testUser.Id);
             Assert.Equal(1, userRole.Count());
         }
@@ -429,7 +429,7 @@ namespace Promact.Oauth.Server.Tests
                 RoleName = _stringConstant.Employee
             };
            
-            string userId = await _userRepository.AddUser(_testUser, _stringConstant.CreatedBy);
+            string userId = await _userRepository.AddUserAsync(_testUser, _stringConstant.CreatedBy);
             ProjectAc projectac = new ProjectAc()
             {
                 Name = _stringConstant.Name,

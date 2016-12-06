@@ -45,11 +45,11 @@ namespace Promact.Oauth.Server.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("teamLeaderDetails/{slackUserId}")]
-        public async Task<IActionResult> TeamLeaderByUserId(string slackUserId)
+        public async Task<IActionResult> TeamLeaderByUserIdAsync(string slackUserId)
         {
             try
             {
-                var user = await _userRepository.TeamLeaderByUserSlackId(slackUserId);
+                var user = await _userRepository.TeamLeaderByUserSlackIdAsync(slackUserId);
                 return Ok(user);
             }
             catch (Exception ex)
@@ -65,11 +65,11 @@ namespace Promact.Oauth.Server.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("managementDetails")]
-        public async Task<IActionResult> ManagementDetails()
+        public async Task<IActionResult> ManagementDetailsAsync()
         {
             try
             {
-                var user = await _userRepository.ManagementDetails();
+                var user = await _userRepository.ManagementDetailsAsync();
                 return Ok(user);
             }
             catch (Exception ex)
@@ -103,9 +103,9 @@ namespace Promact.Oauth.Server.Controllers
 
         [HttpGet]
         [Route("userIsAdmin/{slackUserId}")]
-        public async Task<IActionResult> UserIsAdmin(string slackUserId)
+        public async Task<IActionResult> UserIsAdminAsync(string slackUserId)
         {
-            var result = await _userRepository.IsAdmin(slackUserId);
+            var result = await _userRepository.IsAdminAsync(slackUserId);
             return Ok(result);
         }
     }
