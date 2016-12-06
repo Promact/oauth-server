@@ -91,5 +91,7 @@
         public string DateFormate { get { return "dd'/'MM'/'yyyy"; } }
         public string TeamLeaderNotAssign { get { return "Not Assigned"; } }
         public string DomainAddress { get { return "@promactinfo.com"; } }
+        public string Dot { get { return "."; } }
+        public string ZeroDot { get { return "0."; } }
     }
 }

@@ -12,7 +12,7 @@ namespace Promact.Oauth.Server.Repository
         /// This method is used for adding user and return its id
         /// </summary>
         /// <param name="applicationUser">UserAc Application class object</param>
-        Task<string> AddUser(UserAc newUser, string createdBy);
+        Task<string> AddUserAsync(UserAc newUser, string createdBy);
 
 
         /// <summary>
@@ -20,27 +20,27 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="id">string id</param>
         /// <returns>UserAc Application class object</returns>
-        Task<UserAc> GetById(string id);
+        Task<UserAc> GetByIdAsync(string id);
 
 
         /// <summary>
         /// This method used for update user and return its id
         /// </summary>
         /// <param name="editedUser">UserAc Application class object</param>
-        Task<string> UpdateUserDetails(UserAc editedUser, string updatedBy);
+        Task<string> UpdateUserDetailsAsync(UserAc editedUser, string updatedBy);
 
 
         /// <summary>
         /// This method used forget list of users
         /// </summary>
         /// <returns>List of all users</returns>
-        IEnumerable<UserAc> GetAllUsers();
+        Task<IEnumerable<UserAc>> GetAllUsersAsync();
 
         /// <summary>
         /// This method  get the list of Employees
         /// </summary>
         /// <returns>List of all Employees</returns>
-        Task<List<UserAc>> GetAllEmployees();
+        Task<IEnumerable<UserAc>> GetAllEmployeesAsync();
         /// <summary>
         /// This method used for get role list. 
         /// </summary>
@@ -52,7 +52,7 @@ namespace Promact.Oauth.Server.Repository
         /// This method is used for changing the password of an user
         /// </summary>
         /// <param name="passwordModel">ChangePasswordViewModel type object</param>
-        Task<string> ChangePassword(ChangePasswordViewModel passwordModel);
+        Task<string> ChangePasswordAsync(ChangePasswordViewModel passwordModel);
 
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="userName">string userName</param>
         /// <returns> boolean: true if the user name exists, false if does not exist</returns>
-        Task<bool> FindByUserName(string userName);
+        Task<bool> FindByUserNameAsync(string userName);
 
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="email"></param>
         /// <returns> boolean: true if the email exists, false if does not exist</returns>
-        Task<bool> CheckEmailIsExists(string email);
+        Task<bool> CheckEmailIsExistsAsync(string email);
 
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="slackUserName"></param>
         /// <returns></returns>
-        ApplicationUser FindUserBySlackUserName(string slackUserName);
+        Task<ApplicationUser> FindUserBySlackUserNameAsync(string slackUserName);
 
         /// <summary>
         /// This method is used to send email to the currently added user
@@ -96,21 +96,21 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        Task<List<ApplicationUser>> TeamLeaderByUserSlackId(string userSlackName);
+        Task<List<ApplicationUser>> TeamLeaderByUserSlackIdAsync(string userSlackName);
 
         /// <summary>
         /// Method to get list of management people
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        Task<List<ApplicationUser>> ManagementDetails();
+        Task<List<ApplicationUser>> ManagementDetailsAsync();
 
         /// <summary>
         /// Used to fetch the userdetail by given UserName 
         /// </summary>
         /// <param name="UserName"></param>
         /// <returns>object of UserAc</returns>
-        Task<UserAc> GetUserDetail(string UserName);
+        Task<UserAc> GetUserDetailAsync(string UserName);
 
 
 
@@ -126,7 +126,7 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="userName"></param>
         /// <returns>details of user</returns>
-        Task<UserAc> GetUserDetailByUserName(string UserName);
+        Task<UserAc> GetUserDetailByUserNameAsync(string UserName);
 
         /// <summary>
         /// Method to get the number of casual leave allowed to a user by slackUserId
@@ -140,14 +140,14 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="slackUserId"></param>
         /// <returns>true or false</returns>
-        Task<bool> IsAdmin(string slackUserId);
+        Task<bool> IsAdminAsync(string slackUserId);
 
         /// <summary>
         /// This method used for re -send mail for user credentails
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<bool> ReSendMail(string id);
+        Task<bool> ReSendMailAsync(string id);
 
         /// <summary>
         /// Method to get User Role
@@ -174,7 +174,7 @@ namespace Promact.Oauth.Server.Repository
         /// Fetches the list of Slack User Details
         /// </summary>
         /// <returns></returns>
-        Task<List<SlackUserDetailAc>> GetSlackUserDetails();
+        Task<List<SlackUserDetailAc>> GetSlackUserDetailsAsync();
     }
 
 
