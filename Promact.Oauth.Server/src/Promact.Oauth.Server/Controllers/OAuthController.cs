@@ -74,12 +74,18 @@ namespace Promact.Oauth.Server.Controllers
             catch (NullReferenceException ex)
             {
                 ex.ToExceptionless().Submit();
-                throw;
+                // If catch error, redirect to promact ERP message page and will display error.
+                var returnUrl = _appSettingUtil.Value.PromactErpUrl + _stringConstant.ErpAuthorizeUrl
+             + _stringConstant.Message + ex.Message;
+                return Redirect(returnUrl);
             }
             catch (HttpRequestException ex)
             {
                 ex.ToExceptionless().Submit();
-                throw;
+                // If catch error, redirect to promact ERP message page and will display error.
+                var returnUrl = _appSettingUtil.Value.PromactErpUrl + _stringConstant.ErpAuthorizeUrl
+             + _stringConstant.Message + ex.Message;
+                return Redirect(returnUrl);
             }
         }
 
@@ -93,7 +99,7 @@ namespace Promact.Oauth.Server.Controllers
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
         * {
-        *     "Description":"Redirect to Promact OAuth server external login page"
+        *     "Description":"Redirect to Promact OAuth server external login page. If user already login, then Redirect to Authorize user to external server."
         * }
         */
 
@@ -110,8 +116,8 @@ namespace Promact.Oauth.Server.Controllers
                         string returnUrl = await _oAuthRepository.UserAlreadyLoginAsync(User.Identity.Name, clientId, result.CallbackUrl);
                         if (String.IsNullOrEmpty(returnUrl))
                         {
-                            returnUrl = _appSettingUtil.Value.PromactErpUrl + _stringConstant.ErpAuthorizeUrl;
-                            returnUrl += _stringConstant.Message + _stringConstant.InCorrectSlackName;
+                            returnUrl = _appSettingUtil.Value.PromactErpUrl + _stringConstant.ErpAuthorizeUrl
+                             + _stringConstant.Message + _stringConstant.InCorrectSlackName;
                         }
                         return Redirect(returnUrl);
                     }
@@ -128,12 +134,18 @@ namespace Promact.Oauth.Server.Controllers
             catch (NullReferenceException ex)
             {
                 ex.ToExceptionless().Submit();
-                throw;
+                // If catch error, redirect to promact ERP message page and will display error.
+                var returnUrl = _appSettingUtil.Value.PromactErpUrl + _stringConstant.ErpAuthorizeUrl
+                             + _stringConstant.Message + ex.Message;
+                return Redirect(returnUrl);
             }
             catch (HttpRequestException ex)
             {
                 ex.ToExceptionless().Submit();
-                throw;
+                // If catch error, redirect to promact ERP message page and will display error.
+                var returnUrl = _appSettingUtil.Value.PromactErpUrl + _stringConstant.ErpAuthorizeUrl
+             + _stringConstant.Message + ex.Message;
+                return Redirect(returnUrl);
             }
         }
     }
