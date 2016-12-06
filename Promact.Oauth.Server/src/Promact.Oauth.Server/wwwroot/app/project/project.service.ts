@@ -5,16 +5,11 @@ import { ProjectModel } from './project.model';
 @Injectable()
 export class ProjectService {
     private ProjectUrl = 'api/project';  // URL to web api
-    private UserUrl = 'api/user';
+    private UserUrl = 'api/users';
     constructor(private httpService: HttpService<ProjectModel>) { }
-    //check duplicate
-    checkDuplicate(project: ProjectModel) {
-        return this.httpService.post(this.ProjectUrl + "/checkDuplicate", project);
-    }
 
-    //list of users
     getUsers() {
-        return this.httpService.get(this.UserUrl + "/getEmployees");
+        return this.httpService.get(this.UserUrl + "/orderby/name");
     }
     getProjects() {
         return this.httpService.get(this.ProjectUrl);
