@@ -43,7 +43,7 @@ namespace Promact.Oauth.Server.Controllers
         #region public Methods
       
         /**
-        * @api {get} api/users 
+        * @api {get} api/users/AllUsersAsync 
         * @apiVersion 1.0.0
         * @apiName AllUsersAsync
         * @apiGroup User
@@ -71,8 +71,8 @@ namespace Promact.Oauth.Server.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AllUsersAsync()
         {
-            var user = await _userRepository.GetAllUsersAsync();
-            return Ok(user);
+           var user = await _userRepository.GetAllUsersAsync();
+           return Ok(user);
         }
 
         /**
