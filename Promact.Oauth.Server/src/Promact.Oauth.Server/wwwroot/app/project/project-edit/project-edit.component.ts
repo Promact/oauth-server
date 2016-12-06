@@ -8,8 +8,8 @@ import { Md2Toast } from 'md2';
 import { LoaderService } from '../../shared/loader.service';
 
 @Component({
-    templateUrl: "app/project/project-edit/project-edit.html",
-    
+    //templateUrl: "app/project/project-edit/project-edit.html",
+    templateUrl: "project-edit.html"
 })
 export class ProjectEditComponent implements OnInit {
     project: ProjectModel;

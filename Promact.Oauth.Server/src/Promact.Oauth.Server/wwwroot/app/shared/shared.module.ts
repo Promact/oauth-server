@@ -17,7 +17,7 @@ import { Md2Module } from 'md2';
         MdSidenavModule.forRoot(),
         MdInputModule.forRoot(),
         MdCheckboxModule.forRoot(),
-        Md2Module.forRoot()
+        //Md2Module.forRoot()
     ],
     declarations: [],
     exports: [CommonModule, FormsModule, MdButtonModule, MdToolbarModule, MdSidenavModule, MdInputModule, MdCheckboxModule, Md2Module]

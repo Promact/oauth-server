@@ -9,9 +9,8 @@ import { UserRole } from "../../shared/userrole.model";
 
 
 @Component({
-    templateUrl: 'app/project/project-list/project-list.html',
-    
-
+    //templateUrl: 'app/project/project-list/project-list.html',
+    templateUrl: "project-list.html"
 })
 export class ProjectListComponent implements OnInit {
     projects: Array<ProjectModel>;
@@ -40,11 +39,11 @@ export class ProjectListComponent implements OnInit {
        
         
     }
-    editProject(Id) {
-        this.router.navigate(['/project/edit', Id]);
+    editProject(id:number) {
+        this.router.navigate(['/project/edit', id]);
     }
-    viewProject(Id) {
-        this.router.navigate(['/project/view', Id]);
+    viewProject(id:number) {
+        this.router.navigate(['/project/view', id]);
     }
 
     

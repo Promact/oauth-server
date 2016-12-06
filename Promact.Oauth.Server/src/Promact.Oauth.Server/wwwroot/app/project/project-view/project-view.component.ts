@@ -7,7 +7,8 @@ import { Location } from "@angular/common";
 import { Md2Toast } from 'md2';
 
 @Component({
-    templateUrl: "app/project/project-view/project-view.html",
+    //templateUrl: "app/project/project-view/project-view.html",
+    templateUrl:"project-view.html"
 })
 export class ProjectViewComponent implements OnInit {
     project: ProjectModel;

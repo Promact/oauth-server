@@ -6,7 +6,8 @@ import { Md2Toast } from 'md2';
 import { LoaderService } from '../../shared/loader.service';
 
 @Component({
-    templateUrl: "app/consumerapp/consumerapp-add/consumerapp-add.html",
+    //templateUrl: "app/consumerapp/consumerapp-add/consumerapp-add.html",
+    templateUrl: "consumerapp-add.html"
 })
 export class ConsumerappAddComponent {
     consumerModel: ConsumerAppModel;
@@ -14,7 +15,7 @@ export class ConsumerappAddComponent {
         this.consumerModel = new ConsumerAppModel();
     }
 
-    submitApps(consumerModel) {
+    submitApps(consumerModel:ConsumerAppModel) {
         this.loader.loader = true;
         this.consumerAppService.addConsumerApps(consumerModel).subscribe((result) => {
             this.toast.show('Consumer App is added successfully.');

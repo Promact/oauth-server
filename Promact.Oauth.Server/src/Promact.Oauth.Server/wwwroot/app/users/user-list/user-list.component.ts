@@ -8,7 +8,8 @@ import { LoaderService } from '../../shared/loader.service';
 
 
 @Component({
-    templateUrl: "app/users/user-list/user-list.html"
+    templateUrl: "user-list.html"
+    //templateUrl: "app/users/user-list/user-list.html"
 })
 
 export class UserListComponent implements OnInit {
@@ -28,11 +29,11 @@ export class UserListComponent implements OnInit {
         });
     }
 
-    userDetails(id) {
+    userDetails(id: number) {
         this.router.navigate(['/user/details', id]);
     }
 
-    userEdit(id) {
+    userEdit(id : number) {
         this.router.navigate(['/user/edit', id]);
     }
 
@@ -40,7 +41,7 @@ export class UserListComponent implements OnInit {
         this.getUsers();
     }
 
-    reSendMail(user) {
+    reSendMail(user: UserModel) {
         this.loader.loader = true;
         this.userService.reSendMail(user.Id).subscribe((response) => {
             if (response === true) {
