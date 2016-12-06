@@ -84,14 +84,12 @@ namespace Promact.Oauth.Server.Repository
         /// This method is used to add new user
         /// </summary>
         /// <param name="applicationUser">UserAc Application class object</param>
-        public async Task<string> AddUser(UserAc newUser, string createdBy)
+        public async Task<string> AddUserAsync(UserAc newUser, string createdBy)
         {
-            //try
-            //{
-            LeaveCalculator LC = new LeaveCalculator();
-            LC = CalculateAllowedLeaves(Convert.ToDateTime(newUser.JoiningDate));
-            newUser.NumberOfCasualLeave = LC.CasualLeave;
-            newUser.NumberOfSickLeave = LC.SickLeave;
+            LeaveCalculator leaveCalculator = new LeaveCalculator();
+            leaveCalculator = CalculateAllowedLeaves(Convert.ToDateTime(newUser.JoiningDate));
+            newUser.NumberOfCasualLeave = leaveCalculator.CasualLeave;
+            newUser.NumberOfSickLeave = leaveCalculator.SickLeave;
             var user = _mapperContext.Map<UserAc, ApplicationUser>(newUser);
             user.UserName = user.Email;
             user.CreatedBy = createdBy;
@@ -103,125 +101,25 @@ namespace Promact.Oauth.Server.Repository
             SendEmail(user, password);
             resultSuccess = await result;
             return user.Id;
-            //}
-
-            //catch (Exception ex)
-            //{
-            //    throw ex;
-            //}
+            
         }
 
         /// <summary>
-        /// Calculat casual leava and sick leave from the date of joining
+        /// this mthod is used to get all role
         /// </summary>
-        /// <param name="dateTime"></param>
         /// <returns></returns>
-        private LeaveCalculator CalculateAllowedLeaves(DateTime dateTime)
-        {
-            double casualAllowed = 0;
-            double sickAllowed = 0;
-            var day = dateTime.Day;
-            var month = dateTime.Month;
-            var year = dateTime.Year;
-            double casualAllow = Convert.ToDouble(_appSettingUtil.Value.CasualLeave);
-            double sickAllow = Convert.ToDouble(_appSettingUtil.Value.SickLeave);
-            if (year >= DateTime.Now.Year)
-            {
-                if (year - DateTime.Now.Year > 365)
-                {
-                    month = 4;
-                    day = 1;
-                }
-                double totalDays = (DateTime.Now - Convert.ToDateTime(dateTime)).TotalDays;
-                if (totalDays > 365)
-                {
-                    month = 4;
-                    day = 1;
-                }
-                if (month >= 4)
-                {
-                    if (day <= 15)
-                    {
-                        casualAllowed = (casualAllow / 12) * (12 - (month - 4));
-                        sickAllowed = (sickAllow / 12) * (12 - (month - 4));
-                    }
-                    else
-                    {
-                        casualAllowed = (casualAllow / 12) * (12 - (month - 3));
-                        sickAllowed = (sickAllow / 12) * (12 - (month - 3));
-                    }
-                }
-                else
-                {
-                    if (day <= 15)
-                    {
-                        casualAllowed = (casualAllow / 12) * (12 - (month + 8));
-                        sickAllowed = (sickAllow / 12) * (12 - (month + 8));
-                    }
-                    else
-                    {
-                        casualAllowed = (casualAllow / 12) * (12 - (month + 9));
-                        sickAllowed = (sickAllow / 12) * (12 - (month + 9));
-                    }
-                }
-
-                if (casualAllowed.ToString().Contains(".") == true)
-                {
-                    string splitCasualAllowed = "0." + casualAllowed.ToString().Split('.')[1];
-                    double casualAllowedConvertedDouble = Convert.ToDouble(splitCasualAllowed);
-                    if (casualAllowedConvertedDouble != 0.5) { casualAllowed = Convert.ToInt32(casualAllowed); }
-
-                }
-                else
-                {
-                    casualAllowed = Convert.ToInt32(casualAllowed);
-                }
-                if (sickAllowed.ToString().Contains(".") == true)
-                {
-                    string splitSickAllowed = "0." + sickAllowed.ToString().Split('.')[1];
-                    double sickAllowedConvertedDouble = Convert.ToDouble(splitSickAllowed);
-                    if (sickAllowedConvertedDouble != 0.5) { sickAllowed = Convert.ToInt32(Math.Floor(sickAllowed)); }
-                    if (sickAllowedConvertedDouble > 0.90) { sickAllowed = sickAllowed + 1; }
-
-                }
-                else
-                {
-                    sickAllowed = Convert.ToInt32(Math.Floor(sickAllowed));
-                }
-            }
-            else
-            {
-                casualAllow = Convert.ToDouble(_appSettingUtil.Value.CasualLeave);
-                sickAllowed = Convert.ToDouble(_appSettingUtil.Value.SickLeave);
-            }
-            LeaveCalculator calculate = new LeaveCalculator
-            {
-                CasualLeave = casualAllowed,
-                SickLeave = sickAllowed
-            };
-
-            return calculate;
-        }
-
         public List<RolesAc> GetRoles()
         {
-            try
+            List<RolesAc> listOfRoleAC = new List<RolesAc>();
+            var roles = _roleManager.Roles;
+            foreach (IdentityRole identityRole in roles.ToList())
             {
-                List<RolesAc> listOfRoleAC = new List<RolesAc>();
-                var roles = _roleManager.Roles;
-                foreach (IdentityRole identityRole in roles.ToList())
-                {
-                    RolesAc roleAc = new RolesAc();
-                    roleAc.Id = identityRole.Id;
-                    roleAc.Name = identityRole.Name;
-                    listOfRoleAC.Add(roleAc);
-                }
-                return listOfRoleAC;
+                RolesAc roleAc = new RolesAc();
+                roleAc.Id = identityRole.Id;
+                roleAc.Name = identityRole.Name;
+                listOfRoleAC.Add(roleAc);
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            return listOfRoleAC;
         }
 
 
@@ -229,17 +127,10 @@ namespace Promact.Oauth.Server.Repository
         /// This method is used for getting the list of all users
         /// </summary>
         /// <returns>List of all users</returns>
-        public IEnumerable<UserAc> GetAllUsers()
+        public async Task<IEnumerable<UserAc>> GetAllUsersAsync()
         {
-            IOrderedQueryable<ApplicationUser> users = _userManager.Users.OrderByDescending(x => x.CreatedDateTime);
-            List<UserAc> userList = new List<UserAc>();
-      
-            foreach (var user in users)
-            {
-                UserAc listItem = _mapperContext.Map<ApplicationUser, UserAc>(user);
-                              userList.Add(listItem);
-            }
-            return userList;
+            var users = await _userManager.Users.OrderByDescending(x=>x.CreatedDateTime).ToListAsync();
+            return _mapperContext.Map<IEnumerable<ApplicationUser>, IEnumerable<UserAc>>(users);
         }
 
 
@@ -247,7 +138,7 @@ namespace Promact.Oauth.Server.Repository
         /// This method is used for getting the list of all Employees
         /// </summary>
         /// <returns>List of all Employees</returns>
-        public async Task<List<UserAc>> GetAllEmployees()
+        public async Task<IEnumerable<UserAc>> GetAllEmployeesAsync()
         {
             var users = await _userManager.Users.Where(user => user.IsActive).OrderBy(user => user.FirstName).ToListAsync();
             return _mapperContext.Map<List<ApplicationUser>, List<UserAc>>(users);
@@ -258,7 +149,7 @@ namespace Promact.Oauth.Server.Repository
         /// This method is used to edit the details of an existing user
         /// </summary>
         /// <param name="editedUser">UserAc Application class object</param>
-        public async Task<string> UpdateUserDetails(UserAc editedUser, string updatedBy)
+        public async Task<string> UpdateUserDetailsAsync(UserAc editedUser, string updatedBy)
         {
             var user = _userManager.Users.FirstOrDefault(x => x.SlackUserName == editedUser.SlackUserName && x.Id != editedUser.Id);
             if (user == null)
@@ -291,19 +182,19 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="id">string id</param>
         /// <returns>UserAc Application class object</returns>
-        public async Task<UserAc> GetById(string id)
+        public async Task<UserAc> GetByIdAsync(string id)
         {
-            try
+           
+            ApplicationUser applicationUser = await _userManager.FindByIdAsync(id);
+            if (applicationUser != null)
             {
-                ApplicationUser user = await _userManager.FindByIdAsync(id);
-                UserAc requiredUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
-                IList<string> identityUserRole = await _userManager.GetRolesAsync(user);
-                requiredUser.RoleName = identityUserRole.FirstOrDefault();
-                return requiredUser;
+                UserAc userAc = _mapperContext.Map<ApplicationUser, UserAc>(applicationUser);
+                IList<string> identityUserRole = await _userManager.GetRolesAsync(applicationUser);
+                userAc.RoleName = identityUserRole.FirstOrDefault();
+                return userAc;
             }
-            catch (Exception exception)
-            {
-                throw exception;
+            else {
+                throw new UserNotFound();
             }
 
         }
@@ -313,7 +204,7 @@ namespace Promact.Oauth.Server.Repository
         /// This method is used to change the password of a particular user
         /// </summary>
         /// <param name="passwordModel">ChangePasswordViewModel type object</param>
-        public async Task<string> ChangePassword(ChangePasswordViewModel passwordModel)
+        public async Task<string> ChangePasswordAsync(ChangePasswordViewModel passwordModel)
         {
             var user = await _userManager.FindByEmailAsync(passwordModel.Email);
             if (user != null)
@@ -333,12 +224,12 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="userName">string userName</param>
         /// <returns> boolean: true if the user name exists, false if does not exist</returns>
-        public async Task<bool> FindByUserName(string userName)
+        public async Task<bool> FindByUserNameAsync(string userName)
         {
             var user = await _userManager.FindByNameAsync(userName);
             if (user == null)
             {
-                return false;
+                throw new UserNotFound();
             }
             return true;
         }
@@ -348,7 +239,7 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="UserName"></param>
         /// <returns>object of UserAc</returns>
-        public async Task<UserAc> GetUserDetail(string UserName)
+        public async Task<UserAc> GetUserDetailAsync(string UserName)
         {
             try
             {
@@ -376,7 +267,7 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="email"></param>
         /// <returns> boolean: true if the email exists, false if does not exist</returns>
-        public async Task<bool> CheckEmailIsExists(string email)
+        public async Task<bool> CheckEmailIsExistsAsync(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
             return user == null ? false : true;
@@ -388,9 +279,9 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="slackUserName"></param>
         /// <returns></returns>
-        public ApplicationUser FindUserBySlackUserName(string slackUserName)
+        public async Task<ApplicationUser> FindUserBySlackUserNameAsync(string slackUserName)
         {
-            var user = _applicationUserDataRepository.FirstOrDefault(x => x.SlackUserName == slackUserName);
+            var user =await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.SlackUserName == slackUserName);
             if (user == null)
                 throw new SlackUserNotFound();
             else
@@ -402,7 +293,7 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<bool> ReSendMail(string id)
+        public async Task<bool> ReSendMailAsync(string id)
         {
             _logger.LogInformation("start Resend Mail Method in User Repository");
             var user = await _userManager.FindByIdAsync(id);
@@ -443,7 +334,7 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="userSlackId"></param>
         /// <returns>list of team leader</returns>
-        public async Task<List<ApplicationUser>> TeamLeaderByUserSlackId(string userSlackId)
+        public async Task<List<ApplicationUser>> TeamLeaderByUserSlackIdAsync(string userSlackId)
         {
             var user = _userManager.Users.FirstOrDefault(x => x.SlackUserId == userSlackId);
             var projects = _projectUserRepository.Fetch(x => x.UserId == user.Id);
@@ -469,7 +360,7 @@ namespace Promact.Oauth.Server.Repository
         /// Method to get management people details
         /// </summary>
         /// <returns>list of management</returns>
-        public async Task<List<ApplicationUser>> ManagementDetails()
+        public async Task<List<ApplicationUser>> ManagementDetailsAsync()
         {
             var management = await _userManager.GetUsersInRoleAsync("Admin");
             List<ApplicationUser> managementUser = new List<ApplicationUser>();
@@ -506,7 +397,7 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="slackUserId"></param>
         /// <returns>true or false</returns>
-        public async Task<bool> IsAdmin(string slackUserId)
+        public async Task<bool> IsAdminAsync(string slackUserId)
         {
             var user = _applicationUserDataRepository.FirstOrDefault(x => x.SlackUserId == slackUserId);
             var isAdmin = await _userManager.IsInRoleAsync(user, _stringConstant.Admin);
@@ -529,7 +420,7 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="userName"></param>
         /// <returns>details of user</returns>
-        public async Task<UserAc> GetUserDetailByUserName(string userName)
+        public async Task<UserAc> GetUserDetailByUserNameAsync(string userName)
         {
             var user = await _userManager.FindByNameAsync(userName);
             return GetUser(user);
@@ -540,7 +431,7 @@ namespace Promact.Oauth.Server.Repository
         /// Fetches the list of Slack User Details
         /// </summary>
         /// <returns></returns>
-        public async Task<List<SlackUserDetailAc>> GetSlackUserDetails()
+        public async Task<List<SlackUserDetailAc>> GetSlackUserDetailsAsync()
         {
             _logger.LogInformation("User Repository: GetSlackUserDetails. Url: " + _appSettingUtil.Value.PromactErpUrl);
             HttpResponseMessage response = await _httpClientRepository.GetAsync(_appSettingUtil.Value.PromactErpUrl, _stringConstant.SlackUsersUrl);
@@ -803,6 +694,98 @@ namespace Promact.Oauth.Server.Repository
             return sb.ToString();
         }
 
+
+        /// <summary>
+        /// Calculat casual leava and sick leave from the date of joining
+        /// </summary>
+        /// <param name="dateTime"></param>
+        /// <returns></returns>
+        private LeaveCalculator CalculateAllowedLeaves(DateTime dateTime)
+        {
+            double casualAllowed = 0;
+            double sickAllowed = 0;
+            var day = dateTime.Day;
+            var month = dateTime.Month;
+            var year = dateTime.Year;
+            double casualAllow = Convert.ToDouble(_appSettingUtil.Value.CasualLeave);
+            double sickAllow = Convert.ToDouble(_appSettingUtil.Value.SickLeave);
+            if (year >= DateTime.Now.Year)
+            {
+                if (year - DateTime.Now.Year > 365)
+                {
+                    month = 4;
+                    day = 1;
+                }
+                double totalDays = (DateTime.Now - Convert.ToDateTime(dateTime)).TotalDays;
+                if (totalDays > 365)
+                {
+                    month = 4;
+                    day = 1;
+                }
+                if (month >= 4)
+                {
+                    if (day <= 15)
+                    {
+                        casualAllowed = (casualAllow / 12) * (12 - (month - 4));
+                        sickAllowed = (sickAllow / 12) * (12 - (month - 4));
+                    }
+                    else
+                    {
+                        casualAllowed = (casualAllow / 12) * (12 - (month - 3));
+                        sickAllowed = (sickAllow / 12) * (12 - (month - 3));
+                    }
+                }
+                else
+                {
+                    if (day <= 15)
+                    {
+                        casualAllowed = (casualAllow / 12) * (12 - (month + 8));
+                        sickAllowed = (sickAllow / 12) * (12 - (month + 8));
+                    }
+                    else
+                    {
+                        casualAllowed = (casualAllow / 12) * (12 - (month + 9));
+                        sickAllowed = (sickAllow / 12) * (12 - (month + 9));
+                    }
+                }
+
+                if (casualAllowed.ToString().Contains(_stringConstant.Dot) == true)
+                {
+                    string splitCasualAllowed =_stringConstant.ZeroDot + casualAllowed.ToString().Split('.')[1];
+                    double casualAllowedConvertedDouble = Convert.ToDouble(splitCasualAllowed);
+                    if (casualAllowedConvertedDouble != 0.5) { casualAllowed = Convert.ToInt32(casualAllowed); }
+
+                }
+                else
+                {
+                    casualAllowed = Convert.ToInt32(casualAllowed);
+                }
+                if (sickAllowed.ToString().Contains(_stringConstant.Dot) == true)
+                {
+                    string splitSickAllowed = _stringConstant.ZeroDot + sickAllowed.ToString().Split('.')[1];
+                    double sickAllowedConvertedDouble = Convert.ToDouble(splitSickAllowed);
+                    if (sickAllowedConvertedDouble != 0.5) { sickAllowed = Convert.ToInt32(Math.Floor(sickAllowed)); }
+                    if (sickAllowedConvertedDouble > 0.90) { sickAllowed = sickAllowed + 1; }
+
+                }
+                else
+                {
+                    sickAllowed = Convert.ToInt32(Math.Floor(sickAllowed));
+                }
+            }
+            else
+            {
+                casualAllow = Convert.ToDouble(_appSettingUtil.Value.CasualLeave);
+                sickAllowed = Convert.ToDouble(_appSettingUtil.Value.SickLeave);
+            }
+            LeaveCalculator calculate = new LeaveCalculator
+            {
+                CasualLeave = casualAllowed,
+                SickLeave = sickAllowed
+            };
+
+            return calculate;
+        }
         #endregion
 
 
