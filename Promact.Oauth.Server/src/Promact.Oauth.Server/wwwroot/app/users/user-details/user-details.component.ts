@@ -7,7 +7,8 @@ import { UserRole } from "../../shared/userrole.model";
 import { LoaderService } from '../../shared/loader.service';
 
 @Component({
-    templateUrl: './app/users/user-details/user-details.html'   
+    //templateUrl: './app/users/user-details/user-details.html'   
+    templateUrl: 'user-details.html'
 })
 
 export class UserDetailsComponent implements OnInit {

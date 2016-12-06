@@ -7,7 +7,8 @@ import { Location } from "@angular/common";
 import { LoaderService } from '../../shared/loader.service';
 
 @Component({
-    templateUrl: "app/consumerapp/consumerapp-edit/consumerapp-edit.html",
+    //templateUrl: "app/consumerapp/consumerapp-edit/consumerapp-edit.html",
+    templateUrl: "consumerapp-edit.html",
 })
 export class ConsumerappEditComponent implements OnInit {
     consumerModel: ConsumerAppModel;
@@ -36,7 +37,7 @@ export class ConsumerappEditComponent implements OnInit {
         });
     }
 
-    updateApps(consumerModel) {
+    updateApps(consumerModel: ConsumerAppModel) {
         this.loader.loader = true;
         this.consumerAppService.updateConsumerApps(consumerModel).subscribe((result) => {
             this.toast.show('Consumer App is updated successfully.');

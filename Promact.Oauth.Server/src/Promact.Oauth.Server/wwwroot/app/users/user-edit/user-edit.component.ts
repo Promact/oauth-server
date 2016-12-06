@@ -10,8 +10,8 @@ import { LoaderService } from '../../shared/loader.service';
 import { UserRole } from "../../shared/userrole.model";
 
 @Component({
-    templateUrl: './app/users/user-edit/user-edit.html'
-
+    //templateUrl: './app/users/user-edit/user-edit.html'
+    templateUrl: 'user-edit.html'
 })
 
 export class UserEditComponent implements OnInit {
