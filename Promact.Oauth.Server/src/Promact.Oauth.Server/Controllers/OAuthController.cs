@@ -82,10 +82,9 @@ namespace Promact.Oauth.Server.Controllers
             catch (HttpRequestException ex)
             {
                 ex.ToExceptionless().Submit();
-                // If catch error, redirect to promact ERP message page and will display error.
-                var returnUrl = _appSettingUtil.Value.PromactErpUrl + _stringConstant.ErpAuthorizeUrl
-             + _stringConstant.Message + ex.Message;
-                return Redirect(returnUrl);
+                // If catch error, redirect to promact OAuth message page and will display error.
+                ViewBag.ErrorMessage = ex.Message;
+                return Redirect("~/Home/Error");
             }
         }
 
@@ -142,10 +141,9 @@ namespace Promact.Oauth.Server.Controllers
             catch (HttpRequestException ex)
             {
                 ex.ToExceptionless().Submit();
-                // If catch error, redirect to promact ERP message page and will display error.
-                var returnUrl = _appSettingUtil.Value.PromactErpUrl + _stringConstant.ErpAuthorizeUrl
-             + _stringConstant.Message + ex.Message;
-                return Redirect(returnUrl);
+                // If catch error, redirect to promact OAuth message page and will display error.
+                ViewBag.ErrorMessage = ex.Message;
+                return Redirect("~/Home/Error");
             }
         }
     }
