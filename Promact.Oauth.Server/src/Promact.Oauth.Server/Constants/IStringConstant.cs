@@ -90,6 +90,8 @@
         string DateFormate { get; }
         string TeamLeaderNotAssign { get; }
         string DomainAddress { get; }
+        string Dot { get; }
+        string ZeroDot { get; }
         string SetSmtpUnSecure { get; }
         string SetSmtpSSL { get; }
     }
