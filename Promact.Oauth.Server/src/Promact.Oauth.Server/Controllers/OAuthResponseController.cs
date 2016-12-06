@@ -1,18 +1,21 @@
 ﻿using Exceptionless;
 using Microsoft.AspNetCore.Mvc;
+using Promact.Oauth.Server.Models;
+using Promact.Oauth.Server.Models.ApplicationClasses;
 using Promact.Oauth.Server.Repository;
 using Promact.Oauth.Server.Services;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Promact.Oauth.Server.Controllers
 {
     [ServiceFilter(typeof(CustomAttribute))]
     [Route("api/[controller]")]
-    public class ProjectUserController : BaseController
+    public class OAuthResponseController : BaseController
     {
         private readonly IUserRepository _userRepository;
-        public ProjectUserController(IUserRepository userRepository)
+        public OAuthResponseController(IUserRepository userRepository)
         {
             _userRepository = userRepository;
         }
@@ -22,16 +25,17 @@ namespace Promact.Oauth.Server.Controllers
         /// </summary>
         /// <param name="userFirstname"></param>
         /// <returns></returns>
+
         [HttpGet]
         [Route("userDetails/{slackUserId}")]
-        public IActionResult UserDetialBySlackUserId(string slackUserId)
+        public IActionResult FetchUserDetialBySlackUserId(string slackUserId)
         {
             try
             {
-                var user = _userRepository.UserDetialByUserSlackId(slackUserId);
+                ApplicationUser user = _userRepository.UserDetialByUserSlackId(slackUserId);
                 return Ok(user);
             }
-            catch (Exception ex)
+            catch (NullReferenceException ex)
             {
                 ex.ToExceptionless().Submit();
                 throw ex;
@@ -49,10 +53,10 @@ namespace Promact.Oauth.Server.Controllers
         {
             try
             {
-                var user = await _userRepository.TeamLeaderByUserSlackId(slackUserId);
-                return Ok(user);
+                List<ApplicationUser> userList = await _userRepository.TeamLeaderByUserSlackId(slackUserId);
+                return Ok(userList);
             }
-            catch (Exception ex)
+            catch (NullReferenceException ex)
             {
                 ex.ToExceptionless().Submit();
                 throw ex;
@@ -67,16 +71,8 @@ namespace Promact.Oauth.Server.Controllers
         [Route("managementDetails")]
         public async Task<IActionResult> ManagementDetails()
         {
-            try
-            {
-                var user = await _userRepository.ManagementDetails();
-                return Ok(user);
-            }
-            catch (Exception ex)
-            {
-                ex.ToExceptionless().Submit();
-                throw ex;
-            }
+            List<ApplicationUser> userList = await _userRepository.ManagementDetails();
+            return Ok(userList);
         }
 
 
@@ -91,10 +87,10 @@ namespace Promact.Oauth.Server.Controllers
         {
             try
             {
-                var casualLeave = _userRepository.GetUserAllowedLeaveBySlackId(slackUserId);
-                return Ok(casualLeave);
+                LeaveAllowed leaveAllowed = _userRepository.GetUserAllowedLeaveBySlackId(slackUserId);
+                return Ok(leaveAllowed);
             }
-            catch (Exception ex)
+            catch (NullReferenceException ex)
             {
                 ex.ToExceptionless().Submit();
                 throw ex;
@@ -105,8 +101,16 @@ namespace Promact.Oauth.Server.Controllers
         [Route("userIsAdmin/{slackUserId}")]
         public async Task<IActionResult> UserIsAdmin(string slackUserId)
         {
-            var result = await _userRepository.IsAdmin(slackUserId);
-            return Ok(result);
+            try
+            {
+                bool result = await _userRepository.IsAdmin(slackUserId);
+                return Ok(result);
+            }
+            catch (NullReferenceException ex)
+            {
+                ex.ToExceptionless().Submit();
+                throw ex;
+            }
         }
     }
 }
