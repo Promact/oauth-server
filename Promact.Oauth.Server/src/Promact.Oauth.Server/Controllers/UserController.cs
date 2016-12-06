@@ -219,6 +219,13 @@ namespace Promact.Oauth.Server.Controllers
          *   "error": "InvalidApiRequestException"
          *   "error": "ArgumentNullException"
          * }
+         * @apiError InvalidApiRequestException , ArgumentNullException
+         * @apiErrorExample {json} Error-Response:
+         * HTTP/1.1 404 Not Found
+         * {
+         *   "error": "InvalidApiRequestException"
+         *   "error": "ArgumentNullException"
+         * }
          */
         [HttpPost]
         [Route("")]
