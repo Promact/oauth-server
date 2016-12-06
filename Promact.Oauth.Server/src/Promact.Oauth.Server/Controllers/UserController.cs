@@ -213,6 +213,13 @@ namespace Promact.Oauth.Server.Controllers
          *   "error": "InvalidApiRequestException"
          *   "error": "ArgumentNullException"
          * }
+         * @apiError InvalidApiRequestException , ArgumentNullException
+         * @apiErrorExample {json} Error-Response:
+         * HTTP/1.1 404 Not Found
+         * {
+         *   "error": "InvalidApiRequestException"
+         *   "error": "ArgumentNullException"
+         * }
          */
         [HttpPost]
         [Route("")]
@@ -280,6 +287,12 @@ namespace Promact.Oauth.Server.Controllers
         * {
         *   "error": "SlackUserNotFound"
         * }
+        * @apiError SlackUserNotFound the slack user was not found.
+        * @apiErrorExample {json} Error-Response:
+        * HTTP/1.1 404 Not Found
+        * {
+        *   "error": "SlackUserNotFound"
+        * }
         */
         [HttpPut]
         [Route("{id}")]
@@ -322,6 +335,12 @@ namespace Promact.Oauth.Server.Controllers
         * HTTP/1.1 200 OK 
         * {
         *     "newPassword":"newPassword"
+        * }
+        * @apiError UserNotFound the slack user was not found.
+        * @apiErrorExample {json} Error-Response:
+        * HTTP/1.1 404 Not Found
+        * {
+        *   "error": "UserNotFound"
         * }
         * @apiError UserNotFound the slack user was not found.
         * @apiErrorExample {json} Error-Response:
