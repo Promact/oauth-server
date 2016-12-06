@@ -212,6 +212,13 @@ namespace Promact.Oauth.Server.Controllers
          *   "error": "InvalidApiRequestException"
          *   "error": "ArgumentNullException"
          * }
+         * @apiError InvalidApiRequestException , ArgumentNullException
+         * @apiErrorExample {json} Error-Response:
+         * HTTP/1.1 404 Not Found
+         * {
+         *   "error": "InvalidApiRequestException"
+         *   "error": "ArgumentNullException"
+         * }
          */
         [HttpPost]
         [Route("")]
@@ -279,6 +286,12 @@ namespace Promact.Oauth.Server.Controllers
         * {
         *   "error": "SlackUserNotFound"
         * }
+        * @apiError SlackUserNotFound the slack user was not found.
+        * @apiErrorExample {json} Error-Response:
+        * HTTP/1.1 404 Not Found
+        * {
+        *   "error": "SlackUserNotFound"
+        * }
         */
         [HttpPut]
         [Route("{id}")]
@@ -328,6 +341,12 @@ namespace Promact.Oauth.Server.Controllers
         * {
         *   "error": "UserNotFound"
         * }
+        * @apiError UserNotFound the slack user was not found.
+        * @apiErrorExample {json} Error-Response:
+        * HTTP/1.1 404 Not Found
+        * {
+        *   "error": "UserNotFound"
+        * }
         */
         [HttpPost]
         [Route("password")]
@@ -366,6 +385,7 @@ namespace Promact.Oauth.Server.Controllers
        */
         [HttpGet]
         [Route("{password}/available")]
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<ActionResult> CheckPasswordAsync(string password)
         {
             var user = await _userManager.GetUserAsync(User);
