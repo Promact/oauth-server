@@ -165,6 +165,12 @@ namespace Promact.Oauth.Server.Controllers
         * {
         *   "error": "UserNotFound"
         * }
+        * @apiError UserNotFound The id of the User was not found.
+        * @apiErrorExample {json} Error-Response:
+        * HTTP/1.1 404 Not Found
+        * {
+        *   "error": "UserNotFound"
+        * }
         */
         [HttpGet]
         [Route("{id}")]
@@ -273,6 +279,12 @@ namespace Promact.Oauth.Server.Controllers
         * HTTP/1.1 200 OK 
         * {
         *     true
+        * }
+        * @apiError SlackUserNotFound the slack user was not found.
+        * @apiErrorExample {json} Error-Response:
+        * HTTP/1.1 404 Not Found
+        * {
+        *   "error": "SlackUserNotFound"
         * }
         * @apiError SlackUserNotFound the slack user was not found.
         * @apiErrorExample {json} Error-Response:
@@ -507,9 +519,9 @@ namespace Promact.Oauth.Server.Controllers
 
 
         /**
-          * @api {get} api/User/{userId}/detail
+          * @api {get} api/users/:userId/details 
           * @apiVersion 1.0.0
-          * @apiName GetUserDetails
+          * @apiName UserDetailById
           * @apiGroup User
           * @apiParam {string} id userId
           * @apiParamExample {json} Request-Example:
@@ -544,16 +556,40 @@ namespace Promact.Oauth.Server.Controllers
         [Route("{userId}/detail")]
         public async Task<IActionResult> UserDetailByIdAsync(string userId)
         {
-            try
-            {
-                var user = await _userRepository.UserDetailByIdAsync(userId);
-                return Ok(user);
-            }
-            catch (UserNotFound)
-            {
-                _logger.LogInformation("User not Found");
-                return NotFound();
-            }
+            return Ok(_userRepository.UserDetailById(userId));
+        }
+
+        /**
+          * @api {get} api/users/:userName/details 
+          * @apiVersion 1.0.0
+          * @apiName User
+          * @apiGroup User
+          * @apiParam {string} Name userName
+          * @apiParamExample {json} Request-Example:
+          *  {
+          *     "userName": "abc"
+          *  }      
+          * @apiSuccessExample {json} Success-Response:
+          * {
+          *   "Id":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
+          *   "FirstName" : "John",
+          *   "Email" : "jone@promactinfo.com",
+          *   "LastName" : "Doe",
+          *   "SlackUserName" :"John",
+          *   "IsActive" : "True",
+          *   "JoiningDate" :"10-02-2016",
+          *   "NumberOfCasualLeave":0,
+          *   "NumberOfSickLeave":0,
+          *   "UniqueName":null,
+          *   "Role":null,
+          *   "UserName": null
+          * }
+          */
+        [HttpGet]
+        [Route("{userName}/details")]
+        public async Task<IActionResult> GetByUserNameAsync(string userName)
+        {
+            return Ok(await _userRepository.GetUserDetailByUserNameAsync(userName));
         }
 
         /**
