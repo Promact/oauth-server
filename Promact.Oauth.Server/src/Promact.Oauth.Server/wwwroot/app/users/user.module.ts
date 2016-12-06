@@ -8,8 +8,6 @@ import { UserService } from "./user.service";
 import { userRoute } from "./user.routes";
 import { SharedModule } from '../shared/shared.module';
 
-
-
 @NgModule({
     imports: [
         userRoute,

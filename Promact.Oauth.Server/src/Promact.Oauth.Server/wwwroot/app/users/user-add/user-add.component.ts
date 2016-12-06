@@ -1,4 +1,4 @@
-﻿import { Component, Input,OnInit } from "@angular/core";
+﻿import { Component, Input, OnInit } from "@angular/core";
 import { UserService } from '../user.service';
 import { UserModel } from '../user.model';
 import { UserRoleModel } from '../userrole.model';
@@ -9,8 +9,8 @@ import { LoaderService } from '../../shared/loader.service';
 
 
 @Component({
-    templateUrl: 'app/users/user-add/user-add.html'
-
+    //templateUrl: 'app/users/user-add/user-add.html'
+    templateUrl: "user-add.html"
 })
 
 export class UserAddComponent implements OnInit {
@@ -30,10 +30,10 @@ export class UserAddComponent implements OnInit {
 
     ngOnInit() {
         this.getRoles();
-    
+
     }
 
-  
+
 
     getRoles() {
         this.userService.getRoles().subscribe((result) => {
@@ -46,7 +46,7 @@ export class UserAddComponent implements OnInit {
         });
     }
 
-    addUser(userModel) {
+    addUser(userModel: UserModel) {
         this.loader.loader = true;
         userModel.JoiningDate = new Date(userModel.JoiningDate);
         if (!this.isSlackUserNameExist) {
@@ -75,7 +75,7 @@ export class UserAddComponent implements OnInit {
         }
     }
 
-    checkEmail(email) {
+    checkEmail(email: string) {
         this.isEmailExist = false;
         if (email !== "" && email !== undefined) {
             this.userService.checkEmailIsExists(email).subscribe((result) => {
@@ -86,7 +86,7 @@ export class UserAddComponent implements OnInit {
         }
     }
 
-    checkSlackUserName(slackUserName) {
+    checkSlackUserName(slackUserName: string) {
         this.isSlackUserNameExist = false;
         if (slackUserName !== "" && slackUserName !== undefined) {
             this.userService.checkUserIsExistsBySlackUserName(slackUserName).subscribe((result) => {

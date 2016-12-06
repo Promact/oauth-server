@@ -8,7 +8,8 @@ import { Location } from "@angular/common";
 import { LoaderService } from '../shared/loader.service';
 
 @Component({
-    templateUrl: './app/change-password/change-password.html',
+    templateUrl: 'change-password.html',
+    //templateUrl: './app/change-password/change-password.html',
 })
 
 export class ChangePasswordComponent {
@@ -35,7 +36,7 @@ export class ChangePasswordComponent {
         }
     }
 
-    changePassword(passwordModel) {
+    changePassword(passwordModel: PasswordModel) {
         if (!this.isNotMatch) {
             this.loader.loader = true;
             this.userService.changePassword(this.passwordModel).subscribe((result) => {
@@ -54,7 +55,7 @@ export class ChangePasswordComponent {
         }
     }
 
-    matchPassword(confirmPassword, newPassword) {
+    matchPassword(confirmPassword : string, newPassword:string) {
         if (confirmPassword !== undefined && newPassword !== undefined) {
             if (confirmPassword === newPassword)
                 this.isNotMatch = false;

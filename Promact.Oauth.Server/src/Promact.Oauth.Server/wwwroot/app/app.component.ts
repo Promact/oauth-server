@@ -6,7 +6,8 @@ import { UserRole } from "./shared/userrole.model";
 
 @Component({
     selector: 'my-app',
-    templateUrl: './app/index.html'
+    //templateUrl: './app/index.html'
+    templateUrl:'index.html'
 })
 export class AppComponent implements OnInit {
 
