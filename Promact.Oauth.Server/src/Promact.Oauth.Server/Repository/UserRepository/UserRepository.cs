@@ -414,6 +414,7 @@ namespace Promact.Oauth.Server.Repository
     
 
         
+        
 
         /// <summary>
         /// Method to return user role
