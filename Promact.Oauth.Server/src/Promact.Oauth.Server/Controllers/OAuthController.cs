@@ -1,6 +1,5 @@
 ﻿using Exceptionless;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Promact.Oauth.Server.Constants;
@@ -8,26 +7,22 @@ using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Repository.ConsumerAppRepository;
 using Promact.Oauth.Server.Repository.OAuthRepository;
 using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Promact.Oauth.Server.Controllers
 {
     public class OAuthController : BaseController
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IConsumerAppRepository _appRepository;
         private readonly IOAuthRepository _oAuthRepository;
         private readonly IOptions<AppSettingUtil> _appSettingUtil;
         private readonly IStringConstant _stringConstant;
 
-        public OAuthController(UserManager<ApplicationUser> userManager, 
-            SignInManager<ApplicationUser> signInManager, IConsumerAppRepository appRepository,
+        public OAuthController(IConsumerAppRepository appRepository,
             IOAuthRepository oAuthRepository, IOptions<AppSettingUtil> appSettingUtil,
             IStringConstant stringConstant)
         {
-            _signInManager = signInManager;
-            _userManager = userManager;
             _appRepository = appRepository;
             _oAuthRepository = oAuthRepository;
             _appSettingUtil = appSettingUtil;
@@ -62,12 +57,12 @@ namespace Promact.Oauth.Server.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var redirectUrl = await _oAuthRepository.UserNotAlreadyLogin(login);
+                    string redirectUrl = await _oAuthRepository.UserNotAlreadyLoginAsync(login);
                     if (redirectUrl != _stringConstant.EmptyString)
                     {
                         return Redirect(redirectUrl);
                     }
-                    var url = string.Format("{0}/OAuth/ExternalLogin?clientId={1}", _appSettingUtil.Value.PromactOAuthUrl, login.ClientId);
+                    string url = string.Format(_stringConstant.OAuthExternalLoginUrl, _appSettingUtil.Value.PromactOAuthUrl, login.ClientId);
                     return Redirect(url);
                 }
                 else
@@ -76,14 +71,19 @@ namespace Promact.Oauth.Server.Controllers
                     return View(login);
                 }
             }
-            catch (Exception ex)
+            catch (NullReferenceException ex)
+            {
+                ex.ToExceptionless().Submit();
+                throw;
+            }
+            catch (HttpRequestException ex)
             {
                 ex.ToExceptionless().Submit();
                 throw;
             }
         }
 
-      
+
         /**
         * @api {post} OAuth/ExternalLogin
         * @apiVersion 1.0.0
@@ -101,17 +101,17 @@ namespace Promact.Oauth.Server.Controllers
         {
             try
             {
-                var result = await _appRepository.GetAppDetailsAsync(clientId);
+                ConsumerApps result = await _appRepository.GetAppDetailsAsync(clientId);
                 if (result != null)
                 {
                     if (User.Identity.IsAuthenticated)
                     {
                         // If already login it will return a redirect url and will be redirect back to another server with access token 
-                        var returnUrl = await _oAuthRepository.UserAlreadyLogin(User.Identity.Name, clientId, result.CallbackUrl);
+                        string returnUrl = await _oAuthRepository.UserAlreadyLoginAsync(User.Identity.Name, clientId, result.CallbackUrl);
                         if (String.IsNullOrEmpty(returnUrl))
                         {
                             returnUrl = _appSettingUtil.Value.PromactErpUrl + _stringConstant.ErpAuthorizeUrl;
-                            returnUrl += "?message="+_stringConstant.InCorrectSlackName;
+                            returnUrl += _stringConstant.Message + _stringConstant.InCorrectSlackName;
                         }
                         return Redirect(returnUrl);
                     }
@@ -125,7 +125,12 @@ namespace Promact.Oauth.Server.Controllers
                 }
                 return BadRequest();
             }
-            catch (Exception ex)
+            catch (NullReferenceException ex)
+            {
+                ex.ToExceptionless().Submit();
+                throw;
+            }
+            catch (HttpRequestException ex)
             {
                 ex.ToExceptionless().Submit();
                 throw;
