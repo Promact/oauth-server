@@ -8,6 +8,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
 using System;
 using Promact.Oauth.Server.Constants;
+using MailKit.Security;
 
 namespace Promact.Oauth.Server.Services
 {
@@ -43,7 +44,15 @@ namespace Promact.Oauth.Server.Services
             using (var smtp = new SmtpClient())
             {
                 _logger.LogInformation("Smtp Connect");
-                smtp.Connect(_emailCrednetials.Value.Host, _emailCrednetials.Value.Port, _emailCrednetials.Value.SetSmtpProtocol.ToLower() == _stringConstant.SetSmtpUnSecure ? MailKit.Security.SecureSocketOptions.None : _emailCrednetials.Value.SetSmtpProtocol.ToLower() == _stringConstant.SetSmtpSSL ? MailKit.Security.SecureSocketOptions.SslOnConnect : MailKit.Security.SecureSocketOptions.StartTls);
+                string smtpProtocol = _emailCrednetials.Value.SetSmtpProtocol.ToLower();
+                SecureSocketOptions secureSocketOption = SecureSocketOptions.StartTls;
+                //if user set stmp protocol way as SSL 
+                if (string.Compare(smtpProtocol,_stringConstant.SetSmtpSSL)==0)
+                    secureSocketOption = SecureSocketOptions.SslOnConnect;
+                //if user set stmp protocol way as UnSecure 
+                else if (string.Compare(smtpProtocol, _stringConstant.SetSmtpUnSecure) == 0)
+                    secureSocketOption = SecureSocketOptions.None;
+                smtp.Connect(_emailCrednetials.Value.Host, _emailCrednetials.Value.Port, secureSocketOption);
                 _logger.LogInformation("Authenticate");
                 smtp.Authenticate(credentials: new NetworkCredential(_emailCrednetials.Value.UserName, _emailCrednetials.Value.Password));
                 smtp.Send(msg, CancellationToken.None);
