@@ -1,4 +1,4 @@
-﻿{
+{
   "userSecretsId": "aspnet-Promact.Oauth.Server-e6fc61da-3875-4c22-9458-d7652dbb0dcc",
 
   "dependencies": {
@@ -42,7 +42,18 @@
     "Microsoft.VisualStudio.Web.CodeGenerators.Mvc": {
       "version": "1.0.0-preview2-final",
       "type": "build"
-    }
+    },
+    "System.Net.Mail": "1.0.0-rtm-00002",
+    "MailKit": "1.4.1",
+    "MimeKit": "1.4.1",
+    "AutoMapper": "5.0.2",
+    "System.Collections": "4.0.11",
+    "Exceptionless.AspNetCore": "4.0.1902",
+    "Microsoft.IdentityModel.Protocols": "2.0.0",
+    "Microsoft.TypeScript.MSBuild": "1.8.11",
+    "NLog.Extensions.Logging": "1.0.0-*",
+    "NLog.Config": "4.3.9",
+    "SendGrid.NetCore": "1.0.0-rtm-00002"
   },
 
   "tools": {
@@ -85,7 +96,9 @@
       "Views",
       "Areas/**/Views",
       "appsettings.json",
-      "web.config"
+      "web.config",
+      "nlog.config",
+      "Template"
     ]
   },
 
