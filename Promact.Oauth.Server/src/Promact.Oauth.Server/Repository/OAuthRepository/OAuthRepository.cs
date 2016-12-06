@@ -40,10 +40,10 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
         /// Method to add OAuth table
         /// </summary>
         /// <param name="model"></param>
-        private void Add(OAuth model)
+        private async Task AddAsync(OAuth model)
         {
             _oAuthDataRepository.Add(model);
-            _oAuthDataRepository.Save();
+            await _oAuthDataRepository.SaveChangesAsync();
         }
 
 
@@ -52,8 +52,8 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
         /// </summary>
         /// <param name="email"></param>
         /// <param name="clientId"></param>
-        /// <returns></returns>
-        private async Task<OAuth> GetDetails(string email, string clientId)
+        /// <returns>object of OAuth</returns>
+        private async Task<OAuth> GetDetailsAsync(string email, string clientId)
         {
             OAuth oAuth = await _oAuthDataRepository.FirstOrDefaultAsync(x => x.userEmail == email && x.ClientId == clientId);
             return oAuth;
@@ -65,11 +65,11 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
         /// </summary>
         /// <param name="email"></param>
         /// <param name="clientId"></param>
-        /// <returns></returns>
-        private async Task<OAuth> OAuthClientChecking(string email, string clientId)
+        /// <returns>object of OAuth</returns>
+        private async Task<OAuth> OAuthClientCheckingAsync(string email, string clientId)
         {
             //checking whether with this app email is register or not if  not new OAuth will be created.
-            OAuth oAuth = await GetDetails(email, clientId);
+            OAuth oAuth = await GetDetailsAsync(email, clientId);
             ConsumerApps consumerApp = await _appRepository.GetAppDetailsAsync(clientId);
             if (oAuth == null && consumerApp != null)
             {
@@ -78,7 +78,7 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
                 newOAuth.userEmail = email;
                 newOAuth.AccessToken = Guid.NewGuid().ToString();
                 newOAuth.ClientId = clientId;
-                Add(newOAuth);
+                await AddAsync(newOAuth);
                 return newOAuth;
             }
             return oAuth;
@@ -90,8 +90,8 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
         /// </summary>
         /// <param name="redirectUrl"></param>
         /// <param name="refreshToken"></param>
-        /// <returns></returns>
-        private async Task<OAuthApplication> GetAppDetailsFromClient(string redirectUrl, string refreshToken, string slackUserName)
+        /// <returns>object of OAuthApplication</returns>
+        private async Task<OAuthApplication> GetAppDetailsFromClientAsync(string redirectUrl, string refreshToken, string slackUserName)
         {
             // Assigning Base Address with redirectUrl
             string requestUrl = string.Format("?refreshToken={0}&slackUserName={1}", refreshToken, slackUserName);
@@ -107,7 +107,7 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
         /// </summary>
         /// <param name="accessToken"></param>
         /// <returns>true if value is not null otherwise false</returns>
-        public async Task<bool> GetDetailsClientByAccessToken(string accessToken)
+        public async Task<bool> GetDetailsClientByAccessTokenAsync(string accessToken)
         {
             OAuth value = await _oAuthDataRepository.FirstOrDefaultAsync(x => x.AccessToken == accessToken);
             if (value != null)
@@ -124,11 +124,11 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
         /// <param name="clientId"></param>
         /// <param name="callBackUrl"></param>
         /// <returns>returUrl</returns>
-        public async Task<string> UserAlreadyLogin(string userName, string clientId, string callBackUrl)
+        public async Task<string> UserAlreadyLoginAsync(string userName, string clientId, string callBackUrl)
         {
             ApplicationUser user = await _userManager.FindByNameAsync(userName);
-            OAuth oAuth = await OAuthClientChecking(user.Email, clientId);
-            OAuthApplication clientResponse = await GetAppDetailsFromClient(callBackUrl, oAuth.RefreshToken, user.SlackUserName);
+            OAuth oAuth = await OAuthClientCheckingAsync(user.Email, clientId);
+            OAuthApplication clientResponse = await GetAppDetailsFromClientAsync(callBackUrl, oAuth.RefreshToken, user.SlackUserName);
             if (!String.IsNullOrEmpty(clientResponse.UserId))
             {
                 user.SlackUserId = clientResponse.UserId;
@@ -145,14 +145,14 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
         /// </summary>
         /// <param name="model"></param>
         /// <returns>if not successfully signed-in then return empty string if successfully signed-in and credentials match then return redirect url</returns>
-        public async Task<string> UserNotAlreadyLogin(OAuthLogin model)
+        public async Task<string> UserNotAlreadyLoginAsync(OAuthLogin model)
         {
             SignInResult result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, lockoutOnFailure: false);
             if (result.Succeeded)
             {
                 ApplicationUser appUser = await _userManager.FindByEmailAsync(model.Email);
-                OAuth oAuth = await OAuthClientChecking(model.Email, model.ClientId);
-                OAuthApplication clientResponse = await GetAppDetailsFromClient(model.RedirectUrl, oAuth.RefreshToken, appUser.SlackUserName);
+                OAuth oAuth = await OAuthClientCheckingAsync(model.Email, model.ClientId);
+                OAuthApplication clientResponse = await GetAppDetailsFromClientAsync(model.RedirectUrl, oAuth.RefreshToken, appUser.SlackUserName);
                 if (!String.IsNullOrEmpty(clientResponse.UserId))
                 {
                     appUser.SlackUserId = clientResponse.UserId;
@@ -174,7 +174,7 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
                 {
                     await _signInManager.SignOutAsync();
                     string returnUrl = _appSettingUtil.Value.PromactErpUrl + _stringConstant.ErpAuthorizeUrl;
-                    returnUrl += "?message="+_stringConstant.InCorrectSlackName;
+                    returnUrl += "?message=" + _stringConstant.InCorrectSlackName;
                     return returnUrl;
                 }
             }

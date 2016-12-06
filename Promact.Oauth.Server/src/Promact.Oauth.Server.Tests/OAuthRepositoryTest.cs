@@ -41,7 +41,7 @@ namespace Promact.Oauth.Server.Tests
              };
             _oAuthDataRepository.Add(oAuth);
             _oAuthDataRepository.Save();
-            var result = await _oAuthRepository.GetDetailsClientByAccessToken(_stringConstant.AccessToken);
+            var result = await _oAuthRepository.GetDetailsClientByAccessTokenAsync(_stringConstant.AccessToken);
             Assert.Equal(result, true);
         }
 
@@ -60,7 +60,7 @@ namespace Promact.Oauth.Server.Tests
             };
             _oAuthDataRepository.Add(oAuth);
             _oAuthDataRepository.Save();
-            var result = await _oAuthRepository.GetDetailsClientByAccessToken(_stringConstant.ClientIdForTest);
+            var result = await _oAuthRepository.GetDetailsClientByAccessTokenAsync(_stringConstant.ClientIdForTest);
             Assert.Equal(result, false);
         }
 
@@ -103,7 +103,7 @@ namespace Promact.Oauth.Server.Tests
                  Password = _stringConstant.PasswordForTest,
                  RedirectUrl = _stringConstant.CallBackUrl
              };
-            var response = await _oAuthRepository.UserNotAlreadyLogin(login);
+            var response = await _oAuthRepository.UserNotAlreadyLoginAsync(login);
             Assert.Equal(response, _stringConstant.EmptyString);
         }
 

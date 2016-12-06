@@ -34,7 +34,8 @@
         string SlackUsersUrl { get; }
         string SlackUserByIdUrl { get; }
         string Port { get; }
-
+        string OAuthExternalLoginUrl { get; }
+        string Message { get; }
         string UserEmail { get; }
 
         string UserPassword { get; }

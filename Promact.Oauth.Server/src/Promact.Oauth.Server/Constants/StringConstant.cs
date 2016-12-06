@@ -59,15 +59,16 @@
         public string UserId { get { return "1"; } }
         public string PasswordUser { get { return "User@123"; } }
         public string UserName { get { return "testUser@pronactinfo.com"; } }
-        public string SlackUserName { get {  return "testSlackUserName"; } }
+        public string SlackUserName { get { return "testSlackUserName"; } }
         public string EmailUser { get { return "testUsers@promactinfo.com"; } }
         public string NewPassword { get { return "User@1"; } }
         public string ConfirmPassword { get { return "User@1"; } }
         public string UpadteFirstName { get { return "Updated User"; } }
         public string ErpAuthorizeUrl { get { return "/Home/SlackAuthorize"; } }
-            public string InCorrectSlackName { get { return "Incorrect Slack Username. Please contact your administrator to edit your Slack Name in Promact OAuth server."; } }
+        public string InCorrectSlackName { get { return "Incorrect Slack Username. Please contact your administrator to edit your Slack Name in Promact OAuth server."; } }
+        public string Message { get { return "?message="; } }
         public string UpdateSlackUserName { get { return "Updated test"; } }
-
+        public string OAuthExternalLoginUrl { get { return "{0}/OAuth/ExternalLogin?clientId={1}"; } }
         public string Employee { get { return "Employee"; } }
         public string Admin { get { return "Admin"; } }
         public string TeamLeader { get { return "TeamLeader"; } }
