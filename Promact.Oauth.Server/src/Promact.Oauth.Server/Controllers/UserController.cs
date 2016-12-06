@@ -17,7 +17,6 @@ using Promact.Oauth.Server.Services;
 namespace Promact.Oauth.Server.Controllers
 {
     [Route("api/users")]
-    // [Authorize(Roles = "Admin")]
     public class UserController : BaseController
     {
         #region "Private Variable(s)"
