@@ -519,7 +519,7 @@ namespace Promact.Oauth.Server.Repository
         public async Task<UserAc> UserDetailByIdAsync(string userId)
         {
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == userId);
-            return GetUser(user);
+            return await GetUserAsync(user);
         }
 
         /// <summary>
@@ -530,7 +530,7 @@ namespace Promact.Oauth.Server.Repository
         public async Task<UserAc> GetUserDetailByUserNameAsync(string userName)
         {
             var user = await _userManager.FindByNameAsync(userName);
-            return GetUser(user);
+            return await GetUserAsync(user);
         }
 
 
@@ -696,7 +696,7 @@ namespace Promact.Oauth.Server.Repository
                         ApplicationUser user = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.Id.Equals(projectUser.UserId));
                         if (user != null)
                         {
-                            var Roles =  _userManager.GetRolesAsync(user).Result.First();
+                            var Roles = (await _userManager.GetRolesAsync(user)).First();
                             UserAc employee = _mapperContext.Map<ApplicationUser, UserAc>(user);
                             employee.Role = Roles;
                             //Checking if employee is already present in the list or not
@@ -759,12 +759,14 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="user"></param>
         /// <returns>user</returns>
-        private UserAc GetUser(ApplicationUser user)
+        private async Task<UserAc> GetUserAsync(ApplicationUser user)
         {
             if (user != null)
             {
-                string roles = _userManager.GetRolesAsync(user).Result.First();
+                //Gets a list of roles the specified user belongs to
+                string roles = (await _userManager.GetRolesAsync(user)).First();
                 UserAc newUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
+                //assign role
                 if (String.Compare(roles, _stringConstant.Admin, true) == 0)
                 {
                     newUser.Role = roles;
@@ -772,7 +774,7 @@ namespace Promact.Oauth.Server.Repository
                 }
                 if (String.Compare(roles, _stringConstant.Employee, true) == 0)
                 {
-                    Project project = _projectDataRepository.FirstOrDefault(x => x.TeamLeaderId.Equals(user.Id));
+                    Project project = await _projectDataRepository.FirstOrDefaultAsync(x => x.TeamLeaderId.Equals(user.Id));
                     if (project != null)
                     {
                         newUser.Role = _stringConstant.TeamLeader;

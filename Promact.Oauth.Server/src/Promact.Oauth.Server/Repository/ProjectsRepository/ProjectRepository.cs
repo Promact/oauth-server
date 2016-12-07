@@ -309,7 +309,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                 UserAc teamLeader = _mapperContext.Map<ApplicationUser, UserAc>(applicationUser);
                 teamLeader.Role = _stringConstant.TeamLeader;
 
-                List<ProjectUser> projectUsers = await _projectUserDataRepository.Fetch(x => x.ProjectId == project.Id).ToListAsync();
+                List<ProjectUser> projectUsers = (await _projectUserDataRepository.FetchAsync(x => x.ProjectId == project.Id)).ToList();
                 ProjectAc projectAc = _mapperContext.Map<Project, ProjectAc>(project);
                 projectAc.TeamLeader = teamLeader;
                 projectAc.CreatedDate = project.CreatedDateTime.ToString(_stringConstant.Format);

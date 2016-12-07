@@ -527,6 +527,7 @@ namespace Promact.Oauth.Server.Controllers
             }
             catch (ProjectNotFound)
             {
+                _logger.LogInformation("No project with that id exists");
                 return NotFound();
             }
         }
