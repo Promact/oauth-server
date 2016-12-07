@@ -31,8 +31,6 @@
         string Password { get; }
         string Host { get; }
         string PromactName { get; }
-        string SlackUsersUrl { get; }
-        string SlackUserByIdUrl { get; }
         string Port { get; }
 
         string UserEmail { get; }

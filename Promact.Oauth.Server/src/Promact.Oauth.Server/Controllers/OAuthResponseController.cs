@@ -1,5 +1,6 @@
 ﻿using Exceptionless;
 using Microsoft.AspNetCore.Mvc;
+using Promact.Oauth.Server.ExceptionHandler;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Models.ApplicationClasses;
 using Promact.Oauth.Server.Repository;
@@ -25,22 +26,14 @@ namespace Promact.Oauth.Server.Controllers
         /// </summary>
         /// <param name="userFirstname"></param>
         /// <returns></returns>
-
         [HttpGet]
-        [Route("userDetails/{slackUserId}")]
+        [Route("user/{slackUserId}")]
         public IActionResult FetchUserDetialBySlackUserId(string slackUserId)
         {
-            try
-            {
-                ApplicationUser user = _userRepository.UserDetialByUserSlackId(slackUserId);
-                return Ok(user);
-            }
-            catch (NullReferenceException ex)
-            {
-                ex.ToExceptionless().Submit();
-                throw ex;
-            }
+            ApplicationUser user = _userRepository.UserDetialByUserSlackId(slackUserId);
+            return Ok(user);
         }
+
 
         /// <summary>
         /// Method is used to get list of teamLeader for an employee slack user Id
@@ -48,28 +41,21 @@ namespace Promact.Oauth.Server.Controllers
         /// <param name="slackUserId"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("teamLeaderDetails/{slackUserId}")]
-        public async Task<IActionResult> TeamLeaderByUserId(string slackUserId)
+        [Route("teamLeaders/{slackUserId}")]
+        public async Task<IActionResult> GetTeamLeaderByUserId(string slackUserId)
         {
-            try
-            {
-                List<ApplicationUser> userList = await _userRepository.TeamLeaderByUserSlackId(slackUserId);
-                return Ok(userList);
-            }
-            catch (NullReferenceException ex)
-            {
-                ex.ToExceptionless().Submit();
-                throw ex;
-            }
+            List<ApplicationUser> userList = await _userRepository.TeamLeaderByUserSlackId(slackUserId);
+            return Ok(userList);
         }
+
 
         /// <summary>
         /// Method is used to get list of management people
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Route("managementDetails")]
-        public async Task<IActionResult> ManagementDetails()
+        [Route("management")]
+        public async Task<IActionResult> GetManagementDetails()
         {
             List<ApplicationUser> userList = await _userRepository.ManagementDetails();
             return Ok(userList);
@@ -82,20 +68,13 @@ namespace Promact.Oauth.Server.Controllers
         /// <param name="slackUserId"></param>
         /// <returns>number of casual leave</returns>
         [HttpGet]
-        [Route("casual/leave/{slackUserId}")]
-        public IActionResult GetUserCasualLeaveBySlackId(string slackUserId)
+        [Route("leave/{slackUserId}")]
+        public IActionResult GetUserLeaveBySlackId(string slackUserId)
         {
-            try
-            {
-                LeaveAllowed leaveAllowed = _userRepository.GetUserAllowedLeaveBySlackId(slackUserId);
-                return Ok(leaveAllowed);
-            }
-            catch (NullReferenceException ex)
-            {
-                ex.ToExceptionless().Submit();
-                throw ex;
-            }
+            LeaveAllowed leaveAllowed = _userRepository.GetUserAllowedLeaveBySlackId(slackUserId);
+            return Ok(leaveAllowed);
         }
+
 
         [HttpGet]
         [Route("userIsAdmin/{slackUserId}")]
@@ -106,11 +85,12 @@ namespace Promact.Oauth.Server.Controllers
                 bool result = await _userRepository.IsAdmin(slackUserId);
                 return Ok(result);
             }
-            catch (NullReferenceException ex)
+            catch (ArgumentNullException ex)
             {
                 ex.ToExceptionless().Submit();
                 throw ex;
             }
         }
+
     }
 }

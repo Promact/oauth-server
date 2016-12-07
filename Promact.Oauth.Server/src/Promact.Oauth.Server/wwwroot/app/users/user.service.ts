@@ -54,8 +54,8 @@ export class UserService {
         return this.httpService.get(this.UserUrl + "/checkOldPasswordIsValid/" + oldPassword);
     }
 
-   fetchSlackUserDetails() {
-       return this.httpService.get(this.UserUrl + "/slackUserDetails");
-    }
+   //fetchSlackUserDetails() {
+   //    return this.httpService.get(this.UserUrl + "/slackUserDetails");
+   // }
 
 }

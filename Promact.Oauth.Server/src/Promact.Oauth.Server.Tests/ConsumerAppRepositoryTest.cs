@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using Promact.Oauth.Server.Models.ApplicationClasses;
 using System.Threading.Tasks;
 using Promact.Oauth.Server.Constants;
-using Promact.Oauth.Server.ExceptionHandler;
 
 namespace Promact.Oauth.Server.Tests
 {
