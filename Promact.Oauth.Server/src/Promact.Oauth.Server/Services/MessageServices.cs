@@ -44,15 +44,7 @@ namespace Promact.Oauth.Server.Services
             using (var smtp = new SmtpClient())
             {
                 _logger.LogInformation("Smtp Connect");
-                string smtpProtocol = _emailCrednetials.Value.SetSmtpProtocol.ToLower();
-                SecureSocketOptions secureSocketOption = SecureSocketOptions.StartTls;
-                //if user set stmp protocol way as SSL 
-                if (string.Compare(smtpProtocol,_stringConstant.SetSmtpSSL)==0)
-                    secureSocketOption = SecureSocketOptions.SslOnConnect;
-                //if user set stmp protocol way as UnSecure 
-                else if (string.Compare(smtpProtocol, _stringConstant.SetSmtpUnSecure) == 0)
-                    secureSocketOption = SecureSocketOptions.None;
-                smtp.Connect(_emailCrednetials.Value.Host, _emailCrednetials.Value.Port, secureSocketOption);
+                smtp.Connect(_emailCrednetials.Value.Host, _emailCrednetials.Value.Port, GetSecureSocketOptions());
                 _logger.LogInformation("Authenticate");
                 smtp.Authenticate(credentials: new NetworkCredential(_emailCrednetials.Value.UserName, _emailCrednetials.Value.Password));
                 smtp.Send(msg, CancellationToken.None);
@@ -60,12 +52,34 @@ namespace Promact.Oauth.Server.Services
                 _logger.LogInformation("SendEmail Mail Successfully");
             }
         }
+        
 
         public Task SendSmsAsync(string number, string message)
         {
             // Plug in your SMS service here to send a text message.
             return Task.FromResult(0);
         }
+
+        #region Private Methods
+
+        /// <summary>
+        /// This method used for get secure Socket options.
+        /// </summary>
+        /// <returns></returns>
+        private SecureSocketOptions GetSecureSocketOptions()
+        {
+            string smtpProtocol = _emailCrednetials.Value.SetSmtpProtocol.ToLower();
+            //if user set stmp protocol way as SSL 
+            if (string.Compare(smtpProtocol, _stringConstant.SetSmtpSSL) == 0)
+               return SecureSocketOptions.SslOnConnect;
+            //if user set stmp protocol way as UnSecure 
+            else if (string.Compare(smtpProtocol, _stringConstant.SetSmtpUnSecure) == 0)
+                return SecureSocketOptions.None;
+            else
+            return SecureSocketOptions.StartTls;
+        }
+
+        #endregion
 
     }
 }
