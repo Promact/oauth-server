@@ -522,17 +522,9 @@ namespace Promact.Oauth.Server.Repository
             return await GetUserAsync(user);
         }
 
-        /// <summary>
-        /// Method is used to get the details of user by using their username
-        /// </summary>
-        /// <param name="userName"></param>
-        /// <returns>details of user</returns>
-        public async Task<UserAc> GetUserDetailByUserNameAsync(string userName)
-        {
-            var user = await _userManager.FindByNameAsync(userName);
-            return await GetUserAsync(user);
-        }
+    
 
+        
 
         /// <summary>
         /// Method to return user role
