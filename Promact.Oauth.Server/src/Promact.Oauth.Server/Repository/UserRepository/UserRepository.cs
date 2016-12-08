@@ -428,8 +428,10 @@ namespace Promact.Oauth.Server.Repository
                 newUser.FirstName = user.FirstName;
                 newUser.LastName = user.LastName;
                 newUser.SlackUserId = user.SlackUserId;
+                return newUser;
             }
-            return newUser;
+            else
+                throw new SlackUserNotFound();
         }
 
 
@@ -499,8 +501,10 @@ namespace Promact.Oauth.Server.Repository
             {
                 leaveAllowed.CasualLeave = user.NumberOfCasualLeave;
                 leaveAllowed.SickLeave = user.NumberOfSickLeave;
+                return leaveAllowed;
             }
-            return leaveAllowed;
+            else
+                throw new SlackUserNotFound();
         }
 
         /// <summary>
@@ -511,8 +515,13 @@ namespace Promact.Oauth.Server.Repository
         public async Task<bool> IsAdmin(string slackUserId)
         {
             ApplicationUser user = _applicationUserDataRepository.FirstOrDefault(x => x.SlackUserId == slackUserId);
-            bool isAdmin = await _userManager.IsInRoleAsync(user, _stringConstant.Admin);
-            return isAdmin;
+            if (user != null)
+            {
+                bool isAdmin = await _userManager.IsInRoleAsync(user, _stringConstant.Admin);
+                return isAdmin;
+            }
+            else
+                throw new SlackUserNotFound();
         }
 
         /// <summary>
@@ -536,8 +545,8 @@ namespace Promact.Oauth.Server.Repository
             ApplicationUser user = await _userManager.FindByNameAsync(userName);
             return GetUser(user);
         }
-             
-        
+
+
         /// <summary>
         /// Method to return user role
         /// </summary>
@@ -674,8 +683,8 @@ namespace Promact.Oauth.Server.Repository
 
 
         #region Private Methods
-        
-       
+
+
         /// <summary>
         /// Fetches the slack real name of the user of the given SlackUserId - JJ
         /// </summary>
