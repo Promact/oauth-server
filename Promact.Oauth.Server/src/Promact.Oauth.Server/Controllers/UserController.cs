@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 using Exceptions;
 using Promact.Oauth.Server.Constants;
-using Promact.Oauth.Server.ExceptionHandler;
+using Promact.Oauth.Server.Exception_Handler;
 using Promact.Oauth.Server.Services;
 
 namespace Promact.Oauth.Server.Controllers
@@ -419,8 +419,8 @@ namespace Promact.Oauth.Server.Controllers
           *         "LastName": "Promact",
           *         "IsActive": true,
           *         "Role": "Admin",
-          *         "NumberOfCasualLeave": 0,
-          *         "NumberOfSickLeave": 0,
+          *         "NumberOfCasualLeave": 14,
+          *         "NumberOfSickLeave": 7,
           *         "JoiningDate": "0001-01-01T00:00:00",
           *         "SlackUserName": "roshni",
           *         "SlackUserId": "U70787887",
@@ -445,56 +445,6 @@ namespace Promact.Oauth.Server.Controllers
                 _logger.LogInformation("User not Found");
                 return NotFound();
             }
-        }
-
-        /**
-          * @api {get} api/User/{userName}/details 
-          * @apiVersion 1.0.0
-          * @apiName User
-          * @apiGroup User
-          * @apiParam {string} Name userName
-          * @apiParamExample {json} Request-Example:
-          *      
-          *        {
-          *             "userName": "roshni@promactinfo.com"
-          *        }      
-          * @apiSuccessExample {json} Success-Response:
-          * HTTP/1.1 200 OK 
-          * {
-          *     "description":"Object of type UserAc "
-          *     
-          *     {
-          *         "Id": "95151b57-42c5-48d5-84b6-6d20e2fb05cd",
-          *         "FirstName": "Admin",
-          *         "LastName": "Promact",
-          *         "IsActive": true,
-          *         "Role": "Admin",
-          *         "NumberOfCasualLeave": 0,
-          *         "NumberOfSickLeave": 0,
-          *         "JoiningDate": "0001-01-01T00:00:00",
-          *         "SlackUserName": "roshni",
-          *         "SlackUserId": "U70787887",
-          *         "Email": "roshni@promactinfo.com",
-          *         "UserName": "roshni@promactinfo.com",
-          *         "UniqueName": "Admin-roshni@promactinfo.com",
-          *     }
-          * }
-          */
-        [ServiceFilter(typeof(CustomAttribute))]
-        [HttpGet]
-        [Route("{userName}/details")]
-        public async Task<IActionResult> GetByUserNameAsync(string userName)
-        {
-            try
-            {
-                return Ok(await _userRepository.GetUserDetailByUserNameAsync(userName));
-            }
-            catch (UserNotFound)
-            {
-                _logger.LogInformation("User not Found");
-                return NotFound();
-            }
-
         }
 
         /**
@@ -595,7 +545,7 @@ namespace Promact.Oauth.Server.Controllers
             return Ok(slackUserList);
         }
 
-    
+
 
         /**
         * @api {get} api/user/:uerid/teammeber 
@@ -701,6 +651,8 @@ namespace Promact.Oauth.Server.Controllers
                 return NotFound();
             }
         }
+
+
         /**
         * @api {get} api/User/{teamLeaderId}/project
         * @apiVersion 1.0.0
@@ -724,8 +676,8 @@ namespace Promact.Oauth.Server.Controllers
         *           "LastName": "Promact",
         *           "IsActive": true,
         *           "Role": "TeamLeader",
-        *           "NumberOfCasualLeave": 0,
-        *           "NumberOfSickLeave": 0,
+        *           "NumberOfCasualLeave": 14,
+        *           "NumberOfSickLeave": 7,
         *           "JoiningDate": "0001-01-01T00:00:00",
         *           "SlackUserName": "roshni",
         *           "SlackUserId": "U70787887",
@@ -739,8 +691,8 @@ namespace Promact.Oauth.Server.Controllers
         *           "LastName": "gourav",
         *           "IsActive": true,
         *           "Role": "Employee",
-        *           "NumberOfCasualLeave": 0,
-        *           "NumberOfSickLeave": 0,
+        *           "NumberOfCasualLeave": 14,
+        *           "NumberOfSickLeave": 7,
         *           "JoiningDate": "2016-07-20T18:30:00",
         *           "SlackUserName": "gourav",
         *           "Email": "gourav@promactinfo.com",
@@ -766,6 +718,7 @@ namespace Promact.Oauth.Server.Controllers
                 return BadRequest();
             }
         }
+
         #endregion
     }
 }
