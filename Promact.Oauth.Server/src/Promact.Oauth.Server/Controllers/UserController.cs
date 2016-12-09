@@ -705,10 +705,11 @@ namespace Promact.Oauth.Server.Controllers
             List<SlackUserDetailAc> slackUserList = await _userRepository.GetSlackUserDetailsAsync();
             return Ok(slackUserList);
         }
-          
+
+
 
         /**
-        * @api {get} api/users/:uerid/teammeber 
+        * @api {get} api/users/:userid/teammeber 
         * @apiVersion 1.0.0
         * @apiName GetTeamMembersAsync
         * @apiGroup User
@@ -742,7 +743,7 @@ namespace Promact.Oauth.Server.Controllers
        */
         [ServiceFilter(typeof(CustomAttribute))]
         [HttpGet]
-        [Route("{uerid}/teammebers")]
+        [Route("{userid}/teammebers")]
         public async Task<IActionResult> GetTeamMembersAsync(string userid)
         {
             try
