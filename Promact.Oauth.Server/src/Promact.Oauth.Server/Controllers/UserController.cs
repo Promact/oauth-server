@@ -709,7 +709,7 @@ namespace Promact.Oauth.Server.Controllers
 
 
         /**
-        * @api {get} api/users/:uerid/teammeber 
+        * @api {get} api/users/:userid/teammeber 
         * @apiVersion 1.0.0
         * @apiName GetTeamMembersAsync
         * @apiGroup User
