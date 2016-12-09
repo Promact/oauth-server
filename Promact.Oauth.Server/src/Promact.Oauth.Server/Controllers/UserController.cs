@@ -126,9 +126,9 @@ namespace Promact.Oauth.Server.Controllers
          */
         [HttpGet]
         [Route("roles")]
-        public IActionResult GetRole()
+        public async Task<IActionResult> GetRoleAsync()
         {
-            return Ok(_userRepository.GetRoles());
+            return Ok(await _userRepository.GetRolesAsync());
         }
 
         /**

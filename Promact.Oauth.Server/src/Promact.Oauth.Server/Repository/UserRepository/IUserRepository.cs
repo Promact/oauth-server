@@ -45,7 +45,7 @@ namespace Promact.Oauth.Server.Repository
         /// This method used for get role list. 
         /// </summary>
         /// <returns></returns>
-        List<RolesAc> GetRoles();
+        Task<List<RolesAc>> GetRolesAsync();
 
 
         /// <summary>
