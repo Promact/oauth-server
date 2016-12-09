@@ -656,6 +656,7 @@ namespace Promact.Oauth.Server.Controllers
         }
           
 
+
         /**
         * @api {get} api/users/:userid/teammebers 
         * @apiVersion 1.0.0
