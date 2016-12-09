@@ -674,6 +674,7 @@ namespace Promact.Oauth.Server.Controllers
           
 
 
+
         /**
         * @api {get} api/users/:userid/teammembers 
         * @apiVersion 1.0.0
