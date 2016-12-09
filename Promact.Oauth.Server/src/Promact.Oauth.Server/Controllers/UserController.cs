@@ -206,7 +206,7 @@ namespace Promact.Oauth.Server.Controllers
          * }
          * @apiError InvalidApiRequestException , ArgumentNullException
          * @apiErrorExample {json} Error-Response:
-         * HTTP/1.1 404 Not Found
+         * HTTP/1.1 400 Bad Request
          * {
          *   "error": "InvalidApiRequestException"
          *   "error": "ArgumentNullException"
@@ -235,12 +235,12 @@ namespace Promact.Oauth.Server.Controllers
                     foreach (var error in apiEx.Errors)
                         _logger.LogError("Forgot Password mail not send " + error);
                 }
-                throw apiEx;
+                return BadRequest();
             }
             catch (ArgumentNullException argEx)
             {
                 _logger.LogError("Add User unsuccessful " + argEx.Message + argEx.ToString());
-                throw argEx;
+                return BadRequest();
             }
         }
 
@@ -468,9 +468,9 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-         * @api {post} api/users/availableUser/:slackUserName/CheckUserIsExistsBySlackUserName 
+         * @api {post} api/users/availableUser/:slackUserName/CheckUserIsExistsBySlackUserNameAsync 
          * @apiVersion 1.0.0
-         * @apiName CheckUserIsExistsBySlackUserName
+         * @apiName CheckUserIsExistsBySlackUserNameAsync
          * @apiGroup User
          * @apiParam {string} slackUaserName  user slack name
          * @apiParamExample {json} Request-Example:
@@ -502,7 +502,7 @@ namespace Promact.Oauth.Server.Controllers
          */
         [HttpGet]
         [Route("availableUser/{slackUserName}")]
-        public async Task<IActionResult> CheckUserIsExistsBySlackUserName(string slackUserName)
+        public async Task<IActionResult> CheckUserIsExistsBySlackUserNameAsync(string slackUserName)
         {
             try
             {
@@ -600,8 +600,15 @@ namespace Promact.Oauth.Server.Controllers
           * {
           *     "true"
           * }
+          * @apiError InvalidApiRequestException , ArgumentNullException
+          * @apiErrorExample {json} Error-Response:
+          * HTTP/1.1 400 Bad Request
+          * {
+          *   "error": "InvalidApiRequestException"
+          *   "error": "ArgumentNullException"
+          * }
           */
-        [HttpPost]
+        [HttpGet]
         [Route("email/{id}/send")]
         public async Task<IActionResult> ReSendMailAsync(string id)
         {
@@ -618,12 +625,12 @@ namespace Promact.Oauth.Server.Controllers
                     foreach (var error in apiEx.Errors)
                         _logger.LogInformation("Forgot Password mail not send " + error);
                 }
-                throw apiEx;
+                return BadRequest();
             }
             catch (ArgumentNullException argEx)
             {
                 _logger.LogError("Resend Mail unsuccessful " + argEx.Message + argEx.ToString());
-                throw argEx;
+                return BadRequest();
             }
            
         }
@@ -812,6 +819,7 @@ namespace Promact.Oauth.Server.Controllers
                 return NotFound();
             }
         }
+
         #endregion
     }
 }
