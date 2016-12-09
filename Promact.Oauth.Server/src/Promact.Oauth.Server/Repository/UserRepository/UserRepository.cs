@@ -535,7 +535,7 @@ namespace Promact.Oauth.Server.Repository
             return GetUser(user);
         }
 
-               
+
         /// <summary>
         /// Method to return user role
         /// </summary>
@@ -638,14 +638,14 @@ namespace Promact.Oauth.Server.Repository
         /// <returns>list of object of UserAc</returns>
         public async Task<List<UserAc>> GetProjectUserByGroupNameAsync(string GroupName)
         {
-            var project = await _projectDataRepository.FirstOrDefaultAsync(x => x.SlackChannelName == GroupName && x.IsActive);
+            var project = await _projectDataRepository.FirstOrDefaultAsync(x => x.SlackChannelName == GroupName);
             var userAcList = new List<UserAc>();
             if (project != null)
             {
                 var projectUserList = await _projectUserDataRepository.FetchAsync(x => x.ProjectId == project.Id);
                 foreach (var projectUser in projectUserList)
                 {
-                    var user = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.Id == projectUser.UserId && x.SlackUserId != null && x.IsActive);
+                    var user = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.Id == projectUser.UserId && x.SlackUserId != null);
                     if (user != null)
                     {
                         var userAc = new UserAc();
