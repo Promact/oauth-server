@@ -108,11 +108,11 @@ namespace Promact.Oauth.Server.Repository
         /// this mthod is used to get all role
         /// </summary>
         /// <returns></returns>
-        public List<RolesAc> GetRoles()
+        public async Task<List<RolesAc>> GetRolesAsync()
         {
             List<RolesAc> listOfRoleAC = new List<RolesAc>();
-            var roles = _roleManager.Roles;
-            foreach (IdentityRole identityRole in roles.ToList())
+            var roles = await _roleManager.Roles.ToListAsync();
+            foreach (IdentityRole identityRole in roles)
             {
                 RolesAc roleAc = new RolesAc();
                 roleAc.Id = identityRole.Id;
