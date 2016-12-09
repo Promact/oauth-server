@@ -297,9 +297,9 @@ namespace Promact.Oauth.Server.Tests
         /// Test case to check GetRoles of User Repository
         /// </summary>
         [Fact, Trait("Category", "Required")]
-        public void GetRoles()
+        public async Task GetRoles()
         {
-            var roles = _userRepository.GetRoles();
+            var roles = await _userRepository.GetRolesAsync();
             Assert.Equal(2, roles.Count);
         }
 
