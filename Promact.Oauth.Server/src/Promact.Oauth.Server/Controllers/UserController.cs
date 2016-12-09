@@ -468,7 +468,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-         * @api {post} api/users/availableUser/:slackUserName 
+         * @api {post} api/users/availableUser/:slackUserName/CheckUserIsExistsBySlackUserNameAsync 
          * @apiVersion 1.0.0
          * @apiName CheckUserIsExistsBySlackUserNameAsync
          * @apiGroup User
