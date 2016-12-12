@@ -42,7 +42,7 @@ namespace Promact.Oauth.Server.Controllers
 
         #region public Methods
         /**
-        * @api {get} api/users/AllUsersAsync 
+        * @api {get} api/users 
         * @apiVersion 1.0.0
         * @apiName AllUsersAsync
         * @apiGroup User
@@ -75,7 +75,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-        * @api {get} api/users/orderby/name/GetEmployeesAsync 
+        * @api {get} api/users/orderby/name 
         * @apiVersion 1.0.0
         * @apiName GetEmployeesAsync
         * @apiGroup User
@@ -109,7 +109,7 @@ namespace Promact.Oauth.Server.Controllers
 
 
         /**
-         * @api {get} api/users/GetRole 
+         * @api {get} api/users/roles 
          * @apiVersion 1.0.0
          * @apiName GetRole
          * @apiGroup User
@@ -132,7 +132,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-        * @api {get} api/users/GetUserByIdAsync/:id 
+        * @api {get} api/users/:id 
         * @apiVersion 1.0.0
         * @apiName GetUserByIdAsync
         * @apiGroup User
@@ -165,7 +165,7 @@ namespace Promact.Oauth.Server.Controllers
         * }
         */
         [HttpGet]
-        [Route("{id}")]
+        [Route("{id:string}")]
         [Authorize(Roles = "Admin,Employee")]
         public async Task<IActionResult> GetUserByIdAsync(string id)
         {
@@ -180,7 +180,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-         * @api {post} api/users/RegisterUser 
+         * @api {post} api/users 
          * @apiVersion 1.0.0
          * @apiName RegisterUserAsync
          * @apiGroup User
@@ -246,7 +246,7 @@ namespace Promact.Oauth.Server.Controllers
 
 
         /**
-        * @api {put} api/users/UpdateUserAsync 
+        * @api {put} api/users 
         * @apiVersion 1.0.0
         * @apiName UpdateUserAsync
         * @apiGroup User
@@ -304,7 +304,7 @@ namespace Promact.Oauth.Server.Controllers
 
 
         /**
-        * @api {post} api/users/:password/ChangePasswordAsync 
+        * @api {post} api/users/:password 
         * @apiVersion 1.0.0
         * @apiName ChangePasswordAsync
         * @apiGroup User
@@ -351,7 +351,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-       * @api {post} api/users/:password/available/CheckPasswordAsync 
+       * @api {post} api/users/:password/available 
        * @apiVersion 1.0.0
        * @apiName CheckPasswordAsync
        * @apiGroup User
@@ -379,7 +379,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-        * @api {post} api/users/detail/:name/FindByUserNameAsync 
+        * @api {post} api/users/detail/:userName 
         * @apiVersion 1.0.0
         * @apiName FindByUserNameAsync
         * @apiGroup User
@@ -427,7 +427,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-       * @api {post} api/users/available/:email/CheckEmailIsExistsAsync
+       * @api {post} api/users/available/:email
        * @apiVersion 1.0.0
        * @apiName CheckEmailIsExistsAsync
        * @apiGroup User
@@ -451,7 +451,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-         * @api {post} api/users/availableUser/:slackUserName/CheckUserIsExistsBySlackUserNameAsync 
+         * @api {post} api/users/availableUser/:slackUserName 
          * @apiVersion 1.0.0
          * @apiName CheckUserIsExistsBySlackUserNameAsync
          * @apiGroup User
@@ -646,7 +646,7 @@ namespace Promact.Oauth.Server.Controllers
           
 
         /**
-        * @api {get} api/users/:userid/teammeber 
+        * @api {get} api/users/:userid/teammebers 
         * @apiVersion 1.0.0
         * @apiName GetTeamMembersAsync
         * @apiGroup User
