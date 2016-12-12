@@ -43,7 +43,7 @@ namespace Promact.Oauth.Server.Controllers
         #region public Methods
       
         /**
-        * @api {get} api/users/AllUsersAsync 
+        * @api {get} api/users 
         * @apiVersion 1.0.0
         * @apiName AllUsersAsync
         * @apiGroup User
@@ -166,7 +166,7 @@ namespace Promact.Oauth.Server.Controllers
         * }
         */
         [HttpGet]
-        [Route("{id}")]
+        [Route("{id:string}")]
         [Authorize(Roles = "Admin,Employee")]
         public async Task<IActionResult> GetUserByIdAsync(string id)
         {
@@ -448,7 +448,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-         * @api {post} api/users/availableUser/:slackUserName/CheckUserIsExistsBySlackUserNameAsync 
+         * @api {post} api/users/availableUser/:slackUserName 
          * @apiVersion 1.0.0
          * @apiName CheckUserIsExistsBySlackUserNameAsync
          * @apiGroup User
