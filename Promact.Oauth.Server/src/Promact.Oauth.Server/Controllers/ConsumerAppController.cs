@@ -100,7 +100,7 @@ namespace Promact.Oauth.Server.Controllers
 
 
         /**
-       * @api {get} api/consumerapp/id 
+       * @api {get} api/consumerapp/:id 
        * @apiVersion 1.0.0
        * @apiName GetConsumerAppByIdAsync
        * @apiGroup ConsumerApp
@@ -181,6 +181,7 @@ namespace Promact.Oauth.Server.Controllers
                 consumerApp.Name = consumerAppsAc.Name;
                 consumerApp.CallbackUrl = consumerAppsAc.CallbackUrl;
                 consumerApp.Description = consumerAppsAc.Description;
+                consumerApp.UpdatedBy = _userManager.GetUserId(User);
                 consumerApp.UpdatedDateTime = DateTime.Now;
                 return Ok(await _consumerAppRepository.UpdateConsumerAppsAsync(consumerApp));
             }
