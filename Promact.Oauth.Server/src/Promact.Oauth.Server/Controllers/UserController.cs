@@ -41,6 +41,7 @@ namespace Promact.Oauth.Server.Controllers
         #endregion
 
         #region public Methods
+      
         /**
         * @api {get} api/users 
         * @apiVersion 1.0.0
@@ -331,7 +332,6 @@ namespace Promact.Oauth.Server.Controllers
         [HttpPost]
         [Route("password")]
         [AllowAnonymous]
-        [Authorize(Roles = "Admin,Employee")]
         public async Task<IActionResult> ChangePasswordAsync([FromBody] ChangePasswordViewModel passwordModel)
         {
             try
@@ -366,11 +366,10 @@ namespace Promact.Oauth.Server.Controllers
        */
         [HttpGet]
         [Route("{password}/available")]
-        [Authorize(Roles = "Admin,Employee")]
-        public async Task<ActionResult> CheckPasswordAsync(string oldPassword)
+        public async Task<ActionResult> CheckPasswordAsync(string password)
         {
             var user = await _userManager.GetUserAsync(User);
-            if (await _userManager.CheckPasswordAsync(user, oldPassword))
+            if (await _userManager.CheckPasswordAsync(user, password))
                 return Ok(true);
             else
                 return Ok(false);
@@ -643,7 +642,6 @@ namespace Promact.Oauth.Server.Controllers
        *  "error": "UserRoleNotFound"
        * }
        */
-
         [ServiceFilter(typeof(CustomAttribute))]
         [HttpGet]
         [Route("{userid}/role")]
@@ -696,28 +694,28 @@ namespace Promact.Oauth.Server.Controllers
         *   "Id":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367"    
         * }
         * @apiSuccessExample {json} Success-Response:
-       * HTTP/1.1 200 OK 
-       * [
-       *        {
-       *            "UserId": "34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
-       *            "UserName": "smith@promactinfo.com",
-       *            "Name":"Smith",
-       *            "Role":"Admin"
-       *        },
-       *        {
-       *            "UserId": "avd1af3d-062f-4bcd-b6f9-b8fd5165e367",
-       *            "UserName": "john@promactinfo.com",
-       *            "Name":"John",
-       *            "Role":"Employee"
-       *        },
-       *    ]
-       * @apiError UserRoleNotFound The role of the user not found.
-       * @apiErrorExample {json} Error-Response:
-       * HTTP/1.1 404 Not Found
-       * {
-       *  "error": "UserRoleNotFound"
-       * }
-       */
+        * HTTP/1.1 200 OK 
+        * [
+        *        {
+        *            "UserId": "34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
+        *            "UserName": "smith@promactinfo.com",
+        *            "Name":"Smith",
+        *            "Role":"Admin"
+        *        },
+        *        {
+        *            "UserId": "avd1af3d-062f-4bcd-b6f9-b8fd5165e367",
+        *            "UserName": "john@promactinfo.com",
+        *            "Name":"John",
+        *            "Role":"Employee"
+        *        },
+        *    ]
+        * @apiError UserRoleNotFound The role of the user not found.
+        * @apiErrorExample {json} Error-Response:
+        * HTTP/1.1 404 Not Found
+        * {
+        *  "error": "UserRoleNotFound"
+        * }
+        */
         [ServiceFilter(typeof(CustomAttribute))]
         [HttpGet]
         [Route("{userid}/teammebers")]
