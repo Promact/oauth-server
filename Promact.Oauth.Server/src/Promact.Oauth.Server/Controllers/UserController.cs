@@ -111,7 +111,7 @@ namespace Promact.Oauth.Server.Controllers
         /**
          * @api {get} api/users/roles 
          * @apiVersion 1.0.0
-         * @apiName GetRole
+         * @apiName GetRoleAsync
          * @apiGroup User
          * @apiSuccessExample {json} Success-Response:
          * HTTP/1.1 200 OK 
@@ -183,7 +183,7 @@ namespace Promact.Oauth.Server.Controllers
          * @api {post} api/users 
          * @apiVersion 1.0.0
          * @apiName RegisterUserAsync
-         * @apiGroup User
+         * @apiParam {object} newUser  object
          * @apiParamExample {json} Request-Example:
          * {
          *    "Id":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
@@ -250,9 +250,9 @@ namespace Promact.Oauth.Server.Controllers
         * @apiVersion 1.0.0
         * @apiName UpdateUserAsync
         * @apiGroup User
-        * @apiParam {int} id  User Id
+        * @apiParam {object} newUser  object
         * @apiParamExample {json} Request-Example:
-        * {
+        *   {
         *    "Id":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
         *    "FirstName" : "John",
         *    "Email" : "jone@promactinfo.com",
@@ -265,7 +265,7 @@ namespace Promact.Oauth.Server.Controllers
         *    "UniqueName":null,
         *    "Role":null,
         *    "UserName": null
-        * }
+        *   }
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
         * {
@@ -279,7 +279,7 @@ namespace Promact.Oauth.Server.Controllers
         * }
         */
         [HttpPut]
-        [Route("")]
+        [Route("{id:string}")]
         [Authorize(Roles = "Admin,Employee")]
         public async Task<IActionResult> UpdateUserAsync([FromBody] UserAc editedUser)
         {
@@ -308,9 +308,7 @@ namespace Promact.Oauth.Server.Controllers
         * @apiVersion 1.0.0
         * @apiName ChangePasswordAsync
         * @apiGroup User
-        * @apiParam {string} OldPassword  User OldPassword
-        * @apiParam {string} NewPassword  User NewPassword
-        * @apiParam {string} ConfirmPassword  User ConfirmPassword
+        * @apiParam {object} passwordModel object
         * @apiParamExample {json} Request-Example:
         * {
         *     "OldPassword":"OldPassword",
@@ -358,7 +356,7 @@ namespace Promact.Oauth.Server.Controllers
        * @apiParam {string} OldPassword  User OldPassword
        * @apiParamExample {json} Request-Example:
        * {
-       *     "OldPassword":"OldPassword"
+       *     "oldPassword":"OldPassword123"
        * }      
        * @apiSuccessExample {json} Success-Response:
        * HTTP/1.1 200 OK 
@@ -386,7 +384,7 @@ namespace Promact.Oauth.Server.Controllers
         * @apiParam {string} userName  user name
         * @apiParamExample {json} Request-Example:
         * {
-        *     "UserName":"abc"
+        *     "userName":"abc"
         * }      
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
