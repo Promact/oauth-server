@@ -365,12 +365,6 @@ namespace Promact.Oauth.Server.Controllers
        * {
        *     true
        * }
-       * @apiError UserNotFound the slack user was not found.
-       * @apiErrorExample {json} Error-Response:
-       * HTTP/1.1 404 Not Found
-       * {
-       *   "error": "UserNotFound"
-       * }
        */
         [HttpGet]
         [Route("{password}/available")]
@@ -445,18 +439,7 @@ namespace Promact.Oauth.Server.Controllers
        * @apiSuccessExample {json} Success-Response:
        * HTTP/1.1 200 OK 
        * {
-       *   "Id":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
-       *   "FirstName" : "John",
-       *   "Email" : "jone@promactinfo.com",
-       *   "LastName" : "Doe",
-       *   "SlackUserName" :"John",
-       *   "IsActive" : "True",
-       *   "JoiningDate" :"10-02-2016",
-       *   "NumberOfCasualLeave":0,
-       *   "NumberOfSickLeave":0,
-       *   "UniqueName":null,
-       *   "Role":null,
-       *   "UserName": null
+       *   true
        * }
        */
         [HttpGet]
