@@ -94,11 +94,10 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
         private async Task<OAuthApplication> GetAppDetailsFromClientAsync(string redirectUrl, string refreshToken, string slackUserName)
         {
             // Assigning Base Address with redirectUrl
-            string requestUrl = string.Format("?refreshToken={0}&slackUserName={1}", refreshToken, slackUserName);
-            HttpResponseMessage response = await _httpClientRepository.GetAsync(redirectUrl, requestUrl);
-            string responseResult = response.Content.ReadAsStringAsync().Result;
+            var requestUrl = string.Format("?refreshToken={0}&slackUserName={1}", refreshToken, slackUserName);
+            var response = await _httpClientRepository.GetAsync(redirectUrl, requestUrl);
             // Transforming Json String to object type OAuthApplication
-            return JsonConvert.DeserializeObject<OAuthApplication>(responseResult);
+            return JsonConvert.DeserializeObject<OAuthApplication>(response);
         }
 
 
@@ -129,12 +128,13 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
             ApplicationUser user = await _userManager.FindByNameAsync(userName);
             OAuth oAuth = await OAuthClientCheckingAsync(user.Email, clientId);
             OAuthApplication clientResponse = await GetAppDetailsFromClientAsync(callBackUrl, oAuth.RefreshToken, user.SlackUserName);
-            if (!String.IsNullOrEmpty(clientResponse.UserId))
-            {
-                user.SlackUserId = clientResponse.UserId;
-                await _userManager.UpdateAsync(user);
-                return string.Format("{0}?accessToken={1}&email={2}&slackUserId={3}&userId={4}", clientResponse.ReturnUrl, oAuth.AccessToken, oAuth.userEmail, user.SlackUserId, user.Id);
-            }
+            if (clientResponse != null)
+                if (!String.IsNullOrEmpty(clientResponse.UserId))
+                {
+                    user.SlackUserId = clientResponse.UserId;
+                    await _userManager.UpdateAsync(user);
+                    return string.Format("{0}?accessToken={1}&email={2}&slackUserId={3}&userId={4}", clientResponse.ReturnUrl, oAuth.AccessToken, oAuth.userEmail, user.SlackUserId, user.Id);
+                }
             return _stringConstant.EmptyString;
         }
 

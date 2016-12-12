@@ -93,6 +93,9 @@
         string DateFormate { get; }
         string TeamLeaderNotAssign { get; }
         string DomainAddress { get; }
+        string UserSlackId { get; }
+        string GetAppDetailsFromClientAsyncResponse { get; }
+        string ReturnUrl { get; }
         string SetSmtpUnSecure { get; }
         string SetSmtpSSL { get; }
     }
