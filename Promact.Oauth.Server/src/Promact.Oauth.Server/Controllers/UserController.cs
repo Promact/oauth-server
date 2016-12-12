@@ -71,8 +71,8 @@ namespace Promact.Oauth.Server.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AllUsersAsync()
         {
-           var user = await _userRepository.GetAllUsersAsync();
-           return Ok(user);
+            var user = await _userRepository.GetAllUsersAsync();
+            return Ok(user);
         }
 
         /**
@@ -166,7 +166,7 @@ namespace Promact.Oauth.Server.Controllers
         * }
         */
         [HttpGet]
-        [Route("{id:string}")]
+        [Route("{id}")]
         [Authorize(Roles = "Admin,Employee")]
         public async Task<IActionResult> GetUserByIdAsync(string id)
         {
