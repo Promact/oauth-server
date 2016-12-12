@@ -167,7 +167,7 @@ namespace Promact.Oauth.Server.Controllers
         * }
         */
         [HttpGet]
-        [Route("{id}")]
+        [Route("{id:string}")]
         [Authorize(Roles = "Admin,Employee")]
         public async Task<IActionResult> GetUserByIdAsync(string id)
         {
