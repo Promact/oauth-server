@@ -70,8 +70,8 @@ namespace Promact.Oauth.Server.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AllUsersAsync()
         {
-           var user = await _userRepository.GetAllUsersAsync();
-           return Ok(user);
+            var user = await _userRepository.GetAllUsersAsync();
+            return Ok(user);
         }
 
         /**
@@ -165,7 +165,7 @@ namespace Promact.Oauth.Server.Controllers
         * }
         */
         [HttpGet]
-        [Route("{id:string}")]
+        [Route("{id}")]
         [Authorize(Roles = "Admin,Employee")]
         public async Task<IActionResult> GetUserByIdAsync(string id)
         {
@@ -252,6 +252,7 @@ namespace Promact.Oauth.Server.Controllers
         * @apiGroup User
         * @apiParam {object} newUser  object
         * @apiParamExample {json} Request-Example:
+        *  "Id":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
         *   {
         *    "Id":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
         *    "FirstName" : "John",
@@ -279,24 +280,23 @@ namespace Promact.Oauth.Server.Controllers
         * }
         */
         [HttpPut]
-        [Route("{id:string}")]
+        [Route("{id}")]
         [Authorize(Roles = "Admin,Employee")]
-        public async Task<IActionResult> UpdateUserAsync([FromBody] UserAc editedUser)
+        public async Task<IActionResult> UpdateUserAsync(string id, [FromBody] UserAc editedUser)
         {
             try
             {
                 string updatedBy = _userManager.GetUserId(User);
                 if (ModelState.IsValid)
                 {
-                    string id = await _userRepository.UpdateUserDetailsAsync(editedUser, updatedBy);
-                    if (id != "")
-                    { return Ok(true); }
+                    editedUser.Id = id;
+                    await _userRepository.UpdateUserDetailsAsync(editedUser, updatedBy);
+                    return Ok(true);
                 }
-                return Ok(false);
+                return Ok(editedUser);
             }
             catch (SlackUserNotFound)
             {
-                _logger.LogInformation("User not Found");
                 return NotFound();
             }
         }
@@ -345,7 +345,7 @@ namespace Promact.Oauth.Server.Controllers
             {
                 return NotFound();
             }
-           
+
         }
 
         /**
@@ -613,7 +613,7 @@ namespace Promact.Oauth.Server.Controllers
                 _logger.LogError("Resend Mail unsuccessful " + argEx.Message + argEx.ToString());
                 return BadRequest();
             }
-           
+
         }
 
 
