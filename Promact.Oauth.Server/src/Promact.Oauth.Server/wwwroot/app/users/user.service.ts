@@ -26,7 +26,7 @@ export class UserService {
     }
 
     editUser(editedUser: UserModel) {
-        return this.httpService.put(this.UserUrl , editedUser);
+        return this.httpService.put(this.UserUrl + "/" + editedUser.Id , editedUser);
     }
 
     changePassword(newPassword: PasswordModel) {
