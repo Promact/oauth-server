@@ -55,6 +55,7 @@ export class ProjectViewComponent implements OnInit {
                                 this.project.applicationUsers[j].NumberOfSickLeave = this.project.listUsers[i].NumberOfSickLeave;
                                 this.project.applicationUsers[j].JoiningDate = this.project.listUsers[i].JoiningDate;
                                 this.project.applicationUsers[j].SlackUserName = this.project.listUsers[i].SlackUserName;
+                                this.project.applicationUsers[j].SlackUserId = this.project.listUsers[i].SlackUserId
                             }
                         }
                     }
