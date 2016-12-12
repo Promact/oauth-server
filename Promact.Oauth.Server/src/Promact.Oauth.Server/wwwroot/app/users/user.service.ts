@@ -50,8 +50,8 @@ export class UserService {
     reSendMail(id: string) {
         return this.httpService.get(this.UserUrl + "/email/" + id +"/send");
     }
-    checkOldPasswordIsValid(oldPassword: string) {
-        return this.httpService.get(this.UserUrl + "/" + oldPassword +"/available");
+    checkOldPasswordIsValid(password: string) {
+        return this.httpService.get(this.UserUrl + "/" + password +"/available");
     }
 
    fetchSlackUserDetails() {
