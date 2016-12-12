@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Exceptionless.Json;
+using Promact.Oauth.Server.Models.ApplicationClasses;
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -6,10 +8,10 @@ namespace Promact.Oauth.Server.Repository.HttpClientRepository
 {
     public class HttpClientRepository: IHttpClientRepository
     {
-        private readonly HttpClient _client;
-        public HttpClientRepository(HttpClient client)
+        private HttpClient _client;
+        public HttpClientRepository()
         {
-            _client = client;
+            
         }
 
         /// <summary>
@@ -18,11 +20,13 @@ namespace Promact.Oauth.Server.Repository.HttpClientRepository
         /// <param name="baseUrl"></param>
         /// <param name="contentUrl"></param>
         /// <returns>response</returns>
-        public async Task<HttpResponseMessage> GetAsync(string baseUrl, string contentUrl)
+        public async Task<string> GetAsync(string baseUrl, string contentUrl)
         {
+            _client = new HttpClient();
             _client.BaseAddress = new Uri(baseUrl);
             var response = await _client.GetAsync(contentUrl);
-            return response;
+            var responseContent = response.Content.ReadAsStringAsync().Result;
+            return responseContent;
         }
     }
 }

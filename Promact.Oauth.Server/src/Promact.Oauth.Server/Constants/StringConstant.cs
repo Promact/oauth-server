@@ -93,5 +93,13 @@
         public string DateFormate { get { return "dd'/'MM'/'yyyy"; } }
         public string TeamLeaderNotAssign { get { return "Not Assigned"; } }
         public string DomainAddress { get { return "@promactinfo.com"; } }
+        public string UserSlackId { get { return "U0HJ49KJ4"; } }
+        public string GetAppDetailsFromClientAsyncResponse {
+            get
+            {
+                return "{\"ClientId\":\"{0}\",\"ClientSecret\":\"{1}\",\"RefreshToken\":\"22719b46-e0d5-4ef2-ad63-6a5a9fe9842e\",\"ReturnUrl\":\"http://localhost:28182/Home/ExtrenalLoginCallBack\",\"UserId\":\"U0HJ49KJ4\"}";
+            }
+        }
+        public string ReturnUrl { get { return "http://localhost:28182/Home/ExtrenalLoginCallBack"; } }
     }
 }

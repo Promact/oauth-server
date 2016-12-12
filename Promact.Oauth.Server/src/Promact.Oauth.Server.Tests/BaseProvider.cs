@@ -15,11 +15,11 @@ using Promact.Oauth.Server.Repository.ProjectsRepository;
 using Promact.Oauth.Server.Seed;
 using Promact.Oauth.Server.Services;
 using System;
-using System.Net.Http;
 using Microsoft.Extensions.FileProviders;
 using System.Linq;
 using System.Collections.Generic;
 using Promact.Oauth.Server.Constants;
+using Moq;
 
 namespace Promact.Oauth.Server.Tests
 {
@@ -56,9 +56,8 @@ namespace Promact.Oauth.Server.Tests
             services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<IConsumerAppRepository, ConsumerAppRepository>();
             services.AddScoped<IOAuthRepository, OAuthRepository>();
-            services.AddScoped<HttpClient>();
+            //services.AddScoped<HttpClient>();
             services.AddScoped<IStringConstant,StringConstant>();
-            services.AddScoped<IHttpClientRepository, HttpClientRepository>();
             services.AddScoped(typeof(IDataRepository<>), typeof(DataRepository<>));
 
             //Register Mapper
@@ -66,7 +65,10 @@ namespace Promact.Oauth.Server.Tests
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
             services.AddDbContext<PromactOauthDbContext>(options => options.UseInMemoryDatabase(randomString), ServiceLifetime.Transient);
-
+            var httpClientMock = new Mock<IHttpClientRepository>();
+            var httpClientMockObject = httpClientMock.Object;
+            services.AddScoped(x => httpClientMock);
+            services.AddScoped(x=>httpClientMockObject);
             serviceProvider = services.BuildServiceProvider();
             RoleSeedFake(serviceProvider);
         }

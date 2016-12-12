@@ -5,6 +5,6 @@ namespace Promact.Oauth.Server.Repository.HttpClientRepository
 {
     public interface IHttpClientRepository
     {
-        Task<HttpResponseMessage> GetAsync(string baseUrl, string contentUrl);
+        Task<string> GetAsync(string baseUrl, string contentUrl);
     }
 }
