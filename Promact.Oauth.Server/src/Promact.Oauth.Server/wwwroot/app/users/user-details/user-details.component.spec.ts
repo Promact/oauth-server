@@ -22,12 +22,13 @@ import { ActivatedRouteStub } from "../../shared/mocks/mock.activatedroute";
 import { UserRole } from "../../shared/userrole.model";
 import { StringConstant } from '../../shared/stringconstant';
 
+
+let stringConstant = new StringConstant();
+
 describe("User Details Test", () => {
     let userDetailsComponent: UserDetailsComponent;
     let userService: UserService;
-    class MockLocation { }
-    class MockLoaderService { }
-    class McokLogin { }
+    
     const routes: Routes = [];
     beforeEach(async(() => {
         this.promise = TestBed.configureTestingModule({
@@ -40,9 +41,8 @@ describe("User Details Test", () => {
                 { provide: Router, useClass: MockRouter },
                 { provide: Md2Toast, useClass: MockToast },
                 { provide: UserModel, useClass: UserModel },
-                { provide: LoaderService, useClass: MockLoaderService },
+                { provide: LoaderService, useClass: LoaderService },
                 { provide: LoginService, useClass: MockLoginService },
-                { provide: Location, useClass: MockLocation },
                 { provide: UserRole, useValue: new UserRole() },
                 { provide: StringConstant, useClass: StringConstant }
                 
@@ -51,16 +51,21 @@ describe("User Details Test", () => {
 
     }));
 
+    it("should be defined UserDetailsComponent", () => {
+        let fixture = TestBed.createComponent(UserDetailsComponent);
+        let userDetailsComponent = fixture.componentInstance;
+        expect(userDetailsComponent).toBeDefined();
+    });
 
 
-    it("should get default Project for company", done => {
+    it("should get default User for company", done => {
         this.promise.then(() => {
            
             let fixture = TestBed.createComponent(UserDetailsComponent); //Create instance of component
             let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
-            activatedRoute.testParams = { id: "1" };            
-            let userDetailsComponent:UserDetailsComponent = fixture.componentInstance;
-            let expectedFirstName = "First Name";
+            activatedRoute.testParams = { id: stringConstant.id };            
+            let userDetailsComponent: UserDetailsComponent = fixture.componentInstance;
+            let expectedFirstName = stringConstant.testfirstName;
             fixture.detectChanges();
             expect(userDetailsComponent.user.FirstName).toBe(expectedFirstName);
             done();

@@ -1,13 +1,11 @@
 ﻿import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ConsumerAppModel } from "../../../consumerapp/consumerapp-model";
-
-
-
-
+import { StringConstant } from '../../stringconstant';
 
 @Injectable()
 export class MockConsumerappService {
+    stringConstant: StringConstant = new StringConstant();
     constructor() {
     }
 
@@ -25,9 +23,9 @@ export class MockConsumerappService {
     getConsumerApps() {
         let listOfConsumerApp = new Array<MockConsumers>();
         let mockConsumerApp = new MockConsumers();
-        mockConsumerApp.Name = "slack";
-        mockConsumerApp.Description = "slack Description";
-        mockConsumerApp.CallbackUrl = "www.google.com";
+        mockConsumerApp.Name = this.stringConstant.consumerappname;
+        mockConsumerApp.Description = this.stringConstant.description;
+        mockConsumerApp.CallbackUrl = this.stringConstant.callbackUrl;
         listOfConsumerApp.push(mockConsumerApp);
         return new BehaviorSubject(listOfConsumerApp).asObservable();
     }
@@ -39,9 +37,9 @@ export class MockConsumerappService {
     getConsumerAppById(id: number) {
         let mockConsumerApp = new MockConsumer(id);
         if (id === 1) {
-            mockConsumerApp.Name = "slack";
-            mockConsumerApp.Description = "slack Description";
-            mockConsumerApp.CallbackUrl = "www.google.com";
+            mockConsumerApp.Name = this.stringConstant.consumerapp;
+            mockConsumerApp.Description = this.stringConstant.description;
+            mockConsumerApp.CallbackUrl = this.stringConstant.callbackUrl;
         }
         return new BehaviorSubject(mockConsumerApp).asObservable();
     }

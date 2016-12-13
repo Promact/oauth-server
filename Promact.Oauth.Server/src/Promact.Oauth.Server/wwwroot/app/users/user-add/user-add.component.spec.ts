@@ -13,14 +13,14 @@ import { UserModule } from '../user.module';
 import { RouterLinkStubDirective } from '../../shared/mocks/mock.routerLink';
 import { LoaderService } from '../../shared/loader.service';
 import { StringConstant } from '../../shared/stringconstant';
+import { ActivatedRouteStub } from "../../shared/mocks/mock.activatedroute";
 
 let promise: TestBed;
+let stringConstant = new StringConstant();
 
 describe('User Add Test', () => {
     let userAddComponent: UserAddComponent;
 
-    class MockActivatedRoute { }
-    class MockLoaderService { }
     const routes: Routes = [];
 
     beforeEach(async(() => {
@@ -29,22 +29,30 @@ describe('User Add Test', () => {
             imports: [UserModule, RouterModule.forRoot(routes, { useHash: true }) //Set LocationStrategy for component. 
             ],
             providers: [
-                { provide: ActivatedRoute, useClass: MockActivatedRoute },
+                { provide: ActivatedRoute, useClass: ActivatedRouteStub },
                 { provide: Router, useClass: MockRouter },
                 { provide: UserService, useClass: MockUserService },
                 { provide: Md2Toast, useClass: MockToast },
                 { provide: UserModel, useClass: UserModel },
-                { provide: LoaderService, useClass: MockLoaderService },
+                { provide: LoaderService, useClass: LoaderService },
                 { provide: StringConstant, useClass: StringConstant }]
         }).compileComponents();
 
     }));
+
+
+    it("should be defined UserAddComponent", () => {
+        let fixture = TestBed.createComponent(UserAddComponent);
+        let userAddComponent = fixture.componentInstance;
+        expect(userAddComponent).toBeDefined();
+    });
+
     it("should check user added successfully", done => {
         this.promise.then(() => {
             let fixture = TestBed.createComponent(UserAddComponent); //Create instance of component            
             let userAddComponent = fixture.componentInstance;
             let userModel = new UserModel();
-            let expected = "Ankit";
+            let expected = stringConstant.firstName;
             userModel.FirstName = expected;
             userAddComponent.addUser(userModel);
             expect(userModel.FirstName).toBe(expected);
@@ -58,8 +66,8 @@ describe('User Add Test', () => {
             let fixture = TestBed.createComponent(UserAddComponent); //Create instance of component            
             let userAddComponent = fixture.componentInstance;
             let userModel = new UserModel();
-            let expected = "ankit@promactinfo.com";
-            userModel.FirstName = "Ankit";
+            let expected = stringConstant.email;
+            userModel.FirstName = stringConstant.firstName;
             userModel.Email = expected;
             userAddComponent.addUser(userModel);
             expect(userModel.Email).toBe(expected);
@@ -72,8 +80,8 @@ describe('User Add Test', () => {
         this.promise.then(() => {
             let fixture = TestBed.createComponent(UserAddComponent); //Create instance of component            
             let userAddComponent = fixture.componentInstance;
-            let email = "";
-            let expected = "";
+            let email = stringConstant.empty;
+            let expected = stringConstant.empty;
             userAddComponent.checkEmail(expected);
             expect(email).toBe(expected);
             done();
@@ -86,8 +94,8 @@ describe('User Add Test', () => {
         this.promise.then(() => {
             let fixture = TestBed.createComponent(UserAddComponent); //Create instance of component            
             let userAddComponent = fixture.componentInstance;
-            let SlackUserName = "";
-            let expected = "";
+            let SlackUserName = stringConstant.empty;
+            let expected = stringConstant.empty;
             userAddComponent.checkSlackUserName(expected);
             expect(SlackUserName).toBe(expected);
             done();

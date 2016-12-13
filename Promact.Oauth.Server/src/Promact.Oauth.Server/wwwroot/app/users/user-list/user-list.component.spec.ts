@@ -24,8 +24,6 @@ let promise: TestBed;
 
 describe("User List Test", () => {
      
-  
-    class MockLoaderService { }
     const routes: Routes = [];
     beforeEach(async(() => {
         this.promise = TestBed.configureTestingModule({
@@ -36,13 +34,18 @@ describe("User List Test", () => {
                 { provide: UserService, useClass: MockUserService },
                 { provide: Router, useClass: MockRouter },
                 { provide: Md2Toast, useClass: MockToast },
-                { provide: LoaderService, useClass: MockLoaderService },
+                { provide: LoaderService, useClass: LoaderService },
                 { provide: StringConstant, useClass: StringConstant }
 
             ]
         }).compileComponents();
     }));
 
+    it("should be defined userListComponent", () => {
+        let fixture = TestBed.createComponent(UserListComponent);
+        let userListComponent = fixture.componentInstance;
+        expect(userListComponent).toBeDefined();
+    });
 
     it("should get default Users for company", done => {
         this.promise.then(() => {

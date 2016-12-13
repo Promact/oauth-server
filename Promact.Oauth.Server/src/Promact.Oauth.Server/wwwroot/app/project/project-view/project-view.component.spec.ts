@@ -19,10 +19,10 @@ import { ActivatedRouteStub } from "../../shared/mocks/mock.activatedroute";
 import { StringConstant } from '../../shared/stringconstant';
 
 let promise: TestBed;
+let stringConstant = new StringConstant();
 
 describe('Project View Test', () => {
-    class MockLocation { }
-    class MockStringConstant { }
+    
     const routes: Routes = [];
    
     beforeEach(async(() => {
@@ -36,7 +36,6 @@ describe('Project View Test', () => {
                 { provide: ProjectService, useClass: MockProjectService },
                 { provide: UserModel, useClass: UserModel },
                 { provide: ProjectModel, useClass: ProjectModel },
-                { provide: Location, useClass: MockLocation },
                 { provide: Md2Toast, useClass: MockToast },
                 { provide: StringConstant, useClass: StringConstant }
             ]
@@ -48,7 +47,7 @@ describe('Project View Test', () => {
         this.promise.then(() => {
             let fixture = TestBed.createComponent(ProjectViewComponent); //Create instance of component  
             let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
-            activatedRoute.testParams = { id: "1" };                
+            activatedRoute.testParams = { id: stringConstant.id };                
             let projectViewComponent = fixture.componentInstance;
             projectViewComponent.ngOnInit();
             expect(projectViewComponent.Userlist).not.toBeNull();
@@ -60,7 +59,7 @@ describe('Project View Test', () => {
         this.promise.then(() => {
             let fixture = TestBed.createComponent(ProjectViewComponent); //Create instance of component  
             let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
-            activatedRoute.testParams = { id: "1" };
+            activatedRoute.testParams = { id: stringConstant.id };
             let projectViewComponent = fixture.componentInstance;
             projectViewComponent.ngOnInit();
             expect(projectViewComponent.project).not.toBeNull();
@@ -72,7 +71,7 @@ describe('Project View Test', () => {
         this.promise.then(() => {
             let fixture = TestBed.createComponent(ProjectViewComponent); //Create instance of component  
             let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
-            activatedRoute.testParams = { id: "1" };
+            activatedRoute.testParams = { id:stringConstant.id };
             let projectViewComponent = fixture.componentInstance;
             projectViewComponent.ngOnInit();
             expect(projectViewComponent.teamLeaderFirstName).not.toBeNull();
@@ -84,7 +83,7 @@ describe('Project View Test', () => {
         this.promise.then(() => {
             let fixture = TestBed.createComponent(ProjectViewComponent); //Create instance of component  
             let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
-            activatedRoute.testParams = { id: "1" };
+            activatedRoute.testParams = { id: stringConstant.id };
             let projectViewComponent = fixture.componentInstance;
             projectViewComponent.ngOnInit();
             expect(projectViewComponent.teamLeaderEmail).not.toBeNull();

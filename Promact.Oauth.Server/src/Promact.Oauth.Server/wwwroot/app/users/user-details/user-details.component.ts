@@ -23,8 +23,8 @@ export class UserDetailsComponent implements OnInit {
         this.admin = true;
     }
     ngOnInit() {
-        
-        if (this.userRole.Role === "Admin") {
+
+        if (this.userRole.Role === this.stringConstant.admin) {
             this.admin = true;
         }
         else {
@@ -33,7 +33,7 @@ export class UserDetailsComponent implements OnInit {
         this.loader.loader = true;
 
         this.route.params.subscribe(params => {
-            let id = this.route.snapshot.params['id'];
+            let id = this.route.snapshot.params[this.stringConstant.paramsId];
             this.userService.getUserById(id)
                 .subscribe((user) => {
                     this.user = user,

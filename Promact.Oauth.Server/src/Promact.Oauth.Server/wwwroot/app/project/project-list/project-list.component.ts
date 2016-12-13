@@ -3,7 +3,6 @@ import { ProjectService } from '../project.service';
 import { ProjectModel } from '../project.model';
 import { Router } from '@angular/router';
 import { Md2Toast } from 'md2';
-import { LoginService } from '../../login.service';
 import { LoaderService } from '../../shared/loader.service';
 import { UserRole } from "../../shared/userrole.model";
 import { StringConstant } from '../../shared/stringconstant';
@@ -17,7 +16,7 @@ export class ProjectListComponent implements OnInit {
     projects: Array<ProjectModel>;
     project: ProjectModel;
     admin: boolean;
-    constructor(private router: Router, private projectService: ProjectService, private toast: Md2Toast, private loginService: LoginService,
+    constructor(private router: Router, private projectService: ProjectService, private toast: Md2Toast, 
         private loader: LoaderService, private userRole: UserRole, private stringConstant: StringConstant) {
         this.projects = new Array<ProjectModel>();
         this.project = new ProjectModel();
