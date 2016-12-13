@@ -12,11 +12,13 @@ import { MockToast } from "../shared/mocks/mock.toast";
 import { Observable } from "rxjs/Observable";
 import { LoaderService } from "../shared/loader.service";
 import { MockRouter } from '../shared/mocks/mock.router';
+import { StringConstant } from '../shared/stringconstant';
+
+let promise: TestBed;
+let stringConstant = new StringConstant();
 
 describe('Change Password', () => {
-    class MockLoaderService { }
     const routes: Routes = [];
-
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [ChangePasswordModule, RouterModule.forRoot(routes, { useHash: true }) //Set LocationStrategy for component. 
@@ -26,7 +28,8 @@ describe('Change Password', () => {
                 { provide: UserService, useClass: MockUserService },
                 { provide: Md2Toast, useClass: MockToast },
                 { provide: PasswordModel, useClass: PasswordModel },
-                { provide: LoaderService, useClass: MockLoaderService }
+                { provide: LoaderService, useClass: LoaderService },
+                { provide: StringConstant, useClass: StringConstant }
             ]
         }).compileComponents();
     }));
@@ -40,11 +43,10 @@ describe('Change Password', () => {
             let fixture = TestBed.createComponent(ChangePasswordComponent); //Create instance of component            
             let changePasswordComponent = fixture.componentInstance;
             let passwordModel = new PasswordModel();
-            let expectedNewPassword = "test123";
-            passwordModel.NewPassword = expectedNewPassword;
-            passwordModel.OldPassword = "test";
-            passwordModel.ConfirmPassword = "test123";
-            passwordModel.Email = "test@yahoo.com";
+            passwordModel.NewPassword = stringConstant.newPassword;
+            passwordModel.OldPassword = stringConstant.oldPassword;
+            passwordModel.ConfirmPassword = stringConstant.newPassword;
+            passwordModel.Email = stringConstant.email;
             let result = changePasswordComponent.changePassword(passwordModel);
             expect(expectedNewPassword).toBe(passwordModel.NewPassword);
     });
@@ -61,8 +63,8 @@ describe('Change Password', () => {
             let fixture = TestBed.createComponent(ChangePasswordComponent); //Create instance of component            
             let changePasswordComponent = fixture.componentInstance;
             let passwordModel = new PasswordModel();
-            passwordModel.NewPassword = "test123";
-            passwordModel.ConfirmPassword = "test123";
+            passwordModel.NewPassword = stringConstant.newPassword;
+            passwordModel.ConfirmPassword = stringConstant.newPassword;
             let result = changePasswordComponent.matchPassword(passwordModel.ConfirmPassword, passwordModel.NewPassword);
             expect(changePasswordComponent.isNotMatch).toBe(false);
     });
@@ -71,8 +73,8 @@ describe('Change Password', () => {
             let fixture = TestBed.createComponent(ChangePasswordComponent); //Create instance of component            
             let changePasswordComponent = fixture.componentInstance;
             let passwordModel = new PasswordModel();
-            passwordModel.NewPassword = "test123";
-            passwordModel.ConfirmPassword = "test1234";
+            passwordModel.NewPassword = stringConstant.newPassword;
+            passwordModel.ConfirmPassword = stringConstant.confirmPassword;
             let result = changePasswordComponent.matchPassword(passwordModel.ConfirmPassword, passwordModel.NewPassword);
             expect(changePasswordComponent.isNotMatch).toBe(true);
     });

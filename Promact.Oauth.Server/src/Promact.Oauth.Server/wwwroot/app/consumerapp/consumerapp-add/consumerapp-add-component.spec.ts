@@ -10,11 +10,13 @@ import { MockConsumerappService } from "../../shared/mocks/consumerapp/mock.cons
 import { MockRouter } from '../../shared/mocks/mock.router';
 import { ConsumerAppModule } from '../consumerapp.module';
 import { LoaderService } from '../../shared/loader.service';
+import { StringConstant } from '../../shared/stringconstant';
+
+
+let stringConstant = new StringConstant();
 
 describe('Consumer Add Test', () => {
-    class MockLoaderService { }
     const routes: Routes = [];
-
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [ConsumerAppModule, RouterModule.forRoot(routes, { useHash: true }) //Set LocationStrategy for component. 
@@ -24,8 +26,8 @@ describe('Consumer Add Test', () => {
                 { provide: ConsumerAppService, useClass: MockConsumerappService },
                 { provide: Md2Toast, useClass: MockToast },
                 { provide: ConsumerAppModel, useClass: ConsumerAppModel },
-                { provide: LoaderService, useClass: MockLoaderService },
-                { provide: consumerappallowedscopes, useClas: consumerappallowedscopes }
+                { provide: LoaderService, useClass: LoaderService },
+                { provide: StringConstant, useClass: StringConstant }
             ]
         }).compileComponents();
     }));

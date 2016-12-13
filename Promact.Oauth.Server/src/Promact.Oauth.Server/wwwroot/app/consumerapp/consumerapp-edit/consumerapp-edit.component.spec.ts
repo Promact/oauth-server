@@ -10,37 +10,34 @@ import { MockConsumerappService } from "../../shared/mocks/consumerapp/mock.cons
 import { Observable } from 'rxjs/Observable';
 import { ConsumerAppModule } from '../consumerapp.module';
 import { LoaderService } from '../../shared/loader.service';
+import { ActivatedRouteStub } from "../../shared/mocks/mock.activatedroute";
+import { StringConstant } from '../../shared/stringconstant';
 
 
+let stringConstant = new StringConstant();
 
 describe('Consumer Edit Test', () => {
-    class MockRouter { }
-    class MockLoaderService { }
     const routes: Routes = [];
-    class MockActivatedRoute extends ActivatedRoute {
-        constructor() {
-            super();
-            this.params = Observable.of({ id: "1" });
-        }
-    }
-
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [ConsumerAppModule, RouterModule.forRoot(routes, { useHash: true }) //Set LocationStrategy for component. 
             ],
             providers: [
-                { provide: ActivatedRoute, useClass: MockActivatedRoute },
+                { provide: ActivatedRoute, useClass: ActivatedRouteStub },
                 { provide: Router, useClass: MockRouter },
                 { provide: ConsumerAppService, useClass: MockConsumerappService },
                 { provide: Md2Toast, useClass: MockToast },
                 { provide: ConsumerAppModel, useClass: ConsumerAppModel },
-                { provide: LoaderService, useClass: MockLoaderService }
+                { provide: LoaderService, useClass: LoaderService },
+                { provide: StringConstant, useClass: StringConstant }
             ]
         }).compileComponents();
     }));
 
     it("Get consumerApp by id", () => {
             let fixture = TestBed.createComponent(ConsumerappEditComponent); //Create instance of component            
+            let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
+            activatedRoute.testParams = { id: stringConstant.id };
             let consumerappEditComponent = fixture.componentInstance;
             consumerappEditComponent.ngOnInit();
             expect(consumerappEditComponent.consumerModel).not.toBeNull();
@@ -51,7 +48,7 @@ describe('Consumer Edit Test', () => {
             let consumerappEditComponent = fixture.componentInstance;
             let toast = fixture.debugElement.injector.get(Md2Toast);
             let consumerAppModel = new ConsumerAppModel();
-            let expectedconsumerappname = "slack";
+            let expectedconsumerappname = stringConstant.consumerappname;
             consumerAppModel.Name = expectedconsumerappname;
             consumerAppModel.CallbackUrl = "www.google.com";
             consumerAppModel.AuthSecret = "dsdsdsdsdsdsd";

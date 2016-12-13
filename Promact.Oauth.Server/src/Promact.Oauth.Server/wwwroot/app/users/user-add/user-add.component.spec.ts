@@ -10,9 +10,15 @@ import { MockUserService } from "../../shared/mocks/user/mock.user.service";
 import { MockRouter } from '../../shared/mocks/mock.router';
 import { UserModule } from '../user.module';
 import { LoaderService } from '../../shared/loader.service';
+import { StringConstant } from '../../shared/stringconstant';
+import { ActivatedRouteStub } from "../../shared/mocks/mock.activatedroute";
 
+
+let stringConstant = new StringConstant();
 
 describe('User Add Test', () => {
+    let userAddComponent: UserAddComponent;
+
     const routes: Routes = [];
 
     beforeEach(async(() => {
@@ -20,11 +26,13 @@ describe('User Add Test', () => {
             imports: [UserModule, RouterModule.forRoot(routes, { useHash: true }) //Set LocationStrategy for component. 
             ],
             providers: [
+                { provide: ActivatedRoute, useClass: ActivatedRouteStub },
                 { provide: Router, useClass: MockRouter },
                 { provide: UserService, useClass: MockUserService },
                 { provide: Md2Toast, useClass: MockToast },
                 { provide: UserModel, useClass: UserModel },
-                { provide: LoaderService, useClass: LoaderService }]
+                { provide: LoaderService, useClass: LoaderService },
+                { provide: StringConstant, useClass: StringConstant }]
         }).compileComponents();
 
     }));
@@ -33,7 +41,7 @@ describe('User Add Test', () => {
         let fixture = TestBed.createComponent(UserAddComponent); //Create instance of component            
         let userAddComponent = fixture.componentInstance;
         let userModel = new UserModel();
-        let expected = "Ankit";
+        let expected = stringConstant.firstName;
         userModel.FirstName = expected;
         userAddComponent.addUser(userModel);
         expect(userModel.FirstName).toBe(expected);
@@ -43,8 +51,8 @@ describe('User Add Test', () => {
         let fixture = TestBed.createComponent(UserAddComponent); //Create instance of component            
         let userAddComponent = fixture.componentInstance;
         let userModel = new UserModel();
-        let expected = "ankit@promactinfo.com";
-        userModel.FirstName = "Ankit";
+        let expected = stringConstant.email;
+        userModel.FirstName = stringConstant.firstName;
         userModel.Email = expected;
         userAddComponent.addUser(userModel);
         expect(userModel.Email).toBe(expected);

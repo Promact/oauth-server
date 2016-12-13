@@ -12,19 +12,15 @@ import { Md2Toast } from 'md2';
 import { LoaderService } from '../../shared/loader.service';
 import { UserRole } from "../../shared/userrole.model";
 import { StringConstant } from '../../shared/stringconstant';
+import { MockRouter } from '../../shared/mocks/mock.router';
+import { MockToast } from "../../shared/mocks/mock.toast";
 
 declare var describe, it, beforeEach, expect;
 let comp: ProjectListComponent;
 let fixture: ComponentFixture<ProjectListComponent>;
 
 describe("Project List Test", () => {
-
-    class MockRouter { }
-    class McokLogin { }
-    class Md2Toast { }
-    class MockHttpService { }
-    class MockLoaderService { }
-    class MockUserRole { }
+   
     const routes: Routes = [];
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -33,21 +29,28 @@ describe("Project List Test", () => {
             providers: [
                 { provide: Router, useClass: MockRouter },
                 { provide: ProjectService, useClass: MockProjectService },
-                { provide: Md2Toast, useClass: Md2Toast },
-                { provide: LoginService, useClass: McokLogin },
-                { provide: LoaderService, useClass: MockLoaderService },
-                { provide: UserRole, useClass: MockUserRole },
+                { provide: Md2Toast, useClass: MockToast },
+                { provide: LoaderService, useClass: LoaderService },
+                { provide: UserRole, useClass: UserRole },
                 { provide: StringConstant, useClass: StringConstant }
             ]
         }).compileComponents();
     }));
 
-
-    it("should get Projects for company", () => {
-        let fixture = TestBed.createComponent(ProjectListComponent); //Create instance of component            
+    it("should be defined ProjectListComponent", () => {
+        let fixture = TestBed.createComponent(ProjectListComponent);
         let projectListComponent = fixture.componentInstance;
-        projectListComponent.getProjects();
-        expect(projectListComponent.projects.length).toBe(1);
+        expect(projectListComponent).toBeDefined();
+    });
+ 
+    it("should get Projects for company", done => {
+        this.promise.then(() => {
+            let fixture = TestBed.createComponent(ProjectListComponent); //Create instance of component            
+            let projectListComponent = fixture.componentInstance;
+            projectListComponent.getProjects();
+            expect(projectListComponent.projects.length).toBe(1);
+            done();
+        });
     });
 });
 
