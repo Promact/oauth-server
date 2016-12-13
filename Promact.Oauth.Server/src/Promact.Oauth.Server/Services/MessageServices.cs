@@ -7,6 +7,8 @@ using Promact.Oauth.Server.Models;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
 using System;
+using Promact.Oauth.Server.Constants;
+using MailKit.Security;
 
 namespace Promact.Oauth.Server.Services
 {
@@ -17,11 +19,13 @@ namespace Promact.Oauth.Server.Services
     public class AuthMessageSender : IEmailSender, ISmsSender
     {
         private readonly ILogger<AuthMessageSender> _logger;
+        private readonly IStringConstant _stringConstant;
         private readonly IOptions<EmailCrednetials> _emailCrednetials;
 
-        public AuthMessageSender(IOptions<EmailCrednetials> emailCrednetials, ILogger<AuthMessageSender> logger)
+        public AuthMessageSender(IOptions<EmailCrednetials> emailCrednetials, ILogger<AuthMessageSender> logger, IStringConstant stringConstant)
         {
             _logger = logger;
+            _stringConstant = stringConstant;
             _emailCrednetials = emailCrednetials;
         }
 
@@ -40,7 +44,7 @@ namespace Promact.Oauth.Server.Services
             using (var smtp = new SmtpClient())
             {
                 _logger.LogInformation("Smtp Connect");
-                smtp.Connect(_emailCrednetials.Value.From, _emailCrednetials.Value.Port, _emailCrednetials.Value.SslOnConnect == true ? MailKit.Security.SecureSocketOptions.SslOnConnect : MailKit.Security.SecureSocketOptions.None);
+                smtp.Connect(_emailCrednetials.Value.Host, _emailCrednetials.Value.Port, GetSecureSocketOptions());
                 _logger.LogInformation("Authenticate");
                 smtp.Authenticate(credentials: new NetworkCredential(_emailCrednetials.Value.UserName, _emailCrednetials.Value.Password));
                 smtp.Send(msg, CancellationToken.None);
@@ -48,12 +52,34 @@ namespace Promact.Oauth.Server.Services
                 _logger.LogInformation("SendEmail Mail Successfully");
             }
         }
+        
 
         public Task SendSmsAsync(string number, string message)
         {
             // Plug in your SMS service here to send a text message.
             return Task.FromResult(0);
         }
+
+        #region Private Methods
+
+        /// <summary>
+        /// This method used for get secure Socket options.
+        /// </summary>
+        /// <returns></returns>
+        private SecureSocketOptions GetSecureSocketOptions()
+        {
+            string smtpProtocol = _emailCrednetials.Value.SetSmtpProtocol.ToLower();
+            //if user set stmp protocol way as SSL 
+            if (string.Compare(smtpProtocol, _stringConstant.SetSmtpSSL) == 0)
+               return SecureSocketOptions.SslOnConnect;
+            //if user set stmp protocol way as UnSecure 
+            else if (string.Compare(smtpProtocol, _stringConstant.SetSmtpUnSecure) == 0)
+                return SecureSocketOptions.None;
+            else
+            return SecureSocketOptions.StartTls;
+        }
+
+        #endregion
 
     }
 }
