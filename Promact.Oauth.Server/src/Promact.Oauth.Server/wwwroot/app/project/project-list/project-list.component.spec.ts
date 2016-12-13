@@ -13,6 +13,8 @@ import { LoaderService } from '../../shared/loader.service';
 import { RouterLinkStubDirective } from '../../shared/mocks/mock.routerLink';
 import { UserRole } from "../../shared/userrole.model";
 import { StringConstant } from '../../shared/stringconstant';
+import { MockRouter } from '../../shared/mocks/mock.router';
+import { MockToast } from "../../shared/mocks/mock.toast";
 
 declare var describe, it, beforeEach, expect;
 let comp: ProjectListComponent;
@@ -22,12 +24,6 @@ let promise: TestBed;
 
 describe("Project List Test", () => {
    
-    class MockRouter { }
-    class McokLogin { }
-    class Md2Toast { }
-    class MockHttpService { }
-    class MockLoaderService { }
-    class MockUserRole { }
     const routes: Routes = [];
     beforeEach(async(() => {
         this.promise = TestBed.configureTestingModule({
@@ -37,15 +33,19 @@ describe("Project List Test", () => {
             providers: [
                 { provide: Router, useClass: MockRouter },
                 { provide: ProjectService, useClass: MockProjectService },
-                { provide: Md2Toast, useClass: Md2Toast },
-                { provide: LoginService, useClass: McokLogin },
-                { provide: LoaderService, useClass: MockLoaderService },
-                { provide: UserRole, useClass: MockUserRole },
+                { provide: Md2Toast, useClass: MockToast },
+                { provide: LoaderService, useClass: LoaderService },
+                { provide: UserRole, useClass: UserRole },
                 { provide: StringConstant, useClass: StringConstant }
             ]
         }).compileComponents();
     }));
 
+    it("should be defined ProjectListComponent", () => {
+        let fixture = TestBed.createComponent(ProjectListComponent);
+        let projectListComponent = fixture.componentInstance;
+        expect(projectListComponent).toBeDefined();
+    });
  
     it("should get Projects for company", done => {
         this.promise.then(() => {

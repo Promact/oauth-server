@@ -13,39 +13,44 @@ import { Observable } from 'rxjs/Observable';
 import { RouterLinkStubDirective } from '../../shared/mocks/mock.routerLink';
 import { ConsumerAppModule } from '../consumerapp.module';
 import { LoaderService } from '../../shared/loader.service';
-
+import { ActivatedRouteStub } from "../../shared/mocks/mock.activatedroute";
+import { StringConstant } from '../../shared/stringconstant';
 
 let promise: TestBed;
-describe('Consumer Edit Test', () => {
-    class MockRouter { }
-    class MockLoaderService { }
-    const routes: Routes = [];
-    class MockActivatedRoute extends ActivatedRoute {
-        constructor() {
-            super();
-            this.params = Observable.of({ id: "1" });
-        }
-    }
+let stringConstant = new StringConstant();
 
+describe('Consumer Edit Test', () => {
+    const routes: Routes = [];
     beforeEach(async(() => {
         this.promise = TestBed.configureTestingModule({
             declarations: [RouterLinkStubDirective], //Declaration of mock routerLink used on page.
             imports: [ConsumerAppModule, RouterModule.forRoot(routes, { useHash: true }) //Set LocationStrategy for component. 
             ],
             providers: [
-                { provide: ActivatedRoute, useClass: MockActivatedRoute },
+                { provide: ActivatedRoute, useClass: ActivatedRouteStub },
                 { provide: Router, useClass: MockRouter },
                 { provide: ConsumerAppService, useClass: MockConsumerappService },
                 { provide: Md2Toast, useClass: MockToast },
                 { provide: ConsumerAppModel, useClass: ConsumerAppModel },
-                { provide: LoaderService, useClass: MockLoaderService }
+                { provide: LoaderService, useClass: LoaderService },
+                { provide: StringConstant, useClass: StringConstant }
             ]
         }).compileComponents();
     }));
 
+    it("should be defined ConsumerappEditComponent", () => {
+        let fixture = TestBed.createComponent(ConsumerappEditComponent);
+        let consumerappEditComponent = fixture.componentInstance;
+        expect(consumerappEditComponent).toBeDefined();
+    });
+
+
+
     it("Get consumerApp by id", done => {
         this.promise.then(() => {
             let fixture = TestBed.createComponent(ConsumerappEditComponent); //Create instance of component            
+            let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
+            activatedRoute.testParams = { id: stringConstant.id };
             let consumerappEditComponent = fixture.componentInstance;
             consumerappEditComponent.ngOnInit();
             expect(consumerappEditComponent.consumerModel).not.toBeNull();
@@ -59,12 +64,12 @@ describe('Consumer Edit Test', () => {
             let consumerappEditComponent = fixture.componentInstance;
             let toast = fixture.debugElement.injector.get(Md2Toast);
             let consumerAppModel = new ConsumerAppModel();
-            let expectedconsumerappname = "slack";
+            let expectedconsumerappname = stringConstant.consumerappname;
             consumerAppModel.Name = expectedconsumerappname;
-            consumerAppModel.Description = "slack description";
-            consumerAppModel.CallbackUrl = "www.google.com";
-            consumerAppModel.AuthSecret = "dsdsdsdsdsdsd";
-            consumerAppModel.AuthId = "ASASs5454545455";
+            consumerAppModel.Description = stringConstant.description;
+            consumerAppModel.CallbackUrl = stringConstant.callbackUrl;
+            consumerAppModel.AuthSecret = stringConstant.authSecret;
+            consumerAppModel.AuthId = stringConstant.authId;
             consumerappEditComponent.updateApps(consumerAppModel);
             expect(consumerAppModel.Name).toBe(expectedconsumerappname);
             done();

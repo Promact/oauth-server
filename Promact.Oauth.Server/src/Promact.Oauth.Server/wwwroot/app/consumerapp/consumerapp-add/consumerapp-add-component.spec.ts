@@ -13,14 +13,13 @@ import { Observable } from 'rxjs/Observable';
 import { RouterLinkStubDirective } from '../../shared/mocks/mock.routerLink';
 import { ConsumerAppModule } from '../consumerapp.module';
 import { LoaderService } from '../../shared/loader.service';
+import { StringConstant } from '../../shared/stringconstant';
 
 let promise: TestBed;
-
+let stringConstant = new StringConstant();
 
 describe('Consumer Add Test', () => {
-    class MockLoaderService { }
     const routes: Routes = [];
-
     beforeEach(async(() => {
         this.promise = TestBed.configureTestingModule({
             declarations: [RouterLinkStubDirective], //Declaration of mock routerLink used on page.
@@ -31,10 +30,18 @@ describe('Consumer Add Test', () => {
                 { provide: ConsumerAppService, useClass: MockConsumerappService },
                 { provide: Md2Toast, useClass: MockToast },
                 { provide: ConsumerAppModel, useClass: ConsumerAppModel },
-                { provide: LoaderService, useClass: MockLoaderService }
+                { provide: LoaderService, useClass: LoaderService },
+                { provide: StringConstant, useClass: StringConstant }
             ]
         }).compileComponents();
     }));
+
+    it("should be defined ConsumerappAddComponent", () => {
+        let fixture = TestBed.createComponent(ConsumerappAddComponent);
+        let consumerappAddComponent = fixture.componentInstance;
+        expect(consumerappAddComponent).toBeDefined();
+    });
+
 
     it("Added consumer app", done => {
         this.promise.then(() => {
@@ -42,12 +49,12 @@ describe('Consumer Add Test', () => {
             let consumerappAddComponent = fixture.componentInstance;
             let toast = fixture.debugElement.injector.get(Md2Toast);
             let consumerAppModel = new ConsumerAppModel();
-            let expectedconsumerappname = "slack";
+            let expectedconsumerappname = stringConstant.consumerappname;
             consumerAppModel.Name = expectedconsumerappname;
-            consumerAppModel.Description = "slack description";
-            consumerAppModel.CallbackUrl = "www.google.com";
-            consumerAppModel.AuthSecret = "dsdsdsdsdsdsd";
-            consumerAppModel.AuthId = "ASASs5454545455";
+            consumerAppModel.Description = stringConstant.description;
+            consumerAppModel.CallbackUrl = stringConstant.callbackUrl;
+            consumerAppModel.AuthSecret = stringConstant.authSecret;
+            consumerAppModel.AuthId = stringConstant.authId;
             consumerappAddComponent.submitApps(consumerAppModel);
             expect(consumerAppModel.Name).toBe(expectedconsumerappname);
             done();

@@ -2,14 +2,16 @@
 import { ProjectModel } from "../../../project/project.model";
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { UserModel } from "../../../users/user.model";
+import { StringConstant } from '../../stringconstant';
 
 @Injectable()
 export class MockProjectService {
     projects: Array<ProjectModel> = new Array<ProjectModel>();
+    stringConstant: StringConstant = new StringConstant();
     constructor() {
         let mockProject = new ProjectModel();
-        mockProject.name = "slack1";
-        mockProject.slackChannelName = "slack.test";
+        mockProject.name = this.stringConstant.projectName;
+        mockProject.slackChannelName = this.stringConstant.slackChannelName;
         this.projects.push(mockProject);
     }
     getProjects() {
@@ -25,9 +27,9 @@ export class MockProjectService {
     }
     getUsers() {
         let mockUser = new UserModel();
-        mockUser.FirstName = "Ronak";
-        mockUser.LastName = "Shah";
-        mockUser.Email = "rshah@Promactinfo.com";
+        mockUser.FirstName = this.stringConstant.firstName;
+        mockUser.LastName = this.stringConstant.lastName;
+        mockUser.Email = this.stringConstant.email;
         mockUser.IsActive = true;
         let mockList = new Array<UserModel>();
         return new BehaviorSubject(mockUser).asObservable();
@@ -36,18 +38,18 @@ export class MockProjectService {
         getProject(Id: number) {
         let mockProject = new MockProjects(Id);
         if (Id === 1) {
-           mockProject.name = "Project";
-           mockProject.slackChannelName = "Slack Channel";
+            mockProject.name = this.stringConstant.projectName;
+            mockProject.slackChannelName = this.stringConstant.slackChannelName;
             let mockUser = new UserModel();
-            mockUser.FirstName = "Ronakfdfas";
-            mockUser.LastName = "Shahfdsaf";
-            mockUser.Email = "rshah@Promactinfofdsfs.com";
+            mockUser.FirstName = this.stringConstant.firstName;
+            mockUser.LastName = this.stringConstant.lastName;
+            mockUser.Email = this.stringConstant.email;
             mockUser.IsActive = true;
-            mockUser.Id = "3";
+            mockUser.Id = this.stringConstant.id;
             let mockList = new Array<UserModel>();
             mockList.push(mockUser);
             mockProject.applicationUsers = mockList;
-            mockProject.teamLeaderId = "2";
+            mockProject.teamLeaderId = this.stringConstant.paramsId;
             mockProject.teamLeader = mockUser;
             return new BehaviorSubject(mockProject).asObservable();
         }

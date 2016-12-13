@@ -13,12 +13,13 @@ import { RouterLinkStubDirective } from '../../shared/mocks/mock.routerLink';
 import { ConsumerAppModule } from '../consumerapp.module';
 import { LoaderService } from '../../shared/loader.service';
 import { Md2Toast } from 'md2';
+import { StringConstant } from '../../shared/stringconstant';
 
 let promise: TestBed;
 
 describe('Consumer List Test', () => {
-    class MockRouter { }
-    class MockLoaderService { }
+    
+    
     const routes: Routes = [];
 
     beforeEach(async(() => {
@@ -31,13 +32,16 @@ describe('Consumer List Test', () => {
                 { provide: ConsumerAppService, useClass: MockConsumerappService },
                 { provide: Md2Toast, useClass: MockToast },
                 { provide: ConsumerAppModel, useClass: ConsumerAppModel },
-                { provide: LoaderService, useClass: MockLoaderService }
+                { provide: LoaderService, useClass: LoaderService },
+                { provide: StringConstant, useClass: StringConstant }
             ]
         }).compileComponents();
     }));
 
     it("Consumerapp list Component", () => done => {
-        expect(ConsumerappListComponent).toBeDefined();
+        let fixture = TestBed.createComponent(ConsumerappListComponent);
+        let consumerappListComponent = fixture.componentInstance;
+        expect(consumerappListComponent).toBeDefined();
     });
 
     it("Get Consumer Apps", () => done => {

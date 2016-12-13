@@ -22,15 +22,14 @@ import { ActivatedRouteStub } from "../../shared/mocks/mock.activatedroute";
 import { UserRole } from "../../shared/userrole.model";
 import { StringConstant } from '../../shared/stringconstant';
 
+let stringConstant = new StringConstant();
+
 describe("User Edit Test", () => {
     let userEditComponent: UserEditComponent;
     let userService: UserService;
-    //class MockActivatedRoute { }
+
+    
    
-    class MockLocation { }
-    class MockLoaderService { }
-    class McokLogin { }
-    class MockUserRole { }
     const routes: Routes = [];
     beforeEach(async(() => {
         this.promise = TestBed.configureTestingModule({
@@ -43,26 +42,29 @@ describe("User Edit Test", () => {
                 { provide: Router, useClass: MockRouter },
                 { provide: Md2Toast, useClass: MockToast },
                 { provide: UserModel, useClass: UserModel },
-                { provide: LoaderService, useClass: MockLoaderService },
+                { provide: LoaderService, useClass: LoaderService },
                 { provide: LoginService, useClass: MockLoginService },
-                { provide: Location, useClass: MockLocation },
-                { provide: UserRole, useClass: MockUserRole },
+                { provide: UserRole, useClass: UserRole },
                 { provide: StringConstant, useClass: StringConstant }
             ]
         }).compileComponents();
        
     }));
 
+    it("should be defined UserEditComponent", () => {
+        let fixture = TestBed.createComponent(UserEditComponent);
+        let userEditComponent = fixture.componentInstance;
+        expect(userEditComponent).toBeDefined();
+    });
 
 
     it("should get particular user details", done => {
         this.promise.then(() => {
             let fixture = TestBed.createComponent(UserEditComponent); //Create instance of component     
             let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
-            activatedRoute.testParams = { id: "1" };        
+            activatedRoute.testParams = { id: stringConstant.id };        
             let userEditComponent = fixture.componentInstance;
-            let expectedFirstName = "First Name";
-            
+            let expectedFirstName = stringConstant.testfirstName;
             userEditComponent.ngOnInit();
             expect(userEditComponent.user.FirstName).toBe(expectedFirstName);
             done();
@@ -74,17 +76,13 @@ describe("User Edit Test", () => {
         this.promise.then(() => {
             let fixture = TestBed.createComponent(UserEditComponent); //Create instance of component            
             let userEditComponent = fixture.componentInstance;
-            let expectedFirstName = "First Name";
+            let expectedFirstName = stringConstant.firstName;
             let userModel = new UserModel();
             userModel.FirstName = expectedFirstName;
             userEditComponent.editUser(userModel);
             expect(userModel.FirstName).toBe(expectedFirstName);
             done();
         });
-       
-
     });
-
-    
 
 });
