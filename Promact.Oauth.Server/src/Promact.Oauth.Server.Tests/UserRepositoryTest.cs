@@ -50,36 +50,60 @@ namespace Promact.Oauth.Server.Tests
                 RoleName = _stringConstant.Employee
             };
             var id = await _userRepository.AddUserAsync(_testUser, _stringConstant.RawFirstNameForTest);
-            Assert.NotEqual(string.Empty, id);
+            var listOfUsers = await _userRepository.GetAllUsersAsync();
+            Assert.NotEqual(0, listOfUsers.Count());
         }
 
-        ///// <summary>
-        ///// This test case gets the user by its id
-        ///// </summary>
-        //[Fact, Trait("Category", "Required")]
-        //public async Task GetUserById()
-        //{
-        //    UserAc _testUser = new UserAc()
-        //    {
-        //        Email = _stringConstant.RawEmailIdForTest,
-        //        FirstName = _stringConstant.RawFirstNameForTest,
-        //        LastName = _stringConstant.RawLastNameForTest,
-        //        IsActive = true,
-        //        UserName = _stringConstant.RawEmailIdForTest,
-        //        SlackUserName = _stringConstant.RawFirstNameForTest,
-        //        JoiningDate = DateTime.UtcNow,
-        //        RoleName = _stringConstant.Employee
-        //    };
-        //    var id = await _userRepository.AddUser(_testUser, _stringConstant.RawFirstNameForTest);
-        //    UserAc testUser = await _userRepository.GetById(id);
-        //    Assert.Equal(testUser.Email, _stringConstant.RawEmailIdForTest);
-        //}
+        /// <summary>
+        /// This test case used to get user object by id.
+        /// </summary>
+        /// <returns></returns>
+        [Fact, Trait("Category", "Required")]
+        public async Task GetUserById()
+        {
+            UserAc _testUser = new UserAc()
+            {
+                Email = _stringConstant.RawEmailIdForTest,
+                FirstName = _stringConstant.RawFirstNameForTest,
+                LastName = _stringConstant.RawLastNameForTest,
+                IsActive = true,
+                UserName = _stringConstant.RawEmailIdForTest,
+                SlackUserName = _stringConstant.RawFirstNameForTest,
+                JoiningDate = DateTime.UtcNow,
+                RoleName = _stringConstant.Employee
+            };
+            string id = await _userRepository.AddUserAsync(_testUser, _stringConstant.RawFirstNameForTest);
+            var user = await _userRepository.GetByIdAsync(id);
+            Assert.NotNull(user);
+        }
 
         /// <summary>
-        /// This test case checks if a user exists with the specified Email
+        /// This test case used to check exception condition 
+        /// </summary>
+        /// <returns></returns>
+        [Fact, Trait("Category", "Required")]
+        public async Task GetUserByIdExcption()
+        {
+            UserAc _testUser = new UserAc()
+            {
+                Email = _stringConstant.RawEmailIdForTest,
+                FirstName = _stringConstant.RawFirstNameForTest,
+                LastName = _stringConstant.RawLastNameForTest,
+                IsActive = true,
+                UserName = _stringConstant.RawEmailIdForTest,
+                SlackUserName = _stringConstant.RawFirstNameForTest,
+                JoiningDate = DateTime.UtcNow,
+                RoleName = _stringConstant.Employee
+            };
+            string id = await _userRepository.AddUserAsync(_testUser, _stringConstant.RawFirstNameForTest);
+            Assert.Throws<AggregateException>(() => _userRepository.GetByIdAsync(_stringConstant.UserIdForTest).Result);
+        }
+
+        /// <summary>
+        /// This test case used to check email exists
         /// </summary>
         [Fact, Trait("Category", "Required")]
-        public async Task CheckEmailIsExists()
+        public async Task EmailIsExists()
         {
             UserAc _testUser = new UserAc()
             {
@@ -98,7 +122,28 @@ namespace Promact.Oauth.Server.Tests
         }
 
         /// <summary>
-        /// This test case checks if a user exists with the specified UserName
+        /// This test case used to check does not exists
+        /// </summary>
+        public async Task EmailDoesNotExists()
+        {
+            UserAc _testUser = new UserAc()
+            {
+                Email = _stringConstant.RawEmailIdForTest,
+                FirstName = _stringConstant.RawFirstNameForTest,
+                LastName = _stringConstant.RawLastNameForTest,
+                IsActive = true,
+                UserName = _stringConstant.RawEmailIdForTest,
+                SlackUserName = _stringConstant.RawFirstNameForTest,
+                JoiningDate = DateTime.UtcNow,
+                RoleName = _stringConstant.Employee
+            };
+            var result = await _userRepository.AddUserAsync(_testUser, _stringConstant.RawFirstNameForTest);
+            var exists = await _userRepository.CheckEmailIsExistsAsync(_stringConstant.EmailForTest);
+            Assert.Equal(false, exists);
+        }
+
+        /// <summary>
+        /// This test case used to find user by username
         /// </summary>
         [Fact, Trait("Category", "Required")]
         public async Task FindByUserName()
@@ -118,6 +163,29 @@ namespace Promact.Oauth.Server.Tests
             var exists = await _userRepository.FindByUserNameAsync(_stringConstant.RawEmailIdForTest);
             Assert.Equal(true, exists);
         }
+
+        /// <summary>
+        /// This test case used to check exception condition
+        /// </summary>
+        /// <returns></returns>
+        [Fact, Trait("Category", "Required")]
+        public async Task FindByUserNameException()
+        {
+            UserAc _testUser = new UserAc()
+            {
+                Email = _stringConstant.RawEmailIdForTest,
+                FirstName = _stringConstant.RawFirstNameForTest,
+                LastName = _stringConstant.RawLastNameForTest,
+                IsActive = true,
+                UserName = _stringConstant.RawEmailIdForTest,
+                SlackUserName = _stringConstant.RawFirstNameForTest,
+                JoiningDate = DateTime.UtcNow,
+                RoleName = _stringConstant.Employee
+            };
+            var id = await _userRepository.AddUserAsync(_testUser, _stringConstant.RawFirstNameForTest);
+            Assert.Throws<AggregateException>(() => _userRepository.FindByUserNameAsync(_stringConstant.UserNameForTest).Result);
+        }
+
 
         /// <summary>
         /// This test case is used for adding new user
@@ -168,15 +236,6 @@ namespace Promact.Oauth.Server.Tests
             var editedUser = _userManager.FindByIdAsync(id).Result;
             Assert.Equal(_stringConstant.FirstName, editedUser.FirstName);
         }
-
-        ///// <summary>
-        ///// This test case is used for changing the password of an user
-        ///// </summary>
-        //[Fact, Trait("Category", "Required")]
-        //public async Task ChangePassword()
-        //{
-        //    var id = await _userRepository.AddUser(_testUser, _stringConstant.RawFirstNameForTest);
-        //    var user = await _userManager.FindByIdAsync(id);
 
 
         //    var password = await _userRepository.ChangePassword(new ChangePasswordViewModel
@@ -270,29 +329,6 @@ namespace Promact.Oauth.Server.Tests
             Assert.Equal(1, user.Count);
         }
 
-        ///// <summary>
-        ///// Test case to get user's number of casual leave
-        ///// </summary>
-        //[Fact, Trait("Category", "Required")]
-        //public void GetUserCasualLeaveBySlackName()
-        //{
-        //    UserAc userLocal = new UserAc()
-        //    {
-        //        Email = _stringConstant.Email,
-        //        FirstName = _stringConstant.RawFirstNameForTest,
-        //        LastName = _stringConstant.RawLastNameForTest,
-        //        IsActive = true,
-        //        UserName = _stringConstant.Email,
-        //        SlackUserId = _stringConstant.RawFirstNameForTest,
-        //        SlackUserName = _stringConstant.RawFirstNameForTest,
-        //        JoiningDate = DateTime.UtcNow,
-        //        RoleName = _stringConstant.Admin
-        //    };
-        //    var id = _userRepository.AddUser(userLocal, _stringConstant.RawFirstNameForTest);
-        //    var casualLeave = _userRepository.GetUserAllowedLeaveBySlackId(userLocal.SlackUserId);
-        //    Assert.NotNull(casualLeave);
-        //}
-
         /// <summary>
         /// Test case to check GetRoles of User Repository
         /// </summary>
@@ -326,10 +362,10 @@ namespace Promact.Oauth.Server.Tests
         }
 
         /// <summary>
-        /// Test case to check FindUserBySlackUserName of user Repository
+        /// Test case used to find user by username
         /// </summary>
         [Fact, Trait("Category", "Required")]
-        public async Task CheckSlackUserIdIsAlreadyExists()
+        public async Task FindUserBySlackUserName()
         {
             UserAc _testUser = new UserAc()
             {
@@ -345,6 +381,97 @@ namespace Promact.Oauth.Server.Tests
             var id = await _userRepository.AddUserAsync(_testUser, _stringConstant.RawFirstNameForTest);
             var result = _userRepository.FindUserBySlackUserNameAsync(_stringConstant.RawFirstNameForTest);
             Assert.NotNull(result);
+        }
+
+        /// <summary>
+        /// This test case used to check exception condition 
+        /// </summary>
+        /// <returns></returns>
+        [Fact, Trait("Category", "Required")]
+        public async Task FindUserBySlackUserNameException()
+        {
+            UserAc _testUser = new UserAc()
+            {
+                Email = _stringConstant.RawEmailIdForTest,
+                FirstName = _stringConstant.RawFirstNameForTest,
+                LastName = _stringConstant.RawLastNameForTest,
+                IsActive = true,
+                UserName = _stringConstant.RawEmailIdForTest,
+                SlackUserName = _stringConstant.RawFirstNameForTest,
+                JoiningDate = DateTime.UtcNow,
+                RoleName = _stringConstant.Employee
+            };
+            var id = await _userRepository.AddUserAsync(_testUser, _stringConstant.RawFirstNameForTest);
+            Assert.Throws<AggregateException>(() => _userRepository.FindUserBySlackUserNameAsync(_stringConstant.SlackUserNameForTest).Result);
+        }
+
+        /// <summary>
+        /// This test case used  to failed resend mail
+        /// </summary>
+        /// <returns></returns>
+        [Fact, Trait("Category", "Required")]
+        public async Task FailedReSendMail()
+        {
+            UserAc _testUser = new UserAc()
+            {
+                Email = _stringConstant.RawEmailIdForTest,
+                FirstName = _stringConstant.RawFirstNameForTest,
+                LastName = _stringConstant.RawLastNameForTest,
+                IsActive = true,
+                UserName = _stringConstant.RawEmailIdForTest,
+                SlackUserName = _stringConstant.RawFirstNameForTest,
+                JoiningDate = DateTime.UtcNow,
+                RoleName = _stringConstant.Employee
+            };
+            var id = await _userRepository.AddUserAsync(_testUser, _stringConstant.RawFirstNameForTest);
+            var result = await _userRepository.ReSendMailAsync(id);
+            Assert.Equal(false, result);
+        }
+
+        /// <summary>
+        /// This test case used for get all employees
+        /// </summary>
+        /// <returns></returns>
+        [Fact, Trait("Category", "Required")]
+        public async Task GetAllEmployees()
+        {
+            UserAc _testUser = new UserAc()
+            {
+                Email = _stringConstant.RawEmailIdForTest,
+                FirstName = _stringConstant.RawFirstNameForTest,
+                LastName = _stringConstant.RawLastNameForTest,
+                IsActive = true,
+                UserName = _stringConstant.RawEmailIdForTest,
+                SlackUserName = _stringConstant.RawFirstNameForTest,
+                JoiningDate = DateTime.UtcNow,
+                RoleName = _stringConstant.Employee
+            };
+            var id = await _userRepository.AddUserAsync(_testUser, _stringConstant.RawFirstNameForTest);
+            var listOfEmployees = await _userRepository.GetAllEmployeesAsync();
+            Assert.NotEqual(0, listOfEmployees.Count());
+        }
+
+        /// <summary>
+        ///  This test case used to get user details by username
+        /// </summary>
+        /// <returns></returns>
+        [Fact, Trait("Category", "Required")]
+        public async Task GetUserDetailByUserName()
+        {
+            UserAc _testUser = new UserAc()
+            {
+                Email = _stringConstant.RawEmailIdForTest,
+                FirstName = _stringConstant.RawFirstNameForTest,
+                LastName = _stringConstant.RawLastNameForTest,
+                IsActive = true,
+                UserName = _stringConstant.RawEmailIdForTest,
+                SlackUserName = _stringConstant.RawFirstNameForTest,
+                JoiningDate = DateTime.UtcNow,
+                RoleName = _stringConstant.Employee
+            };
+            string id = await _userRepository.AddUserAsync(_testUser, _stringConstant.CreatedBy);
+            var listOfUser = await _userRepository.GetUserDetailByUserNameAsync(_stringConstant.RawFirstNameForTest);
+            Assert.NotNull(listOfUser);
         }
 
         /// <summary>
@@ -428,7 +555,7 @@ namespace Promact.Oauth.Server.Tests
                 JoiningDate = DateTime.UtcNow,
                 RoleName = _stringConstant.Employee
             };
-           
+
             string userId = await _userRepository.AddUserAsync(_testUser, _stringConstant.CreatedBy);
             ProjectAc projectac = new ProjectAc()
             {

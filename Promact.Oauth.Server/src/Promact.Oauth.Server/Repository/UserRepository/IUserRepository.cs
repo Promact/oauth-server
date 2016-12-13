@@ -78,12 +78,7 @@ namespace Promact.Oauth.Server.Repository
         /// <returns></returns>
         Task<ApplicationUser> FindUserBySlackUserNameAsync(string slackUserName);
 
-        /// <summary>
-        /// This method is used to send email to the currently added user
-        /// </summary>
-        /// <param name="user">Object of newly registered User</param>
-        //void SendEmail(ApplicationUser user);
-
+       
         /// <summary>
         /// Method is used to Get User details by slack user id
         /// </summary>
