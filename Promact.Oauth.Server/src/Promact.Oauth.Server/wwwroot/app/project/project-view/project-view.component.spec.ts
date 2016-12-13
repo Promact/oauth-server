@@ -19,8 +19,7 @@ import { StringConstant } from '../../shared/stringconstant';
 
 
 describe('Project View Test', () => {
-    class MockLocation { }
-    class MockStringConstant { }
+    
     const routes: Routes = [];
    
     beforeEach(async(() => {
@@ -33,7 +32,6 @@ describe('Project View Test', () => {
                 { provide: ProjectService, useClass: MockProjectService },
                 { provide: UserModel, useClass: UserModel },
                 { provide: ProjectModel, useClass: ProjectModel },
-                { provide: Location, useClass: MockLocation },
                 { provide: Md2Toast, useClass: MockToast },
                 { provide: StringConstant, useClass: StringConstant }
             ]

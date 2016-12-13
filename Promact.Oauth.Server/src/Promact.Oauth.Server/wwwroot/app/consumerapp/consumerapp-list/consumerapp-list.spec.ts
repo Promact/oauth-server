@@ -12,10 +12,11 @@ import { Observable } from 'rxjs/Observable';
 import { ConsumerAppModule } from '../consumerapp.module';
 import { LoaderService } from '../../shared/loader.service';
 import { Md2Toast } from 'md2';
+import { StringConstant } from '../../shared/stringconstant';
 
 describe('Consumer List Test', () => {
-    class MockRouter { }
-    class MockLoaderService { }
+    
+    
     const routes: Routes = [];
 
     beforeEach(async(() => {
@@ -27,7 +28,8 @@ describe('Consumer List Test', () => {
                 { provide: ConsumerAppService, useClass: MockConsumerappService },
                 { provide: Md2Toast, useClass: MockToast },
                 { provide: ConsumerAppModel, useClass: ConsumerAppModel },
-                { provide: LoaderService, useClass: MockLoaderService }
+                { provide: LoaderService, useClass: LoaderService },
+                { provide: StringConstant, useClass: StringConstant }
             ]
         }).compileComponents();
     }));

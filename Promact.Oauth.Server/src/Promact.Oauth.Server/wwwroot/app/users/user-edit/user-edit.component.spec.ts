@@ -15,6 +15,8 @@ import { ActivatedRouteStub } from "../../shared/mocks/mock.activatedroute";
 import { UserRole } from "../../shared/userrole.model";
 import { StringConstant } from '../../shared/stringconstant';
 
+let stringConstant = new StringConstant();
+
 describe("User Edit Test", () => {
     let userService: UserService;
     const routes: Routes = [];

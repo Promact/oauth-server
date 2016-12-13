@@ -13,11 +13,10 @@ import { Observable } from 'rxjs/Observable';
 import { RouterLinkStubDirective } from '../../shared/mocks/mock.routerLink';
 import { ConsumerAppModule } from '../consumerapp.module';
 import { LoaderService } from '../../shared/loader.service';
+import { StringConstant } from '../../shared/stringconstant';
 
 describe('Consumer Add Test', () => {
-    class MockLoaderService { }
     const routes: Routes = [];
-
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             //declarations: [RouterLinkStubDirective], //Declaration of mock routerLink used on page.
@@ -28,7 +27,8 @@ describe('Consumer Add Test', () => {
                 { provide: ConsumerAppService, useClass: MockConsumerappService },
                 { provide: Md2Toast, useClass: MockToast },
                 { provide: ConsumerAppModel, useClass: ConsumerAppModel },
-                { provide: LoaderService, useClass: MockLoaderService }
+                { provide: LoaderService, useClass: LoaderService },
+                { provide: StringConstant, useClass: StringConstant }
             ]
         }).compileComponents();
     }));

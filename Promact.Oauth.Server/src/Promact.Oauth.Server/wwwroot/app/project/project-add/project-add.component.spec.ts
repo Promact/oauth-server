@@ -15,12 +15,22 @@ import { Observable } from 'rxjs/Observable';
 import { ProjectModule } from '../project.module';
 import { LoaderService } from '../../shared/loader.service';
 import { StringConstant } from '../../shared/stringconstant';
+import { ActivatedRouteStub } from "../../shared/mocks/mock.activatedroute";
 
 let promise: TestBed;
+let stringConstant = new StringConstant();
 
+let mockUser = new UserModel();
+mockUser.FirstName = stringConstant.firstName;
+mockUser.LastName = stringConstant.lastName;
+mockUser.Email = stringConstant.email;
+mockUser.IsActive = true;
+mockUser.Id = stringConstant.id;
+let mockList = new Array<UserModel>();
+mockList.push(mockUser);
 
 describe('Project Add Test', () => {
-    class MockLoaderService { }
+    
     const routes: Routes = [];
     class MockActivatedRoute extends ActivatedRoute {
         constructor() {
@@ -34,13 +44,13 @@ describe('Project Add Test', () => {
             imports: [ProjectModule, RouterModule.forRoot(routes, { useHash: true }) //Set LocationStrategy for component. 
             ],
             providers: [
-                { provide: ActivatedRoute, useClass: MockActivatedRoute },
+                { provide: ActivatedRoute, useClass: ActivatedRouteStub },
                 { provide: Router, useClass: MockRouter },
                 { provide: ProjectService, useClass: MockProjectService },
                 { provide: Md2Toast, useClass: MockToast },
                 { provide: UserModel, useClass: UserModel },
                 { provide: ProjectModel, useClass: ProjectModel },
-                { provide: LoaderService, useClass: MockLoaderService },
+                { provide: LoaderService, useClass: LoaderService },
                 { provide: StringConstant, useClass: StringConstant }
             ]
         }).compileComponents();
