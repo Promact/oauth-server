@@ -103,5 +103,9 @@
         string OAuthAfterLoginResponse { get; }
         string SetSmtpUnSecure { get; }
         string SetSmtpSSL { get; }
+        string UserIdForTest { get; }
+        string UserNameForTest { get; }
+        string EmailForTest { get; }
+        string SlackUserNameForTest { get; }
     }
 }
