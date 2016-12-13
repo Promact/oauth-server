@@ -298,7 +298,7 @@ namespace Promact.Oauth.Server.Tests
         /// Test case use for getting user details by its slack name
         /// </summary>
         [Fact, Trait("Category", "Required")]
-        public async Task UserDetail()
+        public async Task UserDetailById()
         {
             UserAc _testUser = new UserAc()
             {
