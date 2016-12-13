@@ -92,5 +92,9 @@
         string DomainAddress { get; }
         string Dot { get; }
         string ZeroDot { get; }
+        string UserIdForTest { get; }
+        string UserNameForTest { get; }
+        string EmailForTest { get; }
+        string SlackUserNameForTest { get;}
     }
 }
