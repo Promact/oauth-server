@@ -36,7 +36,7 @@
         public string Port { get { return "Port"; } }
 
         public string UserEmail { get { return "${{Email}}$"; } }
-
+        public string SlackUserNameForTest { get { return "SlackTest"; } }
         public string UserPassword { get { return "${{Password}}$"; } }
         public string DefaultUserPassword { get { return "User@123"; } }
 
@@ -93,6 +93,9 @@
         public string DomainAddress { get { return "@promactinfo.com"; } }
         public string Dot { get { return "."; } }
         public string ZeroDot { get { return "0."; } }
+        public string UserIdForTest { get { return "asder12346eewsee5s";  } }
+        public string  EmailForTest { get { return "abc@promactinfo.com"; } }
+        public string UserNameForTest { get { return "XyzTest"; } }
         public string SetSmtpUnSecure { get { return "unsecured"; } }
         public string SetSmtpSSL { get { return "ssl"; } }
     }
