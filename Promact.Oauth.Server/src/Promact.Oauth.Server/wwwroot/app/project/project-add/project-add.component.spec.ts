@@ -32,13 +32,7 @@ mockList.push(mockUser);
 describe('Project Add Test', () => {
     
     const routes: Routes = [];
-    class MockActivatedRoute extends ActivatedRoute {
-        constructor() {
-            super();
-            this.params = Observable.of({});
-        }
-    }
-
+    
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [ProjectModule, RouterModule.forRoot(routes, { useHash: true }) //Set LocationStrategy for component. 
@@ -64,75 +58,48 @@ describe('Project Add Test', () => {
         projectAddComponent.ngOnInit();
         expect(projectAddComponent.Userlist).not.toBeNull();
     });
-
     it("should be add new project", () => {
-        let fixture = TestBed.createComponent(ProjectAddComponent); //Create instance of component            
-        let projectAddComponent = fixture.componentInstance;
-        let toast = fixture.debugElement.injector.get(Md2Toast);
-        let expectedProjectName = "Tests Projects";
-        let projectModels = new ProjectModel();
-        projectModels.name = expectedProjectName;
-        let expectedSlackChannelName = "Test Slack Name";
-        projectModels.slackChannelName = expectedSlackChannelName;
-        let mockUser = new UserModel();
-        mockUser.FirstName = "Ronak";
-        mockUser.LastName = "Shah";
-        mockUser.Email = "rshah@Promactinfo.com";
-        mockUser.IsActive = true;
-        mockUser.Id = "1";
-        let mockList = new Array<UserModel>();
-        mockList.push(mockUser);
-        projectModels.applicationUsers = mockList;
-        projectModels.teamLeaderId = "2";
-        projectAddComponent.addProject(projectModels);
-        expect(projectModels.name).toBe(expectedProjectName);
+            let fixture = TestBed.createComponent(ProjectAddComponent); //Create instance of component            
+            let projectAddComponent = fixture.componentInstance;
+            let toast = fixture.debugElement.injector.get(Md2Toast);
+            let projectModels = new ProjectModel();
+            projectModels.name = stringConstant.projectName;
+            projectModels.slackChannelName = stringConstant.slackChannelName;
+            projectModels.applicationUsers = mockList;
+            projectModels.teamLeaderId = stringConstant.teamLeaderId;
+            projectAddComponent.addProject(projectModels);
+            expect(projectModels.name).toBe(stringConstant.projectName);
+            
+       
     });
 
-
     it("should be check project name before Added", () => {
-        let fixture = TestBed.createComponent(ProjectAddComponent); //Create instance of component            
-        let projectAddComponent = fixture.componentInstance;
-        let toast = fixture.debugElement.injector.get(Md2Toast);
-        let expectedProjectName = null;
-        let projectModels = new ProjectModel();
-        projectModels.name = expectedProjectName;
-        let expectedSlackChannelName = "Test Slack Name";
-        projectModels.slackChannelName = expectedSlackChannelName;
-        let mockUser = new UserModel();
-        mockUser.FirstName = "Ronak";
-        mockUser.LastName = "Shah";
-        mockUser.Email = "rshah@Promactinfo.com";
-        mockUser.IsActive = true;
-        mockUser.Id = "1";
-        let mockList = new Array<UserModel>();
-        mockList.push(mockUser);
-        projectModels.applicationUsers = mockList;
-        projectModels.teamLeaderId = "2";
-        projectAddComponent.addProject(projectModels);
-        expect(projectModels.name).toBe(null);
+        
+            let fixture = TestBed.createComponent(ProjectAddComponent); //Create instance of component            
+            let projectAddComponent = fixture.componentInstance;
+            let toast = fixture.debugElement.injector.get(Md2Toast);
+            let projectModels = new ProjectModel();
+            projectModels.name = null;
+            projectModels.slackChannelName = stringConstant.slackChannelName;
+            projectModels.applicationUsers = mockList;
+            projectModels.teamLeaderId = stringConstant.teamLeaderId;
+            projectAddComponent.addProject(projectModels);
+            expect(projectModels.name).toBe(null);
+         
     });
 
     it("should be check Slack Channel Name before Added", () => {
-        let fixture = TestBed.createComponent(ProjectAddComponent); //Create instance of component            
-        let projectAddComponent = fixture.componentInstance;
-        let toast = fixture.debugElement.injector.get(Md2Toast);
-        let expectedProjectName = "test project";
-        let projectModels = new ProjectModel();
-        projectModels.name = expectedProjectName;
-        let expectedSlackChannelName = null;
-        projectModels.slackChannelName = expectedSlackChannelName;
-        let mockUser = new UserModel();
-        mockUser.FirstName = "Ronak";
-        mockUser.LastName = "Shah";
-        mockUser.Email = "rshah@Promactinfo.com";
-        mockUser.IsActive = true;
-        mockUser.Id = "1";
-        let mockList = new Array<UserModel>();
-        mockList.push(mockUser);
-        projectModels.applicationUsers = mockList;
-        projectModels.teamLeaderId = "2";
-        projectAddComponent.addProject(projectModels);
-        expect(projectModels.slackChannelName).toBe(null);
+            let fixture = TestBed.createComponent(ProjectAddComponent); //Create instance of component            
+            let projectAddComponent = fixture.componentInstance;
+            let toast = fixture.debugElement.injector.get(Md2Toast);
+            let projectModels = new ProjectModel();
+            projectModels.name = stringConstant.projectName;
+            projectModels.slackChannelName = null;
+            projectModels.applicationUsers = mockList;
+            projectModels.teamLeaderId = stringConstant.teamLeaderId;
+            projectAddComponent.addProject(projectModels);
+            expect(projectModels.slackChannelName).toBe(null);
+            
     });
 });
 
