@@ -29,6 +29,15 @@ mockUser.Id = stringConstant.id;
 let mockList = new Array<UserModel>();
 mockList.push(mockUser);
 
+let mockUser = new UserModel();
+mockUser.FirstName = stringConstant.firstName;
+mockUser.LastName = stringConstant.lastName;
+mockUser.Email = stringConstant.email;
+mockUser.IsActive = true;
+mockUser.Id = stringConstant.id;
+let mockList = new Array<UserModel>();
+mockList.push(mockUser);
+
 
 describe('Project Edit Test', () => {
     const routes: Routes = [];
