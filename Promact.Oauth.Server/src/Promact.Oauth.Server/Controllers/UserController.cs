@@ -127,6 +127,7 @@ namespace Promact.Oauth.Server.Controllers
          */
         [HttpGet]
         [Route("roles")]
+        [Authorize]
         public async Task<IActionResult> GetRoleAsync()
         {
             return Ok(await _userRepository.GetRolesAsync());
@@ -331,7 +332,7 @@ namespace Promact.Oauth.Server.Controllers
         */
         [HttpPost]
         [Route("password")]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<IActionResult> ChangePasswordAsync([FromBody] ChangePasswordViewModel passwordModel)
         {
             try
@@ -353,7 +354,7 @@ namespace Promact.Oauth.Server.Controllers
        * @apiVersion 1.0.0
        * @apiName CheckPasswordAsync
        * @apiGroup User
-       * @apiParam {string} OldPassword  User OldPassword
+       * @apiParam {string} password  User OldPassword
        * @apiParamExample {json} Request-Example:
        * {
        *     "oldPassword":"OldPassword123"
@@ -366,6 +367,7 @@ namespace Promact.Oauth.Server.Controllers
        */
         [HttpGet]
         [Route("{password}/available")]
+        [Authorize]
         public async Task<ActionResult> CheckPasswordAsync(string password)
         {
             var user = await _userManager.GetUserAsync(User);
@@ -482,6 +484,7 @@ namespace Promact.Oauth.Server.Controllers
          */
         [HttpGet]
         [Route("availableUser/{slackUserName}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CheckUserIsExistsBySlackUserNameAsync(string slackUserName)
         {
             try
@@ -596,6 +599,7 @@ namespace Promact.Oauth.Server.Controllers
           */
         [HttpGet]
         [Route("email/{id}/send")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ReSendMailAsync(string id)
         {
             try
@@ -653,15 +657,7 @@ namespace Promact.Oauth.Server.Controllers
         [Route("{userid}/role")]
         public async Task<IActionResult> GetUserRoleAsync(string userId)
         {
-            try
-            {
-
-                return Ok(await _userRepository.GetUserRoleAsync(userId));
-            }
-            catch (UserRoleNotFound)
-            {
-                return NotFound();
-            }
+            return Ok(await _userRepository.GetUserRoleAsync(userId));
         }
 
         /**
