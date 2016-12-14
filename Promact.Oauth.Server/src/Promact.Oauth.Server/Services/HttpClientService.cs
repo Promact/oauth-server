@@ -1,17 +1,17 @@
-﻿using Exceptionless.Json;
-using Promact.Oauth.Server.Models.ApplicationClasses;
+﻿using Promact.Oauth.Server.Constants;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Promact.Oauth.Server.Repository.HttpClientRepository
+namespace Promact.Oauth.Server.Services
 {
-    public class HttpClientRepository: IHttpClientRepository
+    public class HttpClientService : IHttpClientService
     {
         private HttpClient _client;
-        public HttpClientRepository()
+        private readonly IStringConstant _stringConstant;
+        public HttpClientService(IStringConstant stringConstant)
         {
-            
+            _stringConstant = stringConstant;
         }
 
         /// <summary>
@@ -25,8 +25,14 @@ namespace Promact.Oauth.Server.Repository.HttpClientRepository
             _client = new HttpClient();
             _client.BaseAddress = new Uri(baseUrl);
             var response = await _client.GetAsync(contentUrl);
-            var responseContent = response.Content.ReadAsStringAsync().Result;
-            return responseContent;
+            _client.Dispose();
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                var responseContent = response.Content.ReadAsStringAsync().Result;
+                return responseContent;
+            }
+            else
+                return _stringConstant.EmptyString;
         }
     }
 }

@@ -96,6 +96,11 @@
         string UserSlackId { get; }
         string GetAppDetailsFromClientAsyncResponse { get; }
         string ReturnUrl { get; }
+        string PromactAppNotSet { get; }
+        string PromactAppNotFoundClientId { get; }
+        string PromactAppNotFoundClientSecret { get; }
+        string GetAppDetailsFromClientAsyncResponseInCorrectSlackName { get; }
+        string OAuthAfterLoginResponse { get; }
         string SetSmtpUnSecure { get; }
         string SetSmtpSSL { get; }
     }

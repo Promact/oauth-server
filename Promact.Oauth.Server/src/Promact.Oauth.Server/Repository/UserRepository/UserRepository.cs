@@ -12,13 +12,11 @@ using Promact.Oauth.Server.ExceptionHandler;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Models.ApplicationClasses;
 using Promact.Oauth.Server.Models.ManageViewModels;
-using Promact.Oauth.Server.Repository.HttpClientRepository;
 using Promact.Oauth.Server.Repository.ProjectsRepository;
 using Promact.Oauth.Server.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -43,7 +41,7 @@ namespace Promact.Oauth.Server.Repository
         private readonly ILogger<UserRepository> _logger;
         private readonly IStringConstant _stringConstant;
         private readonly IDataRepository<ProjectUser> _projectUserDataRepository;
-        private readonly IHttpClientRepository _httpClientRepository;
+        private readonly IHttpClientService _httpClientRepository;
         #endregion
 
 
@@ -57,7 +55,7 @@ namespace Promact.Oauth.Server.Repository
             IProjectRepository projectRepository, IOptions<AppSettingUtil> appSettingUtil,
             IDataRepository<Project> projectDataRepository,
             ILogger<UserRepository> logger, IStringConstant stringConstant,
-            IHttpClientRepository httpClientRepository, IDataRepository<ProjectUser> projectUserDataRepository)
+            IHttpClientService httpClientRepository, IDataRepository<ProjectUser> projectUserDataRepository)
         {
             _applicationUserDataRepository = applicationUserDataRepository;
             _hostingEnvironment = hostingEnvironment;
