@@ -11,20 +11,18 @@ import { ConsumerAppModule } from "./consumerapp/consumerapp.module";
 import { UserModule } from "./users/user.module";
 import { ChangePasswordModule } from "./change-password/change-password.module";
 import { LoginService } from "./login.service";
-import { MdSidenavModule } from "@angular2-material/sidenav";
-import { MdToolbarModule } from "@angular2-material/toolbar";
 import { LoaderService } from "./shared/loader.service";
 import { UserRole } from "./shared/userrole.model";
 import { SharedModule } from "./shared/shared.module";
+import { MaterialModule } from '@angular/material';
 
 @NgModule({
     declarations: [AppComponent],
     imports: [
         BrowserModule,
         HttpModule,
-        MdToolbarModule,
-        MdSidenavModule,
         routing,
+        MaterialModule,
         SharedModule,
         ProjectModule,
         ConsumerAppModule,
@@ -32,6 +30,6 @@ import { SharedModule } from "./shared/shared.module";
         ChangePasswordModule
     ],
     bootstrap: [AppComponent],
-    providers: [HttpService, LoginService, LoaderService, { provide: LocationStrategy, useClass: HashLocationStrategy }, UserRole],
+    providers: [LoginService, LoaderService, { provide: LocationStrategy, useClass: HashLocationStrategy }, UserRole],
 })
 export class AppModule { }

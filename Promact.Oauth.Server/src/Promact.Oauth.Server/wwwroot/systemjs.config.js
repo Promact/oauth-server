@@ -8,7 +8,7 @@
         'app': 'app', // 'dist',
         '@angular': 'lib/@angular',
         'angular2-in-memory-web-api': 'lib/angular2-in-memory-web-api',
-        '@angular2-material': 'lib/@angular2-material',
+        '@angular/material': 'lib/@angular/material/material.umd.js',
         'rxjs': 'lib/rxjs',
         'md2': 'lib/md2'
     };
@@ -17,58 +17,6 @@
         'app': { main: 'main.js', defaultExtension: 'js' },
         'rxjs': { defaultExtension: 'js' },
         'angular2-in-memory-web-api': { main: 'index.js', defaultExtension: 'js' },
-
-        '@angular2-material/core': {
-            format: 'cjs',
-            defaultExtension: 'js',
-            main: 'core.umd.js'
-        },
-
-        '@angular2-material/button': {
-            format: 'cjs',
-            defaultExtension: 'js',
-            main: 'button.umd.js'
-        },
-
-        '@angular2-material/toolbar': {
-            format: 'cjs',
-            defaultExtension: 'js',
-            main: 'toolbar.umd.js'
-        },
-
-        '@angular2-material/sidenav': {
-            format: 'cjs',
-            defaultExtension: 'js',
-            main: 'sidenav.umd.js'
-        },
-
-        '@angular2-material/input': {
-            format: 'cjs',
-            defaultExtension: 'js',
-            main: 'input.umd.js'
-        },
-
-        '@angular2-material/card': {
-            format: 'cjs',
-            defaultExtension: 'js',
-            main: 'card.umd.js'
-        },
-        '@angular2-material/checkbox': {
-            format: 'cjs',
-            defaultExtension: 'js',
-            main: 'checkbox.umd.js'
-        },
-        '@angular2-material/progress-bar': {
-            format: 'cjs',
-            defaultExtension: 'js',
-            main: 'progress-bar.umd.js'
-        },
-
-        '@angular2-material/progress-circle': {
-            format: 'cjs',
-            defaultExtension: 'js',
-            main: 'progress-circle.umd.js'
-        },
         'md2': {
             format: 'cjs',
             main: 'md2.umd.js',
