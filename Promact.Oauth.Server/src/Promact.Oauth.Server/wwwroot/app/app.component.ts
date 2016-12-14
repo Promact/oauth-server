@@ -13,7 +13,7 @@ export class AppComponent implements OnInit {
 
     admin: boolean;
     userId: string;
-    constructor(private loginService: LoginService, private router: Router, private loader: LoaderService, private userRole: UserRole) { }
+    constructor(private loginService: LoginService, private router: Router, public loader: LoaderService, private userRole: UserRole) { }
     ngOnInit() {
         if (this.userRole.Role === "Admin") {
             this.admin = true; }
