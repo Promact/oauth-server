@@ -21,7 +21,7 @@ namespace Promact.Oauth.Server.Services
         /// <param name="contentUrl"></param>
         /// <returns>response</returns>
         public async Task<string> GetAsync(string baseUrl, string contentUrl)
-        {
+        { 
             _client = new HttpClient();
             _client.BaseAddress = new Uri(baseUrl);
             var response = await _client.GetAsync(contentUrl);
