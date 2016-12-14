@@ -7,6 +7,14 @@ using Promact.Oauth.Server.Models;
 using System.Threading.Tasks;
 using Promact.Oauth.Server.Repository;
 using Promact.Oauth.Server.Repository.ConsumerAppRepository;
+using Promact.Oauth.Server.Models.ApplicationClasses;
+using System;
+using Moq;
+using Microsoft.AspNetCore.Identity;
+using AutoMapper;
+using Promact.Oauth.Server.Services;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 
 namespace Promact.Oauth.Server.Tests
 {
@@ -17,6 +25,15 @@ namespace Promact.Oauth.Server.Tests
         private readonly IUserRepository _userRepository;
         private readonly IConsumerAppRepository _appRepository;
         private readonly IStringConstant _stringConstant;
+        private readonly Mock<IHttpClientService> _mockHttpClient;
+        private UserAc _testUser = new UserAc();
+        private ConsumerAppsAc app = new ConsumerAppsAc();
+        private OAuth oAuth = new OAuth();
+        private OAuthLogin oAuthLogin = new OAuthLogin();
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IMapper _mapperContext;
+        private readonly IOptions<AppSettingUtil> _appSettingUtil;
+
         public OAuthRepositoryTest() : base()
         {
             _oAuthRepository = serviceProvider.GetService<IOAuthRepository>();
@@ -24,32 +41,19 @@ namespace Promact.Oauth.Server.Tests
             _userRepository = serviceProvider.GetService<IUserRepository>();
             _appRepository = serviceProvider.GetService<IConsumerAppRepository>();
             _stringConstant = serviceProvider.GetService<IStringConstant>();
+            _mockHttpClient = serviceProvider.GetService<Mock<IHttpClientService>>();
+            _userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
+            _mapperContext = serviceProvider.GetService<IMapper>();
+            _appSettingUtil = serviceProvider.GetService<IOptions<AppSettingUtil>>();
+            Initialize();
+
         }
 
         /// <summary>
         /// Test case to check GetDetailsClientByAccessToken for true value of Oauth Repository
         /// </summary>
         [Fact, Trait("Category", "Required")]
-        public async Task GetDetailsClientByAccessToken()
-        {
-             OAuth oAuth = new OAuth()
-             {
-                 AccessToken = _stringConstant.AccessToken,
-                 ClientId = _stringConstant.ClientIdForTest,
-                 RefreshToken = _stringConstant.ClientIdForTest,
-                 userEmail = _stringConstant.UserName
-             };
-            _oAuthDataRepository.Add(oAuth);
-            _oAuthDataRepository.Save();
-            var result = await _oAuthRepository.GetDetailsClientByAccessToken(_stringConstant.AccessToken);
-            Assert.Equal(result, true);
-        }
-
-        /// <summary>
-        /// Test case to check GetDetailsClientByAccessToken for false value of Oauth Repository
-        /// </summary>
-        [Fact, Trait("Category", "Required")]
-        public async Task GetDetailsClientByAccessTokenForWrongValue()
+        public async Task GetDetailsClientByAccessTokenAsync()
         {
             OAuth oAuth = new OAuth()
             {
@@ -60,77 +64,239 @@ namespace Promact.Oauth.Server.Tests
             };
             _oAuthDataRepository.Add(oAuth);
             _oAuthDataRepository.Save();
-            var result = await _oAuthRepository.GetDetailsClientByAccessToken(_stringConstant.ClientIdForTest);
+            var result = await _oAuthRepository.GetDetailsClientByAccessTokenAsync(_stringConstant.AccessToken);
+            Assert.Equal(result, true);
+        }
+
+        /// <summary>
+        /// Test case to check GetDetailsClientByAccessToken for false value of Oauth Repository
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task GetDetailsClientByAccessTokenForWrongValueAsync()
+        {
+            OAuth oAuth = new OAuth()
+            {
+                AccessToken = _stringConstant.AccessToken,
+                ClientId = _stringConstant.ClientIdForTest,
+                RefreshToken = _stringConstant.ClientIdForTest,
+                userEmail = _stringConstant.UserName
+            };
+            _oAuthDataRepository.Add(oAuth);
+            _oAuthDataRepository.Save();
+            var result = await _oAuthRepository.GetDetailsClientByAccessTokenAsync(_stringConstant.ClientIdForTest);
             Assert.Equal(result, false);
         }
 
-        ///// <summary>
-        ///// Test case to check UserAlreadyLogin of Oauth Repository
-        ///// </summary>
-        //[Fact, Trait("Category", "Required")]
-        //public async Task UserAlreadyLogin()
-        //{
-        //    var userId = await _userRepository.AddUser(_testUser, _stringConstant.FirstNameSecond);
-        //    var consumerId = await _appRepository.AddConsumerApps(app);
-        //    var returnUrl = string.Format("{0}?accessToken={1}&email={2}", _stringConstant.CallBackUrl, oAuth.AccessToken, oAuth.userEmail);
-        //    var redirectUrl = await _oAuthRepository.UserAlreadyLogin(_stringConstant.UserName, _stringConstant.ClientIdForTest, _stringConstant.CallBackUrl);
-        //    Assert.Equal(redirectUrl, returnUrl);
-        //}
-
-        ///// <summary>
-        ///// Test case to check UserNotAlreadyLogin for true value of Oauth Repository
-        ///// </summary>
-        //[Fact, Trait("Category", "Required")]
-        //public async Task UserNotAlreadyLogin()
-        //{
-        //    var userId = await _userRepository.AddUser(_testUser, _stringConstant.FirstNameSecond);
-        //    var consumerId = await _appRepository.AddConsumerApps(app);
-        //    var returnUrl = string.Format("{0}?accessToken={1}&email={2}&slackUserName={3}", _stringConstant.CallBackUrl, oAuth.AccessToken, oAuth.userEmail, _stringConstant.SlackUserName);
-        //    var response = await _oAuthRepository.UserNotAlreadyLogin(login);
-        //    Assert.Equal(response, returnUrl);
-        //}
-
         /// <summary>
-        /// Test case to check UserNotAlreadyLogin for false value of Oauth Repository
+        /// Test case to check UserAlreadyLogin of Oauth Repository
         /// </summary>
         [Fact, Trait("Category", "Required")]
-        public async Task UserNotAlreadyLoginForWrongValue()
+        public async Task UserAlreadyLoginAsync()
         {
-            OAuthLogin login = new OAuthLogin()
-             {
-                 ClientId = _stringConstant.ClientIdForTest,
-                 Email = _stringConstant.UserName,
-                 Password = _stringConstant.PasswordForTest,
-                 RedirectUrl = _stringConstant.CallBackUrl
-             };
-            var response = await _oAuthRepository.UserNotAlreadyLogin(login);
-            Assert.Equal(response, _stringConstant.EmptyString);
+            var userId = await _userRepository.AddUser(_testUser, _stringConstant.FirstNameSecond);
+            var consumerId = await _appRepository.AddConsumerAppsAsync(app);
+            var appDetails = await _appRepository.GetConsumerAppByIdAsync(consumerId);
+            _oAuthDataRepository.AddAsync(oAuth);
+            await _oAuthDataRepository.SaveChangesAsync();
+            var requestUrl = MockingGetAppDetailsFromClientAsync(_stringConstant.GetAppDetailsFromClientAsyncResponse);
+            var returnUrl = string.Format("{0}?accessToken={1}&email={2}&slackUserId={3}&userId={4}", _stringConstant.ReturnUrl, 
+                _stringConstant.AccessToken, _stringConstant.UserName, _stringConstant.UserSlackId, _testUser.Id);
+            var redirectUrl = await _oAuthRepository.UserAlreadyLoginAsync(_stringConstant.UserName, _stringConstant.ClientIdForTest, _stringConstant.CallBackUrl);
+            Assert.Equal(redirectUrl, returnUrl);
+            _mockHttpClient.Verify(x => x.GetAsync(_stringConstant.CallBackUrl, requestUrl), Times.Once);
         }
 
-       
+        /// <summary>
+        /// Test case to check UserAlreadyLogin of Oauth Repository for In-Correct Slack Name Error
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task UserAlreadyLoginInCorrectSlackNameErrorAsync()
+        {
+            var userId = await _userRepository.AddUser(_testUser, _stringConstant.FirstNameSecond);
+            var consumerId = await _appRepository.AddConsumerAppsAsync(app);
+            var appDetails = await _appRepository.GetConsumerAppByIdAsync(consumerId);
+            _oAuthDataRepository.AddAsync(oAuth);
+            await _oAuthDataRepository.SaveChangesAsync();
+            var requestUrl = MockingGetAppDetailsFromClientAsync(_stringConstant.GetAppDetailsFromClientAsyncResponseInCorrectSlackName);
+            var returnUrl = _appSettingUtil.Value.PromactErpUrl + _stringConstant.ErpAuthorizeUrl
+                             + _stringConstant.Message + _stringConstant.InCorrectSlackName;
+            var redirectUrl = await _oAuthRepository.UserAlreadyLoginAsync(_stringConstant.UserName, _stringConstant.ClientIdForTest, _stringConstant.CallBackUrl);
+            Assert.Equal(redirectUrl, returnUrl);
+            _mockHttpClient.Verify(x => x.GetAsync(_stringConstant.CallBackUrl, requestUrl), Times.Once);
+        }
 
-        //private UserAc _testUser = new UserAc()
-        //{
-        //    Email = _stringConstant.UserName,
-        //    FirstName = _stringConstant.FirstName,
-        //    LastName = _stringConstant.LastName,
-        //    IsActive = true,
-        //    UserName = _stringConstant.UserName,
-        //    SlackUserName = _stringConstant.FirstName,
-        //    JoiningDate = DateTime.UtcNow,
-        //    RoleName = _stringConstant.Employee
-        //};
+        /// <summary>
+        /// Test case to check UserAlreadyLogin of Oauth Repository for Promact App Not Set
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task UserAlreadyLoginForWrongValueAsync()
+        {
+            var userId = await _userRepository.AddUser(_testUser, _stringConstant.FirstNameSecond);
+            var consumerId = await _appRepository.AddConsumerAppsAsync(app);
+            _oAuthDataRepository.AddAsync(oAuth);
+            await _oAuthDataRepository.SaveChangesAsync();
+            var requestUrl = MockingGetAppDetailsFromClientAsync(_stringConstant.EmptyString);
+            var returnUrl = _appSettingUtil.Value.PromactErpUrl + _stringConstant.ErpAuthorizeUrl
+                                 + _stringConstant.Message + _stringConstant.PromactAppNotSet;
+            var redirectUrl = await _oAuthRepository.UserAlreadyLoginAsync(_stringConstant.UserName, _stringConstant.ClientIdForTest, _stringConstant.CallBackUrl);
+            Assert.Equal(redirectUrl, returnUrl);
+            _mockHttpClient.Verify(x => x.GetAsync(_stringConstant.CallBackUrl, requestUrl), Times.Once);
+        }
 
-        //private ConsumerAppsAc app = new ConsumerAppsAc()
-        //{
-        //    AuthId = _stringConstant.ClientIdForTest,
-        //    AuthSecret = _stringConstant.AccessToken,
-        //    CallbackUrl = _stringConstant.CallBackUrl,
-        //    CreatedBy = _stringConstant.FirstName,
-        //    Description = _stringConstant.ConsumerDescription,
-        //    Name = _stringConstant.ConsumerAppNameDemo1
-        //};
+        /// <summary>
+        /// Test case to check UserAlreadyLogin of Oauth Repository for Promact App Not Found ClientId
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task UserAlreadyLoginForWrongValuePromactAppNotFoundClientIdAsync()
+        {
+            var userId = await _userRepository.AddUser(_testUser, _stringConstant.FirstNameSecond);
+            var errorMessage = string.Format(_stringConstant.PromactAppNotFoundClientId, _stringConstant.ClientIdForTest);
+            var returnUrl = _appSettingUtil.Value.PromactErpUrl + _stringConstant.ErpAuthorizeUrl
+                             + _stringConstant.Message + errorMessage;
+            var redirectUrl = await _oAuthRepository.UserAlreadyLoginAsync(_stringConstant.UserName, _stringConstant.ClientIdForTest, _stringConstant.CallBackUrl);
+            Assert.Equal(redirectUrl, returnUrl);
+        }
 
-       
+        /// <summary>
+        /// Test case to check UserNotAlreadyLogin for true value for Promact App Not Found ClientSecret
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task UserNotAlreadyLoginPromactAppNotFoundClientSecretAsync()
+        {
+            var userId = await _userRepository.AddUser(_testUser, _stringConstant.FirstNameSecond);
+            var user = await _userManager.FindByIdAsync(userId);
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+            await _userManager.ResetPasswordAsync(user, code, _stringConstant.PasswordForTest);
+            var consumerId = await _appRepository.AddConsumerAppsAsync(app);
+            var appDetails = await _appRepository.GetConsumerAppByIdAsync(consumerId);
+            var returnGetAppDetailsFromClientAsync = _stringConstant.GetAppDetailsFromClientAsyncResponse;
+            oAuthLogin.ClientId = appDetails.AuthId;
+            var oAuth = JsonConvert.DeserializeObject<OAuthApplication>(_stringConstant.GetAppDetailsFromClientAsyncResponse);
+            oAuth.ClientId = appDetails.AuthId;
+            oAuth.ClientSecret = appDetails.AuthSecret;
+            var responseExpected = JsonConvert.SerializeObject(oAuth);
+            var requestUrl = MockingGetAppDetailsFromClientAsync(responseExpected);
+            var errorMessage = string.Format(_stringConstant.PromactAppNotFoundClientSecret, appDetails.AuthSecret);
+            var returnUrl = _appSettingUtil.Value.PromactErpUrl + _stringConstant.ErpAuthorizeUrl + _stringConstant.Message + errorMessage;
+            var response = await _oAuthRepository.UserNotAlreadyLoginAsync(oAuthLogin);
+            Assert.Equal(response, returnUrl);
+            _mockHttpClient.Verify(x => x.GetAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+        }
+
+        /// <summary>
+        /// Test case to check UserNotAlreadyLogin for true value of Oauth Repository for Promact App Not Found ClientId
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task UserNotAlreadyLoginPromactAppNotFoundClientIdAsync()
+        {
+            var userId = await _userRepository.AddUser(_testUser, _stringConstant.FirstNameSecond);
+            var user = await _userManager.FindByIdAsync(userId);
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+            await _userManager.ResetPasswordAsync(user, code, _stringConstant.PasswordForTest);
+            var consumerId = await _appRepository.AddConsumerAppsAsync(app);
+            var appDetails = await _appRepository.GetConsumerAppByIdAsync(consumerId);
+            var returnGetAppDetailsFromClientAsync = _stringConstant.GetAppDetailsFromClientAsyncResponse;
+            oAuthLogin.ClientId = appDetails.AuthId;
+            var oAuth = JsonConvert.DeserializeObject<OAuthApplication>(_stringConstant.GetAppDetailsFromClientAsyncResponse);
+            var requestUrl = MockingGetAppDetailsFromClientAsync(_stringConstant.GetAppDetailsFromClientAsyncResponse);
+            var errorMessage = string.Format(_stringConstant.PromactAppNotFoundClientId, oAuth.ClientId);
+            var returnUrl = _appSettingUtil.Value.PromactErpUrl + _stringConstant.ErpAuthorizeUrl + _stringConstant.Message + errorMessage;
+            var response = await _oAuthRepository.UserNotAlreadyLoginAsync(oAuthLogin);
+            Assert.Equal(response, returnUrl);
+            _mockHttpClient.Verify(x => x.GetAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+        }
+
+        /// <summary>
+        /// Test case to check UserNotAlreadyLogin for true value of Oauth Repository for In-Correct Slack Name
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task UserNotAlreadyLoginInCorrectSlackNameAsync()
+        {
+            var userId = await _userRepository.AddUser(_testUser, _stringConstant.FirstNameSecond);
+            var user = await _userManager.FindByIdAsync(userId);
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+            await _userManager.ResetPasswordAsync(user, code, _stringConstant.PasswordForTest);
+            var consumerId = await _appRepository.AddConsumerAppsAsync(app);
+            var appDetails = await _appRepository.GetConsumerAppByIdAsync(consumerId);
+            oAuthLogin.ClientId = appDetails.AuthId;
+            var requestUrl = MockingGetAppDetailsFromClientAsync(_stringConstant.GetAppDetailsFromClientAsyncResponseInCorrectSlackName);
+            var returnUrl = _appSettingUtil.Value.PromactErpUrl + _stringConstant.ErpAuthorizeUrl
+                             + _stringConstant.Message + _stringConstant.InCorrectSlackName;
+            var response = await _oAuthRepository.UserNotAlreadyLoginAsync(oAuthLogin);
+            Assert.Equal(response, returnUrl);
+            _mockHttpClient.Verify(x => x.GetAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+        }
+
+        /// <summary>
+        /// Test case to check UserNotAlreadyLogin for true value of Oauth Repository for Promact App Not Set
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task UserNotAlreadyLoginPromactAppNotSetAsync()
+        {
+            var userId = await _userRepository.AddUser(_testUser, _stringConstant.FirstNameSecond);
+            var user = await _userManager.FindByIdAsync(userId);
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+            await _userManager.ResetPasswordAsync(user, code, _stringConstant.PasswordForTest);
+            var consumerId = await _appRepository.AddConsumerAppsAsync(app);
+            var appDetails = await _appRepository.GetConsumerAppByIdAsync(consumerId);
+            oAuthLogin.ClientId = appDetails.AuthId;
+            var requestUrl = MockingGetAppDetailsFromClientAsync(_stringConstant.EmptyString);
+            var returnUrl = _appSettingUtil.Value.PromactErpUrl + _stringConstant.ErpAuthorizeUrl
+                                 + _stringConstant.Message + _stringConstant.PromactAppNotSet;
+            var response = await _oAuthRepository.UserNotAlreadyLoginAsync(oAuthLogin);
+            Assert.Equal(response, returnUrl);
+            _mockHttpClient.Verify(x => x.GetAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+        }
+
+        /// <summary>
+        /// Test case to check UserNotAlreadyLogin for true value of Oauth Repository for Promact App Not Found ClientId OAuth Empty
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task UserNotAlreadyLoginPromactAppNotFoundClientIdOAuthEmptyAsync()
+        {
+            var userId = await _userRepository.AddUser(_testUser, _stringConstant.FirstNameSecond);
+            var errorMessage = string.Format(_stringConstant.PromactAppNotFoundClientId, _stringConstant.ClientIdForTest);
+            var returnUrl = _appSettingUtil.Value.PromactErpUrl + _stringConstant.ErpAuthorizeUrl
+                             + _stringConstant.Message + errorMessage;
+            var redirectUrl = await _oAuthRepository.UserNotAlreadyLoginAsync(oAuthLogin);
+            Assert.Equal(redirectUrl, returnUrl); ;
+        }
+
+        private void Initialize()
+        {
+            _testUser.Id = _stringConstant.UserId;
+            _testUser.Email = _stringConstant.UserName;
+            _testUser.FirstName = _stringConstant.FirstName;
+            _testUser.LastName = _stringConstant.LastName;
+            _testUser.IsActive = true;
+            _testUser.UserName = _stringConstant.UserName;
+            _testUser.SlackUserName = _stringConstant.SlackUserName;
+            _testUser.JoiningDate = DateTime.UtcNow;
+            _testUser.RoleName = _stringConstant.Employee;
+
+            app.AuthId = _stringConstant.ClientIdForTest;
+            app.AuthSecret = _stringConstant.AccessToken;
+            app.CallbackUrl = _stringConstant.CallBackUrl;
+            app.CreatedBy = _stringConstant.FirstName;
+            app.Description = _stringConstant.ConsumerDescription;
+            app.Name = _stringConstant.ConsumerAppNameDemo1;
+            oAuth.AccessToken = _stringConstant.AccessToken;
+            oAuth.ClientId = _stringConstant.ClientIdForTest;
+            oAuth.RefreshToken = _stringConstant.ClientIdForTest;
+            oAuth.userEmail = _stringConstant.UserName;
+
+            oAuthLogin.ClientId = _stringConstant.ClientIdForTest;
+            oAuthLogin.Email = _stringConstant.UserName;
+            oAuthLogin.Password = _stringConstant.PasswordForTest;
+            oAuthLogin.RedirectUrl = _stringConstant.CallBackUrl;
+        }
+
+        private string MockingGetAppDetailsFromClientAsync(string returnValue)
+        {
+            var response = Task.FromResult(returnValue);
+            var requestUrl = string.Format("?refreshToken={0}&slackUserName={1}", oAuth.RefreshToken, _stringConstant.SlackUserName);
+            _mockHttpClient.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<string>())).Returns(response);
+            return requestUrl;
+        }
     }
 }

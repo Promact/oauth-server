@@ -8,28 +8,28 @@ using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Repository.ConsumerAppRepository;
 using Promact.Oauth.Server.Repository.OAuthRepository;
 using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Promact.Oauth.Server.Controllers
 {
     public class OAuthController : BaseController
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IConsumerAppRepository _appRepository;
         private readonly IOAuthRepository _oAuthRepository;
         private readonly IOptions<AppSettingUtil> _appSettingUtil;
         private readonly IStringConstant _stringConstant;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public OAuthController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IConsumerAppRepository appRepository, IOAuthRepository oAuthRepository, IOptions<AppSettingUtil> appSettingUtil,
-            IStringConstant stringConstant)
+        public OAuthController(IConsumerAppRepository appRepository,
+            IOAuthRepository oAuthRepository, IOptions<AppSettingUtil> appSettingUtil,
+            IStringConstant stringConstant, SignInManager<ApplicationUser> signInManager)
         {
-            _signInManager = signInManager;
-            _userManager = userManager;
             _appRepository = appRepository;
             _oAuthRepository = oAuthRepository;
             _appSettingUtil = appSettingUtil;
             _stringConstant = stringConstant;
+            _signInManager = signInManager;
         }
 
         /**
@@ -58,34 +58,31 @@ namespace Promact.Oauth.Server.Controllers
         {
             try
             {
+                var redirectUrl = string.Format(_stringConstant.OAuthExternalLoginUrl, _appSettingUtil.Value.PromactOAuthUrl, login.ClientId);
                 if (ModelState.IsValid)
                 {
-                    var redirectUrl = await _oAuthRepository.UserNotAlreadyLogin(login);
-                    if (redirectUrl != _stringConstant.EmptyString)
+                    var result = await _signInManager.PasswordSignInAsync(login.Email, login.Password, false, lockoutOnFailure: false);
+                    if (result.Succeeded)
                     {
-                        return Redirect(redirectUrl);
+                        redirectUrl = await _oAuthRepository.UserNotAlreadyLoginAsync(login);
                     }
-                    var url = string.Format("{0}/OAuth/ExternalLogin?clientId={1}", _appSettingUtil.Value.PromactOAuthUrl, login.ClientId);
-                    return Redirect(url);
+                    else
+                    {
+                        redirectUrl = string.Format(_stringConstant.OAuthExternalLoginUrl, _appSettingUtil.Value.PromactOAuthUrl, login.ClientId);
+                    }
                 }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, _stringConstant.InvalidLogin);
-                    return View(login);
-                }
+                //ModelState.AddModelError(string.Empty, _stringConstant.InvalidLogin);
+                return Redirect(redirectUrl);
             }
-            catch (Exception ex)
+            catch (HttpRequestException ex)
             {
                 ex.ToExceptionless().Submit();
-                throw;
+                // If catch error, redirect to promact OAuth message page and will display error.
+                return Redirect("~/Home/Error");
             }
         }
 
-        /// <summary>
-        /// Call will hit here at everytime for external Login with clientId and it will check for 
-        /// </summary>
-        /// <param name="clientId"></param>
-        /// <returns></returns>
+
         /**
         * @api {post} OAuth/ExternalLogin
         * @apiVersion 1.0.0
@@ -95,20 +92,21 @@ namespace Promact.Oauth.Server.Controllers
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
         * {
-        *     "Description":"Redirect to Promact OAuth server external login page"
+        *     "Description":"Redirect to Promact OAuth server external login page. If user already login, then Redirect to Authorize user to external server."
         * }
         */
+
         public async Task<IActionResult> ExternalLogin(string clientId)
         {
             try
             {
-                var result = await _appRepository.GetAppDetailsAsync(clientId);
+                ConsumerApps result = await _appRepository.GetAppDetailsAsync(clientId);
                 if (result != null)
                 {
                     if (User.Identity.IsAuthenticated)
                     {
                         // If already login it will return a redirect url and will be redirect back to another server with access token 
-                        var returnUrl = await _oAuthRepository.UserAlreadyLogin(User.Identity.Name, clientId, result.CallbackUrl);
+                        string returnUrl = await _oAuthRepository.UserAlreadyLoginAsync(User.Identity.Name, clientId, result.CallbackUrl);
                         return Redirect(returnUrl);
                     }
                     else
@@ -119,12 +117,15 @@ namespace Promact.Oauth.Server.Controllers
                         return View();
                     }
                 }
-                return BadRequest();
+                var errorMessage = string.Format(_stringConstant.PromactAppNotFoundClientId, clientId);
+                return Redirect(_appSettingUtil.Value.PromactErpUrl + _stringConstant.ErpAuthorizeUrl
+                                 + _stringConstant.Message + errorMessage);
             }
-            catch (Exception ex)
+            catch (HttpRequestException ex)
             {
                 ex.ToExceptionless().Submit();
-                throw;
+                // If catch error, redirect to promact OAuth message page and will display error.
+                return Redirect("~/Home/Error");
             }
         }
     }

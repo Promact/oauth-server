@@ -10,7 +10,7 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
         /// </summary>
         /// <param name="accessToken"></param>
         /// <returns>true if value is not null otherwise false</returns>
-        Task<bool> GetDetailsClientByAccessToken(string accessToken);
+        Task<bool> GetDetailsClientByAccessTokenAsync(string accessToken);
 
 
         /// <summary>
@@ -20,7 +20,7 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
         /// <param name="clientId"></param>
         /// <param name="callBackUrl"></param>
         /// <returns>returUrl</returns>
-        Task<string> UserAlreadyLogin(string userName, string clientId, string callBackUrl);
+        Task<string> UserAlreadyLoginAsync(string userName, string clientId, string callBackUrl);
 
 
         /// <summary>
@@ -28,6 +28,6 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
         /// </summary>
         /// <param name="model"></param>
         /// <returns>if not successfully signed-in then return empty string if successfully signed-in and credentials match then return redirect url</returns>
-        Task<string> UserNotAlreadyLogin(OAuthLogin model);
+        Task<string> UserNotAlreadyLoginAsync(OAuthLogin model);
     }
 }

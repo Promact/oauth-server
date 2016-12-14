@@ -16,8 +16,8 @@ namespace Promact.Oauth.Server.Services
 
         public override async Task OnActionExecutionAsync(ActionExecutingContext filterContext, ActionExecutionDelegate next)
         {
-            var token = filterContext.HttpContext.Request.Headers["Authorization"].ToString();
-            var data = _oAuthRepository.GetDetailsClientByAccessToken(token).Result;
+            string token = filterContext.HttpContext.Request.Headers["Authorization"].ToString();
+            bool data = await _oAuthRepository.GetDetailsClientByAccessTokenAsync(token);
             if (data == true)
             {
                 await base.OnActionExecutionAsync(filterContext, next);

@@ -34,7 +34,8 @@
         string SlackUsersUrl { get; }
         string SlackUserByIdUrl { get; }
         string Port { get; }
-
+        string OAuthExternalLoginUrl { get; }
+        string Message { get; }
         string UserEmail { get; }
 
         string UserPassword { get; }
@@ -43,6 +44,8 @@
         string Name { get; }
         string EditName { get; }
         string SlackChannelName { get; }
+        string ErpAuthorizeUrl { get; }
+        string InCorrectSlackName { get; }
         bool IsActive { get; }
         string TeamLeaderId { get; }
         string UserIdSecond { get; }
@@ -90,6 +93,14 @@
         string DateFormate { get; }
         string TeamLeaderNotAssign { get; }
         string DomainAddress { get; }
+        string UserSlackId { get; }
+        string GetAppDetailsFromClientAsyncResponse { get; }
+        string ReturnUrl { get; }
+        string PromactAppNotSet { get; }
+        string PromactAppNotFoundClientId { get; }
+        string PromactAppNotFoundClientSecret { get; }
+        string GetAppDetailsFromClientAsyncResponseInCorrectSlackName { get; }
+        string OAuthAfterLoginResponse { get; }
         string SetSmtpUnSecure { get; }
         string SetSmtpSSL { get; }
     }

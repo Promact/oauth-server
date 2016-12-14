@@ -12,13 +12,11 @@ using Promact.Oauth.Server.ExceptionHandler;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Models.ApplicationClasses;
 using Promact.Oauth.Server.Models.ManageViewModels;
-using Promact.Oauth.Server.Repository.HttpClientRepository;
 using Promact.Oauth.Server.Repository.ProjectsRepository;
 using Promact.Oauth.Server.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -43,7 +41,7 @@ namespace Promact.Oauth.Server.Repository
         private readonly ILogger<UserRepository> _logger;
         private readonly IStringConstant _stringConstant;
         private readonly IDataRepository<ProjectUser> _projectUserDataRepository;
-        private readonly IHttpClientRepository _httpClientRepository;
+        private readonly IHttpClientService _httpClientRepository;
         #endregion
 
 
@@ -57,7 +55,7 @@ namespace Promact.Oauth.Server.Repository
             IProjectRepository projectRepository, IOptions<AppSettingUtil> appSettingUtil,
             IDataRepository<Project> projectDataRepository,
             ILogger<UserRepository> logger, IStringConstant stringConstant,
-            IHttpClientRepository httpClientRepository, IDataRepository<ProjectUser> projectUserDataRepository)
+            IHttpClientService httpClientRepository, IDataRepository<ProjectUser> projectUserDataRepository)
         {
             _applicationUserDataRepository = applicationUserDataRepository;
             _hostingEnvironment = hostingEnvironment;
@@ -233,11 +231,11 @@ namespace Promact.Oauth.Server.Repository
         {
             IOrderedQueryable<ApplicationUser> users = _userManager.Users.OrderByDescending(x => x.CreatedDateTime);
             List<UserAc> userList = new List<UserAc>();
-      
+
             foreach (var user in users)
             {
                 UserAc listItem = _mapperContext.Map<ApplicationUser, UserAc>(user);
-                              userList.Add(listItem);
+                userList.Add(listItem);
             }
             return userList;
         }
@@ -537,23 +535,6 @@ namespace Promact.Oauth.Server.Repository
 
 
         /// <summary>
-        /// Fetches the list of Slack User Details
-        /// </summary>
-        /// <returns></returns>
-        public async Task<List<SlackUserDetailAc>> GetSlackUserDetails()
-        {
-            _logger.LogInformation("User Repository: GetSlackUserDetails. Url: " + _appSettingUtil.Value.PromactErpUrl);
-            HttpResponseMessage response = await _httpClientRepository.GetAsync(_appSettingUtil.Value.PromactErpUrl, _stringConstant.SlackUsersUrl);
-            string responseResult = response.Content.ReadAsStringAsync().Result;
-            _logger.LogInformation("User Repository: GetSlackUserDetails. ReponseResult: " + responseResult);
-            // Transforming Json String to object type List of SlackUserDetailAc
-            var data = JsonConvert.DeserializeObject<List<SlackUserDetailAc>>(responseResult);
-            return data;
-        }
-
-        
-
-        /// <summary>
         /// Method to return user role
         /// </summary>
         /// <param name="userName"></param>
@@ -573,8 +554,8 @@ namespace Promact.Oauth.Server.Repository
                 var userList = await _applicationUserDataRepository.GetAll().ToListAsync();
                 foreach (var userDetails in userList)
                 {
-                  var roles = (await _userManager.GetRolesAsync(userDetails)).First();
-                  if (roles != null && roles == _stringConstant.RoleEmployee)
+                    var roles = (await _userManager.GetRolesAsync(userDetails)).First();
+                    if (roles != null && roles == _stringConstant.RoleEmployee)
                     {
                         var userRoleAc = new UserRoleAc();
                         userRoleAc.UserName = userDetails.UserName;
@@ -641,7 +622,8 @@ namespace Promact.Oauth.Server.Repository
                 }
                 return userRolesAcList;
             }
-            else {
+            else
+            {
                 throw new UserRoleNotFound();
             }
         }
@@ -654,7 +636,6 @@ namespace Promact.Oauth.Server.Repository
         /// <returns>list of object of UserAc</returns>
         public async Task<List<UserAc>> GetProjectUserByGroupNameAsync(string GroupName)
         {
-
             var project = await _projectDataRepository.FirstOrDefaultAsync(x => x.SlackChannelName == GroupName);
             var userAcList = new List<UserAc>();
             if (project != null)
@@ -662,7 +643,7 @@ namespace Promact.Oauth.Server.Repository
                 var projectUserList = await _projectUserDataRepository.FetchAsync(x => x.ProjectId == project.Id);
                 foreach (var projectUser in projectUserList)
                 {
-                    var user = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.Id == projectUser.UserId && x.SlackUserId!=null);
+                    var user = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.Id == projectUser.UserId && x.SlackUserId != null);
                     if (user != null)
                     {
                         var userAc = new UserAc();
@@ -698,8 +679,7 @@ namespace Promact.Oauth.Server.Repository
         private async Task<SlackUserDetailAc> GetSlackUserById(string slackUserId)
         {
             _logger.LogInformation("User Repository - GetSlackUserByI. Url: " + _appSettingUtil.Value.PromactErpUrl);
-            HttpResponseMessage response = await _httpClientRepository.GetAsync(_appSettingUtil.Value.PromactErpUrl, _stringConstant.SlackUserByIdUrl + slackUserId);
-            string responseResult = response.Content.ReadAsStringAsync().Result;
+            var responseResult = await _httpClientRepository.GetAsync(_appSettingUtil.Value.PromactErpUrl, _stringConstant.SlackUserByIdUrl + slackUserId);
             _logger.LogInformation("User Repository: GetSlackUserById. ReponseResult: " + responseResult);
             // Transforming Json String to object type List of SlackUserDetailAc
             var data = JsonConvert.DeserializeObject<SlackUserDetailAc>(responseResult);
