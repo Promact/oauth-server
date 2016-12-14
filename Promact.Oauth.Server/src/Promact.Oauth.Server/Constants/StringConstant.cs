@@ -97,9 +97,48 @@
         public string GetAppDetailsFromClientAsyncResponse {
             get
             {
-                return "{\"ClientId\":\"{0}\",\"ClientSecret\":\"{1}\",\"RefreshToken\":\"22719b46-e0d5-4ef2-ad63-6a5a9fe9842e\",\"ReturnUrl\":\"http://localhost:28182/Home/ExtrenalLoginCallBack\",\"UserId\":\"U0HJ49KJ4\"}";
+                return "{\"ClientId\":\"adasfs21gv1drv1gd1sd\",\"ClientSecret\":\"dsjfhsijhfaJjJKDakjka521\",\"RefreshToken\":\"22719b46-e0d5-4ef2-ad63-6a5a9fe9842e\",\"ReturnUrl\":\"http://localhost:28182/Home/ExtrenalLoginCallBack\",\"UserId\":\"U0HJ49KJ4\"}";
             }
         }
         public string ReturnUrl { get { return "http://localhost:28182/Home/ExtrenalLoginCallBack"; } }
+        public string PromactAppNotSet
+        {
+            get
+            {
+                return "Seems like getting error while fetching your promact app details. Please check your Promact app details";
+            }
+        }
+
+        public string PromactAppNotFoundClientId
+        {
+            get
+            {
+                return "Seems like we don't have any Promact app for {0} client Id.";
+            }
+        }
+
+        public string PromactAppNotFoundClientSecret
+        {
+            get
+            {
+                return "Seems like we don't have any Promact app for {0} client secret.";
+            }
+        }
+
+        public string GetAppDetailsFromClientAsyncResponseInCorrectSlackName
+        {
+            get
+            {
+                return "{\"ClientId\":\"{0}\",\"ClientSecret\":\"{1}\",\"RefreshToken\":\"22719b46-e0d5-4ef2-ad63-6a5a9fe9842e\",\"ReturnUrl\":\"http://localhost:28182/Home/ExtrenalLoginCallBack\",\"UserId\":\"\"}";
+            }
+        }
+
+        public string OAuthAfterLoginResponse
+        {
+            get
+            {
+                return "{0}?accessToken={1}&email={2}&slackUserId={3}&userId={4}";
+            }
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Exceptionless;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Promact.Oauth.Server.Constants;
@@ -18,15 +19,17 @@ namespace Promact.Oauth.Server.Controllers
         private readonly IOAuthRepository _oAuthRepository;
         private readonly IOptions<AppSettingUtil> _appSettingUtil;
         private readonly IStringConstant _stringConstant;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
         public OAuthController(IConsumerAppRepository appRepository,
             IOAuthRepository oAuthRepository, IOptions<AppSettingUtil> appSettingUtil,
-            IStringConstant stringConstant)
+            IStringConstant stringConstant, SignInManager<ApplicationUser> signInManager)
         {
             _appRepository = appRepository;
             _oAuthRepository = oAuthRepository;
             _appSettingUtil = appSettingUtil;
             _stringConstant = stringConstant;
+            _signInManager = signInManager;
         }
 
         /**
@@ -55,35 +58,26 @@ namespace Promact.Oauth.Server.Controllers
         {
             try
             {
+                var redirectUrl = string.Format(_stringConstant.OAuthExternalLoginUrl, _appSettingUtil.Value.PromactOAuthUrl, login.ClientId);
                 if (ModelState.IsValid)
                 {
-                    string redirectUrl = await _oAuthRepository.UserNotAlreadyLoginAsync(login);
-                    if (redirectUrl != _stringConstant.EmptyString)
+                    var result = await _signInManager.PasswordSignInAsync(login.Email, login.Password, false, lockoutOnFailure: false);
+                    if (result.Succeeded)
                     {
-                        return Redirect(redirectUrl);
+                        redirectUrl = await _oAuthRepository.UserNotAlreadyLoginAsync(login);
                     }
-                    string url = string.Format(_stringConstant.OAuthExternalLoginUrl, _appSettingUtil.Value.PromactOAuthUrl, login.ClientId);
-                    return Redirect(url);
+                    else
+                    {
+                        redirectUrl = string.Format(_stringConstant.OAuthExternalLoginUrl, _appSettingUtil.Value.PromactOAuthUrl, login.ClientId);
+                    }
                 }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, _stringConstant.InvalidLogin);
-                    return View(login);
-                }
-            }
-            catch (NullReferenceException ex)
-            {
-                ex.ToExceptionless().Submit();
-                // If catch error, redirect to promact ERP message page and will display error.
-                var returnUrl = _appSettingUtil.Value.PromactErpUrl + _stringConstant.ErpAuthorizeUrl
-             + _stringConstant.Message + ex.Message;
-                return Redirect(returnUrl);
+                //ModelState.AddModelError(string.Empty, _stringConstant.InvalidLogin);
+                return Redirect(redirectUrl);
             }
             catch (HttpRequestException ex)
             {
                 ex.ToExceptionless().Submit();
                 // If catch error, redirect to promact OAuth message page and will display error.
-                ViewBag.ErrorMessage = ex.Message;
                 return Redirect("~/Home/Error");
             }
         }
@@ -113,11 +107,6 @@ namespace Promact.Oauth.Server.Controllers
                     {
                         // If already login it will return a redirect url and will be redirect back to another server with access token 
                         string returnUrl = await _oAuthRepository.UserAlreadyLoginAsync(User.Identity.Name, clientId, result.CallbackUrl);
-                        if (String.IsNullOrEmpty(returnUrl))
-                        {
-                            returnUrl = _appSettingUtil.Value.PromactErpUrl + _stringConstant.ErpAuthorizeUrl
-                             + _stringConstant.Message + _stringConstant.InCorrectSlackName;
-                        }
                         return Redirect(returnUrl);
                     }
                     else
@@ -128,21 +117,14 @@ namespace Promact.Oauth.Server.Controllers
                         return View();
                     }
                 }
-                return BadRequest();
-            }
-            catch (NullReferenceException ex)
-            {
-                ex.ToExceptionless().Submit();
-                // If catch error, redirect to promact ERP message page and will display error.
-                var returnUrl = _appSettingUtil.Value.PromactErpUrl + _stringConstant.ErpAuthorizeUrl
-                             + _stringConstant.Message + ex.Message;
-                return Redirect(returnUrl);
+                var errorMessage = string.Format(_stringConstant.PromactAppNotFoundClientId, clientId);
+                return Redirect(_appSettingUtil.Value.PromactErpUrl + _stringConstant.ErpAuthorizeUrl
+                                 + _stringConstant.Message + errorMessage);
             }
             catch (HttpRequestException ex)
             {
                 ex.ToExceptionless().Submit();
                 // If catch error, redirect to promact OAuth message page and will display error.
-                ViewBag.ErrorMessage = ex.Message;
                 return Redirect("~/Home/Error");
             }
         }

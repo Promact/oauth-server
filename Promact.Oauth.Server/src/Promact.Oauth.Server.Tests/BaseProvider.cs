@@ -9,7 +9,6 @@ using Promact.Oauth.Server.Data_Repository;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Repository;
 using Promact.Oauth.Server.Repository.ConsumerAppRepository;
-using Promact.Oauth.Server.Repository.HttpClientRepository;
 using Promact.Oauth.Server.Repository.OAuthRepository;
 using Promact.Oauth.Server.Repository.ProjectsRepository;
 using Promact.Oauth.Server.Seed;
@@ -45,7 +44,13 @@ namespace Promact.Oauth.Server.Tests
 
             var services = new ServiceCollection();
             services.AddEntityFrameworkInMemoryDatabase();
-
+            services.Configure<AppSettingUtil>(x => 
+            {
+                x.CasualLeave = "14";
+                x.PromactErpUrl = "http://www.example.com";
+                x.PromactOAuthUrl = "http://www.example.com";
+                x.SickLeave = "7";
+            });
             services.AddSingleton<IHostingEnvironment>(testHostingEnvironment);
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
@@ -65,10 +70,11 @@ namespace Promact.Oauth.Server.Tests
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
             services.AddDbContext<PromactOauthDbContext>(options => options.UseInMemoryDatabase(randomString), ServiceLifetime.Transient);
-            var httpClientMock = new Mock<IHttpClientRepository>();
+            var httpClientMock = new Mock<IHttpClientService>();
             var httpClientMockObject = httpClientMock.Object;
             services.AddScoped(x => httpClientMock);
             services.AddScoped(x=>httpClientMockObject);
+
             serviceProvider = services.BuildServiceProvider();
             RoleSeedFake(serviceProvider);
         }
