@@ -739,9 +739,9 @@ namespace Promact.Oauth.Server.Repository
                     }
                 }
 
-                if (casualAllowed.ToString().Contains(_stringConstant.Dot) == true)
+                if (casualAllowed.ToString().Contains(".") == true)
                 {
-                    string splitCasualAllowed =_stringConstant.ZeroDot + casualAllowed.ToString().Split('.')[1];
+                    string splitCasualAllowed ="0." + casualAllowed.ToString().Split('.')[1];
                     double casualAllowedConvertedDouble = Convert.ToDouble(splitCasualAllowed);
                     if (casualAllowedConvertedDouble != 0.5) { casualAllowed = Convert.ToInt32(casualAllowed); }
 
@@ -750,9 +750,9 @@ namespace Promact.Oauth.Server.Repository
                 {
                     casualAllowed = Convert.ToInt32(casualAllowed);
                 }
-                if (sickAllowed.ToString().Contains(_stringConstant.Dot) == true)
+                if (sickAllowed.ToString().Contains(".") == true)
                 {
-                    string splitSickAllowed = _stringConstant.ZeroDot + sickAllowed.ToString().Split('.')[1];
+                    string splitSickAllowed = "0." + sickAllowed.ToString().Split('.')[1];
                     double sickAllowedConvertedDouble = Convert.ToDouble(splitSickAllowed);
                     if (sickAllowedConvertedDouble != 0.5) { sickAllowed = Convert.ToInt32(Math.Floor(sickAllowed)); }
                     if (sickAllowedConvertedDouble > 0.90) { sickAllowed = sickAllowed + 1; }
