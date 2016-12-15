@@ -23,13 +23,10 @@ let fixture: ComponentFixture<UserListComponent>;
 let promise: TestBed;
 
 describe("User List Test", () => {
-     
-  
     class MockLoaderService { }
     const routes: Routes = [];
     beforeEach(async(() => {
         this.promise = TestBed.configureTestingModule({
-            declarations: [RouterLinkStubDirective], //Declaration of mock routerLink used on page.
             imports: [UserModule, RouterModule.forRoot(routes, { useHash: true }) //Set LocationStrategy for component. 
             ],
             providers: [

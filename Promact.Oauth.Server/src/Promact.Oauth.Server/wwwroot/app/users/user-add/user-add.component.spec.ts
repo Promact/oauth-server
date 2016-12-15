@@ -10,20 +10,16 @@ import { MockToast } from "../../shared/mocks/mock.toast";
 import { MockUserService } from "../../shared/mocks/user/mock.user.service";
 import { MockRouter } from '../../shared/mocks/mock.router';
 import { UserModule } from '../user.module';
-import { RouterLinkStubDirective } from '../../shared/mocks/mock.routerLink';
 import { LoaderService } from '../../shared/loader.service';
 let promise: TestBed;
 
 describe('User Add Test', () => {
-    let userAddComponent: UserAddComponent;
-
     class MockActivatedRoute { }
     class MockLoaderService { }
     const routes: Routes = [];
 
     beforeEach(async(() => {
         this.promise = TestBed.configureTestingModule({
-            declarations: [RouterLinkStubDirective], //Declaration of mock routerLink used on page.
             imports: [UserModule, RouterModule.forRoot(routes, { useHash: true }) //Set LocationStrategy for component. 
             ],
             providers: [
@@ -91,8 +87,6 @@ describe('User Add Test', () => {
         });
 
     });
-
-
-  
+    
 });
 

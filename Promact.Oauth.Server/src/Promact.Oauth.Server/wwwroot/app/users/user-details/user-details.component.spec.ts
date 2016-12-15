@@ -15,14 +15,12 @@ import { Observable } from 'rxjs/Observable';
 import { RouterLinkStubDirective } from '../../shared/mocks/mock.routerLink';
 import { LoaderService } from '../../shared/loader.service';
 import { Location } from "@angular/common";
-import { LocationStrategy } from "@angular/common";
 import { LoginService } from '../../login.service';
 import { MockLoginService } from "../../shared/mocks/mock.login.service";
 import { ActivatedRouteStub } from "../../shared/mocks/mock.activatedroute";
 import { UserRole } from "../../shared/userrole.model";
 
 describe("User Details Test", () => {
-    let userDetailsComponent: UserDetailsComponent;
     let userService: UserService;
     class MockLocation { }
     class MockLoaderService { }
@@ -30,7 +28,6 @@ describe("User Details Test", () => {
     const routes: Routes = [];
     beforeEach(async(() => {
         this.promise = TestBed.configureTestingModule({
-            declarations: [RouterLinkStubDirective], //Declaration of mock routerLink used on page.
             imports: [UserModule, RouterModule.forRoot(routes, { useHash: true }) //Set LocationStrategy for component. 
             ],
             providers: [

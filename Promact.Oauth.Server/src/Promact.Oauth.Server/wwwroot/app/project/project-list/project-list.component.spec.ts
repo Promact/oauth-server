@@ -10,7 +10,6 @@ import { LoginService } from '../../login.service';
 import { ProjectModule } from '../project.module';
 import { Md2Toast } from 'md2';
 import { LoaderService } from '../../shared/loader.service';
-import { RouterLinkStubDirective } from '../../shared/mocks/mock.routerLink';
 import { UserRole } from "../../shared/userrole.model";
 
 
@@ -31,7 +30,6 @@ describe("Project List Test", () => {
     const routes: Routes = [];
     beforeEach(async(() => {
         this.promise = TestBed.configureTestingModule({
-            declarations: [RouterLinkStubDirective], //Declaration of mock routerLink used on page.
             imports: [ProjectModule,RouterModule.forRoot(routes, { useHash: true }) //Set LocationStrategy for component. 
             ],
             providers: [

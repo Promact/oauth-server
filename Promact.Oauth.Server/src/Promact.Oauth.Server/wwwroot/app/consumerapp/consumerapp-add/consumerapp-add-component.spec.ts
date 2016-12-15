@@ -23,7 +23,7 @@ describe('Consumer Add Test', () => {
 
     beforeEach(async(() => {
         this.promise = TestBed.configureTestingModule({
-            declarations: [RouterLinkStubDirective], //Declaration of mock routerLink used on page.
+            //declarations: [RouterLinkStubDirective], //Declaration of mock routerLink used on page.
             imports: [ConsumerAppModule, RouterModule.forRoot(routes, { useHash: true }) //Set LocationStrategy for component. 
             ],
             providers: [

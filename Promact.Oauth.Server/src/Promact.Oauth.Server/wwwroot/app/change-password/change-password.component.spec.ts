@@ -5,13 +5,11 @@ import { Provider } from "@angular/core";
 import { PasswordModel } from "../users/user-password.model";
 import { ChangePasswordModule } from "../change-password/change-password.module";
 import { ChangePasswordComponent } from "../change-password/change-password.component";
-import { TestConnection } from "../shared/mocks/test.connection";
 import { UserService } from '../users/user.service';
 import { MockUserService } from "../shared/mocks/user/mock.user.service";
 import { Md2Toast } from 'md2';
 import { MockToast } from "../shared/mocks/mock.toast";
 import { Observable } from "rxjs/Observable";
-import { RouterLinkStubDirective } from "../shared/mocks/mock.routerLink";
 import { LoaderService } from "../shared/loader.service";
 
 let promise: TestBed;
@@ -23,7 +21,6 @@ describe('Change Password', () => {
 
     beforeEach(async(() => {
         this.promise = TestBed.configureTestingModule({
-            declarations: [RouterLinkStubDirective], //Declaration of mock routerLink used on page.
             imports: [ChangePasswordModule, RouterModule.forRoot(routes, { useHash: true }) //Set LocationStrategy for component. 
             ],
             providers: [

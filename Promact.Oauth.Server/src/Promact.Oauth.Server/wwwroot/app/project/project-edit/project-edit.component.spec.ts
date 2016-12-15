@@ -12,7 +12,6 @@ import { Md2Multiselect } from 'md2/multiselect';
 import { MockProjectService } from "../../shared/mocks/project/mock.project.service";
 import { MockRouter } from '../../shared/mocks/mock.router';
 import { Observable } from 'rxjs/Observable';
-import { RouterLinkStubDirective } from '../../shared/mocks/mock.routerLink';
 import { ProjectModule } from '../project.module';
 import { LoaderService } from '../../shared/loader.service';
 
@@ -20,7 +19,6 @@ let promise: TestBed;
 
 
 describe('Project Edit Test', () => {
-    //let projectAddComponent: ProjectAddComponent;
     class MockRouter { }
     class MockLocation { }
     class MockLoaderService { }
@@ -35,7 +33,6 @@ describe('Project Edit Test', () => {
 
     beforeEach(async(() => {
         this.promise = TestBed.configureTestingModule({
-            declarations: [RouterLinkStubDirective], //Declaration of mock routerLink used on page.
             imports: [ProjectModule, RouterModule.forRoot(routes, { useHash: true }) //Set LocationStrategy for component. 
             ],
             providers: [
