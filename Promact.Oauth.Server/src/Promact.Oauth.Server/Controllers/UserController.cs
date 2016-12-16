@@ -213,13 +213,6 @@ namespace Promact.Oauth.Server.Controllers
          *   "error": "InvalidApiRequestException"
          *   "error": "ArgumentNullException"
          * }
-         * @apiError InvalidApiRequestException , ArgumentNullException
-         * @apiErrorExample {json} Error-Response:
-         * HTTP/1.1 404 Not Found
-         * {
-         *   "error": "InvalidApiRequestException"
-         *   "error": "ArgumentNullException"
-         * }
          */
         [HttpPost]
         [Route("")]
@@ -280,12 +273,6 @@ namespace Promact.Oauth.Server.Controllers
         * HTTP/1.1 200 OK 
         * {
         *     true
-        * }
-        * @apiError SlackUserNotFound the slack user was not found.
-        * @apiErrorExample {json} Error-Response:
-        * HTTP/1.1 404 Not Found
-        * {
-        *   "error": "SlackUserNotFound"
         * }
         * @apiError SlackUserNotFound the slack user was not found.
         * @apiErrorExample {json} Error-Response:
@@ -376,7 +363,7 @@ namespace Promact.Oauth.Server.Controllers
        * @apiParam {string} password  User OldPassword
        * @apiParamExample {json} Request-Example:
        * {
-       *     "oldPassword":"OldPassword123"
+       *     "password":"OldPassword123"
        * }      
        * @apiSuccessExample {json} Success-Response:
        * HTTP/1.1 200 OK 
@@ -473,10 +460,10 @@ namespace Promact.Oauth.Server.Controllers
          * @apiVersion 1.0.0
          * @apiName CheckUserIsExistsBySlackUserNameAsync
          * @apiGroup User
-         * @apiParam {string} slackUaserName  user slack name
+         * @apiParam {string} slackUserName  user slack name
          * @apiParamExample {json} Request-Example:
          * {
-         *     "SlackUserName" :"John"
+         *     "slackUserName" :"John"
          * }      
          * @apiSuccessExample {json} Success-Response:
          * HTTP/1.1 200 OK 
@@ -494,11 +481,11 @@ namespace Promact.Oauth.Server.Controllers
          *   "Role":null,
          *   "UserName": null
          * }
-         * @apiError UserNotFound the slack user was not found.
+         * @apiError SlackUserNotFound the slack user was not found.
          * @apiErrorExample {json} Error-Response:
          * HTTP/1.1 404 Not Found
          * {
-         *   "error": "UserNotFound"
+         *   "error": "SlackUserNotFound"
          * }
          */
         [HttpGet]
@@ -636,7 +623,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-        * @api {get} api/users/:userid/teammebers 
+        * @api {get} api/users/:userid/teammembers 
         * @apiVersion 1.0.0
         * @apiName GetTeamMembersAsync
         * @apiGroup User
@@ -673,12 +660,12 @@ namespace Promact.Oauth.Server.Controllers
         /**
         * @api {get} api/users/slackChannel/:name 
         * @apiVersion 1.0.0
-        * @apiName GetProjectUserByGroupName
+        * @apiName GetProjectUserByGroupNameAsync
         * @apiGroup User
-        * @apiParam {string} groupName as a SlackChannelName
+        * @apiParam {string} name as a SlackChannelName
         * @apiParamExample {json} Request-Example:
         * {
-        *   "groupName":"SlackChannelName",
+        *   "name":"SlackChannelName",
         * }      
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
