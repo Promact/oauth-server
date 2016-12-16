@@ -411,35 +411,9 @@ namespace Promact.Oauth.Server.Repository
             return GetUser(user);
         }
 
-        /// <summary>
-        /// Method is used to get the details of user by using their username
-        /// </summary>
-        /// <param name="userName"></param>
-        /// <returns>details of user</returns>
-        public async Task<UserAc> GetUserDetailByUserNameAsync(string userName)
-        {
-            var user = await _userManager.FindByNameAsync(userName);
-            return GetUser(user);
-        }
-
-
-        /// <summary>
-        /// Fetches the list of Slack User Details
-        /// </summary>
-        /// <returns></returns>
-        public async Task<List<SlackUserDetailAc>> GetSlackUserDetailsAsync()
-        {
-            _logger.LogInformation("User Repository: GetSlackUserDetails. Url: " + _appSettingUtil.Value.PromactErpUrl);
-            HttpResponseMessage response = await _httpClientRepository.GetAsync(_appSettingUtil.Value.PromactErpUrl, _stringConstant.SlackUsersUrl);
-            string responseResult = response.Content.ReadAsStringAsync().Result;
-            _logger.LogInformation("User Repository: GetSlackUserDetails. ReponseResult: " + responseResult);
-            // Transforming Json String to object type List of SlackUserDetailAc
-            var data = JsonConvert.DeserializeObject<List<SlackUserDetailAc>>(responseResult);
-            return data;
-        }
+       
 
         
-
         /// <summary>
         /// Method to return user role
         /// </summary>
