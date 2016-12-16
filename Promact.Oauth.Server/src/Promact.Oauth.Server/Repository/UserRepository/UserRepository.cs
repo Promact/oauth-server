@@ -451,7 +451,6 @@ namespace Promact.Oauth.Server.Repository
             ApplicationUser applicationUser = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.Id == userId);
             var userRole = (await _userManager.GetRolesAsync(applicationUser)).First();
             var UserRoleAcList = new List<UserRoleAc>();
-            userRole = _stringConstant.RoleTeamLeader;
             if (userRole == _stringConstant.RoleAdmin)
             {
                 var userRoleAdmin = new UserRoleAc();
