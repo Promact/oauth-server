@@ -92,6 +92,7 @@
         string OAuthAfterLoginResponse { get; }
         string SetSmtpUnSecure { get; }
         string SetSmtpSSL { get; }
+        string HttpRequestExceptionErrorMessage { get; }
         string UserIdForTest { get; }
         string UserNameForTest { get; }
         string EmailForTest { get; }
