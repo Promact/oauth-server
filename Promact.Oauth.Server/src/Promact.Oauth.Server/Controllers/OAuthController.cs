@@ -48,7 +48,12 @@ namespace Promact.Oauth.Server.Controllers
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
         * {
-        *     "Description":"Redirect to Authorize user to external server"
+        *     "Description":"Redirect to Authorize user to external server with proper message"
+        * }
+        * @apiErrorExample {json} Error-Response:
+        * HTTP/1.1 408 HttpRequestException 
+        * {
+        *     "Description":"Redirect to external login page"
         * }
         */
         [HttpPost]
@@ -84,6 +89,10 @@ namespace Promact.Oauth.Server.Controllers
         * HTTP/1.1 200 OK 
         * {
         *     "Description":"Redirect to Promact OAuth server external login page. If user already login, then Redirect to Authorize user to external server."
+        * }
+        * HTTP/1.1 408 HttpRequestException
+        * {
+        *     "Description":"Redirect to Promact slack server with appropriate message of error
         * }
         */
 
