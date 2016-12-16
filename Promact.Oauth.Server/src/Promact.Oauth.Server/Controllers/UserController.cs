@@ -168,7 +168,7 @@ namespace Promact.Oauth.Server.Controllers
         */
         [HttpGet]
         [Route("{id}")]
-        [Authorize(Roles = "Admin,Employee")]
+        [Authorize]
         public async Task<IActionResult> GetUserByIdAsync(string id)
         {
             try
@@ -612,10 +612,10 @@ namespace Promact.Oauth.Server.Controllers
        * @apiVersion 1.0.0
        * @apiName GetUserRoleAsync
        * @apiGroup User
-       * @apiParam {string} name UserName
+       * @apiParam {string} name userId
        * @apiParamExample {json} Request-Example:
        * {
-            "Id":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367"    
+            "userId":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367"    
        * }      
        * @apiSuccessExample {json} Success-Response:
        * HTTP/1.1 200 OK 
@@ -626,12 +626,6 @@ namespace Promact.Oauth.Server.Controllers
        *            "Role":"Admin"
        *        }
        *]
-       * @apiError UserRoleNotFound The role of the user not found.
-       * @apiErrorExample {json} Error-Response:
-       * HTTP/1.1 404 Not Found
-       * {
-       *  "error": "UserRoleNotFound"
-       * }
        */
         [ServiceFilter(typeof(CustomAttribute))]
         [HttpGet]
@@ -667,27 +661,13 @@ namespace Promact.Oauth.Server.Controllers
         *            "Role":"Employee"
         *        },
         *    ]
-        * @apiError UserRoleNotFound The role of the user not found.
-        * @apiErrorExample {json} Error-Response:
-        * HTTP/1.1 404 Not Found
-        * {
-        *  "error": "UserRoleNotFound"
-        * }
         */
         [ServiceFilter(typeof(CustomAttribute))]
         [HttpGet]
-        [Route("{userid}/teammebers")]
+        [Route("{userid}/teammembers")]
         public async Task<IActionResult> GetTeamMembersAsync(string userid)
         {
-            try
-            {
-                return Ok(await _userRepository.GetTeamMembersAsync(userid));
-            }
-            catch (UserRoleNotFound)
-            {
-                return NotFound();
-            }
-
+              return Ok(await _userRepository.GetTeamMembersAsync(userid));
         }
 
         /**
