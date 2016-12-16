@@ -27,7 +27,7 @@ describe("User Edit Test", () => {
     class MockUserRole { }
     const routes: Routes = [];
     beforeEach(async(() => {
-        this.promise = TestBed.configureTestingModule({
+        TestBed.configureTestingModule({
             imports: [UserModule, RouterModule.forRoot(routes, { useHash: true }) //Set LocationStrategy for component. 
             ],
             providers: [
@@ -42,41 +42,30 @@ describe("User Edit Test", () => {
                 { provide: UserRole, useClass: MockUserRole }
             ]
         }).compileComponents();
-       
+
     }));
 
 
 
-    it("should get particular user details", done => {
-        this.promise.then(() => {
-            let fixture = TestBed.createComponent(UserEditComponent); //Create instance of component     
-            let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
-            activatedRoute.testParams = { id: "1" };        
-            let userEditComponent = fixture.componentInstance;
-            let expectedFirstName = "First Name";
-            
-            userEditComponent.ngOnInit();
-            expect(userEditComponent.user.FirstName).toBe(expectedFirstName);
-            done();
-        });
+    it("should get particular user details", () => {
+        let fixture = TestBed.createComponent(UserEditComponent); //Create instance of component     
+        let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
+        activatedRoute.testParams = { id: "1" };
+        let userEditComponent = fixture.componentInstance;
+        let expectedFirstName = "First Name";
+        userEditComponent.ngOnInit();
+        expect(userEditComponent.user.FirstName).toBe(expectedFirstName);
     });
 
 
-    it("should check User first name before update", done => {
-        this.promise.then(() => {
-            let fixture = TestBed.createComponent(UserEditComponent); //Create instance of component            
-            let userEditComponent = fixture.componentInstance;
-            let expectedFirstName = "First Name";
-            let userModel = new UserModel();
-            userModel.FirstName = expectedFirstName;
-            userEditComponent.editUser(userModel);
-            expect(userModel.FirstName).toBe(expectedFirstName);
-            done();
-        });
-       
-
+    it("should check User first name before update", () => {
+        let fixture = TestBed.createComponent(UserEditComponent); //Create instance of component            
+        let userEditComponent = fixture.componentInstance;
+        let expectedFirstName = "First Name";
+        let userModel = new UserModel();
+        userModel.FirstName = expectedFirstName;
+        userEditComponent.editUser(userModel);
+        expect(userModel.FirstName).toBe(expectedFirstName);
     });
-
-    
 
 });

@@ -8,16 +8,14 @@ import { UserRole } from "./shared/userrole.model";
 import { LoaderService } from './shared/loader.service';
 import { RouterLinkStubDirective } from './shared/mocks/mock.routerLink';
 import { AppComponent } from './app.component';
-import {  AppModule } from './app.module';
-
-let promise: TestBed;
+import { AppModule } from './app.module';
 
 describe('User Add Test', () => {
     class MockLoaderService { }
     const routes: Routes = [];
 
     beforeEach(async(() => {
-        this.promise = TestBed.configureTestingModule({
+        TestBed.configureTestingModule({
             declarations: [RouterLinkStubDirective],
             imports: [AppModule, RouterModule.forRoot(routes, { useHash: true })],
             providers: [
@@ -26,12 +24,10 @@ describe('User Add Test', () => {
                 { provide: LoaderService, useClass: MockLoaderService }]
         }).compileComponents();
     }));
-    
-    it("Load app Component", () => done => {
-        this.promise.then(() => {
-            let fixture = TestBed.createComponent(AppComponent);
-            let  comp = fixture.componentInstance;
-        });
+
+    it("Load app Component", () => {
+        let fixture = TestBed.createComponent(AppComponent);
+        let comp = fixture.componentInstance;
     });
 });
 

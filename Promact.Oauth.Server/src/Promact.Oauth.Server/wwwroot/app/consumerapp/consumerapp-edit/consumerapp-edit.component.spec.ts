@@ -14,7 +14,7 @@ import { ConsumerAppModule } from '../consumerapp.module';
 import { LoaderService } from '../../shared/loader.service';
 
 
-let promise: TestBed;
+
 describe('Consumer Edit Test', () => {
     class MockRouter { }
     class MockLoaderService { }
@@ -27,7 +27,7 @@ describe('Consumer Edit Test', () => {
     }
 
     beforeEach(async(() => {
-        this.promise = TestBed.configureTestingModule({
+        TestBed.configureTestingModule({
             imports: [ConsumerAppModule, RouterModule.forRoot(routes, { useHash: true }) //Set LocationStrategy for component. 
             ],
             providers: [
@@ -41,18 +41,14 @@ describe('Consumer Edit Test', () => {
         }).compileComponents();
     }));
 
-    it("Get consumerApp by id", done => {
-        this.promise.then(() => {
+    it("Get consumerApp by id", () => {
             let fixture = TestBed.createComponent(ConsumerappEditComponent); //Create instance of component            
             let consumerappEditComponent = fixture.componentInstance;
             consumerappEditComponent.ngOnInit();
             expect(consumerappEditComponent.consumerModel).not.toBeNull();
-            done();
-        });
     });
 
-    it("Edit consumer app", done => {
-        this.promise.then(() => {
+    it("Edit consumer app", () => {
             let fixture = TestBed.createComponent(ConsumerappEditComponent); //Create instance of component            
             let consumerappEditComponent = fixture.componentInstance;
             let toast = fixture.debugElement.injector.get(Md2Toast);
@@ -65,9 +61,6 @@ describe('Consumer Edit Test', () => {
             consumerAppModel.AuthId = "ASASs5454545455";
             consumerappEditComponent.updateApps(consumerAppModel);
             expect(consumerAppModel.Name).toBe(expectedconsumerappname);
-            done();
-        });
-
     });
 
 });

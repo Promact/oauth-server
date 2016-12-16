@@ -27,7 +27,7 @@ describe("User Details Test", () => {
     class McokLogin { }
     const routes: Routes = [];
     beforeEach(async(() => {
-        this.promise = TestBed.configureTestingModule({
+        TestBed.configureTestingModule({
             imports: [UserModule, RouterModule.forRoot(routes, { useHash: true }) //Set LocationStrategy for component. 
             ],
             providers: [
@@ -40,7 +40,7 @@ describe("User Details Test", () => {
                 { provide: LoginService, useClass: MockLoginService },
                 { provide: Location, useClass: MockLocation },
                 { provide: UserRole, useValue: new UserRole() }
-                
+
             ]
         }).compileComponents();
 
@@ -48,17 +48,13 @@ describe("User Details Test", () => {
 
 
 
-    it("should get default Project for company", done => {
-        this.promise.then(() => {
-           
-            let fixture = TestBed.createComponent(UserDetailsComponent); //Create instance of component
-            let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
-            activatedRoute.testParams = { id: "1" };            
-            let userDetailsComponent:UserDetailsComponent = fixture.componentInstance;
-            let expectedFirstName = "First Name";
-            fixture.detectChanges();
-            expect(userDetailsComponent.user.FirstName).toBe(expectedFirstName);
-            done();
-        });
+    it("should get default Project for company", () => {
+        let fixture = TestBed.createComponent(UserDetailsComponent); //Create instance of component
+        let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
+        activatedRoute.testParams = { id: "1" };
+        let userDetailsComponent: UserDetailsComponent = fixture.componentInstance;
+        let expectedFirstName = "First Name";
+        fixture.detectChanges();
+        expect(userDetailsComponent.user.FirstName).toBe(expectedFirstName);
     });
 });

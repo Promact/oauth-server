@@ -13,15 +13,13 @@ import { ConsumerAppModule } from '../consumerapp.module';
 import { LoaderService } from '../../shared/loader.service';
 import { Md2Toast } from 'md2';
 
-let promise: TestBed;
-
 describe('Consumer List Test', () => {
     class MockRouter { }
     class MockLoaderService { }
     const routes: Routes = [];
 
     beforeEach(async(() => {
-        this.promise = TestBed.configureTestingModule({
+        TestBed.configureTestingModule({
             imports: [ConsumerAppModule, RouterModule.forRoot(routes, { useHash: true }) //Set LocationStrategy for component. 
             ],
             providers: [
@@ -34,18 +32,15 @@ describe('Consumer List Test', () => {
         }).compileComponents();
     }));
 
-    it("Consumerapp list Component", () => done => {
+    it("Consumerapp list Component", () => {
         expect(ConsumerappListComponent).toBeDefined();
     });
 
-    it("Get Consumer Apps", () => done => {
-        this.promise.then(() => {
+    it("Get Consumer Apps", () => {
             let fixture = TestBed.createComponent(ConsumerappListComponent); //Create instance of component            
             let consumerappListComponent = fixture.componentInstance;
             consumerappListComponent.getConsumerApps();
             expect(consumerappListComponent.listOfConsumerApps.length).toEqual(1);
-            done();
-        });
     });
 });
 
