@@ -142,5 +142,12 @@
         }
         public string SetSmtpUnSecure { get { return "unsecured"; } }
         public string SetSmtpSSL { get { return "ssl"; } }
+        public string HttpRequestExceptionErrorMessage
+        {
+            get
+            {
+                return "An error occurred while sending the request to other server";
+            }
+        }
     }
 }
