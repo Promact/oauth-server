@@ -464,29 +464,6 @@ namespace Promact.Oauth.Server.Tests
         }
 
         /// <summary>
-        ///  This test case used to get user details by username
-        /// </summary>
-        /// <returns></returns>
-        [Fact, Trait("Category", "Required")]
-        public async Task GetUserDetailByUserName()
-        {
-            UserAc _testUser = new UserAc()
-            {
-                Email = _stringConstant.RawEmailIdForTest,
-                FirstName = _stringConstant.RawFirstNameForTest,
-                LastName = _stringConstant.RawLastNameForTest,
-                IsActive = true,
-                UserName = _stringConstant.RawEmailIdForTest,
-                SlackUserName = _stringConstant.RawFirstNameForTest,
-                JoiningDate = DateTime.UtcNow,
-                RoleName = _stringConstant.Employee
-            };
-            string id = await _userRepository.AddUserAsync(_testUser, _stringConstant.CreatedBy);
-            var listOfUser = await _userRepository.GetUserDetailByUserNameAsync(_stringConstant.RawFirstNameForTest);
-            Assert.NotNull(listOfUser);
-        }
-
-        /// <summary>
         /// Test case to check method IsAdmin of user repository
         /// </summary>
         [Fact, Trait("Category", "Required")]

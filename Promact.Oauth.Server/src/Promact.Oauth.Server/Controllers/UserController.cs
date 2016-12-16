@@ -560,38 +560,6 @@ namespace Promact.Oauth.Server.Controllers
             return Ok(_userRepository.UserDetailById(userId));
         }
 
-        /**
-          * @api {get} api/users/:userName/details 
-          * @apiVersion 1.0.0
-          * @apiName User
-          * @apiGroup User
-          * @apiParam {string} Name userName
-          * @apiParamExample {json} Request-Example:
-          *  {
-          *     "userName": "abc"
-          *  }      
-          * @apiSuccessExample {json} Success-Response:
-          * {
-          *   "Id":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
-          *   "FirstName" : "John",
-          *   "Email" : "jone@promactinfo.com",
-          *   "LastName" : "Doe",
-          *   "SlackUserName" :"John",
-          *   "IsActive" : "True",
-          *   "JoiningDate" :"10-02-2016",
-          *   "NumberOfCasualLeave":0,
-          *   "NumberOfSickLeave":0,
-          *   "UniqueName":null,
-          *   "Role":null,
-          *   "UserName": null
-          * }
-          */
-        [HttpGet]
-        [Route("{userName}/details")]
-        public async Task<IActionResult> GetByUserNameAsync(string userName)
-        {
-            return Ok(await _userRepository.GetUserDetailByUserNameAsync(userName));
-        }
 
         /**
           * @api {get} api/users/email/:id/send 
@@ -678,31 +646,6 @@ namespace Promact.Oauth.Server.Controllers
         {
             return Ok(await _userRepository.GetUserRoleAsync(userId));
         }
-
-        /**
-        * @api {get} api/users/slackUserDetails
-        * @apiVersion 1.0.0
-        * @apiName FetchSlackUserDetailsAsync
-        * @apiGroup User
-        * @apiSuccessExample {json} Success-Response:
-        * HTTP/1.1 200 OK 
-        * [
-        *        {
-        *            "UserName": "smith@promactinfo.com",
-        *            "Name":"Smith",
-        *            "Role":"Admin"
-        *        }
-        *]
-        */
-        [Route("slackUserDetails")]
-        [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> FetchSlackUserDetailsAsync()
-        {
-            List<SlackUserDetailAc> slackUserList = await _userRepository.GetSlackUserDetailsAsync();
-            return Ok(slackUserList);
-        }
-
-
 
         /**
         * @api {get} api/users/:userid/teammebers 
