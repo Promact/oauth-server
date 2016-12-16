@@ -136,6 +136,13 @@
         }
         public string SetSmtpUnSecure { get { return "unsecured"; } }
         public string SetSmtpSSL { get { return "ssl"; } }
+        public string HttpRequestExceptionErrorMessage
+        {
+            get
+            {
+                return "An error occurred while sending the request to other server";
+            }
+        }
         public string UserIdForTest { get { return "asder12346eewsee5s"; } }
         public string EmailForTest { get { return "abc@promactinfo.com"; } }
         public string UserNameForTest { get { return "XyzTest"; } }
