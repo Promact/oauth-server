@@ -209,7 +209,6 @@ namespace Promact.Oauth.Server.Tests
             Assert.Throws<AggregateException>(() => _userRepository.FindByUserNameAsync(_stringConstant.UserNameForTest).Result);
         }
 
-
         /// <summary>
         /// This test case used to check exception condition
         /// </summary>
