@@ -670,23 +670,6 @@ namespace Promact.Oauth.Server.Repository
 
         #region Private Methods
 
-
-        /// <summary>
-        /// Get slack user details of the given slack id from slack server 
-        /// </summary>
-        /// <param name="slackUserId"></param>
-        /// <returns></returns>
-        private async Task<SlackUserDetailAc> GetSlackUserById(string slackUserId)
-        {
-            _logger.LogInformation("User Repository - GetSlackUserByI. Url: " + _appSettingUtil.Value.PromactErpUrl);
-            var responseResult = await _httpClientRepository.GetAsync(_appSettingUtil.Value.PromactErpUrl, _stringConstant.SlackUserByIdUrl + slackUserId);
-            _logger.LogInformation("User Repository: GetSlackUserById. ReponseResult: " + responseResult);
-            // Transforming Json String to object type List of SlackUserDetailAc
-            var data = JsonConvert.DeserializeObject<SlackUserDetailAc>(responseResult);
-            return data;
-        }
-
-
         /// <summary>
         /// Fetches the slack real name of the user of the given SlackUserId - JJ
         /// </summary>
