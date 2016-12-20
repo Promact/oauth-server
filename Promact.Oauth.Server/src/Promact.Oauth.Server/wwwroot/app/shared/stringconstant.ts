@@ -18,12 +18,12 @@ export class StringConstant {
     projectList = '/project/list';
     userList = 'user/list';
     userDetail = '/user/details/';
-    userEdit ='/user/edit'
+    userEdit = '/user/edit';
     emailExtension = '@promactinfo.com';
     projectName = 'test project';
     slackChannelName = 'Test Slack Name';
     firstName = 'test';
-    testfirstName ="First Name"
+    testfirstName = "First Name";
     lastName = 'shah';
     email = 'test@abc.com';
     teamLeaderId = '2';
@@ -38,6 +38,7 @@ export class StringConstant {
     empty = '';
     newPassword = 'test123';
     oldPassword = 'test';
-    confirmPassword='test1234'
-
+    confirmPassword = 'test1234';
+    consumerAppUrl = 'api/consumerapp';
+    dash = '-';
 }
