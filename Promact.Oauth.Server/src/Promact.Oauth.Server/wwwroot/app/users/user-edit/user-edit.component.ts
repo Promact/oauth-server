@@ -80,8 +80,8 @@ export class UserEditComponent implements OnInit {
         });
 
     }
-     goBack() {
-        this.redirectionRoute.navigate(['']);
+    goBack() {
+        this.redirectionRoute.navigate([this.stringConstant.empty]);
     }
 
 
