@@ -25,8 +25,7 @@ export class ProjectService {
     addProject(project: ProjectModel) {
         return this.httpService.post(this.ProjectUrl, project);
     }
-    editProject(project: ProjectModel)
-    {
+    editProject(project: ProjectModel) {
         return this.httpService.put(this.ProjectUrl+"/"+ project.id, project);
     }
 }
