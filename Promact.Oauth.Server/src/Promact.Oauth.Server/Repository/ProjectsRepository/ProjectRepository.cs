@@ -131,13 +131,8 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             foreach (ProjectUser projectUsers in projectUserList)
             {
                 var applicationUser =await _userDataRepository.FirstOrDefaultAsync(z => z.Id==projectUsers.UserId);
-                userAcList.Add(new UserAc
-                {
-                    Id = applicationUser.Id,
-                    FirstName = applicationUser.FirstName,
-                    Email = applicationUser.Email,
-                    LastName = applicationUser.LastName
-                });
+                var user = _mapperContext.Map<ApplicationUser, UserAc>(applicationUser);
+                userAcList.Add(user);
             }
             var projectAc = _mapperContext.Map<Project, ProjectAc>(project);
             if (!string.IsNullOrEmpty(project.TeamLeaderId))
