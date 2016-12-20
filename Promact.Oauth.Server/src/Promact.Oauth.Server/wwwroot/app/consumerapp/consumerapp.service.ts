@@ -2,6 +2,7 @@
 import { HttpService } from "../http.service";
 import 'rxjs/add/operator/toPromise';
 import { ConsumerAppModel } from './consumerapp-model';
+import { StringConstant } from '../shared/stringconstant';
 
 @Injectable()
 export class ConsumerAppService {
