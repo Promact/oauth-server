@@ -32,8 +32,8 @@ export class ProjectViewComponent implements OnInit {
                 this.project = project;
 
                 if (this.project.teamLeaderId === null) {
-                    this.teamLeaderFirstName = "";
-                    this.teamLeaderEmail = "";
+                    this.teamLeaderFirstName = this.stringConstant.empty;
+                    this.teamLeaderEmail = this.stringConstant.empty;
                 }
                 else {
                     this.teamLeaderFirstName = this.project.teamLeader.FirstName;
@@ -62,7 +62,7 @@ export class ProjectViewComponent implements OnInit {
                     }
                     if (this.project.applicationUsers.length === 0) {
                         let user = new UserModel();
-                        user.UniqueName = "-";
+                        user.UniqueName = this.stringConstant.dash;
                         this.project.applicationUsers.push(user);
                     }
                 });
