@@ -63,7 +63,8 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
 
 
         /// <summary>
-        /// Checks whether with this app email is register or not if  not new OAuth will be created.
+        /// Checks whether with this app ClientId & email, any oAuth details already register or not.
+        /// If not new OAuth will be created.
         /// </summary>
         /// <param name="email">User's email Id</param>
         /// <param name="clientId">Promact App's Client Id</param>
@@ -88,7 +89,7 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
 
 
         /// <summary>
-        /// Fetches the app details from the client.
+        /// Fetches the app details from the client server.
         /// </summary>
         /// <param name="redirectUrl">Redirect url of OAuth</param>
         /// <param name="refreshToken">Promact App's refresh token</param>
@@ -97,7 +98,7 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
         private async Task<OAuthApplication> GetAppDetailsFromClientAsync(string redirectUrl, string refreshToken, string slackUserName)
         {
             // Assigning Base Address with redirectUrl
-            var requestUrl = string.Format("?refreshToken={0}&slackUserName={1}", refreshToken, slackUserName);
+            var requestUrl = string.Format(_stringConstant.GetAppDetailsFromClientAsyncUrl, refreshToken, slackUserName);
             var response = await _httpClientRepository.GetAsync(redirectUrl, requestUrl);
             // Transforming Json String to object type OAuthApplication
             return JsonConvert.DeserializeObject<OAuthApplication>(response);
@@ -133,14 +134,16 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
             OAuth oAuth = await OAuthClientCheckingAsync(user.Email, clientId);
             if (oAuth != null)
             {
-                OAuthApplication clientResponse = await GetAppDetailsFromClientAsync(callBackUrl, oAuth.RefreshToken, user.SlackUserName);
+                OAuthApplication clientResponse = await GetAppDetailsFromClientAsync(callBackUrl, oAuth.RefreshToken,
+                    user.SlackUserName);
                 if (clientResponse != null)
                 {
                     if (!String.IsNullOrEmpty(clientResponse.UserId))
                     {
                         user.SlackUserId = clientResponse.UserId;
                         await _userManager.UpdateAsync(user);
-                        returnUrl = string.Format("{0}?accessToken={1}&email={2}&slackUserId={3}&userId={4}", clientResponse.ReturnUrl, oAuth.AccessToken, oAuth.userEmail, user.SlackUserId, user.Id);
+                        returnUrl = string.Format(_stringConstant.OAuthAfterLoginResponseUrl, clientResponse.ReturnUrl,
+                            oAuth.AccessToken, oAuth.userEmail, user.SlackUserId, user.Id);
                     }
                     else
                         returnUrl = _appSettingUtil.Value.PromactErpUrl + _stringConstant.ErpAuthorizeUrl

@@ -15,6 +15,9 @@ using AutoMapper;
 using Promact.Oauth.Server.Services;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Logging;
 
 namespace Promact.Oauth.Server.Tests
 {
@@ -33,6 +36,8 @@ namespace Promact.Oauth.Server.Tests
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapperContext;
         private readonly IOptions<AppSettingUtil> _appSettingUtil;
+        private readonly Mock<IHttpContextAccessor> _httpContextMock;
+        private readonly Mock<HttpContext> _httpContext;
 
         public OAuthRepositoryTest() : base()
         {
@@ -45,6 +50,8 @@ namespace Promact.Oauth.Server.Tests
             _userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
             _mapperContext = serviceProvider.GetService<IMapper>();
             _appSettingUtil = serviceProvider.GetService<IOptions<AppSettingUtil>>();
+            _httpContextMock = serviceProvider.GetService<Mock<IHttpContextAccessor>>();
+            _httpContext = serviceProvider.GetService<Mock<HttpContext>>();
             Initialize();
 
         }
@@ -99,7 +106,7 @@ namespace Promact.Oauth.Server.Tests
             _oAuthDataRepository.AddAsync(oAuth);
             await _oAuthDataRepository.SaveChangesAsync();
             var requestUrl = MockingGetAppDetailsFromClientAsync(_stringConstant.GetAppDetailsFromClientAsyncResponse);
-            var returnUrl = string.Format("{0}?accessToken={1}&email={2}&slackUserId={3}&userId={4}", _stringConstant.ReturnUrl, 
+            var returnUrl = string.Format(_stringConstant.OAuthAfterLoginResponseUrl, _stringConstant.ReturnUrl, 
                 _stringConstant.AccessToken, _stringConstant.UserName, _stringConstant.UserSlackId, _testUser.Id);
             var redirectUrl = await _oAuthRepository.UserAlreadyLoginAsync(_stringConstant.UserName, _stringConstant.ClientIdForTest, _stringConstant.CallBackUrl);
             Assert.Equal(redirectUrl, returnUrl);
@@ -163,6 +170,9 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public async Task UserNotAlreadyLoginPromactAppNotFoundClientSecretAsync()
         {
+            Mocking();
+            var fakeSignInManager = new FakeSignInManager(_httpContextMock.Object);
+            var res = await fakeSignInManager.PasswordSignInAsync(_stringConstant.Email, _stringConstant.Password, false, false);
             var userId = await _userRepository.AddUser(_testUser, _stringConstant.FirstNameSecond);
             var user = await _userManager.FindByIdAsync(userId);
             var code = await _userManager.GeneratePasswordResetTokenAsync(user);
@@ -309,9 +319,63 @@ namespace Promact.Oauth.Server.Tests
         private string MockingGetAppDetailsFromClientAsync(string returnValue)
         {
             var response = Task.FromResult(returnValue);
-            var requestUrl = string.Format("?refreshToken={0}&slackUserName={1}", oAuth.RefreshToken, _stringConstant.SlackUserName);
+            var requestUrl = string.Format(_stringConstant.GetAppDetailsFromClientAsyncUrl, oAuth.RefreshToken, 
+                _stringConstant.SlackUserName);
             _mockHttpClient.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<string>())).Returns(response);
             return requestUrl;
         }
+
+        //private void Mocking()
+        //{
+        //    var httpContextObject = new Mock<HttpContext>();
+        //    _httpContextMock.Setup(x => x.HttpContext).Returns(httpContextObject.Object);
+        //}
+
+        //public class FakeUserManager : UserManager<ApplicationUser>
+        //{
+        //    public FakeUserManager()
+        //        : base(new Mock<IUserStore<ApplicationUser>>().Object,
+        //              new Mock<IOptions<IdentityOptions>>().Object,
+        //              new Mock<IPasswordHasher<ApplicationUser>>().Object,
+        //              new IUserValidator<ApplicationUser>[0],
+        //              new IPasswordValidator<ApplicationUser>[0],
+        //              new Mock<ILookupNormalizer>().Object,
+        //              new Mock<IdentityErrorDescriber>().Object,
+        //              new Mock<IServiceProvider>().Object,
+        //              new Mock<ILogger<UserManager<ApplicationUser>>>().Object
+        //              /*new Mock<IHttpContextAccessor>().Object*/)
+        //    { }
+
+        //    public override Task<IdentityResult> CreateAsync(ApplicationUser user, string password)
+        //    {
+        //        return Task.FromResult(IdentityResult.Success);
+        //    }
+        //}
+        //public class FakeSignInManager : SignInManager<ApplicationUser>
+        //{
+        //    public FakeSignInManager(IHttpContextAccessor contextAccessor)
+        //        : base(new FakeUserManager(),
+        //              contextAccessor,
+        //              new Mock<IUserClaimsPrincipalFactory<ApplicationUser>>().Object,
+        //              new Mock<IOptions<IdentityOptions>>().Object,
+        //              new Mock<ILogger<SignInManager<ApplicationUser>>>().Object)
+        //    {
+        //    }
+
+        //    public override Task SignInAsync(ApplicationUser user, bool isPersistent, string authenticationMethod = null)
+        //    {
+        //        return Task.FromResult(0);
+        //    }
+
+        //    public override Task<SignInResult> PasswordSignInAsync(string userName, string password, bool isPersistent, bool lockoutOnFailure)
+        //    {
+        //        return Task.FromResult(SignInResult.Success);
+        //    }
+
+        //    public override Task SignOutAsync()
+        //    {
+        //        return Task.FromResult(0);
+        //    }
+        //}
     }
 }
