@@ -127,7 +127,7 @@
             }
         }
 
-        public string OAuthAfterLoginResponse
+        public string OAuthAfterLoginResponseUrl
         {
             get
             {
@@ -141,6 +141,13 @@
             get
             {
                 return "An error occurred while sending the request to other server";
+            }
+        }
+        public string GetAppDetailsFromClientAsyncUrl
+        {
+            get
+            {
+                return "?refreshToken={0}&slackUserName={1}";
             }
         }
         public string UserIdForTest { get { return "asder12346eewsee5s"; } }
