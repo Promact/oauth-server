@@ -88,7 +88,7 @@ namespace Promact.Oauth.Server.Controllers
 
 
         /**
-        * @api {post} OAuth/ExternalLogin
+        * @api {get} OAuth/ExternalLogin
         * @apiVersion 1.0.0
         * @apiName ExternalLogin
         * @apiGroup ExternalLogin

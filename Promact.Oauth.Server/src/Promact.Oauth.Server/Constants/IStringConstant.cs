@@ -100,9 +100,10 @@
         string PromactAppNotFoundClientId { get; }
         string PromactAppNotFoundClientSecret { get; }
         string GetAppDetailsFromClientAsyncResponseInCorrectSlackName { get; }
-        string OAuthAfterLoginResponse { get; }
+        string OAuthAfterLoginResponseUrl { get; }
         string SetSmtpUnSecure { get; }
         string SetSmtpSSL { get; }
         string HttpRequestExceptionErrorMessage { get; }
+        string GetAppDetailsFromClientAsyncUrl { get; }
     }
 }
