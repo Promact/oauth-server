@@ -539,6 +539,7 @@ namespace Promact.Oauth.Server.Repository
             if (userRole == _stringConstant.RoleAdmin)
             {
                 var userRoleAdmin = new UserRoleAc();
+                userRoleAdmin.UserId = applicationUser.Id;
                 userRoleAdmin.UserName = applicationUser.UserName;
                 userRoleAdmin.Name = applicationUser.FirstName + " " + applicationUser.LastName;
                 userRoleAdmin.Role = userRole;
@@ -550,6 +551,7 @@ namespace Promact.Oauth.Server.Repository
                     if (roles != null && roles == _stringConstant.RoleEmployee)
                     {
                         var userRoleAc = new UserRoleAc();
+                        userRoleAc.UserId = userDetails.Id;
                         userRoleAc.UserName = userDetails.UserName;
                         userRoleAc.Name = userDetails.FirstName + " " + userDetails.LastName;
                         userRoleAc.Role = userRole;
@@ -563,6 +565,7 @@ namespace Promact.Oauth.Server.Repository
                 if (project == null)
                 {
                     var usersRolesAc = new UserRoleAc();
+                    usersRolesAc.UserId = applicationUser.Id;
                     usersRolesAc.UserName = applicationUser.UserName;
                     usersRolesAc.Role = _stringConstant.RoleEmployee;
                     usersRolesAc.Name = applicationUser.FirstName + " " + applicationUser.LastName;
@@ -571,6 +574,7 @@ namespace Promact.Oauth.Server.Repository
                 else
                 {
                     var usersRoleAc = new UserRoleAc();
+                    usersRoleAc.UserId = applicationUser.Id;
                     usersRoleAc.UserName = applicationUser.UserName;
                     usersRoleAc.Role = _stringConstant.RoleTeamLeader;
                     usersRoleAc.Name = applicationUser.FirstName + " " + applicationUser.LastName;
