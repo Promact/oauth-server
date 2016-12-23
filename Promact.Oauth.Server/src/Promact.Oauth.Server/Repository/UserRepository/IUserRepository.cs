@@ -83,7 +83,7 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="userSlackId"></param>
         /// <returns></returns>
-        ApplicationUser UserDetialByUserSlackId(string userSlackId);
+        Task<ApplicationUser> UserDetialByUserSlackIdAsync(string userSlackId);
 
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="slackUserId"></param>
         /// <returns>number of casual leave</returns>
-        LeaveAllowed GetUserAllowedLeaveBySlackId(string slackUserId);
+        Task<LeaveAllowed> GetUserAllowedLeaveBySlackIdAsync(string slackUserId);
 
 
         /// <summary>
