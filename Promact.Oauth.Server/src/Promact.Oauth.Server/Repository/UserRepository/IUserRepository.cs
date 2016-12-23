@@ -89,21 +89,21 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="userSlackId"></param>
         /// <returns></returns>
-        ApplicationUser UserDetialByUserSlackId(string userSlackId);
+        Task<ApplicationUser> UserDetialByUserSlackIdAsync(string userSlackId);
 
         /// <summary>
         /// Method is used to get team leader's list
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        Task<List<ApplicationUser>> TeamLeaderByUserSlackId(string userSlackName);
+        Task<List<ApplicationUser>> TeamLeaderByUserSlackIdAsync(string userSlackName);
 
         /// <summary>
         /// Method to get list of management people
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        Task<List<ApplicationUser>> ManagementDetails();
+        Task<List<ApplicationUser>> ManagementDetailsAsync();
 
         /// <summary>
         /// Used to fetch the userdetail by given UserName 
@@ -124,14 +124,14 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="slackUserId"></param>
         /// <returns>number of casual leave</returns>
-        LeaveAllowed GetUserAllowedLeaveBySlackId(string slackUserId);
+        Task<LeaveAllowed> GetUserAllowedLeaveBySlackIdAsync(string slackUserId);
 
         /// <summary>
         /// Method to check whether user is admin or not
         /// </summary>
         /// <param name="slackUserId"></param>
         /// <returns>true or false</returns>
-        Task<bool> IsAdmin(string slackUserId);
+        Task<bool> IsAdminAsync(string slackUserId);
 
         /// <summary>
         /// This method used for re -send mail for user credentails
