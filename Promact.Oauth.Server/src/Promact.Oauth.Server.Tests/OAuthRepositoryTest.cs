@@ -170,9 +170,9 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public async Task UserNotAlreadyLoginPromactAppNotFoundClientSecretAsync()
         {
-            Mocking();
-            var fakeSignInManager = new FakeSignInManager(_httpContextMock.Object);
-            var res = await fakeSignInManager.PasswordSignInAsync(_stringConstant.Email, _stringConstant.Password, false, false);
+            //Mocking();
+            //var fakeSignInManager = new FakeSignInManager(_httpContextMock.Object);
+            //var res = await fakeSignInManager.PasswordSignInAsync(_stringConstant.Email, _stringConstant.Password, false, false);
             var userId = await _userRepository.AddUser(_testUser, _stringConstant.FirstNameSecond);
             var user = await _userManager.FindByIdAsync(userId);
             var code = await _userManager.GeneratePasswordResetTokenAsync(user);
