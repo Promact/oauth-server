@@ -292,19 +292,24 @@ namespace Promact.Oauth.Server.Repository
         /// <returns>list of management</returns>
         public async Task<List<ApplicationUser>> ManagementDetailsAsync()
         {
-            var management = await _userManager.GetUsersInRoleAsync("Admin");
-            List<ApplicationUser> managementUser = new List<ApplicationUser>();
-            foreach (var user in management)
+            var management = await _userManager.GetUsersInRoleAsync(_stringConstant.Admin);
+            if (management != null)
             {
-                var newUser = new ApplicationUser
+                List<ApplicationUser> managementUser = new List<ApplicationUser>();
+                foreach (var user in management)
                 {
-                    FirstName = user.FirstName,
-                    Email = user.Email,
-                    SlackUserId = user.SlackUserId
-                };
-                managementUser.Add(newUser);
+                    var newUser = new ApplicationUser
+                    {
+                        FirstName = user.FirstName,
+                        Email = user.Email,
+                        SlackUserId = user.SlackUserId
+                    };
+                    managementUser.Add(newUser);
+                }
+                return managementUser;
             }
-            return managementUser;
+            else
+                throw new FailedToFetchDataException();
         }
 
 
@@ -334,9 +339,13 @@ namespace Promact.Oauth.Server.Repository
         /// <returns>true or false</returns>
         public async Task<bool> IsAdminAsync(string slackUserId)
         {
-            var user = _applicationUserDataRepository.FirstOrDefault(x => x.SlackUserId == slackUserId);
-            var isAdmin = await _userManager.IsInRoleAsync(user, _stringConstant.Admin);
-            return isAdmin;
+            var user = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.SlackUserId == slackUserId);
+            if (user != null)
+            {
+                return await _userManager.IsInRoleAsync(user, _stringConstant.Admin);
+            }
+            else
+                throw new SlackUserNotFound();
         }
 
         /// <summary>
