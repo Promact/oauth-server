@@ -57,7 +57,7 @@ export class ProjectService {
      * @param project
      */
     editProject(project: ProjectModel) {
-        return this.http.put(this.ProjectUrl + "/" + project.id, JSON.stringify(project), { headers: this.headers })
+        return this.http.put(this.ProjectUrl + "/" + project.Id, JSON.stringify(project), { headers: this.headers })
             .map(res => res.json())
             .toPromise();
     }

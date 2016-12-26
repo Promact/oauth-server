@@ -13,27 +13,27 @@
                 <div class="half-width">
                     <!--<md-input  type="text" class="full-width" placeholder="Name"  [(ngModel)]="project.name" name="name" maxlength="255" required #names="ngModel"></md-input>
                     <div [hidden]="!(name.touched && !name.valid && name.errors.required)" style="color:red">Name is required</div>-->
-                    <md-input class="full-width" placeholder="Name" type="text" name="name" [(ngModel)]="project.name" maxlength="255" required #name="ngModel"></md-input>
+                    <md-input class="full-width" placeholder="Name" type="text" name="name" [(ngModel)]="project.Name" maxlength="255" required #name="ngModel"></md-input>
                     <div [hidden]="!(name.touched && !name.valid && name.errors.required)" class="error">Name is required</div>
                 </div>
             </div>
             <div class="form-group">
                 <div class="half-width">
 
-                    <md-input type="text" class="full-width" placeholder="Slack Channel Name" name="SlackChannelName" [(ngModel)]="project.slackChannelName" maxlength="255" required #SlackChannelName="ngModel"></md-input>
+                    <md-input type="text" class="full-width" placeholder="Slack Channel Name" name="SlackChannelName" [(ngModel)]="project.SlackChannelName" maxlength="255" required #SlackChannelName="ngModel"></md-input>
                     <div class="errors"><div [hidden]="!(SlackChannelName.touched && !SlackChannelName.valid && SlackChannelName.errors.required)" class="error">Slack Channel Name is required</div></div>
                 </div>
             </div>
             <div class="form-group">
                 <label class="lb-label">IsActive:</label>
-                <md-checkbox type="checkbox" id="chckbox" name="IsActive" [(ngModel)]="project.isActive"></md-checkbox>
+                <md-checkbox type="checkbox" id="chckbox" name="IsActive" [(ngModel)]="project.IsActive"></md-checkbox>
             </div>
 
             <div class="form-group">
                 <label class="lb-label">TeamLeader:</label>
                 <div class="half-width">
-                    <md2-select [(ngModel)]="project.teamLeaderId" placeholder="select team leader" name="teamLeaderId">
-                        <md2-option [value]="i.Id" *ngFor="let i of project.listUsers">{{i.FirstName}}-{{i.Email}}</md2-option>
+                    <md2-select [(ngModel)]="project.TeamLeaderId" placeholder="select team leader" name="teamLeaderId">
+                        <md2-option [value]="user.Id" *ngFor="let user of project.ListUsers">{{user.FirstName}}-{{user.Email}}</md2-option>
                     </md2-select>
                 </div>
             </div>
@@ -41,9 +41,9 @@
                 <label class="lb-label"> List Of Team Members:</label>
             </div>
             <div class="half-width">
-                <md2-multiselect *ngIf="project.applicationUsers && project.listUsers" [items]="project.listUsers"
+                <md2-multiselect *ngIf="project.ApplicationUsers && project.ListUsers" [items]="project.ListUsers"
                                  [item-text]="'UniqueName'"
-                                 [(ngModel)]="project.applicationUsers"
+                                 [(ngModel)]="project.ApplicationUsers"
                                  placeholder="select team members" name="applicationUsers">
                 </md2-multiselect>
             </div>
