@@ -398,52 +398,53 @@ namespace Promact.Oauth.Server.Controllers
 
 
         /**
-          * @api {get} api/User/userDetail/:userId 
+          * @api {get} api/User/{userId}/detail
           * @apiVersion 1.0.0
-          * @apiName User
+          * @apiName GetUserDetails
           * @apiGroup User
           * @apiParam {string} id userId
           * @apiParamExample {json} Request-Example:
           *      
           *        {
-          *             "id": "1"
+          *             "id": "95151b57-42c5-48d5-84b6-6d20e2fb05cd"
           *        }      
           * @apiSuccessExample {json} Success-Response:
           * HTTP/1.1 200 OK 
           * {
           *     "description":"Object of type UserAc "
+          *     
+          *     {
+          *         "Id": "95151b57-42c5-48d5-84b6-6d20e2fb05cd",
+          *         "FirstName": "Admin",
+          *         "LastName": "Promact",
+          *         "IsActive": true,
+          *         "Role": "Admin",
+          *         "NumberOfCasualLeave": 14,
+          *         "NumberOfSickLeave": 7,
+          *         "JoiningDate": "0001-01-01T00:00:00",
+          *         "SlackUserName": "roshni",
+          *         "SlackUserId": "U70787887",
+          *         "Email": "roshni@promactinfo.com",
+          *         "UserName": "roshni@promactinfo.com",
+          *         "UniqueName": "Admin-roshni@promactinfo.com",
+          *     }
           * }
           */
+        [ServiceFilter(typeof(CustomAttribute))]
         [HttpGet]
-        [Route("userDetail/{userId}")]
-        public IActionResult UserDetailById(string userId)
+        [Route("{userId}/detail")]
+        public async Task<IActionResult> UserDetailByIdAsync(string userId)
         {
-            var user = _userRepository.UserDetailById(userId);
-            return Ok(user);
-        }
-
-        /**
-          * @api {get} api/User/getByUserName/:userName 
-          * @apiVersion 1.0.0
-          * @apiName User
-          * @apiGroup User
-          * @apiParam {string} Name userName
-          * @apiParamExample {json} Request-Example:
-          *      
-          *        {
-          *             "userName": "abc"
-          *        }      
-          * @apiSuccessExample {json} Success-Response:
-          * HTTP/1.1 200 OK 
-          * {
-          *     "description":"Object of type UserAc "
-          * }
-          */
-        [HttpGet]
-        [Route("getByUserName/{userName}")]
-        public async Task<IActionResult> GetByUserName(string userName)
-        {
-            return Ok(await _userRepository.GetUserDetailByUserName(userName));
+            try
+            {
+                var user = await _userRepository.UserDetailByIdAsync(userId);
+                return Ok(user);
+            }
+            catch (UserNotFound)
+            {
+                _logger.LogInformation("User not Found");
+                return NotFound();
+            }
         }
 
         /**
@@ -640,6 +641,71 @@ namespace Promact.Oauth.Server.Controllers
             catch (UserNotFound)
             {
                 return NotFound();
+            }
+        }
+        /**
+        * @api {get} api/User/{teamLeaderId}/project
+        * @apiVersion 1.0.0
+        * @apiName GetProject
+        * @apiGroup User
+        * @apiParam {string}  teamLeaderId
+        * @apiParamExample {json} Request-Example:
+        *      
+        *        {
+        *             "id": "95151b57-42c5-48d5-84b6-6d20e2fb05cd"
+        *        }      
+        * @apiSuccessExample {json} Success-Response:
+        * HTTP/1.1 200 OK 
+        * {
+        *     "description":"list of projects with users for that specific teamleader"
+        *     
+        *     [
+        *       {
+        *           "Id": "95151b57-42c5-48d5-84b6-6d20e2fb05cd",
+        *           "FirstName": "Admin",
+        *           "LastName": "Promact",
+        *           "IsActive": true,
+        *           "Role": "TeamLeader",
+        *           "NumberOfCasualLeave": 14,
+        *           "NumberOfSickLeave": 7,
+        *           "JoiningDate": "0001-01-01T00:00:00",
+        *           "SlackUserName": "roshni",
+        *           "SlackUserId": "U70787887",
+        *           "Email": "roshni@promactinfo.com",
+        *           "UserName": "roshni@promactinfo.com",
+        *           "UniqueName": "Admin-roshni@promactinfo.com",
+        *        },
+        *        {
+        *           "Id": "bbd66866-8e35-430a-9f66-8cb550e72f9e",
+        *           "FirstName": "gourav",
+        *           "LastName": "gourav",
+        *           "IsActive": true,
+        *           "Role": "Employee",
+        *           "NumberOfCasualLeave": 14,
+        *           "NumberOfSickLeave": 7,
+        *           "JoiningDate": "2016-07-20T18:30:00",
+        *           "SlackUserName": "gourav",
+        *           "Email": "gourav@promactinfo.com",
+        *           "UserName": "gourav@promactinfo.com",
+        *           "UniqueName": "gourav-gourav@promactinfo.com",
+        *        }
+        *      ]
+        * }
+        */
+        [ServiceFilter(typeof(CustomAttribute))]
+        [HttpGet]
+        [Route("{teamLeaderId}/project")]
+        public async Task<IActionResult> GetProjectUsersByTeamLeaderIdAsync(string teamLeaderId)
+        {
+            if (teamLeaderId != null)
+            {
+                List<UserAc> projectUsers = await _userRepository.GetProjectUsersByTeamLeaderIdAsync(teamLeaderId);
+                return Ok(projectUsers);
+            }
+            else
+            {
+                _logger.LogInformation("Teamleader Id does not exist");
+                return BadRequest();
             }
         }
         #endregion
