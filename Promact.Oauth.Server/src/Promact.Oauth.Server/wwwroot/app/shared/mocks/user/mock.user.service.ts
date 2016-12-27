@@ -38,7 +38,6 @@ export class MockUserService {
             mockUser.Email = "test@promactinfo.com";
         }
         return new BehaviorSubject(mockUser).asObservable();
-        //return this.mockBaseService.get(this.UserUrl + "/" + userId);
     }
 
     editUser(editedUser: UserModel) {
@@ -49,23 +48,12 @@ export class MockUserService {
         let result = newPassword.NewPassword;
         return new BehaviorSubject(result).asObservable();
     }
-
-    ////    return this.mockBaseService.get(this.UserUrl + "/findbyusername/" + userName);
-    ////}
-
-    //findUserByEmail(email: string) {
-    //    let isEmailExist = true;
-    //    let connection = this.mockBaseService.getMockResponse(this.UserUrl, isEmailExist);
-    //    return connection;
-    //}
-
     getRoles() {
         let listOfRole = new Array<MockRole>();
         let mockRole = new MockRole();
         mockRole.Id = "1";
         mockRole.RoleName = "Employee";
         listOfRole.push(mockRole);
-        //let connection = this.mockBaseService.getMockResponse(this.UserUrl, listOfRole);
         return new BehaviorSubject(listOfRole).asObservable();
     }
 
@@ -77,8 +65,7 @@ export class MockUserService {
 class MockRole extends UserModel {
 
     constructor() {
-        super();
-        //this.Id = id;
+        super();  
     }
 }
 
@@ -86,7 +73,6 @@ class MockUser extends UserModel {
 
     constructor() {
         super();
-        //this.Id = id;
     }
 }
 

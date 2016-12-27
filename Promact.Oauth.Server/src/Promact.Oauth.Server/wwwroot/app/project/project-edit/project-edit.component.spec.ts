@@ -12,15 +12,12 @@ import { Md2Multiselect } from 'md2/multiselect';
 import { MockProjectService } from "../../shared/mocks/project/mock.project.service";
 import { MockRouter } from '../../shared/mocks/mock.router';
 import { Observable } from 'rxjs/Observable';
-import { RouterLinkStubDirective } from '../../shared/mocks/mock.routerLink';
 import { ProjectModule } from '../project.module';
 import { LoaderService } from '../../shared/loader.service';
 
-let promise: TestBed;
 
 
 describe('Project Edit Test', () => {
-    //let projectAddComponent: ProjectAddComponent;
     class MockRouter { }
     class MockLocation { }
     class MockLoaderService { }
@@ -32,10 +29,8 @@ describe('Project Edit Test', () => {
         }
     }
 
-
     beforeEach(async(() => {
-        this.promise = TestBed.configureTestingModule({
-            declarations: [RouterLinkStubDirective], //Declaration of mock routerLink used on page.
+      TestBed.configureTestingModule({
             imports: [ProjectModule, RouterModule.forRoot(routes, { useHash: true }) //Set LocationStrategy for component. 
             ],
             providers: [
@@ -49,21 +44,16 @@ describe('Project Edit Test', () => {
                 { provide: Location, useClass: MockLocation }
             ]
         }).compileComponents();
-
     }));
 
-    it("should get selected Project", done => {
-        this.promise.then(() => {
+    it("should get selected Project", () => {
             let fixture = TestBed.createComponent(ProjectEditComponent); //Create instance of component            
             let projectEditComponent = fixture.componentInstance;
             projectEditComponent.ngOnInit();
             expect(projectEditComponent.Userlist).not.toBeNull();
-            done();
-        });
     });
 
-    it("should check Project name and Slack Channel Name before update", done => {
-        this.promise.then(() => {
+    it("should check Project name and Slack Channel Name before update", () => {
             let fixture = TestBed.createComponent(ProjectEditComponent); //Create instance of component            
             let projectEditComponent = fixture.componentInstance;
             let projectModels = new ProjectModel();
@@ -83,13 +73,9 @@ describe('Project Edit Test', () => {
             projectModels.teamLeaderId = "2";
             projectEditComponent.editProject(projectModels);
             expect(projectModels.name).toBe(expectedProjecteName);
-            done();
-        });
     });
-
-
-    it("should check Project name before update", done => {
-        this.promise.then(() => {
+    
+    it("should check Project name before update", () => {
             let fixture = TestBed.createComponent(ProjectEditComponent); //Create instance of component            
             let projectEditComponent = fixture.componentInstance;
             let projectModels = new ProjectModel();
@@ -109,11 +95,8 @@ describe('Project Edit Test', () => {
             projectModels.teamLeaderId = "2";
             projectEditComponent.editProject(projectModels);
             expect(projectModels.name).toBe(null);
-            done();
-        });
     });
-
-   
+    
 });    
 
 

@@ -9,12 +9,9 @@ import { MockToast } from "../../shared/mocks/mock.toast";
 import { MockConsumerappService } from "../../shared/mocks/consumerapp/mock.consumerapp.service";
 import { MockRouter } from '../../shared/mocks/mock.router';
 import { Observable } from 'rxjs/Observable';
-import { RouterLinkStubDirective } from '../../shared/mocks/mock.routerLink';
 import { ConsumerAppModule } from '../consumerapp.module';
 import { LoaderService } from '../../shared/loader.service';
 import { Md2Toast } from 'md2';
-
-let promise: TestBed;
 
 describe('Consumer List Test', () => {
     class MockRouter { }
@@ -22,8 +19,7 @@ describe('Consumer List Test', () => {
     const routes: Routes = [];
 
     beforeEach(async(() => {
-        this.promise = TestBed.configureTestingModule({
-            declarations: [RouterLinkStubDirective], //Declaration of mock routerLink used on page.
+        TestBed.configureTestingModule({
             imports: [ConsumerAppModule, RouterModule.forRoot(routes, { useHash: true }) //Set LocationStrategy for component. 
             ],
             providers: [
@@ -36,18 +32,15 @@ describe('Consumer List Test', () => {
         }).compileComponents();
     }));
 
-    it("Consumerapp list Component", () => done => {
+    it("Consumerapp list Component", () => {
         expect(ConsumerappListComponent).toBeDefined();
     });
 
-    it("Get Consumer Apps", () => done => {
-        this.promise.then(() => {
+    it("Get Consumer Apps", () => {
             let fixture = TestBed.createComponent(ConsumerappListComponent); //Create instance of component            
             let consumerappListComponent = fixture.componentInstance;
             consumerappListComponent.getConsumerApps();
             expect(consumerappListComponent.listOfConsumerApps.length).toEqual(1);
-            done();
-        });
     });
 });
 

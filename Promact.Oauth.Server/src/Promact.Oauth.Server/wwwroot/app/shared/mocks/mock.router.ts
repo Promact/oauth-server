@@ -1,19 +1,9 @@
-﻿//import { Injectable } from '@angular/core';
-
-////mock Router service
-//@Injectable()
-//export class MockRouter {
-//    navigate() {
-//        return true;
-//    }
-//}
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 
 export class UrlTree {
-    root: any;
     queryParams: {
         [key: string]: string;
     };

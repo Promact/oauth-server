@@ -10,20 +10,16 @@ import { MockToast } from "../../shared/mocks/mock.toast";
 import { MockUserService } from "../../shared/mocks/user/mock.user.service";
 import { MockRouter } from '../../shared/mocks/mock.router';
 import { UserModule } from '../user.module';
-import { RouterLinkStubDirective } from '../../shared/mocks/mock.routerLink';
 import { LoaderService } from '../../shared/loader.service';
-let promise: TestBed;
+
 
 describe('User Add Test', () => {
-    let userAddComponent: UserAddComponent;
-
     class MockActivatedRoute { }
     class MockLoaderService { }
     const routes: Routes = [];
 
     beforeEach(async(() => {
-        this.promise = TestBed.configureTestingModule({
-            declarations: [RouterLinkStubDirective], //Declaration of mock routerLink used on page.
+        TestBed.configureTestingModule({
             imports: [UserModule, RouterModule.forRoot(routes, { useHash: true }) //Set LocationStrategy for component. 
             ],
             providers: [
@@ -36,63 +32,46 @@ describe('User Add Test', () => {
         }).compileComponents();
 
     }));
-    it("should check user added successfully", done => {
-        this.promise.then(() => {
-            let fixture = TestBed.createComponent(UserAddComponent); //Create instance of component            
-            let userAddComponent = fixture.componentInstance;
-            let userModel = new UserModel();
-            let expected = "Ankit";
-            userModel.FirstName = expected;
-            userAddComponent.addUser(userModel);
-            expect(userModel.FirstName).toBe(expected);
-            done();
-        });
 
+    it("should check user added successfully", () => {
+        let fixture = TestBed.createComponent(UserAddComponent); //Create instance of component            
+        let userAddComponent = fixture.componentInstance;
+        let userModel = new UserModel();
+        let expected = "Ankit";
+        userModel.FirstName = expected;
+        userAddComponent.addUser(userModel);
+        expect(userModel.FirstName).toBe(expected);
     });
 
-    it("should check user not added successfully", done => {
-        this.promise.then(() => {
-            let fixture = TestBed.createComponent(UserAddComponent); //Create instance of component            
-            let userAddComponent = fixture.componentInstance;
-            let userModel = new UserModel();
-            let expected = "ankit@promactinfo.com";
-            userModel.FirstName = "Ankit";
-            userModel.Email = expected;
-            userAddComponent.addUser(userModel);
-            expect(userModel.Email).toBe(expected);
-            done();
-        });
-
+    it("should check user not added successfully", () => {
+        let fixture = TestBed.createComponent(UserAddComponent); //Create instance of component            
+        let userAddComponent = fixture.componentInstance;
+        let userModel = new UserModel();
+        let expected = "ankit@promactinfo.com";
+        userModel.FirstName = "Ankit";
+        userModel.Email = expected;
+        userAddComponent.addUser(userModel);
+        expect(userModel.Email).toBe(expected);
     });
 
-    it("should check user email", done => {
-        this.promise.then(() => {
-            let fixture = TestBed.createComponent(UserAddComponent); //Create instance of component            
-            let userAddComponent = fixture.componentInstance;
-            let email = "";
-            let expected = "";
-            userAddComponent.checkEmail(expected);
-            expect(email).toBe(expected);
-            done();
-        });
-
-    });
-
-   
-    it("should check user Slack User Name", done => {
-        this.promise.then(() => {
-            let fixture = TestBed.createComponent(UserAddComponent); //Create instance of component            
-            let userAddComponent = fixture.componentInstance;
-            let SlackUserName = "";
-            let expected = "";
-            userAddComponent.checkSlackUserName(expected);
-            expect(SlackUserName).toBe(expected);
-            done();
-        });
-
+    it("should check user email", () => {
+        let fixture = TestBed.createComponent(UserAddComponent); //Create instance of component            
+        let userAddComponent = fixture.componentInstance;
+        let email = "";
+        let expected = "";
+        userAddComponent.checkEmail(expected);
+        expect(email).toBe(expected);
     });
 
 
-  
+    it("should check user Slack User Name", () => {
+        let fixture = TestBed.createComponent(UserAddComponent); //Create instance of component            
+        let userAddComponent = fixture.componentInstance;
+        let SlackUserName = "";
+        let expected = "";
+        userAddComponent.checkSlackUserName(expected);
+        expect(SlackUserName).toBe(expected);
+    });
+
 });
 
