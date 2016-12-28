@@ -550,7 +550,7 @@ namespace Promact.Oauth.Server.Controllers
         [Route("{userId}/detail")]
         public async Task<IActionResult> UserDetailByIdAsync(string userId)
         {
-            return Ok(_userRepository.UserDetailById(userId));
+            return Ok(await _userRepository.UserDetailByIdAsync(userId));
         }
 
 
@@ -725,6 +725,7 @@ namespace Promact.Oauth.Server.Controllers
                 return NotFound();
             }
         }
+
         /**
         * @api {get} api/User/{teamLeaderId}/project
         * @apiVersion 1.0.0

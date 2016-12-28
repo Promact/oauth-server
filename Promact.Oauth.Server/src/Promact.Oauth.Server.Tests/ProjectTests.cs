@@ -268,7 +268,7 @@ namespace Promact.Oauth.Server.Tests
                 JoiningDate = DateTime.UtcNow,
                 RoleName = _stringConstant.Employee
             };
-            string id = await _userRepository.AddUser(_testUser, _stringConstant.CreatedBy);
+            string id = await _userRepository.AddUserAsync(_testUser, _stringConstant.CreatedBy);
             ProjectAc project = new ProjectAc()
             {
                 Name = _stringConstant.Name,
@@ -299,7 +299,7 @@ namespace Promact.Oauth.Server.Tests
                 JoiningDate = DateTime.UtcNow,
                 RoleName = _stringConstant.Employee
             };
-            string id = await _userRepository.AddUser(_testUser, _stringConstant.CreatedBy);
+            string id = await _userRepository.AddUserAsync(_testUser, _stringConstant.CreatedBy);
             ProjectAc project = new ProjectAc()
             {
                 Name = _stringConstant.Name,
@@ -312,6 +312,7 @@ namespace Promact.Oauth.Server.Tests
             var projectDetails = await _projectRepository.GetProjectDetailsAsync(projectId);
             Assert.Equal(projectDetails.Name, _stringConstant.Name);
         }
+
         #endregion
     }
 }
