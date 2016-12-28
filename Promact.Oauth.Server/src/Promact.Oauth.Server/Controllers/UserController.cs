@@ -159,7 +159,7 @@ namespace Promact.Oauth.Server.Controllers
         *   "Role":null,
         *   "UserName": null
         * }
-        * @apiError UserNotFound The id of the User was not found.
+        * @apiError UserNotFound The User of the id was not found.
         * @apiErrorExample {json} Error-Response:
         * HTTP/1.1 404 Not Found
         * {

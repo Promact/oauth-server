@@ -122,27 +122,6 @@ namespace Promact.Oauth.Server.Tests
         }
 
         /// <summary>
-        /// This test case used to check does not exists
-        /// </summary>
-        public async Task EmailDoesNotExists()
-        {
-            UserAc _testUser = new UserAc()
-            {
-                Email = _stringConstant.RawEmailIdForTest,
-                FirstName = _stringConstant.RawFirstNameForTest,
-                LastName = _stringConstant.RawLastNameForTest,
-                IsActive = true,
-                UserName = _stringConstant.RawEmailIdForTest,
-                SlackUserName = _stringConstant.RawFirstNameForTest,
-                JoiningDate = DateTime.UtcNow,
-                RoleName = _stringConstant.Employee
-            };
-            var result = await _userRepository.AddUserAsync(_testUser, _stringConstant.RawFirstNameForTest);
-            var exists = await _userRepository.CheckEmailIsExistsAsync(_stringConstant.EmailForTest);
-            Assert.Equal(false, exists);
-        }
-
-        /// <summary>
         /// This test case used to find user by username
         /// </summary>
         [Fact, Trait("Category", "Required")]
@@ -163,7 +142,7 @@ namespace Promact.Oauth.Server.Tests
             var exists = await _userRepository.FindByUserNameAsync(_stringConstant.RawEmailIdForTest);
             Assert.Equal(true, exists);
         }
-
+        
         /// <summary>
         /// This test case used to check exception condition
         /// </summary>
@@ -294,7 +273,7 @@ namespace Promact.Oauth.Server.Tests
         //}
 
         /// <summary>
-        /// Test case use for getting user details by its slack name
+        /// Test case use for getting user details by id
         /// </summary>
         [Fact, Trait("Category", "Required")]
         public async Task UserDetailById()
