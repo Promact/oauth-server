@@ -550,7 +550,7 @@ namespace Promact.Oauth.Server.Repository
             //Get projects for that specific teamleader
             List<Project> projects = (await _projectDataRepository.FetchAsync(x => x.TeamLeaderId.Equals(teamLeaderId))).ToList();
 
-            if (projects.Count > 0)
+            if (projects.Any())
             {
                 //Get details of teamleader
                 ApplicationUser teamLeader = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.Id.Equals(teamLeaderId));
@@ -585,8 +585,6 @@ namespace Promact.Oauth.Server.Repository
             return projectUsers;
         }
         #endregion
-
-
 
         #region Private Methods
 
@@ -722,17 +720,7 @@ namespace Promact.Oauth.Server.Repository
             double sickAllow = Convert.ToDouble(_appSettingUtil.Value.SickLeave);
             if (year >= DateTime.Now.Year)
             {
-                if (year - DateTime.Now.Year > 365)
-                {
-                    month = 4;
-                    day = 1;
-                }
                 double totalDays = (DateTime.Now - Convert.ToDateTime(dateTime)).TotalDays;
-                if (totalDays > 365)
-                {
-                    month = 4;
-                    day = 1;
-                }
                 if (month >= 4)
                 {
                     if (day <= 15)
