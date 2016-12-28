@@ -114,12 +114,6 @@ namespace Promact.Oauth.Server.Repository
         /// <returns>details of user</returns>
         Task<UserAc> UserDetailByIdAsync(string userId);
 
-        /// <summary>
-        /// Method is used to get the details of user by using their username
-        /// </summary>
-        /// <param name="userName"></param>
-        /// <returns>details of user</returns>
-        Task<UserAc> GetUserDetailByUserNameAsync(string UserName);
        
 
         /// <summary>
@@ -164,6 +158,7 @@ namespace Promact.Oauth.Server.Repository
         /// <returns>object of UserAc</returns>
         Task<List<UserAc>> GetProjectUserByGroupNameAsync(string GroupName);
 
+
         /// <summary>
         /// The method is used to get list of projects along with its users for a specific teamleader 
         /// </summary>
@@ -171,7 +166,5 @@ namespace Promact.Oauth.Server.Repository
         /// <returns>list of projects with users for a specific teamleader</returns>
         Task<List<UserAc>> GetProjectUsersByTeamLeaderIdAsync(string teamLeaderId);
 
-        /// <returns></returns>
-        Task<List<SlackUserDetailAc>> GetSlackUserDetailsAsync();
     }
 }

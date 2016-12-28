@@ -185,8 +185,7 @@ namespace Promact.Oauth.Server.Tests
             var id = await _userRepository.AddUserAsync(_testUser, _stringConstant.RawFirstNameForTest);
             Assert.Throws<AggregateException>(() => _userRepository.FindByUserNameAsync(_stringConstant.UserNameForTest).Result);
         }
-
-
+        
         /// <summary>
         /// This test case is used for adding new user
         /// </summary>
@@ -236,8 +235,7 @@ namespace Promact.Oauth.Server.Tests
             var editedUser = _userManager.FindByIdAsync(id).Result;
             Assert.Equal(_stringConstant.FirstName, editedUser.FirstName);
         }
-
-
+        
         /// <summary>
         /// Test case use for getting user details by its slack name
         /// </summary>
@@ -257,7 +255,7 @@ namespace Promact.Oauth.Server.Tests
                 RoleName = _stringConstant.Employee
             };
             string id = await _userRepository.AddUserAsync(_testUser, _stringConstant.RawFirstNameForTest);
-            var user = _userRepository.UserDetailById(id);
+            var user = await _userRepository.UserDetailByIdAsync(id);
             Assert.Equal(user.Email, _testUser.Email);
         }
 
@@ -564,7 +562,6 @@ namespace Promact.Oauth.Server.Tests
             Assert.NotEqual(projectUsers.Count, 2);
         }
 
-
         /// <summary>
         /// Test case to check UserDetailById method of User Repository
         /// </summary>
@@ -582,7 +579,7 @@ namespace Promact.Oauth.Server.Tests
                 JoiningDate = DateTime.UtcNow,
                 RoleName = _stringConstant.Employee
             };
-            var id = await _userRepository.AddUser(_testUser, _stringConstant.RawFirstNameForTest);
+            var id = await _userRepository.AddUserAsync(_testUser, _stringConstant.RawFirstNameForTest);
             var user = await _userRepository.UserDetailByIdAsync(id);
             Assert.Equal(user.FirstName, _stringConstant.RawFirstNameForTest);
         }
@@ -604,7 +601,7 @@ namespace Promact.Oauth.Server.Tests
                 JoiningDate = DateTime.UtcNow,
                 RoleName = _stringConstant.Employee
             };
-            string id = await _userRepository.AddUser(_testUser, _stringConstant.CreatedBy);
+            string id = await _userRepository.AddUserAsync(_testUser, _stringConstant.CreatedBy);
             ProjectAc project = new ProjectAc()
             {
                 Name = _stringConstant.Name,
