@@ -41,7 +41,7 @@ namespace Promact.Oauth.Server.Controllers
         #endregion
 
         #region public Methods
-      
+
         /**
         * @api {get} api/users 
         * @apiVersion 1.0.0
@@ -227,6 +227,7 @@ namespace Promact.Oauth.Server.Controllers
         {
             try
             {
+                await _userRepository.GetProjectUserByGroupNameAsync("Slack123h");
                 string createdBy = _userManager.GetUserId(User);
                 if (ModelState.IsValid)
                 {
@@ -383,10 +384,7 @@ namespace Promact.Oauth.Server.Controllers
         public async Task<ActionResult> CheckPasswordAsync(string password)
         {
             var user = await _userManager.GetUserAsync(User);
-            if (await _userManager.CheckPasswordAsync(user, password))
-                return Ok(true);
-            else
-                return Ok(false);
+            return Ok(await _userManager.CheckPasswordAsync(user, password));
         }
 
         /**
@@ -502,7 +500,7 @@ namespace Promact.Oauth.Server.Controllers
             try
             {
                 await _userRepository.FindUserBySlackUserNameAsync(slackUserName);
-                return Ok(false);
+                return Ok(true);
             }
             catch (SlackUserNotFound)
             {
@@ -667,7 +665,7 @@ namespace Promact.Oauth.Server.Controllers
         [Route("{userid}/teammembers")]
         public async Task<IActionResult> GetTeamMembersAsync(string userid)
         {
-              return Ok(await _userRepository.GetTeamMembersAsync(userid));
+            return Ok(await _userRepository.GetTeamMembersAsync(userid));
         }
 
         /**
@@ -711,7 +709,7 @@ namespace Promact.Oauth.Server.Controllers
         *  "error": "UserNotFound"
         * }
         */
-        [ServiceFilter(typeof(CustomAttribute))]
+        
         [HttpGet]
         [Route("slackChannel/{name}")]
         public async Task<IActionResult> GetProjectUserByGroupNameAsync(string name)
@@ -791,6 +789,7 @@ namespace Promact.Oauth.Server.Controllers
                 return BadRequest();
             }
         }
+
         #endregion
     }
 }
