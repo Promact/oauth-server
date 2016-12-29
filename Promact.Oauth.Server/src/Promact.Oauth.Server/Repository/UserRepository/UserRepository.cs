@@ -44,7 +44,6 @@ namespace Promact.Oauth.Server.Repository
         private readonly IHttpClientService _httpClientRepository;
         #endregion
 
-
         #region "Constructor"
 
 
@@ -75,7 +74,6 @@ namespace Promact.Oauth.Server.Repository
 
         #endregion
 
-
         #region "Public Method(s)"
 
         /// <summary>
@@ -99,7 +97,7 @@ namespace Promact.Oauth.Server.Repository
             SendEmail(user, password);
             resultSuccess = await result;
             return user.Id;
-            
+
         }
 
         /// <summary>
@@ -127,7 +125,7 @@ namespace Promact.Oauth.Server.Repository
         /// <returns>List of all users</returns>
         public async Task<IEnumerable<UserAc>> GetAllUsersAsync()
         {
-            var users = await _userManager.Users.OrderByDescending(x=>x.CreatedDateTime).ToListAsync();
+            var users = await _userManager.Users.OrderByDescending(x => x.CreatedDateTime).ToListAsync();
             return _mapperContext.Map<IEnumerable<ApplicationUser>, IEnumerable<UserAc>>(users);
         }
 
@@ -174,7 +172,6 @@ namespace Promact.Oauth.Server.Repository
         }
 
 
-
         /// <summary>
         /// This method is used to get particular user's details by his/her id
         /// </summary>
@@ -189,7 +186,8 @@ namespace Promact.Oauth.Server.Repository
                 userAc.RoleName = (await _userManager.GetRolesAsync(applicationUser)).First();
                 return userAc;
             }
-            else {
+            else
+            {
                 throw new UserNotFound();
             }
 
@@ -277,7 +275,7 @@ namespace Promact.Oauth.Server.Repository
         /// <returns></returns>
         public async Task<ApplicationUser> FindUserBySlackUserNameAsync(string slackUserName)
         {
-            var user =await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.SlackUserName == slackUserName);
+            var user = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.SlackUserName == slackUserName);
             if (user == null)
                 throw new SlackUserNotFound();
             else
@@ -291,17 +289,12 @@ namespace Promact.Oauth.Server.Repository
         /// <returns></returns>
         public async Task<bool> ReSendMailAsync(string id)
         {
-            _logger.LogInformation("start Resend Mail Method in User Repository");
             var user = await _userManager.FindByIdAsync(id);
             string newPassword = GetRandomString();
             var code = await _userManager.GeneratePasswordResetTokenAsync(user);
             IdentityResult result = await _userManager.ResetPasswordAsync(user, code, newPassword);
             if (result.Succeeded)
-            {
-                _logger.LogInformation("Successfully Reset Password");
-                if (SendEmail(user, newPassword))
-                    return true;
-            }
+                return SendEmail(user, newPassword);
             return false;
         }
 
@@ -411,7 +404,6 @@ namespace Promact.Oauth.Server.Repository
             return await GetUserAsync(user);
         }
 
-
         /// <summary>
         /// Method to return user role
         /// </summary>
@@ -421,54 +413,29 @@ namespace Promact.Oauth.Server.Repository
         {
             ApplicationUser applicationUser = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.Id == userId);
             var userRole = (await _userManager.GetRolesAsync(applicationUser)).First();
-            var UserRoleAcList = new List<UserRoleAc>();
+            List<UserRoleAc> userRoleAcList = new List<UserRoleAc>();
             if (userRole == _stringConstant.RoleAdmin)
             {
-                var userRoleAdmin = new UserRoleAc();
-                userRoleAdmin.UserId = applicationUser.Id;
-                userRoleAdmin.UserName = applicationUser.UserName;
-                userRoleAdmin.Name = applicationUser.FirstName + " " + applicationUser.LastName;
-                userRoleAdmin.Role = userRole;
-                UserRoleAcList.Add(userRoleAdmin);
+                var userRoleAdmin = new UserRoleAc(applicationUser.Id, applicationUser.UserName, applicationUser.FirstName + " " + applicationUser.LastName, userRole);
+                userRoleAcList.Add(userRoleAdmin);
                 var userList = await _applicationUserDataRepository.GetAll().ToListAsync();
                 foreach (var user in userList)
                 {
                     var roles = (await _userManager.GetRolesAsync(user)).First();
                     if (roles != null && roles == _stringConstant.RoleEmployee)
                     {
-                        var userRoleAc = new UserRoleAc();
-                        userRoleAc.UserId = user.Id;
-                        userRoleAc.UserName = user.UserName;
-                        userRoleAc.Name = user.FirstName + " " + user.LastName;
-                        userRoleAc.Role = userRole;
-                        UserRoleAcList.Add(userRoleAc);
+                        var userRoleAc = new UserRoleAc(user.Id, user.UserName, user.FirstName + " " + user.LastName, userRole);
+                        userRoleAcList.Add(userRoleAc);
                     }
                 }
             }
             else
             {
                 var project = await _projectDataRepository.FirstOrDefaultAsync(x => x.TeamLeaderId == applicationUser.Id);
-                if (project == null)
-                {
-                    var userRoleAc = new UserRoleAc();
-                    userRoleAc.UserId = applicationUser.Id;
-                    userRoleAc.UserName = applicationUser.UserName;
-                    userRoleAc.Role = _stringConstant.RoleEmployee;
-                    userRoleAc.Name = applicationUser.FirstName + " " + applicationUser.LastName;
-                    UserRoleAcList.Add(userRoleAc);
-                }
-                else
-                {
-                    var userRoleAc = new UserRoleAc();
-                    userRoleAc.UserId = applicationUser.Id;
-                    userRoleAc.UserName = applicationUser.UserName;
-                    userRoleAc.Role = _stringConstant.RoleTeamLeader;
-                    userRoleAc.Name = applicationUser.FirstName + " " + applicationUser.LastName;
-                    UserRoleAcList.Add(userRoleAc);
-                }
+                var userRoleAc = new UserRoleAc(applicationUser.Id, applicationUser.UserName, applicationUser.FirstName + " " + applicationUser.LastName, (project != null ? _stringConstant.RoleTeamLeader : _stringConstant.RoleEmployee));
+                userRoleAcList.Add(userRoleAc);
             }
-            
-                return UserRoleAcList;
+            return userRoleAcList;
         }
 
         /// <summary>
@@ -480,23 +447,15 @@ namespace Promact.Oauth.Server.Repository
         {
             ApplicationUser applicationUser = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.Id == userId);
             var userRolesAcList = new List<UserRoleAc>();
-            var userRoleAc = new UserRoleAc();
-            userRoleAc.UserId = applicationUser.Id;
-            userRoleAc.UserName = applicationUser.UserName;
-            userRoleAc.Role = _stringConstant.RoleTeamLeader;
-            userRoleAc.Name = applicationUser.FirstName + " " + applicationUser.LastName;
+            var userRoleAc = new UserRoleAc(applicationUser.Id, applicationUser.UserName, applicationUser.FirstName + " " + applicationUser.LastName, _stringConstant.RoleTeamLeader);
             userRolesAcList.Add(userRoleAc);
             var project = await _projectDataRepository.FirstOrDefaultAsync(x => x.TeamLeaderId == applicationUser.Id);
             var projectUserList = await _projectUserDataRepository.FetchAsync(x => x.ProjectId == project.Id);
 
             foreach (var projectUser in projectUserList)
             {
-                var usersRoleAc = new UserRoleAc();
                 var users = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.Id == projectUser.UserId);
-                usersRoleAc.UserId = users.Id;
-                usersRoleAc.UserName = users.UserName;
-                usersRoleAc.Name = users.FirstName + " " + users.LastName;
-                usersRoleAc.Role = _stringConstant.RoleAdmin;
+                var usersRoleAc = new UserRoleAc(users.Id, users.UserName, users.FirstName + " " + users.LastName, _stringConstant.RoleAdmin);
                 userRolesAcList.Add(usersRoleAc);
             }
             return userRolesAcList;
@@ -521,13 +480,7 @@ namespace Promact.Oauth.Server.Repository
                     if (user != null)
                     {
                         var userAc = new UserAc();
-                        userAc.Id = user.Id;
-                        userAc.Email = user.Email;
-                        userAc.FirstName = user.FirstName;
-                        userAc.IsActive = user.IsActive;
-                        userAc.LastName = user.LastName;
-                        userAc.UserName = user.UserName;
-                        userAc.SlackUserId = user.SlackUserId;
+                        var userAC = _mapperContext.Map<ApplicationUser, UserAc>(user);
                         userAcList.Add(userAc);
                     }
                 }
@@ -633,35 +586,28 @@ namespace Promact.Oauth.Server.Repository
         /// <returns>user</returns>
         private async Task<UserAc> GetUserAsync(ApplicationUser user)
         {
-            if (user != null)
+            //Gets a list of roles the specified user belongs to
+            string roles = (await _userManager.GetRolesAsync(user)).First();
+            UserAc newUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
+            //assign role
+            if (String.Compare(roles, _stringConstant.Admin, true) == 0)
             {
-                //Gets a list of roles the specified user belongs to
-                string roles = (await _userManager.GetRolesAsync(user)).First();
-                UserAc newUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
-                //assign role
-                if (String.Compare(roles, _stringConstant.Admin, true) == 0)
+                newUser.Role = roles;
+            }
+            else if (String.Compare(roles, _stringConstant.Employee, true) == 0)
+            {
+                Project project = await _projectDataRepository.FirstOrDefaultAsync(x => x.TeamLeaderId.Equals(user.Id));
+                if (project != null)
                 {
-                    newUser.Role = roles;
-                    return newUser;
+                    newUser.Role = _stringConstant.TeamLeader;
                 }
-                if (String.Compare(roles, _stringConstant.Employee, true) == 0)
+                else
                 {
-                    Project project = await _projectDataRepository.FirstOrDefaultAsync(x => x.TeamLeaderId.Equals(user.Id));
-                    if (project != null)
-                    {
-                        newUser.Role = _stringConstant.TeamLeader;
-                        return newUser;
-                    }
-                    else
-                    {
-                        newUser.Role = _stringConstant.Employee;
-                        return newUser;
-                    }
+                    newUser.Role = _stringConstant.Employee;
                 }
             }
-            throw new UserNotFound();
+            return newUser;
         }
-
 
         /// <summary>
         /// This method is used to send email to the currently added user
@@ -669,14 +615,10 @@ namespace Promact.Oauth.Server.Repository
         /// <param name="user">Object of newly registered User</param>
         private bool SendEmail(ApplicationUser user, string password)
         {
-            _logger.LogInformation("Start Fetch Email Template");
             string path = _hostingEnvironment.ContentRootPath + _stringConstant.UserDetialTemplateFolderPath;
-            _logger.LogInformation("ContentRootPath Path:" + _hostingEnvironment.ContentRootPath);
-            _logger.LogInformation("Full Path:" + _hostingEnvironment.ContentRootPath + _stringConstant.UserDetialTemplateFolderPath);
             string finaleTemplate = "";
             if (System.IO.File.Exists(path))
             {
-                _logger.LogInformation("Email Template Featch successfully");
                 finaleTemplate = System.IO.File.ReadAllText(path);
                 finaleTemplate = finaleTemplate.Replace(_stringConstant.UserEmail, user.Email).Replace(_stringConstant.UserPassword, password).Replace(_stringConstant.ResertPasswordUserName, user.FirstName);
                 _emailSender.SendEmail(user.Email, _stringConstant.LoginCredentials, finaleTemplate);
@@ -703,7 +645,6 @@ namespace Promact.Oauth.Server.Repository
             return sb.ToString();
         }
 
-
         /// <summary>
         /// Calculat casual leava and sick leave from the date of joining
         /// </summary>
@@ -716,8 +657,8 @@ namespace Promact.Oauth.Server.Repository
             var day = dateTime.Day;
             var month = dateTime.Month;
             var year = dateTime.Year;
-            double casualAllow = Convert.ToDouble(_appSettingUtil.Value.CasualLeave);
-            double sickAllow = Convert.ToDouble(_appSettingUtil.Value.SickLeave);
+            double casualAllow = _appSettingUtil.Value.CasualLeave;
+            double sickAllow = _appSettingUtil.Value.SickLeave;
             if (year >= DateTime.Now.Year)
             {
                 double totalDays = (DateTime.Now - Convert.ToDateTime(dateTime)).TotalDays;
@@ -750,7 +691,7 @@ namespace Promact.Oauth.Server.Repository
 
                 if (casualAllowed.ToString().Contains(".") == true)
                 {
-                    string splitCasualAllowed ="0." + casualAllowed.ToString().Split('.')[1];
+                    string splitCasualAllowed = "0." + casualAllowed.ToString().Split('.')[1];
                     double casualAllowedConvertedDouble = Convert.ToDouble(splitCasualAllowed);
                     if (casualAllowedConvertedDouble != 0.5) { casualAllowed = Convert.ToInt32(casualAllowed); }
 
@@ -774,17 +715,17 @@ namespace Promact.Oauth.Server.Repository
             }
             else
             {
-                casualAllow = Convert.ToDouble(_appSettingUtil.Value.CasualLeave);
-                sickAllowed = Convert.ToDouble(_appSettingUtil.Value.SickLeave);
+                casualAllow = _appSettingUtil.Value.CasualLeave;
+                sickAllowed = _appSettingUtil.Value.SickLeave;
             }
             LeaveCalculator calculate = new LeaveCalculator
             {
                 CasualLeave = casualAllowed,
                 SickLeave = sickAllowed
             };
-
             return calculate;
         }
+
         #endregion
 
 

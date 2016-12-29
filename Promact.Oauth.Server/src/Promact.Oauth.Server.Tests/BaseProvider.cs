@@ -46,10 +46,10 @@ namespace Promact.Oauth.Server.Tests
             services.AddEntityFrameworkInMemoryDatabase();
             services.Configure<AppSettingUtil>(x => 
             {
-                x.CasualLeave = "14";
+                x.CasualLeave = 14;
                 x.PromactErpUrl = "http://www.example.com";
                 x.PromactOAuthUrl = "http://www.example.com";
-                x.SickLeave = "7";
+                x.SickLeave = 7;
             });
             services.AddSingleton<IHostingEnvironment>(testHostingEnvironment);
 
