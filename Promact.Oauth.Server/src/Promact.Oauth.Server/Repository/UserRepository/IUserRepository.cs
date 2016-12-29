@@ -49,10 +49,10 @@ namespace Promact.Oauth.Server.Repository
 
 
         /// <summary>
-        /// This method is used for changing the password of an user
+        /// This method is used for changing the password of user
         /// </summary>
         /// <param name="passwordModel">ChangePasswordViewModel type object</param>
-        Task<string> ChangePasswordAsync(ChangePasswordViewModel passwordModel);
+        Task<ChangePasswordErrorModel> ChangePasswordAsync(ChangePasswordViewModel passwordModel);
 
 
         /// <summary>

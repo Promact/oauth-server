@@ -25,7 +25,6 @@ export class ChangePasswordComponent {
         this.isInCorrect = true;
     }
 
-
     checkOldPasswordIsValid() {
         this.isInCorrect = true;
         if (this.passwordModel.OldPassword !== "") {
@@ -38,17 +37,16 @@ export class ChangePasswordComponent {
 
     }
     
-
     changePassword(passwordModel) {
         if (!this.isNotMatch) {
             this.loader.loader = true;
             this.userService.changePassword(passwordModel).subscribe((result) => {
-                if (result.response === this.passwordModel.NewPassword) {
+                if (result.errorMessage === null) {
                     this.toast.show('Password changed successfully');
                     this.redirectionRoute.navigate(['']);
                 }
                 else {
-                    this.toast.show(result.response);
+                    this.toast.show(result.errorMessage);
                 }
                 this.loader.loader = false;
             }, err => {

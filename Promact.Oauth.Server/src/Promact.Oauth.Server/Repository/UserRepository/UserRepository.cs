@@ -198,17 +198,18 @@ namespace Promact.Oauth.Server.Repository
         /// This method is used to change the password of a particular user
         /// </summary>
         /// <param name="passwordModel">ChangePasswordViewModel type object</param>
-        public async Task<string> ChangePasswordAsync(ChangePasswordViewModel passwordModel)
+        public async Task<ChangePasswordErrorModel> ChangePasswordAsync(ChangePasswordViewModel passwordModel)
         {
+            ChangePasswordErrorModel changePasswordErrorModel = new ChangePasswordErrorModel();
             var user = await _userManager.FindByEmailAsync(passwordModel.Email);
             if (user != null)
             {
                 IdentityResult result = await _userManager.ChangePasswordAsync(user, passwordModel.OldPassword, passwordModel.NewPassword);
-                if (result.Succeeded)
+                if (!result.Succeeded)
                 {
-                    return passwordModel.NewPassword;
+                    changePasswordErrorModel.ErrorMessage = result.Errors.FirstOrDefault().Description.ToString();
                 }
-                return result.Errors.FirstOrDefault().Description.ToString();
+                return changePasswordErrorModel;
             }
             throw new UserNotFound();
         }
