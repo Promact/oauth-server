@@ -23,6 +23,7 @@ namespace Promact.Oauth.Server.Tests
 {
     public class OAuthRepositoryTest : BaseProvider
     {
+        #region Private Variables
         private readonly IOAuthRepository _oAuthRepository;
         private readonly IDataRepository<OAuth> _oAuthDataRepository;
         private readonly IUserRepository _userRepository;
@@ -38,7 +39,9 @@ namespace Promact.Oauth.Server.Tests
         private readonly IOptions<AppSettingUtil> _appSettingUtil;
         private readonly Mock<IHttpContextAccessor> _httpContextMock;
         private readonly Mock<HttpContext> _httpContext;
+        #endregion
 
+        #region Constructor
         public OAuthRepositoryTest() : base()
         {
             _oAuthRepository = serviceProvider.GetService<IOAuthRepository>();
@@ -53,9 +56,10 @@ namespace Promact.Oauth.Server.Tests
             _httpContextMock = serviceProvider.GetService<Mock<IHttpContextAccessor>>();
             _httpContext = serviceProvider.GetService<Mock<HttpContext>>();
             Initialize();
-
         }
+        #endregion
 
+        #region Public Methods
         /// <summary>
         /// Test case to check GetDetailsClientByAccessToken for true value of Oauth Repository
         /// </summary>
@@ -286,7 +290,9 @@ namespace Promact.Oauth.Server.Tests
             var redirectUrl = await _oAuthRepository.UserNotAlreadyLoginAsync(oAuthLogin);
             Assert.Equal(redirectUrl, returnUrl); ;
         }
+        #endregion
 
+        #region Initialize
         private void Initialize()
         {
             _testUser.Id = _stringConstant.UserId;
@@ -315,7 +321,9 @@ namespace Promact.Oauth.Server.Tests
             oAuthLogin.Password = _stringConstant.PasswordForTest;
             oAuthLogin.RedirectUrl = _stringConstant.CallBackUrl;
         }
+        #endregion
 
+        #region Private Method
         private string MockingGetAppDetailsFromClientAsync(string returnValue)
         {
             var response = Task.FromResult(returnValue);
@@ -324,58 +332,6 @@ namespace Promact.Oauth.Server.Tests
             _mockHttpClient.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<string>())).Returns(response);
             return requestUrl;
         }
-
-        //private void Mocking()
-        //{
-        //    var httpContextObject = new Mock<HttpContext>();
-        //    _httpContextMock.Setup(x => x.HttpContext).Returns(httpContextObject.Object);
-        //}
-
-        //public class FakeUserManager : UserManager<ApplicationUser>
-        //{
-        //    public FakeUserManager()
-        //        : base(new Mock<IUserStore<ApplicationUser>>().Object,
-        //              new Mock<IOptions<IdentityOptions>>().Object,
-        //              new Mock<IPasswordHasher<ApplicationUser>>().Object,
-        //              new IUserValidator<ApplicationUser>[0],
-        //              new IPasswordValidator<ApplicationUser>[0],
-        //              new Mock<ILookupNormalizer>().Object,
-        //              new Mock<IdentityErrorDescriber>().Object,
-        //              new Mock<IServiceProvider>().Object,
-        //              new Mock<ILogger<UserManager<ApplicationUser>>>().Object
-        //              /*new Mock<IHttpContextAccessor>().Object*/)
-        //    { }
-
-        //    public override Task<IdentityResult> CreateAsync(ApplicationUser user, string password)
-        //    {
-        //        return Task.FromResult(IdentityResult.Success);
-        //    }
-        //}
-        //public class FakeSignInManager : SignInManager<ApplicationUser>
-        //{
-        //    public FakeSignInManager(IHttpContextAccessor contextAccessor)
-        //        : base(new FakeUserManager(),
-        //              contextAccessor,
-        //              new Mock<IUserClaimsPrincipalFactory<ApplicationUser>>().Object,
-        //              new Mock<IOptions<IdentityOptions>>().Object,
-        //              new Mock<ILogger<SignInManager<ApplicationUser>>>().Object)
-        //    {
-        //    }
-
-        //    public override Task SignInAsync(ApplicationUser user, bool isPersistent, string authenticationMethod = null)
-        //    {
-        //        return Task.FromResult(0);
-        //    }
-
-        //    public override Task<SignInResult> PasswordSignInAsync(string userName, string password, bool isPersistent, bool lockoutOnFailure)
-        //    {
-        //        return Task.FromResult(SignInResult.Success);
-        //    }
-
-        //    public override Task SignOutAsync()
-        //    {
-        //        return Task.FromResult(0);
-        //    }
-        //}
+        #endregion
     }
 }
