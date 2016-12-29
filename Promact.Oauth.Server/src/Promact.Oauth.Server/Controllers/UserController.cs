@@ -221,17 +221,17 @@ namespace Promact.Oauth.Server.Controllers
         {
             try
             {
-                await _userRepository.GetProjectUserByGroupNameAsync("Slack123h");
-                string createdBy = _userManager.GetUserId(User);
                 if (ModelState.IsValid)
                 {
+                    string createdBy = _userManager.GetUserId(User);
                     await _userRepository.AddUserAsync(newUser, createdBy);
                     return Ok(true);
                 }
-                return Ok(false);
+                return BadRequest();
             }
             catch (InvalidApiRequestException apiEx)
             {
+                //Exception raised from send grid api,when api token is not provided. 
                 _logger.LogError("Forgot Password mail not send " + apiEx.Message + apiEx.ToString());
                 if (apiEx.Errors.Length > 0)
                 {
@@ -289,21 +289,20 @@ namespace Promact.Oauth.Server.Controllers
         {
             try
             {
-                string updatedBy = _userManager.GetUserId(User);
                 if (ModelState.IsValid)
                 {
+                    string updatedBy = _userManager.GetUserId(User);
                     editedUser.Id = id;
                     await _userRepository.UpdateUserDetailsAsync(editedUser, updatedBy);
                     return Ok(true);
                 }
-                return Ok(editedUser);
+                return BadRequest();
             }
             catch (SlackUserNotFound)
             {
                 return NotFound();
             }
         }
-
 
 
         /**
@@ -346,14 +345,12 @@ namespace Promact.Oauth.Server.Controllers
             {
                 var user = await _userManager.GetUserAsync(User);
                 passwordModel.Email = user.Email;
-                string response = await _userRepository.ChangePasswordAsync(passwordModel);
-                return Ok(new { response });
+                return Ok(await _userRepository.ChangePasswordAsync(passwordModel));
             }
             catch (UserNotFound)
             {
                 return NotFound();
             }
-
         }
 
         /**
@@ -702,7 +699,6 @@ namespace Promact.Oauth.Server.Controllers
         *  "error": "UserNotFound"
         * }
         */
-        
         [HttpGet]
         [Route("slackChannel/{name}")]
         public async Task<IActionResult> GetProjectUserByGroupNameAsync(string name)
