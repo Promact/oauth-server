@@ -693,10 +693,16 @@ namespace Promact.Oauth.Server.Repository
             if (year >= DateTime.Now.Year)
             {
                 double totalDays = (DateTime.Now - Convert.ToDateTime(dateTime)).TotalDays;
+                //If an employee joins between 1st to 15th of month, then he/she will be eligible for that particular month's leaves 
+                //and if he/she joins after 16th of month, he/she will not be eligible for that month's leaves.
+
+                //In Our Project we consider Leave renewal on 1st april
                 if (month >= 4)
                 {
+                    //if first 15 days of month april to December then substact 4 other wise substact 3
                     if (day <= 15)
                     {
+                        	
                         casualAllowed = (casualAllow / 12) * (12 - (month - 4));
                         sickAllowed = (sickAllow / 12) * (12 - (month - 4));
                     }
@@ -706,8 +712,10 @@ namespace Promact.Oauth.Server.Repository
                         sickAllowed = (sickAllow / 12) * (12 - (month - 3));
                     }
                 }
+
                 else
                 {
+                    //if first 15 days of month January to March then add 8 other wise add 9
                     if (day <= 15)
                     {
                         casualAllowed = (casualAllow / 12) * (12 - (month + 8));
@@ -720,28 +728,21 @@ namespace Promact.Oauth.Server.Repository
                     }
                 }
 
-                if (casualAllowed.ToString().Contains(".") == true)
+                // If calculated casualAllowed is exact 0.5 then it's considered half day casual leave
+                if (casualAllowed % 1!=0)
                 {
-                    string splitCasualAllowed = "0." + casualAllowed.ToString().Split('.')[1];
-                    double casualAllowedConvertedDouble = Convert.ToDouble(splitCasualAllowed);
-                    if (casualAllowedConvertedDouble != 0.5) { casualAllowed = Convert.ToInt32(casualAllowed); }
+                    double CasualAlloweddecimal = casualAllowed - Math.Floor(casualAllowed);
+                    if (CasualAlloweddecimal != 0.5) { casualAllowed = Convert.ToInt32(casualAllowed); }
+                }
 
-                }
-                else
+                // If calculated sickAllowed is exact 0.5 then it's considered half day sick leave 
+                // If calculated sickAllowed is more than  0.90 then add one leave in sick leave 
+                if (sickAllowed % 1 !=0)
                 {
-                    casualAllowed = Convert.ToInt32(casualAllowed);
-                }
-                if (sickAllowed.ToString().Contains(".") == true)
-                {
-                    string splitSickAllowed = "0." + sickAllowed.ToString().Split('.')[1];
-                    double sickAllowedConvertedDouble = Convert.ToDouble(splitSickAllowed);
-                    if (sickAllowedConvertedDouble != 0.5) { sickAllowed = Convert.ToInt32(Math.Floor(sickAllowed)); }
-                    if (sickAllowedConvertedDouble > 0.90) { sickAllowed = sickAllowed + 1; }
+                    double sickAlloweddecimal= sickAllowed - Math.Floor(sickAllowed);
+                    if (sickAlloweddecimal != 0.5) { sickAllowed = Convert.ToInt32(Math.Floor(sickAllowed)); }
+                    if (sickAlloweddecimal > 0.90) { sickAllowed = sickAllowed + 1; }
 
-                }
-                else
-                {
-                    sickAllowed = Convert.ToInt32(Math.Floor(sickAllowed));
                 }
             }
             else
