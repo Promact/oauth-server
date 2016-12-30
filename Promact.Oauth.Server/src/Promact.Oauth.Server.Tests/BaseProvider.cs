@@ -21,6 +21,7 @@ using Promact.Oauth.Server.Constants;
 using Moq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Authentication;
+using System.IO;
 
 namespace Promact.Oauth.Server.Tests
 {
@@ -42,18 +43,15 @@ namespace Promact.Oauth.Server.Tests
                 cfg.AddProfile(new AutoMapperProfileConfiguration());
             });
 
-            var testHostingEnvironment = new MockHostingEnvironment();
-
             var services = new ServiceCollection();
             services.AddEntityFrameworkInMemoryDatabase();
-            services.Configure<AppSettingUtil>(x => 
+            services.Configure<AppSettingUtil>(x =>
             {
                 x.CasualLeave = "14";
                 x.PromactErpUrl = "http://www.example.com";
                 x.PromactOAuthUrl = "http://www.example.com";
                 x.SickLeave = "7";
             });
-            services.AddSingleton<IHostingEnvironment>(testHostingEnvironment);
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<PromactOauthDbContext>()
@@ -63,19 +61,17 @@ namespace Promact.Oauth.Server.Tests
             services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<IConsumerAppRepository, ConsumerAppRepository>();
             services.AddScoped<IOAuthRepository, OAuthRepository>();
-            //services.AddScoped<HttpClient>();
-            services.AddScoped<IStringConstant,StringConstant>();
+            services.AddScoped<IStringConstant, StringConstant>();
             services.AddScoped(typeof(IDataRepository<>), typeof(DataRepository<>));
 
             //Register Mapper
             services.AddSingleton<IMapper>(sp => _mapperConfiguration.CreateMapper());
-            services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
             services.AddDbContext<PromactOauthDbContext>(options => options.UseInMemoryDatabase(randomString), ServiceLifetime.Transient);
             var httpClientMock = new Mock<IHttpClientService>();
             var httpClientMockObject = httpClientMock.Object;
             services.AddScoped(x => httpClientMock);
-            services.AddScoped(x=>httpClientMockObject);
+            services.AddScoped(x => httpClientMockObject);
 
             // Http Context mocking
             var authenticationManagerMock = new Mock<AuthenticationManager>();
@@ -86,6 +82,17 @@ namespace Promact.Oauth.Server.Tests
             var httpContextMockObject = httpContextAccessorMock.Object;
             services.AddScoped(x => httpContextAccessorMock);
             services.AddScoped(x => httpContextMockObject);
+
+            var iHostingEnvironmentMock = new Mock<IHostingEnvironment>();
+            var iHostingEnvironmentMockObject = iHostingEnvironmentMock.Object;
+            services.AddScoped(x => iHostingEnvironmentMock);
+            services.AddScoped(x => iHostingEnvironmentMockObject);
+
+            var emailServiceMock = new Mock<IEmailSender>();
+            var emailServiceMockObject = emailServiceMock.Object;
+            services.AddScoped(x => emailServiceMock);
+            services.AddScoped(x => emailServiceMockObject);
+
 
             serviceProvider = services.BuildServiceProvider();
             RoleSeedFake(serviceProvider);
@@ -108,85 +115,5 @@ namespace Promact.Oauth.Server.Tests
             }
         }
     }
-
-    public class MockHostingEnvironment : IHostingEnvironment
-    {
-        public string ApplicationName
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public IFileProvider ContentRootFileProvider
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public string ContentRootPath
-        {
-            get
-            {
-                return "test";
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public string EnvironmentName
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public IFileProvider WebRootFileProvider
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public string WebRootPath
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-    }
 }
+
