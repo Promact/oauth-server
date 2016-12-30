@@ -1,13 +1,17 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using Promact.Oauth.Server.Constants;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Models.ApplicationClasses;
 using Promact.Oauth.Server.Repository;
 using Promact.Oauth.Server.Repository.ProjectsRepository;
+using Promact.Oauth.Server.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -21,6 +25,8 @@ namespace Promact.Oauth.Server.Tests
         private readonly IMapper _mapper;
         private readonly IStringConstant _stringConstant;
         private readonly IProjectRepository _projectRepository;
+        private readonly Mock<IHostingEnvironment> _mockHostingEnvironment;
+        private readonly Mock<IEmailSender> _mockEmailService;
         public UserRepositoryTest() : base()
         {
             _userRepository = serviceProvider.GetService<IUserRepository>();
@@ -28,6 +34,8 @@ namespace Promact.Oauth.Server.Tests
             _mapper = serviceProvider.GetService<IMapper>();
             _stringConstant = serviceProvider.GetService<IStringConstant>();
             _projectRepository = serviceProvider.GetService<IProjectRepository>();
+            _mockHostingEnvironment = serviceProvider.GetService<Mock<IHostingEnvironment>>();
+            _mockEmailService = serviceProvider.GetService<Mock<IEmailSender>>();
         }
 
         #region Test Case
@@ -428,7 +436,7 @@ namespace Promact.Oauth.Server.Tests
                 JoiningDate = DateTime.UtcNow,
                 RoleName = _stringConstant.Employee
             };
-           
+
             string userId = await _userRepository.AddUser(_testUser, _stringConstant.CreatedBy);
             ProjectAc projectac = new ProjectAc()
             {
@@ -527,6 +535,42 @@ namespace Promact.Oauth.Server.Tests
             Assert.NotNull(projectUsers.Count);
         }
 
+        /// <summary>
+        /// This test case used to resend mail
+        /// </summary>
+        /// <returns></returns>
+        [Fact, Trait("Category", "Required")]
+        public async Task ReSendMail()
+        {
+            var path = PathCreator();
+            _mockHostingEnvironment.Setup(x => x.ContentRootPath).Returns(path);
+            _mockEmailService.Setup(x => x.SendEmail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+            UserAc _testUser = new UserAc()
+            {
+                Email = _stringConstant.RawEmailIdForTest,
+                FirstName = _stringConstant.RawFirstNameForTest,
+                LastName = _stringConstant.RawLastNameForTest,
+                IsActive = true,
+                UserName = _stringConstant.RawEmailIdForTest,
+                SlackUserName = _stringConstant.RawFirstNameForTest,
+                JoiningDate = DateTime.UtcNow,
+                RoleName = _stringConstant.Employee
+            };
+            var id = await _userRepository.AddUser(_testUser, _stringConstant.RawFirstNameForTest);
+            var result = await _userRepository.ReSendMail(id);
+            Assert.Equal(true, result);
+        }
+
+        private string PathCreator()
+        {
+            var directory = Path.GetTempPath();
+            var path = "Template";
+            var createNewDirectory = directory + path;
+            Directory.CreateDirectory(directory);
+            var newPath = string.Format("{0}\\UserDetial.html", createNewDirectory);
+            File.Create(newPath);
+            return directory;
+        }
         #endregion
 
 
