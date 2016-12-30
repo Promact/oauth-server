@@ -105,6 +105,17 @@ namespace Promact.Oauth.Server.Tests
             services.AddScoped(x => httpContextMockObject);
             services.AddScoped(x => httpClientMockObject);
 
+            var iHostingEnvironmentMock = new Mock<IHostingEnvironment>();
+            var iHostingEnvironmentMockObject = iHostingEnvironmentMock.Object;
+            services.AddScoped(x => iHostingEnvironmentMock);
+            services.AddScoped(x => iHostingEnvironmentMockObject);
+
+            var emailServiceMock = new Mock<IEmailSender>();
+            var emailServiceMockObject = emailServiceMock.Object;
+            services.AddScoped(x => emailServiceMock);
+            services.AddScoped(x => emailServiceMockObject);
+
+
             //Register email util mock
             var emailUtilMock = new Mock<IEmailUtil>();
             var emailUtilMockObject = emailUtilMock.Object;
