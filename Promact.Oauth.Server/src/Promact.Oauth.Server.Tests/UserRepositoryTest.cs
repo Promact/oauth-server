@@ -429,6 +429,10 @@ namespace Promact.Oauth.Server.Tests
             Assert.Equal(true, result);
         }
 
+        /// <summary>
+        /// Method used to get current folder address and create a file "UserDetial.html".
+        /// </summary>
+        /// <returns></returns>
         private string PathCreator()
         {
             var directory = Path.GetTempPath();
