@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Models.ApplicationClasses;
+using System.Collections.Generic;
 
 namespace Promact.Oauth.Server.AutoMapper
 {
@@ -13,6 +15,7 @@ namespace Promact.Oauth.Server.AutoMapper
             CreateMap<ConsumerAppsAc, ConsumerApps>();
             CreateMap<ProjectAc, Project>();
             CreateMap<Project, ProjectAc>();
+            CreateMap<IdentityRole, RolesAc>();
             CreateMap<UserAc, ApplicationUser>().ReverseMap();
         }
     }

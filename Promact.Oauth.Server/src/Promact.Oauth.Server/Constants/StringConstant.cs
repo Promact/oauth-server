@@ -145,5 +145,8 @@
         public string UserIdForTest { get { return "asder12346eewsee5s"; } }
         public string EmailForTest { get { return "abc@promactinfo.com"; } }
         public string UserNameForTest { get { return "XyzTest"; } }
+        public string RandomString { get { return "abcdefghijklmnopqrstuvwxyz|ABCDEFGHIJKLMNOPQRSTUVWXYZ|012345789|@#$%^!&*()"; } }
+
+        
     }
 }

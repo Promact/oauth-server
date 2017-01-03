@@ -99,14 +99,7 @@ namespace Promact.Oauth.Server.Repository
         /// <param name="userId"></param>
         /// <returns></returns>
         Task<List<ApplicationUser>> ManagementDetailsAsync();
-
-        /// <summary>
-        /// Used to fetch the userdetail by given UserName 
-        /// </summary>
-        /// <param name="UserName"></param>
-        /// <returns>object of UserAc</returns>
-        Task<UserAc> GetUserDetailAsync(string UserName);
-
+        
         /// <summary>
         /// This method is used to Get User details by Id
         /// </summary>

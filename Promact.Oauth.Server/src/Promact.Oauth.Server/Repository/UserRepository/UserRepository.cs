@@ -95,7 +95,6 @@ namespace Promact.Oauth.Server.Repository
             var resultSuccess = await result;
             result = _userManager.AddToRoleAsync(user, newUser.RoleName);
             SendEmail(user, password);
-            resultSuccess = await result;
             return user.Id;
 
         }
@@ -108,14 +107,7 @@ namespace Promact.Oauth.Server.Repository
         {
             List<RolesAc> listOfRoleAC = new List<RolesAc>();
             var roles = await _roleManager.Roles.ToListAsync();
-            foreach (IdentityRole identityRole in roles)
-            {
-                RolesAc roleAc = new RolesAc();
-                roleAc.Id = identityRole.Id;
-                roleAc.Name = identityRole.Name;
-                listOfRoleAC.Add(roleAc);
-            }
-            return listOfRoleAC;
+            return _mapperContext.Map<List<IdentityRole>, List<RolesAc>>(roles);
         }
 
 
@@ -160,13 +152,11 @@ namespace Promact.Oauth.Server.Repository
                 user.NumberOfCasualLeave = editedUser.NumberOfCasualLeave;
                 user.NumberOfSickLeave = editedUser.NumberOfSickLeave;
                 user.SlackUserName = editedUser.SlackUserName;
-                var userPreviousInfo = await _userManager.FindByEmailAsync(editedUser.Email);
                 await _userManager.UpdateAsync(user);
                 IList<string> listofUserRole = await _userManager.GetRolesAsync(user);
-                var removeFromRole = await _userManager.RemoveFromRoleAsync(user, listofUserRole.FirstOrDefault());
+                var removeFromRole = await _userManager.RemoveFromRoleAsync(user, listofUserRole.First());
                 var addNewRole = await _userManager.AddToRoleAsync(user, editedUser.RoleName);
                 return user.Id;
-
             }
             throw new SlackUserNotFound();
         }
@@ -228,35 +218,7 @@ namespace Promact.Oauth.Server.Repository
             }
             return true;
         }
-
-        /// <summary>
-        /// Used to fetch the userdetail by given UserName 
-        /// </summary>
-        /// <param name="UserName"></param>
-        /// <returns>object of UserAc</returns>
-        public async Task<UserAc> GetUserDetailAsync(string UserName)
-        {
-            try
-            {
-                var user = await _userManager.FindByNameAsync(UserName);
-                var userAc = new UserAc();
-                if (user != null)
-                {
-                    userAc.Email = user.Email;
-                    userAc.Id = user.Id;
-                    userAc.FirstName = user.FirstName;
-                    userAc.LastName = user.LastName;
-                    userAc.UserName = user.UserName;
-                    // userAc.SlackUserName = user.SlackUserName;
-                }
-                return userAc;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
+        
         /// <summary>
         /// This method is used to check if a user already exists in the database with the given email
         /// </summary>
@@ -571,44 +533,7 @@ namespace Promact.Oauth.Server.Repository
         #endregion
 
         #region Private Methods
-
-
-        /// <summary>
-        /// Get slack user details of the given slack id from slack server 
-        /// </summary>
-        /// <param name="slackUserId"></param>
-        /// <returns></returns>
-        private async Task<SlackUserDetailAc> GetSlackUserById(string slackUserId)
-        {
-            _logger.LogInformation("User Repository - GetSlackUserByI. Url: " + _appSettingUtil.Value.PromactErpUrl);
-            var responseResult = await _httpClientRepository.GetAsync(_appSettingUtil.Value.PromactErpUrl, _stringConstant.SlackUserByIdUrl + slackUserId);
-            _logger.LogInformation("User Repository: GetSlackUserById. ReponseResult: " + responseResult);
-            // Transforming Json String to object type List of SlackUserDetailAc
-            var data = JsonConvert.DeserializeObject<SlackUserDetailAc>(responseResult);
-            return data;
-        }
-
-
-        /// <summary>
-        /// Fetches the slack real name of the user of the given SlackUserId - JJ
-        /// </summary>
-        /// <param name="slackUsers"></param>
-        /// <param name="slackUserId"></param>
-        /// <returns></returns>
-        private string GetSlackName(List<SlackUserDetailAc> slackUsers, string slackUserId)
-        {
-            string slackName = string.Empty;
-            foreach (var user in slackUsers)
-            {
-                if (String.Compare(user.UserId, slackUserId, false) == 0)
-                {
-                    slackName = user.Name;
-                    break;
-                }
-            }
-            return slackName;
-        }
-
+        
 
         /// <summary>
         /// Method is used to return a user after assigning a role and mapping from ApplicationUser class to UserAc class
@@ -666,7 +591,7 @@ namespace Promact.Oauth.Server.Repository
         {
             Random random = new Random();
             //Initialize static Ato,atoz,0to9 and special characters seprated by '|'.
-            const string chars = "abcdefghijklmnopqrstuvwxyz|ABCDEFGHIJKLMNOPQRSTUVWXYZ|012345789|@#$%^!&*()";
+            string chars = _stringConstant.RandomString;
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < 4; i++)
             {
@@ -703,7 +628,7 @@ namespace Promact.Oauth.Server.Repository
                     //if first 15 days of month april to December then substact 4 other wise substact 3 in month
                     if (day <= 15)
                     {
-                        	
+
                         casualAllowed = (casualAllow / 12) * (12 - (month - 4));
                         sickAllowed = (sickAllow / 12) * (12 - (month - 4));
                     }
@@ -740,7 +665,7 @@ namespace Promact.Oauth.Server.Repository
                 // If calculated sickAllowed decimal value is more than  0.90 then add one leave in sick leave 
                 if (sickAllowed % 1 !=0)
                 {
-                    double sickAlloweddecimal= sickAllowed - Math.Floor(sickAllowed);
+                    double sickAlloweddecimal = sickAllowed - Math.Floor(sickAllowed);
                     if (sickAlloweddecimal != 0.5) { sickAllowed = Convert.ToInt32(Math.Floor(sickAllowed)); }
                     if (sickAlloweddecimal > 0.90) { sickAllowed = sickAllowed + 1; }
 
