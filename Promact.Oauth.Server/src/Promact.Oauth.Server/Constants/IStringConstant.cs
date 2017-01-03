@@ -107,5 +107,6 @@
         string UserNameForTest { get; }
         string EmailForTest { get; }
         string SlackUserNameForTest { get; }
+        string RandomString { get; }
     }
 }
