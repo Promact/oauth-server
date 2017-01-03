@@ -694,12 +694,13 @@ namespace Promact.Oauth.Server.Repository
             {
                 double totalDays = (DateTime.Now - Convert.ToDateTime(dateTime)).TotalDays;
                 //If an employee joins between 1st to 15th of month, then he/she will be eligible for that particular month's leaves 
-                //and if he/she joins after 16th of month, he/she will not be eligible for that month's leaves.
+                //and if he/she joins after 15th of month, he/she will not be eligible for that month's leaves.
 
+                //calculate casualAllowed and sickAllowed.
                 //In Our Project we consider Leave renewal on 1st april
                 if (month >= 4)
                 {
-                    //if first 15 days of month april to December then substact 4 other wise substact 3
+                    //if first 15 days of month april to December then substact 4 other wise substact 3 in month
                     if (day <= 15)
                     {
                         	
@@ -715,7 +716,7 @@ namespace Promact.Oauth.Server.Repository
 
                 else
                 {
-                    //if first 15 days of month January to March then add 8 other wise add 9
+                    //if first 15 days of month January to March then add 8 other wise add 9 in month
                     if (day <= 15)
                     {
                         casualAllowed = (casualAllow / 12) * (12 - (month + 8));
@@ -728,15 +729,15 @@ namespace Promact.Oauth.Server.Repository
                     }
                 }
 
-                // If calculated casualAllowed is exact 0.5 then it's considered half day casual leave
+                // If calculated casualAllowed decimal value is exact 0.5 then it's considered half day casual leave
                 if (casualAllowed % 1!=0)
                 {
                     double CasualAlloweddecimal = casualAllowed - Math.Floor(casualAllowed);
                     if (CasualAlloweddecimal != 0.5) { casualAllowed = Convert.ToInt32(casualAllowed); }
                 }
 
-                // If calculated sickAllowed is exact 0.5 then it's considered half day sick leave 
-                // If calculated sickAllowed is more than  0.90 then add one leave in sick leave 
+                // If calculated sickAllowed decimal value is exact 0.5 then it's considered half day sick leave 
+                // If calculated sickAllowed decimal value is more than  0.90 then add one leave in sick leave 
                 if (sickAllowed % 1 !=0)
                 {
                     double sickAlloweddecimal= sickAllowed - Math.Floor(sickAllowed);
