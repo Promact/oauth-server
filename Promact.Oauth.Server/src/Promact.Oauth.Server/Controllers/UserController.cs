@@ -321,7 +321,7 @@ namespace Promact.Oauth.Server.Controllers
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
         * {
-        *     "newPassword":"newPassword"
+        *     ErrorMessage : if password is valid, return empty otherwise error message.
         * }
         * @apiError UserNotFound the slack user was not found.
         * @apiErrorExample {json} Error-Response:
