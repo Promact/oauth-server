@@ -165,12 +165,6 @@ namespace Promact.Oauth.Server.Controllers
         * {
         *   "error": "UserNotFound"
         * }
-        * @apiError UserNotFound The id of the User was not found.
-        * @apiErrorExample {json} Error-Response:
-        * HTTP/1.1 404 Not Found
-        * {
-        *   "error": "UserNotFound"
-        * }
         */
         [HttpGet]
         [Route("{id}")]
@@ -328,12 +322,6 @@ namespace Promact.Oauth.Server.Controllers
         * HTTP/1.1 200 OK 
         * {
         *     "newPassword":"newPassword"
-        * }
-        * @apiError UserNotFound the slack user was not found.
-        * @apiErrorExample {json} Error-Response:
-        * HTTP/1.1 404 Not Found
-        * {
-        *   "error": "UserNotFound"
         * }
         * @apiError UserNotFound the slack user was not found.
         * @apiErrorExample {json} Error-Response:
