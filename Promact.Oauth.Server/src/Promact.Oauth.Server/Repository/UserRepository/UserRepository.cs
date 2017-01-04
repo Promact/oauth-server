@@ -91,12 +91,10 @@ namespace Promact.Oauth.Server.Repository
             user.CreatedBy = createdBy;
             user.CreatedDateTime = DateTime.UtcNow;
             string password = GetRandomString();
-            var result = _userManager.CreateAsync(user, password);
-            var resultSuccess = await result;
-            result = _userManager.AddToRoleAsync(user, newUser.RoleName);
+            var result = await _userManager.CreateAsync(user, password);
+            result = await _userManager.AddToRoleAsync(user, newUser.RoleName);
             SendEmail(user, password);
             return user.Id;
-
         }
 
         /// <summary>
@@ -218,7 +216,7 @@ namespace Promact.Oauth.Server.Repository
             }
             return true;
         }
-        
+
         /// <summary>
         /// This method is used to check if a user already exists in the database with the given email
         /// </summary>
@@ -533,7 +531,7 @@ namespace Promact.Oauth.Server.Repository
         #endregion
 
         #region Private Methods
-        
+
 
         /// <summary>
         /// Method is used to return a user after assigning a role and mapping from ApplicationUser class to UserAc class
@@ -655,7 +653,7 @@ namespace Promact.Oauth.Server.Repository
                 }
 
                 // If calculated casualAllowed decimal value is exact 0.5 then it's considered half day casual leave
-                if (casualAllowed % 1!=0)
+                if (casualAllowed % 1 != 0)
                 {
                     double CasualAlloweddecimal = casualAllowed - Math.Floor(casualAllowed);
                     if (CasualAlloweddecimal != 0.5) { casualAllowed = Convert.ToInt32(casualAllowed); }
@@ -663,7 +661,7 @@ namespace Promact.Oauth.Server.Repository
 
                 // If calculated sickAllowed decimal value is exact 0.5 then it's considered half day sick leave 
                 // If calculated sickAllowed decimal value is more than  0.90 then add one leave in sick leave 
-                if (sickAllowed % 1 !=0)
+                if (sickAllowed % 1 != 0)
                 {
                     double sickAlloweddecimal = sickAllowed - Math.Floor(sickAllowed);
                     if (sickAlloweddecimal != 0.5) { sickAllowed = Convert.ToInt32(Math.Floor(sickAllowed)); }
