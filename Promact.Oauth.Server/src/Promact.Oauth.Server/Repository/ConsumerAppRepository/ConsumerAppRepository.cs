@@ -12,6 +12,8 @@ using IdentityServer4.EntityFramework.Entities;
 using IdentityServer4.Models;
 using IdentityServer4.EntityFramework.Mappers;
 using IdentityServer4.EntityFramework.DbContexts;
+using Promact.Oauth.Server.StringLliterals;
+using Microsoft.Extensions.Options;
 
 namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
 {
@@ -24,12 +26,13 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         private readonly IDataRepository<ClientSecret, ConfigurationDbContext> _secret;
         private readonly IDataRepository<ClientRedirectUri, ConfigurationDbContext> _redirectUri;
         private readonly IDataRepository<ClientPostLogoutRedirectUri, ConfigurationDbContext> _logoutRedirectUri;
+        private readonly StringLiterals _stringLiterals;
         #endregion
 
         #region "Constructor"
         public ConsumerAppRepository(IStringConstant stringConstant, IDataRepository<IdentityServer4.EntityFramework.Entities.Client, ConfigurationDbContext> clientDataRepository,
             IDataRepository<ClientScope, ConfigurationDbContext> scopes, IDataRepository<ClientSecret, ConfigurationDbContext> secret, IDataRepository<ClientRedirectUri, ConfigurationDbContext> redirectUri,
-            IDataRepository<ClientPostLogoutRedirectUri, ConfigurationDbContext> logoutRedirectUri)
+            IDataRepository<ClientPostLogoutRedirectUri, ConfigurationDbContext> logoutRedirectUri, IOptionsMonitor<StringLiterals> stringLiterals)
         {
             _stringConstant = stringConstant;
             _clientDataRepository = clientDataRepository;
@@ -37,6 +40,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
             _secret = secret;
             _redirectUri = redirectUri;
             _logoutRedirectUri = logoutRedirectUri;
+            _stringLiterals = stringLiterals.CurrentValue;
         }
 
         #endregion
@@ -121,12 +125,12 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
             var random = new Random();
             if (isAuthId)
             {
-                return new string(Enumerable.Repeat(_stringConstant.CapitalAlphaNumericString, 15)
+                return new string(Enumerable.Repeat(_stringLiterals.CapitalAlphaNumericString, 15)
                   .Select(s => s[random.Next(s.Length)]).ToArray());
             }
             else
             {
-                return new string(Enumerable.Repeat(_stringConstant.AlphaNumericString, 30)
+                return new string(Enumerable.Repeat(_stringLiterals.AlphaNumericString, 30)
                   .Select(s => s[random.Next(s.Length)]).ToArray());
             }
         }

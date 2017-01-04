@@ -1,0 +1,26 @@
+﻿{
+  "StringLiterals": {
+    "Projects": {
+      "title": "Project Related String Constant",
+      "DateFormate": "dd/MM/yyyy",
+      "TeamLeaderNotAssign": "Not Assigned"
+    },
+    "User": {
+      "title": "User Related String Constant",
+      "UserDetialTemplateFolderPath": "\\Template\\UserDetial.html",
+      "UserPassword": "${{Password}}$"
+    },
+    "ConsumerApp": {
+      "ATOZaTOz0TO9": "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
+      "ATOZ0TO9": "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+
+    },
+    "CommanStringConstant": {
+      "title": "Comman String Constant",
+      "RoleAdmin": "Admin",
+      "RoleTeamLeader": "TeamLeader",
+      "RoleEmployee": "Employee"
+
+    }
+  }
+}

@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using IdentityServer4;
 using Promact.Oauth.Server.Configuration.DefaultAPIResource;
 using Promact.Oauth.Server.Configuration.DefaultIdentityResource;
+using Promact.Oauth.Server.StringLliterals;
 
 namespace Promact.Oauth.Server
 {
@@ -43,6 +44,7 @@ namespace Promact.Oauth.Server
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile("stringliterals.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 
             if (env.IsDevelopment())
@@ -102,6 +104,7 @@ namespace Promact.Oauth.Server
             services.AddScoped<ICustomConsentService, CustomConsentService>();
             services.AddScoped<SecurityHeadersAttribute>();
 
+            services.Configure<StringLiterals>(Configuration.GetSection("StringLiterals"));
             services.AddMvc();
 
             // Add application services.
