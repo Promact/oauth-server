@@ -537,10 +537,10 @@ namespace Promact.Oauth.Server.Controllers
                 return NotFound();
             }
         }
-          
+
 
         /**
-        * @api {get} api/user/:uerid/teammeber 
+        * @api {get} api/user/:uerid/teammebers 
         * @apiVersion 1.0.0
         * @apiName GetTeamMembersAsync
         * @apiGroup User
@@ -574,7 +574,7 @@ namespace Promact.Oauth.Server.Controllers
        */
         [ServiceFilter(typeof(CustomAttribute))]
         [HttpGet]
-        [Route("{uerid}/teammebers")]
+        [Route("{userid}/teammebers")]
         public async Task<IActionResult> GetTeamMembersAsync(string userid)
         {
             try
