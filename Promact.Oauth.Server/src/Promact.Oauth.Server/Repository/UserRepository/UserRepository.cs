@@ -90,15 +90,15 @@ namespace Promact.Oauth.Server.Repository
             user.UserName = user.Email;
             user.CreatedBy = createdBy;
             user.CreatedDateTime = DateTime.UtcNow;
-            string password = GetRandomString();
+            string password = GetRandomString();//get readom password.
             var result = await _userManager.CreateAsync(user, password);
-            result = await _userManager.AddToRoleAsync(user, newUser.RoleName);
-            SendEmail(user, password);
+            result = await _userManager.AddToRoleAsync(user, newUser.RoleName);//add role of new user.
+            SendEmail(user, password);//send mail with generated password of new user. 
             return user.Id;
         }
 
         /// <summary>
-        /// this mthod is used to get all role
+        /// this method is used to get all role
         /// </summary>
         /// <returns></returns>
         public async Task<List<RolesAc>> GetRolesAsync()
@@ -151,8 +151,11 @@ namespace Promact.Oauth.Server.Repository
                 user.NumberOfSickLeave = editedUser.NumberOfSickLeave;
                 user.SlackUserName = editedUser.SlackUserName;
                 await _userManager.UpdateAsync(user);
-                IList<string> listofUserRole = await _userManager.GetRolesAsync(user);
+                //get user roles
+                IList<string> listofUserRole = await _userManager.GetRolesAsync(user); 
+                //remove user role 
                 var removeFromRole = await _userManager.RemoveFromRoleAsync(user, listofUserRole.First());
+                //add new role of user.
                 var addNewRole = await _userManager.AddToRoleAsync(user, editedUser.RoleName);
                 return user.Id;
             }
@@ -193,7 +196,7 @@ namespace Promact.Oauth.Server.Repository
             if (user != null)
             {
                 IdentityResult result = await _userManager.ChangePasswordAsync(user, passwordModel.OldPassword, passwordModel.NewPassword);
-                if (!result.Succeeded)
+                if (!result.Succeeded)//when password not changed successfully then error message will be added in changePasswordErrorModel
                 {
                     changePasswordErrorModel.ErrorMessage = result.Errors.FirstOrDefault().Description.ToString();
                 }
@@ -252,9 +255,9 @@ namespace Promact.Oauth.Server.Repository
         {
             var user = await _userManager.FindByIdAsync(id);
             string newPassword = GetRandomString();
-            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user); //genrate passsword reset token
             IdentityResult result = await _userManager.ResetPasswordAsync(user, code, newPassword);
-            if (result.Succeeded)
+            if (result.Succeeded)//if password is reset successfully,send mail with new password of user.
                 return SendEmail(user, newPassword);
             return false;
         }
@@ -364,6 +367,7 @@ namespace Promact.Oauth.Server.Repository
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == userId);
             return await GetUserAsync(user);
         }
+        
 
         /// <summary>
         /// Method to return user role
@@ -547,7 +551,7 @@ namespace Promact.Oauth.Server.Repository
         {
             string path = _hostingEnvironment.ContentRootPath + _stringConstant.UserDetialTemplateFolderPath;
             string finaleTemplate = "";
-            if (System.IO.File.Exists(path))
+            if (System.IO.File.Exists(path))//check user details template exists or not.
             {
                 finaleTemplate = System.IO.File.ReadAllText(path);
                 finaleTemplate = finaleTemplate.Replace(_stringConstant.UserEmail, user.Email).Replace(_stringConstant.UserPassword, password).Replace(_stringConstant.ResertPasswordUserName, user.FirstName);

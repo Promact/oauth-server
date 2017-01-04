@@ -98,7 +98,6 @@ namespace Promact.Oauth.Server.Tests
             string id = await _userRepository.AddUserAsync(_testUser, _stringConstant.RawFirstNameForTest);
             Assert.Throws<AggregateException>(() => _userRepository.GetByIdAsync(_stringConstant.UserIdForTest).Result);
         }
-        
 
         /// <summary>
         /// This test case used to check email exists
@@ -123,27 +122,6 @@ namespace Promact.Oauth.Server.Tests
         }
 
         /// <summary>
-        /// This test case used to check does not exists
-        /// </summary>
-        public async Task EmailDoesNotExists()
-        {
-            UserAc _testUser = new UserAc()
-            {
-                Email = _stringConstant.RawEmailIdForTest,
-                FirstName = _stringConstant.RawFirstNameForTest,
-                LastName = _stringConstant.RawLastNameForTest,
-                IsActive = true,
-                UserName = _stringConstant.RawEmailIdForTest,
-                SlackUserName = _stringConstant.RawFirstNameForTest,
-                JoiningDate = DateTime.UtcNow,
-                RoleName = _stringConstant.Employee
-            };
-            var result = await _userRepository.AddUserAsync(_testUser, _stringConstant.RawFirstNameForTest);
-            var exists = await _userRepository.CheckEmailIsExistsAsync(_stringConstant.EmailForTest);
-            Assert.Equal(false, exists);
-        }
-        
-        /// <summary>
         /// This test case used to find user by username
         /// </summary>
         [Fact, Trait("Category", "Required")]
@@ -164,7 +142,7 @@ namespace Promact.Oauth.Server.Tests
             var exists = await _userRepository.FindByUserNameAsync(_stringConstant.RawEmailIdForTest);
             Assert.Equal(true, exists);
         }
-
+        
         /// <summary>
         /// This test case used to check exception condition
         /// </summary>
@@ -187,6 +165,7 @@ namespace Promact.Oauth.Server.Tests
             Assert.Throws<AggregateException>(() => _userRepository.FindByUserNameAsync(_stringConstant.UserNameForTest).Result);
         }
         
+      
 
         /// <summary>
         /// This test case is used for adding new user
@@ -237,8 +216,42 @@ namespace Promact.Oauth.Server.Tests
             var editedUser = _userManager.FindByIdAsync(id).Result;
             Assert.Equal(_stringConstant.FirstName, editedUser.FirstName);
         }
-        
-       
+
+
+        //    var password = await _userRepository.ChangePassword(new ChangePasswordViewModel
+        //    {
+        //        OldPassword = _stringConstant.OldPassword,
+        //        NewPassword = _stringConstant.NewPassword,
+        //        ConfirmPassword = _stringConstant.NewPassword,
+        //        Email = user.Email
+        //    });
+        //    var passwordMatch = await _userManager.CheckPasswordAsync(user, password);
+        //    Assert.Equal(true, passwordMatch);
+        //}
+
+        /// <summary>
+        /// Test case use for getting user details by id
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task UserDetailById()
+        {
+            UserAc _testUser = new UserAc()
+            {
+                Email = _stringConstant.RawEmailIdForTest,
+                FirstName = _stringConstant.RawFirstNameForTest,
+                LastName = _stringConstant.RawLastNameForTest,
+                IsActive = true,
+                UserName = _stringConstant.RawEmailIdForTest,
+                SlackUserName = _stringConstant.RawFirstNameForTest,
+                SlackUserId = _stringConstant.RawFirstNameForTest,
+                JoiningDate = DateTime.UtcNow,
+                RoleName = _stringConstant.Employee
+            };
+            string id = await _userRepository.AddUserAsync(_testUser, _stringConstant.RawFirstNameForTest);
+            var user = await _userRepository.UserDetailByIdAsync(id);
+            Assert.Equal(user.Email, _testUser.Email);
+        }
+
         /// <summary>
         /// Test case use for getting TeamLeader's details by users slack name
         /// </summary>

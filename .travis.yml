@@ -6,7 +6,7 @@ mono: none
 os: linux		
 dist: trusty		
 sudo: required
-dotnet: 1.0.0-preview2-003131
+dotnet: 1.0.0-preview2-1-003177
 cache:
   yarn: true
   directories:

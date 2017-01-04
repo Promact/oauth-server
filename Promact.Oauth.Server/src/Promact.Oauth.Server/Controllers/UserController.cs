@@ -321,13 +321,7 @@ namespace Promact.Oauth.Server.Controllers
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
         * {
-        *     "newPassword":"newPassword"
-        * }
-        * @apiError UserNotFound the slack user was not found.
-        * @apiErrorExample {json} Error-Response:
-        * HTTP/1.1 404 Not Found
-        * {
-        *   "error": "UserNotFound"
+        *     ErrorMessage : if password is valid, return empty otherwise error message.
         * }
         * @apiError UserNotFound the slack user was not found.
         * @apiErrorExample {json} Error-Response:
@@ -622,6 +616,7 @@ namespace Promact.Oauth.Server.Controllers
         {
             return Ok(await _userRepository.GetUserRoleAsync(userId));
         }
+          
 
         /**
         * @api {get} api/users/:userid/teammembers 
