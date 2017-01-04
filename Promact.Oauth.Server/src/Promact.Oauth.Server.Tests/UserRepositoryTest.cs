@@ -238,29 +238,7 @@ namespace Promact.Oauth.Server.Tests
             Assert.Equal(_stringConstant.FirstName, editedUser.FirstName);
         }
         
-        /// <summary>
-        /// Test case use for getting user details by id
-        /// </summary>
-        [Fact, Trait("Category", "Required")]
-        public async Task UserDetailById()
-        {
-            UserAc _testUser = new UserAc()
-            {
-                Email = _stringConstant.RawEmailIdForTest,
-                FirstName = _stringConstant.RawFirstNameForTest,
-                LastName = _stringConstant.RawLastNameForTest,
-                IsActive = true,
-                UserName = _stringConstant.RawEmailIdForTest,
-                SlackUserName = _stringConstant.RawFirstNameForTest,
-                SlackUserId = _stringConstant.RawFirstNameForTest,
-                JoiningDate = DateTime.UtcNow,
-                RoleName = _stringConstant.Employee
-            };
-            string id = await _userRepository.AddUserAsync(_testUser, _stringConstant.RawFirstNameForTest);
-            var user = await _userRepository.UserDetailByIdAsync(id);
-            Assert.Equal(user.Email, _testUser.Email);
-        }
-
+       
         /// <summary>
         /// Test case use for getting TeamLeader's details by users slack name
         /// </summary>
