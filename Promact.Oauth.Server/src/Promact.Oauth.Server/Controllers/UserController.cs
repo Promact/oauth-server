@@ -181,82 +181,14 @@ namespace Promact.Oauth.Server.Controllers
             }
         }
 
-        /**
-         * @api {post} api/users 
-         * @apiVersion 1.0.0
-         * @apiName RegisterUserAsync
-         * @apiParam {object} newUser  object
-         * @apiParamExample {json} Request-Example:
-         * {
-         *    "Id":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
-         *    "FirstName" : "John",
-         *    "Email" : "jone@promactinfo.com",
-         *    "LastName" : "Doe",
-         *    "SlackUserName" :"John",
-         *    "IsActive" : "True",
-         *    "JoiningDate" :"10-02-2016",
-         *    "NumberOfCasualLeave":0,
-         *    "NumberOfSickLeave":0,
-         *    "UniqueName":null,
-         *    "Role":null,
-         *    "UserName": null
-         * }
-         * @apiSuccessExample {json} Success-Response:
-         * HTTP/1.1 200 OK 
-         * {
-         *     true
-         * }
-         * @apiError InvalidApiRequestException , ArgumentNullException
-         * @apiErrorExample {json} Error-Response:
-         * HTTP/1.1 400 Bad Request
-         * {
-         *   "error": "InvalidApiRequestException"
-         *   "error": "ArgumentNullException"
-         * }
-         */
-        [HttpPost]
-        [Route("")]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> RegisterUserAsync([FromBody] UserAc newUser)
-        {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    string createdBy = _userManager.GetUserId(User);
-                    await _userRepository.AddUserAsync(newUser, createdBy);
-                    return Ok(true);
-                }
-                return BadRequest();
-            }
-            catch (InvalidApiRequestException apiEx)
-            {
-                //Exception raised from send grid api,when api token is not provided. 
-                _logger.LogError("Forgot Password mail not send " + apiEx.Message + apiEx.ToString());
-                if (apiEx.Errors.Length > 0)
-                {
-                    foreach (var error in apiEx.Errors)
-                        _logger.LogError("Forgot Password mail not send " + error);
-                }
-                return BadRequest();
-            }
-            catch (ArgumentNullException argEx)
-            {
-                _logger.LogError("Add User unsuccessful " + argEx.Message + argEx.ToString());
-                return BadRequest();
-            }
-        }
 
-
-        /**
-        * @api {put} api/users 
+/**
+        * @api {post} api/users 
         * @apiVersion 1.0.0
-        * @apiName UpdateUserAsync
-        * @apiGroup User
+        * @apiName RegisterUserAsync
         * @apiParam {object} newUser  object
         * @apiParamExample {json} Request-Example:
-        *  "Id":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
-        *   {
+        * {
         *    "Id":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
         *    "FirstName" : "John",
         *    "Email" : "jone@promactinfo.com",
@@ -269,20 +201,75 @@ namespace Promact.Oauth.Server.Controllers
         *    "UniqueName":null,
         *    "Role":null,
         *    "UserName": null
-        *   }
+        * }
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
         * {
         *     true
         * }
-        * @apiError SlackUserNotFound the slack user was not found.
+        * @apiError BadRequest
         * @apiErrorExample {json} Error-Response:
-        * HTTP/1.1 404 Not Found
+        * HTTP/1.1 400 Bad Request
         * {
-        *   "error": "SlackUserNotFound"
+        *   "error": "Problems parsing JSON object"
         * }
         */
-        [HttpPut]
+        [HttpPost]
+        [Route("")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> RegisterUserAsync([FromBody] UserAc newUser)
+        {           
+                if (ModelState.IsValid)
+                {
+                    string createdBy = _userManager.GetUserId(User);
+                    await _userRepository.AddUserAsync(newUser, createdBy);
+                    return Ok(true);
+                }
+                return BadRequest();
+        }
+
+
+    /**
+    * @api {put} api/users 
+    * @apiVersion 1.0.0
+    * @apiName UpdateUserAsync
+    * @apiGroup User
+    * @apiParam {object} newUser  object
+    * @apiParamExample {json} Request-Example:
+    *  "Id":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
+    *   {
+    *    "Id":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
+    *    "FirstName" : "John",
+    *    "Email" : "jone@promactinfo.com",
+    *    "LastName" : "Doe",
+    *    "SlackUserName" :"John",
+    *    "IsActive" : "True",
+    *    "JoiningDate" :"10-02-2016",
+    *    "NumberOfCasualLeave":0,
+    *    "NumberOfSickLeave":0,
+    *    "UniqueName":null,
+    *    "Role":null,
+    *    "UserName": null
+    *   }
+    * @apiSuccessExample {json} Success-Response:
+    * HTTP/1.1 200 OK 
+    * {
+    *     true
+    * }
+    * @apiError BadRequest
+    * @apiErrorExample {json} Error-Response:
+    * HTTP/1.1 400 Bad Request
+    * {
+    *   "error": "Problems parsing JSON object"
+    * }
+    * @apiError SlackUserNotFound the slack user was not found.
+    * @apiErrorExample {json} Error-Response:
+    * HTTP/1.1 404 Not Found
+    * {
+    *   "error": "SlackUserNotFound"
+    * }
+    */
+      [HttpPut]
         [Route("{id}")]
         [Authorize(Roles = "Admin,Employee")]
         public async Task<IActionResult> UpdateUserAsync(string id, [FromBody] UserAc editedUser)
@@ -552,40 +539,14 @@ namespace Promact.Oauth.Server.Controllers
           * {
           *     "true"
           * }
-          * @apiError InvalidApiRequestException , ArgumentNullException
-          * @apiErrorExample {json} Error-Response:
-          * HTTP/1.1 400 Bad Request
-          * {
-          *   "error": "InvalidApiRequestException"
-          *   "error": "ArgumentNullException"
-          * }
           */
         [HttpGet]
         [Route("email/{id}/send")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ReSendMailAsync(string id)
         {
-            try
-            {
-                _logger.LogInformation("Resend Mail");
-                return Ok(await _userRepository.ReSendMailAsync(id));
-            }
-            catch (InvalidApiRequestException apiEx)
-            {
-                _logger.LogError("Forgot Password mail not send " + apiEx.Message + apiEx.ToString());
-                if (apiEx.Errors.Length > 0)
-                {
-                    foreach (var error in apiEx.Errors)
-                        _logger.LogInformation("Forgot Password mail not send " + error);
-                }
-                return BadRequest();
-            }
-            catch (ArgumentNullException argEx)
-            {
-                _logger.LogError("Resend Mail unsuccessful " + argEx.Message + argEx.ToString());
-                return BadRequest();
-            }
-
+                 return Ok(await _userRepository.ReSendMailAsync(id));
+           
         }
 
 
