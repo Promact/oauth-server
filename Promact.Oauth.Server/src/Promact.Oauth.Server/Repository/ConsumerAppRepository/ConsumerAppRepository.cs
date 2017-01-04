@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Promact.Oauth.Server.Constants;
 using Promact.Oauth.Server.ExceptionHandler;
+using Promact.Oauth.Server.StringLliterals;
+using Microsoft.Extensions.Options;
 
 namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
 {
@@ -18,15 +20,16 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
 
         private readonly IDataRepository<ConsumerApps> _appsDataRepository;
         private readonly IMapper _mapperContext;
-        private readonly IStringConstant _stringConstant;
+        private readonly StringLiterals _stringLiterals;
         #endregion
 
         #region "Constructor"
-        public ConsumerAppRepository(IDataRepository<ConsumerApps> appsDataRepository, IMapper mapperContext, IStringConstant stringConstant)
+        public ConsumerAppRepository(IDataRepository<ConsumerApps> appsDataRepository, IMapper mapperContext
+            , IOptionsMonitor<StringLiterals> stringLiterals)
         {
             _appsDataRepository = appsDataRepository;
             _mapperContext = mapperContext;
-            _stringConstant = stringConstant;
+            _stringLiterals = stringLiterals.CurrentValue;
         }
 
         #endregion
@@ -122,12 +125,12 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
             var random = new Random();
             if (isAuthId)
             {
-                return new string(Enumerable.Repeat(_stringConstant.ATOZ0TO9, 15)
+                return new string(Enumerable.Repeat(_stringLiterals.ConsumerApp.ATOZ0TO9, 15)
                   .Select(s => s[random.Next(s.Length)]).ToArray());
             }
             else
             {
-                return new string(Enumerable.Repeat(_stringConstant.ATOZaTOz0TO9, 30)
+                return new string(Enumerable.Repeat(_stringLiterals.ConsumerApp.ATOZaTOz0TO9, 30)
                   .Select(s => s[random.Next(s.Length)]).ToArray());
             }
 
