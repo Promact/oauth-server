@@ -372,11 +372,13 @@ namespace Promact.Oauth.Server.Repository
         /// <returns></returns>
         public async Task<List<UserRoleAc>> GetUserRoleAsync(string userId)
         {
-            ApplicationUser applicationUser = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.Id == userId);
+            ApplicationUser applicationUser = await _userManager.FindByIdAsync(userId);
             var userRole = (await _userManager.GetRolesAsync(applicationUser)).First();
             List<UserRoleAc> userRoleAcList = new List<UserRoleAc>();
+            userRole = _stringConstant.TeamLeader;
             if (userRole == _stringConstant.RoleAdmin)
             {
+                //getting the all user infromation. 
                 var userRoleAdmin = new UserRoleAc(applicationUser.Id, applicationUser.UserName, applicationUser.FirstName + " " + applicationUser.LastName, userRole);
                 userRoleAcList.Add(userRoleAdmin);
                 var userList = await _applicationUserDataRepository.GetAll().ToListAsync();
@@ -392,8 +394,10 @@ namespace Promact.Oauth.Server.Repository
             }
             else
             {
-                var project = await _projectDataRepository.FirstOrDefaultAsync(x => x.TeamLeaderId == applicationUser.Id);
-                var userRoleAc = new UserRoleAc(applicationUser.Id, applicationUser.UserName, applicationUser.FirstName + " " + applicationUser.LastName, (project != null ? _stringConstant.RoleTeamLeader : _stringConstant.RoleEmployee));
+                //check login user is teamLeader or not.
+                var isProjectExists = await _projectDataRepository.FirstOrDefaultAsync(x => x.TeamLeaderId == applicationUser.Id);
+                //If isProjectExists is null then user role is employee other wise user role is teamleader. 
+                var userRoleAc = new UserRoleAc(applicationUser.Id, applicationUser.UserName, applicationUser.FirstName + " " + applicationUser.LastName, (isProjectExists != null ? _stringConstant.RoleTeamLeader : _stringConstant.RoleEmployee));
                 userRoleAcList.Add(userRoleAc);
             }
             return userRoleAcList;
@@ -406,13 +410,15 @@ namespace Promact.Oauth.Server.Repository
         /// <returns></returns>
         public async Task<List<UserRoleAc>> GetTeamMembersAsync(string userId)
         {
-            ApplicationUser applicationUser = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.Id == userId);
+            ApplicationUser applicationUser = await _userManager.FindByIdAsync(userId);
             var userRolesAcList = new List<UserRoleAc>();
             var userRoleAc = new UserRoleAc(applicationUser.Id, applicationUser.UserName, applicationUser.FirstName + " " + applicationUser.LastName, _stringConstant.RoleTeamLeader);
             userRolesAcList.Add(userRoleAc);
-            var project = await _projectDataRepository.FirstOrDefaultAsync(x => x.TeamLeaderId == applicationUser.Id);
+            //getting teamLeader Project.
+            var project = await _projectDataRepository.FirstAsync(x => x.TeamLeaderId == applicationUser.Id);
+            //getting user list of particular project.
             var projectUserList = await _projectUserDataRepository.FetchAsync(x => x.ProjectId == project.Id);
-
+            //getting list of user infromation.
             foreach (var projectUser in projectUserList)
             {
                 var users = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.Id == projectUser.UserId);
