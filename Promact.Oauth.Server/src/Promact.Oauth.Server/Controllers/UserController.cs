@@ -513,7 +513,15 @@ namespace Promact.Oauth.Server.Controllers
         [Route("{userId}/role")]
         public async Task<IActionResult> GetUserRoleAsync(string userId)
         {
-            return Ok(await _userRepository.GetUserRoleAsync(userId));
+            try
+            {
+
+                return Ok(await _userRepository.GetUserRoleAsync(userId));
+            }
+            catch (UserRoleNotFound)
+            {
+                return NotFound();
+            }
         }
 
 
@@ -546,10 +554,18 @@ namespace Promact.Oauth.Server.Controllers
         */
         [Authorize(Policy = ReadUser)]
         [HttpGet]
-        [Route("{userId}/teammembers")]
-        public async Task<IActionResult> GetTeamMembersAsync(string userId)
+        [Route("{userid}/teammebers")]
+        public async Task<IActionResult> GetTeamMembersAsync(string userid)
         {
-            return Ok(await _userRepository.GetTeamMembersAsync(userId));
+            try
+            {
+                return Ok(await _userRepository.GetTeamMembersAsync(userid));
+            }
+            catch (UserRoleNotFound)
+            {
+                return NotFound();
+            }
+
         }
 
         /**
