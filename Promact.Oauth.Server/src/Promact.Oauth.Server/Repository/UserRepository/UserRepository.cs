@@ -108,7 +108,6 @@ namespace Promact.Oauth.Server.Repository
             return _mapperContext.Map<List<IdentityRole>, List<RolesAc>>(roles);
         }
 
-
         /// <summary>
         /// This method is used for getting the list of all users
         /// </summary>
