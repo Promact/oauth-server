@@ -15,6 +15,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using Promact.Oauth.Server.Constants;
+using Promact.Oauth.Server.StringLliterals;
 using Moq;
 using Promact.Oauth.Server.Models.ApplicationClasses;
 using System.Threading.Tasks;
@@ -63,6 +64,18 @@ namespace Promact.Oauth.Server.Tests
                 x.PromactOAuthUrl = _stringConstant.PromactErpUrlForTest;
                 x.SickLeave = 7;
             });
+
+            services.Configure<StringLiterals>(y =>
+            {
+                y.Account = new Account();
+                y.Account.EmailNotExists = "Email does not exist";
+                y.Account.SuccessfullySendMail = "We have sent you a link on {{emailaddress}} to reset password.Please check your email.";
+                y.ConsumerApp = new ConsumerApp();
+                y.ConsumerApp.ATOZ0TO9 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789Test";
+                y.ConsumerApp.ATOZaTOz0TO9 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            });
+
+            
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<PromactOauthDbContext>()
