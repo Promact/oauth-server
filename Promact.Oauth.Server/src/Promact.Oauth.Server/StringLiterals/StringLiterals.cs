@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Promact.Oauth.Server.StringLiterals
+﻿namespace Promact.Oauth.Server.StringLiterals
 {
-    
+
     public class ConsumerApp
     {
-        public string ATOZaTOz0TO9 { get; set; }
-        public string ATOZ0TO9 { get; set; }
+        public string AlphaNumericString { get; set; }
+        public string CapitalAlphaNumericString { get; set; }
     }
     public class Account
     {
