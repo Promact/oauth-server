@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Identity;
 using Promact.Oauth.Server.Constants;
 using Microsoft.Extensions.Logging;
 using Promact.Oauth.Server.ExceptionHandler;
-using Promact.Oauth.Server.StringLliterals;
 using Microsoft.Extensions.Options;
 
 namespace Promact.Oauth.Server.Repository.ProjectsRepository

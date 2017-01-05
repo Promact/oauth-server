@@ -14,7 +14,7 @@ using Promact.Oauth.Server.Constants;
 using Microsoft.AspNetCore.Hosting;
 using System;
 using Exceptions;
-using Promact.Oauth.Server.StringLliterals;
+using Promact.Oauth.Server.StringLiterals;
 using Microsoft.Extensions.Options;
 
 namespace Promact.Oauth.Server.Controllers
@@ -29,7 +29,7 @@ namespace Promact.Oauth.Server.Controllers
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
         private readonly IStringConstant _stringConstant;
-        private readonly StringLiterals _stringLiterals;
+        private readonly StringLiteral _stringLiterals;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
@@ -39,7 +39,7 @@ namespace Promact.Oauth.Server.Controllers
             ILoggerFactory loggerFactory,
             IHostingEnvironment hostingEnvironment,
             IStringConstant stringConstant,
-            IOptionsMonitor<StringLiterals> stringLiterals)
+            IOptionsMonitor<StringLiteral> stringLiterals)
         {
             _userManager = userManager;
             _hostingEnvironment = hostingEnvironment;
