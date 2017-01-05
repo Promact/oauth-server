@@ -17,12 +17,8 @@
         string CallbackUrl { get; }
         string CreatedBy { get; }
         string UpdateBy { get; }
-        string CapitalAlphaNumericString { get; }
-        string AlphaNumericString { get; }
-        string EmailNotExists { get; }
         string ForgotPassword { get; }
         string LoginCredentials { get; }
-        string SuccessfullySendMail { get; }
         string ResetPasswordLink { get; }
         string ResertPasswordUserName { get; }
         string ForgotPasswordTemplateFolderPath { get; }

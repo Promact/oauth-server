@@ -1,0 +1,14 @@
+﻿{
+  "StringLiterals": {
+    "ConsumerApp": {
+      "ATOZaTOz0TO9": "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
+      "ATOZ0TO9": "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789Test"
+
+    },
+    "Account": {
+      "EmailNotExists": "Email does not exist",
+      "SuccessfullySendMail": "We have sent you a link on {{emailaddress}} to reset password.Please check your email."
+    }
+   
+  }
+}
