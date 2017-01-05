@@ -31,10 +31,8 @@ namespace Promact.Oauth.Server.Services
 
         public void SendEmail(string email, string subject, string message)
         {
-            _logger.LogInformation("Start Email Send Method in Message Service");
             // Plug in your email service here to send an email.
             var msg = new MimeMessage();
-            _logger.LogInformation("Email Credential 1");
             msg.From.Add(new MailboxAddress("Promact", _emailCrednetials.Value.From));
             msg.To.Add(new MailboxAddress("User", email));
             msg.Subject = subject;
@@ -43,13 +41,10 @@ namespace Promact.Oauth.Server.Services
             msg.Body = bodyBuilder.ToMessageBody();
             using (var smtp = new SmtpClient())
             {
-                _logger.LogInformation("Smtp Connect");
                 smtp.Connect(_emailCrednetials.Value.Host, _emailCrednetials.Value.Port, GetSecureSocketOptions());
-                _logger.LogInformation("Authenticate");
                 smtp.Authenticate(credentials: new NetworkCredential(_emailCrednetials.Value.UserName, _emailCrednetials.Value.Password));
                 smtp.Send(msg, CancellationToken.None);
                 smtp.Disconnect(true, CancellationToken.None);
-                _logger.LogInformation("SendEmail Mail Successfully");
             }
         }
         
