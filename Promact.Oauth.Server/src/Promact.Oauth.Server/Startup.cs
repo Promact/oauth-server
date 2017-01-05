@@ -44,7 +44,7 @@ namespace Promact.Oauth.Server
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile("StringLliterals/stringliterals.json", optional: true, reloadOnChange: true)
+                .AddJsonFile("StringLiterals/stringliterals.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 
             if (env.IsDevelopment())
@@ -104,7 +104,7 @@ namespace Promact.Oauth.Server
             services.AddScoped<ICustomConsentService, CustomConsentService>();
             services.AddScoped<SecurityHeadersAttribute>();
 
-            services.Configure<StringLiterals>(Configuration.GetSection("StringLiterals"));
+            services.Configure<StringLiteral>(Configuration.GetSection("StringLiterals"));
             services.AddMvc();
 
             // Add application services.
