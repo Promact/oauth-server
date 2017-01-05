@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Promact.Oauth.Server.Constants;
 using Promact.Oauth.Server.ExceptionHandler;
-using Promact.Oauth.Server.StringLliterals;
+using Promact.Oauth.Server.StringLiterals;
 using Microsoft.Extensions.Options;
 
 namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
@@ -20,12 +20,12 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
 
         private readonly IDataRepository<ConsumerApps> _appsDataRepository;
         private readonly IMapper _mapperContext;
-        private readonly StringLiterals _stringLiterals;
+        private readonly StringLiteral _stringLiterals;
         #endregion
 
         #region "Constructor"
         public ConsumerAppRepository(IDataRepository<ConsumerApps> appsDataRepository, IMapper mapperContext
-            , IOptionsMonitor<StringLiterals> stringLiterals)
+            , IOptionsMonitor<StringLiteral> stringLiterals)
         {
             _appsDataRepository = appsDataRepository;
             _mapperContext = mapperContext;
