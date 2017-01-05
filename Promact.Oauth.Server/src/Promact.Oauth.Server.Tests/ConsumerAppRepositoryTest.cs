@@ -28,7 +28,7 @@ namespace Promact.Oauth.Server.Tests
             _consumerAppRespository = serviceProvider.GetService<IConsumerAppRepository>();
             _clientContext = serviceProvider.GetService<IDataRepository<IdentityServer4.EntityFramework.Entities.Client, ConfigurationDbContext>>();
             _stringConstant = serviceProvider.GetService<IStringConstant>();
-            _stringLiterals = serviceProvider.GetService<IOptionsMonitor<StringLiterals>>();
+            _stringLiterals = serviceProvider.GetService<IOptionsMonitor<StringLiteral>>();
         }
         #endregion
 
