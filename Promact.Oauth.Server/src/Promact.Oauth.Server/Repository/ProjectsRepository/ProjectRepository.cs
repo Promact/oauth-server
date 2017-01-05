@@ -11,14 +11,13 @@ using Microsoft.AspNetCore.Identity;
 using Promact.Oauth.Server.Constants;
 using Microsoft.Extensions.Logging;
 using Promact.Oauth.Server.ExceptionHandler;
-using Microsoft.Extensions.Options;
+
 
 namespace Promact.Oauth.Server.Repository.ProjectsRepository
 {
     public class ProjectRepository : IProjectRepository
     {
         #region "Private Variable(s)"
-        
         private readonly IDataRepository<Project> _projectDataRepository;
         private readonly IDataRepository<ProjectUser> _projectUserDataRepository;
         private readonly IDataRepository<ApplicationUser> _userDataRepository;
