@@ -14,6 +14,8 @@ using Promact.Oauth.Server.Constants;
 using Microsoft.AspNetCore.Hosting;
 using System;
 using Exceptions;
+using Promact.Oauth.Server.StringLliterals;
+using Microsoft.Extensions.Options;
 
 namespace Promact.Oauth.Server.Controllers
 {
@@ -26,6 +28,7 @@ namespace Promact.Oauth.Server.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
         private readonly IStringConstant _stringConstant;
+        private readonly StringLiterals _stringLiterals;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
@@ -33,7 +36,8 @@ namespace Promact.Oauth.Server.Controllers
             IEmailSender emailSender,
             ILoggerFactory loggerFactory,
             IHostingEnvironment hostingEnvironment,
-            IStringConstant stringConstant)
+            IStringConstant stringConstant,
+            IOptionsMonitor<StringLiterals> stringLiterals)
         {
             _userManager = userManager;
             _hostingEnvironment = hostingEnvironment;
@@ -41,6 +45,7 @@ namespace Promact.Oauth.Server.Controllers
             _emailSender = emailSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
             _stringConstant = stringConstant;
+            _stringLiterals = stringLiterals.CurrentValue;
         }
 
         //
@@ -273,7 +278,7 @@ namespace Promact.Oauth.Server.Controllers
                     var user = await _userManager.FindByNameAsync(model.Email);
                     if (user == null)
                     {
-                        @ViewData["EmailNotExist"] = _stringConstant.EmailNotExists;
+                        @ViewData["EmailNotExist"] = _stringLiterals.Account .EmailNotExists;
                         return View();
                     }
 
@@ -286,7 +291,7 @@ namespace Promact.Oauth.Server.Controllers
                         string finaleTemplate = System.IO.File.ReadAllText(path);
                         finaleTemplate = finaleTemplate.Replace(_stringConstant.ResetPasswordLink, resetPasswordLink).Replace(_stringConstant.ResertPasswordUserName, user.FirstName);
                         _emailSender.SendEmail(model.Email, _stringConstant.ForgotPassword, finaleTemplate);
-                        @ViewData["MailSentSuccessfully"] = _stringConstant.SuccessfullySendMail.Replace("{{emailaddress}}", "'" + model.Email + "'");
+                        @ViewData["MailSentSuccessfully"] = _stringLiterals.Account.SuccessfullySendMail.Replace("{{emailaddress}}", "'" + model.Email + "'");
                     }
                 }
                 // If we got this far, something failed, redisplay form
