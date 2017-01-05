@@ -9,6 +9,8 @@ using Promact.Oauth.Server.Models.ApplicationClasses;
 using System.Threading.Tasks;
 using Promact.Oauth.Server.Constants;
 using Promact.Oauth.Server.ExceptionHandler;
+using Promact.Oauth.Server.StringLliterals;
+using Microsoft.Extensions.Options;
 
 namespace Promact.Oauth.Server.Tests
 {
@@ -17,11 +19,13 @@ namespace Promact.Oauth.Server.Tests
         private readonly IConsumerAppRepository _consumerAppRespository;
         private readonly IDataRepository<ConsumerApps> _consumerAppsContext;
         private readonly IStringConstant _stringConstant;
+        private readonly IOptionsMonitor<StringLiterals> _stringLiterals;
         public ConsumerAppRepositoryTest() : base()
         {
             _consumerAppRespository = serviceProvider.GetService<IConsumerAppRepository>();
             _consumerAppsContext = serviceProvider.GetService<IDataRepository<ConsumerApps>>();
             _stringConstant = serviceProvider.GetService<IStringConstant>();
+            _stringLiterals = serviceProvider.GetService<IOptionsMonitor<StringLiterals>>();
         }
 
         #region Test Case
@@ -32,6 +36,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public async Task AddConsumerApps()
         {
+            
             ConsumerAppsAc consumerApp = GetConsumerApp();
             consumerApp.Name = _stringConstant.ConsumerAppNameDemo;
             int id = await _consumerAppRespository.AddConsumerAppsAsync(consumerApp);
