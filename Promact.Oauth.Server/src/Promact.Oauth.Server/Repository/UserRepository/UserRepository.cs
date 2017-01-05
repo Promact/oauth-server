@@ -379,7 +379,6 @@ namespace Promact.Oauth.Server.Repository
             ApplicationUser applicationUser = await _userManager.FindByIdAsync(userId);
             var userRole = (await _userManager.GetRolesAsync(applicationUser)).First();
             List<UserRoleAc> userRoleAcList = new List<UserRoleAc>();
-            userRole = _stringConstant.TeamLeader;
             if (userRole == _stringConstant.RoleAdmin)
             {
                 //getting the all user infromation. 
@@ -425,7 +424,7 @@ namespace Promact.Oauth.Server.Repository
             //getting list of user infromation.
             foreach (var projectUser in projectUserList)
             {
-                var users = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.Id == projectUser.UserId);
+                var users = await _applicationUserDataRepository.FirstAsync(x => x.Id == projectUser.UserId);
                 var usersRoleAc = new UserRoleAc(users.Id, users.UserName, users.FirstName + " " + users.LastName, _stringConstant.RoleAdmin);
                 userRolesAcList.Add(usersRoleAc);
             }
