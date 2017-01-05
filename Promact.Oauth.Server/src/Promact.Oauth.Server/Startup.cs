@@ -30,6 +30,7 @@ using IdentityServer4;
 using Promact.Oauth.Server.Configuration.DefaultAPIResource;
 using Promact.Oauth.Server.Configuration.DefaultIdentityResource;
 using Promact.Oauth.Server.StringLliterals;
+using Promact.Oauth.Server.StringLiterals;
 
 namespace Promact.Oauth.Server
 {
