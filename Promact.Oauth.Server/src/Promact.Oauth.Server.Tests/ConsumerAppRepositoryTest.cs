@@ -9,8 +9,6 @@ using Promact.Oauth.Server.Models.ApplicationClasses;
 using System.Threading.Tasks;
 using Promact.Oauth.Server.Constants;
 using Promact.Oauth.Server.ExceptionHandler;
-using Promact.Oauth.Server.StringLiterals;
-using Microsoft.Extensions.Options;
 
 namespace Promact.Oauth.Server.Tests
 {
@@ -19,13 +17,11 @@ namespace Promact.Oauth.Server.Tests
         private readonly IConsumerAppRepository _consumerAppRespository;
         private readonly IDataRepository<ConsumerApps> _consumerAppsContext;
         private readonly IStringConstant _stringConstant;
-        private readonly IOptionsMonitor<StringLiteral> _stringLiterals;
         public ConsumerAppRepositoryTest() : base()
         {
             _consumerAppRespository = serviceProvider.GetService<IConsumerAppRepository>();
             _consumerAppsContext = serviceProvider.GetService<IDataRepository<ConsumerApps>>();
             _stringConstant = serviceProvider.GetService<IStringConstant>();
-            _stringLiterals = serviceProvider.GetService<IOptionsMonitor<StringLiteral>>();
         }
 
         #region Test Case
