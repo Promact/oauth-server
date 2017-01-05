@@ -18,12 +18,8 @@
         public string CallbackUrl { get { return "https://promact.slack.com/messages/@roshni/"; } }
         public string CreatedBy { get { return "Ankit"; } }
         public string UpdateBy { get { return "Roshni"; } }
-        public string ATOZ0TO9 { get { return "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"; } }
-        public string ATOZaTOz0TO9 { get { return "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"; } }
-        public string EmailNotExists { get { return "Email does not exist"; } }
         public string ForgotPassword { get { return "Forgot Password"; } }
         public string LoginCredentials { get { return "Login Credentials"; } }
-        public string SuccessfullySendMail { get { return "We have sent you a link on {{emailaddress}} to reset password.Please check your email."; } }
         public string ResetPasswordLink { get { return "${{RestPassWordLink}}$"; } }
         public string ResertPasswordUserName { get { return "${{Username}}$"; } }
         public string ForgotPasswordTemplateFolderPath { get { return "\\Template\\ForgotPassword.html"; } }

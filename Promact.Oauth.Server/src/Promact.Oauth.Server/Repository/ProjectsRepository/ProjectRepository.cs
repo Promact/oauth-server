@@ -28,12 +28,11 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         private readonly IStringConstant _stringConstant;
         private readonly IMapper _mapperContext;
         private readonly ILogger<ProjectRepository> _logger;
-        private readonly StringLiterals _stringLiterals;
         #endregion
 
         #region "Constructor"
         public ProjectRepository(IDataRepository<Project> projectDataRepository, IDataRepository<ProjectUser> projectUserDataRepository, IDataRepository<ApplicationUser> userDataRepository, UserManager<ApplicationUser> userManager, 
-            IMapper mapperContext,IStringConstant stringConstant, ILogger<ProjectRepository> logger, IOptionsMonitor<StringLiterals> stringLiterals)
+            IMapper mapperContext,IStringConstant stringConstant, ILogger<ProjectRepository> logger)
         {
             _projectDataRepository = projectDataRepository;
             _projectUserDataRepository = projectUserDataRepository;
@@ -42,7 +41,6 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             _userManager = userManager;
             _stringConstant = stringConstant;
             _logger = logger;
-            _stringLiterals = stringLiterals.CurrentValue;
         }
         #endregion
 
@@ -75,11 +73,11 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                 if (project.UpdatedDateTime == null)
                 { UpdatedDate = ""; }
                 else
-                { UpdatedDate = Convert.ToDateTime(project.UpdatedDateTime).ToString(_stringLiterals.Projects.DateFormate); }
+                { UpdatedDate = Convert.ToDateTime(project.UpdatedDateTime).ToString(_stringConstant.DateFormate); }
                 var projectAc = _mapperContext.Map<Project, ProjectAc>(project);
                 projectAc.TeamLeader = userAc;
                 projectAc.CreatedBy = CreatedBy;
-                projectAc.CreatedDate = project.CreatedDateTime.ToString(_stringLiterals.Projects.DateFormate);
+                projectAc.CreatedDate = project.CreatedDateTime.ToString(_stringConstant.DateFormate);
                 projectAc.UpdatedBy = UpdatedBy;
                 projectAc.UpdatedDate = UpdatedDate;
                 projectAcList.Add(projectAc);
