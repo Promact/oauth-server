@@ -116,12 +116,12 @@ call :ExecuteCmd dotnet restore "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Pr
 IF !ERRORLEVEL! NEQ 0 goto error
 
 ::6. Build Project
-call :ExecuteCmd dotnet build "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Promact.Oauth.Server\project.json" --output "%DEPLOYMENT_TEMP%"  --configuration Release --framework netcoreapp1.0
+call :ExecuteCmd dotnet build "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Promact.Oauth.Server\project.json" --output "%DEPLOYMENT_TEMP%"  --configuration Release --framework netcoreapp1.1
 IF !ERRORLEVEL! NEQ 0 goto error
 
 
 ::7. Publish Project 
-call :ExecuteCmd dotnet publish "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Promact.Oauth.Server\project.json" --output "%DEPLOYMENT_TEMP%" --configuration Release --runtime win10-x64
+call :ExecuteCmd dotnet publish "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Promact.Oauth.Server\project.json" --output "%DEPLOYMENT_TEMP%" --configuration Release --runtime win10-x64 --framework netcoreapp1.1
 IF !ERRORLEVEL! NEQ 0 goto error
 
 :: 8. KuduSync

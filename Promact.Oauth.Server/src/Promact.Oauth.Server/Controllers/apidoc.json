@@ -1,0 +1,10 @@
+{
+  "name": "promact-oauth-api",
+  "version": "1.0.0",
+  "description": "Promact OAuth server",
+  "title": "Promact OAuth server",  
+  "template": {
+  	"withCompare": true,
+  	"withGenerator": true
+  }
+}
