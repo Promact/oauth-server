@@ -120,13 +120,13 @@ IF !ERRORLEVEL! NEQ 0 goto error
 
 ::6. Build Project
 pushd "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Promact.Oauth.Server"
-call :ExecuteCmd dotnet build project.json --output "%DEPLOYMENT_TEMP%"  --configuration Release --framework netcoreapp1.1
+call :ExecuteCmd dotnet build project.json --output "%DEPLOYMENT_TEMP%"  --configuration Release -r win81-x86
 IF !ERRORLEVEL! NEQ 0 goto error
 popd
 
 ::7. Publish Project 
 pushd "%DEPLOYMENT_SOURCE%\Promact.Oauth.Server\src\Promact.Oauth.Server"
-call :ExecuteCmd dotnet publish project.json --output "%DEPLOYMENT_TEMP%" --configuration Release --runtime win10-x64 --framework netcoreapp1.1
+call :ExecuteCmd dotnet publish project.json --output "%DEPLOYMENT_TEMP%" --configuration Release --runtime win10-x64 -r win81-x86
 IF !ERRORLEVEL! NEQ 0 goto error
 popd
 
