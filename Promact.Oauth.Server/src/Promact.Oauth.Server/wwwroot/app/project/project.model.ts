@@ -6,9 +6,9 @@ export class ProjectModel {
     isActive: boolean;
     teamLeaderId: string;
     createdBy: string;
-    createdDate: string;
+    createdDate: Date;
     updatedBy: string;
-    updatedDate: string;
+    updatedDate: Date;
     uniqueName: string;
     teamLeader: UserModel;
     listUsers: Array<UserModel>;
