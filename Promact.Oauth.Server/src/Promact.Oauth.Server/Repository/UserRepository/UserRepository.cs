@@ -378,21 +378,21 @@ namespace Promact.Oauth.Server.Repository
             ApplicationUser applicationUser = await _userManager.FindByIdAsync(userId);
             var userRole = (await _userManager.GetRolesAsync(applicationUser)).First();
             List<UserRoleAc> userRoleAcList = new List<UserRoleAc>();
+            userRole = _stringConstant.RoleEmployee;
             if (userRole == _stringConstant.RoleAdmin)
             {
                 //getting the all user infromation. 
                 var userRoleAdmin = new UserRoleAc(applicationUser.Id, applicationUser.UserName, applicationUser.FirstName + " " + applicationUser.LastName, userRole);
                 userRoleAcList.Add(userRoleAdmin);
-                var userList = await _applicationUserDataRepository.GetAll().ToListAsync();
+                //getting employee role id. 
+                var roleId = (await _roleManager.Roles.SingleAsync(x=>x.Name==_stringConstant.RoleEmployee)).Id;
+                //getting active employee list.
+                var userList = await _applicationUserDataRepository.Fetch(y => y.IsActive == true && y.Roles.Any(x => x.RoleId == roleId)).ToListAsync();
                 foreach (var user in userList)
-                {
-                    var roles = (await _userManager.GetRolesAsync(user)).First();
-                    if (roles != null && roles == _stringConstant.RoleEmployee)
                     {
                         var userRoleAc = new UserRoleAc(user.Id, user.UserName, user.FirstName + " " + user.LastName, userRole);
                         userRoleAcList.Add(userRoleAc);
                     }
-                }
             }
             else
             {
@@ -419,7 +419,8 @@ namespace Promact.Oauth.Server.Repository
             //getting teamLeader Project.
             var project = await _projectDataRepository.FirstAsync(x => x.TeamLeaderId == applicationUser.Id);
             //getting user list of particular project.
-            var projectUserList = await _projectUserDataRepository.FetchAsync(x => x.ProjectId == project.Id);
+            var projectUserList = await _projectUserDataRepository.Fetch(x => x.ProjectId == project.Id).ToListAsync();
+
             //getting list of user infromation.
             foreach (var projectUser in projectUserList)
             {
@@ -442,7 +443,7 @@ namespace Promact.Oauth.Server.Repository
             var userAcList = new List<UserAc>();
             if (project != null)
             {
-                var projectUserList = await _projectUserDataRepository.FetchAsync(x => x.ProjectId == project.Id);
+                var projectUserList = await _projectUserDataRepository.Fetch(x => x.ProjectId == project.Id).ToListAsync();
                 foreach (var projectUser in projectUserList)
                 {
                     var user = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.Id == projectUser.UserId && x.SlackUserId != null);
@@ -470,7 +471,7 @@ namespace Promact.Oauth.Server.Repository
         {
             List<UserAc> projectUsers = new List<UserAc>();
             //Get projects for that specific teamleader
-            List<Project> projects = (await _projectDataRepository.FetchAsync(x => x.TeamLeaderId.Equals(teamLeaderId))).ToList();
+            List<Project> projects = await _projectDataRepository.Fetch(x => x.TeamLeaderId.Equals(teamLeaderId)).ToListAsync();
 
             if (projects.Any())
             {
@@ -486,7 +487,7 @@ namespace Promact.Oauth.Server.Repository
                 //Get details of employees for projects with that particular teamleader 
                 foreach (var project in projects)
                 {
-                    List<ProjectUser> projectUsersList = (await _projectUserRepository.FetchAsync(x => x.ProjectId == project.Id)).ToList();
+                    List<ProjectUser> projectUsersList = await _projectUserRepository.Fetch(x => x.ProjectId == project.Id).ToListAsync();
                     foreach (var projectUser in projectUsersList)
                     {
                         ApplicationUser user = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.Id.Equals(projectUser.UserId));
