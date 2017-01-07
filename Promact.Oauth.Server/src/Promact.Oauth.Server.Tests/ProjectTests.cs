@@ -97,7 +97,7 @@ namespace Promact.Oauth.Server.Tests
                 TeamLeader = new UserAc { FirstName = _stringConstant.FirstName },
                 TeamLeaderId = _stringConstant.TeamLeaderId,
                 CreatedBy = _stringConstant.CreatedBy,
-                CreatedDate = DateTime.Now,
+                CreatedDate = DateTime.UtcNow,
                 ApplicationUsers = userlist
             };
             await _projectRepository.EditProjectAsync(id, projectacSecound, _stringConstant.CreatedBy);
