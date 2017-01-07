@@ -139,7 +139,7 @@ namespace Promact.Oauth.Server.Tests
                 TeamLeader = new UserAc { FirstName = _stringConstant.FirstName },
                 TeamLeaderId = _stringConstant.TeamLeaderId,
                 CreatedBy = _stringConstant.CreatedBy,
-                CreatedDate = DateTime.Now.ToString(CultureInfo.InvariantCulture),
+                CreatedDate = DateTime.UtcNow,
                 ApplicationUsers = userlist
             };
             await _projectRepository.EditProjectAsync(id,projectacSecound, _stringConstant.CreatedBy);
@@ -196,7 +196,7 @@ namespace Promact.Oauth.Server.Tests
                 TeamLeader = new UserAc { FirstName = _stringConstant.FirstName },
                 TeamLeaderId = _stringConstant.TeamLeaderId,
                 CreatedBy = _stringConstant.CreatedBy,
-                CreatedDate = DateTime.Now.ToString(CultureInfo.InvariantCulture),
+                CreatedDate = DateTime.UtcNow,
                 ApplicationUsers = userlist
             };
             await _projectRepository.AddProjectAsync(projectacSecound, _stringConstant.CreatedBy);
