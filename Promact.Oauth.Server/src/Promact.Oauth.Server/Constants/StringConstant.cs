@@ -156,5 +156,12 @@
                 return "?refreshToken={0}&slackUserName={1}";
             }
         }
+        public string OAuthAfterLoginResponse
+        {
+            get
+            {
+                return "{0}?accessToken={1}&email={2}&slackUserId={3}&userId={4}";
+            }
+        }
     }
 }

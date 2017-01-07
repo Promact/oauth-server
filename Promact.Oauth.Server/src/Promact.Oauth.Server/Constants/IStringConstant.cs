@@ -105,5 +105,6 @@
         string SetSmtpSSL { get; }
         string HttpRequestExceptionErrorMessage { get; }
         string GetAppDetailsFromClientAsyncUrl { get; }
+        string OAuthAfterLoginResponse { get; }
     }
 }
