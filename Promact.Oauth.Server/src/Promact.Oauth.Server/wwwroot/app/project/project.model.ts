@@ -7,10 +7,8 @@ export class ProjectModel {
     teamLeaderId: string;
     createdBy: string;
     createdDate: Date;
-    createdOns: string;
     updatedBy: string;
     updatedDate: Date;
-    updatedOns: string;
     uniqueName: string;
     teamLeader: UserModel;
     listUsers: Array<UserModel>;
