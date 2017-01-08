@@ -232,7 +232,7 @@ namespace Promact.Oauth.Server.Tests
                 RoleName = _stringConstant.Employee
             };
             string id = await _userRepository.AddUser(_testUser, _stringConstant.RawFirstNameForTest);
-            var user = await _userRepository.TeamLeaderByUserSlackId(_stringConstant.RawFirstNameForTest);
+            var user = await _userRepository.TeamLeaderByUserSlackIdAsync(_stringConstant.RawFirstNameForTest);
             Assert.Equal(0, user.Count);
         }
 
@@ -266,7 +266,7 @@ namespace Promact.Oauth.Server.Tests
             };
             string id = await _userRepository.AddUser(_testUser, _stringConstant.RawFirstNameForTest);
             id = await _userRepository.AddUser(userLocal, _stringConstant.RawFirstNameForTest);
-            var user = await _userRepository.ManagementDetails();
+            var user = await _userRepository.ManagementDetailsAsync();
             Assert.Equal(1, user.Count);
         }
 
@@ -366,7 +366,7 @@ namespace Promact.Oauth.Server.Tests
                 RoleName = _stringConstant.Employee
             };
             var id = await _userRepository.AddUser(_testUser, _stringConstant.RawFirstNameForTest);
-            var result = await _userRepository.IsAdmin(_testUser.SlackUserId);
+            var result = await _userRepository.IsAdminAsync(_testUser.SlackUserId);
             Assert.Equal(false, result);
         }
 

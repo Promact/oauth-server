@@ -133,7 +133,7 @@
             }
         }
 
-        public string OAuthAfterLoginResponse
+        public string OAuthAfterLoginResponseUrl
         {
             get
             {
@@ -142,5 +142,19 @@
         }
         public string SetSmtpUnSecure { get { return "unsecured"; } }
         public string SetSmtpSSL { get { return "ssl"; } }
+        public string HttpRequestExceptionErrorMessage
+        {
+            get
+            {
+                return "An error occurred while sending the request to other server";
+            }
+        }
+        public string GetAppDetailsFromClientAsyncUrl
+        {
+            get
+            {
+                return "?refreshToken={0}&slackUserName={1}";
+            }
+        }
     }
 }
