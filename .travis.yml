@@ -6,10 +6,11 @@ mono: none
 os: linux		
 dist: trusty		
 sudo: required
-dotnet: 1.0.0-preview2-003131
-cache:  
+dotnet: 1.0.0-preview2-1-003177
+cache:
+  yarn: true
   directories:
-  - $HOME/build/Promact/promact-oauth-server/Promact.Oauth.Server/src/Promact.Oauth.Server/node_modules
+     - $HOME/build/Promact/promact-oauth-server/Promact.Oauth.Server/src/Promact.Oauth.Server/node_modules
 before_install:
 - export CHROME_BIN=chromium-browser
 - export DISPLAY=:99.0

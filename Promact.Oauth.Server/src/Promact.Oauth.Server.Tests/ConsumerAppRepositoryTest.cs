@@ -30,12 +30,12 @@ namespace Promact.Oauth.Server.Tests
         /// This test case for add Consumer Apps. -An
         /// </summary>
         [Fact, Trait("Category", "Required")]
-        public void AddConsumerApps()
+        public async Task AddConsumerApps()
         {
             ConsumerAppsAc consumerApp = GetConsumerApp();
             consumerApp.Name = _stringConstant.ConsumerAppNameDemo;
-            int id = _consumerAppRespository.AddConsumerAppsAsync(consumerApp).Result;
-            var consumerApps = _consumerAppsContext.FirstOrDefault(x => x.Id == id);
+            int id = await _consumerAppRespository.AddConsumerAppsAsync(consumerApp);
+            var consumerApps = await _consumerAppsContext.FirstOrDefaultAsync(x => x.Id == id);
             Assert.NotNull(consumerApps);
         }
 
@@ -43,11 +43,11 @@ namespace Promact.Oauth.Server.Tests
         /// This test case used for check consumer name is unique or not. -An
         /// </summary>
         [Fact, Trait("Category", "Required")]
-        public void ConsumerAppNameUnique()
+        public async Task ConsumerAppNameUnique()
         {
             ConsumerAppsAc consumerApp = GetConsumerApp();
             consumerApp.Name = _stringConstant.ConsumerAppNameDemo1;
-            int id = _consumerAppRespository.AddConsumerAppsAsync(consumerApp).Result;
+            int id = await _consumerAppRespository.AddConsumerAppsAsync(consumerApp);
             Assert.Throws<AggregateException>(() => _consumerAppRespository.AddConsumerAppsAsync(consumerApp).Result);
         }
 
@@ -55,13 +55,13 @@ namespace Promact.Oauth.Server.Tests
         /// This test case used for check app details fetch by valid client id.-An
         /// </summary>
         [Fact, Trait("Category", "Required")]
-        public void GetAppDetailsByClientId()
+        public async Task GetAppDetailsByClientId()
         {
             ConsumerAppsAc consumerApp = GetConsumerApp();
             consumerApp.Name = _stringConstant.ConsumerAppNameDemo2;
-            int id = _consumerAppRespository.AddConsumerAppsAsync(consumerApp).Result;
-            var consumerApps = _consumerAppsContext.FirstOrDefault(x => x.Id == id);
-            var getApplication = _consumerAppRespository.GetAppDetailsAsync(consumerApps.AuthId);
+            int id = await _consumerAppRespository.AddConsumerAppsAsync(consumerApp);
+            var consumerApps = await _consumerAppsContext.FirstOrDefaultAsync(x => x.Id == id);
+            var getApplication = await _consumerAppRespository.GetAppDetailsAsync(consumerApps.AuthId);
             Assert.NotNull(getApplication);
         }
 
@@ -69,12 +69,12 @@ namespace Promact.Oauth.Server.Tests
         /// This test case used for check app details not fetch by invalid client id.
         /// </summary>
         [Fact, Trait("Category", "Required")]
-        public void ApplicationDetailsFetchOnlyValidClientId()
+        public async Task ApplicationDetailsFetchOnlyValidClientId()
         {
             ConsumerAppsAc consumerApp = GetConsumerApp();
             consumerApp.Name = _stringConstant.ConsumerAppNameDemo3;
-            int id = _consumerAppRespository.AddConsumerAppsAsync(consumerApp).Result;
-            ConsumerApps getApplication = _consumerAppRespository.GetAppDetailsAsync("ABEDNGdeMR1234568F").Result;
+            int id = await _consumerAppRespository.AddConsumerAppsAsync(consumerApp);
+            ConsumerApps getApplication = await _consumerAppRespository.GetAppDetailsAsync("ABEDNGdeMR1234568F");
             Assert.Null(getApplication);
         }
 
@@ -84,11 +84,11 @@ namespace Promact.Oauth.Server.Tests
         /// </summary>
         /// 
         [Fact, Trait("Category", "Required")]
-        public void GetConsumerAppsById()
+        public async Task GetConsumerAppsById()
         {
             ConsumerAppsAc consumerApp = GetConsumerApp();
             consumerApp.Name = _stringConstant.ConsumerAppNameDemo4;
-            int id = _consumerAppRespository.AddConsumerAppsAsync(consumerApp).Result;
+            int id = await _consumerAppRespository.AddConsumerAppsAsync(consumerApp);
             Task<ConsumerApps> getApplication = _consumerAppRespository.GetConsumerAppByIdAsync(id);
             Assert.NotNull(getApplication.Result);
         }
@@ -99,11 +99,11 @@ namespace Promact.Oauth.Server.Tests
         /// </summary>
         ///  
         [Fact, Trait("Category", "Required")]
-        public void ConsumerAppGetByWrongId()
+        public async Task ConsumerAppGetByWrongId()
         {
             ConsumerAppsAc consumerApp = GetConsumerApp();
             consumerApp.Name = _stringConstant.ConsumerAppNameDemo5;
-            _consumerAppRespository.AddConsumerAppsAsync(consumerApp);
+            await _consumerAppRespository.AddConsumerAppsAsync(consumerApp);
             Assert.Throws<AggregateException>(() => _consumerAppRespository.GetConsumerAppByIdAsync(23213).Result);
         }
 
@@ -112,12 +112,12 @@ namespace Promact.Oauth.Server.Tests
         /// This test case used for check get list of apps. -An 
         /// </summary>
         [Fact, Trait("Category", "Required")]
-        public void GetListOfApps()
+        public async Task GetListOfApps()
         {
             ConsumerAppsAc consumerApp = GetConsumerApp();
             consumerApp.Name = _stringConstant.ConsumerAppNameDemo6;
-            int id = _consumerAppRespository.AddConsumerAppsAsync(consumerApp).Result;
-            List<ConsumerApps> listOfApps = _consumerAppRespository.GetListOfConsumerAppsAsync().Result;
+            int id = await _consumerAppRespository.AddConsumerAppsAsync(consumerApp);
+            List<ConsumerApps> listOfApps = await _consumerAppRespository.GetListOfConsumerAppsAsync();
             Assert.NotEmpty(listOfApps);
         }
 
@@ -125,16 +125,16 @@ namespace Promact.Oauth.Server.Tests
         /// This test case used for update consumer app. -An
         /// </summary>
         [Fact, Trait("Category", "Required")]
-        public void UpdateConsumerApps()
+        public async Task UpdateConsumerApps()
         {
             ConsumerAppsAc consumerApp = GetConsumerApp();
             consumerApp.Name = _stringConstant.ConsumerAppNameDemo7;
-            int id = _consumerAppRespository.AddConsumerAppsAsync(consumerApp).Result;
-            ConsumerApps consumerApps = _consumerAppRespository.GetConsumerAppByIdAsync(id).Result;
+            int id = await _consumerAppRespository.AddConsumerAppsAsync(consumerApp);
+            ConsumerApps consumerApps = await _consumerAppRespository.GetConsumerAppByIdAsync(id);
             consumerApps.Description = _stringConstant.ConsumerDescription;
             consumerApps.UpdatedDateTime = DateTime.Now;
             consumerApps.UpdatedBy = _stringConstant.UpdateBy;
-            int newId = _consumerAppRespository.UpdateConsumerAppsAsync(consumerApps).Result;
+            int newId = await _consumerAppRespository.UpdateConsumerAppsAsync(consumerApps);
             Assert.NotEqual(0, newId);
         }
 
@@ -142,15 +142,15 @@ namespace Promact.Oauth.Server.Tests
         /// This test case used for check consumer name is unique or not when update consumer app. -An
         /// </summary>
         [Fact, Trait("Category", "Required")]
-        public void CheckConsumerAppNameUnique()
+        public async Task CheckConsumerAppNameUnique()
         {
             ConsumerAppsAc consumerApp = GetConsumerApp();
             consumerApp.Name = _stringConstant.TwitterName;
-            _consumerAppRespository.AddConsumerAppsAsync(consumerApp);
+            await _consumerAppRespository.AddConsumerAppsAsync(consumerApp);
             ConsumerAppsAc newConsumerApp = GetConsumerApp();
             newConsumerApp.Name = _stringConstant.FaceBookName;
-            int id = _consumerAppRespository.AddConsumerAppsAsync(newConsumerApp).Result;
-            ConsumerApps oldConsumerApp = _consumerAppRespository.GetConsumerAppByIdAsync(id).Result;
+            int id = await _consumerAppRespository.AddConsumerAppsAsync(newConsumerApp);
+            ConsumerApps oldConsumerApp = await _consumerAppRespository.GetConsumerAppByIdAsync(id);
             oldConsumerApp.Name = _stringConstant.TwitterName;
             Assert.Throws<AggregateException>(() => _consumerAppRespository.UpdateConsumerAppsAsync(oldConsumerApp).Result);
         }

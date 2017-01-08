@@ -15,7 +15,6 @@ using Promact.Oauth.Server.Data_Repository;
 using Promact.Oauth.Server.Repository.ProjectsRepository;
 using Promact.Oauth.Server.Repository.ConsumerAppRepository;
 using Promact.Oauth.Server.Repository.OAuthRepository;
-using Promact.Oauth.Server.Repository.HttpClientRepository;
 using System.Net.Http;
 using Promact.Oauth.Server.AutoMapper;
 using AutoMapper;
@@ -88,7 +87,7 @@ namespace Promact.Oauth.Server
             services.AddScoped<IStringConstant, StringConstant>();
             services.AddScoped<HttpClient>();
 
-            services.AddScoped<IHttpClientRepository, HttpClientRepository>();
+            services.AddScoped<IHttpClientService, HttpClientService>();
 
 
             services.AddMvc();

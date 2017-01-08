@@ -20,16 +20,11 @@ import { Observable } from 'rxjs/Observable';
 let comp: UserListComponent;
 let fixture: ComponentFixture<UserListComponent>;
 
-let promise: TestBed;
-
 describe("User List Test", () => {
-     
-  
     class MockLoaderService { }
     const routes: Routes = [];
     beforeEach(async(() => {
-        this.promise = TestBed.configureTestingModule({
-            declarations: [RouterLinkStubDirective], //Declaration of mock routerLink used on page.
+        TestBed.configureTestingModule({
             imports: [UserModule, RouterModule.forRoot(routes, { useHash: true }) //Set LocationStrategy for component. 
             ],
             providers: [
@@ -43,14 +38,11 @@ describe("User List Test", () => {
     }));
 
 
-    it("should get default Users for company", done => {
-        this.promise.then(() => {
+    it("should get default Users for company", () => {
             let fixture = TestBed.createComponent(UserListComponent); //Create instance of component            
             let userListComponent = fixture.componentInstance;
             expect(userListComponent.getUsers());
-            done();
-        });
-    });
+      });
 });
 
 

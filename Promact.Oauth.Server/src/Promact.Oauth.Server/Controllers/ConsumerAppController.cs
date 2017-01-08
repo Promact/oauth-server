@@ -36,7 +36,7 @@ namespace Promact.Oauth.Server.Controllers
         /**
         * @api {post} api/consumerapp 
         * @apiVersion 1.0.0
-        * @apiName AddConsumerApp
+        * @apiName AddConsumerAppAsync
         * @apiGroup ConsumerApp
         * @apiParam {object} consumerAppsAc  object
         * @apiParamExample {json} Request-Example:  
@@ -59,7 +59,7 @@ namespace Promact.Oauth.Server.Controllers
         */
         [HttpPost]
         [Route("")]
-        public async Task<IActionResult> AddConsumerApp([FromBody]ConsumerAppsAc consumerAppsAc)
+        public async Task<IActionResult> AddConsumerAppAsync([FromBody]ConsumerAppsAc consumerAppsAc)
         {
             try
             {
@@ -76,7 +76,7 @@ namespace Promact.Oauth.Server.Controllers
         /**
         * @api {get} api/consumerapp 
         * @apiVersion 1.0.0
-        * @apiName GetConsumerApps
+        * @apiName GetConsumerAppsAsync
         * @apiGroup ConsumerApp
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
@@ -92,7 +92,7 @@ namespace Promact.Oauth.Server.Controllers
         */
         [HttpGet]
         [Route("")]
-        public async Task<IActionResult> GetConsumerApps()
+        public async Task<IActionResult> GetConsumerAppsAsync()
         {
             List<ConsumerApps> listOfApps = await _consumerAppRepository.GetListOfConsumerAppsAsync();
             return Ok(listOfApps);
@@ -100,9 +100,9 @@ namespace Promact.Oauth.Server.Controllers
 
 
         /**
-       * @api {get} api/consumerapp/id 
+       * @api {get} api/consumerapp/:id 
        * @apiVersion 1.0.0
-       * @apiName GetConsumerAppById
+       * @apiName GetConsumerAppByIdAsync
        * @apiGroup ConsumerApp
        * @apiParam {int} id
        * @apiParamExample {json} Request-Example:  
@@ -128,8 +128,8 @@ namespace Promact.Oauth.Server.Controllers
        * }
        */
         [HttpGet]
-        [Route("{id}")]
-        public async Task<IActionResult> GetConsumerAppById(int id)
+        [Route("{id:int}")]
+        public async Task<IActionResult> GetConsumerAppByIdAsync(int id)
         {
             try
             {
@@ -145,14 +145,19 @@ namespace Promact.Oauth.Server.Controllers
         /**
         * @api {put} api/consumerapp 
         * @apiVersion 1.0.0
-        * @apiName UpdateConsumerApp
+        * @apiName UpdateConsumerAppAsync
         * @apiGroup ConsumerApp
         * @apiParam {object} consumerAppsAc object
-        * @apiParamExample {json} Request-Example:  
+        * @apiParamExample {json} Request-Example: 
+        *    "Id":"1", 
         *       {
+        *             "Id":"1", 
         *             "Name":"ProjectName",
         *             "Description":"True",
-        *             "CallbackUrl":"1"
+        *             "CallbackUrl":"1",
+        *             "AuthSecret":"ABCDEEADweesd",
+        *             "AuthId":"ABCDE123XYZED45awadddfgdAWWEWFsfsFF",
+        *             
         *       } 
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
@@ -167,15 +172,16 @@ namespace Promact.Oauth.Server.Controllers
         * }
         */
         [HttpPut]
-        [Route("")]
-        public async Task<IActionResult> UpdateConsumerApp([FromBody]ConsumerAppsAc consumerAppsAc)
+        [Route("{id:int}")]
+        public async Task<IActionResult> UpdateConsumerAppAsync(int id, [FromBody]ConsumerAppsAc consumerAppsAc)
         {
             try
             {
-                ConsumerApps consumerApp = await _consumerAppRepository.GetConsumerAppByIdAsync(consumerAppsAc.Id);
+                ConsumerApps consumerApp = await _consumerAppRepository.GetConsumerAppByIdAsync(id);
                 consumerApp.Name = consumerAppsAc.Name;
                 consumerApp.CallbackUrl = consumerAppsAc.CallbackUrl;
                 consumerApp.Description = consumerAppsAc.Description;
+                consumerApp.UpdatedBy = _userManager.GetUserId(User);
                 consumerApp.UpdatedDateTime = DateTime.Now;
                 return Ok(await _consumerAppRepository.UpdateConsumerAppsAsync(consumerApp));
             }

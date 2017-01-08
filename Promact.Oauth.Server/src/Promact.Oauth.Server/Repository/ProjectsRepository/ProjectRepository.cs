@@ -300,7 +300,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// <returns>List of projects along with users</returns>
         public async Task<IList<ProjectAc>> GetProjectsWithUsersAsync()
         {
-            List<ProjectAc> projectAcList = new List<ProjectAc>();
+            List<ProjectAc> projectList = new List<ProjectAc>();
             var projects = await _projectDataRepository.GetAll().ToListAsync();
 
             foreach(var project in projects)
@@ -309,7 +309,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                 UserAc teamLeader = _mapperContext.Map<ApplicationUser, UserAc>(applicationUser);
                 teamLeader.Role = _stringConstant.TeamLeader;
 
-                List<ProjectUser> projectUsers = await _projectUserDataRepository.Fetch(x => x.ProjectId == project.Id).ToListAsync();
+                List<ProjectUser> projectUsers = (await _projectUserDataRepository.FetchAsync(x => x.ProjectId == project.Id)).ToList();
                 ProjectAc projectAc = _mapperContext.Map<Project, ProjectAc>(project);
                 projectAc.TeamLeader = teamLeader;
                 projectAc.CreatedDate = project.CreatedDateTime.ToString(_stringConstant.Format);
@@ -320,9 +320,9 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                     userAc.Role = _stringConstant.Employee;
                     projectAc.ApplicationUsers.Add(userAc);
                 }
-                projectAcList.Add(projectAc);
+                projectList.Add(projectAc);
             }
-            return projectAcList;
+            return projectList;
         }
 
         /// <summary>
@@ -353,7 +353,8 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
 
                 return projectAc;
             }
-            else {
+            else
+            {
                 throw new ProjectNotFound();
             }
         }

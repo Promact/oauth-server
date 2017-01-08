@@ -14,16 +14,13 @@ import { RouterLinkStubDirective } from '../../shared/mocks/mock.routerLink';
 import { ConsumerAppModule } from '../consumerapp.module';
 import { LoaderService } from '../../shared/loader.service';
 
-let promise: TestBed;
-
-
 describe('Consumer Add Test', () => {
     class MockLoaderService { }
     const routes: Routes = [];
 
     beforeEach(async(() => {
-        this.promise = TestBed.configureTestingModule({
-            declarations: [RouterLinkStubDirective], //Declaration of mock routerLink used on page.
+        TestBed.configureTestingModule({
+            //declarations: [RouterLinkStubDirective], //Declaration of mock routerLink used on page.
             imports: [ConsumerAppModule, RouterModule.forRoot(routes, { useHash: true }) //Set LocationStrategy for component. 
             ],
             providers: [
@@ -36,21 +33,18 @@ describe('Consumer Add Test', () => {
         }).compileComponents();
     }));
 
-    it("Added consumer app", done => {
-        this.promise.then(() => {
-            let fixture = TestBed.createComponent(ConsumerappAddComponent); //Create instance of component            
-            let consumerappAddComponent = fixture.componentInstance;
-            let toast = fixture.debugElement.injector.get(Md2Toast);
-            let consumerAppModel = new ConsumerAppModel();
-            let expectedconsumerappname = "slack";
-            consumerAppModel.Name = expectedconsumerappname;
-            consumerAppModel.Description = "slack description";
-            consumerAppModel.CallbackUrl = "www.google.com";
-            consumerAppModel.AuthSecret = "dsdsdsdsdsdsd";
-            consumerAppModel.AuthId = "ASASs5454545455";
-            consumerappAddComponent.submitApps(consumerAppModel);
-            expect(consumerAppModel.Name).toBe(expectedconsumerappname);
-            done();
-        });
+    it("Added consumer app", () => {
+        let fixture = TestBed.createComponent(ConsumerappAddComponent); //Create instance of component            
+        let consumerappAddComponent = fixture.componentInstance;
+        let toast = fixture.debugElement.injector.get(Md2Toast);
+        let consumerAppModel = new ConsumerAppModel();
+        let expectedconsumerappname = "slack";
+        consumerAppModel.Name = expectedconsumerappname;
+        consumerAppModel.Description = "slack description";
+        consumerAppModel.CallbackUrl = "www.google.com";
+        consumerAppModel.AuthSecret = "dsdsdsdsdsdsd";
+        consumerAppModel.AuthId = "ASASs5454545455";
+        consumerappAddComponent.submitApps(consumerAppModel);
+        expect(consumerAppModel.Name).toBe(expectedconsumerappname);
     });
 });

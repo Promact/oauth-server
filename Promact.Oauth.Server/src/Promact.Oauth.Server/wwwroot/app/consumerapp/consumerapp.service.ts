@@ -1,7 +1,7 @@
 ﻿import { Injectable } from '@angular/core';
-import {HttpService} from "../http.service";
+import { HttpService } from "../http.service";
 import 'rxjs/add/operator/toPromise';
-import {ConsumerAppModel} from './consumerapp-model';
+import { ConsumerAppModel } from './consumerapp-model';
 
 @Injectable()
 export class ConsumerAppService {
@@ -15,7 +15,7 @@ export class ConsumerAppService {
      * @param consumerAppsAc
      */
     addConsumerApps(consumerAppsAc: ConsumerAppModel) {
-        return this.httpService.post(this.consumerAppUrl , consumerAppsAc);
+        return this.httpService.post(this.consumerAppUrl, consumerAppsAc);
     }
 
     /*This method used for get consumer apps list*
@@ -39,6 +39,6 @@ export class ConsumerAppService {
      * @param consumerAppsAc
      */
     updateConsumerApps(consumerAppsAc: ConsumerAppModel) {
-        return this.httpService.put(this.consumerAppUrl,consumerAppsAc);
+        return this.httpService.put(this.consumerAppUrl + "/" + consumerAppsAc.Id, consumerAppsAc);
     }
 }
