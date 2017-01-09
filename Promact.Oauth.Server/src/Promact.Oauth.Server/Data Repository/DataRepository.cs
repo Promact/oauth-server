@@ -187,6 +187,17 @@ namespace Promact.Oauth.Server.Data_Repository
         }
 
         /// <summary>
+        /// Method fetches the first item from the datacontext based on the the supplied function.
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public async Task<T> FirstAsync(Expression<Func<T, bool>> predicate)
+        {
+            return await _dbSet.FirstAsync<T>(predicate);
+        }
+
+
+        /// <summary>
         /// Method Fetches the particular single record based on the supplied function.
         /// </summary>
         /// <param name="predicate"></param>
