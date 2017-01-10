@@ -25,7 +25,6 @@ namespace Promact.Oauth.Server.Tests
         private readonly IMapper _mapper;
         private readonly IStringConstant _stringConstant;
         private readonly IProjectRepository _projectRepository;
-        private readonly Mock<IHostingEnvironment> _mockHostingEnvironment;
         private readonly Mock<IEmailSender> _mockEmailService;
 
         private readonly IDataRepository<ProjectUser> _projectUserDataRepository;
@@ -37,7 +36,6 @@ namespace Promact.Oauth.Server.Tests
             _stringConstant = serviceProvider.GetService<IStringConstant>();
             _projectRepository = serviceProvider.GetService<IProjectRepository>();
             _projectUserDataRepository = serviceProvider.GetService<IDataRepository<ProjectUser>>();
-            _mockHostingEnvironment = serviceProvider.GetService<Mock<IHostingEnvironment>>();
             _mockEmailService = serviceProvider.GetService<Mock<IEmailSender>>();
         }
 
@@ -122,11 +120,13 @@ namespace Promact.Oauth.Server.Tests
         }
 
         /// <summary>
-        /// This test case is used to Calculate Allowed Leaves for past years
+        /// This test case is used to calculate allowed leaves for past years
         /// </summary>
         [Fact, Trait("Category", "Required")]
         public async Task CalculateAllowedLeavesForPastyears()
         {
+
+
             UserAc _testUser = new UserAc()
             {
                 Email = _stringConstant.RawEmailIdForTest,
@@ -181,8 +181,7 @@ namespace Promact.Oauth.Server.Tests
             var editedUser = _userManager.FindByIdAsync(id).Result;
             Assert.Equal(_stringConstant.FirstName, editedUser.FirstName);
         }
-
-
+      
 
         /// <summary>
         /// Test case is used to get user details by id
@@ -273,7 +272,7 @@ namespace Promact.Oauth.Server.Tests
             await _userRepository.ReSendMailAsync(id);
             _mockEmailService.VerifyAll();
         }
-        
+
         /// <summary>
         /// This test case is used to get all employees
         /// </summary>
@@ -314,9 +313,6 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public async Task GetUserRoleAdmin()
         {
-            var path = PathCreatorForEmailTemplate();
-            _mockHostingEnvironment.Setup(x => x.ContentRootPath).Returns(path);
-            _mockEmailService.Setup(x => x.SendEmail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
             UserAc _testUser = new UserAc()
             {
                 Email = _stringConstant.RawEmailIdForTest,
@@ -363,19 +359,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "A")]
         public async Task GetProjectUserBySlackChannelNameAsync()
         {
-            UserAc _testUser = new UserAc()
-            {
-                Email = _stringConstant.RawEmailIdForTest,
-                FirstName = _stringConstant.FirstName,
-                LastName = _stringConstant.RawLastNameForTest,
-                IsActive = true,
-                UserName = _stringConstant.RawEmailIdForTest,
-                SlackUserId = _stringConstant.RawFirstNameForTest,
-                JoiningDate = DateTime.UtcNow,
-                RoleName = _stringConstant.Admin
-            };
-            string userId = await _userRepository.AddUserAsync(_testUser, _stringConstant.CreatedBy);
-
+            string userId = await CreateMockAndUserAsync();
             ProjectAc projectac = new ProjectAc();
             projectac.Name = _stringConstant.Name;
             projectac.SlackChannelName = _stringConstant.SlackChannelName;
@@ -421,7 +405,7 @@ namespace Promact.Oauth.Server.Tests
             var projectUsers = await _userRepository.GetProjectUsersByTeamLeaderIdAsync(id);
             Assert.NotNull(projectUsers);
         }
-        
+
         #endregion
     }
 }
