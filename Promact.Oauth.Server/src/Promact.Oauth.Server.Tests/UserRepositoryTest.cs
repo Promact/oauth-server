@@ -570,7 +570,7 @@ namespace Promact.Oauth.Server.Tests
             var directory = Path.GetTempPath();
             var path = "Template";
             var createNewDirectory = directory + path;
-            Directory.CreateDirectory(directory);
+            Directory.CreateDirectory(createNewDirectory);
             var newPath = string.Format("{0}\\UserDetial.html", createNewDirectory);
             File.Create(newPath);
             return directory;
