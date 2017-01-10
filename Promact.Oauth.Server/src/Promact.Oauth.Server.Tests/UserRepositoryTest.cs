@@ -190,6 +190,50 @@ namespace Promact.Oauth.Server.Tests
         }
 
         /// <summary>
+        /// This test case is used to Calculate Allowed Leaves for past years
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task CalculateAllowedLeavesForPastyears()
+        {
+            UserAc _testUser = new UserAc()
+            {
+                Email = _stringConstant.RawEmailIdForTest,
+                FirstName = _stringConstant.RawFirstNameForTest,
+                LastName = _stringConstant.RawLastNameForTest,
+                IsActive = true,
+                UserName = _stringConstant.RawEmailIdForTest,
+                SlackUserName = _stringConstant.RawFirstNameForTest,
+                JoiningDate = DateTime.UtcNow.AddYears(-1),
+                RoleName = _stringConstant.Employee
+            };
+            string id = await _userRepository.AddUserAsync(_testUser, _stringConstant.CreatedBy);
+            var user = await _userManager.FindByIdAsync(id);
+            Assert.NotNull(id);
+        }
+
+        /// <summary>
+        /// This test case is used to Calculate Allowed Leaves for future year
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task CalculateAllowedLeavesForFutureyear()
+        {
+            UserAc _testUser = new UserAc()
+            {
+                Email = _stringConstant.RawEmailIdForTest,
+                FirstName = _stringConstant.RawFirstNameForTest,
+                LastName = _stringConstant.RawLastNameForTest,
+                IsActive = true,
+                UserName = _stringConstant.RawEmailIdForTest,
+                SlackUserName = _stringConstant.RawFirstNameForTest,
+                JoiningDate = DateTime.UtcNow.AddYears(+1),
+                RoleName = _stringConstant.Employee
+            };
+            string id = await _userRepository.AddUserAsync(_testUser, _stringConstant.CreatedBy);
+            var user = await _userManager.FindByIdAsync(id);
+            Assert.NotNull(id);
+        }
+
+        /// <summary>
         /// This test case is used for updating user details
         /// </summary>
         [Fact, Trait("Category", "Required")]
