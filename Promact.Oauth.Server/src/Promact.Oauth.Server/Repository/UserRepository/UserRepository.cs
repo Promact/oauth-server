@@ -366,19 +366,19 @@ namespace Promact.Oauth.Server.Repository
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == userId);
             return await GetUserAsync(user);
         }
-        
+
 
         /// <summary>
-        /// Method to return user role
+        /// Method to return user role. - RS
         /// </summary>
-        /// <param name="userName"></param>
+        /// <param name="userId">passed user id for getting list of user role </param>
         /// <returns></returns>
         public async Task<List<UserRoleAc>> GetUserRoleAsync(string userId)
         {
             ApplicationUser applicationUser = await _userManager.FindByIdAsync(userId);
             var userRole = (await _userManager.GetRolesAsync(applicationUser)).First();
             List<UserRoleAc> userRoleAcList = new List<UserRoleAc>();
-            
+            userRole = _stringConstant.RoleTeamLeader;
             if (userRole == _stringConstant.RoleAdmin)
             {
                 //getting the all user infromation. 
@@ -406,9 +406,9 @@ namespace Promact.Oauth.Server.Repository
         }
 
         /// <summary>
-        /// Method to return list of users.
+        /// Method to return list of users. - RS
         /// </summary>
-        /// <param name="userName"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
         public async Task<List<UserRoleAc>> GetTeamMembersAsync(string userId)
         {
@@ -578,7 +578,7 @@ namespace Promact.Oauth.Server.Repository
         }
 
         /// <summary>
-        /// Calculat casual leava and sick leave from the date of joining
+        /// Calculat casual leava and sick leave from the date of joining - RS
         /// </summary>
         /// <param name="dateTime"></param>
         /// <returns></returns>
@@ -593,7 +593,6 @@ namespace Promact.Oauth.Server.Repository
             double sickAllow = _appSettingUtil.Value.SickLeave;
             if (year >= DateTime.Now.Year)
             {
-                double totalDays = (DateTime.Now - Convert.ToDateTime(dateTime)).TotalDays;
                 //If an employee joins between 1st to 15th of month, then he/she will be eligible for that particular month's leaves 
                 //and if he/she joins after 15th of month, he/she will not be eligible for that month's leaves.
 
@@ -649,7 +648,7 @@ namespace Promact.Oauth.Server.Repository
             }
             else
             {
-                casualAllow = _appSettingUtil.Value.CasualLeave;
+                casualAllowed = _appSettingUtil.Value.CasualLeave;
                 sickAllowed = _appSettingUtil.Value.SickLeave;
             }
             LeaveCalculator calculate = new LeaveCalculator

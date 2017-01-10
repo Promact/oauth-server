@@ -218,16 +218,6 @@ namespace Promact.Oauth.Server.Tests
         }
 
 
-        //    var password = await _userRepository.ChangePassword(new ChangePasswordViewModel
-        //    {
-        //        OldPassword = _stringConstant.OldPassword,
-        //        NewPassword = _stringConstant.NewPassword,
-        //        ConfirmPassword = _stringConstant.NewPassword,
-        //        Email = user.Email
-        //    });
-        //    var passwordMatch = await _userManager.CheckPasswordAsync(user, password);
-        //    Assert.Equal(true, passwordMatch);
-        //}
 
         /// <summary>
         /// Test case use for getting user details by id
