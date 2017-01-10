@@ -365,10 +365,11 @@ namespace Promact.Oauth.Server.Repository
             return await GetUserAsync(user);
         }
 
+
         /// <summary>
-        /// Method to return user role
+        /// Method to return user role. - RS
         /// </summary>
-        /// <param name="userName"></param>
+        /// <param name="userId">passed user id for getting list of user role </param>
         /// <returns></returns>
         public async Task<List<UserRoleAc>> GetUserRoleAsync(string userId)
         {
@@ -403,9 +404,9 @@ namespace Promact.Oauth.Server.Repository
         }
 
         /// <summary>
-        /// Method to return list of users.
+        /// Method to return list of users. - RS
         /// </summary>
-        /// <param name="userName"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
         public async Task<List<UserRoleAc>> GetTeamMembersAsync(string userId)
         {
@@ -421,7 +422,7 @@ namespace Promact.Oauth.Server.Repository
             var userList = await _applicationUserDataRepository.Fetch(x => userIdList.Contains(x.Id)).ToListAsync();
             foreach (var user in userList)
             {
-                var usersRoleAc = new UserRoleAc(user.Id, user.UserName, user.FirstName + " " + user.LastName, _stringConstant.RoleAdmin);
+                var usersRoleAc = new UserRoleAc(user.Id, user.UserName, user.FirstName + " " + user.LastName, _stringConstant.RoleEmployee);
                 userRolesAcList.Add(usersRoleAc);
             }
             return userRolesAcList;
@@ -430,32 +431,26 @@ namespace Promact.Oauth.Server.Repository
         /// <summary>
         /// Method to return list of users/employees of the given group name. - JJ
         /// </summary>
-        /// <param name="GroupName"></param>
-        /// <param name="UserName"></param>
+        /// <param name="slackChannelName"></param>
         /// <returns>list of object of UserAc</returns>
-        public async Task<List<UserAc>> GetProjectUserByGroupNameAsync(string groupName)
+        public async Task<List<UserAc>> GetProjectUserBySlackChannelNameAsync(string slackChannelName)
         {
-            var project = await _projectDataRepository.FirstOrDefaultAsync(x => x.SlackChannelName == groupName);
-            var userAcList = new List<UserAc>();
+            Project project = await _projectDataRepository.FirstOrDefaultAsync(x => x.SlackChannelName == slackChannelName);
+            List<UserAc> userAcList = new List<UserAc>();
             if (project != null)
             {
-                var projectUserList = await _projectUserDataRepository.Fetch(x => x.ProjectId == project.Id).ToListAsync();
+                List<ProjectUser> projectUserList = await _projectUserDataRepository.Fetch(x => x.ProjectId == project.Id).ToListAsync();
                 foreach (var projectUser in projectUserList)
                 {
-                    var user = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.Id == projectUser.UserId && x.SlackUserId != null);
+                    ApplicationUser user = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.Id == projectUser.UserId && x.SlackUserId != null);
                     if (user != null)
                     {
-                        var userAc = new UserAc();
-                        var userAC = _mapperContext.Map<ApplicationUser, UserAc>(user);
+                        UserAc userAc = _mapperContext.Map<ApplicationUser, UserAc>(user);
                         userAcList.Add(userAc);
                     }
                 }
-
             }
-            if (userAcList == null)
-                throw new UserNotFound();
-            else
-                return userAcList;
+            return userAcList;
         }
 
         /// <summary>
@@ -571,7 +566,7 @@ namespace Promact.Oauth.Server.Repository
         }
 
         /// <summary>
-        /// Calculat casual leava and sick leave from the date of joining
+        /// Calculat casual leava and sick leave from the date of joining - RS
         /// </summary>
         /// <param name="dateTime"></param>
         /// <returns></returns>
@@ -586,7 +581,6 @@ namespace Promact.Oauth.Server.Repository
             double sickAllow = _appSettingUtil.Value.SickLeave;
             if (year >= DateTime.Now.Year)
             {
-                double totalDays = (DateTime.Now - Convert.ToDateTime(dateTime)).TotalDays;
                 //If an employee joins between 1st to 15th of month, then he/she will be eligible for that particular month's leaves 
                 //and if he/she joins after 15th of month, he/she will not be eligible for that month's leaves.
 
@@ -642,7 +636,7 @@ namespace Promact.Oauth.Server.Repository
             }
             else
             {
-                casualAllow = _appSettingUtil.Value.CasualLeave;
+                casualAllowed = _appSettingUtil.Value.CasualLeave;
                 sickAllowed = _appSettingUtil.Value.SickLeave;
             }
             LeaveCalculator calculate = new LeaveCalculator

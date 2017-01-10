@@ -659,7 +659,7 @@ namespace Promact.Oauth.Server.Controllers
         {
             try
             {
-                return Ok(await _userRepository.GetProjectUserByGroupNameAsync(name));
+                return Ok(await _userRepository.GetProjectUserBySlackChannelNameAsync(name));
             }
             catch (UserNotFound)
             {

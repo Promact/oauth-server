@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Promact.Oauth.Server.Constants;
+using Promact.Oauth.Server.Data_Repository;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Models.ApplicationClasses;
 using Promact.Oauth.Server.Repository;
@@ -26,6 +28,7 @@ namespace Promact.Oauth.Server.Tests
         private readonly Mock<IHostingEnvironment> _mockHostingEnvironment;
         private readonly Mock<IEmailSender> _mockEmailService;
 
+        private readonly IDataRepository<ProjectUser> _projectUserDataRepository;
         public UserRepositoryTest() : base()
         {
             _userRepository = serviceProvider.GetService<IUserRepository>();
@@ -33,6 +36,7 @@ namespace Promact.Oauth.Server.Tests
             _mapper = serviceProvider.GetService<IMapper>();
             _stringConstant = serviceProvider.GetService<IStringConstant>();
             _projectRepository = serviceProvider.GetService<IProjectRepository>();
+            _projectUserDataRepository = serviceProvider.GetService<IDataRepository<ProjectUser>>();
             _mockHostingEnvironment = serviceProvider.GetService<Mock<IHostingEnvironment>>();
             _mockEmailService = serviceProvider.GetService<Mock<IEmailSender>>();
         }
@@ -118,7 +122,51 @@ namespace Promact.Oauth.Server.Tests
         }
 
         /// <summary>
-        /// This test case is used to update user details
+        /// This test case is used to Calculate Allowed Leaves for past years
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task CalculateAllowedLeavesForPastyears()
+        {
+            UserAc _testUser = new UserAc()
+            {
+                Email = _stringConstant.RawEmailIdForTest,
+                FirstName = _stringConstant.RawFirstNameForTest,
+                LastName = _stringConstant.RawLastNameForTest,
+                IsActive = true,
+                UserName = _stringConstant.RawEmailIdForTest,
+                SlackUserName = _stringConstant.RawFirstNameForTest,
+                JoiningDate = DateTime.UtcNow.AddYears(-1),
+                RoleName = _stringConstant.Employee
+            };
+            string id = await _userRepository.AddUserAsync(_testUser, _stringConstant.CreatedBy);
+            var user = await _userManager.FindByIdAsync(id);
+            Assert.NotNull(id);
+        }
+
+        /// <summary>
+        /// This test case is used to Calculate Allowed Leaves for future year
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task CalculateAllowedLeavesForFutureyear()
+        {
+            UserAc _testUser = new UserAc()
+            {
+                Email = _stringConstant.RawEmailIdForTest,
+                FirstName = _stringConstant.RawFirstNameForTest,
+                LastName = _stringConstant.RawLastNameForTest,
+                IsActive = true,
+                UserName = _stringConstant.RawEmailIdForTest,
+                SlackUserName = _stringConstant.RawFirstNameForTest,
+                JoiningDate = DateTime.UtcNow.AddYears(+1),
+                RoleName = _stringConstant.Employee
+            };
+            string id = await _userRepository.AddUserAsync(_testUser, _stringConstant.CreatedBy);
+            var user = await _userManager.FindByIdAsync(id);
+            Assert.NotNull(id);
+        }
+
+        /// <summary>
+        /// This test case is used for updating user details
         /// </summary>
         [Fact, Trait("Category", "Required")]
         public async Task UpdateUser()
@@ -133,6 +181,7 @@ namespace Promact.Oauth.Server.Tests
             var editedUser = _userManager.FindByIdAsync(id).Result;
             Assert.Equal(_stringConstant.FirstName, editedUser.FirstName);
         }
+
 
 
         /// <summary>
@@ -307,19 +356,26 @@ namespace Promact.Oauth.Server.Tests
             Assert.Equal(1, userRole.Count());
         }
 
+
         /// <summary>
         /// Fetches Users of the given project name(slack channel name)
         /// </summary>
         [Fact, Trait("Category", "A")]
-        public async Task GetProjectUserByGroupNameAsync()
+        public async Task GetProjectUserBySlackChannelNameAsync()
         {
-            ProjectUser projectUser = new ProjectUser()
+            UserAc _testUser = new UserAc()
             {
-                ProjectId = 1,
-                Project = new Project { Name = _stringConstant.Name },
-                UserId = _stringConstant.UserId,
-                User = new ApplicationUser { FirstName = _stringConstant.FirstName }
+                Email = _stringConstant.RawEmailIdForTest,
+                FirstName = _stringConstant.FirstName,
+                LastName = _stringConstant.RawLastNameForTest,
+                IsActive = true,
+                UserName = _stringConstant.RawEmailIdForTest,
+                SlackUserId = _stringConstant.RawFirstNameForTest,
+                JoiningDate = DateTime.UtcNow,
+                RoleName = _stringConstant.Admin
             };
+            string userId = await _userRepository.AddUserAsync(_testUser, _stringConstant.CreatedBy);
+
             ProjectAc projectac = new ProjectAc();
             projectac.Name = _stringConstant.Name;
             projectac.SlackChannelName = _stringConstant.SlackChannelName;
@@ -327,11 +383,22 @@ namespace Promact.Oauth.Server.Tests
             projectac.TeamLeader = new UserAc { FirstName = _stringConstant.FirstName };
             projectac.TeamLeaderId = _stringConstant.TeamLeaderId;
             projectac.CreatedBy = _stringConstant.CreatedBy;
-            await _projectRepository.AddProjectAsync(projectac, _stringConstant.CreatedBy);
-            await _projectRepository.AddUserProjectAsync(projectUser);
-            var projectUsers = await _userRepository.GetProjectUserByGroupNameAsync(projectac.SlackChannelName);
-            Assert.NotEqual(projectUsers.Count, 2);
+            int projectId = await _projectRepository.AddProjectAsync(projectac, _stringConstant.CreatedBy);
+
+            ProjectUser projectUser = new ProjectUser()
+            {
+                ProjectId = projectId,
+                UserId = userId,
+                CreatedDateTime = DateTime.UtcNow.Date,
+                CreatedBy = _stringConstant.CreatedBy
+            };
+            _projectUserDataRepository.Add(projectUser);
+            await _projectUserDataRepository.SaveChangesAsync();
+
+            var projectUsers = await _userRepository.GetProjectUserBySlackChannelNameAsync(projectac.SlackChannelName);
+            Assert.Equal(projectUsers.Count, 1);
         }
+
 
         /// <summary>
         /// Test case to check GetProjectUsersByTeamLeaderId method of user repository 

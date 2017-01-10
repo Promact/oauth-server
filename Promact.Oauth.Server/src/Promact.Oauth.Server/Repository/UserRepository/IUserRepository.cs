@@ -148,9 +148,9 @@ namespace Promact.Oauth.Server.Repository
         /// <summary>
         /// This method is used to fetch list of users/employees of the given group name. - JJ
         /// </summary>
-        /// <param name="GroupName"></param>
+        /// <param name="slackChannelName"></param>
         /// <returns>object of UserAc</returns>
-        Task<List<UserAc>> GetProjectUserByGroupNameAsync(string GroupName);
+        Task<List<UserAc>> GetProjectUserBySlackChannelNameAsync(string slackChannelName);
 
         /// <summary>
         /// The method is used to get list of projects along with its users for a specific teamleader 
