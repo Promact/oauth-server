@@ -14,11 +14,13 @@ using Promact.Oauth.Server.Repository.ProjectsRepository;
 using Promact.Oauth.Server.Seed;
 using Promact.Oauth.Server.Services;
 using System;
-using Microsoft.Extensions.FileProviders;
 using System.Linq;
 using System.Collections.Generic;
 using Promact.Oauth.Server.Constants;
 using Moq;
+using Promact.Oauth.Server.Models.ApplicationClasses;
+using System.Threading.Tasks;
+using System.IO;
 
 namespace Promact.Oauth.Server.Tests
 {
@@ -27,8 +29,10 @@ namespace Promact.Oauth.Server.Tests
         public IServiceProvider serviceProvider { get; set; }
 
         private MapperConfiguration _mapperConfiguration { get; set; }
-
-        //private readonly StringConstant _stringConstant;
+        private readonly Mock<IHostingEnvironment> _mockHostingEnvironment;
+        private readonly Mock<IEmailSender> _mockEmailService;
+        private readonly IStringConstant _stringConstant;
+        private readonly IUserRepository _userRepository;
 
         public BaseProvider()
         {
@@ -40,18 +44,16 @@ namespace Promact.Oauth.Server.Tests
                 cfg.AddProfile(new AutoMapperProfileConfiguration());
             });
 
-            var testHostingEnvironment = new MockHostingEnvironment();
 
             var services = new ServiceCollection();
             services.AddEntityFrameworkInMemoryDatabase();
-            services.Configure<AppSettingUtil>(x => 
+            services.Configure<AppSettingUtil>(x =>
             {
                 x.CasualLeave = 14;
-                x.PromactErpUrl = "http://www.example.com";
-                x.PromactOAuthUrl = "http://www.example.com";
+                x.PromactErpUrl =  _stringConstant.PromactErpUrlForTest;
+                x.PromactOAuthUrl = _stringConstant.PromactErpUrlForTest;
                 x.SickLeave = 7;
             });
-            services.AddSingleton<IHostingEnvironment>(testHostingEnvironment);
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<PromactOauthDbContext>()
@@ -62,7 +64,7 @@ namespace Promact.Oauth.Server.Tests
             services.AddScoped<IConsumerAppRepository, ConsumerAppRepository>();
             services.AddScoped<IOAuthRepository, OAuthRepository>();
             //services.AddScoped<HttpClient>();
-            services.AddScoped<IStringConstant,StringConstant>();
+            services.AddScoped<IStringConstant, StringConstant>();
             services.AddScoped(typeof(IDataRepository<>), typeof(DataRepository<>));
 
             //Register Mapper
@@ -73,11 +75,34 @@ namespace Promact.Oauth.Server.Tests
             var httpClientMock = new Mock<IHttpClientService>();
             var httpClientMockObject = httpClientMock.Object;
             services.AddScoped(x => httpClientMock);
-            services.AddScoped(x=>httpClientMockObject);
+            services.AddScoped(x => httpClientMockObject);
 
+
+            var iHostingEnvironmentMock = new Mock<IHostingEnvironment>();
+            var iHostingEnvironmentMockObject = iHostingEnvironmentMock.Object;
+            services.AddScoped(x => iHostingEnvironmentMock);
+            services.AddScoped(x => iHostingEnvironmentMockObject);
+
+            var emailServiceMock = new Mock<IEmailSender>();
+            var emailServiceMockObject = emailServiceMock.Object;
+            services.AddScoped(x => emailServiceMock);
+            services.AddScoped(x => emailServiceMockObject);
             serviceProvider = services.BuildServiceProvider();
             RoleSeedFake(serviceProvider);
+
+            _mockHostingEnvironment = serviceProvider.GetService<Mock<IHostingEnvironment>>();
+            _mockEmailService = serviceProvider.GetService<Mock<IEmailSender>>();
+            _userRepository = serviceProvider.GetService<IUserRepository>();
+            _stringConstant = serviceProvider.GetService<IStringConstant>();
+
+            //setup mock for email service and hosting enviroment. 
+            var path = PathCreatorForEmailTemplate();
+            _mockHostingEnvironment.Setup(x => x.ContentRootPath).Returns(path);
+            _mockEmailService.Setup(x => x.SendEmail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
         }
+
+        #region Public Method(s)
+
         public void RoleSeedFake(IServiceProvider serviceProvider)
         {
             var _db = serviceProvider.GetService<PromactOauthDbContext>();
@@ -95,86 +120,46 @@ namespace Promact.Oauth.Server.Tests
                 _db.SaveChanges();
             }
         }
+
+        /// <summary>
+        /// This method used for create mock(hosting environment and email service) and user.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<string> CreateMockAndUserAsync()
+        {
+            UserAc _testUser = new UserAc()
+            {
+                Email = _stringConstant.UserName,
+                FirstName = _stringConstant.FirstName,
+                LastName = _stringConstant.LastName,
+                IsActive = true,
+                SlackUserId = _stringConstant.SlackUserId,
+                UserName = _stringConstant.UserName,
+                SlackUserName = _stringConstant.SlackUserName,
+                JoiningDate = DateTime.UtcNow,
+                RoleName = _stringConstant.Employee
+            };
+            return await _userRepository.AddUserAsync(_testUser, _stringConstant.RawFirstNameForTest);
+        }
+
+        /// <summary>
+        /// Method used to get current folder address and create a file "UserDetial.html".
+        /// </summary>
+        /// <returns></returns>
+        public string PathCreatorForEmailTemplate()
+        {
+            var directory = Path.GetTempPath();
+            var createNewDirectory = Path.Combine(directory, "Template");
+            if (!Directory.Exists(createNewDirectory))
+            {
+                Directory.CreateDirectory(createNewDirectory);
+                var newPath = string.Format("{0}\\UserDetial.html", createNewDirectory);
+                File.Create(newPath);
+            }
+            return directory;
+        }
+
+        #endregion
     }
 
-    public class MockHostingEnvironment : IHostingEnvironment
-    {
-        public string ApplicationName
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public IFileProvider ContentRootFileProvider
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public string ContentRootPath
-        {
-            get
-            {
-                return "test";
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public string EnvironmentName
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public IFileProvider WebRootFileProvider
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public string WebRootPath
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-    }
 }

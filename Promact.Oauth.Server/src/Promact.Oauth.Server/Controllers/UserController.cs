@@ -45,7 +45,7 @@ namespace Promact.Oauth.Server.Controllers
         /**
         * @api {get} api/users 
         * @apiVersion 1.0.0
-        * @apiName AllUsersAsync
+        * @apiName GetAllUsersAsync
         * @apiGroup User
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
@@ -69,7 +69,7 @@ namespace Promact.Oauth.Server.Controllers
         [HttpGet]
         [Route("")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> AllUsersAsync()
+        public async Task<IActionResult> GetAllUsersAsync()
         {
             var user = await _userRepository.GetAllUsersAsync();
             return Ok(user);
@@ -182,13 +182,62 @@ namespace Promact.Oauth.Server.Controllers
         }
 
 
-/**
-        * @api {post} api/users 
+        /**
+                * @api {post} api/users 
+                * @apiVersion 1.0.0
+                * @apiName RegisterUserAsync
+                * @apiParam {object} newUser  object
+                * @apiParamExample {json} Request-Example:
+                * {
+                *    "Id":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
+                *    "FirstName" : "John",
+                *    "Email" : "jone@promactinfo.com",
+                *    "LastName" : "Doe",
+                *    "SlackUserName" :"John",
+                *    "IsActive" : "True",
+                *    "JoiningDate" :"10-02-2016",
+                *    "NumberOfCasualLeave":0,
+                *    "NumberOfSickLeave":0,
+                *    "UniqueName":null,
+                *    "Role":null,
+                *    "UserName": null
+                * }
+                * @apiSuccessExample {json} Success-Response:
+                * HTTP/1.1 200 OK 
+                * {
+                *     true
+                * }
+                * @apiError BadRequest
+                * @apiErrorExample {json} Error-Response:
+                * HTTP/1.1 400 Bad Request
+                * {
+                *   "error": "Problems parsing JSON object"
+                * }
+                */
+        [HttpPost]
+        [Route("")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> RegisterUserAsync([FromBody] UserAc newUser)
+        {
+            if (ModelState.IsValid)
+            {
+                string createdBy = _userManager.GetUserId(User);
+                await _userRepository.AddUserAsync(newUser, createdBy);
+                return Ok(true);
+            }
+            return BadRequest();
+        }
+
+
+        /**
+        * @api {put} api/users 
         * @apiVersion 1.0.0
-        * @apiName RegisterUserAsync
+        * @apiName UpdateUserAsync
+        * @apiGroup User
         * @apiParam {object} newUser  object
         * @apiParamExample {json} Request-Example:
-        * {
+        *  "Id":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
+        *   {
         *    "Id":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
         *    "FirstName" : "John",
         *    "Email" : "jone@promactinfo.com",
@@ -201,7 +250,7 @@ namespace Promact.Oauth.Server.Controllers
         *    "UniqueName":null,
         *    "Role":null,
         *    "UserName": null
-        * }
+        *   }
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
         * {
@@ -213,63 +262,14 @@ namespace Promact.Oauth.Server.Controllers
         * {
         *   "error": "Problems parsing JSON object"
         * }
+        * @apiError SlackUserNotFound the slack user was not found.
+        * @apiErrorExample {json} Error-Response:
+        * HTTP/1.1 404 Not Found
+        * {
+        *   "error": "SlackUserNotFound"
+        * }
         */
-        [HttpPost]
-        [Route("")]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> RegisterUserAsync([FromBody] UserAc newUser)
-        {           
-                if (ModelState.IsValid)
-                {
-                    string createdBy = _userManager.GetUserId(User);
-                    await _userRepository.AddUserAsync(newUser, createdBy);
-                    return Ok(true);
-                }
-                return BadRequest();
-        }
-
-
-    /**
-    * @api {put} api/users 
-    * @apiVersion 1.0.0
-    * @apiName UpdateUserAsync
-    * @apiGroup User
-    * @apiParam {object} newUser  object
-    * @apiParamExample {json} Request-Example:
-    *  "Id":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
-    *   {
-    *    "Id":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
-    *    "FirstName" : "John",
-    *    "Email" : "jone@promactinfo.com",
-    *    "LastName" : "Doe",
-    *    "SlackUserName" :"John",
-    *    "IsActive" : "True",
-    *    "JoiningDate" :"10-02-2016",
-    *    "NumberOfCasualLeave":0,
-    *    "NumberOfSickLeave":0,
-    *    "UniqueName":null,
-    *    "Role":null,
-    *    "UserName": null
-    *   }
-    * @apiSuccessExample {json} Success-Response:
-    * HTTP/1.1 200 OK 
-    * {
-    *     true
-    * }
-    * @apiError BadRequest
-    * @apiErrorExample {json} Error-Response:
-    * HTTP/1.1 400 Bad Request
-    * {
-    *   "error": "Problems parsing JSON object"
-    * }
-    * @apiError SlackUserNotFound the slack user was not found.
-    * @apiErrorExample {json} Error-Response:
-    * HTTP/1.1 404 Not Found
-    * {
-    *   "error": "SlackUserNotFound"
-    * }
-    */
-      [HttpPut]
+        [HttpPut]
         [Route("{id}")]
         [Authorize(Roles = "Admin,Employee")]
         public async Task<IActionResult> UpdateUserAsync(string id, [FromBody] UserAc editedUser)
@@ -308,7 +308,7 @@ namespace Promact.Oauth.Server.Controllers
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
         * {
-        *     ErrorMessage : if password is valid, return empty otherwise error message.
+        *     ErrorMessage : If password is changed successfully, return empty otherwise error message
         * }
         * @apiError UserNotFound the slack user was not found.
         * @apiErrorExample {json} Error-Response:
@@ -471,12 +471,10 @@ namespace Promact.Oauth.Server.Controllers
         {
             try
             {
-                await _userRepository.FindUserBySlackUserNameAsync(slackUserName);
-                return Ok(true);
+                return Ok(await _userRepository.FindUserBySlackUserNameAsync(slackUserName));
             }
             catch (SlackUserNotFound)
             {
-                _logger.LogInformation("User not Found");
                 return NotFound();
             }
         }
@@ -545,8 +543,8 @@ namespace Promact.Oauth.Server.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ReSendMailAsync(string id)
         {
-                 return Ok(await _userRepository.ReSendMailAsync(id));
-           
+            await _userRepository.ReSendMailAsync(id);
+            return Ok(true);
         }
 
 
@@ -577,7 +575,7 @@ namespace Promact.Oauth.Server.Controllers
         {
             return Ok(await _userRepository.GetUserRoleAsync(userId));
         }
-          
+
 
         /**
         * @api {get} api/users/:userid/teammembers 

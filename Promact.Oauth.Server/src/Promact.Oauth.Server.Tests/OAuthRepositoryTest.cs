@@ -26,7 +26,7 @@ namespace Promact.Oauth.Server.Tests
         private readonly IConsumerAppRepository _appRepository;
         private readonly IStringConstant _stringConstant;
         private readonly Mock<IHttpClientService> _mockHttpClient;
-        private UserAc _testUser = new UserAc();
+        //private UserAc _testUser = new UserAc();
         private ConsumerAppsAc app = new ConsumerAppsAc();
         private OAuth oAuth = new OAuth();
         private OAuthLogin oAuthLogin = new OAuthLogin();
@@ -93,14 +93,15 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public async Task UserAlreadyLoginAsync()
         {
-            var userId = await _userRepository.AddUserAsync(_testUser, _stringConstant.FirstNameSecond);
+
+            string userId = await CreateMockAndUserAsync();
             var consumerId = await _appRepository.AddConsumerAppsAsync(app);
             var appDetails = await _appRepository.GetConsumerAppByIdAsync(consumerId);
             _oAuthDataRepository.AddAsync(oAuth);
             await _oAuthDataRepository.SaveChangesAsync();
             var requestUrl = MockingGetAppDetailsFromClientAsync(_stringConstant.GetAppDetailsFromClientAsyncResponse);
             var returnUrl = string.Format("{0}?accessToken={1}&email={2}&slackUserId={3}&userId={4}", _stringConstant.ReturnUrl, 
-                _stringConstant.AccessToken, _stringConstant.UserName, _stringConstant.UserSlackId, _testUser.Id);
+                _stringConstant.AccessToken, _stringConstant.UserName, _stringConstant.SlackUserId, userId);
             var redirectUrl = await _oAuthRepository.UserAlreadyLoginAsync(_stringConstant.UserName, _stringConstant.ClientIdForTest, _stringConstant.CallBackUrl);
             Assert.Equal(redirectUrl, returnUrl);
             _mockHttpClient.Verify(x => x.GetAsync(_stringConstant.CallBackUrl, requestUrl), Times.Once);
@@ -112,7 +113,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public async Task UserAlreadyLoginInCorrectSlackNameErrorAsync()
         {
-            var userId = await _userRepository.AddUserAsync(_testUser, _stringConstant.FirstNameSecond);
+            string userId = await CreateMockAndUserAsync();
             var consumerId = await _appRepository.AddConsumerAppsAsync(app);
             var appDetails = await _appRepository.GetConsumerAppByIdAsync(consumerId);
             _oAuthDataRepository.AddAsync(oAuth);
@@ -131,7 +132,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public async Task UserAlreadyLoginForWrongValueAsync()
         {
-            var userId = await _userRepository.AddUserAsync(_testUser, _stringConstant.FirstNameSecond);
+            string userId = await CreateMockAndUserAsync();
             var consumerId = await _appRepository.AddConsumerAppsAsync(app);
             _oAuthDataRepository.AddAsync(oAuth);
             await _oAuthDataRepository.SaveChangesAsync();
@@ -149,7 +150,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public async Task UserAlreadyLoginForWrongValuePromactAppNotFoundClientIdAsync()
         {
-            var userId = await _userRepository.AddUserAsync(_testUser, _stringConstant.FirstNameSecond);
+            string userId = await CreateMockAndUserAsync();
             var errorMessage = string.Format(_stringConstant.PromactAppNotFoundClientId, _stringConstant.ClientIdForTest);
             var returnUrl = _appSettingUtil.Value.PromactErpUrl + _stringConstant.ErpAuthorizeUrl
                              + _stringConstant.Message + errorMessage;
@@ -163,7 +164,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public async Task UserNotAlreadyLoginPromactAppNotFoundClientSecretAsync()
         {
-            var userId = await _userRepository.AddUserAsync(_testUser, _stringConstant.FirstNameSecond);
+            string userId = await CreateMockAndUserAsync();
             var user = await _userManager.FindByIdAsync(userId);
             var code = await _userManager.GeneratePasswordResetTokenAsync(user);
             await _userManager.ResetPasswordAsync(user, code, _stringConstant.PasswordForTest);
@@ -189,7 +190,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public async Task UserNotAlreadyLoginPromactAppNotFoundClientIdAsync()
         {
-            var userId = await _userRepository.AddUserAsync(_testUser, _stringConstant.FirstNameSecond);
+            string userId = await CreateMockAndUserAsync();
             var user = await _userManager.FindByIdAsync(userId);
             var code = await _userManager.GeneratePasswordResetTokenAsync(user);
             await _userManager.ResetPasswordAsync(user, code, _stringConstant.PasswordForTest);
@@ -212,7 +213,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public async Task UserNotAlreadyLoginInCorrectSlackNameAsync()
         {
-            var userId = await _userRepository.AddUserAsync(_testUser, _stringConstant.FirstNameSecond);
+            string userId = await CreateMockAndUserAsync();
             var user = await _userManager.FindByIdAsync(userId);
             var code = await _userManager.GeneratePasswordResetTokenAsync(user);
             await _userManager.ResetPasswordAsync(user, code, _stringConstant.PasswordForTest);
@@ -233,7 +234,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public async Task UserNotAlreadyLoginPromactAppNotSetAsync()
         {
-            var userId = await _userRepository.AddUserAsync(_testUser, _stringConstant.FirstNameSecond);
+            string userId = await CreateMockAndUserAsync();
             var user = await _userManager.FindByIdAsync(userId);
             var code = await _userManager.GeneratePasswordResetTokenAsync(user);
             await _userManager.ResetPasswordAsync(user, code, _stringConstant.PasswordForTest);
@@ -254,7 +255,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public async Task UserNotAlreadyLoginPromactAppNotFoundClientIdOAuthEmptyAsync()
         {
-            var userId = await _userRepository.AddUserAsync(_testUser, _stringConstant.FirstNameSecond);
+            string userId = await CreateMockAndUserAsync();
             var errorMessage = string.Format(_stringConstant.PromactAppNotFoundClientId, _stringConstant.ClientIdForTest);
             var returnUrl = _appSettingUtil.Value.PromactErpUrl + _stringConstant.ErpAuthorizeUrl
                              + _stringConstant.Message + errorMessage;
@@ -264,16 +265,6 @@ namespace Promact.Oauth.Server.Tests
 
         private void Initialize()
         {
-            _testUser.Id = _stringConstant.UserId;
-            _testUser.Email = _stringConstant.UserName;
-            _testUser.FirstName = _stringConstant.FirstName;
-            _testUser.LastName = _stringConstant.LastName;
-            _testUser.IsActive = true;
-            _testUser.UserName = _stringConstant.UserName;
-            _testUser.SlackUserName = _stringConstant.SlackUserName;
-            _testUser.JoiningDate = DateTime.UtcNow;
-            _testUser.RoleName = _stringConstant.Employee;
-
             app.AuthId = _stringConstant.ClientIdForTest;
             app.AuthSecret = _stringConstant.AccessToken;
             app.CallbackUrl = _stringConstant.CallBackUrl;

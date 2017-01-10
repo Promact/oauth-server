@@ -43,7 +43,6 @@ export class UserEditComponent implements OnInit {
         });
     }
 
-
     getRoles() {
         this.userService.getRoles().subscribe((result) => {
             if (result !== null) {
@@ -57,7 +56,6 @@ export class UserEditComponent implements OnInit {
         });
     }
 
-
     editUser(user: UserModel) {
         this.loader.loader = true;
         user.FirstName = user.FirstName.trim();
@@ -66,7 +64,9 @@ export class UserEditComponent implements OnInit {
             this.redirectionRoute.navigate(['']);
             this.loader.loader = false;
         }, err => {
-            this.toast.show('User Name or Slack User Name already exists.');
+            if (err.status === 404) {//Not Found 
+                this.toast.show('User Name or Slack User Name already exists.');
+            }
             this.loader.loader = false;
         });
     }
