@@ -1,13 +1,14 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Promact.Oauth.Server.Constants;
+using Promact.Oauth.Server.Data_Repository;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Models.ApplicationClasses;
 using Promact.Oauth.Server.Repository;
 using Promact.Oauth.Server.Repository.ProjectsRepository;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -21,6 +22,7 @@ namespace Promact.Oauth.Server.Tests
         private readonly IMapper _mapper;
         private readonly IStringConstant _stringConstant;
         private readonly IProjectRepository _projectRepository;
+        private readonly IDataRepository<ProjectUser> _projectUserDataRepository;
         public UserRepositoryTest() : base()
         {
             _userRepository = serviceProvider.GetService<IUserRepository>();
@@ -28,6 +30,7 @@ namespace Promact.Oauth.Server.Tests
             _mapper = serviceProvider.GetService<IMapper>();
             _stringConstant = serviceProvider.GetService<IStringConstant>();
             _projectRepository = serviceProvider.GetService<IProjectRepository>();
+            _projectUserDataRepository = serviceProvider.GetService<IDataRepository<ProjectUser>>();
         }
 
         #region Test Case
@@ -142,7 +145,7 @@ namespace Promact.Oauth.Server.Tests
             var exists = await _userRepository.FindByUserNameAsync(_stringConstant.RawEmailIdForTest);
             Assert.Equal(true, exists);
         }
-        
+
         /// <summary>
         /// This test case used to check exception condition
         /// </summary>
@@ -164,8 +167,8 @@ namespace Promact.Oauth.Server.Tests
             var id = await _userRepository.AddUserAsync(_testUser, _stringConstant.RawFirstNameForTest);
             Assert.Throws<AggregateException>(() => _userRepository.FindByUserNameAsync(_stringConstant.UserNameForTest).Result);
         }
-        
-      
+
+
 
         /// <summary>
         /// This test case is used for adding new user
@@ -319,7 +322,7 @@ namespace Promact.Oauth.Server.Tests
             Assert.Equal(2, roles.Count);
         }
 
-        
+
         /// <summary>
         /// Test case used to find user by username
         /// </summary>
@@ -508,19 +511,26 @@ namespace Promact.Oauth.Server.Tests
             Assert.Equal(1, userRole.Count());
         }
 
+
         /// <summary>
         /// Fetches Users of the given Project Name(slack channel name)
         /// </summary>
         [Fact, Trait("Category", "A")]
-        public async Task GetProjectUserByGroupNameAsync()
+        public async Task GetProjectUserBySlackChannelNameAsync()
         {
-            ProjectUser projectUser = new ProjectUser()
+            UserAc _testUser = new UserAc()
             {
-                ProjectId = 1,
-                Project = new Project { Name = _stringConstant.Name },
-                UserId = _stringConstant.UserId,
-                User = new ApplicationUser { FirstName = _stringConstant.FirstName }
+                Email = _stringConstant.RawEmailIdForTest,
+                FirstName = _stringConstant.FirstName,
+                LastName = _stringConstant.RawLastNameForTest,
+                IsActive = true,
+                UserName = _stringConstant.RawEmailIdForTest,
+                SlackUserId = _stringConstant.RawFirstNameForTest,
+                JoiningDate = DateTime.UtcNow,
+                RoleName = _stringConstant.Admin
             };
+            string userId = await _userRepository.AddUserAsync(_testUser, _stringConstant.CreatedBy);
+
             ProjectAc projectac = new ProjectAc();
             projectac.Name = _stringConstant.Name;
             projectac.SlackChannelName = _stringConstant.SlackChannelName;
@@ -528,11 +538,22 @@ namespace Promact.Oauth.Server.Tests
             projectac.TeamLeader = new UserAc { FirstName = _stringConstant.FirstName };
             projectac.TeamLeaderId = _stringConstant.TeamLeaderId;
             projectac.CreatedBy = _stringConstant.CreatedBy;
-            await _projectRepository.AddProjectAsync(projectac, _stringConstant.CreatedBy);
-            await _projectRepository.AddUserProjectAsync(projectUser);
-            var projectUsers = await _userRepository.GetProjectUserByGroupNameAsync(projectac.SlackChannelName);
-            Assert.NotEqual(projectUsers.Count, 2);
+            int projectId = await _projectRepository.AddProjectAsync(projectac, _stringConstant.CreatedBy);
+
+            ProjectUser projectUser = new ProjectUser()
+            {
+                ProjectId = projectId,
+                UserId = userId,
+                CreatedDateTime = DateTime.UtcNow.Date,
+                CreatedBy = _stringConstant.CreatedBy
+            };
+            _projectUserDataRepository.Add(projectUser);
+            await _projectUserDataRepository.SaveChangesAsync();
+
+            var projectUsers = await _userRepository.GetProjectUserBySlackChannelNameAsync(projectac.SlackChannelName);
+            Assert.Equal(projectUsers.Count, 1);
         }
+
 
         /// <summary>
         /// Test case to check UserDetailById method of User Repository

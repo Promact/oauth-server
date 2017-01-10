@@ -151,7 +151,7 @@ namespace Promact.Oauth.Server.Repository
                 user.SlackUserName = editedUser.SlackUserName;
                 await _userManager.UpdateAsync(user);
                 //get user roles
-                IList<string> listofUserRole = await _userManager.GetRolesAsync(user); 
+                IList<string> listofUserRole = await _userManager.GetRolesAsync(user);
                 //remove user role 
                 var removeFromRole = await _userManager.RemoveFromRoleAsync(user, listofUserRole.First());
                 //add new role of user.
@@ -366,7 +366,7 @@ namespace Promact.Oauth.Server.Repository
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == userId);
             return await GetUserAsync(user);
         }
-        
+
 
         /// <summary>
         /// Method to return user role
@@ -378,21 +378,21 @@ namespace Promact.Oauth.Server.Repository
             ApplicationUser applicationUser = await _userManager.FindByIdAsync(userId);
             var userRole = (await _userManager.GetRolesAsync(applicationUser)).First();
             List<UserRoleAc> userRoleAcList = new List<UserRoleAc>();
-            
+
             if (userRole == _stringConstant.RoleAdmin)
             {
                 //getting the all user infromation. 
                 var userRoleAdmin = new UserRoleAc(applicationUser.Id, applicationUser.UserName, applicationUser.FirstName + " " + applicationUser.LastName, userRole);
                 userRoleAcList.Add(userRoleAdmin);
                 //getting employee role id. 
-                var roleId = (await _roleManager.Roles.SingleAsync(x=>x.Name==_stringConstant.RoleEmployee)).Id;
+                var roleId = (await _roleManager.Roles.SingleAsync(x => x.Name == _stringConstant.RoleEmployee)).Id;
                 //getting active employee list.
                 var userList = await _applicationUserDataRepository.Fetch(y => y.IsActive == true && y.Roles.Any(x => x.RoleId == roleId)).ToListAsync();
                 foreach (var user in userList)
-                    {
-                        var userRoleAc = new UserRoleAc(user.Id, user.UserName, user.FirstName + " " + user.LastName, userRole);
-                        userRoleAcList.Add(userRoleAc);
-                    }
+                {
+                    var userRoleAc = new UserRoleAc(user.Id, user.UserName, user.FirstName + " " + user.LastName, userRole);
+                    userRoleAcList.Add(userRoleAc);
+                }
             }
             else
             {
@@ -419,7 +419,7 @@ namespace Promact.Oauth.Server.Repository
             //getting teamLeader Project.
             var project = await _projectDataRepository.FirstAsync(x => x.TeamLeaderId == applicationUser.Id);
             //getting user Id list of particular project.
-            var userIdList = (await _projectUserDataRepository.Fetch(x => x.ProjectId == project.Id).ToListAsync()).Select(y=>y.UserId);
+            var userIdList = (await _projectUserDataRepository.Fetch(x => x.ProjectId == project.Id).ToListAsync()).Select(y => y.UserId);
             //getting list of user infromation.
             var userList = await _applicationUserDataRepository.Fetch(x => userIdList.Contains(x.Id)).ToListAsync();
             foreach (var user in userList)
@@ -433,32 +433,26 @@ namespace Promact.Oauth.Server.Repository
         /// <summary>
         /// Method to return list of users/employees of the given group name. - JJ
         /// </summary>
-        /// <param name="GroupName"></param>
-        /// <param name="UserName"></param>
+        /// <param name="slackChannelName"></param>
         /// <returns>list of object of UserAc</returns>
-        public async Task<List<UserAc>> GetProjectUserByGroupNameAsync(string GroupName)
+        public async Task<List<UserAc>> GetProjectUserBySlackChannelNameAsync(string slackChannelName)
         {
-            var project = await _projectDataRepository.FirstOrDefaultAsync(x => x.SlackChannelName == GroupName);
-            var userAcList = new List<UserAc>();
+            Project project = await _projectDataRepository.FirstOrDefaultAsync(x => x.SlackChannelName == slackChannelName);
+            List<UserAc> userAcList = new List<UserAc>();
             if (project != null)
             {
-                var projectUserList = await _projectUserDataRepository.Fetch(x => x.ProjectId == project.Id).ToListAsync();
+                List<ProjectUser> projectUserList = await _projectUserDataRepository.Fetch(x => x.ProjectId == project.Id).ToListAsync();
                 foreach (var projectUser in projectUserList)
                 {
-                    var user = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.Id == projectUser.UserId && x.SlackUserId != null);
+                    ApplicationUser user = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.Id == projectUser.UserId && x.SlackUserId != null);
                     if (user != null)
                     {
-                        var userAc = new UserAc();
-                        var userAC = _mapperContext.Map<ApplicationUser, UserAc>(user);
+                        UserAc userAc = _mapperContext.Map<ApplicationUser, UserAc>(user);
                         userAcList.Add(userAc);
                     }
                 }
-
             }
-            if (userAcList == null)
-                throw new UserNotFound();
-            else
-                return userAcList;
+            return userAcList;
         }
 
         /// <summary>
