@@ -21,6 +21,7 @@ using AutoMapper;
 using Exceptionless;
 using NLog.Extensions.Logging;
 using Promact.Oauth.Server.Constants;
+using Promact.Oauth.Server.Utility;
 
 namespace Promact.Oauth.Server
 {
@@ -88,7 +89,7 @@ namespace Promact.Oauth.Server
             services.AddScoped<HttpClient>();
 
             services.AddScoped<IHttpClientService, HttpClientService>();
-
+            services.AddScoped<IEmailUtil, EmailUtil>();
 
             services.AddMvc();
             services.AddScoped<CustomAttribute>();

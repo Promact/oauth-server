@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Promact.Oauth.Server.Repository;
 using Promact.Oauth.Server.Repository.ConsumerAppRepository;
 using Promact.Oauth.Server.Models.ApplicationClasses;
-using System;
 using Moq;
 using Microsoft.AspNetCore.Identity;
 using AutoMapper;
@@ -26,7 +25,6 @@ namespace Promact.Oauth.Server.Tests
         private readonly IConsumerAppRepository _appRepository;
         private readonly IStringConstant _stringConstant;
         private readonly Mock<IHttpClientService> _mockHttpClient;
-        //private UserAc _testUser = new UserAc();
         private ConsumerAppsAc app = new ConsumerAppsAc();
         private OAuth oAuth = new OAuth();
         private OAuthLogin oAuthLogin = new OAuthLogin();

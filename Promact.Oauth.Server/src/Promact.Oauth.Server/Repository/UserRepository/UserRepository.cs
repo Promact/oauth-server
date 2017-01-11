@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -12,9 +11,9 @@ using Promact.Oauth.Server.Models.ApplicationClasses;
 using Promact.Oauth.Server.Models.ManageViewModels;
 using Promact.Oauth.Server.Repository.ProjectsRepository;
 using Promact.Oauth.Server.Services;
+using Promact.Oauth.Server.Utility;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,7 +26,7 @@ namespace Promact.Oauth.Server.Repository
         #region "Private Variable(s)"
 
 
-        private readonly IHostingEnvironment _hostingEnvironment;
+
         private readonly IDataRepository<ApplicationUser> _applicationUserDataRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -40,7 +39,7 @@ namespace Promact.Oauth.Server.Repository
         private readonly IStringConstant _stringConstant;
         private readonly IDataRepository<ProjectUser> _projectUserDataRepository;
         private readonly IHttpClientService _httpClientRepository;
-
+        private readonly IEmailUtil _emailUtil;
 
         #endregion
 
@@ -48,16 +47,15 @@ namespace Promact.Oauth.Server.Repository
 
 
         public UserRepository(IDataRepository<ApplicationUser> applicationUserDataRepository,
-            IHostingEnvironment hostingEnvironment, RoleManager<IdentityRole> roleManager,
+            RoleManager<IdentityRole> roleManager,
             UserManager<ApplicationUser> userManager, IEmailSender emailSender,
             IMapper mapperContext, IDataRepository<ProjectUser> projectUserRepository,
             IProjectRepository projectRepository, IOptions<AppSettingUtil> appSettingUtil,
             IDataRepository<Project> projectDataRepository,
             IStringConstant stringConstant,
-            IHttpClientService httpClientRepository, IDataRepository<ProjectUser> projectUserDataRepository)
+            IHttpClientService httpClientRepository, IDataRepository<ProjectUser> projectUserDataRepository, IEmailUtil emailUtil)
         {
             _applicationUserDataRepository = applicationUserDataRepository;
-            _hostingEnvironment = hostingEnvironment;
             _userManager = userManager;
             _emailSender = emailSender;
             _mapperContext = mapperContext;
@@ -69,6 +67,7 @@ namespace Promact.Oauth.Server.Repository
             _stringConstant = stringConstant;
             _projectUserDataRepository = projectUserDataRepository;
             _httpClientRepository = httpClientRepository;
+            _emailUtil = emailUtil;
         }
 
         #endregion
@@ -499,10 +498,21 @@ namespace Promact.Oauth.Server.Repository
             }
             return projectUsers;
         }
-
         #endregion
 
         #region Private Methods
+
+        /// <summary>
+        /// This method is used to send email to the currently added user. -An
+        /// </summary>
+        /// <param name="firstName">Passed user first name</param>
+        /// <param name="email">Passed user email</param>
+        /// <param name="password">Passed password</param>
+        private void SendEmail(string firstName, string email, string password)
+        {
+            string finaleTemplate = _emailUtil.GetEmailTemplateForUserDetail(firstName, email, password);
+            _emailSender.SendEmail(email, _stringConstant.LoginCredentials, finaleTemplate);
+        }
 
         /// <summary>
         /// Method is used to return a user after assigning a role and mapping from ApplicationUser class to UserAc class
@@ -533,21 +543,7 @@ namespace Promact.Oauth.Server.Repository
             }
             return newUser;
         }
-
-        /// <summary>
-        /// This method is used to send email to the currently added user. -An
-        /// </summary>
-        /// <param name="firstName">Passed user first name</param>
-        /// <param name="email">Passed user email</param>
-        /// <param name="password">Passed password</param>
-        private void SendEmail(string firstName, string email, string password)
-        {
-            string path = Path.Combine(_hostingEnvironment.ContentRootPath, _stringConstant.UserDetialTemplateFolderPath);
-            string finaleTemplate = File.ReadAllText(path);
-            finaleTemplate = finaleTemplate.Replace(_stringConstant.UserEmail, email).Replace(_stringConstant.UserPassword, password).Replace(_stringConstant.ResertPasswordUserName, firstName);
-            _emailSender.SendEmail(email, _stringConstant.LoginCredentials, finaleTemplate);
-        }
-
+    
         /// <summary>
         /// This method used for genrate random string with alphanumeric words and special characters. -An
         /// </summary>
