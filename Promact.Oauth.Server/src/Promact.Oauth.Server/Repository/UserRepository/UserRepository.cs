@@ -14,6 +14,7 @@ using Promact.Oauth.Server.Repository.ProjectsRepository;
 using Promact.Oauth.Server.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -541,8 +542,8 @@ namespace Promact.Oauth.Server.Repository
         /// <param name="password">Passed password</param>
         private void SendEmail(string firstName, string email, string password)
         {
-            string path = _hostingEnvironment.ContentRootPath + _stringConstant.UserDetialTemplateFolderPath;
-            string finaleTemplate = System.IO.File.ReadAllText(path);
+            string path = Path.Combine(_hostingEnvironment.ContentRootPath, _stringConstant.UserDetialTemplateFolderPath);
+            string finaleTemplate = File.ReadAllText(path);
             finaleTemplate = finaleTemplate.Replace(_stringConstant.UserEmail, email).Replace(_stringConstant.UserPassword, password).Replace(_stringConstant.ResertPasswordUserName, firstName);
             _emailSender.SendEmail(email, _stringConstant.LoginCredentials, finaleTemplate);
         }
