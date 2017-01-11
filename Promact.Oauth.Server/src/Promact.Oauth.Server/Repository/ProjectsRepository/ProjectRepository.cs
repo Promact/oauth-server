@@ -105,8 +105,15 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// <param name="newProjectUser"></param>ProjectId and UserId information that need to be added
         public async Task AddUserProjectAsync(ProjectUser newProjectUser)
         {
-            _projectUserDataRepository.AddAsync(newProjectUser);
-            await _projectDataRepository.SaveChangesAsync();
+            try
+            {
+                _projectUserDataRepository.AddAsync(newProjectUser);
+                await _projectUserDataRepository.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
 
         }
 

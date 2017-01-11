@@ -1,11 +1,8 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Promact.Oauth.Server.Constants;
-using Promact.Oauth.Server.Data_Repository;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Models.ApplicationClasses;
 using Promact.Oauth.Server.Repository;
@@ -27,7 +24,6 @@ namespace Promact.Oauth.Server.Tests
         private readonly IProjectRepository _projectRepository;
         private readonly Mock<IEmailSender> _mockEmailService;
 
-        private readonly IDataRepository<ProjectUser> _projectUserDataRepository;
         public UserRepositoryTest() : base()
         {
             _userRepository = serviceProvider.GetService<IUserRepository>();
@@ -35,7 +31,6 @@ namespace Promact.Oauth.Server.Tests
             _mapper = serviceProvider.GetService<IMapper>();
             _stringConstant = serviceProvider.GetService<IStringConstant>();
             _projectRepository = serviceProvider.GetService<IProjectRepository>();
-            _projectUserDataRepository = serviceProvider.GetService<IDataRepository<ProjectUser>>();
             _mockEmailService = serviceProvider.GetService<Mock<IEmailSender>>();
         }
 
@@ -368,17 +363,14 @@ namespace Promact.Oauth.Server.Tests
             projectac.TeamLeaderId = _stringConstant.TeamLeaderId;
             projectac.CreatedBy = _stringConstant.CreatedBy;
             int projectId = await _projectRepository.AddProjectAsync(projectac, _stringConstant.CreatedBy);
-
             ProjectUser projectUser = new ProjectUser()
             {
                 ProjectId = projectId,
                 UserId = userId,
-                CreatedDateTime = DateTime.UtcNow.Date,
-                CreatedBy = _stringConstant.CreatedBy
+                CreatedBy = userId,
+                CreatedDateTime = DateTime.UtcNow,
             };
-            _projectUserDataRepository.Add(projectUser);
-            await _projectUserDataRepository.SaveChangesAsync();
-
+            await _projectRepository.AddUserProjectAsync(projectUser);
             var projectUsers = await _userRepository.GetProjectUserBySlackChannelNameAsync(projectac.SlackChannelName);
             Assert.Equal(projectUsers.Count, 1);
         }

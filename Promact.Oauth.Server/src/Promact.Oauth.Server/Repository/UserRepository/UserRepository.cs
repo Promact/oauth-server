@@ -25,7 +25,6 @@ namespace Promact.Oauth.Server.Repository
 
         #region "Private Variable(s)"
 
-
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly IDataRepository<ApplicationUser> _applicationUserDataRepository;
         private readonly UserManager<ApplicationUser> _userManager;
@@ -38,13 +37,10 @@ namespace Promact.Oauth.Server.Repository
         private readonly IOptions<AppSettingUtil> _appSettingUtil;
         private readonly IStringConstant _stringConstant;
         private readonly IDataRepository<ProjectUser> _projectUserDataRepository;
-        private readonly IHttpClientService _httpClientRepository;
-
-
+        
         #endregion
 
         #region "Constructor"
-
 
         public UserRepository(IDataRepository<ApplicationUser> applicationUserDataRepository,
             IHostingEnvironment hostingEnvironment, RoleManager<IdentityRole> roleManager,
@@ -53,7 +49,7 @@ namespace Promact.Oauth.Server.Repository
             IProjectRepository projectRepository, IOptions<AppSettingUtil> appSettingUtil,
             IDataRepository<Project> projectDataRepository,
             IStringConstant stringConstant,
-            IHttpClientService httpClientRepository, IDataRepository<ProjectUser> projectUserDataRepository)
+            IDataRepository<ProjectUser> projectUserDataRepository)
         {
             _applicationUserDataRepository = applicationUserDataRepository;
             _hostingEnvironment = hostingEnvironment;
@@ -67,7 +63,6 @@ namespace Promact.Oauth.Server.Repository
             _appSettingUtil = appSettingUtil;
             _stringConstant = stringConstant;
             _projectUserDataRepository = projectUserDataRepository;
-            _httpClientRepository = httpClientRepository;
         }
 
         #endregion
@@ -91,8 +86,8 @@ namespace Promact.Oauth.Server.Repository
             user.CreatedBy = createdBy;
             user.CreatedDateTime = DateTime.UtcNow;
             string password = GetRandomString();//get readom password.
-            var result = await _userManager.CreateAsync(user, password);
-            result = await _userManager.AddToRoleAsync(user, newUser.RoleName);//add role of new user.
+            await _userManager.CreateAsync(user, password);
+            await _userManager.AddToRoleAsync(user, newUser.RoleName);//add role of new user.
             SendEmail(user.FirstName, user.Email, password);//send mail with generated password of new user. 
             return user.Id;
         }
@@ -103,7 +98,6 @@ namespace Promact.Oauth.Server.Repository
         /// <returns>List of user roles</returns>
         public async Task<List<RolesAc>> GetRolesAsync()
         {
-            List<RolesAc> listOfRoleAC = new List<RolesAc>();
             var roles = await _roleManager.Roles.ToListAsync();
             return _mapperContext.Map<List<IdentityRole>, List<RolesAc>>(roles);
         }
@@ -125,7 +119,7 @@ namespace Promact.Oauth.Server.Repository
         public async Task<IEnumerable<UserAc>> GetAllEmployeesAsync()
         {
             var users = await _userManager.Users.Where(user => user.IsActive).OrderBy(user => user.FirstName).ToListAsync();
-            return _mapperContext.Map<List<ApplicationUser>, List<UserAc>>(users);
+            return _mapperContext.Map<IEnumerable<ApplicationUser>, IEnumerable<UserAc>>(users);
         }
 
         /// <summary>
@@ -175,11 +169,7 @@ namespace Promact.Oauth.Server.Repository
                 userAc.RoleName = (await _userManager.GetRolesAsync(applicationUser)).First();
                 return userAc;
             }
-            else
-            {
-                throw new UserNotFound();
-            }
-
+            throw new UserNotFound();
         }
 
         /// <summary>
@@ -189,10 +179,10 @@ namespace Promact.Oauth.Server.Repository
         /// <returns>If password is changed successfully, return empty otherwise error message.</returns>
         public async Task<ChangePasswordErrorModel> ChangePasswordAsync(ChangePasswordViewModel passwordModel)
         {
-            ChangePasswordErrorModel changePasswordErrorModel = new ChangePasswordErrorModel();
             var user = await _userManager.FindByEmailAsync(passwordModel.Email);
             if (user != null)
             {
+                ChangePasswordErrorModel changePasswordErrorModel = new ChangePasswordErrorModel();
                 IdentityResult result = await _userManager.ChangePasswordAsync(user, passwordModel.OldPassword, passwordModel.NewPassword);
                 if (!result.Succeeded)//When password not changed successfully then error message will be added in changePasswordErrorModel
                 {
@@ -254,13 +244,13 @@ namespace Promact.Oauth.Server.Repository
         {
             var user = await _userManager.FindByIdAsync(id);
             string newPassword = GetRandomString();
-            var code = await _userManager.GeneratePasswordResetTokenAsync(user); //genrate passsword reset token
-            IdentityResult result = await _userManager.ResetPasswordAsync(user, code, newPassword);
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user); //genrate passsword reset token
+            IdentityResult result = await _userManager.ResetPasswordAsync(user, token, newPassword);
             SendEmail(user.FirstName, user.Email, newPassword);
         }
 
         /// <summary>
-        /// Method to get user details by slackUserId
+        /// Method to get user details by slackUserId -SD
         /// </summary>
         /// <param name="slackUserId"></param>
         /// <returns>user details</returns>
@@ -280,7 +270,7 @@ namespace Promact.Oauth.Server.Repository
         }
 
         /// <summary>
-        /// Method to get team leader's details by userSlackId
+        /// Method to get team leader's details by userSlackId -SD
         /// </summary>
         /// <param name="userSlackId"></param>
         /// <returns>list of team leader</returns>
@@ -307,7 +297,7 @@ namespace Promact.Oauth.Server.Repository
         }
 
         /// <summary>
-        /// Method to get management people details
+        /// Method to get management people details - SD
         /// </summary>
         /// <returns>list of management</returns>
         public async Task<List<ApplicationUser>> ManagementDetailsAsync()
@@ -329,7 +319,7 @@ namespace Promact.Oauth.Server.Repository
 
 
         /// <summary>
-        /// Method to get the number of casual leave allowed to a user by slack user name
+        /// Method to get the number of casual leave allowed to a user by slack user name 
         /// </summary>
         /// <param name="slackUserId"></param>
         /// <returns>number of casual leave</returns>
@@ -370,7 +360,7 @@ namespace Promact.Oauth.Server.Repository
         /// Method to return user role. - RS
         /// </summary>
         /// <param name="userId">passed user id for getting list of user role </param>
-        /// <returns></returns>
+        /// <returns>users/user information</returns>
         public async Task<List<UserRoleAc>> GetUserRoleAsync(string userId)
         {
             ApplicationUser applicationUser = await _userManager.FindByIdAsync(userId);
@@ -407,7 +397,7 @@ namespace Promact.Oauth.Server.Repository
         /// Method to return list of users. - RS
         /// </summary>
         /// <param name="userId"></param>
-        /// <returns></returns>
+        /// <returns>teamMembers information</returns>
         public async Task<List<UserRoleAc>> GetTeamMembersAsync(string userId)
         {
             ApplicationUser applicationUser = await _userManager.FindByIdAsync(userId);
@@ -550,19 +540,19 @@ namespace Promact.Oauth.Server.Repository
         /// <summary>
         /// This method used for genrate random string with alphanumeric words and special characters. -An
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Random string</returns>
         private string GetRandomString()
         {
             Random random = new Random();
             //Initialize static Ato,atoz,0to9 and special characters seprated by '|'.
             string chars = _stringConstant.RandomString;
-            StringBuilder sb = new StringBuilder();
+            StringBuilder stringBuilder = new StringBuilder();
             for (int i = 0; i < 4; i++)
             {
                 //Get random 4 characters from diffrent portion and append on stringbuilder. 
-                sb.Append(new string(Enumerable.Repeat(chars.Split('|').ToArray()[i], 3).Select(s => s[random.Next(4)]).ToArray()));
+                stringBuilder.Append(new string(Enumerable.Repeat(chars.Split('|').ToArray()[i], 3).Select(s => s[random.Next(4)]).ToArray()));
             }
-            return sb.ToString();
+            return stringBuilder.ToString();
         }
 
         /// <summary>
