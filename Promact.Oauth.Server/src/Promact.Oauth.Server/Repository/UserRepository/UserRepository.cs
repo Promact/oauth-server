@@ -441,17 +441,11 @@ namespace Promact.Oauth.Server.Repository
             List<UserAc> userAcList = new List<UserAc>();
             if (project != null)
             {
-                List<ProjectUser> projectUserList = await _projectUserDataRepository.Fetch(x => x.ProjectId == project.Id).ToListAsync();
-                foreach (var projectUser in projectUserList)
-                {
-                    ApplicationUser user = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.Id == projectUser.UserId && x.SlackUserId != null);
-                    if (user != null)
-                    {
-                        UserAc userAc = _mapperContext.Map<ApplicationUser, UserAc>(user);
-                        userAcList.Add(userAc);
-                    }
-                }
+                IEnumerable<string> userIdList = (await _projectUserDataRepository.Fetch(x => x.ProjectId == project.Id).ToListAsync()).Select(y => y.UserId);
+                List<ApplicationUser> applicationUsers = await _applicationUserDataRepository.Fetch(x => userIdList.Contains(x.Id)).ToListAsync();
+                userAcList = _mapperContext.Map<List<ApplicationUser>, List<UserAc>>(applicationUsers);
             }
+
             return userAcList;
         }
 
