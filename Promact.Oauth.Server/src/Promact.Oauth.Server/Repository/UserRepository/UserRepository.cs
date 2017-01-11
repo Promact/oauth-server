@@ -1,10 +1,7 @@
 ﻿using AutoMapper;
-using Exceptionless.Json;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Promact.Oauth.Server.Constants;
 using Promact.Oauth.Server.Data_Repository;
@@ -14,6 +11,7 @@ using Promact.Oauth.Server.Models.ApplicationClasses;
 using Promact.Oauth.Server.Models.ManageViewModels;
 using Promact.Oauth.Server.Repository.ProjectsRepository;
 using Promact.Oauth.Server.Services;
+using Promact.Oauth.Server.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +26,7 @@ namespace Promact.Oauth.Server.Repository
         #region "Private Variable(s)"
 
 
-        private readonly IHostingEnvironment _hostingEnvironment;
+
         private readonly IDataRepository<ApplicationUser> _applicationUserDataRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -38,26 +36,24 @@ namespace Promact.Oauth.Server.Repository
         private readonly IProjectRepository _projectRepository;
         private readonly IDataRepository<Project> _projectDataRepository;
         private readonly IOptions<AppSettingUtil> _appSettingUtil;
-        private readonly ILogger<UserRepository> _logger;
         private readonly IStringConstant _stringConstant;
         private readonly IDataRepository<ProjectUser> _projectUserDataRepository;
-        private readonly IHttpClientService _httpClientRepository;
+        private readonly IEmailUtil _emailUtil;
+
         #endregion
 
         #region "Constructor"
 
-
         public UserRepository(IDataRepository<ApplicationUser> applicationUserDataRepository,
-            IHostingEnvironment hostingEnvironment, RoleManager<IdentityRole> roleManager,
+            RoleManager<IdentityRole> roleManager,
             UserManager<ApplicationUser> userManager, IEmailSender emailSender,
             IMapper mapperContext, IDataRepository<ProjectUser> projectUserRepository,
             IProjectRepository projectRepository, IOptions<AppSettingUtil> appSettingUtil,
             IDataRepository<Project> projectDataRepository,
-            ILogger<UserRepository> logger, IStringConstant stringConstant,
-            IHttpClientService httpClientRepository, IDataRepository<ProjectUser> projectUserDataRepository)
+            IStringConstant stringConstant,
+            IDataRepository<ProjectUser> projectUserDataRepository,IEmailUtil emailUtil)
         {
             _applicationUserDataRepository = applicationUserDataRepository;
-            _hostingEnvironment = hostingEnvironment;
             _userManager = userManager;
             _emailSender = emailSender;
             _mapperContext = mapperContext;
@@ -66,10 +62,9 @@ namespace Promact.Oauth.Server.Repository
             _roleManager = roleManager;
             _projectDataRepository = projectDataRepository;
             _appSettingUtil = appSettingUtil;
-            _logger = logger;
             _stringConstant = stringConstant;
             _projectUserDataRepository = projectUserDataRepository;
-            _httpClientRepository = httpClientRepository;
+           _emailUtil = emailUtil;
         }
 
         #endregion
@@ -79,7 +74,9 @@ namespace Promact.Oauth.Server.Repository
         /// <summary>
         /// This method is used to add new user
         /// </summary>
-        /// <param name="applicationUser">UserAc Application class object</param>
+        /// <param name="newUser">Passed userAC object</param>
+        /// <param name="createdBy">Passed id of user who has created this user.</param>
+        /// <returns>Added user id</returns>
         public async Task<string> AddUserAsync(UserAc newUser, string createdBy)
         {
             LeaveCalculator leaveCalculator = new LeaveCalculator();
@@ -91,25 +88,24 @@ namespace Promact.Oauth.Server.Repository
             user.CreatedBy = createdBy;
             user.CreatedDateTime = DateTime.UtcNow;
             string password = GetRandomString();//get readom password.
-            var result = await _userManager.CreateAsync(user, password);
-            result = await _userManager.AddToRoleAsync(user, newUser.RoleName);//add role of new user.
-            SendEmail(user, password);//send mail with generated password of new user. 
+            await _userManager.CreateAsync(user, password);
+            await _userManager.AddToRoleAsync(user, newUser.RoleName);//add role of new user.
+            SendEmail(user.FirstName, user.Email, password);//send mail with generated password of new user. 
             return user.Id;
         }
 
         /// <summary>
-        /// this method is used to get all role
+        ///This method is used to get all role. -An
         /// </summary>
-        /// <returns></returns>
+        /// <returns>List of user roles</returns>
         public async Task<List<RolesAc>> GetRolesAsync()
         {
-            List<RolesAc> listOfRoleAC = new List<RolesAc>();
             var roles = await _roleManager.Roles.ToListAsync();
             return _mapperContext.Map<List<IdentityRole>, List<RolesAc>>(roles);
         }
 
         /// <summary>
-        /// This method is used for getting the list of all users
+        /// This method is used for fetching the list of all users
         /// </summary>
         /// <returns>List of all users</returns>
         public async Task<IEnumerable<UserAc>> GetAllUsersAsync()
@@ -118,7 +114,6 @@ namespace Promact.Oauth.Server.Repository
             return _mapperContext.Map<IEnumerable<ApplicationUser>, IEnumerable<UserAc>>(users);
         }
 
-
         /// <summary>
         /// This method is used for getting the list of all Employees
         /// </summary>
@@ -126,14 +121,15 @@ namespace Promact.Oauth.Server.Repository
         public async Task<IEnumerable<UserAc>> GetAllEmployeesAsync()
         {
             var users = await _userManager.Users.Where(user => user.IsActive).OrderBy(user => user.FirstName).ToListAsync();
-            return _mapperContext.Map<List<ApplicationUser>, List<UserAc>>(users);
+            return _mapperContext.Map<IEnumerable<ApplicationUser>, IEnumerable<UserAc>>(users);
         }
-
 
         /// <summary>
         /// This method is used to edit the details of an existing user
         /// </summary>
-        /// <param name="editedUser">UserAc Application class object</param>
+        /// <param name="editedUser">Passed UserAc object</param>
+        /// <param name="updatedBy">Passed id of user who has updated this user.</param>
+        /// <returns>Updated user id.</returns>
         public async Task<string> UpdateUserDetailsAsync(UserAc editedUser, string updatedBy)
         {
             var user = _userManager.Users.FirstOrDefault(x => x.SlackUserName == editedUser.SlackUserName && x.Id != editedUser.Id);
@@ -161,12 +157,11 @@ namespace Promact.Oauth.Server.Repository
             throw new SlackUserNotFound();
         }
 
-
         /// <summary>
-        /// This method is used to get particular user's details by his/her id
+        ///  This method used for get user detail by user id 
         /// </summary>
-        /// <param name="id">string id</param>
-        /// <returns>UserAc Application class object</returns>
+        /// <param name="id">Passed user id</param>
+        /// <returns>UserAc application class object</returns>
         public async Task<UserAc> GetByIdAsync(string id)
         {
             ApplicationUser applicationUser = await _userManager.FindByIdAsync(id);
@@ -176,28 +171,24 @@ namespace Promact.Oauth.Server.Repository
                 userAc.RoleName = (await _userManager.GetRolesAsync(applicationUser)).First();
                 return userAc;
             }
-            else
-            {
-                throw new UserNotFound();
-            }
-
+            throw new UserNotFound();
         }
 
-
         /// <summary>
-        /// This method is used to change the password of a particular user
+        /// This method is used to change the password of a particular user. -An
         /// </summary>
-        /// <param name="passwordModel">ChangePasswordViewModel type object</param>
+        /// <param name="passwordModel">Passed changePasswordViewModel object(OldPassword,NewPassword,ConfirmPassword,Email)</param>
+        /// <returns>If password is changed successfully, return empty otherwise error message.</returns>
         public async Task<ChangePasswordErrorModel> ChangePasswordAsync(ChangePasswordViewModel passwordModel)
         {
-            ChangePasswordErrorModel changePasswordErrorModel = new ChangePasswordErrorModel();
             var user = await _userManager.FindByEmailAsync(passwordModel.Email);
             if (user != null)
             {
+                ChangePasswordErrorModel changePasswordErrorModel = new ChangePasswordErrorModel();
                 IdentityResult result = await _userManager.ChangePasswordAsync(user, passwordModel.OldPassword, passwordModel.NewPassword);
-                if (!result.Succeeded)//when password not changed successfully then error message will be added in changePasswordErrorModel
+                if (!result.Succeeded)//When password not changed successfully then error message will be added in changePasswordErrorModel
                 {
-                    changePasswordErrorModel.ErrorMessage = result.Errors.FirstOrDefault().Description.ToString();
+                    changePasswordErrorModel.ErrorMessage = result.Errors.First().Description.ToString();
                 }
                 return changePasswordErrorModel;
             }
@@ -207,8 +198,8 @@ namespace Promact.Oauth.Server.Repository
         /// <summary>
         /// This method is used to check if a user already exists in the database with the given userName
         /// </summary>
-        /// <param name="userName">string userName</param>
-        /// <returns> boolean: true if the user name exists, false if does not exist</returns>
+        /// <param name="userName">Passed userName</param>
+        /// <returns>boolean: true if the user name exists,otherwise throw UserNotFound exception.</returns>
         public async Task<bool> FindByUserNameAsync(string userName)
         {
             var user = await _userManager.FindByNameAsync(userName);
@@ -220,9 +211,9 @@ namespace Promact.Oauth.Server.Repository
         }
 
         /// <summary>
-        /// This method is used to check if a user already exists in the database with the given email
+        /// This method is used to check email is already exists in database.
         /// </summary>
-        /// <param name="email"></param>
+        /// <param name="email">Passed user email address</param>
         /// <returns> boolean: true if the email exists, false if does not exist</returns>
         public async Task<bool> CheckEmailIsExistsAsync(string email)
         {
@@ -232,10 +223,10 @@ namespace Promact.Oauth.Server.Repository
 
 
         /// <summary>
-        /// Fetches user with the given Slack User Id
+        /// Fetch user with given slack user name
         /// </summary>
-        /// <param name="slackUserName"></param>
-        /// <returns></returns>
+        /// <param name="slackUserName">Passed slack user name</param>
+        /// <returns>If user is exists return user otherwise throw SlackUserNotFound exception.</returns>
         public async Task<ApplicationUser> FindUserBySlackUserNameAsync(string slackUserName)
         {
             var user = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.SlackUserName == slackUserName);
@@ -245,24 +236,23 @@ namespace Promact.Oauth.Server.Repository
                 return user;
         }
 
+
         /// <summary>
-        /// This method used for re -send mail for user credentails
+        /// This method used for re-send mail for user credentials. -An
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">passed userid</param>
         /// <returns></returns>
-        public async Task<bool> ReSendMailAsync(string id)
+        public async Task ReSendMailAsync(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
             string newPassword = GetRandomString();
-            var code = await _userManager.GeneratePasswordResetTokenAsync(user); //genrate passsword reset token
-            IdentityResult result = await _userManager.ResetPasswordAsync(user, code, newPassword);
-            if (result.Succeeded)//if password is reset successfully,send mail with new password of user.
-                return SendEmail(user, newPassword);
-            return false;
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user); //genrate passsword reset token
+            IdentityResult result = await _userManager.ResetPasswordAsync(user, token, newPassword);
+            SendEmail(user.FirstName, user.Email, newPassword);
         }
 
         /// <summary>
-        /// Method to get user details by slackUserId
+        /// Method to get user details by slackUserId -SD
         /// </summary>
         /// <param name="slackUserId"></param>
         /// <returns>user details</returns>
@@ -282,7 +272,7 @@ namespace Promact.Oauth.Server.Repository
         }
 
         /// <summary>
-        /// Method to get team leader's details by userSlackId
+        /// Method to get team leader's details by userSlackId -SD
         /// </summary>
         /// <param name="userSlackId"></param>
         /// <returns>list of team leader</returns>
@@ -309,7 +299,7 @@ namespace Promact.Oauth.Server.Repository
         }
 
         /// <summary>
-        /// Method to get management people details
+        /// Method to get management people details - SD
         /// </summary>
         /// <returns>list of management</returns>
         public async Task<List<ApplicationUser>> ManagementDetailsAsync()
@@ -331,7 +321,7 @@ namespace Promact.Oauth.Server.Repository
 
 
         /// <summary>
-        /// Method to get the number of casual leave allowed to a user by slack user name
+        /// Method to get the number of casual leave allowed to a user by slack user name 
         /// </summary>
         /// <param name="slackUserId"></param>
         /// <returns>number of casual leave</returns>
@@ -372,7 +362,7 @@ namespace Promact.Oauth.Server.Repository
         /// Method to return user role. - RS
         /// </summary>
         /// <param name="userId">passed user id for getting list of user role </param>
-        /// <returns></returns>
+        /// <returns>users/user information</returns>
         public async Task<List<UserRoleAc>> GetUserRoleAsync(string userId)
         {
             ApplicationUser applicationUser = await _userManager.FindByIdAsync(userId);
@@ -409,7 +399,7 @@ namespace Promact.Oauth.Server.Repository
         /// Method to return list of users. - RS
         /// </summary>
         /// <param name="userId"></param>
-        /// <returns></returns>
+        /// <returns>teamMembers information</returns>
         public async Task<List<UserRoleAc>> GetTeamMembersAsync(string userId)
         {
             ApplicationUser applicationUser = await _userManager.FindByIdAsync(userId);
@@ -498,6 +488,17 @@ namespace Promact.Oauth.Server.Repository
 
         #region Private Methods
 
+        /// <summary>
+        /// This method is used to send email to the currently added user. -An
+        /// </summary>
+        /// <param name="firstName">Passed user first name</param>
+        /// <param name="email">Passed user email</param>
+        /// <param name="password">Passed password</param>
+        private void SendEmail(string firstName, string email, string password)
+        {
+            string finaleTemplate = _emailUtil.GetEmailTemplateForUserDetail(firstName, email, password);
+            _emailSender.SendEmail(email, _stringConstant.LoginCredentials, finaleTemplate);
+        }
 
         /// <summary>
         /// Method is used to return a user after assigning a role and mapping from ApplicationUser class to UserAc class
@@ -528,41 +529,23 @@ namespace Promact.Oauth.Server.Repository
             }
             return newUser;
         }
-
+    
         /// <summary>
-        /// This method is used to send email to the currently added user
+        /// This method used for genrate random string with alphanumeric words and special characters. -An
         /// </summary>
-        /// <param name="user">Object of newly registered User</param>
-        private bool SendEmail(ApplicationUser user, string password)
-        {
-            string path = _hostingEnvironment.ContentRootPath + _stringConstant.UserDetialTemplateFolderPath;
-            string finaleTemplate = "";
-            if (System.IO.File.Exists(path))//check user details template exists or not.
-            {
-                finaleTemplate = System.IO.File.ReadAllText(path);
-                finaleTemplate = finaleTemplate.Replace(_stringConstant.UserEmail, user.Email).Replace(_stringConstant.UserPassword, password).Replace(_stringConstant.ResertPasswordUserName, user.FirstName);
-                _emailSender.SendEmail(user.Email, _stringConstant.LoginCredentials, finaleTemplate);
-                return true;
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// This method used for genrate random string with alphanumeric words and special characters. 
-        /// </summary>
-        /// <returns></returns>
+        /// <returns>Random string</returns>
         private string GetRandomString()
         {
             Random random = new Random();
             //Initialize static Ato,atoz,0to9 and special characters seprated by '|'.
             string chars = _stringConstant.RandomString;
-            StringBuilder sb = new StringBuilder();
+            StringBuilder stringBuilder = new StringBuilder();
             for (int i = 0; i < 4; i++)
             {
                 //Get random 4 characters from diffrent portion and append on stringbuilder. 
-                sb.Append(new string(Enumerable.Repeat(chars.Split('|').ToArray()[i], 3).Select(s => s[random.Next(4)]).ToArray()));
+                stringBuilder.Append(new string(Enumerable.Repeat(chars.Split('|').ToArray()[i], 3).Select(s => s[random.Next(4)]).ToArray()));
             }
-            return sb.ToString();
+            return stringBuilder.ToString();
         }
 
         /// <summary>

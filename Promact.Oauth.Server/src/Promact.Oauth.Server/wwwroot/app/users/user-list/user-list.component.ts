@@ -1,4 +1,4 @@
-﻿import { Component ,OnInit} from "@angular/core";
+﻿import { Component, OnInit } from "@angular/core";
 import { Router } from '@angular/router';
 import { UserService } from '../user.service';
 import { UserModel } from '../user.model';
@@ -18,7 +18,7 @@ export class UserListComponent implements OnInit {
         this.users = new Array<UserModel>();
         this.user = new UserModel();
     }
-    
+
     getUsers() {
         this.loader.loader = true;
         this.userService.getUsers().subscribe((users) => {
@@ -43,9 +43,7 @@ export class UserListComponent implements OnInit {
     reSendMail(user) {
         this.loader.loader = true;
         this.userService.reSendMail(user.Id).subscribe((response) => {
-            if (response === true) {
-                this.toast.show('Credentials re-send succesfully');
-            }
+            this.toast.show('Credentials re-send succesfully');
             this.loader.loader = false;
         }, err => {
         });

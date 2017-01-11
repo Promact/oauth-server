@@ -30,6 +30,7 @@ namespace Promact.Oauth.Server.Tests
             _stringConstant = serviceProvider.GetService<IStringConstant>();
             _userRepository = serviceProvider.GetService<IUserRepository>();
         }
+      
         #region Test Case
         /// <summary>
         /// This test case to add a new project
@@ -226,12 +227,9 @@ namespace Promact.Oauth.Server.Tests
             projectac.CreatedBy = _stringConstant.CreatedBy;
             await _projectRepository.AddProjectAsync(projectac, _stringConstant.CreatedBy);
             await _projectRepository.AddUserProjectAsync(projectUser);
-            IEnumerable<ProjectAc> projects =await _projectRepository.GetAllProjectsAsync();
+            IEnumerable<ProjectAc> projects = await _projectRepository.GetAllProjectsAsync();
             Assert.NotNull(projects);
         }
-
-       
-
 
         /// <summary>
         /// Fetch the project of the given slack channel name 
@@ -257,18 +255,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public async void TestGetProjectsWithUsers()
         {
-            UserAc _testUser = new UserAc()
-            {
-                Email = _stringConstant.RawEmailIdForTest,
-                FirstName = _stringConstant.RawFirstNameForTest,
-                LastName = _stringConstant.RawLastNameForTest,
-                IsActive = true,
-                UserName = _stringConstant.RawEmailIdForTest,
-                SlackUserName = _stringConstant.RawFirstNameForTest,
-                JoiningDate = DateTime.UtcNow,
-                RoleName = _stringConstant.Employee
-            };
-            string id = await _userRepository.AddUserAsync(_testUser, _stringConstant.CreatedBy);
+            string id = await CreateMockAndUserAsync();
             ProjectAc project = new ProjectAc()
             {
                 Name = _stringConstant.Name,
@@ -288,18 +275,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public async void TestGetProjectDetails()
         {
-            UserAc _testUser = new UserAc()
-            {
-                Email = _stringConstant.RawEmailIdForTest,
-                FirstName = _stringConstant.RawFirstNameForTest,
-                LastName = _stringConstant.RawLastNameForTest,
-                IsActive = true,
-                UserName = _stringConstant.RawEmailIdForTest,
-                SlackUserName = _stringConstant.RawFirstNameForTest,
-                JoiningDate = DateTime.UtcNow,
-                RoleName = _stringConstant.Employee
-            };
-            string id = await _userRepository.AddUserAsync(_testUser, _stringConstant.CreatedBy);
+            string id = await CreateMockAndUserAsync();
             ProjectAc project = new ProjectAc()
             {
                 Name = _stringConstant.Name,

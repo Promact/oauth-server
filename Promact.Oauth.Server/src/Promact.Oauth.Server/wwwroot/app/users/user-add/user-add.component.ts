@@ -1,4 +1,4 @@
-﻿import { Component, Input,OnInit } from "@angular/core";
+﻿import { Component, Input, OnInit } from "@angular/core";
 import { UserService } from '../user.service';
 import { UserModel } from '../user.model';
 import { UserRoleModel } from '../userrole.model';
@@ -30,10 +30,8 @@ export class UserAddComponent implements OnInit {
 
     ngOnInit() {
         this.getRoles();
-    
-    }
 
-  
+    }
 
     getRoles() {
         this.userService.getRoles().subscribe((result) => {
@@ -53,20 +51,18 @@ export class UserAddComponent implements OnInit {
             if (!this.isEmailExist) {
                 userModel.FirstName = userModel.FirstName.trim();
                 this.userService.registerUser(userModel).subscribe((result) => {
-                    if (result) {
-                        this.toast.show('User added successfully.');
-                        this.redirectionRoute.navigate(['user/list']);
-                    }
-                    else if (!result) {
-                        this.toast.show('Email is invalid.');
-                    }
+                    this.toast.show('User added successfully.');
+                    this.redirectionRoute.navigate(['user/list']);
                     this.loader.loader = false;
                 }, err => {
+                    if (err.status === 400) {
+                        this.toast.show('Email is invalid.');
+                    } this.loader.loader = false;
                 });
             }
             else {
                 this.loader.loader = false;
-                this.toast.show('Email Address already exists.');
+                this.toast.show('Email already exists.');
             }
         }
         else {
@@ -81,7 +77,7 @@ export class UserAddComponent implements OnInit {
             this.userService.checkEmailIsExists(email).subscribe((result) => {
                 this.isEmailExist = result;
             }, err => {
-                console.log(err);
+                console.log(err.statusText);
             });
         }
     }
@@ -90,7 +86,7 @@ export class UserAddComponent implements OnInit {
         this.isSlackUserNameExist = false;
         if (slackUserName !== "" && slackUserName !== undefined) {
             this.userService.checkUserIsExistsBySlackUserName(slackUserName).subscribe((result) => {
-                this.isSlackUserNameExist = result;
+                this.isSlackUserNameExist = true;
             }, err => {
                 console.log(err.statusText);
             });
