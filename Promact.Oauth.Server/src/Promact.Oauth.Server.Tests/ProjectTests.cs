@@ -227,7 +227,7 @@ namespace Promact.Oauth.Server.Tests
             projectac.CreatedBy = _stringConstant.CreatedBy;
             await _projectRepository.AddProjectAsync(projectac, _stringConstant.CreatedBy);
             await _projectRepository.AddUserProjectAsync(projectUser);
-            IEnumerable<ProjectAc> projects =await _projectRepository.GetAllProjectsAsync();
+            IEnumerable<ProjectAc> projects = await _projectRepository.GetAllProjectsAsync();
             Assert.NotNull(projects);
         }
 

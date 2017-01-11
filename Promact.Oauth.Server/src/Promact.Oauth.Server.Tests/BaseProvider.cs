@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,7 +19,7 @@ using Promact.Oauth.Server.Constants;
 using Moq;
 using Promact.Oauth.Server.Models.ApplicationClasses;
 using System.Threading.Tasks;
-using System.IO;
+using Promact.Oauth.Server.Utility;
 
 namespace Promact.Oauth.Server.Tests
 {
@@ -29,10 +28,10 @@ namespace Promact.Oauth.Server.Tests
         public IServiceProvider serviceProvider { get; set; }
 
         private MapperConfiguration _mapperConfiguration { get; set; }
-        private readonly Mock<IHostingEnvironment> _mockHostingEnvironment;
-        private readonly Mock<IEmailSender> _mockEmailService;
+        private readonly Mock<IEmailUtil> _emailUtilMock;
         private readonly IStringConstant _stringConstant;
         private readonly IUserRepository _userRepository;
+        private readonly Mock<IEmailSender> _mockEmailService;
 
         public BaseProvider()
         {
@@ -63,7 +62,6 @@ namespace Promact.Oauth.Server.Tests
             services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<IConsumerAppRepository, ConsumerAppRepository>();
             services.AddScoped<IOAuthRepository, OAuthRepository>();
-            //services.AddScoped<HttpClient>();
             services.AddScoped<IStringConstant, StringConstant>();
             services.AddScoped(typeof(IDataRepository<>), typeof(DataRepository<>));
 
@@ -76,29 +74,31 @@ namespace Promact.Oauth.Server.Tests
             var httpClientMockObject = httpClientMock.Object;
             services.AddScoped(x => httpClientMock);
             services.AddScoped(x => httpClientMockObject);
+            
 
-
-            var iHostingEnvironmentMock = new Mock<IHostingEnvironment>();
-            var iHostingEnvironmentMockObject = iHostingEnvironmentMock.Object;
-            services.AddScoped(x => iHostingEnvironmentMock);
-            services.AddScoped(x => iHostingEnvironmentMockObject);
+            var emailUtilMock = new Mock<IEmailUtil>();
+            var emailUtilMockObject = emailUtilMock.Object;
+            services.AddScoped(x => emailUtilMock);
+            services.AddScoped(x => emailUtilMockObject);
 
             var emailServiceMock = new Mock<IEmailSender>();
             var emailServiceMockObject = emailServiceMock.Object;
             services.AddScoped(x => emailServiceMock);
             services.AddScoped(x => emailServiceMockObject);
+
+
             serviceProvider = services.BuildServiceProvider();
             RoleSeedFake(serviceProvider);
 
-            _mockHostingEnvironment = serviceProvider.GetService<Mock<IHostingEnvironment>>();
+            _emailUtilMock = serviceProvider.GetService<Mock<IEmailUtil>>();
             _mockEmailService = serviceProvider.GetService<Mock<IEmailSender>>();
-            _userRepository = serviceProvider.GetService<IUserRepository>();
             _stringConstant = serviceProvider.GetService<IStringConstant>();
+            _userRepository = serviceProvider.GetService<IUserRepository>();
 
-            //setup mock for email service and hosting enviroment. 
-            var path = PathCreatorForEmailTemplate();
-            _mockHostingEnvironment.Setup(x => x.ContentRootPath).Returns(path);
+            //mock email service and email util
             _mockEmailService.Setup(x => x.SendEmail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+            _emailUtilMock.Setup(x => x.GetEmailTemplateForUserDetail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+
         }
 
         #region Public Method(s)
@@ -122,7 +122,7 @@ namespace Promact.Oauth.Server.Tests
         }
 
         /// <summary>
-        /// This method used for create mock(hosting environment and email service) and user.
+        /// This method is used to create new user.
         /// </summary>
         /// <returns></returns>
         public async Task<string> CreateMockAndUserAsync()
@@ -141,24 +141,7 @@ namespace Promact.Oauth.Server.Tests
             };
             return await _userRepository.AddUserAsync(_testUser, _stringConstant.RawFirstNameForTest);
         }
-
-        /// <summary>
-        /// Method used to get current folder address and create a file "UserDetial.html".
-        /// </summary>
-        /// <returns></returns>
-        public string PathCreatorForEmailTemplate()
-        {
-            var directory = Path.GetTempPath();
-            var createNewDirectory = Path.Combine(directory, "Template");
-            if (!Directory.Exists(createNewDirectory))
-            {
-                Directory.CreateDirectory(createNewDirectory);
-                var newPath = string.Format("{0}\\UserDetial.html", createNewDirectory);
-                File.Create(newPath);
-            }
-            return directory;
-        }
-
+        
         #endregion
     }
 
