@@ -325,6 +325,28 @@ namespace Promact.Oauth.Server.Tests
         }
 
         /// <summary>
+        ///This test case is used to get the list of active user with role using admin user id.
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task GetUserRoleTeamLeader()
+        {
+            string id = await CreateMockAndUserAsync();
+            ProjectAc projectac = new ProjectAc()
+            {
+                Name = _stringConstant.Name,
+                SlackChannelName = _stringConstant.SlackChannelName,
+                IsActive = _stringConstant.IsActive,
+                TeamLeader = new UserAc { FirstName = _stringConstant.FirstName },
+                TeamLeaderId = id,
+                CreatedBy = _stringConstant.CreatedBy
+
+            };
+            var projectId = await _projectRepository.AddProjectAsync(projectac, _stringConstant.CreatedBy);
+            var userRole = await _userRepository.GetUserRoleAsync(id);
+            Assert.Equal(1, userRole.Count());
+        }
+
+        /// <summary>
         /// This test case is used to get team members with role using team leader id.   
         /// </summary>
         /// <returns></returns>
@@ -343,8 +365,16 @@ namespace Promact.Oauth.Server.Tests
 
             };
             var projectId = await _projectRepository.AddProjectAsync(projectac, _stringConstant.CreatedBy);
+            ProjectUser projectUser = new ProjectUser()
+            {
+                ProjectId = projectId,
+                UserId = userId,
+                CreatedBy = userId,
+                CreatedDateTime = DateTime.UtcNow,
+            };
+            await _projectRepository.AddUserProjectAsync(projectUser);
             var userRole = await _userRepository.GetTeamMembersAsync(userId);
-            Assert.Equal(1, userRole.Count());
+            Assert.Equal(2, userRole.Count());
         }
 
 

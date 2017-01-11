@@ -64,8 +64,7 @@ namespace Promact.Oauth.Server.Repository
             _appSettingUtil = appSettingUtil;
             _stringConstant = stringConstant;
             _projectUserDataRepository = projectUserDataRepository;
-           
-            _emailUtil = emailUtil;
+           _emailUtil = emailUtil;
         }
 
         #endregion
@@ -189,7 +188,7 @@ namespace Promact.Oauth.Server.Repository
                 IdentityResult result = await _userManager.ChangePasswordAsync(user, passwordModel.OldPassword, passwordModel.NewPassword);
                 if (!result.Succeeded)//When password not changed successfully then error message will be added in changePasswordErrorModel
                 {
-                    changePasswordErrorModel.ErrorMessage = result.Errors.FirstOrDefault().Description.ToString();
+                    changePasswordErrorModel.ErrorMessage = result.Errors.First().Description.ToString();
                 }
                 return changePasswordErrorModel;
             }
