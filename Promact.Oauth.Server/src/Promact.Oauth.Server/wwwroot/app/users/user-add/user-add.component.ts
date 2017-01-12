@@ -40,7 +40,6 @@ export class UserAddComponent implements OnInit {
                     this.listOfRoles.push(result[i]);
                 }
             }
-        }, err => {
         });
     }
 
@@ -76,8 +75,6 @@ export class UserAddComponent implements OnInit {
         if (email !== "" && email !== undefined) {
             this.userService.checkEmailIsExists(email).subscribe((result) => {
                 this.isEmailExist = result;
-            }, err => {
-                console.log(err.statusText);
             });
         }
     }

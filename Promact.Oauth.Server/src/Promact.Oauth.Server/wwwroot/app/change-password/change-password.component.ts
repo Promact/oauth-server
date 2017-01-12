@@ -13,7 +13,6 @@ import { LoaderService } from '../shared/loader.service';
 
 export class ChangePasswordComponent {
     isNotMatch: boolean;
-    isSame: boolean;
     isInCorrect: boolean;
 
     @Input()

@@ -2,11 +2,8 @@
 using MimeKit;
 using System.Net;
 using System.Threading;
-using System.Threading.Tasks;
 using Promact.Oauth.Server.Models;
 using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Logging;
-using System;
 using Promact.Oauth.Server.Constants;
 using MailKit.Security;
 
@@ -16,20 +13,26 @@ namespace Promact.Oauth.Server.Services
     // when you turn on two-factor authentication in ASP.NET Identity.
     // For more details see this link http://go.microsoft.com/fwlink/?LinkID=532713
 
-    public class AuthMessageSender : IEmailSender, ISmsSender
+    public class AuthMessageSender : IEmailSender
     {
-        private readonly ILogger<AuthMessageSender> _logger;
+        
         private readonly IStringConstant _stringConstant;
         private readonly IOptions<EmailCrednetials> _emailCrednetials;
 
-        public AuthMessageSender(IOptions<EmailCrednetials> emailCrednetials, ILogger<AuthMessageSender> logger, IStringConstant stringConstant)
+        public AuthMessageSender(IOptions<EmailCrednetials> emailCrednetials, IStringConstant stringConstant)
         {
-            _logger = logger;
             _stringConstant = stringConstant;
             _emailCrednetials = emailCrednetials;
         }
 
-        public void SendEmail(string email, string subject, string message)
+
+        /// <summary>
+        /// This method is used to send email.
+        /// </summary>
+        /// <param name="email">Passed email</param>
+        /// <param name="subject">Passed email subject</param>
+        /// <param name="body">Passed email body</param>
+        public void SendEmail(string email, string subject, string body)
         {
             // Plug in your email service here to send an email.
             var msg = new MimeMessage();
@@ -37,7 +40,7 @@ namespace Promact.Oauth.Server.Services
             msg.To.Add(new MailboxAddress("User", email));
             msg.Subject = subject;
             var bodyBuilder = new BodyBuilder();
-            bodyBuilder.HtmlBody = message;
+            bodyBuilder.HtmlBody = body;
             msg.Body = bodyBuilder.ToMessageBody();
             using (var smtp = new SmtpClient())
             {
@@ -48,19 +51,12 @@ namespace Promact.Oauth.Server.Services
             }
         }
         
-
-        public Task SendSmsAsync(string number, string message)
-        {
-            // Plug in your SMS service here to send a text message.
-            return Task.FromResult(0);
-        }
-
         #region Private Methods
 
         /// <summary>
         /// This method used for get secure Socket options.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>secure socket options</returns>
         private SecureSocketOptions GetSecureSocketOptions()
         {
             string smtpProtocol = _emailCrednetials.Value.SetSmtpProtocol.ToLower();

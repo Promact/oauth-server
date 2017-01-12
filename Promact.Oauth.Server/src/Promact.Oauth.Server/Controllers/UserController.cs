@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using System;
 using Promact.Oauth.Server.Repository;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Models.ManageViewModels;
@@ -9,7 +8,6 @@ using Promact.Oauth.Server.Models.ApplicationClasses;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
-using Exceptions;
 using Promact.Oauth.Server.Constants;
 using Promact.Oauth.Server.ExceptionHandler;
 using Promact.Oauth.Server.Services;
@@ -157,7 +155,7 @@ namespace Promact.Oauth.Server.Controllers
         *   "Role":null,
         *   "UserName": null
         * }
-        * @apiError UserNotFound The User of the id was not found.
+        * @apiError UserNotFound user id not found.
         * @apiErrorExample {json} Error-Response:
         * HTTP/1.1 404 Not Found
         * {
@@ -255,12 +253,12 @@ namespace Promact.Oauth.Server.Controllers
         *     true
         * }
         * @apiError BadRequest
+        * @apiError SlackUserNotFound the slack user was not found.
         * @apiErrorExample {json} Error-Response:
         * HTTP/1.1 400 Bad Request
         * {
         *   "error": "Problems parsing JSON object"
         * }
-        * @apiError SlackUserNotFound the slack user was not found.
         * @apiErrorExample {json} Error-Response:
         * HTTP/1.1 404 Not Found
         * {
@@ -306,7 +304,7 @@ namespace Promact.Oauth.Server.Controllers
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
         * {
-        *     ErrorMessage : If password is changed successfully, return empty otherwise error message
+        *     Message : If password is changed successfully, return empty otherwise error message
         * }
         * @apiError UserNotFound the slack user was not found.
         * @apiErrorExample {json} Error-Response:
@@ -406,7 +404,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-       * @api {post} api/users/available/:email
+       * @api {post} api/users/available/email/:email
        * @apiVersion 1.0.0
        * @apiName CheckEmailIsExistsAsync
        * @apiGroup User
@@ -422,7 +420,7 @@ namespace Promact.Oauth.Server.Controllers
        * }
        */
         [HttpGet]
-        [Route("available/{email}")]
+        [Route("available/email/{email}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CheckEmailIsExistsAsync(string email)
         {
@@ -430,7 +428,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-         * @api {post} api/users/availableUser/:slackUserName 
+         * @api {post} api/users/available/:slackUserName 
          * @apiVersion 1.0.0
          * @apiName CheckUserIsExistsBySlackUserNameAsync
          * @apiGroup User
@@ -463,7 +461,7 @@ namespace Promact.Oauth.Server.Controllers
          * }
          */
         [HttpGet]
-        [Route("availableUser/{slackUserName}")]
+        [Route("available/{slackUserName}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CheckUserIsExistsBySlackUserNameAsync(string slackUserName)
         {
@@ -476,7 +474,6 @@ namespace Promact.Oauth.Server.Controllers
                 return NotFound();
             }
         }
-
 
         /**
           * @api {get} api/users/:userId/details 
@@ -547,7 +544,7 @@ namespace Promact.Oauth.Server.Controllers
 
 
         /**
-       * @api {get} api/users/:userid/role 
+       * @api {get} api/users/:userId/role 
        * @apiVersion 1.0.0
        * @apiName GetUserRoleAsync
        * @apiGroup User
@@ -560,6 +557,7 @@ namespace Promact.Oauth.Server.Controllers
        * HTTP/1.1 200 OK 
        * [
        *        {
+       *            "UserId": "34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
        *            "UserName": "smith@promactinfo.com",
        *            "Name":"Smith",
        *            "Role":"Admin"
@@ -568,7 +566,7 @@ namespace Promact.Oauth.Server.Controllers
        */
         [ServiceFilter(typeof(CustomAttribute))]
         [HttpGet]
-        [Route("{userid}/role")]
+        [Route("{userId}/role")]
         public async Task<IActionResult> GetUserRoleAsync(string userId)
         {
             return Ok(await _userRepository.GetUserRoleAsync(userId));
@@ -576,7 +574,7 @@ namespace Promact.Oauth.Server.Controllers
 
 
         /**
-        * @api {get} api/users/:userid/teammembers 
+        * @api {get} api/users/:userId/teammembers 
         * @apiVersion 1.0.0
         * @apiName GetTeamMembersAsync
         * @apiGroup User
@@ -604,10 +602,10 @@ namespace Promact.Oauth.Server.Controllers
         */
         [ServiceFilter(typeof(CustomAttribute))]
         [HttpGet]
-        [Route("{userid}/teammembers")]
-        public async Task<IActionResult> GetTeamMembersAsync(string userid)
+        [Route("{userId}/teammembers")]
+        public async Task<IActionResult> GetTeamMembersAsync(string userId)
         {
-            return Ok(await _userRepository.GetTeamMembersAsync(userid));
+            return Ok(await _userRepository.GetTeamMembersAsync(userId));
         }
 
         /**
