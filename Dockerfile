@@ -61,7 +61,7 @@ RUN gulp copytowwwroot && mkdir /out
 RUN dotnet restore
 RUN dotnet publish project.json -c Release -o /out && cp appsettings.development.example.json /out/appsettings.production.json && rm -rf /app && rm -rf /tmp/*
 ENV ASPNETCORE_ENVIRONMENT Production
-COPY entrypoint.sh ./
+COPY entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["entrypoint.sh"]
 EXPOSE 5000
 CMD ["dotnet","/out/Promact.Oauth.Server.dll"]
