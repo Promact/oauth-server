@@ -487,7 +487,7 @@ namespace Promact.Oauth.Server.Controllers
           * @apiParamExample {json} Request-Example:
           *      
           *        {
-          *             "id": "95151b57-42c5-48d5-84b6-6d20e2fb05cd"
+          *             "userId": "95151b57-42c5-48d5-84b6-6d20e2fb05cd"
           *        }      
           * @apiSuccessExample {json} Success-Response:
           * HTTP/1.1 200 OK 
@@ -674,7 +674,7 @@ namespace Promact.Oauth.Server.Controllers
         * @apiParamExample {json} Request-Example:
         *      
         *        {
-        *             "id": "95151b57-42c5-48d5-84b6-6d20e2fb05cd"
+        *             "teamLeaderId": "95151b57-42c5-48d5-84b6-6d20e2fb05cd"
         *        }      
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
@@ -719,16 +719,8 @@ namespace Promact.Oauth.Server.Controllers
         [Route("{teamLeaderId}/project")]
         public async Task<IActionResult> GetProjectUsersByTeamLeaderIdAsync(string teamLeaderId)
         {
-            if (teamLeaderId != null)
-            {
-                List<UserAc> projectUsers = await _userRepository.GetProjectUsersByTeamLeaderIdAsync(teamLeaderId);
-                return Ok(projectUsers);
-            }
-            else
-            {
-                _logger.LogInformation("Teamleader Id does not exist");
-                return BadRequest();
-            }
+            List<UserAc> projectUsers = await _userRepository.GetProjectUsersByTeamLeaderIdAsync(teamLeaderId);
+            return Ok(projectUsers);
         }
 
         #endregion

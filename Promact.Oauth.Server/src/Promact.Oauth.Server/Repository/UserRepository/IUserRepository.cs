@@ -112,9 +112,9 @@ namespace Promact.Oauth.Server.Repository
 
 
         /// <summary>
-        /// This method is used to Get User details by Id
+        /// This method is used to Get User details by Id - GA
         /// </summary>
-        /// <param name="userId"></param>
+        /// <param name="userId">Id of the user</param>
         /// <returns>details of user</returns>
         Task<UserAc> UserDetailByIdAsync(string userId);
 
@@ -168,9 +168,9 @@ namespace Promact.Oauth.Server.Repository
 
 
         /// <summary>
-        /// The method is used to get list of projects along with its users for a specific teamleader 
+        /// The method is used to get list of projects along with its users for a specific teamleader - GA
         /// </summary>
-        /// <param name="teamLeaderId"></param>
+        /// <param name="teamLeaderId">Id of the teamleader</param>
         /// <returns>list of projects with users for a specific teamleader</returns>
         Task<List<UserAc>> GetProjectUsersByTeamLeaderIdAsync(string teamLeaderId);
 
