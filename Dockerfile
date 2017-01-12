@@ -65,4 +65,3 @@ COPY entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
 EXPOSE 5000
-CMD ["dotnet","/out/Promact.Oauth.Server.dll"]
