@@ -240,7 +240,7 @@ namespace Promact.Oauth.Server.Repository
         /// <summary>
         /// This method used for re-send mail for user credentials. -An
         /// </summary>
-        /// <param name="id">passed userid</param>
+        /// <param name="id">passed user id</param>
         /// <returns></returns>
         public async Task ReSendMailAsync(string id)
         {
@@ -349,7 +349,7 @@ namespace Promact.Oauth.Server.Repository
         /// <summary>
         /// This method is used to Get User details by Id
         /// </summary>
-        /// <param name="userId"></param>
+        /// <param name="userId">Passed user id</param>
         /// <returns>details of user</returns>
         public async Task<UserAc> UserDetailByIdAsync(string userId)
         {
@@ -369,7 +369,7 @@ namespace Promact.Oauth.Server.Repository
             var userRole = (await _userManager.GetRolesAsync(applicationUser)).First();
             List<UserRoleAc> userRoleAcList = new List<UserRoleAc>();
 
-            if (userRole == _stringConstant.RoleAdmin)
+            if (userRole == _stringConstant.RoleAdmin) //If login user is admin then return all active users with role.
             {
                 //getting the all user infromation. 
                 var userRoleAdmin = new UserRoleAc(applicationUser.Id, applicationUser.UserName, applicationUser.FirstName + " " + applicationUser.LastName, userRole);
@@ -384,7 +384,7 @@ namespace Promact.Oauth.Server.Repository
                     userRoleAcList.Add(userRoleAc);
                 }
             }
-            else
+            else //If login user is team leader/employee then return own infromation with his role.
             {
                 //check login user is teamLeader or not.
                 var isProjectExists = await _projectDataRepository.FirstOrDefaultAsync(x => x.TeamLeaderId == applicationUser.Id);
@@ -398,7 +398,7 @@ namespace Promact.Oauth.Server.Repository
         /// <summary>
         /// Method to return list of users. - RS
         /// </summary>
-        /// <param name="userId"></param>
+        /// <param name="userId">Passed user id</param>
         /// <returns>teamMembers information</returns>
         public async Task<List<UserRoleAc>> GetTeamMembersAsync(string userId)
         {
@@ -424,7 +424,7 @@ namespace Promact.Oauth.Server.Repository
         /// <summary>
         /// Method to return list of users/employees of the given slack channel name. - JJ
         /// </summary>
-        /// <param name="slackChannelName"></param>
+        /// <param name="slackChannelName">Passed slack channel name</param>
         /// <returns>list of object of UserAc</returns>
         public async Task<List<UserAc>> GetProjectUserBySlackChannelNameAsync(string slackChannelName)
         {
@@ -555,8 +555,8 @@ namespace Promact.Oauth.Server.Repository
         /// <summary>
         /// Calculat casual leava and sick leave from the date of joining - RS
         /// </summary>
-        /// <param name="dateTime"></param>
-        /// <returns></returns>
+        /// <param name="dateTime">passing joining date</param>
+        /// <returns>LeaveCalculator</returns>
         private LeaveCalculator CalculateAllowedLeaves(DateTime dateTime)
         {
             double casualAllowed = 0;

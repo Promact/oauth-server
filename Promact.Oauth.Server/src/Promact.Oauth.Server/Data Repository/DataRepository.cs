@@ -47,16 +47,8 @@ namespace Promact.Oauth.Server.Data_Repository
         /// <param name="entity">entity</param>
         public void Add(T entity)
         {
-            try
-            {
-                _dbSet.Add(entity);
-                _promactDbContext.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
+            _dbSet.Add(entity);
+            _promactDbContext.SaveChanges();
         }
 
         /// <summary>
@@ -65,16 +57,7 @@ namespace Promact.Oauth.Server.Data_Repository
         /// <param name="entity"></param>
         public void AddAsync(T entity)
         {
-            try
-            {
-                _dbSet.Add(entity);
-                //_promactDbContext.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
+            _dbSet.Add(entity);
         }
 
         /// <summary>
@@ -102,17 +85,10 @@ namespace Promact.Oauth.Server.Data_Repository
         /// <param name="entity"></param>
         public void UpdateAsync(T entity)
         {
-            try
-            {
-                _promactDbContext.Entry(entity).State = EntityState.Modified;
-                //_promactDbContext.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
+            _promactDbContext.Entry(entity).State = EntityState.Modified;
         }
+
+
         /// <summary>
         /// Saves the changes of the database context
         /// </summary>
@@ -126,11 +102,10 @@ namespace Promact.Oauth.Server.Data_Repository
         /// <returns></returns>
         public async Task<int> SaveChangesAsync()
         {
-            try
-            { return await _promactDbContext.SaveChangesAsync(); }
-            catch (Exception)
-            { throw; }
+            return await _promactDbContext.SaveChangesAsync();
+
         }
+
         /// <summary>
         /// Method attaches the entity from the context
         /// </summary>
@@ -156,13 +131,13 @@ namespace Promact.Oauth.Server.Data_Repository
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        
+
 
         public async Task<IEnumerable<T>> FetchAsync(Expression<Func<T, bool>> predicate)
         {
-          
-                return await _dbSet.Where(predicate).ToListAsync();
-            
+
+            return await _dbSet.Where(predicate).ToListAsync();
+
         }
 
         /// <summary>
@@ -193,7 +168,7 @@ namespace Promact.Oauth.Server.Data_Repository
         /// <returns></returns>
         public async Task<T> FirstAsync(Expression<Func<T, bool>> predicate)
         {
-                return await _dbSet.FirstAsync<T>(predicate);
+            return await _dbSet.FirstAsync<T>(predicate);
         }
 
         /// <summary>
@@ -231,37 +206,23 @@ namespace Promact.Oauth.Server.Data_Repository
 
         public void Delete(T entity)
         {
-            try
+            if (_promactDbContext.Entry(entity).State == EntityState.Detached)
+            {
+                _dbSet.Attach(entity);
+            }
+            _dbSet.Remove(entity);
+        }
+
+        public void Delete(Expression<Func<T, bool>> predicate)
+        {
+            var entitiesToDelete = Fetch(predicate);
+            foreach (var entity in entitiesToDelete)
             {
                 if (_promactDbContext.Entry(entity).State == EntityState.Detached)
                 {
                     _dbSet.Attach(entity);
                 }
                 _dbSet.Remove(entity);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        public void Delete(Expression<Func<T, bool>> predicate)
-        {
-            try
-            {
-                var entitiesToDelete = Fetch(predicate);
-                foreach (var entity in entitiesToDelete)
-                {
-                    if (_promactDbContext.Entry(entity).State == EntityState.Detached)
-                    {
-                        _dbSet.Attach(entity);
-                    }
-                    _dbSet.Remove(entity);
-                }
-            }
-            catch (Exception)
-            {
-                throw;
             }
         }
 
@@ -273,15 +234,7 @@ namespace Promact.Oauth.Server.Data_Repository
         /// <returns></returns>
         public async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate)
         {
-            try
-            {
-                return await _dbSet.FirstOrDefaultAsync(predicate);
-
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            return await _dbSet.FirstOrDefaultAsync(predicate);
         }
 
         private bool disposed = false;

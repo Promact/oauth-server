@@ -102,7 +102,7 @@ namespace Promact.Oauth.Server.Repository
         /// <returns></returns>
         Task<List<ApplicationUser>> TeamLeaderByUserSlackIdAsync(string userSlackId);
 
-        
+
         /// <summary>
         /// Method to get list of management people
         /// </summary>
@@ -114,7 +114,7 @@ namespace Promact.Oauth.Server.Repository
         /// <summary>
         /// This method is used to Get User details by Id
         /// </summary>
-        /// <param name="userId"></param>
+        /// <param name="userId">Passed user id</param>
         /// <returns>details of user</returns>
         Task<UserAc> UserDetailByIdAsync(string userId);
 
@@ -126,7 +126,7 @@ namespace Promact.Oauth.Server.Repository
         /// <returns>number of casual leave</returns>
         LeaveAllowed GetUserAllowedLeaveBySlackId(string slackUserId);
 
-  
+
         /// <summary>
         /// Method to check whether user is admin or not
         /// </summary>
@@ -134,35 +134,35 @@ namespace Promact.Oauth.Server.Repository
         /// <returns>true or false</returns>
         Task<bool> IsAdminAsync(string slackUserId);
 
-     
+
         /// <summary>
         /// This method used for re -send mail for user credentails
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">Passed user id.</param>
         /// <returns></returns>
         Task ReSendMailAsync(string id);
 
-     
+
         /// <summary>
-        /// Method to get User Role
+        /// Method to return user role. - RS
         /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
+        /// <param name="userId">passed user id for getting list of user role </param>
+        /// <returns>users/user information</returns>
         Task<List<UserRoleAc>> GetUserRoleAsync(string userId);
 
 
         /// <summary>
-        /// Method to get list of TeamMember By TeamLeaderId
+        /// Method to return list of users. - RS
         /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
+        /// <param name="userId">Passed user id</param>
+        /// <returns>teamMembers information</returns>
         Task<List<UserRoleAc>> GetTeamMembersAsync(string userId);
 
-      
+
         /// <summary>
         /// This method is used to fetch list of users/employees of the given group name. - JJ
         /// </summary>
-        /// <param name="slackChannelName"></param>
+        /// <param name="slackChannelName">Passed slack channel name</param>
         /// <returns>object of UserAc</returns>
         Task<List<UserAc>> GetProjectUserBySlackChannelNameAsync(string slackChannelName);
 

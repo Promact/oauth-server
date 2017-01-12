@@ -188,7 +188,7 @@ namespace Promact.Oauth.Server.Tests
         }
 
         /// <summary>
-        /// Test case use for getting TeamLeader's details by users slack name
+        /// Test case use for getting teamLeader's details by users slack id
         /// </summary>
         [Fact, Trait("Category", "Required")]
         public async Task TeamLeaderByUserSlackId()
@@ -233,7 +233,7 @@ namespace Promact.Oauth.Server.Tests
 
 
         /// <summary>
-        /// Test case used to find user by username
+        /// Test case used to find user by slack user name
         /// </summary>
         [Fact, Trait("Category", "Required")]
         public async Task FindUserBySlackUserName()
@@ -255,7 +255,7 @@ namespace Promact.Oauth.Server.Tests
         }
 
         /// <summary>
-        /// This test case is used to check exception condition
+        /// This test case is used to resend mail
         /// </summary>
         /// <returns></returns>
         [Fact, Trait("Category", "Required")]

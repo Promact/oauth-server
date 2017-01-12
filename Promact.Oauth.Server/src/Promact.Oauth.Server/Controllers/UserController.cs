@@ -134,7 +134,7 @@ namespace Promact.Oauth.Server.Controllers
         * @apiVersion 1.0.0
         * @apiName GetUserByIdAsync
         * @apiGroup User
-        * @apiParam {int} id User Id
+        * @apiParam {int} id
         * @apiParamExample {json} Request-Example:
         * {
         *   "id": "34d1af3d-062f-4bcd-b6f9-b8fd5165e367"
@@ -331,7 +331,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-       * @api {post} api/users/:password/available 
+       * @api {get} api/users/:password/available 
        * @apiVersion 1.0.0
        * @apiName CheckPasswordAsync
        * @apiGroup User
@@ -356,7 +356,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-        * @api {post} api/users/detail/:userName 
+        * @api {get} api/users/detail/:userName 
         * @apiVersion 1.0.0
         * @apiName FindByUserNameAsync
         * @apiGroup User
@@ -404,7 +404,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-       * @api {post} api/users/available/email/:email
+       * @api {get} api/users/available/email/:email
        * @apiVersion 1.0.0
        * @apiName CheckEmailIsExistsAsync
        * @apiGroup User
@@ -428,7 +428,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-         * @api {post} api/users/available/:slackUserName 
+         * @api {get} api/users/available/:slackUserName 
          * @apiVersion 1.0.0
          * @apiName CheckUserIsExistsBySlackUserNameAsync
          * @apiGroup User
@@ -478,19 +478,17 @@ namespace Promact.Oauth.Server.Controllers
         /**
           * @api {get} api/users/:userId/details 
           * @apiVersion 1.0.0
-          * @apiName UserDetailById
+          * @apiName UserDetailByIdAsync
           * @apiGroup User
-          * @apiParam {string} id userId
-          * @apiParamExample {json} Request-Example:
-          *      
+          * @apiParam {string} userId
+          * @apiParamExample {json} Request-Example:    
           *        {
-          *             "id": "95151b57-42c5-48d5-84b6-6d20e2fb05cd"
+          *             "userId": "95151b57-42c5-48d5-84b6-6d20e2fb05cd"
           *        }      
           * @apiSuccessExample {json} Success-Response:
           * HTTP/1.1 200 OK 
           * {
-          *     "description":"Object of type UserAc "
-          *     
+          *     "description":"Object of type UserAc "   
           *     {
           *         "Id": "95151b57-42c5-48d5-84b6-6d20e2fb05cd",
           *         "FirstName": "Admin",
@@ -520,10 +518,9 @@ namespace Promact.Oauth.Server.Controllers
         /**
           * @api {get} api/users/email/:id/send 
           * @apiVersion 1.0.0
-          * @apiName ReSendMail
+          * @apiName ReSendMailAsync
           * @apiParam {string} id
-          * @apiParamExample {json} Request-Example:
-          *      
+          * @apiParamExample {json} Request-Example:   
           *        {
           *             "id": "adssdvvsdv55gdfgdsgbc"
           *        }      
@@ -578,10 +575,10 @@ namespace Promact.Oauth.Server.Controllers
         * @apiVersion 1.0.0
         * @apiName GetTeamMembersAsync
         * @apiGroup User
-        * @apiParam {string} name UserName
+        * @apiParam {string} userId
         * @apiParamExample {json} Request-Example:
         * {
-        *   "Id":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367"    
+        *   "userId":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367"    
         * }
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
@@ -666,13 +663,12 @@ namespace Promact.Oauth.Server.Controllers
         /**
         * @api {get} api/User/{teamLeaderId}/project
         * @apiVersion 1.0.0
-        * @apiName GetProject
+        * @apiName GetProjectUsersByTeamLeaderIdAsync
         * @apiGroup User
         * @apiParam {string}  teamLeaderId
-        * @apiParamExample {json} Request-Example:
-        *      
+        * @apiParamExample {json} Request-Example:     
         *        {
-        *             "id": "95151b57-42c5-48d5-84b6-6d20e2fb05cd"
+        *             "teamLeaderId": "95151b57-42c5-48d5-84b6-6d20e2fb05cd"
         *        }      
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 

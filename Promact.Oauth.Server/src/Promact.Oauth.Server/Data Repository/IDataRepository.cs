@@ -98,7 +98,7 @@ namespace Promact.Oauth.Server.Data_Repository
         IQueryable<T> GetAll();
 
 
-        /// <summary>
+        /// <summary>z
         /// This method is used to get maximum id.
         /// </summary>
         /// <returns></returns>
