@@ -51,7 +51,7 @@ namespace Promact.Oauth.Server.Repository
             IProjectRepository projectRepository, IOptions<AppSettingUtil> appSettingUtil,
             IDataRepository<Project> projectDataRepository,
             IStringConstant stringConstant,
-            IDataRepository<ProjectUser> projectUserDataRepository,IEmailUtil emailUtil)
+            IDataRepository<ProjectUser> projectUserDataRepository, IEmailUtil emailUtil)
         {
             _applicationUserDataRepository = applicationUserDataRepository;
             _userManager = userManager;
@@ -64,7 +64,7 @@ namespace Promact.Oauth.Server.Repository
             _appSettingUtil = appSettingUtil;
             _stringConstant = stringConstant;
             _projectUserDataRepository = projectUserDataRepository;
-           _emailUtil = emailUtil;
+            _emailUtil = emailUtil;
         }
 
         #endregion
@@ -420,8 +420,9 @@ namespace Promact.Oauth.Server.Repository
             return userRolesAcList;
         }
 
+
         /// <summary>
-        /// Method to return list of users/employees of the given group name. - JJ
+        /// Method to return list of users/employees of the given slack channel name. - JJ
         /// </summary>
         /// <param name="slackChannelName"></param>
         /// <returns>list of object of UserAc</returns>
@@ -431,13 +432,16 @@ namespace Promact.Oauth.Server.Repository
             List<UserAc> userAcList = new List<UserAc>();
             if (project != null)
             {
+                //fetches the ids of users of the project
                 IEnumerable<string> userIdList = (await _projectUserDataRepository.Fetch(x => x.ProjectId == project.Id).ToListAsync()).Select(y => y.UserId);
+                //fetches the application users of the above obtained ids.
                 List<ApplicationUser> applicationUsers = await _applicationUserDataRepository.Fetch(x => userIdList.Contains(x.Id)).ToListAsync();
+                //perform mapping
                 userAcList = _mapperContext.Map<List<ApplicationUser>, List<UserAc>>(applicationUsers);
             }
-
             return userAcList;
         }
+
 
         /// <summary>
         /// The method is used to get list of projects along with its users for a specific teamleader 
@@ -529,7 +533,7 @@ namespace Promact.Oauth.Server.Repository
             }
             return newUser;
         }
-    
+
         /// <summary>
         /// This method used for genrate random string with alphanumeric words and special characters. -An
         /// </summary>
