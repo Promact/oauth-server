@@ -68,19 +68,20 @@ namespace Promact.Oauth.Server.Tests
             //Register Mapper
             services.AddSingleton<IMapper>(sp => _mapperConfiguration.CreateMapper());
             services.AddTransient<IEmailSender, AuthMessageSender>();
-            services.AddTransient<ISmsSender, AuthMessageSender>();
+            
             services.AddDbContext<PromactOauthDbContext>(options => options.UseInMemoryDatabase(randomString), ServiceLifetime.Transient);
             var httpClientMock = new Mock<IHttpClientService>();
             var httpClientMockObject = httpClientMock.Object;
             services.AddScoped(x => httpClientMock);
             services.AddScoped(x => httpClientMockObject);
             
-
+            //Register email util mock
             var emailUtilMock = new Mock<IEmailUtil>();
             var emailUtilMockObject = emailUtilMock.Object;
             services.AddScoped(x => emailUtilMock);
             services.AddScoped(x => emailUtilMockObject);
 
+            //Register email service mock
             var emailServiceMock = new Mock<IEmailSender>();
             var emailServiceMockObject = emailServiceMock.Object;
             services.AddScoped(x => emailServiceMock);
@@ -95,7 +96,7 @@ namespace Promact.Oauth.Server.Tests
             _stringConstant = serviceProvider.GetService<IStringConstant>();
             _userRepository = serviceProvider.GetService<IUserRepository>();
 
-            //mock email service and email util
+            //mock SendEmail and GetEmailTemplateForUserDetail methods
             _mockEmailService.Setup(x => x.SendEmail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
             _emailUtilMock.Setup(x => x.GetEmailTemplateForUserDetail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
 

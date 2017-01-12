@@ -36,20 +36,6 @@ namespace Promact.Oauth.Server.Controllers
             return RedirectToAction("Login", "Account");
         }
 
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Contact page";
-
-            return View();
-        }
-
         public IActionResult Error()
         {
             return View();

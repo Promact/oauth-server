@@ -120,8 +120,6 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public async Task CalculateAllowedLeavesForPastyears()
         {
-
-
             UserAc _testUser = new UserAc()
             {
                 Email = _stringConstant.RawEmailIdForTest,
@@ -135,7 +133,7 @@ namespace Promact.Oauth.Server.Tests
             };
             string id = await _userRepository.AddUserAsync(_testUser, _stringConstant.CreatedBy);
             var user = await _userManager.FindByIdAsync(id);
-            Assert.NotNull(id);
+            Assert.NotNull(user);
         }
 
         /// <summary>
@@ -157,7 +155,7 @@ namespace Promact.Oauth.Server.Tests
             };
             string id = await _userRepository.AddUserAsync(_testUser, _stringConstant.CreatedBy);
             var user = await _userManager.FindByIdAsync(id);
-            Assert.NotNull(id);
+            Assert.NotNull(user);
         }
 
         /// <summary>
@@ -195,7 +193,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public async Task TeamLeaderByUserSlackId()
         {
-            string id = await CreateMockAndUserAsync();
+            await CreateMockAndUserAsync();
             var user = await _userRepository.TeamLeaderByUserSlackIdAsync(_stringConstant.SlackUserId);
             Assert.Equal(0, user.Count);
         }
@@ -271,7 +269,6 @@ namespace Promact.Oauth.Server.Tests
         /// <summary>
         /// This test case is used to get all employees
         /// </summary>
-        /// <returns></returns>
         [Fact, Trait("Category", "Required")]
         public async Task GetAllEmployees()
         {
@@ -341,7 +338,7 @@ namespace Promact.Oauth.Server.Tests
                 CreatedBy = _stringConstant.CreatedBy
 
             };
-            var projectId = await _projectRepository.AddProjectAsync(projectac, _stringConstant.CreatedBy);
+            await _projectRepository.AddProjectAsync(projectac, _stringConstant.CreatedBy);
             var userRole = await _userRepository.GetUserRoleAsync(id);
             Assert.Equal(1, userRole.Count());
         }
@@ -349,7 +346,6 @@ namespace Promact.Oauth.Server.Tests
         /// <summary>
         /// This test case is used to get team members with role using team leader id.   
         /// </summary>
-        /// <returns></returns>
         [Fact, Trait("Category", "Required")]
         public async Task GetTeamMembersAsync()
         {
