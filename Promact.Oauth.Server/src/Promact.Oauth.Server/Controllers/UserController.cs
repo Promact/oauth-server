@@ -713,16 +713,8 @@ namespace Promact.Oauth.Server.Controllers
         [Route("{teamLeaderId}/project")]
         public async Task<IActionResult> GetProjectUsersByTeamLeaderIdAsync(string teamLeaderId)
         {
-            if (teamLeaderId != null)
-            {
-                List<UserAc> projectUsers = await _userRepository.GetProjectUsersByTeamLeaderIdAsync(teamLeaderId);
-                return Ok(projectUsers);
-            }
-            else
-            {
-                _logger.LogInformation("Teamleader Id does not exist");
-                return BadRequest();
-            }
+            List<UserAc> projectUsers = await _userRepository.GetProjectUsersByTeamLeaderIdAsync(teamLeaderId);
+            return Ok(projectUsers);
         }
 
         #endregion
