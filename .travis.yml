@@ -18,7 +18,6 @@ before_install:
 - export DISPLAY=:99.0
 - docker build -t promact/promact-oauth-server .
 install:
-- npm i -g yarn
 - yarn global add typescript typings
 - dotnet restore
 before_script:

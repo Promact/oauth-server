@@ -38,7 +38,7 @@ RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-
 RUN cd /tmp && wget https://www.npmjs.org/install.sh && sh install.sh
 
 # install bower
-RUN npm install --global bower gulp-cli typescript typings && apt-get install -y yarn
+RUN npm install --global bower gulp-cli typescript typings
 
 WORKDIR /app
 
@@ -47,7 +47,7 @@ COPY ./Promact.Oauth.Server/src/Promact.Oauth.Server/project.json .
 
 COPY ./Promact.Oauth.Server/src/Promact.Oauth.Server/package.json .
 COPY ./Promact.Oauth.Server/src/Promact.Oauth.Server/typings.json .
-RUN yarn install --production
+RUN npm install --production
 
 COPY ./Promact.Oauth.Server/src/Promact.Oauth.Server/bower.json .
 COPY ./Promact.Oauth.Server/src/Promact.Oauth.Server/.bowerrc .
@@ -59,9 +59,10 @@ COPY ./Promact.Oauth.Server/src/Promact.Oauth.Server/* ./
 # copy and build everything else
 RUN gulp copytowwwroot && mkdir /out
 RUN dotnet restore
-RUN dotnet publish project.json -c Release -o /out && cp appsettings.development.example.json /out/appsettings.production.json && rm -rf /app && rm -rf /tmp/*
+RUN dotnet publish project.json -c Release -o /out && cp appsettings.development.example.json /out/appsettings.production.json && ls / && ls /out
 ENV ASPNETCORE_ENVIRONMENT Production
 COPY entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
 EXPOSE 5000
 CMD ["dotnet","/out/Promact.Oauth.Server.dll"]
