@@ -1,5 +1,5 @@
 #!/bin/bash
-
+cd /out
 sed -i 's/YOUR_SENDER_EMAIL_ADDRESS_HERE/'"$From"'/g' appsettings.production.json
 sed -i 's/YOUR_USERNAME_HERE/'"$UserName"'/g' appsettings.production.json
 sed -i 's/YOUR_PASSWORD_HERE/'"$Password"'/g' appsettings.production.json
