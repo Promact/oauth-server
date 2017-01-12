@@ -7,6 +7,8 @@ os: linux
 dist: trusty		
 sudo: required
 dotnet: 1.0.0-preview2-1-003177
+services:
+  - docker
 cache:
   yarn: true
   directories:
@@ -14,6 +16,7 @@ cache:
 before_install:
 - export CHROME_BIN=chromium-browser
 - export DISPLAY=:99.0
+- docker build -t promact/promact-oauth-server .
 install:
 - npm i -g yarn
 - yarn global add typescript typings
