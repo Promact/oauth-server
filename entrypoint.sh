@@ -16,3 +16,4 @@ sed -i 's/NUMBER_OF_CASUAL_LEAVE/'"$CasualLeave"'/g' appsettings.production.json
 sed -i 's/PROMACT_ERP_URL/'"$PromactErpUrl"'/g' appsettings.production.json
 
 jq '.ConnectionStrings.DefaultConnection |= "'"$ConnectionString"'" ' appsettings.json 
+dotnet /out/Promact.Oauth.Server.dll
