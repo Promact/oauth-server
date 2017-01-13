@@ -13,8 +13,7 @@ namespace Promact.Oauth.Server.AutoMapper
         #pragma warning restore CS0672 // Member overrides obsolete member
         {
             CreateMap<ConsumerAppsAc, ConsumerApps>();
-            CreateMap<ProjectAc, Project>();
-            CreateMap<Project, ProjectAc>();
+            CreateMap<ProjectAc, Project>().ReverseMap();
             CreateMap<IdentityRole, RolesAc>();
             CreateMap<UserAc, ApplicationUser>().ReverseMap();
         }
