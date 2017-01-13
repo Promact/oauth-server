@@ -82,28 +82,6 @@ namespace Promact.Oauth.Server.Tests
         }
 
         /// <summary>
-        /// This test case is used to find user by username
-        /// </summary>
-        [Fact, Trait("Category", "Required")]
-        public async Task FindByUserName()
-        {
-            await CreateMockAndUserAsync();
-            var exists = await _userRepository.FindByUserNameAsync(_stringConstant.UserName);
-            Assert.Equal(true, exists);
-        }
-
-        /// <summary>
-        /// This test case is used to check exception condition
-        /// </summary>
-        /// <returns></returns>
-        [Fact, Trait("Category", "Required")]
-        public async Task FindByUserNameException()
-        {
-            await CreateMockAndUserAsync();
-            Assert.Throws<AggregateException>(() => _userRepository.FindByUserNameAsync(_stringConstant.UserNameForTest).Result);
-        }
-
-        /// <summary>
         /// This test case is used to add new user
         /// </summary>
         [Fact, Trait("Category", "Required")]

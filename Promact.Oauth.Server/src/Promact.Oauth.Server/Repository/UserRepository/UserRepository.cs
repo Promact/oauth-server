@@ -79,10 +79,10 @@ namespace Promact.Oauth.Server.Repository
         /// <returns>Added user id</returns>
         public async Task<string> AddUserAsync(UserAc newUser, string createdBy)
         {
-            LeaveCalculator leaveCalculator = new LeaveCalculator();
-            leaveCalculator = CalculateAllowedLeaves(Convert.ToDateTime(newUser.JoiningDate));
-            newUser.NumberOfCasualLeave = leaveCalculator.CasualLeave;
-            newUser.NumberOfSickLeave = leaveCalculator.SickLeave;
+            LeaveAllowed leaveAllowed = new LeaveAllowed();
+            leaveAllowed = CalculateAllowedLeaves(Convert.ToDateTime(newUser.JoiningDate));
+            newUser.NumberOfCasualLeave = leaveAllowed.CasualLeave;
+            newUser.NumberOfSickLeave = leaveAllowed.SickLeave;
             var user = _mapperContext.Map<UserAc, ApplicationUser>(newUser);
             user.UserName = user.Email;
             user.CreatedBy = createdBy;
@@ -195,20 +195,6 @@ namespace Promact.Oauth.Server.Repository
             throw new UserNotFound();
         }
 
-        /// <summary>
-        /// This method is used to check if a user already exists in the database with the given userName
-        /// </summary>
-        /// <param name="userName">Passed userName</param>
-        /// <returns>boolean: true if the user name exists,otherwise throw UserNotFound exception.</returns>
-        public async Task<bool> FindByUserNameAsync(string userName)
-        {
-            var user = await _userManager.FindByNameAsync(userName);
-            if (user == null)
-            {
-                throw new UserNotFound();
-            }
-            return true;
-        }
 
         /// <summary>
         /// This method is used to check email is already exists in database.
@@ -286,7 +272,6 @@ namespace Promact.Oauth.Server.Repository
                 var teamLeaderId = await _projectRepository.GetProjectByIdAsync(project.ProjectId);
                 var teamLeader = teamLeaderId.TeamLeaderId;
                 user = await _userManager.FindByIdAsync(teamLeader);
-                //user = _userManager.Users.FirstOrDefault(x => x.Id == teamLeader);
                 var newUser = new ApplicationUser
                 {
                     UserName = user.UserName,
@@ -321,7 +306,7 @@ namespace Promact.Oauth.Server.Repository
 
 
         /// <summary>
-        /// Method to get the number of casual leave allowed to a user by slack user name 
+        /// Method to get the number of casual leave allowed to a user by slack user name -SD
         /// </summary>
         /// <param name="slackUserId"></param>
         /// <returns>number of casual leave</returns>
@@ -335,7 +320,7 @@ namespace Promact.Oauth.Server.Repository
         }
 
         /// <summary>
-        /// Method to check whether user is admin or not
+        /// Method to check whether user is admin or not - SD
         /// </summary>
         /// <param name="slackUserId"></param>
         /// <returns>true or false</returns>
@@ -544,27 +529,27 @@ namespace Promact.Oauth.Server.Repository
         /// Calculat casual leava and sick leave from the date of joining - RS
         /// </summary>
         /// <param name="dateTime">passing joining date</param>
-        /// <returns>LeaveCalculator</returns>
-        private LeaveCalculator CalculateAllowedLeaves(DateTime dateTime)
+        /// <returns>LeaveAllowed</returns>
+        private LeaveAllowed CalculateAllowedLeaves(DateTime dateTime)
         {
-            double casualAllowed = 0;
+            double casualAllowed = 0; 
             double sickAllowed = 0;
-            var day = dateTime.Day;
             var month = dateTime.Month;
-            var year = dateTime.Year;
-            double casualAllow = _appSettingUtil.Value.CasualLeave;
-            double sickAllow = _appSettingUtil.Value.SickLeave;
-            if (year >= DateTime.Now.Year)
+            //if joining year are more then current year or difference of current year and joining year is 1 then calculate casual Allow and sick Allow
+            //other wise no need to be calculation directly set default value CasualLeave(14) and SickLeave(7).  
+            if (dateTime.Year >= DateTime.Now.Year || (DateTime.Now.Year-dateTime.Year)==1)
             {
+                double casualAllow = _appSettingUtil.Value.CasualLeave;
+                double sickAllow = _appSettingUtil.Value.SickLeave;
                 //If an employee joins between 1st to 15th of month, then he/she will be eligible for that particular month's leaves 
                 //and if he/she joins after 15th of month, he/she will not be eligible for that month's leaves.
 
-                //calculate casualAllowed and sickAllowed.
                 //In Our Project we consider Leave renewal on 1st april
                 if (month >= 4)
                 {
                     //if first 15 days of month april to December then substact 4 other wise substact 3 in month
-                    if (day <= 15)
+                    //this setting for the employee eligible for that particular month's leaves or not
+                    if (dateTime.Day <= 15)
                     {
 
                         casualAllowed = (casualAllow / 12) * (12 - (month - 4));
@@ -576,51 +561,60 @@ namespace Promact.Oauth.Server.Repository
                         sickAllowed = (sickAllow / 12) * (12 - (month - 3));
                     }
                 }
-
-                else
+                else //calculate casual allowed and sick allowed for first three month.
                 {
-                    //if first 15 days of month January to March then add 8 other wise add 9 in month
-                    if (day <= 15)
+                    //if joining year are more then current year then calculate casual allowed and sick allowed   
+                    if (dateTime.Year >= DateTime.Now.Year)
                     {
-                        casualAllowed = (casualAllow / 12) * (12 - (month + 8));
-                        sickAllowed = (sickAllow / 12) * (12 - (month + 8));
+                        //if first 15 days of month January to March then add 8 other wise add 9 in month
+                        //this setting for the employee eligible for that particular month's leaves or not
+                        if (dateTime.Day <= 15)
+                        {
+                            casualAllowed = (casualAllow / 12) * (12 - (month + 8));
+                            sickAllowed = (sickAllow / 12) * (12 - (month + 8));
+                        }
+                        else
+                        {
+                            casualAllowed = (casualAllow / 12) * (12 - (month + 9));
+                            sickAllowed = (sickAllow / 12) * (12 - (month + 9));
+                        }
                     }
-                    else
+                    else 
                     {
-                        casualAllowed = (casualAllow / 12) * (12 - (month + 9));
-                        sickAllowed = (sickAllow / 12) * (12 - (month + 9));
+                        casualAllowed = casualAllow;
+                        sickAllowed = sickAllow;
                     }
                 }
-
-                // If calculated casualAllowed decimal value is exact 0.5 then it's considered half day casual leave
-                if (casualAllowed % 1 != 0)
+                
+                if (casualAllowed % 1 != 0) //check casualAllowed has decimal value
                 {
                     double CasualAlloweddecimal = casualAllowed - Math.Floor(casualAllowed);
+                    // If calculated casualAllowed decimal value is exact 0.5 then it's considered half day casual leave
                     if (CasualAlloweddecimal != 0.5) { casualAllowed = Convert.ToInt32(casualAllowed); }
                 }
-
-                // If calculated sickAllowed decimal value is exact 0.5 then it's considered half day sick leave 
-                // If calculated sickAllowed decimal value is more than  0.90 then add one leave in sick leave 
-                if (sickAllowed % 1 != 0)
+                if (sickAllowed % 1 != 0)//check sickAllowed has decmial value
                 {
                     double sickAlloweddecimal = sickAllowed - Math.Floor(sickAllowed);
-                    if (sickAlloweddecimal != 0.5) { sickAllowed = Convert.ToInt32(Math.Floor(sickAllowed)); }
-                    if (sickAlloweddecimal > 0.90) { sickAllowed = sickAllowed + 1; }
-
+                    // If calculated sickAllowed decimal value is exact 0.5 then it's considered half day sick leave 
+                    // If calculated sickAllowed decimal value is more than  0.90 then add one leave in sick leave 
+                    if (sickAlloweddecimal > 0.90) { sickAllowed = Convert.ToInt32(Math.Ceiling(sickAllowed)); }
+                    else if(sickAlloweddecimal != 0.5) { sickAllowed = Convert.ToInt32(Math.Floor(sickAllowed)); }
                 }
             }
-            else
+            else 
             {
                 casualAllowed = _appSettingUtil.Value.CasualLeave;
                 sickAllowed = _appSettingUtil.Value.SickLeave;
             }
-            LeaveCalculator calculate = new LeaveCalculator
+            LeaveAllowed leaveAllowed = new LeaveAllowed
             {
                 CasualLeave = casualAllowed,
                 SickLeave = sickAllowed
             };
-            return calculate;
+            return leaveAllowed;
         }
+
+
 
         #endregion
 

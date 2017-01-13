@@ -33,10 +33,6 @@ export class UserService {
         return this.httpServiceForPassword.post(this.UserUrl + "/password", newPassword);
     }
 
-    findUserByUserName(userName: string) {
-        return this.httpService.get(this.UserUrl + "/detail/" + userName);
-    }
-
     checkEmailIsExists(email: string) {
         return this.httpService.get(this.UserUrl + "/available/email/" + email);
     }

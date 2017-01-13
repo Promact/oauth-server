@@ -62,15 +62,6 @@ namespace Promact.Oauth.Server.Repository
         /// <returns>If password is changed successfully, return empty otherwise error message.</returns>
         Task<ChangePasswordErrorModel> ChangePasswordAsync(ChangePasswordViewModel passwordModel);
 
-
-        /// <summary>
-        /// This method is used to check if a user already exists in the database with the given userName
-        /// </summary>
-        /// <param name="userName">Passed userName</param>
-        /// <returns>boolean: true if the user name exists,otherwise throw UserNotFound exception.</returns>
-        Task<bool> FindByUserNameAsync(string userName);
-
-
         /// <summary>
         /// This method is used to check email is already exists in database.
         /// </summary>
