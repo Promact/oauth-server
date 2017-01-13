@@ -7,7 +7,6 @@ export class ProjectService {
     private ProjectUrl = 'api/project';  // URL to web api
     private UserUrl = 'api/users';
     constructor(private httpService: HttpService<ProjectModel>) { }
-
     getUsers() {
         return this.httpService.get(this.UserUrl + "/orderby/name");
     }
