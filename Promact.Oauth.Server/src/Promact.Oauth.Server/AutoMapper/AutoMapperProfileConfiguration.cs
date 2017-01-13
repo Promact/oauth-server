@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Models.ApplicationClasses;
-using System.Collections.Generic;
 
 namespace Promact.Oauth.Server.AutoMapper
 {

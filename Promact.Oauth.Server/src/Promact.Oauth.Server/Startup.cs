@@ -100,7 +100,7 @@ namespace Promact.Oauth.Server
                 services.AddTransient<IEmailSender, AuthMessageSender>();
             else if (_currentEnvironment.IsProduction())
                 services.AddTransient<IEmailSender, SendGridEmailSender>();
-            //services.AddTransient<ISmsSender, AuthMessageSender>();
+            
 
             services.AddOptions();
 

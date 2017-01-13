@@ -24,7 +24,6 @@ namespace Promact.Oauth.Server.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
-        private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
         private readonly IStringConstant _stringConstant;
 
@@ -32,7 +31,6 @@ namespace Promact.Oauth.Server.Controllers
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
-            ISmsSender smsSender,
             ILoggerFactory loggerFactory,
             IHostingEnvironment hostingEnvironment,
             IStringConstant stringConstant)
@@ -41,7 +39,6 @@ namespace Promact.Oauth.Server.Controllers
             _hostingEnvironment = hostingEnvironment;
             _signInManager = signInManager;
             _emailSender = emailSender;
-            _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
             _stringConstant = stringConstant;
         }
@@ -426,10 +423,7 @@ namespace Promact.Oauth.Server.Controllers
             {
                 //await _emailSender.SendEmailAsync(await _userManager.GetEmailAsync(user), "Security Code", message);
             }
-            else if (model.SelectedProvider == "Phone")
-            {
-                await _smsSender.SendSmsAsync(await _userManager.GetPhoneNumberAsync(user), message);
-            }
+            
 
             return RedirectToAction(nameof(VerifyCode), new { Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
         }

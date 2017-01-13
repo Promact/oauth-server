@@ -2,7 +2,7 @@
 import { UserService } from '../user.service';
 import { UserModel } from '../user.model';
 import { UserRoleModel } from '../userrole.model';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { Md2Toast } from 'md2';
 import { LoaderService } from '../../shared/loader.service';
 
@@ -20,7 +20,7 @@ export class UserAddComponent implements OnInit {
     @Input()
     userModel: UserModel;
     listOfRoles: Array<UserRoleModel>;
-    constructor(private userService: UserService, private redirectionRoute: Router, private route: ActivatedRoute, private toast: Md2Toast, private loader: LoaderService) {
+    constructor(private userService: UserService, private redirectionRoute: Router, private toast: Md2Toast, private loader: LoaderService) {
         this.userModel = new UserModel();
         this.listOfRoles = new Array<UserRoleModel>();
         this.isEmailExist = false;
