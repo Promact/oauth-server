@@ -435,38 +435,34 @@ namespace Promact.Oauth.Server.Repository
         /// <returns>list of projects with users for a specific teamleader</returns>
         public async Task<List<UserAc>> GetProjectUsersByTeamLeaderIdAsync(string teamLeaderId)
         {
-            List<UserAc> projectUsers = new List<UserAc>();
-            //Get projects for that specific teamleader
-            List<Project> projects = await _projectDataRepository.Fetch(x => x.TeamLeaderId.Equals(teamLeaderId)).ToListAsync();
-            if (projects.Any())
+            List<UserAc> userAcList = new List<UserAc>();
+            //Get projectid's for that specific teamleader
+            IEnumerable<int> projectIds = (await _projectDataRepository.Fetch(x => x.TeamLeaderId.Equals(teamLeaderId)).ToListAsync()).Select(y => y.Id);
+            if (projectIds.Any())
             {
                 //Get details of teamleader
-                ApplicationUser teamLeader = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.Id.Equals(teamLeaderId));
-                if (teamLeader != null)
-                {
-                    UserAc projectTeamLeader = _mapperContext.Map<ApplicationUser, UserAc>(teamLeader);
-                    projectTeamLeader.Role = _stringConstant.TeamLeader;
-                    projectUsers.Add(projectTeamLeader);
-                }
+                ApplicationUser teamLeader = await _applicationUserDataRepository.FirstAsync(x => x.Id.Equals(teamLeaderId));
+                UserAc projectTeamLeader = _mapperContext.Map<ApplicationUser, UserAc>(teamLeader);
+                projectTeamLeader.Role = _stringConstant.TeamLeader;
+                userAcList.Add(projectTeamLeader);
+                
                 //Get details of employees for projects with that particular teamleader 
-                foreach (var project in projects)
+                List<ProjectUser> projectUsersList = await _projectUserRepository.Fetch(x => projectIds.Contains(x.Id)).ToListAsync();
+                foreach (var projectUser in projectUsersList)
                 {
-                    List<ProjectUser> projectUsersList = await _projectUserRepository.Fetch(x => x.ProjectId == project.Id).ToListAsync();
-                    foreach (var projectUser in projectUsersList)
+                    ApplicationUser user = await _applicationUserDataRepository.FirstAsync(x => x.Id.Equals(projectUser.UserId));
+                    var Roles = _stringConstant.RoleEmployee;
+                    UserAc userAc = _mapperContext.Map<ApplicationUser, UserAc>(user);
+                    userAc.Role = Roles;
+                    //Checking if employee is already present in the list or not
+                    if (!userAcList.Any(x => x.Id == userAc.Id))
                     {
-                        ApplicationUser user = await _applicationUserDataRepository.FirstAsync(x => x.Id.Equals(projectUser.UserId));
-                        var Roles = (await _userManager.GetRolesAsync(user)).First();
-                        UserAc employee = _mapperContext.Map<ApplicationUser, UserAc>(user);
-                        employee.Role = Roles;
-                        //Checking if employee is already present in the list or not
-                        if (!projectUsers.Any(x => x.Id == employee.Id))
-                        {
-                            projectUsers.Add(employee);
-                        }
+                        userAcList.Add(userAc);
                     }
                 }
             }
-            return projectUsers;
+
+            return userAcList;
         }
         #endregion
 
