@@ -80,9 +80,6 @@
         public string RawEmailIdForTest { get { return "siddhartha@promactinfo.com"; } }
         public string RawFirstNameForTest { get { return "Siddhartha"; } }
         public string RawLastNameForTest { get { return "Shaw"; } }
-        public string RoleEmployee { get { return "Employee"; } }
-        public string RoleAdmin { get { return "Admin"; } }
-        public string RoleTeamLeader { get { return "TeamLeader"; } }
         public string OldPassword { get { return "User@123"; } }
         public string Url { get { return "Url"; } }
         public string Format { get { return "yyyy-MM-dd"; } }

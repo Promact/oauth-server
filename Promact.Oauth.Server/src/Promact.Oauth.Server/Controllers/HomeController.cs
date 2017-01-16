@@ -22,13 +22,13 @@ namespace Promact.Oauth.Server.Controllers
             {
                 var user = await _userManager.FindByNameAsync(User.Identity.Name);
                 UserRoleAc userRole;
-                if (User.IsInRole(_stringConstant.RoleAdmin))
+                if (User.IsInRole(_stringConstant.Admin))
                 {
-                    userRole = new UserRoleAc(user.Id, user.Email, user.FirstName, _stringConstant.RoleAdmin);
+                    userRole = new UserRoleAc(user.Id, user.Email, user.FirstName, _stringConstant.Admin);
                 }
                 else
                 {
-                    userRole = new UserRoleAc(user.Id, user.Email, user.FirstName, _stringConstant.RoleEmployee);
+                    userRole = new UserRoleAc(user.Id, user.Email, user.FirstName, _stringConstant.Employee);
                 }
                 ViewData["UserRole"] = userRole;
                 return View("Index");

@@ -354,13 +354,13 @@ namespace Promact.Oauth.Server.Repository
             var userRole = (await _userManager.GetRolesAsync(applicationUser)).First();
             List<UserRoleAc> userRoleAcList = new List<UserRoleAc>();
 
-            if (userRole == _stringConstant.RoleAdmin) //If login user is admin then return all active users with role.
+            if (userRole == _stringConstant.Admin) //If login user is admin then return all active users with role.
             {
                 //getting the all user infromation. 
                 var userRoleAdmin = new UserRoleAc(applicationUser.Id, applicationUser.UserName, applicationUser.FirstName + " " + applicationUser.LastName, userRole);
                 userRoleAcList.Add(userRoleAdmin);
                 //getting employee role id. 
-                var roleId = (await _roleManager.Roles.SingleAsync(x => x.Name == _stringConstant.RoleEmployee)).Id;
+                var roleId = (await _roleManager.Roles.SingleAsync(x => x.Name == _stringConstant.Employee)).Id;
                 //getting active employee list.
                 var userList = await _applicationUserDataRepository.Fetch(y => y.IsActive == true && y.Roles.Any(x => x.RoleId == roleId)).ToListAsync();
                 foreach (var user in userList)
@@ -374,7 +374,7 @@ namespace Promact.Oauth.Server.Repository
                 //check login user is teamLeader or not.
                 var isProjectExists = await _projectDataRepository.FirstOrDefaultAsync(x => x.TeamLeaderId == applicationUser.Id);
                 //If isProjectExists is null then user role is employee other wise user role is teamleader. 
-                var userRoleAc = new UserRoleAc(applicationUser.Id, applicationUser.UserName, applicationUser.FirstName + " " + applicationUser.LastName, (isProjectExists != null ? _stringConstant.RoleTeamLeader : _stringConstant.RoleEmployee));
+                var userRoleAc = new UserRoleAc(applicationUser.Id, applicationUser.UserName, applicationUser.FirstName + " " + applicationUser.LastName, (isProjectExists != null ? _stringConstant.TeamLeader : _stringConstant.Employee));
                 userRoleAcList.Add(userRoleAc);
             }
             return userRoleAcList;
@@ -389,7 +389,7 @@ namespace Promact.Oauth.Server.Repository
         {
             ApplicationUser applicationUser = await _userManager.FindByIdAsync(userId);
             var userRolesAcList = new List<UserRoleAc>();
-            var userRoleAc = new UserRoleAc(applicationUser.Id, applicationUser.UserName, applicationUser.FirstName + " " + applicationUser.LastName, _stringConstant.RoleTeamLeader);
+            var userRoleAc = new UserRoleAc(applicationUser.Id, applicationUser.UserName, applicationUser.FirstName + " " + applicationUser.LastName, _stringConstant.TeamLeader);
             userRolesAcList.Add(userRoleAc);
             //getting teamLeader Project.
             var project = await _projectDataRepository.FirstAsync(x => x.TeamLeaderId == applicationUser.Id);
@@ -399,7 +399,7 @@ namespace Promact.Oauth.Server.Repository
             var userList = await _applicationUserDataRepository.Fetch(x => userIdList.Contains(x.Id)).ToListAsync();
             foreach (var user in userList)
             {
-                var usersRoleAc = new UserRoleAc(user.Id, user.UserName, user.FirstName + " " + user.LastName, _stringConstant.RoleEmployee);
+                var usersRoleAc = new UserRoleAc(user.Id, user.UserName, user.FirstName + " " + user.LastName, _stringConstant.Employee);
                 userRolesAcList.Add(usersRoleAc);
             }
             return userRolesAcList;
@@ -451,7 +451,7 @@ namespace Promact.Oauth.Server.Repository
                 foreach (var projectUser in projectUsersList)
                 {
                     ApplicationUser user = await _applicationUserDataRepository.FirstAsync(x => x.Id.Equals(projectUser.UserId));
-                    var Roles = _stringConstant.RoleEmployee;
+                    var Roles = _stringConstant.Employee;
                     UserAc userAc = _mapperContext.Map<ApplicationUser, UserAc>(user);
                     userAc.Role = Roles;
                     //Checking if employee is already present in the list or not

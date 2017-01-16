@@ -76,9 +76,6 @@
         string RawEmailIdForTest { get; }
         string RawFirstNameForTest { get; }
         string RawLastNameForTest { get; }
-        string RoleEmployee { get; }
-        string RoleAdmin { get; }
-        string RoleTeamLeader { get; }
         string OldPassword { get; }
         string Url { get; }
         string Format { get; }
