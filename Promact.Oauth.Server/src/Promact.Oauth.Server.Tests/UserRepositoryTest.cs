@@ -348,7 +348,7 @@ namespace Promact.Oauth.Server.Tests
             };
             await _projectRepository.AddUserProjectAsync(projectUser);
             var userRole = await _userRepository.GetTeamMembersAsync(userId);
-            Assert.Equal(2, userRole.Count());
+            Assert.Equal(1, userRole.Count());
         }
 
 
