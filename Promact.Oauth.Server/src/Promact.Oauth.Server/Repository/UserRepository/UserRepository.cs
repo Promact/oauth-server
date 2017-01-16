@@ -347,7 +347,7 @@ namespace Promact.Oauth.Server.Repository
         /// Method to return user role. - RS
         /// </summary>
         /// <param name="userId">passed user id for getting list of user role </param>
-        /// <returns>users/user information</returns>
+        /// <returns>user/users information</returns>
         public async Task<List<UserRoleAc>> GetUserRoleAsync(string userId)
         {
             ApplicationUser applicationUser = await _userManager.FindByIdAsync(userId);

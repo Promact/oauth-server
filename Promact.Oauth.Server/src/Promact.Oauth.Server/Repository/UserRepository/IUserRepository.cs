@@ -79,7 +79,7 @@ namespace Promact.Oauth.Server.Repository
 
 
         /// <summary>
-        /// Method is used to Get User details by slack user id
+        /// Method is used to Get User details by slack user id - SD
         /// </summary>
         /// <param name="userSlackId"></param>
         /// <returns></returns>
@@ -87,7 +87,7 @@ namespace Promact.Oauth.Server.Repository
 
 
         /// <summary>
-        /// Method is used to get team leader's list
+        /// Method is used to get team leader's list - SD
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
@@ -95,7 +95,7 @@ namespace Promact.Oauth.Server.Repository
 
 
         /// <summary>
-        /// Method to get list of management people
+        /// Method to get list of management people - SD
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
@@ -111,7 +111,7 @@ namespace Promact.Oauth.Server.Repository
 
 
         /// <summary>
-        /// Method to get the number of casual leave allowed to a user by slackUserId
+        /// Method to get the number of casual leave allowed to a user by slackUserId - SD
         /// </summary>
         /// <param name="slackUserId"></param>
         /// <returns>number of casual leave</returns>
@@ -119,7 +119,7 @@ namespace Promact.Oauth.Server.Repository
 
 
         /// <summary>
-        /// Method to check whether user is admin or not
+        /// Method to check whether user is admin or not - SD
         /// </summary>
         /// <param name="slackUserId"></param>
         /// <returns>true or false</returns>
@@ -127,7 +127,7 @@ namespace Promact.Oauth.Server.Repository
 
 
         /// <summary>
-        /// This method used for re -send mail for user credentails
+        /// This method used for re -send mail for user credentails -An
         /// </summary>
         /// <param name="id">Passed user id.</param>
         /// <returns></returns>
