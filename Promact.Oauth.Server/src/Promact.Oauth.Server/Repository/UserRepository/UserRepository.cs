@@ -447,7 +447,7 @@ namespace Promact.Oauth.Server.Repository
                 userAcList.Add(projectTeamLeader);
                 
                 //Get details of employees for projects with that particular teamleader 
-                List<ProjectUser> projectUsersList = await _projectUserRepository.Fetch(x => projectIds.Contains(x.Id)).ToListAsync();
+                List<ProjectUser> projectUsersList = await _projectUserRepository.Fetch(x => projectIds.Contains(x.ProjectId)).ToListAsync();
                 foreach (var projectUser in projectUsersList)
                 {
                     ApplicationUser user = await _applicationUserDataRepository.FirstAsync(x => x.Id.Equals(projectUser.UserId));
@@ -461,7 +461,6 @@ namespace Promact.Oauth.Server.Repository
                     }
                 }
             }
-
             return userAcList;
         }
         #endregion
