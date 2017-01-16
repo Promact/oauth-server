@@ -194,11 +194,11 @@ namespace Promact.Oauth.Server.Tests
             projectac.SlackChannelName = _stringConstant.SlackChannelName;
             projectac.IsActive = _stringConstant.IsActive;
             projectac.TeamLeader = new UserAc { FirstName = _stringConstant.FirstName };
-            projectac.TeamLeaderId = _stringConstant.TeamLeaderId;
-            projectac.CreatedBy = _stringConstant.CreatedBy;
-            await _projectRepository.AddProjectAsync(projectac, _stringConstant.CreatedBy);
-            await _projectRepository.AddUserProjectAsync(projectUser);
-            IEnumerable<ProjectAc> projects = await _projectRepository.GetAllProjectsAsync();
+            projectac.TeamLeaderId = id;
+            projectac.CreatedBy = id;
+            await _projectRepository.AddProjectAsync(projectac, id);
+            await GetProjectUserMockData();
+            IEnumerable<ProjectAc> projects =await _projectRepository.GetAllProjectsAsync();
             Assert.NotNull(projects);
         }
 
