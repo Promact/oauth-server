@@ -447,11 +447,11 @@ namespace Promact.Oauth.Server.Repository
                 userAcList.Add(projectTeamLeader);
                 
                 //Get details of employees for projects with that particular teamleader 
-                List<ProjectUser> projectUsersList = await _projectUserRepository.Fetch(x => projectIds.Contains(x.Id)).ToListAsync();
+                List<ProjectUser> projectUsersList = await _projectUserRepository.Fetch(x => projectIds.Contains(x.ProjectId)).ToListAsync();
                 foreach (var projectUser in projectUsersList)
                 {
                     ApplicationUser user = await _applicationUserDataRepository.FirstAsync(x => x.Id.Equals(projectUser.UserId));
-                    var Roles = _stringConstant.RoleEmployee;
+                    var Roles = _stringConstant.Employee;
                     UserAc userAc = _mapperContext.Map<ApplicationUser, UserAc>(user);
                     userAc.Role = Roles;
                     //Checking if employee is already present in the list or not
@@ -461,7 +461,6 @@ namespace Promact.Oauth.Server.Repository
                     }
                 }
             }
-
             return userAcList;
         }
         #endregion
