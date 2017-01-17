@@ -14,10 +14,10 @@ cache:
 before_install:
 - export CHROME_BIN=chromium-browser
 - export DISPLAY=:99.0
+- if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
 install:
 - yarn global add typescript typings
 - dotnet restore
-- if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
 before_script:
 - sh -e /etc/init.d/xvfb start
 solution: "./Promact.Oauth.Server/Promact.Oauth.Server.sln"
