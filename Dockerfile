@@ -54,7 +54,7 @@ COPY ./Promact.Oauth.Server/src/Promact.Oauth.Server/.bowerrc .
 RUN bower install --allow-root
 
 # copy project.json and restore as distinct layers
-COPY ./Promact.Oauth.Server/src/Promact.Oauth.Server/* ./
+COPY ./Promact.Oauth.Server/src/Promact.Oauth.Server ./
 
 # copy and build everything else
 RUN gulp copytowwwroot && mkdir /out
