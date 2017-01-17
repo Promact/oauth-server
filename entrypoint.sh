@@ -15,7 +15,10 @@ sed -i 's/NUMBER_OF_SICK_LEAVE/'"$SickLeave"'/g' appsettings.production.json
 sed -i 's/NUMBER_OF_CASUAL_LEAVE/'"$CasualLeave"'/g' appsettings.production.json
 sed -i 's/PROMACT_ERP_URL/'"$PromactErpUrl"'/g' appsettings.production.json
 
-jq '.ConnectionStrings.DefaultConnection |= "'"$ConnectionString"'" ' appsettings.json > appsettings.json
+jq '.ConnectionStrings.DefaultConnection |= "'"$ConnectionString"'" ' appsettings.json > appsettings.new.json
+rm appsettings.json
+cp appsettings.new.json appsettings.json
+rm appsettings.new.json
 
 env
 
