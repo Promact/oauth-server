@@ -1,5 +1,5 @@
 FROM microsoft/dotnet:latest
-RUN cd /tmp && wget http://security.debian.org/debian-security/pool/updates/main/a/apt/apt-transport-https_1.0.9.8.4_amd64.deb && dpkg -i apt-transport-https_1.0.9.8.4_amd64.deb && wget http://http.us.debian.org/debian/pool/main/c/ca-certificates/ca-certificates_20141019+deb8u1_all.deb && dpkg -i ca-certificates_20141019+deb8u1_all.deb && rm *.deb
+RUN cd /tmp && wget http://security.debian.org/debian-security/pool/updates/main/a/apt/apt-transport-https_1.0.9.8.4_amd64.deb && dpkg -i apt-transport-https_1.0.9.8.4_amd64.deb && rm *.deb
 
 ENV HOME /root
 
@@ -63,6 +63,5 @@ RUN dotnet publish project.json -c Release -o /out && cp appsettings.development
 ENV ASPNETCORE_ENVIRONMENT Production
 COPY entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/entrypoint.sh
-ENTRYPOINT ["entrypoint.sh"]
 EXPOSE 5000
-CMD ["/usr/bin/dotnet","/out/Promact.Oauth.Server.dll"]
+ENTRYPOINT ["entrypoint.sh"]
