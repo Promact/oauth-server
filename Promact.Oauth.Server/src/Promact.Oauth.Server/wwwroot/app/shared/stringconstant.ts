@@ -35,10 +35,8 @@ export class StringConstant {
     consumerapp = '/consumerapp';
     consumerappEdit = '/consumerapp/edit';
     consumerappAdd = '/consumerapp/add';
-    empty = '';
     newPassword = 'test123';
     oldPassword = 'test';
     confirmPassword = 'test1234';
     consumerAppUrl = 'api/consumerapp';
-    dash = '-';
 }

@@ -71,7 +71,7 @@ export class UserAddComponent implements OnInit {
 
     checkEmail(email) {
         this.isEmailExist = false;
-        if (email !== this.stringConstant.empty && email !== undefined) {
+        if (email !== '' && email !== undefined) {
             this.userService.checkEmailIsExists(email).subscribe((result) => {
                 this.isEmailExist = result;
             });
@@ -80,7 +80,7 @@ export class UserAddComponent implements OnInit {
 
     checkSlackUserName(slackUserName) {
         this.isSlackUserNameExist = false;
-        if (slackUserName !== this.stringConstant.empty && slackUserName !== undefined) {
+        if (slackUserName !== '' && slackUserName !== undefined) {
             this.userService.checkUserIsExistsBySlackUserName(slackUserName).subscribe((result) => {
                 this.isSlackUserNameExist = true;
             }, err => {
