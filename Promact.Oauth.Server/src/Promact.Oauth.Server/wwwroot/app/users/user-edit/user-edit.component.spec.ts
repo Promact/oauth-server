@@ -55,4 +55,11 @@ describe("User Edit Test", () => {
         expect(userModel.FirstName).toBe(expectedFirstName);
     });
 
+    it("should check total role", () => {
+        let fixture = TestBed.createComponent(UserEditComponent); //Create instance of component            
+        let userEditComponent = fixture.componentInstance;
+        userEditComponent.getRoles();
+        expect(userEditComponent.listOfRoles.length).toBe(1);
+    });
+  
 });
