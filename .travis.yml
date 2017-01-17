@@ -17,9 +17,9 @@ before_install:
 install:
 - yarn global add typescript typings
 - dotnet restore
+- if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
 before_script:
 - sh -e /etc/init.d/xvfb start
-- if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
 solution: "./Promact.Oauth.Server/Promact.Oauth.Server.sln"
 notifications:
   email:
