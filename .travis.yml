@@ -16,7 +16,7 @@ before_install:
 - export DISPLAY=:99.0
 - if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
 install:
-- yarn global add typescript typings
+- npm i -g typescript typings
 - dotnet restore
 before_script:
 - sh -e /etc/init.d/xvfb start
