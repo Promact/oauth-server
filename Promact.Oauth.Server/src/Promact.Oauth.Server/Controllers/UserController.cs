@@ -219,7 +219,7 @@ namespace Promact.Oauth.Server.Controllers
 
 
         /**
-        * @api {put} api/users 
+        * @api {put} api/users/:id 
         * @apiVersion 1.0.0
         * @apiName UpdateUserAsync
         * @apiGroup User
@@ -607,7 +607,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-        * @api {get} api/users/{teamLeaderId}/project
+        * @api {get} api/users/:teamLeaderId/project
         * @apiVersion 1.0.0
         * @apiName GetProjectUsersByTeamLeaderIdAsync
         * @apiGroup User
