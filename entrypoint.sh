@@ -19,6 +19,7 @@ jq '.ConnectionStrings.DefaultConnection |= "'"$ConnectionString"'" ' appsetting
 rm appsettings.json
 cp appsettings.new.json appsettings.json
 rm appsettings.new.json
+cp NLog.config nlog.config
 
 env
 
