@@ -443,15 +443,14 @@ namespace Promact.Oauth.Server.Repository
             UserAc projectTeamLeader = _mapperContext.Map<ApplicationUser, UserAc>(teamLeader);
             projectTeamLeader.Role = _stringConstant.TeamLeader;
             userAcList.Add(projectTeamLeader);
-                
-            //Get details of distinct employees for projects with that particular teamleader 
-            List<ProjectUser> projectUsersList = await _projectUserRepository.Fetch(x => projectIds.Contains(x.ProjectId)).Distinct().ToListAsync();
-            foreach (var projectUser in projectUsersList)
+
+            //Get details of distinct employees for projects with that particular teamleader
+            var userIds = await _projectUserRepository.Fetch(x => projectIds.Contains(x.ProjectId)).Select(y => y.UserId).Distinct().ToListAsync();
+            foreach (var userId in userIds)
             {
-                ApplicationUser user = await _applicationUserDataRepository.FirstAsync(x => x.Id.Equals(projectUser.UserId));
-                var Roles = _stringConstant.Employee;
+                ApplicationUser user = await _applicationUserDataRepository.FirstAsync(x => x.Id.Equals(userId));
                 UserAc userAc = _mapperContext.Map<ApplicationUser, UserAc>(user);
-                userAc.Role = Roles;
+                userAc.Role = _stringConstant.Employee;
                 userAcList.Add(userAc);
             }
             return userAcList;
