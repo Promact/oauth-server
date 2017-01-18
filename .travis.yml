@@ -25,6 +25,8 @@ notifications:
   email:
     on_success: change
     on_failure: always
+after_success:
+- cat ./coverage/lcov.info | ./node_modules/.bin/codecov
 script:
 - dotnet build ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests -c Release
 - dotnet test ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests/project.json -c Release 
