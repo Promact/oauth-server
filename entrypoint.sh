@@ -20,11 +20,8 @@ rm appsettings.json
 cp appsettings.new.json appsettings.json
 rm appsettings.new.json
 cp NLog.config nlog.config
-
-env
-
-cat appsettings.json
-cat appsettings.production.json
+mkdir /public
+cp -R /out/wwwroot /public
 
 
 /usr/bin/dotnet /out/app.dll
