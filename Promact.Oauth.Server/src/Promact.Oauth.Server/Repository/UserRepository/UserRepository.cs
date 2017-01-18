@@ -78,9 +78,8 @@ namespace Promact.Oauth.Server.Repository
         /// <param name="createdBy">Passed id of user who has created this user.</param>
         /// <returns>Added user id</returns>
         public async Task<string> AddUserAsync(UserAc newUser, string createdBy)
-        {
-            LeaveAllowed leaveAllowed = new LeaveAllowed();
-            leaveAllowed = CalculateAllowedLeaves(Convert.ToDateTime(newUser.JoiningDate));
+        {             
+            LeaveAllowed leaveAllowed = CalculateAllowedLeaves(Convert.ToDateTime(newUser.JoiningDate));
             newUser.NumberOfCasualLeave = leaveAllowed.CasualLeave;
             newUser.NumberOfSickLeave = leaveAllowed.SickLeave;
             var user = _mapperContext.Map<UserAc, ApplicationUser>(newUser);
@@ -188,7 +187,7 @@ namespace Promact.Oauth.Server.Repository
                 IdentityResult result = await _userManager.ChangePasswordAsync(user, passwordModel.OldPassword, passwordModel.NewPassword);
                 if (!result.Succeeded)//When password not changed successfully then error message will be added in changePasswordErrorModel
                 {
-                    changePasswordErrorModel.ErrorMessage = result.Errors.First().Description.ToString();
+                    changePasswordErrorModel.ErrorMessage = result.Errors.First().Description;
                 }
                 return changePasswordErrorModel;
             }
@@ -204,7 +203,7 @@ namespace Promact.Oauth.Server.Repository
         public async Task<bool> CheckEmailIsExistsAsync(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
-            return user == null ? false : true;
+            return user != null;
         }
 
 
@@ -218,8 +217,7 @@ namespace Promact.Oauth.Server.Repository
             var user = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.SlackUserName == slackUserName);
             if (user == null)
                 throw new SlackUserNotFound();
-            else
-                return user;
+            return user;
         }
 
 
@@ -264,7 +262,7 @@ namespace Promact.Oauth.Server.Repository
         /// <returns>list of team leader</returns>
         public async Task<List<ApplicationUser>> TeamLeaderByUserSlackIdAsync(string userSlackId)
         {
-            var user = _userManager.Users.FirstOrDefault(x => x.SlackUserId == userSlackId);
+            var user = _userManager.Users.First(x => x.SlackUserId == userSlackId);            
             var projects = _projectUserRepository.Fetch(x => x.UserId == user.Id);
             List<ApplicationUser> teamLeaders = new List<ApplicationUser>();
             foreach (var project in projects)
@@ -362,7 +360,7 @@ namespace Promact.Oauth.Server.Repository
                 //getting employee role id. 
                 var roleId = (await _roleManager.Roles.SingleAsync(x => x.Name == _stringConstant.Employee)).Id;
                 //getting active employee list.
-                var userList = await _applicationUserDataRepository.Fetch(y => y.IsActive == true && y.Roles.Any(x => x.RoleId == roleId)).ToListAsync();
+                var userList = await _applicationUserDataRepository.Fetch(y => y.IsActive && y.Roles.Any(x => x.RoleId == roleId)).ToListAsync();
                 foreach (var user in userList)
                 {
                     var userRoleAc = new UserRoleAc(user.Id, user.UserName, user.FirstName + " " + user.LastName, employeeRole);
@@ -418,7 +416,7 @@ namespace Promact.Oauth.Server.Repository
             if (project != null)
             {
                 //fetches the ids of users of the project
-                IEnumerable<string> userIdList = (await _projectUserDataRepository.Fetch(x => x.ProjectId == project.Id).ToListAsync()).Select(y => y.UserId);
+                IEnumerable<string> userIdList = (await _projectUserDataRepository.Fetch(x => x.ProjectId == project.Id).Select(y => y.UserId).ToListAsync());
                 //fetches the application users of the above obtained ids.
                 List<ApplicationUser> applicationUsers = await _applicationUserDataRepository.Fetch(x => userIdList.Contains(x.Id)).ToListAsync();
                 //perform mapping
@@ -519,8 +517,8 @@ namespace Promact.Oauth.Server.Repository
         /// <returns>LeaveAllowed</returns>
         private LeaveAllowed CalculateAllowedLeaves(DateTime dateTime)
         {
-            double casualAllowed = 0; 
-            double sickAllowed = 0;
+            double casualAllowed; 
+            double sickAllowed;
             var month = dateTime.Month;
             //if joining year are more then current year or difference of current year and joining year is 1 then calculate casual Allow and sick Allow
             //other wise no need to be calculation directly set default value CasualLeave(14) and SickLeave(7).  
@@ -572,20 +570,20 @@ namespace Promact.Oauth.Server.Repository
                         sickAllowed = sickAllow;
                     }
                 }
-                
-                if (casualAllowed % 1 != 0) //check casualAllowed has decimal value
+                var tolerance = 0.0001;
+                if (Math.Abs(casualAllowed % 1) > tolerance) //check casualAllowed has decimal value
                 {
-                    double CasualAlloweddecimal = casualAllowed - Math.Floor(casualAllowed);
+                    double casualAlloweddecimal = casualAllowed - Math.Floor(casualAllowed);
                     // If calculated casualAllowed decimal value is exact 0.5 then it's considered half day casual leave
-                    if (CasualAlloweddecimal != 0.5) { casualAllowed = Convert.ToInt32(casualAllowed); }
+                    if (Math.Abs(casualAlloweddecimal - 0.5) > tolerance) { casualAllowed = Convert.ToInt32(casualAllowed); }
                 }
-                if (sickAllowed % 1 != 0)//check sickAllowed has decmial value
+                if (Math.Abs(sickAllowed % 1) > tolerance)//check sickAllowed has decmial value
                 {
                     double sickAlloweddecimal = sickAllowed - Math.Floor(sickAllowed);
                     // If calculated sickAllowed decimal value is exact 0.5 then it's considered half day sick leave 
                     // If calculated sickAllowed decimal value is more than  0.90 then add one leave in sick leave 
                     if (sickAlloweddecimal > 0.90) { sickAllowed = Convert.ToInt32(Math.Ceiling(sickAllowed)); }
-                    else if(sickAlloweddecimal != 0.5) { sickAllowed = Convert.ToInt32(Math.Floor(sickAllowed)); }
+                    else if(Math.Abs(sickAlloweddecimal - 0.5) > tolerance) { sickAllowed = Convert.ToInt32(Math.Floor(sickAllowed)); }
                 }
             }
             else 
