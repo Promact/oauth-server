@@ -10,8 +10,7 @@ var gulp = require("gulp"),
     sysBuilder = require('systemjs-builder'),
     remapIstanbul = require('remap-istanbul'),
     Server = require('karma').Server,
-    tslint = require('gulp-tslint'),
-    tsc = require('gulp-typescript');	
+    tslint = require('gulp-tslint');    
    
 
 var paths = {
@@ -26,7 +25,6 @@ paths.concatJsDest = paths.webroot + "js/site.min.js";
 paths.concatCssDest = paths.webroot + "css/site.min.css";
 paths.systemConfig = paths.webroot + "systemjs.config.js";
 
-gulp.task("default",["clean","tsc","min","copytowwwroot"]);
 
 gulp.task("copytowwwroot", function () {
     var environment = {
@@ -142,11 +140,5 @@ gulp.task("tslint", function(){
         .pipe(tslint({ configuration: "./tslint.json" }))
         .pipe(tslint({formatter: "prose"}))
 		.pipe(tslint.report({emitError: true}))
-});
-
-gulp.task("tsc", function() {
-	var tsProject = tsc.createProject('tsconfig.json');
-
-    return tsProject.src().pipe(tsProject());    
 });
 
