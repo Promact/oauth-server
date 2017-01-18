@@ -344,9 +344,9 @@ namespace Promact.Oauth.Server.Repository
 
 
         /// <summary>
-        /// Method to return user role. - RS
+        /// Method to return user/users infromation. - RS
         /// </summary>
-        /// <param name="userId">passed user id for getting list of user role </param>
+        /// <param name="userId">passed user id</param>
         /// <returns>user/users information</returns>
         public async Task<List<UserRoleAc>> GetUserRoleAsync(string userId)
         {
@@ -381,7 +381,7 @@ namespace Promact.Oauth.Server.Repository
         }
 
         /// <summary>
-        /// Method to return list of users. - RS
+        /// Method to return list of teamMembers. - RS
         /// </summary>
         /// <param name="userId">Passed user id</param>
         /// <returns>teamMembers information</returns>
@@ -513,9 +513,9 @@ namespace Promact.Oauth.Server.Repository
         }
 
         /// <summary>
-        /// Calculat casual leava and sick leave from the date of joining - RS
+        /// Calculate casual leave and sick leave from the date of joining - RS
         /// </summary>
-        /// <param name="dateTime">passing joining date</param>
+        /// <param name="dateTime">passed joining date</param>
         /// <returns>LeaveAllowed</returns>
         private LeaveAllowed CalculateAllowedLeaves(DateTime dateTime)
         {

@@ -135,15 +135,15 @@ namespace Promact.Oauth.Server.Repository
 
 
         /// <summary>
-        /// Method to return user role. - RS
+        /// Method to return user/users infromation. - RS
         /// </summary>
-        /// <param name="userId">passed user id for getting list of user role </param>
+        /// <param name="userId">passed user id</param>
         /// <returns>users/user information</returns>
         Task<List<UserRoleAc>> GetUserRoleAsync(string userId);
 
 
         /// <summary>
-        /// Method to return list of users. - RS
+        /// Method to return list of teamMembers. - RS
         /// </summary>
         /// <param name="userId">Passed user id</param>
         /// <returns>teamMembers information</returns>

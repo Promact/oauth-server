@@ -200,7 +200,7 @@ namespace Promact.Oauth.Server.Tests
         }
 
         /// <summary>
-        /// Test case to check get roles of user repository
+        /// Test case use to get roles
         /// </summary>
         [Fact, Trait("Category", "Required")]
         public async Task GetRoles()
@@ -300,7 +300,7 @@ namespace Promact.Oauth.Server.Tests
         }
 
         /// <summary>
-        ///This test case is used to get the list of active user with role using admin user id.
+        ///This test case is used to get the team leader infromation.
         /// </summary>
         [Fact, Trait("Category", "Required")]
         public async Task GetUserRoleTeamLeader()

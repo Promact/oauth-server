@@ -109,7 +109,7 @@ namespace Promact.Oauth.Server.Controllers
          *     [
          *      {
          *          Id: 452dsf34,
-         *          Name: abc
+         *          Name: Employee
          *      },
          *     ]
          * }
@@ -283,7 +283,7 @@ namespace Promact.Oauth.Server.Controllers
 
 
         /**
-        * @api {post} api/users/:password 
+        * @api {post} api/users/password 
         * @apiVersion 1.0.0
         * @apiName ChangePasswordAsync
         * @apiGroup User
