@@ -1,10 +1,7 @@
 ﻿using AutoMapper;
-using Exceptionless.Json;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Promact.Oauth.Server.Constants;
 using Promact.Oauth.Server.Data_Repository;
@@ -14,6 +11,7 @@ using Promact.Oauth.Server.Models.ApplicationClasses;
 using Promact.Oauth.Server.Models.ManageViewModels;
 using Promact.Oauth.Server.Repository.ProjectsRepository;
 using Promact.Oauth.Server.Services;
+using Promact.Oauth.Server.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +26,7 @@ namespace Promact.Oauth.Server.Repository
         #region "Private Variable(s)"
 
 
-        private readonly IHostingEnvironment _hostingEnvironment;
+
         private readonly IDataRepository<ApplicationUser> _applicationUserDataRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -38,27 +36,24 @@ namespace Promact.Oauth.Server.Repository
         private readonly IProjectRepository _projectRepository;
         private readonly IDataRepository<Project> _projectDataRepository;
         private readonly IOptions<AppSettingUtil> _appSettingUtil;
-        private readonly ILogger<UserRepository> _logger;
         private readonly IStringConstant _stringConstant;
         private readonly IDataRepository<ProjectUser> _projectUserDataRepository;
-        private readonly IHttpClientService _httpClientRepository;
-        #endregion
+        private readonly IEmailUtil _emailUtil;
 
+        #endregion
 
         #region "Constructor"
 
-
         public UserRepository(IDataRepository<ApplicationUser> applicationUserDataRepository,
-            IHostingEnvironment hostingEnvironment, RoleManager<IdentityRole> roleManager,
+            RoleManager<IdentityRole> roleManager,
             UserManager<ApplicationUser> userManager, IEmailSender emailSender,
             IMapper mapperContext, IDataRepository<ProjectUser> projectUserRepository,
             IProjectRepository projectRepository, IOptions<AppSettingUtil> appSettingUtil,
             IDataRepository<Project> projectDataRepository,
-            ILogger<UserRepository> logger, IStringConstant stringConstant,
-            IHttpClientService httpClientRepository, IDataRepository<ProjectUser> projectUserDataRepository)
+            IStringConstant stringConstant,
+            IDataRepository<ProjectUser> projectUserDataRepository, IEmailUtil emailUtil)
         {
             _applicationUserDataRepository = applicationUserDataRepository;
-            _hostingEnvironment = hostingEnvironment;
             _userManager = userManager;
             _emailSender = emailSender;
             _mapperContext = mapperContext;
@@ -67,196 +62,74 @@ namespace Promact.Oauth.Server.Repository
             _roleManager = roleManager;
             _projectDataRepository = projectDataRepository;
             _appSettingUtil = appSettingUtil;
-            _logger = logger;
             _stringConstant = stringConstant;
             _projectUserDataRepository = projectUserDataRepository;
-            _httpClientRepository = httpClientRepository;
+            _emailUtil = emailUtil;
         }
 
         #endregion
-
 
         #region "Public Method(s)"
 
         /// <summary>
         /// This method is used to add new user
         /// </summary>
-        /// <param name="applicationUser">UserAc Application class object</param>
-        public async Task<string> AddUser(UserAc newUser, string createdBy)
-        {
-            //try
-            //{
-            LeaveCalculator LC = new LeaveCalculator();
-            LC = CalculateAllowedLeaves(Convert.ToDateTime(newUser.JoiningDate));
-            newUser.NumberOfCasualLeave = LC.CasualLeave;
-            newUser.NumberOfSickLeave = LC.SickLeave;
+        /// <param name="newUser">Passed userAC object</param>
+        /// <param name="createdBy">Passed id of user who has created this user.</param>
+        /// <returns>Added user id</returns>
+        public async Task<string> AddUserAsync(UserAc newUser, string createdBy)
+        {             
+            LeaveAllowed leaveAllowed = CalculateAllowedLeaves(Convert.ToDateTime(newUser.JoiningDate));
+            newUser.NumberOfCasualLeave = leaveAllowed.CasualLeave;
+            newUser.NumberOfSickLeave = leaveAllowed.SickLeave;
             var user = _mapperContext.Map<UserAc, ApplicationUser>(newUser);
             user.UserName = user.Email;
             user.CreatedBy = createdBy;
             user.CreatedDateTime = DateTime.UtcNow;
-            string password = GetRandomString();
-            var result = _userManager.CreateAsync(user, password);
-            var resultSuccess = await result;
-            result = _userManager.AddToRoleAsync(user, newUser.RoleName);
-            SendEmail(user, password);
-            resultSuccess = await result;
+            string password = GetRandomString();//get readom password.
+            await _userManager.CreateAsync(user, password);
+            await _userManager.AddToRoleAsync(user, newUser.RoleName);//add role of new user.
+            SendEmail(user.FirstName, user.Email, password);//send mail with generated password of new user. 
             return user.Id;
-            //}
-
-            //catch (Exception ex)
-            //{
-            //    throw ex;
-            //}
         }
 
         /// <summary>
-        /// Calculat casual leava and sick leave from the date of joining
+        ///This method is used to get all role. -An
         /// </summary>
-        /// <param name="dateTime"></param>
-        /// <returns></returns>
-        private LeaveCalculator CalculateAllowedLeaves(DateTime dateTime)
+        /// <returns>List of user roles</returns>
+        public async Task<List<RolesAc>> GetRolesAsync()
         {
-            double casualAllowed = 0;
-            double sickAllowed = 0;
-            var day = dateTime.Day;
-            var month = dateTime.Month;
-            var year = dateTime.Year;
-            double casualAllow = Convert.ToDouble(_appSettingUtil.Value.CasualLeave);
-            double sickAllow = Convert.ToDouble(_appSettingUtil.Value.SickLeave);
-            if (year >= DateTime.Now.Year)
-            {
-                if (year - DateTime.Now.Year > 365)
-                {
-                    month = 4;
-                    day = 1;
-                }
-                double totalDays = (DateTime.Now - Convert.ToDateTime(dateTime)).TotalDays;
-                if (totalDays > 365)
-                {
-                    month = 4;
-                    day = 1;
-                }
-                if (month >= 4)
-                {
-                    if (day <= 15)
-                    {
-                        casualAllowed = (casualAllow / 12) * (12 - (month - 4));
-                        sickAllowed = (sickAllow / 12) * (12 - (month - 4));
-                    }
-                    else
-                    {
-                        casualAllowed = (casualAllow / 12) * (12 - (month - 3));
-                        sickAllowed = (sickAllow / 12) * (12 - (month - 3));
-                    }
-                }
-                else
-                {
-                    if (day <= 15)
-                    {
-                        casualAllowed = (casualAllow / 12) * (12 - (month + 8));
-                        sickAllowed = (sickAllow / 12) * (12 - (month + 8));
-                    }
-                    else
-                    {
-                        casualAllowed = (casualAllow / 12) * (12 - (month + 9));
-                        sickAllowed = (sickAllow / 12) * (12 - (month + 9));
-                    }
-                }
-
-                if (casualAllowed.ToString().Contains(".") == true)
-                {
-                    string splitCasualAllowed = "0." + casualAllowed.ToString().Split('.')[1];
-                    double casualAllowedConvertedDouble = Convert.ToDouble(splitCasualAllowed);
-                    if (casualAllowedConvertedDouble != 0.5) { casualAllowed = Convert.ToInt32(casualAllowed); }
-
-                }
-                else
-                {
-                    casualAllowed = Convert.ToInt32(casualAllowed);
-                }
-                if (sickAllowed.ToString().Contains(".") == true)
-                {
-                    string splitSickAllowed = "0." + sickAllowed.ToString().Split('.')[1];
-                    double sickAllowedConvertedDouble = Convert.ToDouble(splitSickAllowed);
-                    if (sickAllowedConvertedDouble != 0.5) { sickAllowed = Convert.ToInt32(Math.Floor(sickAllowed)); }
-                    if (sickAllowedConvertedDouble > 0.90) { sickAllowed = sickAllowed + 1; }
-
-                }
-                else
-                {
-                    sickAllowed = Convert.ToInt32(Math.Floor(sickAllowed));
-                }
-            }
-            else
-            {
-                casualAllow = Convert.ToDouble(_appSettingUtil.Value.CasualLeave);
-                sickAllowed = Convert.ToDouble(_appSettingUtil.Value.SickLeave);
-            }
-            LeaveCalculator calculate = new LeaveCalculator
-            {
-                CasualLeave = casualAllowed,
-                SickLeave = sickAllowed
-            };
-
-            return calculate;
+            var roles = await _roleManager.Roles.ToListAsync();
+            return _mapperContext.Map<List<IdentityRole>, List<RolesAc>>(roles);
         }
-
-        public List<RolesAc> GetRoles()
-        {
-            try
-            {
-                List<RolesAc> listOfRoleAC = new List<RolesAc>();
-                var roles = _roleManager.Roles;
-                foreach (IdentityRole identityRole in roles.ToList())
-                {
-                    RolesAc roleAc = new RolesAc();
-                    roleAc.Id = identityRole.Id;
-                    roleAc.Name = identityRole.Name;
-                    listOfRoleAC.Add(roleAc);
-                }
-                return listOfRoleAC;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
 
         /// <summary>
-        /// This method is used for getting the list of all users
+        /// This method is used for fetching the list of all users
         /// </summary>
         /// <returns>List of all users</returns>
-        public IEnumerable<UserAc> GetAllUsers()
+        public async Task<IEnumerable<UserAc>> GetAllUsersAsync()
         {
-            IOrderedQueryable<ApplicationUser> users = _userManager.Users.OrderByDescending(x => x.CreatedDateTime);
-            List<UserAc> userList = new List<UserAc>();
-
-            foreach (var user in users)
-            {
-                UserAc listItem = _mapperContext.Map<ApplicationUser, UserAc>(user);
-                userList.Add(listItem);
-            }
-            return userList;
+            var users = await _userManager.Users.OrderByDescending(x => x.CreatedDateTime).ToListAsync();
+            return _mapperContext.Map<IEnumerable<ApplicationUser>, IEnumerable<UserAc>>(users);
         }
-
 
         /// <summary>
         /// This method is used for getting the list of all Employees
         /// </summary>
         /// <returns>List of all Employees</returns>
-        public async Task<List<UserAc>> GetAllEmployees()
+        public async Task<IEnumerable<UserAc>> GetAllEmployeesAsync()
         {
             var users = await _userManager.Users.Where(user => user.IsActive).OrderBy(user => user.FirstName).ToListAsync();
-            return _mapperContext.Map<List<ApplicationUser>, List<UserAc>>(users);
+            return _mapperContext.Map<IEnumerable<ApplicationUser>, IEnumerable<UserAc>>(users);
         }
-
 
         /// <summary>
         /// This method is used to edit the details of an existing user
         /// </summary>
-        /// <param name="editedUser">UserAc Application class object</param>
-        public async Task<string> UpdateUserDetails(UserAc editedUser, string updatedBy)
+        /// <param name="editedUser">Passed UserAc object</param>
+        /// <param name="updatedBy">Passed id of user who has updated this user.</param>
+        /// <returns>Updated user id.</returns>
+        public async Task<string> UpdateUserDetailsAsync(UserAc editedUser, string updatedBy)
         {
             var user = _userManager.Users.FirstOrDefault(x => x.SlackUserName == editedUser.SlackUserName && x.Id != editedUser.Id);
             if (user == null)
@@ -271,153 +144,99 @@ namespace Promact.Oauth.Server.Repository
                 user.NumberOfCasualLeave = editedUser.NumberOfCasualLeave;
                 user.NumberOfSickLeave = editedUser.NumberOfSickLeave;
                 user.SlackUserName = editedUser.SlackUserName;
-                var userPreviousInfo = await _userManager.FindByEmailAsync(editedUser.Email);
                 await _userManager.UpdateAsync(user);
+                //get user roles
                 IList<string> listofUserRole = await _userManager.GetRolesAsync(user);
-                var removeFromRole = await _userManager.RemoveFromRoleAsync(user, listofUserRole.FirstOrDefault());
+                //remove user role 
+                var removeFromRole = await _userManager.RemoveFromRoleAsync(user, listofUserRole.First());
+                //add new role of user.
                 var addNewRole = await _userManager.AddToRoleAsync(user, editedUser.RoleName);
                 return user.Id;
-
             }
             throw new SlackUserNotFound();
         }
 
-
-
         /// <summary>
-        /// This method is used to get particular user's details by his/her id
+        ///  This method used for get user detail by user id 
         /// </summary>
-        /// <param name="id">string id</param>
-        /// <returns>UserAc Application class object</returns>
-        public async Task<UserAc> GetById(string id)
+        /// <param name="id">Passed user id</param>
+        /// <returns>UserAc application class object</returns>
+        public async Task<UserAc> GetByIdAsync(string id)
         {
-            try
+            ApplicationUser applicationUser = await _userManager.FindByIdAsync(id);
+            if (applicationUser != null)
             {
-                ApplicationUser user = await _userManager.FindByIdAsync(id);
-                UserAc requiredUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
-                IList<string> identityUserRole = await _userManager.GetRolesAsync(user);
-                requiredUser.RoleName = identityUserRole.FirstOrDefault();
-                return requiredUser;
-            }
-            catch (Exception exception)
-            {
-                throw exception;
-            }
-
-        }
-
-
-        /// <summary>
-        /// This method is used to change the password of a particular user
-        /// </summary>
-        /// <param name="passwordModel">ChangePasswordViewModel type object</param>
-        public async Task<string> ChangePassword(ChangePasswordViewModel passwordModel)
-        {
-            var user = await _userManager.FindByEmailAsync(passwordModel.Email);
-            if (user != null)
-            {
-                IdentityResult result = await _userManager.ChangePasswordAsync(user, passwordModel.OldPassword, passwordModel.NewPassword);
-                if (result.Succeeded)
-                {
-                    return passwordModel.NewPassword;
-                }
-                return result.Errors.FirstOrDefault().Description.ToString();
+                UserAc userAc = _mapperContext.Map<ApplicationUser, UserAc>(applicationUser);
+                userAc.RoleName = (await _userManager.GetRolesAsync(applicationUser)).First();
+                return userAc;
             }
             throw new UserNotFound();
         }
 
         /// <summary>
-        /// This method is used to check if a user already exists in the database with the given userName
+        /// This method is used to change the password of a particular user. -An
         /// </summary>
-        /// <param name="userName">string userName</param>
-        /// <returns> boolean: true if the user name exists, false if does not exist</returns>
-        public async Task<bool> FindByUserName(string userName)
+        /// <param name="passwordModel">Passed changePasswordViewModel object(OldPassword,NewPassword,ConfirmPassword,Email)</param>
+        /// <returns>If password is changed successfully, return empty otherwise error message.</returns>
+        public async Task<ChangePasswordErrorModel> ChangePasswordAsync(ChangePasswordViewModel passwordModel)
         {
-            var user = await _userManager.FindByNameAsync(userName);
-            if (user == null)
+            var user = await _userManager.FindByEmailAsync(passwordModel.Email);
+            if (user != null)
             {
-                return false;
-            }
-            return true;
-        }
-
-        /// <summary>
-        /// Used to fetch the userdetail by given UserName 
-        /// </summary>
-        /// <param name="UserName"></param>
-        /// <returns>object of UserAc</returns>
-        public async Task<UserAc> GetUserDetail(string UserName)
-        {
-            try
-            {
-                var user = await _userManager.FindByNameAsync(UserName);
-                var userAc = new UserAc();
-                if (user != null)
+                ChangePasswordErrorModel changePasswordErrorModel = new ChangePasswordErrorModel();
+                IdentityResult result = await _userManager.ChangePasswordAsync(user, passwordModel.OldPassword, passwordModel.NewPassword);
+                if (!result.Succeeded)//When password not changed successfully then error message will be added in changePasswordErrorModel
                 {
-                    userAc.Email = user.Email;
-                    userAc.Id = user.Id;
-                    userAc.FirstName = user.FirstName;
-                    userAc.LastName = user.LastName;
-                    userAc.UserName = user.UserName;
-                    // userAc.SlackUserName = user.SlackUserName;
+                    changePasswordErrorModel.ErrorMessage = result.Errors.First().Description;
                 }
-                return userAc;
+                return changePasswordErrorModel;
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            throw new UserNotFound();
         }
 
+
         /// <summary>
-        /// This method is used to check if a user already exists in the database with the given email
+        /// This method is used to check email is already exists in database.
         /// </summary>
-        /// <param name="email"></param>
+        /// <param name="email">Passed user email address</param>
         /// <returns> boolean: true if the email exists, false if does not exist</returns>
-        public async Task<bool> CheckEmailIsExists(string email)
+        public async Task<bool> CheckEmailIsExistsAsync(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
-            return user == null ? false : true;
+            return user != null;
         }
 
 
         /// <summary>
-        /// Fetches user with the given Slack User Id
+        /// Fetch user with given slack user name
         /// </summary>
-        /// <param name="slackUserName"></param>
-        /// <returns></returns>
-        public ApplicationUser FindUserBySlackUserName(string slackUserName)
+        /// <param name="slackUserName">Passed slack user name</param>
+        /// <returns>If user is exists return user otherwise throw SlackUserNotFound exception.</returns>
+        public async Task<ApplicationUser> FindUserBySlackUserNameAsync(string slackUserName)
         {
-            var user = _applicationUserDataRepository.FirstOrDefault(x => x.SlackUserName == slackUserName);
+            var user = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.SlackUserName == slackUserName);
             if (user == null)
                 throw new SlackUserNotFound();
-            else
-                return user;
+            return user;
         }
 
+
         /// <summary>
-        /// This method used for re -send mail for user credentails
+        /// This method used for re-send mail for user credentials. -An
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">passed user id</param>
         /// <returns></returns>
-        public async Task<bool> ReSendMail(string id)
+        public async Task ReSendMailAsync(string id)
         {
-            _logger.LogInformation("start Resend Mail Method in User Repository");
             var user = await _userManager.FindByIdAsync(id);
             string newPassword = GetRandomString();
-            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-            IdentityResult result = await _userManager.ResetPasswordAsync(user, code, newPassword);
-            if (result.Succeeded)
-            {
-                _logger.LogInformation("Successfully Reset Password");
-                if (SendEmail(user, newPassword))
-                    return true;
-            }
-            return false;
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user); //genrate passsword reset token
+            IdentityResult result = await _userManager.ResetPasswordAsync(user, token, newPassword);
+            SendEmail(user.FirstName, user.Email, newPassword);
         }
 
         /// <summary>
-        /// Method to get user details by slackUserId
+        /// Method to get user details by slackUserId -SD
         /// </summary>
         /// <param name="slackUserId"></param>
         /// <returns>user details</returns>
@@ -437,13 +256,13 @@ namespace Promact.Oauth.Server.Repository
         }
 
         /// <summary>
-        /// Method to get team leader's details by userSlackId
+        /// Method to get team leader's details by userSlackId -SD
         /// </summary>
         /// <param name="userSlackId"></param>
         /// <returns>list of team leader</returns>
-        public async Task<List<ApplicationUser>> TeamLeaderByUserSlackId(string userSlackId)
+        public async Task<List<ApplicationUser>> TeamLeaderByUserSlackIdAsync(string userSlackId)
         {
-            var user = _userManager.Users.FirstOrDefault(x => x.SlackUserId == userSlackId);
+            var user = _userManager.Users.First(x => x.SlackUserId == userSlackId);            
             var projects = _projectUserRepository.Fetch(x => x.UserId == user.Id);
             List<ApplicationUser> teamLeaders = new List<ApplicationUser>();
             foreach (var project in projects)
@@ -451,7 +270,6 @@ namespace Promact.Oauth.Server.Repository
                 var teamLeaderId = await _projectRepository.GetProjectByIdAsync(project.ProjectId);
                 var teamLeader = teamLeaderId.TeamLeaderId;
                 user = await _userManager.FindByIdAsync(teamLeader);
-                //user = _userManager.Users.FirstOrDefault(x => x.Id == teamLeader);
                 var newUser = new ApplicationUser
                 {
                     UserName = user.UserName,
@@ -464,10 +282,10 @@ namespace Promact.Oauth.Server.Repository
         }
 
         /// <summary>
-        /// Method to get management people details
+        /// Method to get management people details - SD
         /// </summary>
         /// <returns>list of management</returns>
-        public async Task<List<ApplicationUser>> ManagementDetails()
+        public async Task<List<ApplicationUser>> ManagementDetailsAsync()
         {
             var management = await _userManager.GetUsersInRoleAsync("Admin");
             List<ApplicationUser> managementUser = new List<ApplicationUser>();
@@ -486,7 +304,7 @@ namespace Promact.Oauth.Server.Repository
 
 
         /// <summary>
-        /// Method to get the number of casual leave allowed to a user by slack user name
+        /// Method to get the number of casual leave allowed to a user by slack user name -SD
         /// </summary>
         /// <param name="slackUserId"></param>
         /// <returns>number of casual leave</returns>
@@ -500,11 +318,11 @@ namespace Promact.Oauth.Server.Repository
         }
 
         /// <summary>
-        /// Method to check whether user is admin or not
+        /// Method to check whether user is admin or not - SD
         /// </summary>
         /// <param name="slackUserId"></param>
         /// <returns>true or false</returns>
-        public async Task<bool> IsAdmin(string slackUserId)
+        public async Task<bool> IsAdminAsync(string slackUserId)
         {
             var user = _applicationUserDataRepository.FirstOrDefault(x => x.SlackUserId == slackUserId);
             var isAdmin = await _userManager.IsInRoleAsync(user, _stringConstant.Admin);
@@ -512,317 +330,279 @@ namespace Promact.Oauth.Server.Repository
         }
 
         /// <summary>
-        /// This method is used to Get User details by Id
+        /// This method is used to Get User details by Id  - GA
         /// </summary>
-        /// <param name="userId"></param>
+        /// <param name="userId">Id of the user</param>
         /// <returns>details of user</returns>
         public async Task<UserAc> UserDetailByIdAsync(string userId)
         {
-            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == userId);
+            var user = await _userManager.Users.FirstAsync(x => x.Id == userId);
             return await GetUserAsync(user);
         }
 
-    
-
-        
 
         /// <summary>
-        /// Method to return user role
+        /// Method to return user/users infromation. - RS
         /// </summary>
-        /// <param name="userName"></param>
-        /// <returns></returns>
+        /// <param name="userId">passed user id</param>
+        /// <returns>user/users information</returns>
         public async Task<List<UserRoleAc>> GetUserRoleAsync(string userId)
         {
-            ApplicationUser applicationUser = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.Id == userId);
-            var userRole = (await _userManager.GetRolesAsync(applicationUser)).First();
-            var UserRoleAcList = new List<UserRoleAc>();
-            if (userRole == _stringConstant.RoleAdmin)
+            ApplicationUser applicationUser = await _userManager.FindByIdAsync(userId);
+            var employeeRole = (await _userManager.GetRolesAsync(applicationUser)).First();
+            List<UserRoleAc> userRoleAcList = new List<UserRoleAc>();
+            
+            if (employeeRole == _stringConstant.Admin) //If login user is admin then return all active users with role.
             {
-                var userRoleAdmin = new UserRoleAc();
-                userRoleAdmin.UserName = applicationUser.UserName;
-                userRoleAdmin.Name = applicationUser.FirstName + " " + applicationUser.LastName;
-                userRoleAdmin.Role = userRole;
-                UserRoleAcList.Add(userRoleAdmin);
-                var userList = await _applicationUserDataRepository.GetAll().ToListAsync();
-                foreach (var userDetails in userList)
+                //getting the all user infromation. 
+                var userRole = new UserRoleAc(applicationUser.Id, applicationUser.UserName, applicationUser.FirstName + " " + applicationUser.LastName, employeeRole);
+                userRoleAcList.Add(userRole);
+                //getting employee role id. 
+                var roleId = (await _roleManager.Roles.SingleAsync(x => x.Name == _stringConstant.Employee)).Id;
+                //getting active employee list.
+                var userList = await _applicationUserDataRepository.Fetch(y => y.IsActive && y.Roles.Any(x => x.RoleId == roleId)).ToListAsync();
+                foreach (var user in userList)
                 {
-                    var roles = (await _userManager.GetRolesAsync(userDetails)).First();
-                    if (roles != null && roles == _stringConstant.RoleEmployee)
-                    {
-                        var userRoleAc = new UserRoleAc();
-                        userRoleAc.UserName = userDetails.UserName;
-                        userRoleAc.Name = userDetails.FirstName + " " + userDetails.LastName;
-                        userRoleAc.Role = userRole;
-                        UserRoleAcList.Add(userRoleAc);
-                    }
+                    var userRoleAc = new UserRoleAc(user.Id, user.UserName, user.FirstName + " " + user.LastName, employeeRole);
+                    userRoleAcList.Add(userRoleAc);
                 }
             }
-            else
+            else //If login user is team leader/employee then return own infromation with his role.
             {
-                var project = await _projectDataRepository.FirstOrDefaultAsync(x => x.TeamLeaderId == applicationUser.Id);
-                if (project == null)
-                {
-                    var usersRolesAc = new UserRoleAc();
-                    usersRolesAc.UserName = applicationUser.UserName;
-                    usersRolesAc.Role = _stringConstant.RoleEmployee;
-                    usersRolesAc.Name = applicationUser.FirstName + " " + applicationUser.LastName;
-                    UserRoleAcList.Add(usersRolesAc);
-                }
-                else
-                {
-                    var usersRoleAc = new UserRoleAc();
-                    usersRoleAc.UserName = applicationUser.UserName;
-                    usersRoleAc.Role = _stringConstant.RoleTeamLeader;
-                    usersRoleAc.Name = applicationUser.FirstName + " " + applicationUser.LastName;
-                    UserRoleAcList.Add(usersRoleAc);
-                }
+                //check login user is teamLeader or not.
+                var isProjectExists = await _projectDataRepository.FirstOrDefaultAsync(x => x.TeamLeaderId == applicationUser.Id);
+                //If isProjectExists is null then user role is employee other wise user role is teamleader. 
+                var userRoleAc = new UserRoleAc(applicationUser.Id, applicationUser.UserName, applicationUser.FirstName + " " + applicationUser.LastName, (isProjectExists != null ? _stringConstant.TeamLeader : _stringConstant.Employee));
+                userRoleAcList.Add(userRoleAc);
             }
-            if (UserRoleAcList == null)
-                throw new UserRoleNotFound();
-            else
-                return UserRoleAcList;
-
+            return userRoleAcList;
         }
 
         /// <summary>
-        /// Method to return list of users.
+        /// Method to return list of teamMembers. - RS
         /// </summary>
-        /// <param name="userName"></param>
-        /// <returns></returns>
+        /// <param name="userId">Passed user id</param>
+        /// <returns>teamMembers information</returns>
         public async Task<List<UserRoleAc>> GetTeamMembersAsync(string userId)
         {
-            ApplicationUser applicationUser = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.Id == userId);
-            if (applicationUser != null)
+            ApplicationUser applicationUser = await _userManager.FindByIdAsync(userId);
+            var userRoleAcList = new List<UserRoleAc>();
+            var userRoleAc = new UserRoleAc(applicationUser.Id, applicationUser.UserName, applicationUser.FirstName + " " + applicationUser.LastName, _stringConstant.TeamLeader);
+            userRoleAcList.Add(userRoleAc);
+            //Get projectid's for that specific teamleader
+            IEnumerable<int> projectIds = await _projectDataRepository.Fetch(x => x.TeamLeaderId.Equals(applicationUser.Id)).Select(y => y.Id).ToListAsync();
+            //Get distinct userid's for projects with that particular teamleader 
+            var userIdList = await _projectUserRepository.Fetch(x => projectIds.Contains(x.ProjectId)).Select(y => y.UserId).Distinct().ToListAsync();
+            //getting list of user infromation.
+            var userList = await _applicationUserDataRepository.Fetch(x => userIdList.Contains(x.Id)).ToListAsync();
+            foreach (var user in userList)
             {
-                var userRolesAcList = new List<UserRoleAc>();
-                var usersRoleAc = new UserRoleAc();
-                usersRoleAc.UserName = applicationUser.UserName;
-                usersRoleAc.Role = _stringConstant.RoleTeamLeader;
-                usersRoleAc.Name = applicationUser.FirstName + " " + applicationUser.LastName;
-                userRolesAcList.Add(usersRoleAc);
-                var project = await _projectDataRepository.FirstOrDefaultAsync(x => x.TeamLeaderId == applicationUser.Id);
-                var projectUserList = await _projectUserDataRepository.FetchAsync(x => x.ProjectId == project.Id);
-
-                foreach (var projectUser in projectUserList)
-                {
-                    var usersRolesAc = new UserRoleAc();
-                    var users = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.Id == projectUser.UserId);
-                    usersRolesAc.UserName = users.UserName;
-                    usersRolesAc.Name = users.FirstName + " " + users.LastName;
-                    usersRolesAc.Role = _stringConstant.RoleAdmin;
-                    userRolesAcList.Add(usersRolesAc);
-                }
-                return userRolesAcList;
+                var usersRoleAc = new UserRoleAc(user.Id, user.UserName, user.FirstName + " " + user.LastName, _stringConstant.Employee);
+                userRoleAcList.Add(usersRoleAc);
             }
-            else
-            {
-                throw new UserRoleNotFound();
-            }
+            return userRoleAcList;
         }
 
+
         /// <summary>
-        /// Method to return list of users/employees of the given group name. - JJ
+        /// Method to return list of users/employees of the given slack channel name. - JJ
         /// </summary>
-        /// <param name="GroupName"></param>
-        /// <param name="UserName"></param>
+        /// <param name="slackChannelName">Passed slack channel name</param>
         /// <returns>list of object of UserAc</returns>
-        public async Task<List<UserAc>> GetProjectUserByGroupNameAsync(string GroupName)
+        public async Task<List<UserAc>> GetProjectUserBySlackChannelNameAsync(string slackChannelName)
         {
-            var project = await _projectDataRepository.FirstOrDefaultAsync(x => x.SlackChannelName == GroupName);
-            var userAcList = new List<UserAc>();
+            Project project = await _projectDataRepository.FirstOrDefaultAsync(x => x.SlackChannelName == slackChannelName);
+            List<UserAc> userAcList = new List<UserAc>();
             if (project != null)
             {
-                var projectUserList = await _projectUserDataRepository.FetchAsync(x => x.ProjectId == project.Id);
-                foreach (var projectUser in projectUserList)
-                {
-                    var user = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.Id == projectUser.UserId && x.SlackUserId != null);
-                    if (user != null)
-                    {
-                        var userAc = new UserAc();
-                        userAc.Id = user.Id;
-                        userAc.Email = user.Email;
-                        userAc.FirstName = user.FirstName;
-                        userAc.IsActive = user.IsActive;
-                        userAc.LastName = user.LastName;
-                        userAc.UserName = user.UserName;
-                        userAc.SlackUserId = user.SlackUserId;
-                        userAcList.Add(userAc);
-                    }
-                }
-
+                //fetches the ids of users of the project
+                IEnumerable<string> userIdList = (await _projectUserDataRepository.Fetch(x => x.ProjectId == project.Id).Select(y => y.UserId).ToListAsync());
+                //fetches the application users of the above obtained ids.
+                List<ApplicationUser> applicationUsers = await _applicationUserDataRepository.Fetch(x => userIdList.Contains(x.Id)).ToListAsync();
+                //perform mapping
+                userAcList = _mapperContext.Map<List<ApplicationUser>, List<UserAc>>(applicationUsers);
             }
-            if (userAcList == null)
-                throw new UserNotFound();
-            else
-                return userAcList;
+            return userAcList;
         }
 
+
         /// <summary>
-        /// The method is used to get list of projects along with its users for a specific teamleader 
+        /// The method is used to get list of projects along with its users for a specific teamleader  - GA
         /// </summary>
-        /// <param name="teamLeaderId"></param>
+        /// <param name="teamLeaderId">Id of the teamleader</param>
         /// <returns>list of projects with users for a specific teamleader</returns>
         public async Task<List<UserAc>> GetProjectUsersByTeamLeaderIdAsync(string teamLeaderId)
         {
-            List<UserAc> projectUsers = new List<UserAc>();
-            //Get projects for that specific teamleader
-            List<Project> projects = (await _projectDataRepository.FetchAsync(x => x.TeamLeaderId.Equals(teamLeaderId))).ToList();
+            List<UserAc> userAcList = new List<UserAc>();
+            //Get projectid's for that specific teamleader
+            IEnumerable<int> projectIds = await _projectDataRepository.Fetch(x => x.TeamLeaderId.Equals(teamLeaderId)).Select(y => y.Id).ToListAsync();
+            //Get details of teamleader
+            ApplicationUser teamLeader = await _applicationUserDataRepository.FirstAsync(x => x.Id.Equals(teamLeaderId));
+            UserAc projectTeamLeader = _mapperContext.Map<ApplicationUser, UserAc>(teamLeader);
+            projectTeamLeader.Role = _stringConstant.TeamLeader;
+            userAcList.Add(projectTeamLeader);
 
-            if (projects.Count > 0)
+            //Get details of distinct employees for projects with that particular teamleader
+            var userIds = await _projectUserRepository.Fetch(x => projectIds.Contains(x.ProjectId)).Select(y => y.UserId).Distinct().ToListAsync();
+            foreach (var userId in userIds)
             {
-                //Get details of teamleader
-                ApplicationUser teamLeader = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.Id.Equals(teamLeaderId));
-                if (teamLeader != null)
-                {
-                    UserAc projectTeamLeader = _mapperContext.Map<ApplicationUser, UserAc>(teamLeader);
-                    projectTeamLeader.Role = _stringConstant.TeamLeader;
-                    projectUsers.Add(projectTeamLeader);
-                }
-
-                //Get details of employees for projects with that particular teamleader 
-                foreach (var project in projects)
-                {
-                    List<ProjectUser> projectUsersList = (await _projectUserRepository.FetchAsync(x => x.ProjectId == project.Id)).ToList();
-                    foreach (var projectUser in projectUsersList)
-                    {
-                        ApplicationUser user = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.Id.Equals(projectUser.UserId));
-                        if (user != null)
-                        {
-                            var Roles = (await _userManager.GetRolesAsync(user)).First();
-                            UserAc employee = _mapperContext.Map<ApplicationUser, UserAc>(user);
-                            employee.Role = Roles;
-                            //Checking if employee is already present in the list or not
-                            if (!projectUsers.Any(x => x.Id == employee.Id))
-                            {
-                                projectUsers.Add(employee);
-                            }
-                        }
-                    }
-                }
+                ApplicationUser user = await _applicationUserDataRepository.FirstAsync(x => x.Id.Equals(userId));
+                UserAc userAc = _mapperContext.Map<ApplicationUser, UserAc>(user);
+                userAc.Role = _stringConstant.Employee;
+                userAcList.Add(userAc);
             }
-            return projectUsers;
+            return userAcList;
         }
         #endregion
 
-
-
         #region Private Methods
 
-
         /// <summary>
-        /// Get slack user details of the given slack id from slack server 
+        /// This method is used to send email to the currently added user. -An
         /// </summary>
-        /// <param name="slackUserId"></param>
-        /// <returns></returns>
-        private async Task<SlackUserDetailAc> GetSlackUserById(string slackUserId)
+        /// <param name="firstName">Passed user first name</param>
+        /// <param name="email">Passed user email</param>
+        /// <param name="password">Passed password</param>
+        private void SendEmail(string firstName, string email, string password)
         {
-            _logger.LogInformation("User Repository - GetSlackUserByI. Url: " + _appSettingUtil.Value.PromactErpUrl);
-            var responseResult = await _httpClientRepository.GetAsync(_appSettingUtil.Value.PromactErpUrl, _stringConstant.SlackUserByIdUrl + slackUserId);
-            _logger.LogInformation("User Repository: GetSlackUserById. ReponseResult: " + responseResult);
-            // Transforming Json String to object type List of SlackUserDetailAc
-            var data = JsonConvert.DeserializeObject<SlackUserDetailAc>(responseResult);
-            return data;
+            string finaleTemplate = _emailUtil.GetEmailTemplateForUserDetail(firstName, email, password);
+            _emailSender.SendEmail(email, _stringConstant.LoginCredentials, finaleTemplate);
         }
 
-
         /// <summary>
-        /// Fetches the slack real name of the user of the given SlackUserId - JJ
+        /// Method is used to return a user after assigning a role and mapping from ApplicationUser class to UserAc class - GA
         /// </summary>
-        /// <param name="slackUsers"></param>
-        /// <param name="slackUserId"></param>
-        /// <returns></returns>
-        private string GetSlackName(List<SlackUserDetailAc> slackUsers, string slackUserId)
-        {
-            string slackName = string.Empty;
-            foreach (var user in slackUsers)
-            {
-                if (String.Compare(user.UserId, slackUserId, false) == 0)
-                {
-                    slackName = user.Name;
-                    break;
-                }
-            }
-            return slackName;
-        }
-
-
-        /// <summary>
-        /// Method is used to return a user after assigning a role and mapping from ApplicationUser class to UserAc class
-        /// </summary>
-        /// <param name="user"></param>
+        /// <param name="user">Details of application user</param>
         /// <returns>user</returns>
         private async Task<UserAc> GetUserAsync(ApplicationUser user)
         {
-            if (user != null)
+            //Gets a list of roles the specified user belongs to
+            string roles = (await _userManager.GetRolesAsync(user)).First();
+            UserAc newUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
+            //assign role
+            if (roles.Equals(_stringConstant.Admin))
             {
-                //Gets a list of roles the specified user belongs to
-                string roles = (await _userManager.GetRolesAsync(user)).First();
-                UserAc newUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
-                //assign role
-                if (String.Compare(roles, _stringConstant.Admin, true) == 0)
-                {
-                    newUser.Role = roles;
-                    return newUser;
-                }
-                if (String.Compare(roles, _stringConstant.Employee, true) == 0)
-                {
-                    Project project = await _projectDataRepository.FirstOrDefaultAsync(x => x.TeamLeaderId.Equals(user.Id));
-                    if (project != null)
-                    {
-                        newUser.Role = _stringConstant.TeamLeader;
-                        return newUser;
-                    }
-                    else
-                    {
-                        newUser.Role = _stringConstant.Employee;
-                        return newUser;
-                    }
-                }
+                newUser.Role = roles;
             }
-            throw new UserNotFound();
-        }
-
-
-        /// <summary>
-        /// This method is used to send email to the currently added user
-        /// </summary>
-        /// <param name="user">Object of newly registered User</param>
-        private bool SendEmail(ApplicationUser user, string password)
-        {
-            _logger.LogInformation("Start Fetch Email Template");
-            string path = _hostingEnvironment.ContentRootPath + _stringConstant.UserDetialTemplateFolderPath;
-            _logger.LogInformation("ContentRootPath Path:" + _hostingEnvironment.ContentRootPath);
-            _logger.LogInformation("Full Path:" + _hostingEnvironment.ContentRootPath + _stringConstant.UserDetialTemplateFolderPath);
-            string finaleTemplate = "";
-            if (System.IO.File.Exists(path))
+            else 
             {
-                _logger.LogInformation("Email Template Featch successfully");
-                finaleTemplate = System.IO.File.ReadAllText(path);
-                finaleTemplate = finaleTemplate.Replace(_stringConstant.UserEmail, user.Email).Replace(_stringConstant.UserPassword, password).Replace(_stringConstant.ResertPasswordUserName, user.FirstName);
-                _emailSender.SendEmail(user.Email, _stringConstant.LoginCredentials, finaleTemplate);
-                return true;
+                Project project = await _projectDataRepository.FirstOrDefaultAsync(x => x.TeamLeaderId.Equals(user.Id));
+                newUser.Role = (project != null) ? _stringConstant.TeamLeader : _stringConstant.Employee;
             }
-            return false;
+            return newUser;
         }
 
         /// <summary>
-        /// This method used for genrate random string with alphanumeric words and special characters. 
+        /// This method used for genrate random string with alphanumeric words and special characters. -An
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Random string</returns>
         private string GetRandomString()
         {
             Random random = new Random();
             //Initialize static Ato,atoz,0to9 and special characters seprated by '|'.
-            const string chars = "abcdefghijklmnopqrstuvwxyz|ABCDEFGHIJKLMNOPQRSTUVWXYZ|012345789|@#$%^!&*()";
-            StringBuilder sb = new StringBuilder();
+            string chars = _stringConstant.RandomString;
+            StringBuilder stringBuilder = new StringBuilder();
             for (int i = 0; i < 4; i++)
             {
                 //Get random 4 characters from diffrent portion and append on stringbuilder. 
-                sb.Append(new string(Enumerable.Repeat(chars.Split('|').ToArray()[i], 3).Select(s => s[random.Next(4)]).ToArray()));
+                stringBuilder.Append(new string(Enumerable.Repeat(chars.Split('|').ToArray()[i], 3).Select(s => s[random.Next(4)]).ToArray()));
             }
-            return sb.ToString();
+            return stringBuilder.ToString();
         }
 
-        #endregion       
+        /// <summary>
+        /// Calculate casual leave and sick leave from the date of joining - RS
+        /// </summary>
+        /// <param name="dateTime">passed joining date</param>
+        /// <returns>LeaveAllowed</returns>
+        private LeaveAllowed CalculateAllowedLeaves(DateTime dateTime)
+        {
+            double casualAllowed; 
+            double sickAllowed;
+            var month = dateTime.Month;
+            //if joining year are more then current year or difference of current year and joining year is 1 then calculate casual Allow and sick Allow
+            //other wise no need to be calculation directly set default value CasualLeave(14) and SickLeave(7).  
+            if (dateTime.Year >= DateTime.Now.Year || (DateTime.Now.Year-dateTime.Year)==1)
+            {
+                double casualAllow = _appSettingUtil.Value.CasualLeave;
+                double sickAllow = _appSettingUtil.Value.SickLeave;
+                //If an employee joins between 1st to 15th of month, then he/she will be eligible for that particular month's leaves 
+                //and if he/she joins after 15th of month, he/she will not be eligible for that month's leaves.
+
+                //In Our Project we consider Leave renewal on 1st april
+                if (month >= 4)
+                {
+                    //if first 15 days of month april to December then substact 4 other wise substact 3 in month
+                    //this setting for the employee eligible for that particular month's leaves or not
+                    if (dateTime.Day <= 15)
+                    {
+
+                        casualAllowed = (casualAllow / 12) * (12 - (month - 4));
+                        sickAllowed = (sickAllow / 12) * (12 - (month - 4));
+                    }
+                    else
+                    {
+                        casualAllowed = (casualAllow / 12) * (12 - (month - 3));
+                        sickAllowed = (sickAllow / 12) * (12 - (month - 3));
+                    }
+                }
+                else //calculate casual allowed and sick allowed for first three month.
+                {
+                    //if joining year are more then current year then calculate casual allowed and sick allowed   
+                    if (dateTime.Year >= DateTime.Now.Year)
+                    {
+                        //if first 15 days of month January to March then add 8 other wise add 9 in month
+                        //this setting for the employee eligible for that particular month's leaves or not
+                        if (dateTime.Day <= 15)
+                        {
+                            casualAllowed = (casualAllow / 12) * (12 - (month + 8));
+                            sickAllowed = (sickAllow / 12) * (12 - (month + 8));
+                        }
+                        else
+                        {
+                            casualAllowed = (casualAllow / 12) * (12 - (month + 9));
+                            sickAllowed = (sickAllow / 12) * (12 - (month + 9));
+                        }
+                    }
+                    else 
+                    {
+                        casualAllowed = casualAllow;
+                        sickAllowed = sickAllow;
+                    }
+                }
+                var tolerance = 0.0001;
+                if (Math.Abs(casualAllowed % 1) > tolerance) //check casualAllowed has decimal value
+                {
+                    double casualAlloweddecimal = casualAllowed - Math.Floor(casualAllowed);
+                    // If calculated casualAllowed decimal value is exact 0.5 then it's considered half day casual leave
+                    if (Math.Abs(casualAlloweddecimal - 0.5) > tolerance) { casualAllowed = Convert.ToInt32(casualAllowed); }
+                }
+                if (Math.Abs(sickAllowed % 1) > tolerance)//check sickAllowed has decmial value
+                {
+                    double sickAlloweddecimal = sickAllowed - Math.Floor(sickAllowed);
+                    // If calculated sickAllowed decimal value is exact 0.5 then it's considered half day sick leave 
+                    // If calculated sickAllowed decimal value is more than  0.90 then add one leave in sick leave 
+                    if (sickAlloweddecimal > 0.90) { sickAllowed = Convert.ToInt32(Math.Ceiling(sickAllowed)); }
+                    else if(Math.Abs(sickAlloweddecimal - 0.5) > tolerance) { sickAllowed = Convert.ToInt32(Math.Floor(sickAllowed)); }
+                }
+            }
+            else 
+            {
+                casualAllowed = _appSettingUtil.Value.CasualLeave;
+                sickAllowed = _appSettingUtil.Value.SickLeave;
+            }
+            LeaveAllowed leaveAllowed = new LeaveAllowed
+            {
+                CasualLeave = casualAllowed,
+                SickLeave = sickAllowed
+            };
+            return leaveAllowed;
+        }
+
+
+
+        #endregion
+
+
     }
 }

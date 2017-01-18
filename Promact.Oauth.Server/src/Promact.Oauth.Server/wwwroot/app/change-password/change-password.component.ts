@@ -1,7 +1,6 @@
 ﻿import { Component, Input } from '@angular/core';
 import { UserService } from '../users/user.service';
 import { PasswordModel } from '../users/user-password.model';
-import { FormBuilder, Validators } from '@angular/forms';
 import { Router} from '@angular/router';
 import { Md2Toast } from 'md2';
 import { Location } from "@angular/common";
@@ -13,7 +12,6 @@ import { LoaderService } from '../shared/loader.service';
 
 export class ChangePasswordComponent {
     isNotMatch: boolean;
-    isSame: boolean;
     isInCorrect: boolean;
 
     @Input()
@@ -24,7 +22,6 @@ export class ChangePasswordComponent {
         this.isNotMatch = false;
         this.isInCorrect = true;
     }
-
 
     checkOldPasswordIsValid() {
         this.isInCorrect = true;
@@ -38,17 +35,16 @@ export class ChangePasswordComponent {
 
     }
     
-
     changePassword(passwordModel) {
         if (!this.isNotMatch) {
             this.loader.loader = true;
             this.userService.changePassword(passwordModel).subscribe((result) => {
-                if (result.response === this.passwordModel.NewPassword) {
+                if (result.errorMessage === null) {
                     this.toast.show('Password changed successfully');
                     this.redirectionRoute.navigate(['']);
                 }
                 else {
-                    this.toast.show(result.response);
+                    this.toast.show(result.errorMessage);
                 }
                 this.loader.loader = false;
             }, err => {

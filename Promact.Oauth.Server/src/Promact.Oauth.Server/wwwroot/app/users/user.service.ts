@@ -7,18 +7,18 @@ import { PasswordModel } from './user-password.model';
 
 @Injectable()
 export class UserService {
-    private UserUrl = 'api/user';
+    private UserUrl = 'api/users';
 
     constructor(private httpService: HttpService<UserModel>, private httpServiceForPassword: HttpService<PasswordModel>) { }
 
     getUsers() {
-        return this.httpService.get(this.UserUrl + "/users");
+        return this.httpService.get(this.UserUrl);
     }
 
     registerUser(newUser: UserModel) {
         newUser.IsActive = true;
         newUser.Email = newUser.Email + "@promactinfo.com";
-        return this.httpService.post(this.UserUrl + "/add", newUser);
+        return this.httpService.post(this.UserUrl, newUser);
     }
 
     getUserById(userId: string) {
@@ -26,32 +26,28 @@ export class UserService {
     }
 
     editUser(editedUser: UserModel) {
-        return this.httpService.put(this.UserUrl + "/edit", editedUser);
+        return this.httpService.put(this.UserUrl + "/" + editedUser.Id , editedUser);
     }
 
     changePassword(newPassword: PasswordModel) {
-        return this.httpServiceForPassword.post(this.UserUrl + "/changePassword", newPassword);
-    }
-
-    findUserByUserName(userName: string) {
-        return this.httpService.get(this.UserUrl + "/findbyusername/" + userName);
+        return this.httpServiceForPassword.post(this.UserUrl + "/password", newPassword);
     }
 
     checkEmailIsExists(email: string) {
-        return this.httpService.get(this.UserUrl + "/checkEmailIsExists/" + email);
+        return this.httpService.get(this.UserUrl + "/available/email/" + email);
     }
     checkUserIsExistsBySlackUserName(slackUserName: string) {
-        return this.httpService.get(this.UserUrl + "/checkUserIsExistsBySlackUserName/" + slackUserName);
+        return this.httpService.get(this.UserUrl + "/available/" + slackUserName);
     }
     getRoles() {
-        return this.httpService.get(this.UserUrl + "/getRole");
+        return this.httpService.get(this.UserUrl + "/roles");
     }
 
     reSendMail(id: string) {
-        return this.httpService.get(this.UserUrl + "/reSendMail" + "/" + id);
+        return this.httpService.get(this.UserUrl + "/email/" + id +"/send");
     }
-    checkOldPasswordIsValid(oldPassword: string) {
-        return this.httpService.get(this.UserUrl + "/checkOldPasswordIsValid/" + oldPassword);
+    checkOldPasswordIsValid(password: string) {
+        return this.httpService.get(this.UserUrl + "/" + password +"/available");
     }
 
    
