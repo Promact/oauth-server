@@ -52,7 +52,7 @@ COPY ./Promact.Oauth.Server/src/Promact.Oauth.Server/project.json .
 
 COPY ./Promact.Oauth.Server/src/Promact.Oauth.Server/package.json .
 COPY ./Promact.Oauth.Server/src/Promact.Oauth.Server/typings.json .
-RUN npm install --production
+RUN npm install
 
 COPY ./Promact.Oauth.Server/src/Promact.Oauth.Server/bower.json .
 COPY ./Promact.Oauth.Server/src/Promact.Oauth.Server/.bowerrc .
