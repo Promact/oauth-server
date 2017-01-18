@@ -27,10 +27,6 @@ notifications:
     on_failure: always
 after_success:
 - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
-- if [ "$TRAVIS_BRANCH" == "dev" ]; then
-  docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-  docker push promact/promact-oauth-server;
-  fi
 script:
 - dotnet build ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests -c Release
 - dotnet test ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests/project.json -c Release 
