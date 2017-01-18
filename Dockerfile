@@ -1,12 +1,17 @@
 FROM microsoft/dotnet:latest
-RUN cd /tmp && wget http://security.debian.org/debian-security/pool/updates/main/a/apt/apt-transport-https_1.0.9.8.4_amd64.deb && dpkg -i apt-transport-https_1.0.9.8.4_amd64.deb && rm *.deb
+MAINTAINER Promact Infotech<info@promactinfo.com>
+# Install required packages
+RUN apt-get update -q \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends \
+      ca-certificates \           
+      apt-transport-https \
+	  git \
+	  curl \
+	  wget \
+	  bzip2 \
+	  jq
 
 ENV HOME /root
-
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-
-RUN apt-get update 
-RUN apt-get install -y  git curl wget bzip2 jq
 
 # install npm
 RUN groupadd --gid 1000 node \
@@ -59,7 +64,7 @@ COPY ./Promact.Oauth.Server/src/Promact.Oauth.Server ./
 # copy and build everything else
 RUN gulp copytowwwroot && mkdir /out
 RUN dotnet restore
-RUN dotnet publish project.json -c Release -o /out && cp appsettings.development.example.json /out/appsettings.production.json && ls / && ls /out
+RUN dotnet publish project.json -c Release -o /out && cp appsettings.development.example.json /out/appsettings.production.json && rm -rf /app 
 ENV ASPNETCORE_ENVIRONMENT Production
 COPY entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/entrypoint.sh
