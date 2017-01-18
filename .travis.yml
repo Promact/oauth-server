@@ -26,10 +26,10 @@ notifications:
     on_success: change
     on_failure: always
 after_success:
-- cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+- cat codecov.yml | curl --data-binary @- https://codecov.io/validate
 script:
 - dotnet build ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests -c Release
 - dotnet test ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests/project.json -c Release 
 - cd ./Promact.Oauth.Server/src/Promact.Oauth.Server && npm install && npm run tslint && npm run test --cover  
 env:  
-  - secure: 0AgYDqM3Rvtq/nXTtmGAb+j41lNK1hLU/t4ZSWos7da4L3UKBgaGGOgzrjJPyB4/4rmglAp8m/AlzZJAunUQ9yfEt8Di/F2i/D6WFEP+r9I=
+- secret:maAaOvUx0qe+WFLercSKsNo206YAlqZP7FGxYK4l6iJjFgsB/pkOuFmAmVlfO+aRYGi9sXgmSHd41rgmNniPujP4GUkcMQDBb8iWHmptk8c=
