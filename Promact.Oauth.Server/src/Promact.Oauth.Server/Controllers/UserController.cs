@@ -32,7 +32,7 @@ namespace Promact.Oauth.Server.Controllers
 
         #endregion
 
-        #region public Methods
+        #region "Public Methods"
 
         /**
         * @api {get} api/users 
