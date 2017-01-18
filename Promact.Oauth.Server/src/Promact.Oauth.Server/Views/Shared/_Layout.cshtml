@@ -4,34 +4,25 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Promact.Oauth.Server</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+    <script src="~/js/site.js" asp-append-version="true"></script>
     <link href="~/css/app-seagreen.css" rel="stylesheet" />
-</head>
-<body>
-
-    <div class="body-content">
-        @RenderBody()
- 
-    </div>
-
-    <environment names="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-    </environment>
-    <environment names="Staging,Production">
+    <environment names="Production">
+        <!-- 1. Jquery.min.js-->
         <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
                 asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
                 asp-fallback-test="window.jQuery">
         </script>
-        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/bootstrap.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
-        </script>
-        <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
 
+    <environment names="Development">
+        <!-- 1. Jquery.min.js-->
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+    </environment>
+</head>
+<body>
+    <div class="body-content">
+        @RenderBody()
+    </div>
     @RenderSection("scripts", required: false)
 </body>
 </html>
