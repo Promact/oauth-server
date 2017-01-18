@@ -1,6 +1,7 @@
 {
-  "name": "PromactOauthServer",
+  "name": "promact-oauth-server",
   "version": "1.0.0",
+  "repository": "https://github.com/Promact/promact-oauth-server.git",
   "scripts": {
     "build": "tsc -p wwwroot",
     "pretest": "npm run build",
