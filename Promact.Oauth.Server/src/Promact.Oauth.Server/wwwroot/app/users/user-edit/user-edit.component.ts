@@ -1,8 +1,6 @@
-﻿import {Component , OnInit} from "@angular/core";
-import {Router, ActivatedRoute } from "@angular/router";
-import {Location} from "@angular/common";
-import { LoginService } from '../../login.service';
-import { UserService }   from '../user.service';
+﻿import { Component, OnInit } from "@angular/core";
+import { Router, ActivatedRoute } from "@angular/router";
+import { UserService } from '../user.service';
 import { UserModel } from '../user.model';
 import { UserRoleModel } from '../userrole.model';
 import { Md2Toast } from 'md2';
@@ -16,12 +14,10 @@ import { UserRole } from "../../shared/userrole.model";
 
 export class UserEditComponent implements OnInit {
     user: UserModel;
-    errorMessage: string;
-    isSlackUserNameExist: boolean;
     listOfRoles: Array<UserRoleModel>;
     admin: boolean;
 
-    constructor(private userService: UserService, private route: ActivatedRoute, private redirectionRoute: Router, private toast: Md2Toast, private loginService: LoginService, private loader: LoaderService, private userRole: UserRole) {
+    constructor(private userService: UserService, private route: ActivatedRoute, private redirectionRoute: Router, private toast: Md2Toast, private loader: LoaderService, private userRole: UserRole) {
         this.user = new UserModel();
         this.listOfRoles = new Array<UserRoleModel>();
     }
@@ -39,10 +35,9 @@ export class UserEditComponent implements OnInit {
             this.userService.getUserById(id)
                 .subscribe(
                 user => this.user = user,
-                error => { console.log(error.statusText);});
+                error => { console.log(error.statusText); });
         });
     }
-
 
     getRoles() {
         this.userService.getRoles().subscribe((result) => {
@@ -51,37 +46,27 @@ export class UserEditComponent implements OnInit {
                     this.listOfRoles.push(result[i]);
                 }
             }
-        }, err => {
-            console.log(err.statusText);
-
         });
     }
-
 
     editUser(user: UserModel) {
         this.loader.loader = true;
         user.FirstName = user.FirstName.trim();
         this.userService.editUser(user).subscribe((result) => {
-            if (result === true) {
-                this.toast.show('User updated successfully.');
-                this.redirectionRoute.navigate(['']);
-            }
-            else if (result === false) {
+            this.toast.show('User updated successfully.');
+            this.redirectionRoute.navigate(['']);
+            this.loader.loader = false;
+        }, err => {
+            if (err.status === 404) {//Not Found 
                 this.toast.show('User Name or Slack User Name already exists.');
             }
             this.loader.loader = false;
-
-        }, err => {
-            console.log(err.statusText);
-            this.toast.show('User detail could not be edited successfully.');
-            this.loader.loader = false;
         });
-
     }
-     goBack() {
+
+    goBack() {
         this.redirectionRoute.navigate(['']);
     }
-
 
 }
 

@@ -17,8 +17,8 @@
         string CallbackUrl { get; }
         string CreatedBy { get; }
         string UpdateBy { get; }
-        string ATOZ0TO9 { get; }
-        string ATOZaTOz0TO9 { get; }
+        string CapitalAlphaNumericString { get; }
+        string AlphaNumericString { get; }
         string EmailNotExists { get; }
         string ForgotPassword { get; }
         string LoginCredentials { get; }
@@ -37,10 +37,7 @@
         string OAuthExternalLoginUrl { get; }
         string Message { get; }
         string UserEmail { get; }
-
         string UserPassword { get; }
-        string DefaultUserPassword { get; }
-
         string Name { get; }
         string EditName { get; }
         string SlackChannelName { get; }
@@ -64,17 +61,12 @@
         string SlackUserName { get; }
         string EmailUser { get; }
         string NewPassword { get; }
-        string ConfirmPassword { get; }
-        string UpadteFirstName { get; }
-
-        string UpdateSlackUserName { get; }
-
+        string ConfirmPassword { get; }  
         string Employee { get; }
         string Admin { get; }
         string TeamLeader { get; }
         string NormalizedName { get; }
         string NormalizedSecond { get; }
-
         string AccessToken { get; }
         string ClientIdForTest { get; }
         string CallBackUrl { get; }
@@ -84,16 +76,13 @@
         string RawEmailIdForTest { get; }
         string RawFirstNameForTest { get; }
         string RawLastNameForTest { get; }
-        string RoleEmployee { get; }
-        string RoleAdmin { get; }
-        string RoleTeamLeader { get; }
         string OldPassword { get; }
         string Url { get; }
         string Format { get; }
         string DateFormate { get; }
         string TeamLeaderNotAssign { get; }
         string DomainAddress { get; }
-        string UserSlackId { get; }
+        string SlackUserId { get; }
         string GetAppDetailsFromClientAsyncResponse { get; }
         string ReturnUrl { get; }
         string PromactAppNotSet { get; }
@@ -103,5 +92,11 @@
         string OAuthAfterLoginResponse { get; }
         string SetSmtpUnSecure { get; }
         string SetSmtpSSL { get; }
+        string UserIdForTest { get; }
+        string UserNameForTest { get; }
+        string EmailForTest { get; }
+        string SlackUserNameForTest { get; }
+        string RandomString { get; }
+        string PromactErpUrlForTest { get; }
     }
 }

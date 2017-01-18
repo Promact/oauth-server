@@ -9,162 +9,159 @@ namespace Promact.Oauth.Server.Repository
     public interface IUserRepository
     {
         /// <summary>
-        /// This method is used for adding user and return its id
+        /// This method is used to add new user
         /// </summary>
-        /// <param name="applicationUser">UserAc Application class object</param>
-        Task<string> AddUser(UserAc newUser, string createdBy);
+        /// <param name="newUser">Passed userAC object</param>
+        /// <param name="createdBy">Passed id of user who has created this user.</param>
+        /// <returns>Added user id</returns>
+        Task<string> AddUserAsync(UserAc newUser, string createdBy);
 
 
         /// <summary>
         /// This method used for get user detail by user id 
         /// </summary>
-        /// <param name="id">string id</param>
-        /// <returns>UserAc Application class object</returns>
-        Task<UserAc> GetById(string id);
+        /// <param name="id">Passed user id</param>
+        /// <returns>UserAc application class object</returns>
+        Task<UserAc> GetByIdAsync(string id);
 
 
         /// <summary>
-        /// This method used for update user and return its id
+        /// This method is used to edit the details of an existing user
         /// </summary>
-        /// <param name="editedUser">UserAc Application class object</param>
-        Task<string> UpdateUserDetails(UserAc editedUser, string updatedBy);
+        /// <param name="editedUser">Passed UserAc object</param>
+        /// <param name="updatedBy">Passed id of user who has updated this user.</param>
+        /// <returns>Updated user id.</returns>
+        Task<string> UpdateUserDetailsAsync(UserAc editedUser, string updatedBy);
 
 
         /// <summary>
-        /// This method used forget list of users
+        /// This method is used for fetching the list of all users
         /// </summary>
         /// <returns>List of all users</returns>
-        IEnumerable<UserAc> GetAllUsers();
+        Task<IEnumerable<UserAc>> GetAllUsersAsync();
+
 
         /// <summary>
         /// This method  get the list of Employees
         /// </summary>
         /// <returns>List of all Employees</returns>
-        Task<List<UserAc>> GetAllEmployees();
-        /// <summary>
-        /// This method used for get role list. 
-        /// </summary>
-        /// <returns></returns>
-        List<RolesAc> GetRoles();
+        Task<IEnumerable<UserAc>> GetAllEmployeesAsync();
 
 
         /// <summary>
-        /// This method is used for changing the password of an user
+        ///This method is used to get all role. -An
         /// </summary>
-        /// <param name="passwordModel">ChangePasswordViewModel type object</param>
-        Task<string> ChangePassword(ChangePasswordViewModel passwordModel);
+        /// <returns>List of user roles</returns>
+        Task<List<RolesAc>> GetRolesAsync();
 
 
         /// <summary>
-        /// This method finds if a user already exists with the specified UserName
+        /// This method is used to change the password of a particular user. -An
         /// </summary>
-        /// <param name="userName">string userName</param>
-        /// <returns> boolean: true if the user name exists, false if does not exist</returns>
-        Task<bool> FindByUserName(string userName);
-
+        /// <param name="passwordModel">Passed changePasswordViewModel object(OldPassword,NewPassword,ConfirmPassword,Email)</param>
+        /// <returns>If password is changed successfully, return empty otherwise error message.</returns>
+        Task<ChangePasswordErrorModel> ChangePasswordAsync(ChangePasswordViewModel passwordModel);
 
         /// <summary>
-        /// This method finds if a user already exists with the specified Email
+        /// This method is used to check email is already exists in database.
         /// </summary>
-        /// <param name="email"></param>
+        /// <param name="email">Passed user email address</param>
         /// <returns> boolean: true if the email exists, false if does not exist</returns>
-        Task<bool> CheckEmailIsExists(string email);
+        Task<bool> CheckEmailIsExistsAsync(string email);
 
 
         /// <summary>
-        /// Fetches user with the given Slack User Name
+        /// Fetch user with given slack user name
         /// </summary>
-        /// <param name="slackUserName"></param>
-        /// <returns></returns>
-        ApplicationUser FindUserBySlackUserName(string slackUserName);
+        /// <param name="slackUserName">Passed slack user name</param>
+        /// <returns>If user is exists return user otherwise throw SlackUserNotFound exception.</returns>
+        Task<ApplicationUser> FindUserBySlackUserNameAsync(string slackUserName);
+
 
         /// <summary>
-        /// This method is used to send email to the currently added user
-        /// </summary>
-        /// <param name="user">Object of newly registered User</param>
-        //void SendEmail(ApplicationUser user);
-
-        /// <summary>
-        /// Method is used to Get User details by slack user id
+        /// Method is used to Get User details by slack user id - SD
         /// </summary>
         /// <param name="userSlackId"></param>
         /// <returns></returns>
         ApplicationUser UserDetialByUserSlackId(string userSlackId);
 
+
         /// <summary>
-        /// Method is used to get team leader's list
+        /// Method is used to get team leader's list - SD
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        Task<List<ApplicationUser>> TeamLeaderByUserSlackId(string userSlackName);
+        Task<List<ApplicationUser>> TeamLeaderByUserSlackIdAsync(string userSlackId);
+
 
         /// <summary>
-        /// Method to get list of management people
+        /// Method to get list of management people - SD
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        Task<List<ApplicationUser>> ManagementDetails();
+        Task<List<ApplicationUser>> ManagementDetailsAsync();
+
 
         /// <summary>
-        /// Used to fetch the userdetail by given UserName 
+        /// This method is used to Get User details by Id - GA
         /// </summary>
-        /// <param name="UserName"></param>
-        /// <returns>object of UserAc</returns>
-        Task<UserAc> GetUserDetail(string UserName);
-
-        /// <summary>
-        /// This method is used to Get User details by Id
-        /// </summary>
-        /// <param name="userId"></param>
+        /// <param name="userId">Id of the user</param>
         /// <returns>details of user</returns>
         Task<UserAc> UserDetailByIdAsync(string userId);
 
+
         /// <summary>
-        /// Method to get the number of casual leave allowed to a user by slackUserId
+        /// Method to get the number of casual leave allowed to a user by slackUserId - SD
         /// </summary>
         /// <param name="slackUserId"></param>
         /// <returns>number of casual leave</returns>
         LeaveAllowed GetUserAllowedLeaveBySlackId(string slackUserId);
 
+
         /// <summary>
-        /// Method to check whether user is admin or not
+        /// Method to check whether user is admin or not - SD
         /// </summary>
         /// <param name="slackUserId"></param>
         /// <returns>true or false</returns>
-        Task<bool> IsAdmin(string slackUserId);
+        Task<bool> IsAdminAsync(string slackUserId);
+
 
         /// <summary>
-        /// This method used for re -send mail for user credentails
+        /// This method used for re -send mail for user credentails -An
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">Passed user id.</param>
         /// <returns></returns>
-        Task<bool> ReSendMail(string id);
+        Task ReSendMailAsync(string id);
+
 
         /// <summary>
-        /// Method to get User Role
+        /// Method to return user/users infromation. - RS
         /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
+        /// <param name="userId">passed user id</param>
+        /// <returns>users/user information</returns>
         Task<List<UserRoleAc>> GetUserRoleAsync(string userId);
 
+
         /// <summary>
-        /// Method to get list of TeamMember By TeamLeaderId
+        /// Method to return list of teamMembers. - RS
         /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
+        /// <param name="userId">Passed user id</param>
+        /// <returns>teamMembers information</returns>
         Task<List<UserRoleAc>> GetTeamMembersAsync(string userId);
+
 
         /// <summary>
         /// This method is used to fetch list of users/employees of the given group name. - JJ
         /// </summary>
-        /// <param name="GroupName"></param>
+        /// <param name="slackChannelName">Passed slack channel name</param>
         /// <returns>object of UserAc</returns>
-        Task<List<UserAc>> GetProjectUserByGroupNameAsync(string GroupName);
+        Task<List<UserAc>> GetProjectUserBySlackChannelNameAsync(string slackChannelName);
+
 
         /// <summary>
-        /// The method is used to get list of projects along with its users for a specific teamleader 
+        /// The method is used to get list of projects along with its users for a specific teamleader - GA
         /// </summary>
-        /// <param name="teamLeaderId"></param>
+        /// <param name="teamLeaderId">Id of the teamleader</param>
         /// <returns>list of projects with users for a specific teamleader</returns>
         Task<List<UserAc>> GetProjectUsersByTeamLeaderIdAsync(string teamLeaderId);
 

@@ -21,6 +21,7 @@ using AutoMapper;
 using Exceptionless;
 using NLog.Extensions.Logging;
 using Promact.Oauth.Server.Constants;
+using Promact.Oauth.Server.Utility;
 
 namespace Promact.Oauth.Server
 {
@@ -88,7 +89,7 @@ namespace Promact.Oauth.Server
             services.AddScoped<HttpClient>();
 
             services.AddScoped<IHttpClientService, HttpClientService>();
-
+            services.AddScoped<IEmailUtil, EmailUtil>();
 
             services.AddMvc();
             services.AddScoped<CustomAttribute>();
@@ -99,7 +100,7 @@ namespace Promact.Oauth.Server
                 services.AddTransient<IEmailSender, AuthMessageSender>();
             else if (_currentEnvironment.IsProduction())
                 services.AddTransient<IEmailSender, SendGridEmailSender>();
-            services.AddTransient<ISmsSender, AuthMessageSender>();
+            
 
             services.AddOptions();
 
@@ -161,15 +162,8 @@ namespace Promact.Oauth.Server
                     template: "LogOff",
                     defaults: new { controller = "Account", action = "LogOff" });
 
-                //routes.MapRoute(
-                //        name: "default",
-                //         template: "{*.}",
-                //     defaults: new { controller = "Home", action = "Index" }
-                //     );
-
                 routes.MapRoute(
                     name: "default",
-                    //template: "{controller=Account}/{action=Login}");
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
         }

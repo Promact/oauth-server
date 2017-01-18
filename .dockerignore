@@ -1,0 +1,6 @@
+.dotnet
+.vscode
+bin
+obj
+node_modules
+typings

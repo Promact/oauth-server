@@ -122,12 +122,12 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
             var random = new Random();
             if (isAuthId)
             {
-                return new string(Enumerable.Repeat(_stringConstant.ATOZ0TO9, 15)
+                return new string(Enumerable.Repeat(_stringConstant.CapitalAlphaNumericString, 15)
                   .Select(s => s[random.Next(s.Length)]).ToArray());
             }
             else
             {
-                return new string(Enumerable.Repeat(_stringConstant.ATOZaTOz0TO9, 30)
+                return new string(Enumerable.Repeat(_stringConstant.AlphaNumericString, 30)
                   .Select(s => s[random.Next(s.Length)]).ToArray());
             }
 

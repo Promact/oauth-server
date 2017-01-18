@@ -8,23 +8,14 @@ import { UserModule } from '../user.module';
 import { Router, ActivatedRoute, RouterModule, Routes } from '@angular/router';
 import { Md2Toast } from 'md2';
 import { MockToast } from "../../shared/mocks/mock.toast";
-import { Md2Multiselect } from 'md2/multiselect';
 import { MockUserService } from "../../shared/mocks/user/mock.user.service";
 import { MockRouter } from '../../shared/mocks/mock.router';
-import { Observable } from 'rxjs/Observable';
-import { RouterLinkStubDirective } from '../../shared/mocks/mock.routerLink';
 import { LoaderService } from '../../shared/loader.service';
-import { LoginService } from '../../login.service';
-import { MockLoginService } from "../../shared/mocks/mock.login.service";
 import { ActivatedRouteStub } from "../../shared/mocks/mock.activatedroute";
 import { UserRole } from "../../shared/userrole.model";
 
 describe("User Edit Test", () => {
     let userService: UserService;
-    class MockLocation { }
-    class MockLoaderService { }
-    class McokLogin { }
-    class MockUserRole { }
     const routes: Routes = [];
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -36,16 +27,12 @@ describe("User Edit Test", () => {
                 { provide: Router, useClass: MockRouter },
                 { provide: Md2Toast, useClass: MockToast },
                 { provide: UserModel, useClass: UserModel },
-                { provide: LoaderService, useClass: MockLoaderService },
-                { provide: LoginService, useClass: MockLoginService },
-                { provide: Location, useClass: MockLocation },
-                { provide: UserRole, useClass: MockUserRole }
+                { provide: LoaderService, useClass: LoaderService },
+                { provide: UserRole, useClass: UserRole }
             ]
         }).compileComponents();
 
     }));
-
-
 
     it("should get particular user details", () => {
         let fixture = TestBed.createComponent(UserEditComponent); //Create instance of component     
@@ -68,4 +55,11 @@ describe("User Edit Test", () => {
         expect(userModel.FirstName).toBe(expectedFirstName);
     });
 
+    it("should check total role", () => {
+        let fixture = TestBed.createComponent(UserEditComponent); //Create instance of component            
+        let userEditComponent = fixture.componentInstance;
+        userEditComponent.getRoles();
+        expect(userEditComponent.listOfRoles.length).toBe(1);
+    });
+  
 });

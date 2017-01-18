@@ -41,10 +41,7 @@
     "whitespace": [
       false
     ],
-    "no-any": [
-      true
-    ],
-
+    "no-any": false,
     "directive-selector-name": [ true, "camelCase" ],
     "component-selector-name": [ true, "kebab-case" ],
     "directive-selector-type": [ true, "attribute" ],
