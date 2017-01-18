@@ -263,5 +263,7 @@ paket-files/
 *.min.css
 bundle.js
 **/coverage/
-/Promact.Oauth.Server/src/Promact.Oauth.Server/Properties/PublishProfiles
+
+/Promact.Oauth.Server/src/Promact.Oauth.Server/Controllers/doc
 /Promact.Oauth.Server/src/Promact.Oauth.Server/appsettings.development.json
+/Promact.Oauth.Server/src/Promact.Oauth.Server/Properties/PublishProfiles
