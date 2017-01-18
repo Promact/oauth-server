@@ -20,8 +20,7 @@ namespace Promact.Oauth.Server.Tests
         private readonly IDataRepository<ProjectUser> _dataRepositoryProjectUser;
         private readonly IUserRepository _userRepository;
         private readonly IStringConstant _stringConstant;
-        private readonly IUserRepository _userRepository;
-
+        
         public ProjectTests() : base()
         {
             _projectRepository = serviceProvider.GetService<IProjectRepository>();
@@ -29,7 +28,6 @@ namespace Promact.Oauth.Server.Tests
             _dataRepositoryProjectUser = serviceProvider.GetService<IDataRepository<ProjectUser>>();
             _userRepository = serviceProvider.GetService<IUserRepository>();
             _stringConstant = serviceProvider.GetService<IStringConstant>();
-            _userRepository = serviceProvider.GetService<IUserRepository>();
         }
       
         #region Test Case
@@ -49,7 +47,7 @@ namespace Promact.Oauth.Server.Tests
         /// This test case for the add user and project in userproject table
         /// </summary>
         [Fact, Trait("Category", "Required")]
-        public void AddUserProject()
+        public async Task AddUserProject()
         {
             await GetProjectUserMockData();
             var ProjectUser = _dataRepositoryProjectUser.Fetch(x => x.ProjectId == 1);
@@ -152,7 +150,7 @@ namespace Promact.Oauth.Server.Tests
         public async Task CheckDuplicatePositive()
         {
             List<UserAc> userlist = GetUserListMockData();
-            var id = await GetProjectMockData();
+            await GetProjectMockData();
             ProjectAc projectacSecound = new ProjectAc()
             {
                 Id = 4,
@@ -165,7 +163,6 @@ namespace Promact.Oauth.Server.Tests
                 CreatedDate = DateTime.Now.ToString(CultureInfo.InvariantCulture),
                 ApplicationUsers = userlist
             };
-            await _projectRepository.AddProjectAsync(projectacSecound, _stringConstant.CreatedBy);
             var project =await _projectRepository.CheckDuplicateProjectAsync(projectacSecound);
             Assert.Null(project.SlackChannelName);
         }
@@ -187,17 +184,17 @@ namespace Promact.Oauth.Server.Tests
                 JoiningDate = DateTime.UtcNow,
                 RoleName = _stringConstant.Employee
             };
-            var id = await _userRepository.AddUser(_testUser, _stringConstant.RawFirstNameForTest);
-           
-            ProjectAc projectac = new ProjectAc();
+            var id = await _userRepository.AddUserAsync(_testUser, _stringConstant.RawFirstNameForTest);
+
+            ProjectAc projectac=new ProjectAc();
             projectac.Name = _stringConstant.Name;
             projectac.SlackChannelName = _stringConstant.SlackChannelName;
             projectac.IsActive = _stringConstant.IsActive;
             projectac.TeamLeader = new UserAc { FirstName = _stringConstant.FirstName };
             projectac.TeamLeaderId = id;
             projectac.CreatedBy = id;
-            await _projectRepository.AddProjectAsync(projectac, id);
-            await GetProjectUserMockData();
+            var projectId=await _projectRepository.AddProjectAsync(projectac, id);
+            
             IEnumerable<ProjectAc> projects =await _projectRepository.GetAllProjectsAsync();
             Assert.NotNull(projects);
         }
