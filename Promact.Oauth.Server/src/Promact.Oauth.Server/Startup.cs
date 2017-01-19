@@ -123,7 +123,7 @@ namespace Promact.Oauth.Server
             //add NLog to ASP.NET Core
             loggerFactory.AddNLog();
             //needed for non-NETSTANDARD platforms: configure nlog.config in your project root
-            loggerFactory.ConfigureNLog("nlog.conf");            
+            loggerFactory.ConfigureNLog("nlog.config");            
 
             //Call the Seed method in (Seed.EnsureSeedData) to create initial Admin
             seeder.Seed(serviceProvider);
