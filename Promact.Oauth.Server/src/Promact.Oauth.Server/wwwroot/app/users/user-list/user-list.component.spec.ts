@@ -31,10 +31,7 @@ describe("User List Test", () => {
                 { provide: UserService, useClass: MockUserService },
                 { provide: Router, useClass: MockRouter },
                 { provide: Md2Toast, useClass: MockToast },
-                { provide: LoaderService, useClass: LoaderService },
-                { provide: StringConstant, useClass: StringConstant }
-
-            ]
+                { provide: LoaderService, useClass: LoaderService }]
         }).compileComponents();
     }));
 

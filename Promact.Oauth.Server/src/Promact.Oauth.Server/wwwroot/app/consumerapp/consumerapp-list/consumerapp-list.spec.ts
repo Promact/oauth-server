@@ -9,7 +9,6 @@ import { MockConsumerappService } from "../../shared/mocks/consumerapp/mock.cons
 import { ConsumerAppModule } from '../consumerapp.module';
 import { LoaderService } from '../../shared/loader.service';
 import { Md2Toast } from 'md2';
-import { StringConstant } from '../../shared/stringconstant';
 
 describe('Consumer List Test', () => {
     
@@ -25,9 +24,7 @@ describe('Consumer List Test', () => {
                 { provide: ConsumerAppService, useClass: MockConsumerappService },
                 { provide: Md2Toast, useClass: MockToast },
                 { provide: ConsumerAppModel, useClass: ConsumerAppModel },
-                { provide: LoaderService, useClass: LoaderService },
-                { provide: StringConstant, useClass: StringConstant }
-            ]
+                { provide: LoaderService, useClass: LoaderService }]
         }).compileComponents();
     }));
 

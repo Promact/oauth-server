@@ -44,9 +44,7 @@ describe('Project Add Test', () => {
                 { provide: Md2Toast, useClass: MockToast },
                 { provide: UserModel, useClass: UserModel },
                 { provide: ProjectModel, useClass: ProjectModel },
-                { provide: LoaderService, useClass: LoaderService },
-                { provide: StringConstant, useClass: StringConstant }
-            ]
+                { provide: LoaderService, useClass: LoaderService }]
         }).compileComponents();
 
     }));

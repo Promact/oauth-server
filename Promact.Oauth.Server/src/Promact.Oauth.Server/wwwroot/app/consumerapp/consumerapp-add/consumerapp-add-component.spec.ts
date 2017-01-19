@@ -26,9 +26,7 @@ describe('Consumer Add Test', () => {
                 { provide: ConsumerAppService, useClass: MockConsumerappService },
                 { provide: Md2Toast, useClass: MockToast },
                 { provide: ConsumerAppModel, useClass: ConsumerAppModel },
-                { provide: LoaderService, useClass: LoaderService },
-                { provide: StringConstant, useClass: StringConstant }
-            ]
+                { provide: LoaderService, useClass: LoaderService }]
         }).compileComponents();
     }));
 

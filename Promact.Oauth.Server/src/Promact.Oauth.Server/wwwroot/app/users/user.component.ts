@@ -20,11 +20,11 @@ export class UserComponent implements OnInit {
     ngOnInit() {
 
         if (this.userRole.Role === this.stringconstant.admin) {
-            this.router.navigate([this.stringconstant.userList]);
+            this.router.navigate(['/project/list']);
             this.admin = true;
         }
         else {
-            this.router.navigate([this.stringconstant.userDetail + this.userRole.Id]);
+            this.router.navigate(['/user/details/' + this.userRole.Id]);
             this.admin = false;
         }
     }

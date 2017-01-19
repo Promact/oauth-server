@@ -19,7 +19,7 @@ export class UserAddComponent implements OnInit {
     @Input()
     userModel: UserModel;
     listOfRoles: Array<UserRoleModel>;
-    constructor(private userService: UserService, private redirectionRoute: Router, private route: ActivatedRoute, private toast: Md2Toast, private loader: LoaderService, private stringConstant: StringConstant) {
+    constructor(private userService: UserService, private redirectionRoute: Router, private route: ActivatedRoute, private toast: Md2Toast, private loader: LoaderService) {
         this.userModel = new UserModel();
         this.listOfRoles = new Array<UserRoleModel>();
         this.isEmailExist = false;
@@ -90,7 +90,7 @@ export class UserAddComponent implements OnInit {
     }
 
     goBack() {
-        this.redirectionRoute.navigate([this.stringConstant.userList]);
+        this.redirectionRoute.navigate(['user/list']);
     }
 
 

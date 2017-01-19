@@ -23,7 +23,7 @@ export class UserService {
     }
 
     getUserById(userId: string) {
-        return this.httpService.get(this.stringConstant.userUrl + this.stringConstant.slash + userId);
+        return this.httpService.get(this.stringConstant.userUrl + '/' + userId);
     }
 
     editUser(editedUser: UserModel) {
