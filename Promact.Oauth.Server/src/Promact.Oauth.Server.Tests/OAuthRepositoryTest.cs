@@ -251,31 +251,31 @@ namespace Promact.Oauth.Server.Tests
         /// <summary>
         /// Test case to check UserNotAlreadyLogin for true value of Oauth Repository for Promact App Not Found ClientId OAuth Empty
         /// </summary>
-        [Fact, Trait("Category", "Required")]
-        public async Task UserNotAlreadyLoginPromactAppNotFoundClientIdOAuthEmptyAsync()
-        {
-            var userId = await _userRepository.AddUserAsync(_testUser, _stringConstant.FirstNameSecond);
-            var user = await _userManager.FindByIdAsync(userId);
-            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-            await _userManager.ResetPasswordAsync(user, code, _stringConstant.PasswordForTest);
-            var errorMessage = string.Format(_stringConstant.PromactAppNotFoundClientId, _stringConstant.ClientIdForTest);
-            var returnUrl = _appSettingUtil.Value.PromactErpUrl + _stringConstant.ErpAuthorizeUrl
-                             + _stringConstant.Message + errorMessage;
-            var redirectUrl = await _oAuthRepository.UserNotAlreadyLoginAsync(oAuthLogin);
-            Assert.Equal(redirectUrl, returnUrl); ;
-        }
+        //[Fact, Trait("Category", "Required")]
+        //public async Task UserNotAlreadyLoginPromactAppNotFoundClientIdOAuthEmptyAsync()
+        //{
+        //    var userId = await _userRepository.AddUserAsync(_testUser, _stringConstant.FirstNameSecond);
+        //    var user = await _userManager.FindByIdAsync(userId);
+        //    var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+        //    await _userManager.ResetPasswordAsync(user, code, _stringConstant.PasswordForTest);
+        //    var errorMessage = string.Format(_stringConstant.PromactAppNotFoundClientId, _stringConstant.ClientIdForTest);
+        //    var returnUrl = _appSettingUtil.Value.PromactErpUrl + _stringConstant.ErpAuthorizeUrl
+        //                     + _stringConstant.Message + errorMessage;
+        //    var redirectUrl = await _oAuthRepository.UserNotAlreadyLoginAsync(oAuthLogin);
+        //    Assert.Equal(redirectUrl, returnUrl); ;
+        //}
 
         /// <summary>
         /// Test case to check UserNotAlreadyLogin for true value of Oauth Repository for Promact App Not Found ClientId OAuth Empty
         /// </summary>
-        [Fact, Trait("Category", "Required")]
-        public async Task UserNotAlreadyLoginFailed()
-        {
-            var userId = await _userRepository.AddUserAsync(_testUser, _stringConstant.FirstNameSecond);
-            var returnUrl = string.Format(_stringConstant.OAuthExternalLoginUrl, _appSettingUtil.Value.PromactOAuthUrl, _stringConstant.ClientIdForTest);
-            var redirectUrl = await _oAuthRepository.UserNotAlreadyLoginAsync(oAuthLogin);
-            Assert.Equal(redirectUrl, returnUrl); ;
-        }
+        //[Fact, Trait("Category", "Required")]
+        //public async Task UserNotAlreadyLoginFailed()
+        //{
+        //    var userId = await _userRepository.AddUserAsync(_testUser, _stringConstant.FirstNameSecond);
+        //    var returnUrl = string.Format(_stringConstant.OAuthExternalLoginUrl, _appSettingUtil.Value.PromactOAuthUrl, _stringConstant.ClientIdForTest);
+        //    var redirectUrl = await _oAuthRepository.UserNotAlreadyLoginAsync(oAuthLogin);
+        //    Assert.Equal(redirectUrl, returnUrl); ;
+        //}
 
         private void Initialize()
         {
