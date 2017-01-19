@@ -27,8 +27,6 @@ notifications:
     on_failure: always
 after_success:
 - bash <(curl -s https://codecov.io/bash)
-after_failure:
-- bash <(curl -s https://codecov.io/bash)
 script:
 - dotnet build ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests -c Release
 - dotnet test ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests/project.json -c Release 
