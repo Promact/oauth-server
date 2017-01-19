@@ -3,29 +3,30 @@ using IdentityServer4.Models;
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
 using Microsoft.Extensions.Logging;
-using Promact.Oauth.Server.Models;
+using Promact.Oauth.Server.Constants;
+using Promact.Oauth.Server.Models.IdentityServer4;
+using Promact.Oauth.Server.Utility;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Promact.Oauth.Server.Consent
+namespace Promact.Oauth.Server.Services
 {
-    public class ConsentService
+    public class ConsentService : IConsentService
     {
         private readonly IClientStore _clientStore;
         private readonly IResourceStore _resourceStore;
         private readonly IIdentityServerInteractionService _interaction;
         private readonly ILogger _logger;
+        private readonly IStringConstant _stringConstant;
 
-        public ConsentService(
-            IIdentityServerInteractionService interaction,
-            IClientStore clientStore,
-            IResourceStore resourceStore,
-            ILogger logger)
+        public ConsentService(IIdentityServerInteractionService interaction, IClientStore clientStore,
+            IResourceStore resourceStore, ILogger logger, IStringConstant stringConstant)
         {
             _interaction = interaction;
             _clientStore = clientStore;
             _resourceStore = resourceStore;
             _logger = logger;
+            _stringConstant = stringConstant;
         }
 
         public async Task<ProcessConsentResult> ProcessConsent(ConsentInputModel model)
@@ -40,17 +41,12 @@ namespace Promact.Oauth.Server.Consent
                 grantedConsent = ConsentResponse.Denied;
             }
             // user clicked 'yes' - validate the data
-            else if (model.Button == "yes" && model != null)
+            else if (model.Button == "yes")
             {
                 // if the user consented to some scope, build the response model
                 if (model.ScopesConsented != null && model.ScopesConsented.Any())
                 {
                     var scopes = model.ScopesConsented;
-                    if (ConsentOptions.EnableOfflineAccess == false)
-                    {
-                        scopes = scopes.Where(x => x != IdentityServerConstants.StandardScopes.OfflineAccess);
-                    }
-
                     grantedConsent = new ConsentResponse
                     {
                         RememberConsent = model.RememberConsent,
@@ -59,19 +55,19 @@ namespace Promact.Oauth.Server.Consent
                 }
                 else
                 {
-                    result.ValidationError = ConsentOptions.MuchChooseOneErrorMessage;
+                    result.ValidationError = _stringConstant.MuchChooseOneErrorMessage;
                 }
             }
             else
             {
-                result.ValidationError = ConsentOptions.InvalidSelectionErrorMessage;
+                result.ValidationError = _stringConstant.InvalidSelectionErrorMessage;
             }
 
             if (grantedConsent != null)
             {
                 // validate return url is still valid
                 var request = await _interaction.GetAuthorizationContextAsync(model.ReturnUrl);
-                if (result == null) return result;
+                //if (result == null) return result;
 
                 // communicate outcome of consent back to identityserver
                 await _interaction.GrantConsentAsync(request, grantedConsent);
@@ -120,8 +116,8 @@ namespace Promact.Oauth.Server.Consent
         }
 
         private ConsentViewModel CreateConsentViewModel(
-            ConsentInputModel model, string returnUrl, 
-            AuthorizationRequest request, 
+            ConsentInputModel model, string returnUrl,
+            AuthorizationRequest request,
             Client client, Resources resources)
         {
             var vm = new ConsentViewModel();
@@ -137,7 +133,7 @@ namespace Promact.Oauth.Server.Consent
 
             vm.IdentityScopes = resources.IdentityResources.Select(x => CreateScopeViewModel(x, vm.ScopesConsented.Contains(x.Name) || model == null)).ToArray();
             vm.ResourceScopes = resources.ApiResources.SelectMany(x => x.Scopes).Select(x => CreateScopeViewModel(x, vm.ScopesConsented.Contains(x.Name) || model == null)).ToArray();
-            if (ConsentOptions.EnableOfflineAccess && resources.OfflineAccess)
+            if (resources.OfflineAccess)
             {
                 vm.ResourceScopes = vm.ResourceScopes.Union(new ScopeViewModel[] {
                     GetOfflineAccessScope(vm.ScopesConsented.Contains(IdentityServerConstants.StandardScopes.OfflineAccess) || model == null)
@@ -178,12 +174,11 @@ namespace Promact.Oauth.Server.Consent
             return new ScopeViewModel
             {
                 Name = IdentityServerConstants.StandardScopes.OfflineAccess,
-                DisplayName = ConsentOptions.OfflineAccessDisplayName,
-                Description = ConsentOptions.OfflineAccessDescription,
+                DisplayName = _stringConstant.OfflineAccessDisplayName,
+                Description = _stringConstant.OfflineAccessDescription,
                 Emphasize = true,
                 Checked = check
             };
         }
     }
 }
-

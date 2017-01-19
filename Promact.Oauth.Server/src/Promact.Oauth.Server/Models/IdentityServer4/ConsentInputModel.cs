@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Promact.Oauth.Server.Consent
+namespace Promact.Oauth.Server.Models.IdentityServer4
 {
     public class ConsentInputModel
     {

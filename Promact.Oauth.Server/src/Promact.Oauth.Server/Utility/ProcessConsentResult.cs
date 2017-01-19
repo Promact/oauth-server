@@ -1,6 +1,6 @@
-﻿using Promact.Oauth.Server.Models;
+﻿using Promact.Oauth.Server.Models.IdentityServer4;
 
-namespace Promact.Oauth.Server.Consent
+namespace Promact.Oauth.Server.Utility
 {
     public class ProcessConsentResult
     {

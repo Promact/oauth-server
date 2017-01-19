@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Promact.Oauth.Server.Constants
+﻿namespace Promact.Oauth.Server.Constants
 {
     public class StringConstant : IStringConstant
     {
@@ -143,6 +141,15 @@ namespace Promact.Oauth.Server.Constants
         public string RandomString { get { return "abcdefghijklmnopqrstuvwxyz|ABCDEFGHIJKLMNOPQRSTUVWXYZ|012345789|@#$%^!&*()"; } }
         public string PromactErpUrlForTest { get { return "http://www.example.com"; } }
 
+        #region IdentityServer4
+        public string ReadUser
+        {
+            get
+            {
+                return "ReadUser";
+            }
+        }
+
         public string APIResourceName
         {
             get
@@ -190,5 +197,95 @@ namespace Promact.Oauth.Server.Constants
                 return "project.read";
             }
         }
+
+        public string XContentTypeOptions
+        {
+            get
+            {
+                return "X-Content-Type-Options";
+            }
+        }
+
+        public string Nosniff
+        {
+            get
+            {
+                return "nosniff";
+            }
+        }
+
+        public string XFrameOptions
+        {
+            get
+            {
+                return "X-Frame-Options";
+            }
+        }
+
+        public string Sameorigin
+        {
+            get
+            {
+                return "SAMEORIGIN";
+            }
+        }
+
+        public string ContentSecurityPolicy
+        {
+            get
+            {
+                return "Content-Security-Policy";
+            }
+        }
+
+        public string DefaultSrcSelf
+        {
+            get
+            {
+                return "default-src 'self'";
+            }
+        }
+
+        public string XContentSecurityPolicy
+        {
+            get
+            {
+                return "X-Content-Security-Policy";
+            }
+        }
+
+        #region ConsentOptions
+        public string OfflineAccessDisplayName
+        {
+            get
+            {
+                return "Offline Access";
+            }
+        }
+        public string OfflineAccessDescription
+        {
+            get
+            {
+                return "Access to your applications and resources, even when you are offline";
+            }
+        }
+
+        public string MuchChooseOneErrorMessage
+        {
+            get
+            {
+                return "You must pick at least one permission";
+            }
+        }
+        public string InvalidSelectionErrorMessage
+        {
+            get
+            {
+                return "Invalid selection";
+            }
+        }
+        #endregion
+
+        #endregion
     }
 }

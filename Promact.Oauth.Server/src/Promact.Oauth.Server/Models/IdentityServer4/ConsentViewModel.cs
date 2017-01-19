@@ -1,7 +1,6 @@
-﻿using Promact.Oauth.Server.Consent;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace Promact.Oauth.Server.Models
+namespace Promact.Oauth.Server.Models.IdentityServer4
 {
     public class ConsentViewModel : ConsentInputModel
     {

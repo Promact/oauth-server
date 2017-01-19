@@ -100,6 +100,8 @@ namespace Promact.Oauth.Server
             services.AddScoped<IEmailUtil, EmailUtil>();
             services.AddScoped<IDefaultApiResources, DefaultApiResources>();
             services.AddScoped<IDefaultIdentityResources, DefaultIdentityResources>();
+            services.AddScoped<IConsentService, ConsentService>();
+            services.AddScoped<SecurityHeadersAttribute>();
 
             services.AddMvc();
 
