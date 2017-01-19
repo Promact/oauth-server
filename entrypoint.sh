@@ -21,7 +21,5 @@ cp appsettings.new.json appsettings.json
 rm appsettings.new.json
 cp NLog.config nlog.config
 mkdir /public
-cp -R /out/wwwroot /public
-
-
-/usr/bin/dotnet /out/app.dll
+cp -R ./wwwroot /public
+/usr/bin/dotnet app.dll
