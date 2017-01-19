@@ -51,9 +51,9 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// <summary>
         /// Fetches the project details of the given GroupName
         /// </summary>
-        /// <param name="GroupName"></param>
+        /// <param name="groupName"></param>
         /// <returns>object of ProjectAc</returns>
-        Task<ProjectAc> GetProjectByGroupNameAsync(string GroupName);
+        Task<ProjectAc> GetProjectByGroupNameAsync(string groupName);
         
         /// <summary>
         /// Method to get list of project in which current user is envolved

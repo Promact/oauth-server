@@ -104,7 +104,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             {
                 var userIdList = await _projectUserDataRepository.Fetch(y => y.ProjectId == project.Id).Select(x => x.UserId).ToListAsync();
                 var userList = await _userDataRepository.Fetch(y => userIdList.Contains(y.Id)).OrderBy(y => y.FirstName).ToListAsync();
-                userAcList = _mapperContext.Map<List<ApplicationUser>,List<UserAc>>(userList);
+                userAcList = _mapperContext.Map<List<ApplicationUser>, List<UserAc>>(userList);
                 var projectAc = _mapperContext.Map<Project, ProjectAc>(project);
                 if (!string.IsNullOrEmpty(project.TeamLeaderId))
                 {
@@ -119,7 +119,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             {
                 throw new ProjectNotFound();
             }
-       }
+        }
 
         /// <summary>
         /// This method to update project information 
@@ -215,10 +215,11 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                 projectAc = _mapperContext.Map<Project, ProjectAc>(project);
                 return projectAc;
             }
-            else {
+            else
+            {
                 throw new ProjectNotFound();
             }
-               
+
         }
 
         /// <summary>
@@ -265,7 +266,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         public async Task<IList<ProjectAc>> GetProjectsWithUsersAsync()
         {
             List<ProjectAc> projectList = new List<ProjectAc>();
-            var projects = await _projectDataRepository.Fetch(x=>!string.IsNullOrEmpty(x.TeamLeaderId)).ToListAsync();
+            var projects = await _projectDataRepository.Fetch(x => !string.IsNullOrEmpty(x.TeamLeaderId)).ToListAsync();
 
             foreach (var project in projects)
             {
@@ -320,6 +321,8 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             {
                 throw new ProjectNotFound();
             }
+
         }
     }
 }
+
