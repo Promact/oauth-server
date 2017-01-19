@@ -48,11 +48,11 @@ export class UserDetailsComponent implements OnInit {
     }
 
     goBack() {
-        this.redirectRoute.navigate([this.stringConstant.userList]);
+        this.redirectRoute.navigate(['user/list']);
     }
 
     edit(id: number) {
-        this.redirectRoute.navigate([this.stringConstant.userEdit + id]);
+        this.redirectRoute.navigate(['/user/edit' + id]);
     }
 
     

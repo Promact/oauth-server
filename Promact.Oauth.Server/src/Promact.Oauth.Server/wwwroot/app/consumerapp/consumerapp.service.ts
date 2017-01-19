@@ -31,7 +31,7 @@ export class ConsumerAppService {
      * @param id 
      */
     getConsumerAppById(id: number) {
-        return this.httpService.get(this.consumerAppUrl + this.stringConstant.slash + id);
+        return this.httpService.get(this.consumerAppUrl + '/' + id);
 
     }
 

@@ -37,7 +37,7 @@ export class MockConsumerappService {
     getConsumerAppById(id: number) {
         let mockConsumerApp = new MockConsumer(id);
         if (id === 1) {
-            mockConsumerApp.Name = this.stringConstant.consumerapp;
+            mockConsumerApp.Name = this.stringConstant.consumerappname;
             mockConsumerApp.Description = this.stringConstant.description;
             mockConsumerApp.CallbackUrl = this.stringConstant.callbackUrl;
         }

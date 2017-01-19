@@ -4,14 +4,13 @@ import { Router } from "@angular/router";
 import { ConsumerAppService } from "../consumerapp.service";
 import { Md2Toast } from 'md2';
 import { LoaderService } from '../../shared/loader.service';
-import { StringConstant } from '../../shared/stringconstant';
 
 @Component({
     templateUrl: "app/consumerapp/consumerapp-add/consumerapp-add.html",
 })
 export class ConsumerappAddComponent {
     consumerModel: ConsumerAppModel;
-    constructor(private consumerAppService: ConsumerAppService, private router: Router, private toast: Md2Toast, private loader: LoaderService, private stringConstant: StringConstant) {
+    constructor(private consumerAppService: ConsumerAppService, private router: Router, private toast: Md2Toast, private loader: LoaderService) {
         this.consumerModel = new ConsumerAppModel();
     }
 
@@ -27,7 +26,7 @@ export class ConsumerappAddComponent {
     }
 
     cancel() {
-        this.router.navigate([this.stringConstant.consumerapp]);
+        this.router.navigate(['/consumerapp']);
     }
 
 

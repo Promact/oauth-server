@@ -25,9 +25,7 @@ describe('Change Password', () => {
                 { provide: UserService, useClass: MockUserService },
                 { provide: Md2Toast, useClass: MockToast },
                 { provide: PasswordModel, useClass: PasswordModel },
-                { provide: LoaderService, useClass: LoaderService },
-                { provide: StringConstant, useClass: StringConstant }
-            ]
+                { provide: LoaderService, useClass: LoaderService }]
         }).compileComponents();
     }));
 

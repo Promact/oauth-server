@@ -87,7 +87,7 @@ export class ProjectEditComponent implements OnInit {
                     }
                     else {
                         this.toast.show("Project Successfully Updated.");
-                        this.router.navigate([this.stringConstant.projectList]);
+                        this.router.navigate(['/project/list']);
                     }
 
                     this.loader.loader = false;
