@@ -122,8 +122,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         }
 
 
-
-        /// <summary>
+         /// <summary>
         /// This method to update project information 
         /// </summary>
         /// <param name="id">project id</param> 
