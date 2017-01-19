@@ -452,7 +452,7 @@ namespace Promact.Oauth.Server.Controllers
           *     }
           * }
           */
-        [ServiceFilter(typeof(CustomAttribute))]
+        [Authorize("ReadUser")]
         [HttpGet]
         [Route("{userId}/detail")]
         public async Task<IActionResult> UserDetailByIdAsync(string userId)
@@ -507,7 +507,7 @@ namespace Promact.Oauth.Server.Controllers
        *        }
        *]
        */
-        [ServiceFilter(typeof(CustomAttribute))]
+        [Authorize("ReadUser")]
         [HttpGet]
         [Route("{userId}/role")]
         public async Task<IActionResult> GetUserRoleAsync(string userId)
@@ -543,7 +543,7 @@ namespace Promact.Oauth.Server.Controllers
         *        }
         *    ]
         */
-        [ServiceFilter(typeof(CustomAttribute))]
+        [Authorize("ReadUser")]
         [HttpGet]
         [Route("{userId}/teammembers")]
         public async Task<IActionResult> GetTeamMembersAsync(string userId)
@@ -654,7 +654,7 @@ namespace Promact.Oauth.Server.Controllers
         *      ]
         * }
         */
-        [ServiceFilter(typeof(CustomAttribute))]
+        [Authorize("ReadUser")]
         [HttpGet]
         [Route("{teamLeaderId}/project")]
         public async Task<IActionResult> GetProjectUsersByTeamLeaderIdAsync(string teamLeaderId)

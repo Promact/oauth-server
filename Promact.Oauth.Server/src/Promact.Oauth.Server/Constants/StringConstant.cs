@@ -1,4 +1,6 @@
-﻿namespace Promact.Oauth.Server.Constants
+﻿using System;
+
+namespace Promact.Oauth.Server.Constants
 {
     public class StringConstant : IStringConstant
     {
@@ -140,5 +142,53 @@
         public string UserNameForTest { get { return "XyzTest"; } }
         public string RandomString { get { return "abcdefghijklmnopqrstuvwxyz|ABCDEFGHIJKLMNOPQRSTUVWXYZ|012345789|@#$%^!&*()"; } }
         public string PromactErpUrlForTest { get { return "http://www.example.com"; } }
+
+        public string APIResourceName
+        {
+            get
+            {
+                return "read-only";
+            }
+        }
+
+        public string APIResourceDisplayName
+        {
+            get
+            {
+                return "Promact OAuth Server details read only";
+            }
+        }
+
+        public string APIResourceApiSecrets
+        {
+            get
+            {
+                return "promactUserInfo";
+            }
+        }
+
+        public string APIResourceSlackUserIdScope
+        {
+            get
+            {
+                return "slack_user_id";
+            }
+        }
+
+        public string APIResourceUserReadScope
+        {
+            get
+            {
+                return "user.read";
+            }
+        }
+
+        public string APIResourceProjectReadScope
+        {
+            get
+            {
+                return "project.read";
+            }
+        }
     }
 }

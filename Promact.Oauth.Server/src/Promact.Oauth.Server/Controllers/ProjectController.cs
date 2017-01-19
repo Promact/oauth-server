@@ -13,12 +13,6 @@ using Microsoft.AspNetCore.Authorization;
 using Promact.Oauth.Server.ExceptionHandler;
 using Microsoft.Extensions.Logging;
 
-
-
-
-
-// For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace Promact.Oauth.Server.Controllers
 {
     [Route("api/[controller]")]
@@ -449,7 +443,7 @@ namespace Promact.Oauth.Server.Controllers
         *   "error": "ProjectNotFound"
         * }
         */
-        [ServiceFilter(typeof(CustomAttribute))]
+        [Authorize("ReadProject")]
         [HttpGet]
         [Route("{name}")]
         public async Task<IActionResult> GetProjectByGroupNameAsync(string name)
@@ -481,7 +475,7 @@ namespace Promact.Oauth.Server.Controllers
       *  }
       * ]
       */
-        [ServiceFilter(typeof(CustomAttribute))]
+        [Authorize("ReadProject")]
         [HttpGet]
         [Route("list")]
         public async Task<IEnumerable<ProjectAc>> AllProjectsAsync()
@@ -516,7 +510,7 @@ namespace Promact.Oauth.Server.Controllers
         *   "error": "ProjectNotFound"
         * }
         */
-        [ServiceFilter(typeof(CustomAttribute))]
+        [Authorize("ReadProject")]
         [HttpGet]
         [Route("{projectId:int}/detail")]
         public async Task<IActionResult> ProjectDetailsAsync(int projectId)
