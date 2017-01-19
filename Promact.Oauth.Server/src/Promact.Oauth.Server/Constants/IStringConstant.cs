@@ -98,5 +98,11 @@
         string SlackUserNameForTest { get; }
         string RandomString { get; }
         string PromactErpUrlForTest { get; }
+        string APIResourceName { get; }
+        string APIResourceDisplayName { get; }
+        string APIResourceApiSecrets { get; }
+        string APIResourceSlackUserIdScope { get; }
+        string APIResourceUserReadScope { get; }
+        string APIResourceProjectReadScope { get; }
     }
 }

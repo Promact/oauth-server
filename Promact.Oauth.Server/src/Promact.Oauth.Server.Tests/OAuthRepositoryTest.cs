@@ -31,6 +31,7 @@ namespace Promact.Oauth.Server.Tests
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapperContext;
         private readonly IOptions<AppSettingUtil> _appSettingUtil;
+        private UserAc _testUser = new UserAc();
 
         public OAuthRepositoryTest() : base()
         {
@@ -253,7 +254,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public async Task UserNotAlreadyLoginPromactAppNotFoundClientIdOAuthEmptyAsync()
         {
-            var userId = await _userRepository.AddUser(_testUser, _stringConstant.FirstNameSecond);
+            var userId = await _userRepository.AddUserAsync(_testUser, _stringConstant.FirstNameSecond);
             var user = await _userManager.FindByIdAsync(userId);
             var code = await _userManager.GeneratePasswordResetTokenAsync(user);
             await _userManager.ResetPasswordAsync(user, code, _stringConstant.PasswordForTest);
@@ -270,7 +271,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public async Task UserNotAlreadyLoginFailed()
         {
-            var userId = await _userRepository.AddUser(_testUser, _stringConstant.FirstNameSecond);
+            var userId = await _userRepository.AddUserAsync(_testUser, _stringConstant.FirstNameSecond);
             var returnUrl = string.Format(_stringConstant.OAuthExternalLoginUrl, _appSettingUtil.Value.PromactOAuthUrl, _stringConstant.ClientIdForTest);
             var redirectUrl = await _oAuthRepository.UserNotAlreadyLoginAsync(oAuthLogin);
             Assert.Equal(redirectUrl, returnUrl); ;
