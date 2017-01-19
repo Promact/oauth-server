@@ -85,7 +85,9 @@ module.exports = function (config) {
 
         coverageReporter: {
             reporters: [
-                { type: 'cobertura', subdir: 'cobertura' }]
+                { type: 'html', subdir: 'html' },
+            { type: 'lcovonly', subdir: 'lcov' },
+            { type: 'cobertura', subdir: 'cobertura' }]
         },
 
         // web server port
