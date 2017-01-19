@@ -37,6 +37,9 @@ export class ProjectEditComponent implements OnInit {
                 this.service.getUsers().subscribe(listUsers => {
                     this.project.listUsers = listUsers;
                 });
+            }, err => {
+                this.toast.show("Project dose not exists.");
+                this.loader.loader = false;
             });
         });
     }
