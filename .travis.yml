@@ -16,6 +16,8 @@ before_install:
 - export DISPLAY=:99.0
 - if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
 install:
+- pwd 
+- ls
 - npm i -g typescript typings
 - dotnet restore
 - chmod +x ./Promact.Oauth.Server/src/packages/xunit.runner.console/2.1.0/tools/xunit.console.exe
@@ -42,7 +44,7 @@ script:
 - dotnet test ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests/project.json -c Release 
 - xbuild /p:Configuration=Release ./src/Promact.Oauth.Server/Promact.Oauth.Server.sln
 - export LD_LIBRARY_PATH=/usr/local/lib
-- mono --debug --profile=monocov:outfile=monocovCoverage.cov,+[Promact.Oauth.Server],+[Promact.Oauth.Server.Tests] ./src/packages/xunit.runners.1.9.2/tools/xunit.console.clr4.exe ./src/Promact.Oauth.Server.Tests/bin/Release/netcoreapp1.0/Promact.Oauth.Server.Tests.dll  /noshadow
+- mono --debug --profile=monocov:outfile=monocovCoverage.cov,+[Promact.Oauth.Server],+[Promact.Oauth.Server.Tests] ./Promact.Oauth.Server/src/packages/xunit.runner.console/2.1.0/tools/xunit.console.exe ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests/bin/Release/netcoreapp1.0/Promact.Oauth.Server.Tests.dll  /noshadow
 - monocov --export-xml=monocovCoverage monocovCoverage.cov
 - REPO_COMMIT_AUTHOR=$(git show -s --pretty=format:"%cn")
 - REPO_COMMIT_AUTHOR_EMAIL=$(git show -s --pretty=format:"%ce")
