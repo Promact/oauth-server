@@ -30,8 +30,6 @@ install:
 - make
 - sudo make install
 - cd ../../Promact/promact-oauth-server
-- ls
-- pwd
 before_script:
 - sh -e /etc/init.d/xvfb start
 solution: "./Promact.Oauth.Server/Promact.Oauth.Server.sln"
@@ -40,11 +38,10 @@ notifications:
     on_success: change
     on_failure: always
 script:
-- ls
-- pwd
 - dotnet build ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests -c Release
 - dotnet test ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests/project.json -c Release 
-- xbuild /p:Configuration=Release ./src/Promact.Oauth.Server/Promact.Oauth.Server.sln
+- pwd
+- xbuild /p:Configuration=Release ./Promact.Oauth.Server/Promact.Oauth.Server.sln
 - export LD_LIBRARY_PATH=/usr/local/lib
 - mono --debug --profile=monocov:outfile=monocovCoverage.cov,+[Promact.Oauth.Server],+[Promact.Oauth.Server.Tests] ~/.nuget/packages/xunit.runner.console/2.2.0-beta5-build3474/toolstools/xunit.console.exe ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests/bin/Release/netcoreapp1.0/Promact.Oauth.Server.Tests.dll  /noshadow
 - monocov --export-xml=monocovCoverage monocovCoverage.cov
