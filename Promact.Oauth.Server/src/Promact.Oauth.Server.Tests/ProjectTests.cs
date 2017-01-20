@@ -205,7 +205,7 @@ namespace Promact.Oauth.Server.Tests
         {
             ProjectAc projectAc = MockOfProjectAc();
             await _projectRepository.AddProjectAsync(projectAc, _stringConstant.CreatedBy);
-            var project =await _projectRepository.GetProjectByGroupNameAsync(projectAc.SlackChannelName);
+            var project =await _projectRepository.GetProjectBySlackChannelNameAsync(projectAc.SlackChannelName);
             Assert.Equal(projectAc.Name, project.Name);
         }
 
@@ -217,7 +217,7 @@ namespace Promact.Oauth.Server.Tests
         {
             ProjectAc projectAc = MockOfProjectAc();
             await _projectRepository.AddProjectAsync(projectAc, _stringConstant.CreatedBy);
-            Assert.Throws<AggregateException>(() => _projectRepository.GetProjectByGroupNameAsync("test").Result);
+            Assert.Throws<AggregateException>(() => _projectRepository.GetProjectBySlackChannelNameAsync("test").Result);
         }
 
          /// <summary>
