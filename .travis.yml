@@ -29,7 +29,8 @@ install:
 - ./configure
 - make
 - sudo make install
-- cd ../../promact/promact-oauth-server
+- cd ../../
+- ls
 - pwd
 before_script:
 - sh -e /etc/init.d/xvfb start
