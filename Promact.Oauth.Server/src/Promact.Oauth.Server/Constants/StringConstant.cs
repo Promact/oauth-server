@@ -246,6 +246,46 @@
             }
         }
 
+        public string No
+        {
+            get
+            {
+                return "no";
+            }
+        }
+
+        public string Yes
+        {
+            get
+            {
+                return "yes";
+            }
+        }
+
+        public string NoScopesMatching
+        {
+            get
+            {
+                return "No scopes matching: {0}";
+            }
+        }
+
+        public string InvalidClientId
+        {
+            get
+            {
+                return "Invalid client id: {0}";
+            }
+        }
+
+        public string NoConsentRequestMatchingRequest
+        {
+            get
+            {
+                return "No consent request matching request: {0}";
+            }
+        }
+
         #region ConsentOptions
         public string OfflineAccessDisplayName
         {

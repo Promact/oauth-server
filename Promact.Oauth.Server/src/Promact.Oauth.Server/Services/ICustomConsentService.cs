@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Promact.Oauth.Server.Services
 {
-    public interface IConsentService
+    public interface ICustomConsentService
     {
         Task<ProcessConsentResult> ProcessConsent(ConsentInputModel model);
         Task<ConsentViewModel> BuildViewModelAsync(string returnUrl, ConsentInputModel model = null);

@@ -113,6 +113,11 @@
         string ContentSecurityPolicy { get; }
         string DefaultSrcSelf { get; }
         string XContentSecurityPolicy { get; }
+        string No { get; }
+        string Yes { get; }
+        string NoScopesMatching { get; }
+        string InvalidClientId { get; }
+        string NoConsentRequestMatchingRequest { get; }
 
         #region ConsentOptions
         string OfflineAccessDisplayName { get; }

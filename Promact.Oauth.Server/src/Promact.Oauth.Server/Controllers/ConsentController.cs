@@ -1,7 +1,4 @@
-﻿using IdentityServer4.Services;
-using IdentityServer4.Stores;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Mvc;
 using Promact.Oauth.Server.Models.IdentityServer4;
 using Promact.Oauth.Server.Services;
 using System.Threading.Tasks;
@@ -14,21 +11,19 @@ namespace Promact.Oauth.Server.Controllers
     [ServiceFilter(typeof(SecurityHeadersAttribute))]
     public class ConsentController : BaseController
     {
-        private readonly Services.IConsentService _consent;
+        private readonly ICustomConsentService _consent;
 
-        public ConsentController(IIdentityServerInteractionService interaction, IClientStore clientStore,
-            IResourceStore resourceStore, ILogger<ConsentController> logger, Services.IConsentService consent)
+        public ConsentController(ICustomConsentService consent)
         {
             _consent = consent;
-            //_consent = new IConsentService(interaction, clientStore, resourceStore, logger);
         }
 
         /// <summary>
         /// Shows the consent screen
         /// </summary>
-        /// <param name="returnUrl">redirect url</param>
+        /// <param name="returnUrl">redirect url of client server as string</param>
         /// <returns>view of allowed scope</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet]
+        [HttpGet]
         public async Task<IActionResult> Index(string returnUrl)
         {
             var consentViewModel = await _consent.BuildViewModelAsync(returnUrl);
