@@ -60,7 +60,6 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public async Task GetProjectById()
         {
-            
             var id = await GetProjectMockData();
             await GetProjectUserMockData();
             ProjectAc project = await _projectRepository.GetProjectByIdAsync(id);
@@ -97,7 +96,7 @@ namespace Promact.Oauth.Server.Tests
                 TeamLeader = new UserAc { FirstName = _stringConstant.FirstName },
                 TeamLeaderId = _stringConstant.TeamLeaderId,
                 CreatedBy = _stringConstant.CreatedBy,
-                CreatedDate = DateTime.Now.ToString(CultureInfo.InvariantCulture),
+                CreatedDate = DateTime.Now,
                 ApplicationUsers = userlist
             };
             await _projectRepository.EditProjectAsync(id, projectacSecound, _stringConstant.CreatedBy);
@@ -124,7 +123,7 @@ namespace Promact.Oauth.Server.Tests
                 TeamLeader = new UserAc { FirstName = _stringConstant.FirstName },
                 TeamLeaderId = _stringConstant.TeamLeaderId,
                 CreatedBy = _stringConstant.CreatedBy,
-                CreatedDate = DateTime.Now.ToString(CultureInfo.InvariantCulture),
+                CreatedDate = DateTime.Now,
                 ApplicationUsers = userlist
             };
 
@@ -160,7 +159,7 @@ namespace Promact.Oauth.Server.Tests
                 TeamLeader = new UserAc { FirstName = _stringConstant.FirstName },
                 TeamLeaderId = _stringConstant.TeamLeaderId,
                 CreatedBy = _stringConstant.CreatedBy,
-                CreatedDate = DateTime.Now.ToString(CultureInfo.InvariantCulture),
+                CreatedDate = DateTime.Now,
                 ApplicationUsers = userlist
             };
             var project =await _projectRepository.CheckDuplicateProjectAsync(projectacSecound);
