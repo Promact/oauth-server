@@ -120,7 +120,6 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             }
         }
 
-
         /// <summary>
         /// This method to update project information 
         /// </summary>
