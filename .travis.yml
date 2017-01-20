@@ -29,6 +29,7 @@ install:
 - ./configure
 - make
 - sudo make install
+- cd ../../Promact.Oauth.Server
 before_script:
 - sh -e /etc/init.d/xvfb start
 solution: "./Promact.Oauth.Server/Promact.Oauth.Server.sln"
@@ -37,6 +38,8 @@ notifications:
     on_success: change
     on_failure: always
 script:
+- ls
+- pwd
 - dotnet build ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests -c Release
 - dotnet test ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests/project.json -c Release 
 - xbuild /p:Configuration=Release ./src/Promact.Oauth.Server/Promact.Oauth.Server.sln
