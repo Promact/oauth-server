@@ -23,8 +23,7 @@ install:
 - ls -la ~/
 - ls -la ~/.nuget
 - ls -la ~/.nuget/packages
-- tree ~/.nuget/packages
-- chmod +x ~/.nuget/packages/xunit.runner.console/2.1.0/tools/xunit.console.exe
+- chmod +x ~/.nuget/packages/xunit.runner.console/2.2.0-beta5-build3474/toolstools/xunit.console.exe
 - sudo apt-get install gtk-sharp2
 - curl -sS https://api.nuget.org/packages/mono.cecil.0.9.5.4.nupkg > /tmp/mono.cecil.0.9.5.4.nupkg.zip
 - unzip /tmp/mono.cecil.0.9.5.4.nupkg.zip -d /tmp/cecil
@@ -48,7 +47,7 @@ script:
 - dotnet test ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests/project.json -c Release 
 - xbuild /p:Configuration=Release ./src/Promact.Oauth.Server/Promact.Oauth.Server.sln
 - export LD_LIBRARY_PATH=/usr/local/lib
-- mono --debug --profile=monocov:outfile=monocovCoverage.cov,+[Promact.Oauth.Server],+[Promact.Oauth.Server.Tests] ~/.nuget/packages/xunit.runner.console/2.1.0/tools/xunit.console.exe ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests/bin/Release/netcoreapp1.0/Promact.Oauth.Server.Tests.dll  /noshadow
+- mono --debug --profile=monocov:outfile=monocovCoverage.cov,+[Promact.Oauth.Server],+[Promact.Oauth.Server.Tests] ~/.nuget/packages/xunit.runner.console/2.2.0-beta5-build3474/toolstools/xunit.console.exe ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests/bin/Release/netcoreapp1.0/Promact.Oauth.Server.Tests.dll  /noshadow
 - monocov --export-xml=monocovCoverage monocovCoverage.cov
 - REPO_COMMIT_AUTHOR=$(git show -s --pretty=format:"%cn")
 - REPO_COMMIT_AUTHOR_EMAIL=$(git show -s --pretty=format:"%ce")

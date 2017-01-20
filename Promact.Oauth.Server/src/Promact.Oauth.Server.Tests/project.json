@@ -13,6 +13,8 @@
     "IdentityServer4": "1.0.2",
     "IdentityServer4.AspNetIdentity": "1.0.0",
     "IdentityServer4.AccessTokenValidation": "1.0.2"
+    "xunit": "2.2.0-beta5-build3474",
+    "xunit.runner.console":"2.2.0-beta5-build3474"
   },
 
   "frameworks": {
