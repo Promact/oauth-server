@@ -49,11 +49,11 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         Task<ProjectAc> CheckDuplicateProjectAsync(ProjectAc project);
 
         /// <summary>
-        /// Fetches the project details of the given GroupName
+        /// Fetches the project details of the given Slack Channel Name
         /// </summary>
-        /// <param name="groupName"></param>
+        /// <param name="slackChannelName"></param>
         /// <returns>object of ProjectAc</returns>
-        Task<ProjectAc> GetProjectByGroupNameAsync(string groupName);
+        Task<ProjectAc> GetProjectBySlackChannelNameAsync(string slackChannelName);
         
         /// <summary>
         /// Method to get list of project in which current user is envolved
