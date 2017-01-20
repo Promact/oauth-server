@@ -1,4 +1,5 @@
 ﻿using Exceptionless;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Promact.Oauth.Server.Repository;
 using Promact.Oauth.Server.Services;
@@ -7,11 +8,12 @@ using System.Threading.Tasks;
 
 namespace Promact.Oauth.Server.Controllers
 {
-    [ServiceFilter(typeof(CustomAttribute))]
+    [Authorize(Policy = ReadUser)]
     [Route("api/[controller]")]
     public class ProjectUserController : BaseController
     {
         private readonly IUserRepository _userRepository;
+        public const string ReadUser = "ReadUser";
         public ProjectUserController(IUserRepository userRepository)
         {
             _userRepository = userRepository;

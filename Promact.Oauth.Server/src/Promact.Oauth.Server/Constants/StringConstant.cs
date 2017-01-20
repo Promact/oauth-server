@@ -140,5 +140,184 @@
         public string UserNameForTest { get { return "XyzTest"; } }
         public string RandomString { get { return "abcdefghijklmnopqrstuvwxyz|ABCDEFGHIJKLMNOPQRSTUVWXYZ|012345789|@#$%^!&*()"; } }
         public string PromactErpUrlForTest { get { return "http://www.example.com"; } }
+
+        #region IdentityServer4
+        public string APIResourceName
+        {
+            get
+            {
+                return "read-only";
+            }
+        }
+
+        public string APIResourceDisplayName
+        {
+            get
+            {
+                return "Promact OAuth Server details read only";
+            }
+        }
+
+        public string APIResourceApiSecrets
+        {
+            get
+            {
+                return "promactUserInfo";
+            }
+        }
+
+        public string APIResourceSlackUserIdScope
+        {
+            get
+            {
+                return "slack_user_id";
+            }
+        }
+
+        public string APIResourceUserReadScope
+        {
+            get
+            {
+                return "user.read";
+            }
+        }
+
+        public string APIResourceProjectReadScope
+        {
+            get
+            {
+                return "project.read";
+            }
+        }
+
+        public string XContentTypeOptions
+        {
+            get
+            {
+                return "X-Content-Type-Options";
+            }
+        }
+
+        public string Nosniff
+        {
+            get
+            {
+                return "nosniff";
+            }
+        }
+
+        public string XFrameOptions
+        {
+            get
+            {
+                return "X-Frame-Options";
+            }
+        }
+
+        public string Sameorigin
+        {
+            get
+            {
+                return "SAMEORIGIN";
+            }
+        }
+
+        public string ContentSecurityPolicy
+        {
+            get
+            {
+                return "Content-Security-Policy";
+            }
+        }
+
+        public string DefaultSrcSelf
+        {
+            get
+            {
+                return "default-src 'self'";
+            }
+        }
+
+        public string XContentSecurityPolicy
+        {
+            get
+            {
+                return "X-Content-Security-Policy";
+            }
+        }
+
+        public string No
+        {
+            get
+            {
+                return "no";
+            }
+        }
+
+        public string Yes
+        {
+            get
+            {
+                return "yes";
+            }
+        }
+
+        public string NoScopesMatching
+        {
+            get
+            {
+                return "No scopes matching: {0}";
+            }
+        }
+
+        public string InvalidClientId
+        {
+            get
+            {
+                return "Invalid client id: {0}";
+            }
+        }
+
+        public string NoConsentRequestMatchingRequest
+        {
+            get
+            {
+                return "No consent request matching request: {0}";
+            }
+        }
+
+        #region ConsentOptions
+        public string OfflineAccessDisplayName
+        {
+            get
+            {
+                return "Offline Access";
+            }
+        }
+        public string OfflineAccessDescription
+        {
+            get
+            {
+                return "Access to your applications and resources, even when you are offline";
+            }
+        }
+
+        public string MuchChooseOneErrorMessage
+        {
+            get
+            {
+                return "You must pick at least one permission";
+            }
+        }
+        public string InvalidSelectionErrorMessage
+        {
+            get
+            {
+                return "Invalid selection";
+            }
+        }
+        #endregion
+
+        #endregion
     }
 }

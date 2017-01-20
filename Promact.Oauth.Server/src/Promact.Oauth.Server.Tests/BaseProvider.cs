@@ -20,6 +20,8 @@ using Moq;
 using Promact.Oauth.Server.Models.ApplicationClasses;
 using System.Threading.Tasks;
 using Promact.Oauth.Server.Utility;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Authentication;
 
 namespace Promact.Oauth.Server.Tests
 {
@@ -73,6 +75,18 @@ namespace Promact.Oauth.Server.Tests
             var httpClientMock = new Mock<IHttpClientService>();
             var httpClientMockObject = httpClientMock.Object;
             services.AddScoped(x => httpClientMock);
+            services.AddScoped(x=>httpClientMockObject);
+
+            // Http Context mocking
+            var authenticationManagerMock = new Mock<AuthenticationManager>();
+            var httpContextMock = new Mock<HttpContext>();
+            httpContextMock.Setup(x => x.Authentication).Returns(authenticationManagerMock.Object);
+            var httpContextAccessorMock = new Mock<IHttpContextAccessor>();
+            httpContextAccessorMock.Setup(x => x.HttpContext).Returns(httpContextMock.Object);
+            var httpContextMockObject = httpContextAccessorMock.Object;
+            services.AddScoped(x => httpContextAccessorMock);
+            services.AddScoped(x => httpContextMockObject);
+
             services.AddScoped(x => httpClientMockObject);
             
             //Register email util mock

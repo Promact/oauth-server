@@ -20,6 +20,7 @@ namespace Promact.Oauth.Server.Controllers
         private readonly IUserRepository _userRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IStringConstant _stringConstant;
+        public const string ReadUser = "ReadUser";
         #endregion
 
         #region "Constructor"
@@ -452,7 +453,7 @@ namespace Promact.Oauth.Server.Controllers
           *     }
           * }
           */
-        [ServiceFilter(typeof(CustomAttribute))]
+        [Authorize(Policy = ReadUser)]
         [HttpGet]
         [Route("{userId}/detail")]
         public async Task<IActionResult> UserDetailByIdAsync(string userId)
@@ -507,7 +508,7 @@ namespace Promact.Oauth.Server.Controllers
        *        }
        *]
        */
-        [ServiceFilter(typeof(CustomAttribute))]
+        [Authorize(Policy = ReadUser)]
         [HttpGet]
         [Route("{userId}/role")]
         public async Task<IActionResult> GetUserRoleAsync(string userId)
@@ -543,7 +544,7 @@ namespace Promact.Oauth.Server.Controllers
         *        }
         *    ]
         */
-        [ServiceFilter(typeof(CustomAttribute))]
+        [Authorize(Policy = ReadUser)]
         [HttpGet]
         [Route("{userId}/teammembers")]
         public async Task<IActionResult> GetTeamMembersAsync(string userId)
@@ -654,7 +655,7 @@ namespace Promact.Oauth.Server.Controllers
         *      ]
         * }
         */
-        [ServiceFilter(typeof(CustomAttribute))]
+        [Authorize(Policy = ReadUser)]
         [HttpGet]
         [Route("{teamLeaderId}/project")]
         public async Task<IActionResult> GetProjectUsersByTeamLeaderIdAsync(string teamLeaderId)

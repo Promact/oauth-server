@@ -35,5 +35,10 @@ namespace Promact.Oauth.Server.Controllers
             }
             return RedirectToAction("Login", "Account");
         }
+
+        public IActionResult Error()
+        {
+            return View();
+        }
     }
 }

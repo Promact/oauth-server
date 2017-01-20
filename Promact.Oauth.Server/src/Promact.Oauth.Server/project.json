@@ -1,7 +1,27 @@
 {
   "userSecretsId": "aspnet-Promact.Oauth.Server-e6fc61da-3875-4c22-9458-d7652dbb0dcc",
 
-  "dependencies": {   
+  "dependencies": {
+    "Microsoft.AspNetCore.Razor.Tools": {
+      "version": "1.0.0-preview2-final",
+      "type": "build"
+    },
+    "IdentityServer4.EntityFramework": "1.0.0",
+    "IdentityServer4": "1.0.2",
+    "IdentityServer4.AspNetIdentity": "1.0.0",
+    "IdentityServer4.AccessTokenValidation": "1.0.2",
+    "Microsoft.EntityFrameworkCore.Tools": {
+      "version": "1.0.0-preview2-final",
+      "type": "build"
+    },
+    "Microsoft.VisualStudio.Web.CodeGeneration.Tools": {
+      "version": "1.0.0-preview2-final",
+      "type": "build"
+    },
+    "Microsoft.VisualStudio.Web.CodeGenerators.Mvc": {
+      "version": "1.0.0-preview2-final",
+      "type": "build"
+    },
     "System.Net.Mail": "1.0.0-rtm-00002",
     "NLog.Extensions.Logging": "1.0.0-*",
     "SendGrid.NetCore": "1.0.0-rtm-00002",

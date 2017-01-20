@@ -61,7 +61,7 @@
         string SlackUserName { get; }
         string EmailUser { get; }
         string NewPassword { get; }
-        string ConfirmPassword { get; }  
+        string ConfirmPassword { get; }
         string Employee { get; }
         string Admin { get; }
         string TeamLeader { get; }
@@ -98,5 +98,34 @@
         string SlackUserNameForTest { get; }
         string RandomString { get; }
         string PromactErpUrlForTest { get; }
+
+        #region IdentityServer4
+        string APIResourceName { get; }
+        string APIResourceDisplayName { get; }
+        string APIResourceApiSecrets { get; }
+        string APIResourceSlackUserIdScope { get; }
+        string APIResourceUserReadScope { get; }
+        string APIResourceProjectReadScope { get; }
+        string XContentTypeOptions { get; }
+        string Nosniff { get; }
+        string XFrameOptions { get; }
+        string Sameorigin { get; }
+        string ContentSecurityPolicy { get; }
+        string DefaultSrcSelf { get; }
+        string XContentSecurityPolicy { get; }
+        string No { get; }
+        string Yes { get; }
+        string NoScopesMatching { get; }
+        string InvalidClientId { get; }
+        string NoConsentRequestMatchingRequest { get; }
+
+        #region ConsentOptions
+        string OfflineAccessDisplayName { get; }
+        string OfflineAccessDescription { get; }
+        string MuchChooseOneErrorMessage { get; }
+        string InvalidSelectionErrorMessage { get; }
+        #endregion
+
+        #endregion
     }
 }
