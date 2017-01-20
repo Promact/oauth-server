@@ -1,16 +1,14 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Promact.Oauth.Server.Models.ApplicationClasses;
-using Promact.Oauth.Server.Data;
 using Promact.Oauth.Server.Repository.ProjectsRepository;
 using Promact.Oauth.Server.Models;
 using Microsoft.AspNetCore.Identity;
 using System;
-using Promact.Oauth.Server.Repository;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Promact.Oauth.Server.ExceptionHandler;
-using Microsoft.Extensions.Logging;
+using Promact.Oauth.Server.Constants;
 
 namespace Promact.Oauth.Server.Controllers
 {
@@ -18,7 +16,6 @@ namespace Promact.Oauth.Server.Controllers
     public class ProjectController : Controller
     {
         #region "Private Variable(s)"
-        private readonly PromactOauthDbContext _appDbContext;
         private readonly IProjectRepository _projectRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUserRepository _userRepository;
@@ -27,14 +24,11 @@ namespace Promact.Oauth.Server.Controllers
         #endregion
 
         #region "Constructor"
-        public ProjectController(PromactOauthDbContext appContext, IProjectRepository projectRepository,
-            UserManager<ApplicationUser> userManager, IUserRepository userRepository, ILogger<ProjectController> logger)
+        public ProjectController(IProjectRepository projectRepository,UserManager<ApplicationUser> userManager,IStringConstant stringConstant)
         {
             _projectRepository = projectRepository;
-            _appDbContext = appContext;
             _userManager = userManager;
-            _userRepository = userRepository;
-            _logger = logger;
+            _stringConstant = stringConstant;
         }
         #endregion
 
@@ -83,28 +77,20 @@ namespace Promact.Oauth.Server.Controllers
         [Route("")]
         public async Task<IActionResult> GetProjectsAsync()
         {
-
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            var isRoleExists = await _userManager.IsInRoleAsync(user, "Employee");
-            _logger.LogInformation("UserRole Employee  " + isRoleExists);
+            var isRoleExists = await _userManager.IsInRoleAsync(user,_stringConstant.Employee );
             if (isRoleExists)
             {
-                _logger.LogInformation("call project repository for User");
                 return Ok(await _projectRepository.GetAllProjectForUserAsync(user.Id));
             }
             else
             {
-                _logger.LogInformation("call project repository for projects");
                 return Ok(await _projectRepository.GetAllProjectsAsync());
             }
         }
 
-
-
-
-
         /**
-        * @api {get} api/project/:id Request Project information
+        * @api {get} api/project/:id 
         * @apiVersion 1.0.0
         * @apiName GetProjectByIdAsync
         * @apiGroup Project
@@ -294,7 +280,6 @@ namespace Promact.Oauth.Server.Controllers
         [Route("")]
         public async Task<IActionResult> AddProjectAsync([FromBody]ProjectAc project)
         {
-
             if (ModelState.IsValid)
             {
                 var createdBy = _userManager.GetUserId(User);
@@ -324,12 +309,14 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-        * @api {put} api/project 
+        * @api {put} api/project/:id 
         * @apiVersion 1.0.0
         * @apiName EditProjectAsync
         * @apiGroup Project
+        * @apiParam {id} project Id.
         * @apiParam {object} ProjectAc object 
         * @apiParamExample {json} Request-Example:
+        * "Id":"1",
         * {
         *   "Id":"1",
         *   "Name":"ProjectName",
@@ -396,7 +383,6 @@ namespace Promact.Oauth.Server.Controllers
         {
             try
             {
-
                 if (ModelState.IsValid)
                 {
                     var updatedBy = _userManager.GetUserId(User);
@@ -417,14 +403,14 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-        * @api {get} api/project/:name 
+        * @api {get} api/project/:slackChannelName 
         * @apiVersion 1.0.0
-        * @apiName GetProjectByGroupNameAsync
+        * @apiName GetProjectBySlackChannelNameAsync
         * @apiGroup Project
-        * @apiParam {string} name project Name
+        * @apiParam {string} SlackChannelName Slack Channel Name
         * @apiParamExample {json} Request-Example:
         * {
-        *   "Name":"ProjectName"
+        *   "slackChannelName":"SlackChannelName"
         * }      
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
@@ -445,12 +431,12 @@ namespace Promact.Oauth.Server.Controllers
         */
         [Authorize(Policy = ReadProject)]
         [HttpGet]
-        [Route("{name}")]
-        public async Task<IActionResult> GetProjectByGroupNameAsync(string name)
+        [Route("{slackChannelName}")]
+        public async Task<IActionResult> GetProjectBySlackChannelNameAsync(string slackChannelName)
         {
             try
             {
-                return Ok(await _projectRepository.GetProjectByGroupNameAsync(name));
+                return Ok(await _projectRepository.GetProjectBySlackChannelNameAsync(slackChannelName));
             }
             catch (ProjectNotFound)
             {
@@ -459,7 +445,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-      * @api {get} api/Project/list 
+      * @api {get} api/project/list 
       * @apiVersion 1.0.0
       * @apiName GetProjectList
       * @apiGroup Project  
@@ -484,7 +470,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-        * @api {get} api/Project/{projectId}/detail
+        * @api {get} api/project/:projectId/detail
         * @apiVersion 1.0.0
         * @apiName GetProjectDetail
         * @apiGroup Project
@@ -492,7 +478,7 @@ namespace Promact.Oauth.Server.Controllers
         * @apiParamExample {json} Request-Example:
         *      
         *        {
-        *             "id": "1"
+        *             "projectId": "1"
         *        }      
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 

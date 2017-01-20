@@ -6,7 +6,6 @@ using Xunit;
 using System;
 using Promact.Oauth.Server.Models;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Threading.Tasks;
 using Promact.Oauth.Server.Constants;
 using Promact.Oauth.Server.Repository;
