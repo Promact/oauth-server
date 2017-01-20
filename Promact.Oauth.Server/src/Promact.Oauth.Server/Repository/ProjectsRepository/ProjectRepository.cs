@@ -205,7 +205,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// <summary>
         /// Method to return the project details of the given slack channel name - JJ
         /// </summary>
-        /// <param name="slackChannelName">passed group name</param>
+        /// <param name="slackChannelName">passed slack channel name</param>
         /// <returns>object of project</returns>
         public async Task<ProjectAc> GetProjectBySlackChannelNameAsync(string slackChannelName)
         {
