@@ -56,9 +56,9 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                 var projectAc = _mapperContext.Map<Project, ProjectAc>(project);
                 projectAc.TeamLeader = userAc;
                 projectAc.CreatedBy = (await _userDataRepository.FirstAsync(x => x.Id == project.CreatedBy)).FirstName;
-                projectAc.CreatedDate = project.CreatedDateTime.ToString(_stringConstant.DateFormate);
+                projectAc.CreatedDate = project.CreatedDateTime;
                 projectAc.UpdatedBy = (await _userDataRepository.FirstOrDefaultAsync(x => x.Id == project.UpdatedBy))?.FirstName;
-                projectAc.UpdatedDate = project.UpdatedDateTime == null ? "" : Convert.ToDateTime(project.UpdatedDateTime).ToString(_stringConstant.DateFormate);
+                projectAc.UpdatedDate = project.UpdatedDateTime;
                 projectAcList.Add(projectAc);
             }
             return projectAcList;
@@ -277,7 +277,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                 List<ProjectUser> projectUsers = await _projectUserDataRepository.Fetch(x => x.ProjectId == project.Id).ToListAsync();
                 ProjectAc projectAc = _mapperContext.Map<Project, ProjectAc>(project);
                 projectAc.TeamLeader = teamLeader;
-                projectAc.CreatedDate = project.CreatedDateTime.ToString(_stringConstant.Format);
+                projectAc.CreatedDate = project.CreatedDateTime;
                 foreach (var projectUser in projectUsers)
                 {
                     ApplicationUser user = await _userDataRepository.FirstAsync(x => x.Id == projectUser.UserId);
@@ -305,7 +305,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                 teamLeader.Role = _stringConstant.TeamLeader;
                 IEnumerable<ProjectUser> projectUsers = await _projectUserDataRepository.Fetch(x => x.ProjectId == project.Id).ToListAsync();
                 ProjectAc projectAc = _mapperContext.Map<Project, ProjectAc>(project);
-                projectAc.CreatedDate = project.CreatedDateTime.ToString(_stringConstant.Format);
+                projectAc.CreatedDate = project.CreatedDateTime;
                 projectAc.TeamLeader = teamLeader;
                 List<UserAc> projectUserList = new List<UserAc>();
                 foreach (var projectUser in projectUsers)
