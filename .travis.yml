@@ -29,7 +29,7 @@ install:
 - ./configure
 - make
 - sudo make install
-- cd ../../
+- cd ../../Promact/promact-oauth-server
 - ls
 - pwd
 before_script:
