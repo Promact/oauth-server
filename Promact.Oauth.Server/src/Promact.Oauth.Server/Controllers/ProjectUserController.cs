@@ -8,11 +8,12 @@ using System.Threading.Tasks;
 
 namespace Promact.Oauth.Server.Controllers
 {
-    [Authorize("ReadUser")]
+    [Authorize(Policy = ReadUser)]
     [Route("api/[controller]")]
     public class ProjectUserController : BaseController
     {
         private readonly IUserRepository _userRepository;
+        public const string ReadUser = "ReadUser";
         public ProjectUserController(IUserRepository userRepository)
         {
             _userRepository = userRepository;

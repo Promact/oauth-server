@@ -100,7 +100,6 @@
         string PromactErpUrlForTest { get; }
 
         #region IdentityServer4
-        string ReadUser { get; }
         string APIResourceName { get; }
         string APIResourceDisplayName { get; }
         string APIResourceApiSecrets { get; }

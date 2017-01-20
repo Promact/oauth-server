@@ -142,14 +142,6 @@
         public string PromactErpUrlForTest { get { return "http://www.example.com"; } }
 
         #region IdentityServer4
-        public string ReadUser
-        {
-            get
-            {
-                return "ReadUser";
-            }
-        }
-
         public string APIResourceName
         {
             get

@@ -16,11 +16,11 @@ namespace Promact.Oauth.Server.Services
         private readonly IClientStore _clientStore;
         private readonly IResourceStore _resourceStore;
         private readonly IIdentityServerInteractionService _interaction;
-        private readonly ILogger _logger;
+        private readonly ILogger<ConsentService> _logger;
         private readonly IStringConstant _stringConstant;
 
         public ConsentService(IIdentityServerInteractionService interaction, IClientStore clientStore,
-            IResourceStore resourceStore, ILogger logger, IStringConstant stringConstant)
+            IResourceStore resourceStore, ILogger<ConsentService> logger, IStringConstant stringConstant)
         {
             _interaction = interaction;
             _clientStore = clientStore;

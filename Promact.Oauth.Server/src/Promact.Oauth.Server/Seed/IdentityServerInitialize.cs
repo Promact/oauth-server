@@ -3,7 +3,6 @@ using IdentityServer4.EntityFramework.Mappers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Promact.Oauth.Server.Configuration;
 using Promact.Oauth.Server.Configuration.DefaultAPIResource;
 using Promact.Oauth.Server.Configuration.DefaultIdentityResource;
 using System.Linq;
@@ -44,14 +43,6 @@ namespace Promact.Oauth.Server.Seed
                     foreach (var resource in defaultIdentityResource.GetIdentityResources())
                     {
                         context.IdentityResources.Add(resource.ToEntity());
-                    }
-                    context.SaveChanges();
-                }
-                if (!context.Clients.Any())
-                {
-                    foreach (var resource in RandomClient.AddRandomClients())
-                    {
-                        context.Clients.Add(resource.ToEntity());
                     }
                     context.SaveChanges();
                 }

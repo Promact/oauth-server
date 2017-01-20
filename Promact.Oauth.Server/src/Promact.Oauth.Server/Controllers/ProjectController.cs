@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using Promact.Oauth.Server.Repository;
 using System.Threading.Tasks;
-using Promact.Oauth.Server.Services;
 using Microsoft.AspNetCore.Authorization;
 using Promact.Oauth.Server.ExceptionHandler;
 using Microsoft.Extensions.Logging;
@@ -24,6 +23,7 @@ namespace Promact.Oauth.Server.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUserRepository _userRepository;
         private readonly ILogger<ProjectController> _logger;
+        public const string ReadProject = "ReadProject";
         #endregion
 
         #region "Constructor"
@@ -443,7 +443,7 @@ namespace Promact.Oauth.Server.Controllers
         *   "error": "ProjectNotFound"
         * }
         */
-        [Authorize("ReadProject")]
+        [Authorize(Policy = ReadProject)]
         [HttpGet]
         [Route("{name}")]
         public async Task<IActionResult> GetProjectByGroupNameAsync(string name)
@@ -475,7 +475,7 @@ namespace Promact.Oauth.Server.Controllers
       *  }
       * ]
       */
-        [Authorize("ReadProject")]
+        [Authorize(Policy = ReadProject)]
         [HttpGet]
         [Route("list")]
         public async Task<IEnumerable<ProjectAc>> AllProjectsAsync()
@@ -510,7 +510,7 @@ namespace Promact.Oauth.Server.Controllers
         *   "error": "ProjectNotFound"
         * }
         */
-        [Authorize("ReadProject")]
+        [Authorize(Policy = ReadProject)]
         [HttpGet]
         [Route("{projectId:int}/detail")]
         public async Task<IActionResult> ProjectDetailsAsync(int projectId)
