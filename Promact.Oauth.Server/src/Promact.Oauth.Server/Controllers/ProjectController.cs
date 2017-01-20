@@ -83,25 +83,25 @@ namespace Promact.Oauth.Server.Controllers
         [Route("")]
         public async Task<IActionResult> GetProjectsAsync()
         {
-           
-                var user = await _userManager.FindByNameAsync(User.Identity.Name);
-                var isRoleExists = await _userManager.IsInRoleAsync(user, "Employee");
-                _logger.LogInformation("UserRole Employee  " + isRoleExists);
-                if (isRoleExists)
-                {
-                    _logger.LogInformation("call project repository for User");
-                    return Ok(await _projectRepository.GetAllProjectForUserAsync(user.Id));
-                }
-                else
-                {
-                    _logger.LogInformation("call project repository for projects");
-                    return Ok(await _projectRepository.GetAllProjectsAsync());
-                }
+
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            var isRoleExists = await _userManager.IsInRoleAsync(user, "Employee");
+            _logger.LogInformation("UserRole Employee  " + isRoleExists);
+            if (isRoleExists)
+            {
+                _logger.LogInformation("call project repository for User");
+                return Ok(await _projectRepository.GetAllProjectForUserAsync(user.Id));
             }
-            
+            else
+            {
+                _logger.LogInformation("call project repository for projects");
+                return Ok(await _projectRepository.GetAllProjectsAsync());
+            }
+        }
 
 
-        
+
+
 
         /**
         * @api {get} api/project/:id Request Project information
@@ -186,7 +186,7 @@ namespace Promact.Oauth.Server.Controllers
         {
             try
             {
-               return Ok(await _projectRepository.GetProjectByIdAsync(id));
+                return Ok(await _projectRepository.GetProjectByIdAsync(id));
             }
             catch (ProjectNotFound)
             {
@@ -294,7 +294,7 @@ namespace Promact.Oauth.Server.Controllers
         [Route("")]
         public async Task<IActionResult> AddProjectAsync([FromBody]ProjectAc project)
         {
-            
+
             if (ModelState.IsValid)
             {
                 var createdBy = _userManager.GetUserId(User);
@@ -392,11 +392,11 @@ namespace Promact.Oauth.Server.Controllers
         [Authorize]
         [HttpPut]
         [Route("{id:int}")]
-        public async Task<IActionResult> EditProjectAsync(int id,[FromBody]ProjectAc project)
+        public async Task<IActionResult> EditProjectAsync(int id, [FromBody]ProjectAc project)
         {
             try
             {
-                
+
                 if (ModelState.IsValid)
                 {
                     var updatedBy = _userManager.GetUserId(User);
@@ -515,15 +515,7 @@ namespace Promact.Oauth.Server.Controllers
         [Route("{projectId:int}/detail")]
         public async Task<IActionResult> ProjectDetailsAsync(int projectId)
         {
-            try
-            {
-                return Ok(await _projectRepository.GetProjectDetailsAsync(projectId));
-            }
-            catch (ProjectNotFound)
-            {
-                _logger.LogInformation("No project with that id exists");
-                return NotFound();
-            }
+            return Ok(await _projectRepository.GetProjectDetailsAsync(projectId));
         }
         #endregion
     }
