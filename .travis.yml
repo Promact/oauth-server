@@ -16,10 +16,11 @@ before_install:
 - export DISPLAY=:99.0
 - if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
 install:
-- pwd 
-- ls
 - npm i -g typescript typings
 - dotnet restore
+- pwd 
+- ls
+- ls -la ~/
 - chmod +x ~/.nuget/packages/xunit.runner.console/2.1.0/tools/xunit.console.exe
 - sudo apt-get install gtk-sharp2
 - curl -sS https://api.nuget.org/packages/mono.cecil.0.9.5.4.nupkg > /tmp/mono.cecil.0.9.5.4.nupkg.zip
