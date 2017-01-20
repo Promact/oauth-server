@@ -15,7 +15,6 @@ import { LoaderService } from '../../shared/loader.service';
 import { MockRouter } from '../../shared/mocks/mock.router';
 import { RouterLinkStubDirective } from '../../shared/mocks/mock.routerLink';
 import { Observable } from 'rxjs/Observable';
-import { StringConstant } from '../../shared/stringconstant';
 
 let comp: UserListComponent;
 let fixture: ComponentFixture<UserListComponent>;

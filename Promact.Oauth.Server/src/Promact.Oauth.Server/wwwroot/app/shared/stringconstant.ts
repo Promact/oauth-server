@@ -1,6 +1,5 @@
 ﻿import { Injectable } from '@angular/core';
 
-
 @Injectable()
 export class StringConstant {
     constructor() { }
@@ -27,5 +26,4 @@ export class StringConstant {
     newPassword = 'test123';
     oldPassword = 'test';
     confirmPassword = 'test1234';
-    
 }
