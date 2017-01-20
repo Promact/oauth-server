@@ -18,8 +18,7 @@ namespace Promact.Oauth.Server.Controllers
         #region "Private Variable(s)"
         private readonly IProjectRepository _projectRepository;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IUserRepository _userRepository;
-        private readonly ILogger<ProjectController> _logger;
+        private readonly IStringConstant _stringConstant;
         public const string ReadProject = "ReadProject";
         #endregion
 
