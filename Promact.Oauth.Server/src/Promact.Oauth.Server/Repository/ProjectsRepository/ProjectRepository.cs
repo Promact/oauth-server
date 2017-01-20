@@ -98,13 +98,12 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// <returns>project infromation </returns>
         public async Task<ProjectAc> GetProjectByIdAsync(int id)
         {
-            List<UserAc> userAcList = new List<UserAc>();
-            var project = await _projectDataRepository.FirstOrDefaultAsync(x => x.Id == id);
+           var project = await _projectDataRepository.FirstOrDefaultAsync(x => x.Id == id);
             if (project != null)
             {
                 var userIdList = await _projectUserDataRepository.Fetch(y => y.ProjectId == project.Id).Select(x => x.UserId).ToListAsync();
                 var userList = await _userDataRepository.Fetch(y => userIdList.Contains(y.Id)).OrderBy(y => y.FirstName).ToListAsync();
-                userAcList = _mapperContext.Map<List<ApplicationUser>, List<UserAc>>(userList);
+                List<UserAc> userAcList = _mapperContext.Map<List<ApplicationUser>, List<UserAc>>(userList);
                 var projectAc = _mapperContext.Map<Project, ProjectAc>(project);
                 if (!string.IsNullOrEmpty(project.TeamLeaderId))
                 {
@@ -210,10 +209,9 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         public async Task<ProjectAc> GetProjectBySlackChannelNameAsync(string slackChannelName)
         {
             Project project = await _projectDataRepository.FirstOrDefaultAsync(x => x.SlackChannelName == slackChannelName);
-            ProjectAc projectAc = new ProjectAc();
             if (project != null)
             {
-                projectAc = _mapperContext.Map<Project, ProjectAc>(project);
+                ProjectAc projectAc = _mapperContext.Map<Project, ProjectAc>(project);
                 return projectAc;
             }
             else
@@ -231,7 +229,6 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         public async Task<IEnumerable<ProjectAc>> GetAllProjectForUserAsync(string userId)
         {
             List<ProjectAc> projectAcList = new List<ProjectAc>();
-            ProjectAc projectAc = new ProjectAc();
             //list of project where specific user are team leader.
             var projects = await _projectDataRepository.Fetch(x => x.TeamLeaderId == userId).ToListAsync();
             if (projects != null)
@@ -240,7 +237,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                 {
                     var teamLeader = await _userManager.FindByIdAsync(project.TeamLeaderId);
                     var projectMapper = _mapperContext.Map<ApplicationUser, UserAc>(teamLeader);
-                    projectAc = _mapperContext.Map<Project, ProjectAc>(project);
+                    ProjectAc projectAc = _mapperContext.Map<Project, ProjectAc>(project);
                     projectAc.TeamLeader = projectMapper;
                     projectAcList.Add(projectAc);
                 }
@@ -249,11 +246,10 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             var projectUser = await _projectUserDataRepository.Fetch(x => x.UserId == userId).ToListAsync();
             foreach (var project in projectUser)
             {
-                projectAc = new ProjectAc();
                 var projectDetails = await _projectDataRepository.FirstAsync(x => x.Id == project.ProjectId);
                 var teamLeader = await _userManager.FindByIdAsync(projectDetails.TeamLeaderId);
                 var projectMapper = _mapperContext.Map<ApplicationUser, UserAc>(teamLeader);
-                projectAc = _mapperContext.Map<Project, ProjectAc>(projectDetails);
+                ProjectAc projectAc = _mapperContext.Map<Project, ProjectAc>(projectDetails);
                 projectAc.TeamLeader = projectMapper;
                 projectAcList.Add(projectAc);
             }
