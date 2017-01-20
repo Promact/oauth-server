@@ -29,7 +29,6 @@ install:
 - ./configure
 - make
 - sudo make install
-- cd ../../Promact.Oauth.Server
 before_script:
 - sh -e /etc/init.d/xvfb start
 solution: "./Promact.Oauth.Server/Promact.Oauth.Server.sln"
