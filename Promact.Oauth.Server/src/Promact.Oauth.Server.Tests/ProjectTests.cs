@@ -221,58 +221,7 @@ namespace Promact.Oauth.Server.Tests
             Assert.Throws<AggregateException>(() => _projectRepository.GetProjectByGroupNameAsync("test").Result);
         }
 
-        private ProjectAc MockOfProjectAc()
-        {
-            ProjectAc projectAc = new ProjectAc();
-            projectAc.Name = _stringConstant.Name;
-            projectAc.SlackChannelName = _stringConstant.SlackChannelName;
-            projectAc.IsActive = _stringConstant.IsActive;
-            projectAc.TeamLeader = new UserAc { FirstName = _stringConstant.FirstName };
-            projectAc.TeamLeaderId = _stringConstant.TeamLeaderId;
-            projectAc.CreatedBy = _stringConstant.CreatedBy;
-            return projectAc;
-        }
-
-        private async Task<int> GetProjectMockData()
-        {
-            ProjectAc projectac = new ProjectAc();
-            projectac.Name = _stringConstant.Name;
-            projectac.SlackChannelName = _stringConstant.SlackChannelName;
-            projectac.IsActive = _stringConstant.IsActive;
-            projectac.CreatedBy = _stringConstant.CreatedBy;
-            return await _projectRepository.AddProjectAsync(projectac, _stringConstant.CreatedBy);
-
-        }
-
-        private async Task GetProjectUserMockData()
-        {
-            ProjectUser projectUser = new ProjectUser()
-            {
-                ProjectId = 1,
-                Project = new Project { Name = _stringConstant.Name },
-                UserId = _stringConstant.UserId,
-                User = new ApplicationUser { FirstName = _stringConstant.FirstName }
-            };
-            await _projectRepository.AddUserProjectAsync(projectUser);
-        }
-
-        private List<UserAc> GetUserListMockData()
-        {
-            List<UserAc> userlist = new List<UserAc>();
-            UserAc user = new UserAc()
-            { FirstName = _stringConstant.FirstName };
-            UserAc userSecound = new UserAc()
-            { Id = _stringConstant.UserIdSecond, FirstName = _stringConstant.FirstNameSecond };
-            UserAc userThird = new UserAc()
-            { Id = _stringConstant.UserIdThird, FirstName = _stringConstant.FirstNameThird };
-            userlist.Add(user);
-            userlist.Add(userSecound);
-            userlist.Add(userThird);
-            return userlist;
-
-        }
-
-        /// <summary>
+         /// <summary>
         /// Test case to check GetProjectsWithUsers 
         /// </summary>
         [Fact, Trait("Category", "Required")]
@@ -312,6 +261,75 @@ namespace Promact.Oauth.Server.Tests
             Assert.Equal(projectDetails.Name, _stringConstant.Name);
         }
 
+        #endregion
+
+        #region private methods
+        /// <summary>
+        /// mock data of project
+        /// </summary>
+        /// <returns></returns>
+        private async Task<int> GetProjectMockData()
+        {
+            ProjectAc projectac = new ProjectAc();
+            projectac.Name = _stringConstant.Name;
+            projectac.SlackChannelName = _stringConstant.SlackChannelName;
+            projectac.IsActive = _stringConstant.IsActive;
+            projectac.CreatedBy = _stringConstant.CreatedBy;
+            return await _projectRepository.AddProjectAsync(projectac, _stringConstant.CreatedBy);
+
+        }
+
+        /// <summary>
+        /// mock data of projectuser.
+        /// </summary>
+        /// <returns></returns>
+        private async Task GetProjectUserMockData()
+        {
+            ProjectUser projectUser = new ProjectUser()
+            {
+                ProjectId = 1,
+                Project = new Project { Name = _stringConstant.Name },
+                UserId = _stringConstant.UserId,
+                User = new ApplicationUser { FirstName = _stringConstant.FirstName }
+            };
+            await _projectRepository.AddUserProjectAsync(projectUser);
+        }
+
+        /// <summary>
+        /// mock of users data.
+        /// </summary>
+        /// <returns></returns>
+        private List<UserAc> GetUserListMockData()
+        {
+            List<UserAc> userlist = new List<UserAc>();
+            UserAc user = new UserAc()
+            { FirstName = _stringConstant.FirstName };
+            UserAc userSecound = new UserAc()
+            { Id = _stringConstant.UserIdSecond, FirstName = _stringConstant.FirstNameSecond };
+            UserAc userThird = new UserAc()
+            { Id = _stringConstant.UserIdThird, FirstName = _stringConstant.FirstNameThird };
+            userlist.Add(user);
+            userlist.Add(userSecound);
+            userlist.Add(userThird);
+            return userlist;
+
+        }
+
+        /// <summary>
+        /// mock of project ac
+        /// </summary>
+        /// <returns></returns>
+        private ProjectAc MockOfProjectAc()
+        {
+            ProjectAc projectAc = new ProjectAc();
+            projectAc.Name = _stringConstant.Name;
+            projectAc.SlackChannelName = _stringConstant.SlackChannelName;
+            projectAc.IsActive = _stringConstant.IsActive;
+            projectAc.TeamLeader = new UserAc { FirstName = _stringConstant.FirstName };
+            projectAc.TeamLeaderId = _stringConstant.TeamLeaderId;
+            projectAc.CreatedBy = _stringConstant.CreatedBy;
+            return projectAc;
+        }
         #endregion
     }
 }
