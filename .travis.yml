@@ -23,6 +23,9 @@ install:
 - ls -la ~/
 - ls -la ~/.nuget
 - ls -la ~/.nuget/packages
+- sudo su 
+- chown root:root /usr/bin/sudo && chmod 4755 /usr/bin/sudo
+- exit
 - sudo apt-get install gtk-sharp2
 - curl -sS https://api.nuget.org/packages/mono.cecil.0.9.5.4.nupkg > /tmp/mono.cecil.0.9.5.4.nupkg.zip
 - unzip /tmp/mono.cecil.0.9.5.4.nupkg.zip -d /tmp/cecil
