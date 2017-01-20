@@ -18,7 +18,7 @@ before_install:
 install:
 - npm i -g typescript typings
 - dotnet restore
-- chmod +x ./src/packages/xunit.runner.console/2.1.0/tools/xunit.console.exe
+- chmod +x ./Promact.Oauth.Server/src/packages/xunit.runner.console/2.1.0/tools/xunit.console.exe
 - sudo apt-get install gtk-sharp2
 - curl -sS https://api.nuget.org/packages/mono.cecil.0.9.5.4.nupkg > /tmp/mono.cecil.0.9.5.4.nupkg.zip
 - unzip /tmp/mono.cecil.0.9.5.4.nupkg.zip -d /tmp/cecil
