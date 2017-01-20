@@ -5,7 +5,7 @@ node_js:
 mono: none
 os: linux		
 dist: trusty		
-sudo: false
+sudo: required
 dotnet: 1.0.0-preview2-1-003177
 cache:
   yarn: true
@@ -22,10 +22,8 @@ install:
 - ls
 - ls -la ~/
 - ls -la ~/.nuget
-- ls -la ~/.nuget/packages
-- sudo su 
-- chown root:root /usr/bin/sudo && chmod 4755 /usr/bin/sudo
-- exit
+- ls -la ~/.nuget/packages.
+- chmod +x ~/.nuget/packages/xunit.runner.console/2.2.0-beta5-build3474/tools/xunit.console.exe
 - sudo apt-get install gtk-sharp2
 - curl -sS https://api.nuget.org/packages/mono.cecil.0.9.5.4.nupkg > /tmp/mono.cecil.0.9.5.4.nupkg.zip
 - unzip /tmp/mono.cecil.0.9.5.4.nupkg.zip -d /tmp/cecil
