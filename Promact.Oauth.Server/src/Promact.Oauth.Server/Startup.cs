@@ -188,7 +188,7 @@ namespace Promact.Oauth.Server
             // Allowing authentication for API resource of read-only with limit scope
             app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
             {
-                Authority = appSetting.PromactOAuthUrl,
+                Authority = appSetting.PromactOAuthUrl ?? "https://oauth.promactinfo.com",
                 RequireHttpsMetadata = false,
                 ApiName = "read-only",
                 AllowedScopes = new List<string>()
