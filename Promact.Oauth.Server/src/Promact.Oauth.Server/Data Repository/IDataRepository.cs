@@ -78,12 +78,15 @@ namespace Promact.Oauth.Server.Data_Repository
         /// <returns></returns>
         T First(Expression<Func<T, bool>> predicate);
 
+
+
         /// <summary>
         /// Method fetches the first record based on the supplied function.
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
         Task<T> FirstAsync(Expression<Func<T, bool>> predicate);
+
         /// <summary>
         /// Fetches the Single entity based on the function.
         /// </summary>

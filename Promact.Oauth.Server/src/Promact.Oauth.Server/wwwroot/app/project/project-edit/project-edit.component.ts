@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, EventEmitter, Output } from "@angular/core";
+import { Component, OnInit, EventEmitter, Output } from "@angular/core";
 import { Location } from "@angular/common";
 import { ProjectService } from '../project.service';
 import { ProjectModel } from '../project.model';
@@ -34,27 +34,12 @@ export class ProjectEditComponent implements OnInit {
             let id = +params['id']; // (+) converts string 'id' to a number
             this.service.getProject(id).subscribe(project => {
                 this.project = project;
-                //this.project.applicationUsers = project.applicationUsers;
                 this.service.getUsers().subscribe(listUsers => {
                     this.project.listUsers = listUsers;
-                    if (!this.project.applicationUsers)
-                        this.project.applicationUsers = new Array<UserModel>();
-                    for (let i = 0; i < this.project.listUsers.length; i++) {
-                        for (let j = 0; j < this.project.applicationUsers.length; j++) {
-                            if (this.project.listUsers[i].Id === this.project.applicationUsers[j].Id) {
-                                this.project.applicationUsers[j].Email = this.project.listUsers[i].Email;
-                                this.project.applicationUsers[j].IsActive = this.project.listUsers[i].IsActive;
-                                this.project.applicationUsers[j].LastName = this.project.listUsers[i].LastName;
-                                this.project.applicationUsers[j].UserName = this.project.listUsers[i].UserName;
-                                this.project.applicationUsers[j].UniqueName = this.project.listUsers[i].UniqueName;
-                                this.project.applicationUsers[j].NumberOfCasualLeave = this.project.listUsers[i].NumberOfCasualLeave;
-                                this.project.applicationUsers[j].NumberOfSickLeave = this.project.listUsers[i].NumberOfSickLeave;
-                                this.project.applicationUsers[j].JoiningDate = this.project.listUsers[i].JoiningDate;
-                                this.project.applicationUsers[j].SlackUserName = this.project.listUsers[i].SlackUserName;
-                            }
-                        }
-                    }
                 });
+            }, err => {
+                this.toast.show("Project dose not exists.");
+                this.loader.loader = false;
             });
         });
     }
