@@ -21,38 +21,19 @@ namespace Promact.Oauth.Server.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 var user = await _userManager.FindByNameAsync(User.Identity.Name);
-                UserRoleAc userRole = new UserRoleAc();
-                if (User.IsInRole(_stringConstant.RoleAdmin))
+                UserRoleAc userRole;
+                if (User.IsInRole(_stringConstant.Admin))
                 {
-                    userRole.Role = _stringConstant.RoleAdmin;
-                    userRole.UserId = user.Id;
-                    ViewData["UserRole"] = userRole;
+                    userRole = new UserRoleAc(user.Id, user.Email, user.FirstName, _stringConstant.Admin);
                 }
                 else
                 {
-                    userRole.Role = _stringConstant.RoleEmployee;
-                    userRole.UserId = user.Id;
-                    ViewData["UserRole"] = userRole;
-                    
-
+                    userRole = new UserRoleAc(user.Id, user.Email, user.FirstName, _stringConstant.Employee);
                 }
-                    return View("Index");
+                ViewData["UserRole"] = userRole;
+                return View("Index");
             }
             return RedirectToAction("Login", "Account");
-        }
-
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Contact page";
-
-            return View();
         }
 
         public IActionResult Error()

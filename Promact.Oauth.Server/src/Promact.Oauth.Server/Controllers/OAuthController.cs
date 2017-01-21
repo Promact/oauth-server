@@ -61,17 +61,8 @@ namespace Promact.Oauth.Server.Controllers
                 var redirectUrl = string.Format(_stringConstant.OAuthExternalLoginUrl, _appSettingUtil.Value.PromactOAuthUrl, login.ClientId);
                 if (ModelState.IsValid)
                 {
-                    var result = await _signInManager.PasswordSignInAsync(login.Email, login.Password, false, lockoutOnFailure: false);
-                    if (result.Succeeded)
-                    {
-                        redirectUrl = await _oAuthRepository.UserNotAlreadyLoginAsync(login);
-                    }
-                    else
-                    {
-                        redirectUrl = string.Format(_stringConstant.OAuthExternalLoginUrl, _appSettingUtil.Value.PromactOAuthUrl, login.ClientId);
-                    }
+                    redirectUrl = await _oAuthRepository.UserNotAlreadyLoginAsync(login);
                 }
-                //ModelState.AddModelError(string.Empty, _stringConstant.InvalidLogin);
                 return Redirect(redirectUrl);
             }
             catch (HttpRequestException ex)

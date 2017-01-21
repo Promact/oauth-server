@@ -10,7 +10,7 @@ var gulp = require("gulp"),
     sysBuilder = require('systemjs-builder'),
     remapIstanbul = require('remap-istanbul'),
     Server = require('karma').Server,
-    tslint = require('gulp-tslint');
+    tslint = require('gulp-tslint');    
    
 
 var paths = {
@@ -24,6 +24,7 @@ paths.minCss = paths.webroot + "css/**/*.min.css";
 paths.concatJsDest = paths.webroot + "js/site.min.js";
 paths.concatCssDest = paths.webroot + "css/site.min.css";
 paths.systemConfig = paths.webroot + "systemjs.config.js";
+
 
 gulp.task("copytowwwroot", function () {
     var environment = {
@@ -134,10 +135,10 @@ gulp.task('coverage', function () {
     .pipe(gulp.dest('./coverage'));
 });
 
-gulp.task("tslint", () =>
+gulp.task("tslint", function(){
   gulp.src("./wwwroot/app/**/*.ts")
         .pipe(tslint({ configuration: "./tslint.json" }))
         .pipe(tslint({formatter: "prose"}))
-        .pipe(tslint.report({emitError: false})))
-
+		.pipe(tslint.report({emitError: true}))
+});
 

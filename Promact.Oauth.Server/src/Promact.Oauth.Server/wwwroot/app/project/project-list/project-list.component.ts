@@ -6,6 +6,7 @@ import { Md2Toast } from 'md2';
 import { LoginService } from '../../login.service';
 import { LoaderService } from '../../shared/loader.service';
 import { UserRole } from "../../shared/userrole.model";
+import { DatePipe } from '@angular/common';
 
 
 @Component({
@@ -26,6 +27,11 @@ export class ProjectListComponent implements OnInit {
         this.loader.loader = true;
         this.projectService.getProjects().subscribe((projects) => {
             this.projects = projects;
+            let datePipe = new DatePipe("medium");
+            this.projects.forEach(project => {
+                project.createdOns = datePipe.transform(project.createdDate, "dd-MM-yyyy");
+                project.updatedOns = datePipe.transform(project.updatedDate, "dd-MM-yyyy");
+            });
             this.loader.loader = false;
         }, err => {
             this.toast.show('Project list is empty.');

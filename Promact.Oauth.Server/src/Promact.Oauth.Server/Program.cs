@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Microsoft.AspNetCore.Hosting;
 
 namespace Promact.Oauth.Server
@@ -6,7 +7,7 @@ namespace Promact.Oauth.Server
     public static class Program
     {
         public static void Main(string[] args)
-        {
+        {            
             var host = new WebHostBuilder()
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())

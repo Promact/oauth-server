@@ -17,48 +17,52 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         Task<int> AddProjectAsync(ProjectAc newProject,string createdBy);
 
         /// <summary>
-        /// Adds UserId and ProjectId in UserProject table
+        ///This method to add user id and project id in userproject table
         /// </summary>
-        /// <param name="newProjectUser"></param>ProjectId and UserId information that need to be added
+        /// <param name="newProjectUser">projectuser object</param>
         Task AddUserProjectAsync(ProjectUser newUserProject);
 
         /// <summary>
-        /// Getting the list of all projects
+        /// This method getting the list of all projects
         /// </summary>
-        /// <returns></returns>List of Projects
+        /// <returns>list of projects</returns>
         Task<IEnumerable<ProjectAc>> GetAllProjectsAsync();
 
         /// <summary>
         /// Get the Project details by project id. 
         /// </summary>
-        /// <param name="id"></param>Project id that need to be featch the Project and list of users
+        /// <param name="id">project id</param> 
         /// <returns></returns>Project and User/Users infromation 
         Task<ProjectAc> GetProjectByIdAsync(int id);
 
         /// <summary>
-        /// Should be update Project ,Team leader and Team member information. 
+        /// This method to update project information 
         /// </summary>
-        /// <param name="editProject"></param>Updated information in editProject Parmeter
+        /// <param name="id">project id</param> 
+        /// <param name="editProject">updated project object</param> 
+        /// <param name="updatedBy">passed id of user who has update this project</param>
+        /// <returns>project id</returns>
         Task<int> EditProjectAsync(int id,ProjectAc editProject,string updatedBy);
 
         /// <summary>
-        /// Check Project and SlackChannelName is already exists or not 
+        /// this method to check Project and SlackChannelName is already exists or not 
         /// </summary>
-        /// <param name="project"></param> pass the project parameter
+        /// <param name="project">projectAc object</param> 
         /// <returns>projectAc object</returns>
         Task<ProjectAc> CheckDuplicateProjectAsync(ProjectAc project);
 
         /// <summary>
-        /// Fetches the project details of the given GroupName
+        /// Method to return the project details of the given slack channel name - JJ
         /// </summary>
-        /// <param name="GroupName"></param>
-        /// <returns>object of ProjectAc</returns>
-        Task<ProjectAc> GetProjectByGroupNameAsync(string GroupName);
-        
+        /// <param name="slackChannelName">passed slack channel name</param>
+        /// <returns>object of project</returns>
+        Task<ProjectAc> GetProjectBySlackChannelNameAsync(string slackChannelName);
+
         /// <summary>
-        /// Method to get list of project in which current user is envolved
+        /// This method to return all project for specific user
         /// </summary>
-        /// <returns></returns>
+        /// <param name="userId">passed login user id</param>
+        /// <returns>project information</returns>
         Task<IEnumerable<ProjectAc>> GetAllProjectForUserAsync(string userId);
 
         /// <summary>
@@ -68,10 +72,10 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         Task<IList<ProjectAc>> GetProjectsWithUsersAsync();
 
         /// <summary>
-        /// Method to return project details by using projectId
+        /// Method to return project details by using projectId - GA
         /// </summary>
-        /// <param name="projectId"></param>
-        /// <returns>Project details along with users</returns>
+        /// <param name="projectId">passed project Id</param>
+        /// <returns>project details along with users</returns>
         Task<ProjectAc> GetProjectDetailsAsync(int projectId);
 
     }

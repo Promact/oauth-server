@@ -18,8 +18,8 @@
         public string CallbackUrl { get { return "https://promact.slack.com/messages/@roshni/"; } }
         public string CreatedBy { get { return "Ankit"; } }
         public string UpdateBy { get { return "Roshni"; } }
-        public string ATOZ0TO9 { get { return "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"; } }
-        public string ATOZaTOz0TO9 { get { return "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"; } }
+        public string CapitalAlphaNumericString { get { return "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"; } }
+        public string AlphaNumericString { get { return "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"; } }
         public string EmailNotExists { get { return "Email does not exist"; } }
         public string ForgotPassword { get { return "Forgot Password"; } }
         public string LoginCredentials { get { return "Login Credentials"; } }
@@ -27,7 +27,7 @@
         public string ResetPasswordLink { get { return "${{RestPassWordLink}}$"; } }
         public string ResertPasswordUserName { get { return "${{Username}}$"; } }
         public string ForgotPasswordTemplateFolderPath { get { return "\\Template\\ForgotPassword.html"; } }
-        public string UserDetialTemplateFolderPath { get { return "\\Template\\UserDetial.html"; } }
+        public string UserDetialTemplateFolderPath { get { return "Template\\UserDetial.html"; } }
         public string From { get { return "From"; } }
         public string Password { get { return "Password"; } }
         public string Host { get { return "Host"; } }
@@ -36,10 +36,8 @@
         public string Port { get { return "Port"; } }
 
         public string UserEmail { get { return "${{Email}}$"; } }
-
+        public string SlackUserNameForTest { get { return "SlackTest"; } }
         public string UserPassword { get { return "${{Password}}$"; } }
-        public string DefaultUserPassword { get { return "User@123"; } }
-
         public string Name { get { return "Project Name"; } }
         public string EditName { get { return "Project Name Edit"; } }
         public string SlackChannelName { get { return "Slack Channel Name"; } }
@@ -63,11 +61,9 @@
         public string EmailUser { get { return "testUsers@promactinfo.com"; } }
         public string NewPassword { get { return "User@1"; } }
         public string ConfirmPassword { get { return "User@1"; } }
-        public string UpadteFirstName { get { return "Updated User"; } }
         public string ErpAuthorizeUrl { get { return "/Home/SlackAuthorize"; } }
         public string InCorrectSlackName { get { return "Incorrect Slack Username. Please contact your administrator to edit your Slack Name in Promact OAuth server."; } }
         public string Message { get { return "?message="; } }
-        public string UpdateSlackUserName { get { return "Updated test"; } }
         public string OAuthExternalLoginUrl { get { return "{0}/OAuth/ExternalLogin?clientId={1}"; } }
         public string Employee { get { return "Employee"; } }
         public string Admin { get { return "Admin"; } }
@@ -84,16 +80,13 @@
         public string RawEmailIdForTest { get { return "siddhartha@promactinfo.com"; } }
         public string RawFirstNameForTest { get { return "Siddhartha"; } }
         public string RawLastNameForTest { get { return "Shaw"; } }
-        public string RoleEmployee { get { return "Employee"; } }
-        public string RoleAdmin { get { return "Admin"; } }
-        public string RoleTeamLeader { get { return "TeamLeader"; } }
         public string OldPassword { get { return "User@123"; } }
         public string Url { get { return "Url"; } }
         public string Format { get { return "yyyy-MM-dd"; } }
         public string DateFormate { get { return "dd'/'MM'/'yyyy"; } }
         public string TeamLeaderNotAssign { get { return "Not Assigned"; } }
         public string DomainAddress { get { return "@promactinfo.com"; } }
-        public string UserSlackId { get { return "U0HJ49KJ4"; } }
+        public string SlackUserId { get { return "U0HJ49KJ4"; } }
         public string GetAppDetailsFromClientAsyncResponse {
             get
             {
@@ -142,5 +135,189 @@
         }
         public string SetSmtpUnSecure { get { return "unsecured"; } }
         public string SetSmtpSSL { get { return "ssl"; } }
+        public string UserIdForTest { get { return "asder12346eewsee5s"; } }
+        public string EmailForTest { get { return "abc@promactinfo.com"; } }
+        public string UserNameForTest { get { return "XyzTest"; } }
+        public string RandomString { get { return "abcdefghijklmnopqrstuvwxyz|ABCDEFGHIJKLMNOPQRSTUVWXYZ|012345789|@#$%^!&*()"; } }
+        public string PromactErpUrlForTest { get { return "http://www.example.com"; } }
+
+        #region IdentityServer4
+        public string APIResourceName
+        {
+            get
+            {
+                return "read-only";
+            }
+        }
+
+        public string APIResourceDisplayName
+        {
+            get
+            {
+                return "Promact OAuth Server details read only";
+            }
+        }
+
+        public string APIResourceApiSecrets
+        {
+            get
+            {
+                return "promactUserInfo";
+            }
+        }
+
+        public string APIResourceSlackUserIdScope
+        {
+            get
+            {
+                return "slack_user_id";
+            }
+        }
+
+        public string APIResourceUserReadScope
+        {
+            get
+            {
+                return "user.read";
+            }
+        }
+
+        public string APIResourceProjectReadScope
+        {
+            get
+            {
+                return "project.read";
+            }
+        }
+
+        public string XContentTypeOptions
+        {
+            get
+            {
+                return "X-Content-Type-Options";
+            }
+        }
+
+        public string Nosniff
+        {
+            get
+            {
+                return "nosniff";
+            }
+        }
+
+        public string XFrameOptions
+        {
+            get
+            {
+                return "X-Frame-Options";
+            }
+        }
+
+        public string Sameorigin
+        {
+            get
+            {
+                return "SAMEORIGIN";
+            }
+        }
+
+        public string ContentSecurityPolicy
+        {
+            get
+            {
+                return "Content-Security-Policy";
+            }
+        }
+
+        public string DefaultSrcSelf
+        {
+            get
+            {
+                return "default-src 'self'";
+            }
+        }
+
+        public string XContentSecurityPolicy
+        {
+            get
+            {
+                return "X-Content-Security-Policy";
+            }
+        }
+
+        public string No
+        {
+            get
+            {
+                return "no";
+            }
+        }
+
+        public string Yes
+        {
+            get
+            {
+                return "yes";
+            }
+        }
+
+        public string NoScopesMatching
+        {
+            get
+            {
+                return "No scopes matching: {0}";
+            }
+        }
+
+        public string InvalidClientId
+        {
+            get
+            {
+                return "Invalid client id: {0}";
+            }
+        }
+
+        public string NoConsentRequestMatchingRequest
+        {
+            get
+            {
+                return "No consent request matching request: {0}";
+            }
+        }
+
+        #region ConsentOptions
+        public string OfflineAccessDisplayName
+        {
+            get
+            {
+                return "Offline Access";
+            }
+        }
+        public string OfflineAccessDescription
+        {
+            get
+            {
+                return "Access to your applications and resources, even when you are offline";
+            }
+        }
+
+        public string MuchChooseOneErrorMessage
+        {
+            get
+            {
+                return "You must pick at least one permission";
+            }
+        }
+        public string InvalidSelectionErrorMessage
+        {
+            get
+            {
+                return "Invalid selection";
+            }
+        }
+        #endregion
+
+        #endregion
     }
 }

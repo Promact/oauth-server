@@ -30,9 +30,9 @@
                     <td *ngIf="!project.isActive">Inactive</td>
                     <td>{{project.teamLeader.FirstName}}</td>
                     <td *ngIf="admin==true">{{project.createdBy}}</td>
-                    <td *ngIf="admin==true">{{project.createdDate}}</td>
+                    <td *ngIf="admin==true">{{project.createdOns}}</td>
                     <td *ngIf="admin==true">{{project.updatedBy}}</td>
-                    <td *ngIf="admin==true">{{project.updatedDate}}</td>
+                    <td *ngIf="admin==true">{{project.updatedOns}}</td>
                     <td *ngIf="admin==true">
                         <button md-raised-button class="btn-green custom-btn mr-5" (click)="editProject(project.id)">Edit</button>
                         <button md-raised-button class="custom-btn" (click)="viewProject(project.id)">View</button>

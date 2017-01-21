@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Promact.Oauth.Server.Constants;
@@ -8,6 +9,7 @@ using Promact.Oauth.Server.Models.ApplicationClasses;
 using Promact.Oauth.Server.Repository.ConsumerAppRepository;
 using Promact.Oauth.Server.Services;
 using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Promact.Oauth.Server.Repository.OAuthRepository
@@ -21,6 +23,7 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IStringConstant _stringConstant;
         private readonly IOptions<AppSettingUtil> _appSettingUtil;
+
         public OAuthRepository(IDataRepository<OAuth> oAuthDataRepository,
             IHttpClientService httpClientRepository, IConsumerAppRepository appRepository,
             UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
@@ -166,53 +169,61 @@ namespace Promact.Oauth.Server.Repository.OAuthRepository
         public async Task<string> UserNotAlreadyLoginAsync(OAuthLogin model)
         {
             string returnUrl = _stringConstant.EmptyString;
-            ApplicationUser appUser = await _userManager.FindByEmailAsync(model.Email);
-            OAuth oAuth = await OAuthClientCheckingAsync(model.Email, model.ClientId);
-            if (oAuth != null)
+            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, lockoutOnFailure: false);
+            if (result.Succeeded)
             {
-                OAuthApplication clientResponse = await GetAppDetailsFromClientAsync(model.RedirectUrl, oAuth.RefreshToken, appUser.SlackUserName);
-                if (clientResponse != null)
+                ApplicationUser appUser = await _userManager.FindByEmailAsync(model.Email);
+                OAuth oAuth = await OAuthClientCheckingAsync(model.Email, model.ClientId);
+                if (oAuth != null)
                 {
-                    if (!String.IsNullOrEmpty(clientResponse.UserId))
+                    OAuthApplication clientResponse = await GetAppDetailsFromClientAsync(model.RedirectUrl, oAuth.RefreshToken, appUser.SlackUserName);
+                    if (clientResponse != null)
                     {
-                        appUser.SlackUserId = clientResponse.UserId;
-                        await _userManager.UpdateAsync(appUser);
-                        // Checking whether request client is equal to response client
-                        if (model.ClientId == clientResponse.ClientId)
+                        if (!String.IsNullOrEmpty(clientResponse.UserId))
                         {
-                            //Getting app details from clientId or AuthId
-                            ConsumerApps consumerApp = await _appRepository.GetAppDetailsAsync(clientResponse.ClientId);
-                            // Refresh token and app's secret is checking if match then accesstoken will be send
-                            if (consumerApp.AuthSecret == clientResponse.ClientSecret && clientResponse.RefreshToken == oAuth.RefreshToken)
+                            appUser.SlackUserId = clientResponse.UserId;
+                            await _userManager.UpdateAsync(appUser);
+                            // Checking whether request client is equal to response client
+                            if (model.ClientId == clientResponse.ClientId)
                             {
-                                ApplicationUser user = await _userManager.FindByEmailAsync(oAuth.userEmail);
-                                returnUrl = string.Format(_stringConstant.OAuthAfterLoginResponse, clientResponse.ReturnUrl, oAuth.AccessToken, oAuth.userEmail, user.SlackUserId, user.Id);
+                                //Getting app details from clientId or AuthId
+                                ConsumerApps consumerApp = await _appRepository.GetAppDetailsAsync(clientResponse.ClientId);
+                                // Refresh token and app's secret is checking if match then accesstoken will be send
+                                if (consumerApp.AuthSecret == clientResponse.ClientSecret && clientResponse.RefreshToken == oAuth.RefreshToken)
+                                {
+                                    ApplicationUser user = await _userManager.FindByEmailAsync(oAuth.userEmail);
+                                    returnUrl = string.Format(_stringConstant.OAuthAfterLoginResponse, clientResponse.ReturnUrl, oAuth.AccessToken, oAuth.userEmail, user.SlackUserId, user.Id);
+                                }
+                                else
+                                {
+                                    var errorMessage = string.Format(_stringConstant.PromactAppNotFoundClientSecret, clientResponse.ClientSecret);
+                                    returnUrl = _appSettingUtil.Value.PromactErpUrl + _stringConstant.ErpAuthorizeUrl + _stringConstant.Message + errorMessage;
+                                }
                             }
                             else
                             {
-                                var errorMessage = string.Format(_stringConstant.PromactAppNotFoundClientSecret, clientResponse.ClientSecret);
+                                var errorMessage = string.Format(_stringConstant.PromactAppNotFoundClientId, clientResponse.ClientId);
                                 returnUrl = _appSettingUtil.Value.PromactErpUrl + _stringConstant.ErpAuthorizeUrl + _stringConstant.Message + errorMessage;
                             }
                         }
                         else
-                        {
-                            var errorMessage = string.Format(_stringConstant.PromactAppNotFoundClientId, clientResponse.ClientId);
-                            returnUrl = _appSettingUtil.Value.PromactErpUrl + _stringConstant.ErpAuthorizeUrl + _stringConstant.Message + errorMessage;
-                        }
+                            returnUrl = _appSettingUtil.Value.PromactErpUrl + _stringConstant.ErpAuthorizeUrl + _stringConstant.Message
+                                + _stringConstant.InCorrectSlackName;
                     }
                     else
-                        returnUrl = _appSettingUtil.Value.PromactErpUrl + _stringConstant.ErpAuthorizeUrl + _stringConstant.Message
-                            + _stringConstant.InCorrectSlackName;
+                        returnUrl = _appSettingUtil.Value.PromactErpUrl + _stringConstant.ErpAuthorizeUrl
+                                     + _stringConstant.Message + _stringConstant.PromactAppNotSet;
                 }
                 else
+                {
+                    var errorMessage = string.Format(_stringConstant.PromactAppNotFoundClientId, model.ClientId);
                     returnUrl = _appSettingUtil.Value.PromactErpUrl + _stringConstant.ErpAuthorizeUrl
-                                 + _stringConstant.Message + _stringConstant.PromactAppNotSet;
+                                     + _stringConstant.Message + errorMessage;
+                }
             }
             else
             {
-                var errorMessage = string.Format(_stringConstant.PromactAppNotFoundClientId, model.ClientId);
-                returnUrl = _appSettingUtil.Value.PromactErpUrl + _stringConstant.ErpAuthorizeUrl
-                                 + _stringConstant.Message + errorMessage;
+                returnUrl = string.Format(_stringConstant.OAuthExternalLoginUrl, _appSettingUtil.Value.PromactOAuthUrl, model.ClientId);
             }
             return returnUrl;
         }

@@ -1,4 +1,5 @@
 ﻿using Exceptionless;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Promact.Oauth.Server.Repository;
 using Promact.Oauth.Server.Services;
@@ -7,11 +8,12 @@ using System.Threading.Tasks;
 
 namespace Promact.Oauth.Server.Controllers
 {
-    [ServiceFilter(typeof(CustomAttribute))]
+    [Authorize(Policy = ReadUser)]
     [Route("api/[controller]")]
     public class ProjectUserController : BaseController
     {
         private readonly IUserRepository _userRepository;
+        public const string ReadUser = "ReadUser";
         public ProjectUserController(IUserRepository userRepository)
         {
             _userRepository = userRepository;
@@ -45,11 +47,11 @@ namespace Promact.Oauth.Server.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("teamLeaderDetails/{slackUserId}")]
-        public async Task<IActionResult> TeamLeaderByUserId(string slackUserId)
+        public async Task<IActionResult> TeamLeaderByUserIdAsync(string slackUserId)
         {
             try
             {
-                var user = await _userRepository.TeamLeaderByUserSlackId(slackUserId);
+                var user = await _userRepository.TeamLeaderByUserSlackIdAsync(slackUserId);
                 return Ok(user);
             }
             catch (Exception ex)
@@ -65,11 +67,11 @@ namespace Promact.Oauth.Server.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("managementDetails")]
-        public async Task<IActionResult> ManagementDetails()
+        public async Task<IActionResult> ManagementDetailsAsync()
         {
             try
             {
-                var user = await _userRepository.ManagementDetails();
+                var user = await _userRepository.ManagementDetailsAsync();
                 return Ok(user);
             }
             catch (Exception ex)
@@ -103,9 +105,9 @@ namespace Promact.Oauth.Server.Controllers
 
         [HttpGet]
         [Route("userIsAdmin/{slackUserId}")]
-        public async Task<IActionResult> UserIsAdmin(string slackUserId)
+        public async Task<IActionResult> UserIsAdminAsync(string slackUserId)
         {
-            var result = await _userRepository.IsAdmin(slackUserId);
+            var result = await _userRepository.IsAdminAsync(slackUserId);
             return Ok(result);
         }
     }

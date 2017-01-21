@@ -1,10 +1,9 @@
 ﻿declare var describe, it, beforeEach, expect;
-import { async, inject, TestBed, ComponentFixture } from '@angular/core/testing';
-import { Provider } from "@angular/core";
+import { async, TestBed } from '@angular/core/testing';
 import { UserAddComponent } from "../user-add/user-add.component";
 import { UserService } from "../user.service";
 import { UserModel } from '../../users/user.model';
-import { Router, ActivatedRoute, RouterModule, Routes } from '@angular/router';
+import { Router, RouterModule, Routes } from '@angular/router';
 import { Md2Toast } from 'md2';
 import { MockToast } from "../../shared/mocks/mock.toast";
 import { MockUserService } from "../../shared/mocks/user/mock.user.service";
@@ -14,8 +13,6 @@ import { LoaderService } from '../../shared/loader.service';
 
 
 describe('User Add Test', () => {
-    class MockActivatedRoute { }
-    class MockLoaderService { }
     const routes: Routes = [];
 
     beforeEach(async(() => {
@@ -23,12 +20,11 @@ describe('User Add Test', () => {
             imports: [UserModule, RouterModule.forRoot(routes, { useHash: true }) //Set LocationStrategy for component. 
             ],
             providers: [
-                { provide: ActivatedRoute, useClass: MockActivatedRoute },
                 { provide: Router, useClass: MockRouter },
                 { provide: UserService, useClass: MockUserService },
                 { provide: Md2Toast, useClass: MockToast },
                 { provide: UserModel, useClass: UserModel },
-                { provide: LoaderService, useClass: MockLoaderService }]
+                { provide: LoaderService, useClass: LoaderService }]
         }).compileComponents();
 
     }));
