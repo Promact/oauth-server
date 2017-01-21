@@ -16,6 +16,7 @@ before_install:
 - if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
 install:
 - npm i -g typescript typings
+- curl -s https://raw.githubusercontent.com/dotnet/cli/rel/1.0.0-preview2/scripts/obtain/dotnet-install.sh
 - dotnet restore
 - chmod +x ~/.nuget/packages/xunit.runner.console/2.2.0-beta5-build3474/tools/xunit.console.exe
 - sudo apt-get install gtk-sharp2
