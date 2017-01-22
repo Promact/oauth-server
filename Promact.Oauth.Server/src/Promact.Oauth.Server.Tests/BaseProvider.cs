@@ -8,7 +8,6 @@ using Promact.Oauth.Server.Data_Repository;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Repository;
 using Promact.Oauth.Server.Repository.ConsumerAppRepository;
-using Promact.Oauth.Server.Repository.OAuthRepository;
 using Promact.Oauth.Server.Repository.ProjectsRepository;
 using Promact.Oauth.Server.Seed;
 using Promact.Oauth.Server.Services;

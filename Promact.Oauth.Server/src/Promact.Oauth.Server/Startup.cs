@@ -14,7 +14,6 @@ using Promact.Oauth.Server.Repository;
 using Promact.Oauth.Server.Data_Repository;
 using Promact.Oauth.Server.Repository.ProjectsRepository;
 using Promact.Oauth.Server.Repository.ConsumerAppRepository;
-using Promact.Oauth.Server.Repository.OAuthRepository;
 using System.Net.Http;
 using Promact.Oauth.Server.AutoMapper;
 using AutoMapper;
