@@ -20,4 +20,12 @@
 #### List of variables to be store in appsetting in web.config of this application 
 1. AppSetting Variables 
   * ```PromactOAuthUrl``` = https://www.example.com :
-    Promact OAuth server Url 
+Promact OAuth server Url 
+  * ```SickLeave``` = 7 :
+Sick Leave Allowed
+  * ```CasualLeave``` = 14 :
+Casual Leave Allowed
+  * ```PromactErpUrl``` = https://www.example.com :
+Promact Erp server Url 
+  * ```AuthenticationAPISecret``` = *sdfsd*dsf45sdfsd* :
+Authentication API Secret of OAuth server

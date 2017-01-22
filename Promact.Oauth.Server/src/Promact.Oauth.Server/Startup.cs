@@ -200,7 +200,7 @@ namespace Promact.Oauth.Server
                             "user.read",
                             "project.read"
                         },
-                ApiSecret = "promactUserInfo",
+                ApiSecret = appSetting.AuthenticationAPISecret,
             });
 
             //If staging or production then only use exceptionless
