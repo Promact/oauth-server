@@ -21,7 +21,6 @@ namespace Promact.Oauth.Server.Tests
         private readonly IDataRepository<ProjectUser, PromactOauthDbContext> _dataRepositoryProjectUser;
         private readonly IStringConstant _stringConstant;
         private readonly IUserRepository _userRepository;
-        private readonly IStringConstant _stringConstant;
         
         public ProjectTests() : base()
         {
@@ -30,7 +29,6 @@ namespace Promact.Oauth.Server.Tests
             _dataRepositoryProjectUser = serviceProvider.GetService<IDataRepository<ProjectUser, PromactOauthDbContext>>();
             _stringConstant = serviceProvider.GetService<IStringConstant>();
             _userRepository = serviceProvider.GetService<IUserRepository>();
-            _stringConstant = serviceProvider.GetService<IStringConstant>();
         }
       
         #region Test Case
