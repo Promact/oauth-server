@@ -63,9 +63,9 @@ namespace Promact.Oauth.Server.Tests
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<IConsumerAppRepository, ConsumerAppRepository>();
-            services.AddScoped<IOAuthRepository, OAuthRepository>();
+            //services.AddScoped<IOAuthRepository, OAuthRepository>();
             services.AddScoped<IStringConstant, StringConstant>();
-            services.AddScoped(typeof(IDataRepository<>), typeof(DataRepository<>));
+            services.AddScoped(typeof(IDataRepository<,>), typeof(DataRepository<,>));
 
             //Register Mapper
             services.AddSingleton<IMapper>(sp => _mapperConfiguration.CreateMapper());

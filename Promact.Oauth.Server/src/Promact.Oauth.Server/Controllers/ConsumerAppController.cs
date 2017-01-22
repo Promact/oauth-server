@@ -59,12 +59,11 @@ namespace Promact.Oauth.Server.Controllers
         */
         [HttpPost]
         [Route("")]
-        public async Task<IActionResult> AddConsumerAppAsync([FromBody]ConsumerAppsAc consumerAppsAc)
+        public async Task<IActionResult> AddConsumerAppAsync([FromBody]ConsumerApps consumerApps)
         {
             try
             {
-                consumerAppsAc.CreatedBy = _userManager.GetUserId(User);
-                return Ok(await _consumerAppRepository.AddConsumerAppsAsync(consumerAppsAc));
+                return Ok(await _consumerAppRepository.AddConsumerAppsAsync(consumerApps));
             }
             catch (ConsumerAppNameIsAlreadyExists)
             {
@@ -94,7 +93,7 @@ namespace Promact.Oauth.Server.Controllers
         [Route("")]
         public async Task<IActionResult> GetConsumerAppsAsync()
         {
-            List<ConsumerApps> listOfApps = await _consumerAppRepository.GetListOfConsumerAppsAsync();
+            var listOfApps = await _consumerAppRepository.GetListOfConsumerAppsAsync();
             return Ok(listOfApps);
         }
 
@@ -128,12 +127,12 @@ namespace Promact.Oauth.Server.Controllers
        * }
        */
         [HttpGet]
-        [Route("{id:int}")]
-        public async Task<IActionResult> GetConsumerAppByIdAsync(int id)
+        [Route("{clientId}")]
+        public async Task<IActionResult> GetConsumerAppByIdAsync(string clientId)
         {
             try
             {
-                ConsumerApps consumerApps = await _consumerAppRepository.GetConsumerAppByIdAsync(id);
+                var consumerApps = await _consumerAppRepository.GetAppDetailsByClientIdAsync(clientId);
                 return Ok(consumerApps);
             }
             catch (ConsumerAppNotFound)
@@ -172,17 +171,11 @@ namespace Promact.Oauth.Server.Controllers
         * }
         */
         [HttpPut]
-        [Route("{id:int}")]
-        public async Task<IActionResult> UpdateConsumerAppAsync(int id, [FromBody]ConsumerAppsAc consumerAppsAc)
+        [Route("")]
+        public async Task<IActionResult> UpdateConsumerAppAsync([FromBody]ConsumerApps consumerApp)
         {
             try
             {
-                ConsumerApps consumerApp = await _consumerAppRepository.GetConsumerAppByIdAsync(id);
-                consumerApp.Name = consumerAppsAc.Name;
-                consumerApp.CallbackUrl = consumerAppsAc.CallbackUrl;
-                consumerApp.Description = consumerAppsAc.Description;
-                consumerApp.UpdatedBy = _userManager.GetUserId(User);
-                consumerApp.UpdatedDateTime = DateTime.Now;
                 return Ok(await _consumerAppRepository.UpdateConsumerAppsAsync(consumerApp));
             }
             catch (ConsumerAppNameIsAlreadyExists)
