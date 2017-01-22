@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Promact.Oauth.Server.Data_Repository;
 using Promact.Oauth.Server.Models;
-using Promact.Oauth.Server.Models.ApplicationClasses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,24 +8,37 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Promact.Oauth.Server.Constants;
 using Promact.Oauth.Server.ExceptionHandler;
+using IdentityServer4.EntityFramework.Entities;
+using IdentityServer4.Models;
+using IdentityServer4.EntityFramework.Mappers;
+using IdentityServer4.EntityFramework.DbContexts;
 
 namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
 {
     public class ConsumerAppRepository : IConsumerAppRepository
     {
         #region "Private Variable(s)"
-
-        private readonly IDataRepository<ConsumerApps> _appsDataRepository;
+        private readonly IDataRepository<IdentityServer4.EntityFramework.Entities.Client, ConfigurationDbContext> _clientDataRepository;
         private readonly IMapper _mapperContext;
         private readonly IStringConstant _stringConstant;
+        private readonly IDataRepository<ClientScope, ConfigurationDbContext> _scopes;
+        private readonly IDataRepository<ClientSecret, ConfigurationDbContext> _secret;
+        private readonly IDataRepository<ClientRedirectUri, ConfigurationDbContext> _redirectUri;
+        private readonly IDataRepository<ClientPostLogoutRedirectUri, ConfigurationDbContext> _logoutRedirectUri;
         #endregion
 
         #region "Constructor"
-        public ConsumerAppRepository(IDataRepository<ConsumerApps> appsDataRepository, IMapper mapperContext, IStringConstant stringConstant)
+        public ConsumerAppRepository(IMapper mapperContext, IStringConstant stringConstant, IDataRepository<IdentityServer4.EntityFramework.Entities.Client, ConfigurationDbContext> clientDataRepository,
+            IDataRepository<ClientScope, ConfigurationDbContext> scopes, IDataRepository<ClientSecret, ConfigurationDbContext> secret, IDataRepository<ClientRedirectUri, ConfigurationDbContext> redirectUri,
+            IDataRepository<ClientPostLogoutRedirectUri, ConfigurationDbContext> logoutRedirectUri)
         {
-            _appsDataRepository = appsDataRepository;
             _mapperContext = mapperContext;
             _stringConstant = stringConstant;
+            _clientDataRepository = clientDataRepository;
+            _scopes = scopes;
+            _secret = secret;
+            _redirectUri = redirectUri;
+            _logoutRedirectUri = logoutRedirectUri;
         }
 
         #endregion
@@ -38,9 +50,13 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// </summary>
         /// <param name="clientId"></param>
         /// <returns></returns>
-        public async Task<ConsumerApps> GetAppDetailsAsync(string clientId)
+        public async Task<ConsumerApps> GetAppDetailsByClientIdAsync(string clientId)
         {
-            return await _appsDataRepository.FirstOrDefaultAsync(x => x.AuthId == clientId);
+            var consumerApps = await GetConsumerByClientIdOfIdentityServerClient(clientId);
+            if (consumerApps != null)
+                return consumerApps;
+            else
+                throw new ConsumerAppNotFound();
         }
 
         /// <summary>
@@ -48,17 +64,16 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// </summary>
         /// <param name="aapsObject"></param>
         /// <returns></returns>
-        public async Task<int> AddConsumerAppsAsync(ConsumerAppsAc consumerApps)
+        public async Task<IdentityServer4.Models.Client> AddConsumerAppsAsync(ConsumerApps consumerApp)
         {
-            if (await _appsDataRepository.FirstOrDefaultAsync(x => x.Name == consumerApps.Name) == null)
+            if (await _clientDataRepository.FirstOrDefaultAsync(x => x.ClientName == consumerApp.Name) == null)
             {
-                var consumerAppObject = _mapperContext.Map<ConsumerAppsAc, ConsumerApps>(consumerApps);
-                consumerAppObject.AuthId = GetRandomNumber(true);
-                consumerAppObject.AuthSecret = GetRandomNumber(false);
-                consumerAppObject.CreatedDateTime = DateTime.Now;
-                _appsDataRepository.AddAsync(consumerAppObject);
-                await _appsDataRepository.SaveChangesAsync();
-                return consumerAppObject.Id;
+                consumerApp.AuthId = GetRandomNumber(true);
+                consumerApp.AuthSecret = "superSecretPassword";
+                var clientApp = ReturnIdentityServerClientFromConsumerApp(consumerApp, ReturnListOfScopesInStringFromEnumAllowedScope(consumerApp.Scopes));
+                _clientDataRepository.Add(clientApp.ToEntity());
+                await _clientDataRepository.SaveChangesAsync();
+                return clientApp;
             }
             else
                 throw new ConsumerAppNameIsAlreadyExists();
@@ -71,40 +86,37 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// <returns></returns>
         public async Task<List<ConsumerApps>> GetListOfConsumerAppsAsync()
         {
-           return await _appsDataRepository.GetAll().ToListAsync(); 
-        }
 
-        /// <summary>
-        /// This method used for get consumer app object by id. -An
-        /// </summary>
-        /// <param name="id">app object primary key</param>
-        /// <returns></returns>
-        public async Task<ConsumerApps> GetConsumerAppByIdAsync(int id)
-        {
-            ConsumerApps consumerApps = await _appsDataRepository.FirstOrDefaultAsync(x => x.Id == id);
-            if (consumerApps != null)
-                return consumerApps;
-            else
-                throw new ConsumerAppNotFound(); 
-            
+            var listOfClient = await _clientDataRepository.GetAll().ToListAsync();
+            List<ConsumerApps> listOfConsumerApp = new List<ConsumerApps>();
+            ConsumerApps app;
+            foreach (var client in listOfClient)
+            {
+                app = await GetConsumerByClientIdOfIdentityServerClient(client.ClientId);
+                listOfConsumerApp.Add(app);
+            }
+            return listOfConsumerApp;
         }
-
 
         /// <summary>
         /// This method used for update consumer app and return primary key. -An
         /// </summary>
         /// <param name="apps"></param>
         /// <returns></returns>
-        public async Task<int> UpdateConsumerAppsAsync(ConsumerApps consumerApps)
+        public async Task<IdentityServer4.EntityFramework.Entities.Client> UpdateConsumerAppsAsync(ConsumerApps consumerApps)
         {
-
-            if (await _appsDataRepository.FirstOrDefaultAsync(x => x.Name == consumerApps.Name && x.Id != consumerApps.Id) == null)
+            if (await _clientDataRepository.FirstOrDefaultAsync(x => x.ClientName == consumerApps.Name && x.ClientId != consumerApps.AuthId) == null)
             {
-                _appsDataRepository.UpdateAsync(consumerApps);
-                await _appsDataRepository.SaveChangesAsync();
-                return consumerApps.Id;
+                var client = await _clientDataRepository.FirstOrDefaultAsync(x => x.ClientId == consumerApps.AuthId);
+                client.ClientName = consumerApps.Name;
+                _clientDataRepository.Update(client);
+                await UpdateClientScope(client.Id, ReturnListOfScopesInStringFromEnumAllowedScope(consumerApps.Scopes));
+                await UpdateClientRedirectUri(client.Id, consumerApps.CallbackUrl);
+                await UpdateClientLogoutRedirectUri(client.Id, consumerApps.LogoutUrl);
+                return client;
             }
-            throw new ConsumerAppNameIsAlreadyExists();
+            else
+                throw new ConsumerAppNameIsAlreadyExists();
         }
 
         #endregion
@@ -130,7 +142,110 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
                 return new string(Enumerable.Repeat(_stringConstant.AlphaNumericString, 30)
                   .Select(s => s[random.Next(s.Length)]).ToArray());
             }
+        }
 
+        private async Task<ConsumerApps> GetConsumerByClientIdOfIdentityServerClient(string clientId)
+        {
+            ConsumerApps app = new ConsumerApps();
+            var client = await _clientDataRepository.FirstOrDefaultAsync(x => x.ClientId == clientId);
+            if (client != null)
+            {
+                var scopesAllowed = await _scopes.FetchAsync(x => x.Client.ClientId == clientId);
+                List<AllowedScope> allowedScope = new List<AllowedScope>();
+                app.Scopes = new List<AllowedScope>();
+                foreach (var scopes in scopesAllowed)
+                {
+                    var value = (AllowedScope)Enum.Parse(typeof(AllowedScope), scopes.Scope);
+                    app.Scopes.Add(value);
+                }
+                app.AuthId = clientId;
+                var secret = await _secret.FirstOrDefaultAsync(x => x.Client.ClientId == clientId);
+                app.AuthSecret = secret.Value;
+                var callBackUri = await _redirectUri.FirstOrDefaultAsync(x => x.Client.ClientId == clientId);
+                app.CallbackUrl = callBackUri.RedirectUri;
+                app.Name = client.ClientName;
+                var logoutUri = await _logoutRedirectUri.FirstOrDefaultAsync(x => x.Client.ClientId == clientId);
+                app.LogoutUrl = logoutUri.PostLogoutRedirectUri;
+            }
+            return app;
+        }
+
+        private IdentityServer4.Models.Client ReturnIdentityServerClientFromConsumerApp(ConsumerApps consumerApp, List<string> allowedScopes)
+        {
+            return new IdentityServer4.Models.Client
+            {
+                ClientId = consumerApp.AuthId,
+                ClientName = consumerApp.Name,
+                AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
+                AllowAccessTokensViaBrowser = true,
+                // where to redirect to after login
+                RedirectUris = { consumerApp.CallbackUrl },
+                // where to redirect to after logout
+                PostLogoutRedirectUris = { consumerApp.LogoutUrl },
+                AllowedScopes = allowedScopes,
+                ClientSecrets = new List<IdentityServer4.Models.Secret>()
+                        {
+                            new IdentityServer4.Models.Secret(consumerApp.AuthSecret.Sha256())
+                        },
+                AllowOfflineAccess = true,
+                RefreshTokenUsage = TokenUsage.ReUse,
+                AccessTokenLifetime = 86400,
+                AuthorizationCodeLifetime = 86400,
+                IdentityTokenLifetime = 86400,
+                AbsoluteRefreshTokenLifetime = 5184000,
+                SlidingRefreshTokenLifetime = 5184000
+            };
+        }
+
+        private List<string> ReturnListOfScopesInStringFromEnumAllowedScope(List<AllowedScope> scopes)
+        {
+            List<string> allowedScope = new List<string>();
+            foreach (var item in scopes)
+            {
+                var value = item.ToString();
+                allowedScope.Add(item.ToString());
+            }
+            return allowedScope;
+        }
+
+        private async Task UpdateClientScope(int clientIdPrimaryKey, List<string> newScopes)
+        {
+            var client = await _clientDataRepository.FirstOrDefaultAsync(x => x.Id == clientIdPrimaryKey);
+            var existingScopes = await _scopes.FetchAsync(x => x.Client.Id == clientIdPrimaryKey);
+            foreach (var scope in newScopes)
+            {
+                if (!(existingScopes.FirstOrDefault(x => x.Scope == scope) != null))
+                {
+                    _scopes.Add(new ClientScope { Scope = scope, Client = client });
+                    await _scopes.SaveChangesAsync();
+                }
+            }
+            var scopesToBeDeleted = existingScopes.Where(x => !newScopes.Contains(x.Scope)).ToList();
+            foreach (var scope in scopesToBeDeleted)
+            {
+                _scopes.Delete(scope);
+                await _scopes.SaveChangesAsync();
+            }
+        }
+
+        private async Task UpdateClientRedirectUri(int clientIdPrimaryKey, string redirectUri)
+        {
+            var existingRedirectUri = await _redirectUri.FirstOrDefaultAsync(x => x.Client.Id == clientIdPrimaryKey);
+            if (!(existingRedirectUri.RedirectUri == redirectUri))
+            {
+                existingRedirectUri.RedirectUri = redirectUri;
+                _redirectUri.Update(existingRedirectUri);
+            }
+        }
+
+        private async Task UpdateClientLogoutRedirectUri(int clientIdPrimaryKey, string redirectUri)
+        {
+            var existingRedirectUri = await _logoutRedirectUri.FirstOrDefaultAsync(x => x.Client.Id == clientIdPrimaryKey);
+            if (!(existingRedirectUri.PostLogoutRedirectUri == redirectUri))
+            {
+                existingRedirectUri.PostLogoutRedirectUri = redirectUri;
+                _logoutRedirectUri.Update(existingRedirectUri);
+            }
         }
         #endregion
     }

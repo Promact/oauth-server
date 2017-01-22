@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Promact.Oauth.Server.Constants;
+using Promact.Oauth.Server.Data;
 using Promact.Oauth.Server.Data_Repository;
 using Promact.Oauth.Server.ExceptionHandler;
 using Promact.Oauth.Server.Models;
@@ -27,31 +28,31 @@ namespace Promact.Oauth.Server.Repository
 
 
 
-        private readonly IDataRepository<ApplicationUser> _applicationUserDataRepository;
+        private readonly IDataRepository<ApplicationUser, PromactOauthDbContext> _applicationUserDataRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IEmailSender _emailSender;
         private readonly IMapper _mapperContext;
-        private readonly IDataRepository<ProjectUser> _projectUserRepository;
+        private readonly IDataRepository<ProjectUser, PromactOauthDbContext> _projectUserRepository;
         private readonly IProjectRepository _projectRepository;
-        private readonly IDataRepository<Project> _projectDataRepository;
+        private readonly IDataRepository<Project, PromactOauthDbContext> _projectDataRepository;
         private readonly IOptions<AppSettingUtil> _appSettingUtil;
         private readonly IStringConstant _stringConstant;
-        private readonly IDataRepository<ProjectUser> _projectUserDataRepository;
+        private readonly IDataRepository<ProjectUser, PromactOauthDbContext> _projectUserDataRepository;
         private readonly IEmailUtil _emailUtil;
 
         #endregion
 
         #region "Constructor"
 
-        public UserRepository(IDataRepository<ApplicationUser> applicationUserDataRepository,
+        public UserRepository(IDataRepository<ApplicationUser, PromactOauthDbContext> applicationUserDataRepository,
             RoleManager<IdentityRole> roleManager,
             UserManager<ApplicationUser> userManager, IEmailSender emailSender,
-            IMapper mapperContext, IDataRepository<ProjectUser> projectUserRepository,
+            IMapper mapperContext, IDataRepository<ProjectUser, PromactOauthDbContext> projectUserRepository,
             IProjectRepository projectRepository, IOptions<AppSettingUtil> appSettingUtil,
-            IDataRepository<Project> projectDataRepository,
+            IDataRepository<Project, PromactOauthDbContext> projectDataRepository,
             IStringConstant stringConstant,
-            IDataRepository<ProjectUser> projectUserDataRepository, IEmailUtil emailUtil)
+            IDataRepository<ProjectUser, PromactOauthDbContext> projectUserDataRepository, IEmailUtil emailUtil)
         {
             _applicationUserDataRepository = applicationUserDataRepository;
             _userManager = userManager;

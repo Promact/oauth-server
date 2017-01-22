@@ -9,22 +9,26 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Promact.Oauth.Server.Constants;
 using Promact.Oauth.Server.Repository;
+using Promact.Oauth.Server.Data;
 
 namespace Promact.Oauth.Server.Tests
 {
     public class ProjectTests : BaseProvider
     {
         private readonly IProjectRepository _projectRepository;
-        private readonly IDataRepository<Project> _dataRepository;
-        private readonly IDataRepository<ProjectUser> _dataRepositoryProjectUser;
+
+        private readonly IDataRepository<Project, PromactOauthDbContext> _dataRepository;
+        private readonly IDataRepository<ProjectUser, PromactOauthDbContext> _dataRepositoryProjectUser;
+        private readonly IStringConstant _stringConstant;
         private readonly IUserRepository _userRepository;
         private readonly IStringConstant _stringConstant;
         
         public ProjectTests() : base()
         {
             _projectRepository = serviceProvider.GetService<IProjectRepository>();
-            _dataRepository = serviceProvider.GetService<IDataRepository<Project>>();
-            _dataRepositoryProjectUser = serviceProvider.GetService<IDataRepository<ProjectUser>>();
+            _dataRepository = serviceProvider.GetService<IDataRepository<Project, PromactOauthDbContext>>();
+            _dataRepositoryProjectUser = serviceProvider.GetService<IDataRepository<ProjectUser, PromactOauthDbContext>>();
+            _stringConstant = serviceProvider.GetService<IStringConstant>();
             _userRepository = serviceProvider.GetService<IUserRepository>();
             _stringConstant = serviceProvider.GetService<IStringConstant>();
         }
