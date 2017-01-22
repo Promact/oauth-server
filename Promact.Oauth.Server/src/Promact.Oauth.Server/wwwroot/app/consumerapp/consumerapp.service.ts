@@ -39,6 +39,6 @@ export class ConsumerAppService {
      * @param consumerAppsAc
      */
     updateConsumerApps(consumerAppsAc: ConsumerAppModel) {
-        return this.httpService.put(this.consumerAppUrl + "/" + consumerAppsAc.Id, consumerAppsAc);
+        return this.httpService.put(this.consumerAppUrl, consumerAppsAc);
     }
 }

@@ -11,15 +11,16 @@ using Microsoft.AspNetCore.Identity;
 using Promact.Oauth.Server.Constants;
 using Microsoft.Extensions.Logging;
 using Promact.Oauth.Server.ExceptionHandler;
+using Promact.Oauth.Server.Data;
 
 namespace Promact.Oauth.Server.Repository.ProjectsRepository
 {
     public class ProjectRepository : IProjectRepository
     {
         #region "Private Variable(s)"
-        private readonly IDataRepository<Project> _projectDataRepository;
-        private readonly IDataRepository<ProjectUser> _projectUserDataRepository;
-        private readonly IDataRepository<ApplicationUser> _userDataRepository;
+        private readonly IDataRepository<Project, PromactOauthDbContext> _projectDataRepository;
+        private readonly IDataRepository<ProjectUser, PromactOauthDbContext> _projectUserDataRepository;
+        private readonly IDataRepository<ApplicationUser, PromactOauthDbContext> _userDataRepository;
 
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IStringConstant _stringConstant;
@@ -28,7 +29,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         #endregion
 
         #region "Constructor"
-        public ProjectRepository(IDataRepository<Project> projectDataRepository, IDataRepository<ProjectUser> projectUserDataRepository, IDataRepository<ApplicationUser> userDataRepository, UserManager<ApplicationUser> userManager, 
+        public ProjectRepository(IDataRepository<Project, PromactOauthDbContext> projectDataRepository, IDataRepository<ProjectUser, PromactOauthDbContext> projectUserDataRepository, IDataRepository<ApplicationUser, PromactOauthDbContext> userDataRepository, UserManager<ApplicationUser> userManager, 
             IMapper mapperContext,IStringConstant stringConstant, ILogger<ProjectRepository> logger)
         {
             _projectDataRepository = projectDataRepository;

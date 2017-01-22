@@ -35,10 +35,19 @@
             </div>
         </div>
 
-
         <div class="form-group">
-            <md-input class="full-width" placeholder="Description" name="description" [(ngModel)]="consumerModel.Description" maxlength="1000" required #description="ngModel"></md-input>
-            <div [hidden]="!(description.touched && !description.valid && description.errors.required)" class="error">Description is required</div>
+            <div class="half-width" style="position:relative;">
+                <md2-multiselect name="select" [items]="scopes"
+                                 item-text="name"
+                                 item-value="value"
+                                 [(ngModel)]="consumerModel.Scopes"
+                                 placeholder="Select Scopes">
+                </md2-multiselect>
+            </div>
+        </div>
+        <div class="form-group">
+            <md-input class="full-width" placeholder="LogoutUrl" name="logoutUrl" [(ngModel)]="consumerModel.LogoutUrl" maxlength="255" required #logoutUrl="ngModel"></md-input>
+            <div [hidden]="!(logoutUrl.touched && !logoutUrl.valid && logoutUrl.errors.required)" class="error">LogoutUrl is required</div>
         </div>
 
         <div class="form-group" id="group-btn">

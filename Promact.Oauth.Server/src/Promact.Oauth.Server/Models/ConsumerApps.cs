@@ -1,16 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using IdentityServer4.EntityFramework.Entities;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Promact.Oauth.Server.Models
 {
-    public class ConsumerApps : OAuthBase
+    public class ConsumerApps 
     {
         [Required]
         [StringLength(255)]
         public string Name { get; set; }
-
-        [Required]
-        [StringLength(1000)]
-        public string Description { get; set; }
 
         [Required]
         [StringLength(255)]
@@ -25,5 +24,11 @@ namespace Promact.Oauth.Server.Models
         [StringLength(30)]
         public string AuthSecret { get; set; }
 
+        public List<AllowedScope> Scopes { get; set; }
+
+        [Required]
+        [StringLength(255)]
+        [Url]
+        public string LogoutUrl { get; set; }
     }
 }

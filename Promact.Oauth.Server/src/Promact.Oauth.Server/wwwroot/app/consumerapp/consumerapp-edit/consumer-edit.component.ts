@@ -1,5 +1,5 @@
 ﻿import { Component, OnInit } from "@angular/core";
-import { ConsumerAppModel } from '../consumerapp-model';
+import { ConsumerAppModel, consumerappallowedscopes } from '../consumerapp-model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ConsumerAppService } from '../consumerapp.service';
 import { Md2Toast } from 'md2';
@@ -11,20 +11,27 @@ import { LoaderService } from '../../shared/loader.service';
 })
 export class ConsumerappEditComponent implements OnInit {
     consumerModel: ConsumerAppModel;
+    scopes: any;
     constructor(private router: Router, private consumerAppService: ConsumerAppService, private route: ActivatedRoute, private toast: Md2Toast, private location: Location, private loader: LoaderService) {
         this.consumerModel = new ConsumerAppModel();
+        this.scopes = [];
+        for (var scope in consumerappallowedscopes) {
+            var scopeIntegerValue: any = parseInt(scope);
+            if (!isNaN(parseFloat(scope)) && isFinite(scopeIntegerValue)) {
+                this.scopes.push({ value: scopeIntegerValue, name: consumerappallowedscopes[scopeIntegerValue] });
+            }
+        }
     }
 
     ngOnInit() {
         this.loader.loader = true;
         this.route.params.subscribe(params => {
-            let id = +params['id']; // (+) converts string 'id' to a number
+            let id = params['id']; // (+) converts string 'id' to a number
             this.consumerAppService.getConsumerAppById(id).subscribe((result) => {
                 this.consumerModel.Name = result.name;
-                this.consumerModel.Description = result.description;
                 this.consumerModel.CallbackUrl = result.callbackUrl;
-                this.consumerModel.Id = result.id;
-
+                this.consumerModel.Scopes = result.scopes;
+                this.consumerModel.LogoutUrl = result.logoutUrl;
                 this.consumerModel.AuthId = result.authId;
                 this.consumerModel.AuthSecret = result.authSecret;
                 this.loader.loader = false;

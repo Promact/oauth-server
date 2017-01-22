@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
+using Promact.Oauth.Server.Data;
 
 namespace Promact.Oauth.Server.Data.Migrations
 {
@@ -11,25 +13,369 @@ namespace Promact.Oauth.Server.Data.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .HasAnnotation("ProductVersion", "1.0.0-rtm-21431")
+                .HasAnnotation("ProductVersion", "1.1.0-rtm-22752")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ApiResource", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("DisplayName");
+
+                    b.Property<bool>("Enabled");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ApiResources");
+                });
+
+            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ApiResourceClaim", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("ApiResourceId");
+
+                    b.Property<string>("Type");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApiResourceId");
+
+                    b.ToTable("ApiResourceClaim");
+                });
+
+            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ApiScope", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("ApiResourceId");
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("DisplayName");
+
+                    b.Property<bool>("Emphasize");
+
+                    b.Property<string>("Name");
+
+                    b.Property<bool>("Required");
+
+                    b.Property<bool>("ShowInDiscoveryDocument");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApiResourceId");
+
+                    b.ToTable("ApiScope");
+                });
+
+            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ApiScopeClaim", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("ApiScopeId");
+
+                    b.Property<string>("Type");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApiScopeId");
+
+                    b.ToTable("ApiScopeClaim");
+                });
+
+            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ApiSecret", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("ApiResourceId");
+
+                    b.Property<string>("Description");
+
+                    b.Property<DateTime?>("Expiration");
+
+                    b.Property<string>("Type");
+
+                    b.Property<string>("Value");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApiResourceId");
+
+                    b.ToTable("ApiSecret");
+                });
+
+            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.Client", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AbsoluteRefreshTokenLifetime");
+
+                    b.Property<int>("AccessTokenLifetime");
+
+                    b.Property<int>("AccessTokenType");
+
+                    b.Property<bool>("AllowAccessTokensViaBrowser");
+
+                    b.Property<bool>("AllowOfflineAccess");
+
+                    b.Property<bool>("AllowPlainTextPkce");
+
+                    b.Property<bool>("AllowRememberConsent");
+
+                    b.Property<bool>("AlwaysIncludeUserClaimsInIdToken");
+
+                    b.Property<bool>("AlwaysSendClientClaims");
+
+                    b.Property<int>("AuthorizationCodeLifetime");
+
+                    b.Property<string>("ClientId");
+
+                    b.Property<string>("ClientName");
+
+                    b.Property<string>("ClientUri");
+
+                    b.Property<bool>("EnableLocalLogin");
+
+                    b.Property<bool>("Enabled");
+
+                    b.Property<int>("IdentityTokenLifetime");
+
+                    b.Property<bool>("IncludeJwtId");
+
+                    b.Property<string>("LogoUri");
+
+                    b.Property<bool>("LogoutSessionRequired");
+
+                    b.Property<string>("LogoutUri");
+
+                    b.Property<bool>("PrefixClientClaims");
+
+                    b.Property<string>("ProtocolType");
+
+                    b.Property<int>("RefreshTokenExpiration");
+
+                    b.Property<int>("RefreshTokenUsage");
+
+                    b.Property<bool>("RequireClientSecret");
+
+                    b.Property<bool>("RequireConsent");
+
+                    b.Property<bool>("RequirePkce");
+
+                    b.Property<int>("SlidingRefreshTokenLifetime");
+
+                    b.Property<bool>("UpdateAccessTokenClaimsOnRefresh");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Clients");
+                });
+
+            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientClaim", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("ClientId");
+
+                    b.Property<string>("Type");
+
+                    b.Property<string>("Value");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
+
+                    b.ToTable("ClientClaim");
+                });
+
+            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientCorsOrigin", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("ClientId");
+
+                    b.Property<string>("Origin");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
+
+                    b.ToTable("ClientCorsOrigin");
+                });
+
+            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientGrantType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("ClientId");
+
+                    b.Property<string>("GrantType");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
+
+                    b.ToTable("ClientGrantType");
+                });
+
+            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientIdPRestriction", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("ClientId");
+
+                    b.Property<string>("Provider");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
+
+                    b.ToTable("ClientIdPRestriction");
+                });
+
+            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientPostLogoutRedirectUri", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("ClientId");
+
+                    b.Property<string>("PostLogoutRedirectUri");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
+
+                    b.ToTable("ClientPostLogoutRedirectUri");
+                });
+
+            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientRedirectUri", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("ClientId");
+
+                    b.Property<string>("RedirectUri");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
+
+                    b.ToTable("ClientRedirectUri");
+                });
+
+            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientScope", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("ClientId");
+
+                    b.Property<string>("Scope");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
+
+                    b.ToTable("ClientScope");
+                });
+
+            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientSecret", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("ClientId");
+
+                    b.Property<string>("Description");
+
+                    b.Property<DateTime?>("Expiration");
+
+                    b.Property<string>("Type");
+
+                    b.Property<string>("Value");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
+
+                    b.ToTable("ClientSecret");
+                });
+
+            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.IdentityClaim", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("IdentityResourceId");
+
+                    b.Property<string>("Type");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdentityResourceId");
+
+                    b.ToTable("IdentityClaim");
+                });
+
+            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.IdentityResource", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("DisplayName");
+
+                    b.Property<bool>("Emphasize");
+
+                    b.Property<bool>("Enabled");
+
+                    b.Property<string>("Name");
+
+                    b.Property<bool>("Required");
+
+                    b.Property<bool>("ShowInDiscoveryDocument");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("IdentityResources");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole", b =>
                 {
-                    b.Property<string>("Id");
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
                     b.Property<string>("Name")
-                        .HasAnnotation("MaxLength", 256);
+                        .HasMaxLength(256);
 
                     b.Property<string>("NormalizedName")
-                        .HasAnnotation("MaxLength", 256);
+                        .HasMaxLength(256);
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
+                        .IsUnique()
                         .HasName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles");
@@ -101,8 +447,6 @@ namespace Promact.Oauth.Server.Data.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("AspNetUserRoles");
                 });
 
@@ -123,7 +467,8 @@ namespace Promact.Oauth.Server.Data.Migrations
 
             modelBuilder.Entity("Promact.Oauth.Server.Models.ApplicationUser", b =>
                 {
-                    b.Property<string>("Id");
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<int>("AccessFailedCount");
 
@@ -135,33 +480,35 @@ namespace Promact.Oauth.Server.Data.Migrations
                     b.Property<DateTime>("CreatedDateTime");
 
                     b.Property<string>("Email")
-                        .HasAnnotation("MaxLength", 256);
+                        .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasAnnotation("MaxLength", 255);
+                        .HasMaxLength(255);
 
                     b.Property<bool>("IsActive");
 
+                    b.Property<DateTime>("JoiningDate");
+
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasAnnotation("MaxLength", 255);
+                        .HasMaxLength(255);
 
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
 
                     b.Property<string>("NormalizedEmail")
-                        .HasAnnotation("MaxLength", 256);
+                        .HasMaxLength(256);
 
                     b.Property<string>("NormalizedUserName")
-                        .HasAnnotation("MaxLength", 256);
+                        .HasMaxLength(256);
 
-                    b.Property<int>("NumberOfCasualLeave");
+                    b.Property<double>("NumberOfCasualLeave");
 
-                    b.Property<int>("NumberOfSeekLeave");
+                    b.Property<double>("NumberOfSickLeave");
 
                     b.Property<string>("PasswordHash");
 
@@ -173,6 +520,13 @@ namespace Promact.Oauth.Server.Data.Migrations
 
                     b.Property<string>("SecurityStamp");
 
+                    b.Property<string>("SlackUserId")
+                        .HasMaxLength(255);
+
+                    b.Property<string>("SlackUserName")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
                     b.Property<bool>("TwoFactorEnabled");
 
                     b.Property<string>("UpdatedBy");
@@ -180,7 +534,7 @@ namespace Promact.Oauth.Server.Data.Migrations
                     b.Property<DateTime>("UpdatedDateTime");
 
                     b.Property<string>("UserName")
-                        .HasAnnotation("MaxLength", 256);
+                        .HasMaxLength(256);
 
                     b.HasKey("Id");
 
@@ -194,44 +548,6 @@ namespace Promact.Oauth.Server.Data.Migrations
                     b.HasIndex("ProjectId");
 
                     b.ToTable("AspNetUsers");
-                });
-
-            modelBuilder.Entity("Promact.Oauth.Server.Models.ConsumerApps", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("AuthId")
-                        .IsRequired()
-                        .HasAnnotation("MaxLength", 15);
-
-                    b.Property<string>("AuthSecret")
-                        .IsRequired()
-                        .HasAnnotation("MaxLength", 30);
-
-                    b.Property<string>("CallbackUrl")
-                        .IsRequired()
-                        .HasAnnotation("MaxLength", 255);
-
-                    b.Property<string>("CreatedBy");
-
-                    b.Property<DateTime>("CreatedDateTime");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasAnnotation("MaxLength", 1000);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasAnnotation("MaxLength", 255);
-
-                    b.Property<string>("UpdatedBy");
-
-                    b.Property<DateTime?>("UpdatedDateTime");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ConsumerApps");
                 });
 
             modelBuilder.Entity("Promact.Oauth.Server.Models.OAuth", b =>
@@ -255,7 +571,8 @@ namespace Promact.Oauth.Server.Data.Migrations
             modelBuilder.Entity("Promact.Oauth.Server.Models.Project", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("CreatedBy");
 
@@ -265,14 +582,13 @@ namespace Promact.Oauth.Server.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasAnnotation("MaxLength", 255);
+                        .HasMaxLength(255);
 
                     b.Property<string>("SlackChannelName")
                         .IsRequired()
-                        .HasAnnotation("MaxLength", 25);
+                        .HasMaxLength(25);
 
-                    b.Property<string>("TeamLeaderId")
-                        .IsRequired();
+                    b.Property<string>("TeamLeaderId");
 
                     b.Property<string>("UpdatedBy");
 
@@ -286,7 +602,8 @@ namespace Promact.Oauth.Server.Data.Migrations
             modelBuilder.Entity("Promact.Oauth.Server.Models.ProjectUser", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("CreatedBy");
 
@@ -307,6 +624,97 @@ namespace Promact.Oauth.Server.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("ProjectUsers");
+                });
+
+            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ApiResourceClaim", b =>
+                {
+                    b.HasOne("IdentityServer4.EntityFramework.Entities.ApiResource", "ApiResource")
+                        .WithMany("UserClaims")
+                        .HasForeignKey("ApiResourceId");
+                });
+
+            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ApiScope", b =>
+                {
+                    b.HasOne("IdentityServer4.EntityFramework.Entities.ApiResource", "ApiResource")
+                        .WithMany("Scopes")
+                        .HasForeignKey("ApiResourceId");
+                });
+
+            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ApiScopeClaim", b =>
+                {
+                    b.HasOne("IdentityServer4.EntityFramework.Entities.ApiScope", "ApiScope")
+                        .WithMany("UserClaims")
+                        .HasForeignKey("ApiScopeId");
+                });
+
+            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ApiSecret", b =>
+                {
+                    b.HasOne("IdentityServer4.EntityFramework.Entities.ApiResource", "ApiResource")
+                        .WithMany("Secrets")
+                        .HasForeignKey("ApiResourceId");
+                });
+
+            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientClaim", b =>
+                {
+                    b.HasOne("IdentityServer4.EntityFramework.Entities.Client", "Client")
+                        .WithMany("Claims")
+                        .HasForeignKey("ClientId");
+                });
+
+            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientCorsOrigin", b =>
+                {
+                    b.HasOne("IdentityServer4.EntityFramework.Entities.Client", "Client")
+                        .WithMany("AllowedCorsOrigins")
+                        .HasForeignKey("ClientId");
+                });
+
+            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientGrantType", b =>
+                {
+                    b.HasOne("IdentityServer4.EntityFramework.Entities.Client", "Client")
+                        .WithMany("AllowedGrantTypes")
+                        .HasForeignKey("ClientId");
+                });
+
+            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientIdPRestriction", b =>
+                {
+                    b.HasOne("IdentityServer4.EntityFramework.Entities.Client", "Client")
+                        .WithMany("IdentityProviderRestrictions")
+                        .HasForeignKey("ClientId");
+                });
+
+            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientPostLogoutRedirectUri", b =>
+                {
+                    b.HasOne("IdentityServer4.EntityFramework.Entities.Client", "Client")
+                        .WithMany("PostLogoutRedirectUris")
+                        .HasForeignKey("ClientId");
+                });
+
+            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientRedirectUri", b =>
+                {
+                    b.HasOne("IdentityServer4.EntityFramework.Entities.Client", "Client")
+                        .WithMany("RedirectUris")
+                        .HasForeignKey("ClientId");
+                });
+
+            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientScope", b =>
+                {
+                    b.HasOne("IdentityServer4.EntityFramework.Entities.Client", "Client")
+                        .WithMany("AllowedScopes")
+                        .HasForeignKey("ClientId");
+                });
+
+            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientSecret", b =>
+                {
+                    b.HasOne("IdentityServer4.EntityFramework.Entities.Client", "Client")
+                        .WithMany("ClientSecrets")
+                        .HasForeignKey("ClientId");
+                });
+
+            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.IdentityClaim", b =>
+                {
+                    b.HasOne("IdentityServer4.EntityFramework.Entities.IdentityResource", "IdentityResource")
+                        .WithMany("UserClaims")
+                        .HasForeignKey("IdentityResourceId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>

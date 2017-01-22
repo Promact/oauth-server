@@ -1,5 +1,5 @@
-﻿using Promact.Oauth.Server.Models;
-using Promact.Oauth.Server.Models.ApplicationClasses;
+﻿using IdentityServer4.EntityFramework.Entities;
+using Promact.Oauth.Server.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -12,7 +12,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// </summary>
         /// <param name="aaps"></param>
         /// <returns></returns>
-        Task<int> AddConsumerAppsAsync(ConsumerAppsAc aaps);
+        Task<IdentityServer4.Models.Client> AddConsumerAppsAsync(ConsumerApps aaps);
 
 
         /// <summary>
@@ -26,20 +26,13 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// </summary>
         /// <param name="clientId"></param>
         /// <returns></returns>
-        Task<ConsumerApps> GetAppDetailsAsync(string clientId);
-
-        /// <summary>
-        /// This method used for get consumer app object by id. -An
-        /// </summary>
-        /// <param name="id">pass apps object primarykey</param>
-        /// <returns></returns>
-        Task<ConsumerApps> GetConsumerAppByIdAsync(int id);
+        Task<ConsumerApps> GetAppDetailsByClientIdAsync(string clientId);
 
         /// <summary>
         /// This method used for update consumer app and return primary key. -An
         /// </summary>
         /// <param name="apps"></param>
         /// <returns></returns>
-        Task<int> UpdateConsumerAppsAsync(ConsumerApps consumerApps);
+        Task<Client> UpdateConsumerAppsAsync(ConsumerApps consumerApp);
     }
 }

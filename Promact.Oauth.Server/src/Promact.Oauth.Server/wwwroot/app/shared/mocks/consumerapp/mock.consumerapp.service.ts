@@ -26,7 +26,7 @@ export class MockConsumerappService {
         let listOfConsumerApp = new Array<MockConsumers>();
         let mockConsumerApp = new MockConsumers();
         mockConsumerApp.Name = "slack";
-        mockConsumerApp.Description = "slack Description";
+        //mockConsumerApp.Description = "slack Description";
         mockConsumerApp.CallbackUrl = "www.google.com";
         listOfConsumerApp.push(mockConsumerApp);
         return new BehaviorSubject(listOfConsumerApp).asObservable();
@@ -36,11 +36,11 @@ export class MockConsumerappService {
      * 
      * @param id 
      */
-    getConsumerAppById(id: number) {
+    getConsumerAppById(id: string) {
         let mockConsumerApp = new MockConsumer(id);
-        if (id === 1) {
+        if (id === "slack") {
             mockConsumerApp.Name = "slack";
-            mockConsumerApp.Description = "slack Description";
+            //mockConsumerApp.Description = "slack Description";
             mockConsumerApp.CallbackUrl = "www.google.com";
         }
         return new BehaviorSubject(mockConsumerApp).asObservable();
@@ -64,8 +64,8 @@ class MockConsumers extends ConsumerAppModel {
 }
 
 class MockConsumer extends ConsumerAppModel {
-    constructor(id: number) {
+    constructor(id: string) {
         super();
-        this.Id = id;
+        this.AuthId = id;
     }
 }

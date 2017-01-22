@@ -178,7 +178,7 @@
         {
             get
             {
-                return "user.read";
+                return "user_read";
             }
         }
 
@@ -186,7 +186,7 @@
         {
             get
             {
-                return "project.read";
+                return "project_read";
             }
         }
 

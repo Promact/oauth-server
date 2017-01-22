@@ -91,8 +91,8 @@ namespace Promact.Oauth.Server
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<IConsumerAppRepository, ConsumerAppRepository>();
-            services.AddScoped(typeof(IDataRepository<>), typeof(DataRepository<>));
-            services.AddScoped<IOAuthRepository, OAuthRepository>();
+            services.AddScoped(typeof(IDataRepository<,>), typeof(DataRepository<,>));
+            //services.AddScoped<IOAuthRepository, OAuthRepository>();
             services.AddScoped<IStringConstant, StringConstant>();
             services.AddScoped<HttpClient>();
 
@@ -156,7 +156,7 @@ namespace Promact.Oauth.Server
 
             // Initializing default APIResource and IdentityResources
             IdentityServerInitialize databaseInitialize = new IdentityServerInitialize();
-            databaseInitialize.InitializeDatabase(app,defaultApiResource,defaultIdentityResource);
+            databaseInitialize.InitializeDatabaseForPreDefinedAPIResourceAndIdentityResources(app,defaultApiResource,defaultIdentityResource);
 
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();

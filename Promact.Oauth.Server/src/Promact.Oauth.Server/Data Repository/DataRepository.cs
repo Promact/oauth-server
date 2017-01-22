@@ -8,21 +8,21 @@ using System.Threading.Tasks;
 
 namespace Promact.Oauth.Server.Data_Repository
 {
-    public class DataRepository<T> : IDataRepository<T> where T : class
+    public class DataRepository<T, U> : IDataRepository<T,U> where T : class where U: DbContext
     {
         #region "Private Member(s)"
 
-        private readonly PromactOauthDbContext _promactDbContext;
+        private readonly U _dbContext;
         private readonly DbSet<T> _dbSet;
 
         #endregion
 
         #region Public Constructor
 
-        public DataRepository(PromactOauthDbContext promactOAuthDbContext)
+        public DataRepository(U dbContext)
         {
-            _promactDbContext = promactOAuthDbContext;
-            _dbSet = _promactDbContext.Set<T>();
+            _dbContext = dbContext;
+            _dbSet = _dbContext.Set<T>();
         }
 
         #endregion
@@ -48,7 +48,7 @@ namespace Promact.Oauth.Server.Data_Repository
         public void Add(T entity)
         {
             _dbSet.Add(entity);
-            _promactDbContext.SaveChanges();
+            _dbContext.SaveChanges();
         }
 
         /// <summary>
@@ -75,8 +75,8 @@ namespace Promact.Oauth.Server.Data_Repository
         /// <param name="entity">entity</param>
         public void Update(T entity)
         {
-            _promactDbContext.Entry(entity).State = EntityState.Modified;
-            _promactDbContext.SaveChanges();
+            _dbContext.Entry(entity).State = EntityState.Modified;
+            _dbContext.SaveChanges();
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace Promact.Oauth.Server.Data_Repository
         /// <param name="entity"></param>
         public void UpdateAsync(T entity)
         {
-            _promactDbContext.Entry(entity).State = EntityState.Modified;
+            _dbContext.Entry(entity).State = EntityState.Modified;
         }
 
 
@@ -94,7 +94,7 @@ namespace Promact.Oauth.Server.Data_Repository
         /// </summary>
         public void Save()
         {
-            _promactDbContext.SaveChanges();
+            _dbContext.SaveChanges();
         }
         /// <summary>
         /// Saves the changes of the database using Async
@@ -102,7 +102,7 @@ namespace Promact.Oauth.Server.Data_Repository
         /// <returns></returns>
         public async Task<int> SaveChangesAsync()
         {
-            return await _promactDbContext.SaveChangesAsync();
+            return await _dbContext.SaveChangesAsync();
 
         }
 
@@ -206,7 +206,7 @@ namespace Promact.Oauth.Server.Data_Repository
 
         public void Delete(T entity)
         {
-            if (_promactDbContext.Entry(entity).State == EntityState.Detached)
+            if (_dbContext.Entry(entity).State == EntityState.Detached)
             {
                 _dbSet.Attach(entity);
             }
@@ -218,11 +218,28 @@ namespace Promact.Oauth.Server.Data_Repository
             var entitiesToDelete = Fetch(predicate);
             foreach (var entity in entitiesToDelete)
             {
-                if (_promactDbContext.Entry(entity).State == EntityState.Detached)
+                if (_dbContext.Entry(entity).State == EntityState.Detached)
                 {
                     _dbSet.Attach(entity);
                 }
                 _dbSet.Remove(entity);
+            }
+        }
+
+        /// <summary>
+        /// Method to search database using Linq Expression and return true or false for any existance of data in database
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public bool Any(Func<T, bool> predicate)
+        {
+            try
+            {
+                return _dbSet.Any(predicate);
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
 
@@ -249,7 +266,7 @@ namespace Promact.Oauth.Server.Data_Repository
             {
                 if (disposing)
                 {
-                    _promactDbContext.Dispose();
+                    _dbContext.Dispose();
                 }
             }
             this.disposed = true;
