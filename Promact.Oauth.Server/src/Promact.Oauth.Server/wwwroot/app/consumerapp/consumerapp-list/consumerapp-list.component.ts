@@ -4,7 +4,7 @@ import { ConsumerAppService } from '../consumerapp.service';
 import { LoaderService } from '../../shared/loader.service';
 import { Md2Toast } from 'md2';
 import { ConsumerAppModel } from "../consumerapp-model";
-import { StringConstant } from '../../shared/stringconstant';
+
 
 
 @Component({

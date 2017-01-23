@@ -10,7 +10,6 @@ import { MockRouter } from '../../shared/mocks/mock.router';
 import { ConsumerAppModule } from '../consumerapp.module';
 import { LoaderService } from '../../shared/loader.service';
 import { Md2Toast } from 'md2';
-import { StringConstant } from '../../shared/stringconstant';
 
 describe('Consumer List Test', () => {
     
