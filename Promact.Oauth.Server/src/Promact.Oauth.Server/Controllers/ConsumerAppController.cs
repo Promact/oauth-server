@@ -42,14 +42,35 @@ namespace Promact.Oauth.Server.Controllers
         * @apiParamExample {json} Request-Example:  
         *  {
         *     "Name":"ProjectName",
-        *     "Description":"True",
-        *     "CallbackUrl":"1",
+        *     "CallbackUrl":"http://www.example.com/signin-oidc",
+        *     "AuthId" : "ASFSGHTRDHX",
+        *     "AuthSecret" : "aFHF142SFG15212DF1GDFDSFSD2",
+        *     "LogoutUrl" : "http://www.example.com/",
+        *     "Scopes" : 
+        *     "{
+        *                   "email",
+        *                   "openid",
+        *                   "profile",
+        *                   "slack_user_id",
+        *     }"
         *  }      
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
         * {
-        *    true
-        * }
+        *     "Id" :"1"
+        *     "Name":"ProjectName",
+        *     "CallbackUrl":"http://www.example.com/signin-oidc",
+        *     "AuthId" : "ASFSGHTRDHX",
+        *     "AuthSecret" : "aFHF142SFG15212DF1GDFDSFSD2",
+        *     "LogoutUrl" : "http://www.example.com/",
+        *     "Scopes" : 
+        *     "{
+        *                   "email",
+        *                   "openid",
+        *                   "profile",
+        *                   "slack_user_id",
+        *     }"
+        *  } 
         * @apiError ConsumerAppNameIsAlreadyExists The ConsumerApp Name is Already Exists
         * @apiErrorExample {json} Error-Response:
         * HTTP/1.1 400 Bad Request 
@@ -81,12 +102,19 @@ namespace Promact.Oauth.Server.Controllers
         * HTTP/1.1 200 OK 
         * {
         *   {
-        *   "Name":"ProjectName",
-        *   "Description":"SlackChannelName",
-        *   "CallbackUrl ":"localhost:35716/oAuth/RefreshToken",
-        *   "AuthId ":"XyzDemo123DSQWE",
-        *   "AuthSecret ":"XyzWERTCDSwasaswre232_e322"
-        *   }
+        *     "Name":"ProjectName",
+        *     "CallbackUrl":"http://www.example.com/signin-oidc",
+        *     "AuthId" : "ASFSGHTRDHX",
+        *     "AuthSecret" : "aFHF142SFG15212DF1GDFDSFSD2",
+        *     "LogoutUrl" : "http://www.example.com/",
+        *     "Scopes" : 
+        *     "{
+        *                   "email",
+        *                   "openid",
+        *                   "profile",
+        *                   "slack_user_id",
+        *     }"
+        *   } 
         * }
         */
         [HttpGet]
@@ -106,19 +134,24 @@ namespace Promact.Oauth.Server.Controllers
        * @apiParam {int} id
        * @apiParamExample {json} Request-Example:  
        *        {
-       *            "id":"1"
+       *            "id":"ASFSGHTRDHX"
        *        }     
        * @apiSuccessExample {json} Success-Response:
        * HTTP/1.1 200 OK 
        * {
-       *  {
-       *   "Name":"ProjectName",
-       *   "Description":"SlackChannelName",
-       *   "CallbackUrl ":"localhost:35716/oAuth/RefreshToken",
-       *   "AuthId ":"XyzDemo123DSQWE",
-       *   "AuthSecret ":"XyzWERTCDSwasaswre232_e322"
-       *   }
-       * }
+       *     "Name":"ProjectName",
+       *     "CallbackUrl":"http://www.example.com/signin-oidc",
+       *     "AuthId" : "ASFSGHTRDHX",
+       *     "AuthSecret" : "aFHF142SFG15212DF1GDFDSFSD2",
+       *     "LogoutUrl" : "http://www.example.com/",
+       *     "Scopes" : 
+       *     "{
+       *                   "email",
+       *                   "openid",
+       *                   "profile",
+       *                   "slack_user_id",
+       *     }"
+       *  } 
        * @apiError ConsumerAppNotFound The id of the ConsumerApp was not found.
        * @apiErrorExample {json} Error-Response:
        * HTTP/1.1 404 Not Found
@@ -148,16 +181,22 @@ namespace Promact.Oauth.Server.Controllers
         * @apiGroup ConsumerApp
         * @apiParam {object} consumerAppsAc object
         * @apiParamExample {json} Request-Example: 
-        *    "Id":"1", 
-        *       {
-        *             "Id":"1", 
-        *             "Name":"ProjectName",
-        *             "Description":"True",
-        *             "CallbackUrl":"1",
-        *             "AuthSecret":"ABCDEEADweesd",
-        *             "AuthId":"ABCDE123XYZED45awadddfgdAWWEWFsfsFF",
-        *             
-        *       } 
+        * {
+        *     "Id" : "1"
+        *     "Name":"ProjectName",
+        *     "CallbackUrl":"http://www.example.com/signin-oidc",
+        *     "AuthId" : "ASFSGHTRDHX",
+        *     "AuthSecret" : "aFHF142SFG15212DF1GDFDSFSD2",
+        *     "LogoutUrl" : "http://www.example.com/",
+        *     "Scopes" : 
+        *     "{
+        *                   "email",
+        *                   "openid",
+        *                   "profile",
+        *                   "slack_user_id",
+        *                   "user_read"
+        *     }"
+        *  }
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
         * {
@@ -174,14 +213,31 @@ namespace Promact.Oauth.Server.Controllers
         [Route("")]
         public async Task<IActionResult> UpdateConsumerAppAsync([FromBody]ConsumerApps consumerApp)
         {
-            try
-            {
-                return Ok(await _consumerAppRepository.UpdateConsumerAppsAsync(consumerApp));
-            }
-            catch (ConsumerAppNameIsAlreadyExists)
-            {
-                return BadRequest();
-            }
+            return Ok(await _consumerAppRepository.UpdateConsumerAppsAsync(consumerApp));
+        }
+
+
+        /**
+        * @api {get} api/consumerappgeneraterandomnumber/{isAuthId:bool}
+        * @apiVersion 1.0.0
+        * @apiName GetRandomNumber
+        * @apiGroup ConsumerApp
+        * @apiParam {bool} isAuthId
+        * @apiParamExample {json} Request-Example: 
+        * {
+        *       "isAuthId" : "true"
+        *  }
+        * @apiSuccessExample {json} Success-Response:
+        * HTTP/1.1 200 OK 
+        * {
+        *       "DADEGSFGFDVGD"
+        * }
+        */
+        [HttpGet]
+        [Route("generaterandomnumber/{isAuthId:bool}")]
+        public IActionResult GetRandomNumber(bool isAuthId)
+        {
+            return Ok(_consumerAppRepository.GetRandomNumber(isAuthId));
         }
 
         #endregion

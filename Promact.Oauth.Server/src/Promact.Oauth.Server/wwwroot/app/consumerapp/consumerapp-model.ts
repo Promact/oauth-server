@@ -5,6 +5,7 @@
         AuthSecret: string;
         Scopes: Array<consumerappallowedscopes>;
         LogoutUrl: string;
+        Id: number;
 }
 
 export enum consumerappallowedscopes {

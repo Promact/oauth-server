@@ -10,14 +10,17 @@
     </div>
 
     <form #consumerappEditForm="ngForm">
-
+        <md-input type="hidden" [(ngModel)]="consumerModel.Id" name="id"></md-input>
+        <!--<input type="hidden" [(ngModel)]="consumerModel.Id" />-->
         <div class="form-group d-flex">
             <div class="half-width mr-25">
                 <md-input class="full-width" placeholder="Auth Id" [(ngModel)]="consumerModel.AuthId" [disabled]="true" name="AuthId"></md-input>
+                <button md-raised-button type="submit" class="btn-back btn-green" (click)="getRandomNumber(true)">Generate New</button>
             </div>
-
             <div class="half-width">
-                <md-input class="full-width" placeholder="Auth Secret" [(ngModel)]="consumerModel.AuthSecret" [disabled]="true" name="AuthSecret"></md-input>
+                <md-input [type]="clientSecretIndicator ? 'text':'password'" class="full-width" placeholder="Auth Secret" [(ngModel)]="consumerModel.AuthSecret" [disabled]="true" name="AuthSecret"></md-input>
+                <button md-raised-button type="submit" class="btn-back btn-green" (click)="getRandomNumber(false)">Generate New</button>
+                <div [hidden]="!clientSecretIndicator" class="error">Please copy the client secret. It will be encoded after saving.</div>
             </div>
 
         </div>

@@ -7,6 +7,7 @@ namespace Promact.Oauth.Server.Models
 {
     public class ConsumerApps 
     {
+        public int Id { get; set; }
         [Required]
         [StringLength(255)]
         public string Name { get; set; }
