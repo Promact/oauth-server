@@ -7,5 +7,6 @@ namespace Promact.Oauth.Server.Models
         public double SickLeave { get; set; }
         public double CasualLeave { get; set; }
         public string PromactErpUrl { get; set; }
+        public string AuthenticationAPISecret { get; set; }
     }
 }
