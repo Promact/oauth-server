@@ -53,4 +53,8 @@ export class HttpService<T> {
 
     }
 
+    getWithoutReturnObject(url: string) {
+        return this.http.get(url).map(res => res.text());
+    }
+
 }

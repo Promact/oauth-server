@@ -48,8 +48,8 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// <summary>
         /// This method used for get apps detail by client id. 
         /// </summary>
-        /// <param name="clientId"></param>
-        /// <returns></returns>
+        /// <param name="clientId">App's clientId</param>
+        /// <returns>App details</returns>
         public async Task<ConsumerApps> GetAppDetailsByClientIdAsync(string clientId)
         {
             var consumerApps = await GetConsumerByClientIdOfIdentityServerClient(clientId);
@@ -62,14 +62,12 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// <summary>
         /// This method used for added consumer app and return primary key. -An
         /// </summary>
-        /// <param name="aapsObject"></param>
-        /// <returns></returns>
+        /// <param name="consumerApp">App details as object</param>
+        /// <returns>App details after saving changes as object</returns>
         public async Task<IdentityServer4.Models.Client> AddConsumerAppsAsync(ConsumerApps consumerApp)
         {
-            if (await _clientDataRepository.FirstOrDefaultAsync(x => x.ClientName == consumerApp.Name) == null)
+            if (await _clientDataRepository.FirstOrDefaultAsync(x => x.ClientName == consumerApp.Name && x.ClientId != consumerApp.AuthId) == null)
             {
-                consumerApp.AuthId = GetRandomNumber(true);
-                consumerApp.AuthSecret = "superSecretPassword";
                 var clientApp = ReturnIdentityServerClientFromConsumerApp(consumerApp, ReturnListOfScopesInStringFromEnumAllowedScope(consumerApp.Scopes));
                 _clientDataRepository.Add(clientApp.ToEntity());
                 await _clientDataRepository.SaveChangesAsync();
@@ -83,10 +81,9 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// <summary>
         /// This method used for get list of apps. -An
         /// </summary>
-        /// <returns></returns>
+        /// <returns>list of App</returns>
         public async Task<List<ConsumerApps>> GetListOfConsumerAppsAsync()
         {
-
             var listOfClient = await _clientDataRepository.GetAll().ToListAsync();
             List<ConsumerApps> listOfConsumerApp = new List<ConsumerApps>();
             ConsumerApps app;
@@ -101,35 +98,28 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// <summary>
         /// This method used for update consumer app and return primary key. -An
         /// </summary>
-        /// <param name="apps"></param>
-        /// <returns></returns>
+        /// <param name="consumerApps">App details as object</param>
+        /// <returns>updated app details</returns>
         public async Task<IdentityServer4.EntityFramework.Entities.Client> UpdateConsumerAppsAsync(ConsumerApps consumerApps)
         {
-            if (await _clientDataRepository.FirstOrDefaultAsync(x => x.ClientName == consumerApps.Name && x.ClientId != consumerApps.AuthId) == null)
-            {
-                var client = await _clientDataRepository.FirstOrDefaultAsync(x => x.ClientId == consumerApps.AuthId);
-                client.ClientName = consumerApps.Name;
-                _clientDataRepository.Update(client);
-                await UpdateClientScope(client.Id, ReturnListOfScopesInStringFromEnumAllowedScope(consumerApps.Scopes));
-                await UpdateClientRedirectUri(client.Id, consumerApps.CallbackUrl);
-                await UpdateClientLogoutRedirectUri(client.Id, consumerApps.LogoutUrl);
-                return client;
-            }
-            else
-                throw new ConsumerAppNameIsAlreadyExists();
+            var client = await _clientDataRepository.FirstOrDefaultAsync(x => x.Id == consumerApps.Id);
+            client.ClientName = consumerApps.Name;
+            client.ClientId = consumerApps.AuthId;
+            _clientDataRepository.Update(client);
+            await UpdateClientSecret(client.Id, consumerApps.AuthSecret);
+            await UpdateClientScope(client.Id, ReturnListOfScopesInStringFromEnumAllowedScope(consumerApps.Scopes));
+            await UpdateClientRedirectUri(client.Id, consumerApps.CallbackUrl);
+            await UpdateClientLogoutRedirectUri(client.Id, consumerApps.LogoutUrl);
+            return client;
         }
-
-        #endregion
-
-        #region "Private Method(s)"
 
         /// <summary>
         /// This method used for get random number For AuthId and Auth Secreate. -An
         /// </summary>
         /// <param name="isAuthId">isAuthId = true (get random number for auth id.) and 
         /// isAuthId = false (get random number for auth secreate)</param>
-        /// <returns></returns>
-        private string GetRandomNumber(bool isAuthId)
+        /// <returns>Random generated code</returns>
+        public string GetRandomNumber(bool isAuthId)
         {
             var random = new Random();
             if (isAuthId)
@@ -143,7 +133,14 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
                   .Select(s => s[random.Next(s.Length)]).ToArray());
             }
         }
+        #endregion
 
+        #region "Private Method(s)"
+        /// <summary>
+        /// Method to get App details for IdentityServer4 Client table in ConsumerApp object
+        /// </summary>
+        /// <param name="clientId">clientId of App</param>
+        /// <returns>App details as object of ConsumerApp</returns>
         private async Task<ConsumerApps> GetConsumerByClientIdOfIdentityServerClient(string clientId)
         {
             ConsumerApps app = new ConsumerApps();
@@ -158,7 +155,8 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
                     var value = (AllowedScope)Enum.Parse(typeof(AllowedScope), scopes.Scope);
                     app.Scopes.Add(value);
                 }
-                app.AuthId = clientId;
+                app.Id = client.Id;
+                app.AuthId = client.ClientId;
                 var secret = await _secret.FirstOrDefaultAsync(x => x.Client.ClientId == clientId);
                 app.AuthSecret = secret.Value;
                 var callBackUri = await _redirectUri.FirstOrDefaultAsync(x => x.Client.ClientId == clientId);
@@ -170,6 +168,12 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
             return app;
         }
 
+        /// <summary>
+        /// Method to convert ConsumerApp object to IdentityServer4 Client
+        /// </summary>
+        /// <param name="consumerApp">App details as object of ConsumerApp</param>
+        /// <param name="allowedScopes">list of allowed scopes</param>
+        /// <returns></returns>
         private IdentityServer4.Models.Client ReturnIdentityServerClientFromConsumerApp(ConsumerApps consumerApp, List<string> allowedScopes)
         {
             return new IdentityServer4.Models.Client
@@ -197,6 +201,11 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
             };
         }
 
+        /// <summary>
+        /// Method to return list of string from list of enum scope
+        /// </summary>
+        /// <param name="scopes">list of enum scopes</param>
+        /// <returns>list of string scope</returns>
         private List<string> ReturnListOfScopesInStringFromEnumAllowedScope(List<AllowedScope> scopes)
         {
             List<string> allowedScope = new List<string>();
@@ -208,6 +217,11 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
             return allowedScope;
         }
 
+        /// <summary>
+        /// Method to updated Client scopes
+        /// </summary>
+        /// <param name="clientIdPrimaryKey">IdentityServer's Client primary key</param>
+        /// <param name="newScopes">list of allowed scopes</param>
         private async Task UpdateClientScope(int clientIdPrimaryKey, List<string> newScopes)
         {
             var client = await _clientDataRepository.FirstOrDefaultAsync(x => x.Id == clientIdPrimaryKey);
@@ -228,6 +242,11 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
             }
         }
 
+        /// <summary>
+        /// Method to updated Client RedirectUri
+        /// </summary>
+        /// <param name="clientIdPrimaryKey">IdentityServer's Client primary key</param>
+        /// <param name="redirectUri">new redirectUri</param>
         private async Task UpdateClientRedirectUri(int clientIdPrimaryKey, string redirectUri)
         {
             var existingRedirectUri = await _redirectUri.FirstOrDefaultAsync(x => x.Client.Id == clientIdPrimaryKey);
@@ -238,6 +257,11 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
             }
         }
 
+        /// <summary>
+        /// Method to update client logout-redirectUri
+        /// </summary>
+        /// <param name="clientIdPrimaryKey">IdentityServer's Client primary key</param>
+        /// <param name="redirectUri">logout redirectUri</param>
         private async Task UpdateClientLogoutRedirectUri(int clientIdPrimaryKey, string redirectUri)
         {
             var existingRedirectUri = await _logoutRedirectUri.FirstOrDefaultAsync(x => x.Client.Id == clientIdPrimaryKey);
@@ -245,6 +269,21 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
             {
                 existingRedirectUri.PostLogoutRedirectUri = redirectUri;
                 _logoutRedirectUri.Update(existingRedirectUri);
+            }
+        }
+
+        /// <summary>
+        /// Method to update Client secret
+        /// </summary>
+        /// <param name="clientIdPrimaryKey">IdentityServer's Client primary key</param>
+        /// <param name="secret">new Client secret</param>
+        private async Task UpdateClientSecret(int clientIdPrimaryKey, string secret)
+        {
+            var existingSecret = await _secret.FirstOrDefaultAsync(x => x.Client.Id == clientIdPrimaryKey);
+            if (!(existingSecret.Value == secret))
+            {
+                existingSecret.Value = secret.Sha256();
+                _secret.Update(existingSecret);
             }
         }
         #endregion

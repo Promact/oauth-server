@@ -41,4 +41,11 @@ export class ConsumerAppService {
     updateConsumerApps(consumerAppsAc: ConsumerAppModel) {
         return this.httpService.put(this.consumerAppUrl, consumerAppsAc);
     }
+
+    /*This method used for get consumer apps list*
+    * 
+    */
+    getRandomNumber(isAuthId: boolean) {
+        return this.httpService.getWithoutReturnObject(this.consumerAppUrl + "/generaterandomnumber/" + isAuthId);
+    }
 }
