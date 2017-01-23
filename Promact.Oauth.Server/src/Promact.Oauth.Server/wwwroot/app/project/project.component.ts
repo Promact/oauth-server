@@ -1,7 +1,6 @@
 ﻿import { Component, OnInit }   from '@angular/core';
 import { Router }from '@angular/router';
 import { ProjectService }   from './project.service';
-import { LoginService } from '../login.service';
 import { UserRole } from "../shared/userrole.model";
 import { StringConstant } from '../shared/stringconstant';
 
@@ -14,7 +13,7 @@ import { StringConstant } from '../shared/stringconstant';
 })
 export class ProjectComponent implements OnInit {
     admin: boolean;
-    constructor(private loginService: LoginService, private router: Router, private userRole: UserRole, private stringconstant: StringConstant) { }
+    constructor(private router: Router, private userRole: UserRole, private stringconstant: StringConstant) { }
     ngOnInit() {
         if (this.userRole.Role === this.stringconstant.admin) {
             this.admin = true;

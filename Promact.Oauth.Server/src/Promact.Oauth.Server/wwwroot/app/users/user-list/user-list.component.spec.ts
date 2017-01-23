@@ -13,7 +13,6 @@ import { LoaderService } from '../../shared/loader.service';
 let fixture: ComponentFixture<UserListComponent>;
 
 describe("User List Test", () => {
-    class MockLoaderService { }
     const routes: Routes = [];
     beforeEach(async(() => {
         TestBed.configureTestingModule({
