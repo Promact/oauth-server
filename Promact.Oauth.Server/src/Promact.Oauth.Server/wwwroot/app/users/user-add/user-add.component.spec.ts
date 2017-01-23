@@ -11,6 +11,7 @@ import { MockRouter } from '../../shared/mocks/mock.router';
 import { UserModule } from '../user.module';
 import { LoaderService } from '../../shared/loader.service';
 import { StringConstant } from '../../shared/stringconstant';
+let stringConstant = new StringConstant();
 
 let stringConstant = new StringConstant();
 describe('User Add Test', () => {

@@ -5,6 +5,7 @@ import { Router} from '@angular/router';
 import { Md2Toast } from 'md2';
 import { Location } from "@angular/common";
 import { LoaderService } from '../shared/loader.service';
+import { StringConstant } from '../shared/stringconstant';
 
 @Component({
     templateUrl: './app/change-password/change-password.html',
@@ -17,7 +18,7 @@ export class ChangePasswordComponent {
     @Input()
     passwordModel: PasswordModel;
 
-    constructor(private userService: UserService, private redirectionRoute: Router, private toast: Md2Toast, private loader: LoaderService) {
+    constructor(private userService: UserService, private redirectionRoute: Router, private toast: Md2Toast, private loader: LoaderService, private stringConstant: StringConstant) {
         this.passwordModel = new PasswordModel();
         this.isNotMatch = false;
         this.isInCorrect = true;
@@ -64,6 +65,6 @@ export class ChangePasswordComponent {
     }
 
     goBack() {
-        this.redirectionRoute.navigate(['user/list']);
+        this.redirectionRoute.navigate([this.stringConstant.userList]);
     }
 }

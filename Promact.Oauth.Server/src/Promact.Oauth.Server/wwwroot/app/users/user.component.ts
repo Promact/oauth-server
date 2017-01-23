@@ -23,7 +23,7 @@ export class UserComponent implements OnInit {
             this.admin = true;
         }
         else {
-            this.router.navigate(['/user/details/' + this.userRole.Id]);
+            this.router.navigate([this.stringconstant.userDetail + this.userRole.Id]);
             this.admin = false;
         }
     }
