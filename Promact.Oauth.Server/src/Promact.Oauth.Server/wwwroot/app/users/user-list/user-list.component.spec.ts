@@ -1,22 +1,15 @@
 ﻿declare var describe, it, beforeEach, expect;
-import {async, inject, TestBed, ComponentFixture} from '@angular/core/testing';
-import { By } from "@angular/platform-browser";
-import { Provider } from "@angular/core";
+import {async,  TestBed, ComponentFixture} from '@angular/core/testing';
 import { UserService }   from '../user.service';
 import {UserModel} from '../user.model';
-import { Router, ActivatedRoute, RouterModule, Routes } from '@angular/router';
-import { Component } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 import { Md2Toast } from 'md2';
 import {UserListComponent} from '../user-list/user-list.component';
 import {MockToast} from "../../shared/mocks/mock.toast";
 import {MockUserService} from "../../shared/mocks/user/mock.user.service";
 import { UserModule } from '../user.module';
 import { LoaderService } from '../../shared/loader.service';
-import { MockRouter } from '../../shared/mocks/mock.router';
-import { RouterLinkStubDirective } from '../../shared/mocks/mock.routerLink';
-import { Observable } from 'rxjs/Observable';
 
-let comp: UserListComponent;
 let fixture: ComponentFixture<UserListComponent>;
 
 describe("User List Test", () => {
@@ -28,7 +21,6 @@ describe("User List Test", () => {
             ],
             providers: [
                 { provide: UserService, useClass: MockUserService },
-                { provide: Router, useClass: MockRouter },
                 { provide: Md2Toast, useClass: MockToast },
                 { provide: LoaderService, useClass: LoaderService }]
         }).compileComponents();

@@ -1,26 +1,18 @@
 ﻿declare var describe, it, beforeEach, expect;
-import { async, inject, TestBed, ComponentFixture } from '@angular/core/testing';
-import { Provider } from "@angular/core";
+import { async,  TestBed} from '@angular/core/testing';
 import { UserModel } from '../../users/user.model';
 import { UserDetailsComponent } from "../user-details/user-details.component";
 import { UserService } from "../user.service";
 import { UserModule } from '../user.module';
-import { Router, ActivatedRoute, RouterModule, Routes } from '@angular/router';
+import { Router,ActivatedRoute, RouterModule, Routes } from '@angular/router';
 import { Md2Toast } from 'md2';
 import { MockToast } from "../../shared/mocks/mock.toast";
-import { Md2Multiselect } from 'md2/multiselect';
 import { MockUserService } from "../../shared/mocks/user/mock.user.service";
-import { MockRouter } from '../../shared/mocks/mock.router';
-import { Observable } from 'rxjs/Observable';
-import { RouterLinkStubDirective } from '../../shared/mocks/mock.routerLink';
 import { LoaderService } from '../../shared/loader.service';
-import { Location } from "@angular/common";
-import { LoginService } from '../../login.service';
-import { MockLoginService } from "../../shared/mocks/mock.login.service";
 import { ActivatedRouteStub } from "../../shared/mocks/mock.activatedroute";
 import { UserRole } from "../../shared/userrole.model";
 import { StringConstant } from '../../shared/stringconstant';
-
+import { MockRouter } from '../../shared/mocks/mock.router';
 
 let stringConstant = new StringConstant();
 
@@ -34,15 +26,13 @@ describe("User Details Test", () => {
             ],
             providers: [
                 { provide: UserService, useClass: MockUserService },
-                { provide: ActivatedRoute, useClass: ActivatedRouteStub },
                 { provide: Router, useClass: MockRouter },
+                { provide: ActivatedRoute, useClass: ActivatedRouteStub },
                 { provide: Md2Toast, useClass: MockToast },
                 { provide: UserModel, useClass: UserModel },
                 { provide: LoaderService, useClass: LoaderService },
-                { provide: LoginService, useClass: MockLoginService },
-                { provide: UserRole, useValue: new UserRole() },
+                { provide: UserRole, useValue: new UserRole()},
                 { provide: StringConstant, useClass: StringConstant }
-                
             ]
         }).compileComponents();
 

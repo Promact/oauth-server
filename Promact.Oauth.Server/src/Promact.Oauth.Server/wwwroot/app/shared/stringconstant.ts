@@ -6,7 +6,7 @@ export class StringConstant {
     admin = 'Admin';
     employee = 'Employee';
     projectUrl = 'api/project';
-    userUrl = 'api/user';
+    userUrl = 'api/users';
     consumerAppUrl = 'api/consumerapp';
     paramsId = 'id';
     id = '1';
@@ -26,4 +26,6 @@ export class StringConstant {
     newPassword = 'test123';
     oldPassword = 'test';
     confirmPassword = 'test1234';
+    medium = "medium";
+    dateFormat = "dd-MM-yyyy";
 }

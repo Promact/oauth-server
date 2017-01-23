@@ -1,7 +1,6 @@
 declare var describe, it, beforeEach, expect;
-import { async, inject, TestBed, ComponentFixture } from '@angular/core/testing';
-import { Router, ActivatedRoute, RouterModule, Routes } from '@angular/router';
-import { Provider } from "@angular/core";
+import { async,  TestBed } from '@angular/core/testing';
+import { RouterModule, Routes } from '@angular/router';
 import { PasswordModel } from "../users/user-password.model";
 import { ChangePasswordModule } from "../change-password/change-password.module";
 import { ChangePasswordComponent } from "../change-password/change-password.component";
@@ -9,12 +8,11 @@ import { UserService } from '../users/user.service';
 import { MockUserService } from "../shared/mocks/user/mock.user.service";
 import { Md2Toast } from 'md2';
 import { MockToast } from "../shared/mocks/mock.toast";
-import { Observable } from "rxjs/Observable";
 import { LoaderService } from "../shared/loader.service";
 import { MockRouter } from '../shared/mocks/mock.router';
 import { StringConstant } from '../shared/stringconstant';
 
-let promise: TestBed;
+
 let stringConstant = new StringConstant();
 
 describe('Change Password', () => {
@@ -24,7 +22,6 @@ describe('Change Password', () => {
             imports: [ChangePasswordModule, RouterModule.forRoot(routes, { useHash: true }) //Set LocationStrategy for component. 
             ],
             providers: [
-                { provide: Router, useClass: MockRouter },
                 { provide: UserService, useClass: MockUserService },
                 { provide: Md2Toast, useClass: MockToast },
                 { provide: PasswordModel, useClass: PasswordModel },
