@@ -11,6 +11,7 @@ import { LoaderService } from '../../shared/loader.service';
 export class ConsumerappAddComponent {
     scopes: any;
     consumerModel: ConsumerAppModel;
+    clientSecretIndicator: boolean = false;
     constructor(private consumerAppService: ConsumerAppService, private router: Router, private toast: Md2Toast, private loader: LoaderService) {
         this.consumerModel = new ConsumerAppModel();
         this.scopes = [];
@@ -36,6 +37,20 @@ export class ConsumerappAddComponent {
     cancel() {
         this.router.navigate(['/consumerapp']);
     }
+    getRandomNumber(isAuthId: boolean) {
+        this.consumerAppService.getRandomNumber(isAuthId).subscribe((result) => {
+            if (isAuthId == true) {
+                this.consumerModel.AuthId = result;
+            }
+            else {
+                this.clientSecretIndicator = true;
+                this.consumerModel.AuthSecret = result;
+            }
+        }), err => {
+            this.toast.show('Error generating random number');
+        }
+        
 
+    }
 
 }
