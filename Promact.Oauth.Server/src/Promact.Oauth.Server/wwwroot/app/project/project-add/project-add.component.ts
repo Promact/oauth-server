@@ -6,6 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Md2Toast } from 'md2';
 import { LoaderService } from '../../shared/loader.service';
 
+
 @Component({
     templateUrl: "app/project/project-add/project-add.html",
 })
