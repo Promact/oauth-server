@@ -17,7 +17,7 @@ export class UserDetailsComponent implements OnInit {
     admin: boolean;
     
 
-    constructor(private userService: UserService, private route: ActivatedRoute, private redirectRoute: Router, private loginService: LoginService,
+    constructor(private userService: UserService, private route: ActivatedRoute, private redirectRoute: Router,
         private loader: LoaderService, private userRole: UserRole, private stringConstant: StringConstant) {
         this.user = new UserModel();
         this.admin = true;

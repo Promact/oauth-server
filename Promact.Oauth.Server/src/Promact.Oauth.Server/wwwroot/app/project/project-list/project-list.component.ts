@@ -26,10 +26,10 @@ export class ProjectListComponent implements OnInit {
         this.loader.loader = true;
         this.projectService.getProjects().subscribe((projects) => {
             this.projects = projects;
-            let datePipe = new DatePipe("medium");
+            let datePipe = new DatePipe(this.stringConstant.medium);
             this.projects.forEach(project => {
-                project.createdOns = datePipe.transform(project.createdDate, "dd-MM-yyyy");
-                project.updatedOns = datePipe.transform(project.updatedDate, "dd-MM-yyyy");
+                project.createdOns = datePipe.transform(project.createdDate, this.stringConstant.dateFormat);
+                project.updatedOns = datePipe.transform(project.updatedDate, this.stringConstant.dateFormat);
             });
             this.loader.loader = false;
         }, err => {

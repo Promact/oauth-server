@@ -18,7 +18,7 @@ export class UserEditComponent implements OnInit {
     listOfRoles: Array<UserRoleModel>;
     admin: boolean;
 
-    constructor(private userService: UserService, private route: ActivatedRoute, private redirectionRoute: Router, private toast: Md2Toast, private loginService: LoginService,
+    constructor(private userService: UserService, private route: ActivatedRoute, private redirectionRoute: Router, private toast: Md2Toast,
         private loader: LoaderService, private userRole: UserRole, private stringConstant: StringConstant) {
         this.user = new UserModel();
         this.listOfRoles = new Array<UserRoleModel>();

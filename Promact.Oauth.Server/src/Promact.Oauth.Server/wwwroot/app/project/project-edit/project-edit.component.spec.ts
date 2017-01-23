@@ -1,23 +1,19 @@
 ﻿declare var describe, it, beforeEach, expect;
-import { async, inject, TestBed, ComponentFixture } from '@angular/core/testing';
-import { Provider } from "@angular/core";
+import { async, TestBed} from '@angular/core/testing';
 import { ProjectModel } from "../project.model";
 import { ProjectEditComponent } from "../project-edit/project-edit.component";
 import { ProjectService } from "../project.service";
 import { UserModel } from '../../users/user.model';
-import { Router, ActivatedRoute, RouterModule, Routes } from '@angular/router';
+import { ActivatedRoute, RouterModule, Routes } from '@angular/router';
 import { Md2Toast } from 'md2';
 import { MockToast } from "../../shared/mocks/mock.toast";
-import { Md2Multiselect } from 'md2/multiselect';
 import { MockProjectService } from "../../shared/mocks/project/mock.project.service";
-import { MockRouter } from '../../shared/mocks/mock.router';
-import { Observable } from 'rxjs/Observable';
 import { ProjectModule } from '../project.module';
 import { LoaderService } from '../../shared/loader.service';
 import { StringConstant } from '../../shared/stringconstant';
 import { ActivatedRouteStub } from "../../shared/mocks/mock.activatedroute";
 
-
+let stringConstant = new StringConstant();
 let mockUser = new UserModel();
 mockUser.FirstName = stringConstant.firstName;
 mockUser.LastName = stringConstant.lastName;
@@ -29,24 +25,13 @@ mockList.push(mockUser);
 
 
 describe('Project Edit Test', () => {
-    class MockRouter { }
-    class MockLocation { }
-    class MockLoaderService { }
     const routes: Routes = [];
-    class MockActivatedRoute extends ActivatedRoute {
-        constructor() {
-            super();
-            this.params = Observable.of({ id: "1"});
-        }
-    }
-
     beforeEach(async(() => {
       TestBed.configureTestingModule({
             imports: [ProjectModule, RouterModule.forRoot(routes, { useHash: true }) //Set LocationStrategy for component. 
             ],
             providers: [
                 { provide: ActivatedRoute, useClass: ActivatedRouteStub },
-                { provide: Router, useClass: MockRouter },
                 { provide: ProjectService, useClass: MockProjectService },
                 { provide: Md2Toast, useClass: MockToast },
                 { provide: UserModel, useClass: UserModel },

@@ -1,6 +1,5 @@
 ﻿import { Component, OnInit }   from '@angular/core';
 import { Router }from '@angular/router';
-import { LoginService } from '../login.service';
 import { UserService } from './user.service';
 import { UserRole } from "../shared/userrole.model";
 import { StringConstant } from '../shared/stringconstant';
@@ -8,19 +7,19 @@ import { StringConstant } from '../shared/stringconstant';
 @Component({
     template: `
     <router-outlet></router-outlet>`,
-    providers: [UserService, LoginService]
+    providers: [UserService]
 })
 
 export class UserComponent implements OnInit {
     admin: boolean;
-    constructor(private loginService: LoginService, private router: Router, private userRole: UserRole, private stringconstant: StringConstant) { }
+    constructor( private router: Router, private userRole: UserRole, private stringconstant: StringConstant) { }
 
    
 
     ngOnInit() {
 
         if (this.userRole.Role === this.stringconstant.admin) {
-            this.router.navigate(['/project/list']);
+            this.router.navigate(['/user/list']);
             this.admin = true;
         }
         else {

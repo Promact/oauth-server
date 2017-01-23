@@ -1,9 +1,6 @@
-﻿
-import { Injectable } from '@angular/core';
-import { ResponseOptions, Response } from "@angular/http";
+﻿import { Injectable } from '@angular/core';
 import { UserModel } from "../../../users/user.model";
 import { PasswordModel } from "../../../users/user-password.model";
-import { Subject } from 'rxjs/Rx';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { StringConstant } from '../../stringconstant';
 
