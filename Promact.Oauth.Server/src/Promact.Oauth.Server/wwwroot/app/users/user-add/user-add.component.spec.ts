@@ -13,7 +13,6 @@ import { LoaderService } from '../../shared/loader.service';
 import { StringConstant } from '../../shared/stringconstant';
 let stringConstant = new StringConstant();
 
-let stringConstant = new StringConstant();
 describe('User Add Test', () => {
     const routes: Routes = [];
 

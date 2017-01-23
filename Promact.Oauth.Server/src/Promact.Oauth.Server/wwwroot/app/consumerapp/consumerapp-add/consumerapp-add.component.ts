@@ -27,7 +27,7 @@ export class ConsumerappAddComponent {
     }
 
     cancel() {
-        this.router.navigate([this.stringConstant.consumerapp]);
+        this.router.navigate(['/consumerapp']);
     }
 
 

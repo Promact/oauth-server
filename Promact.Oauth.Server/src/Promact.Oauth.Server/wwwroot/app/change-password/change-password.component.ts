@@ -65,6 +65,6 @@ export class ChangePasswordComponent {
     }
 
     goBack() {
-        this.redirectionRoute.navigate([this.stringConstant.userList]);
+        this.redirectionRoute.navigate([['user/list']]);
     }
 }

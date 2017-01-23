@@ -77,7 +77,7 @@ export class ProjectAddComponent implements OnInit {
                     }
                     else {
                         this.toast.show("Project Successfully Added.");
-                        this.router.navigate([this.stringConstant.projectList]);
+                        this.router.navigate(['/project/list']);
                     }
                     this.loader.loader = false;
                 }, err => {

@@ -31,7 +31,7 @@ export class UserListComponent implements OnInit {
     }
 
     userEdit(id) {
-        this.router.navigate([this.stringConstant.userEdit, id]);
+        this.router.navigate(['/user/edit', id]);
     }
 
     ngOnInit() {

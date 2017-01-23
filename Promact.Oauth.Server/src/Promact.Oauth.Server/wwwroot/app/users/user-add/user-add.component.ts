@@ -91,7 +91,7 @@ export class UserAddComponent implements OnInit {
     }
 
     goBack() {
-        this.redirectionRoute.navigate([this.stringConstant.userList]);
+        this.redirectionRoute.navigate(['user/list']);
     }
 
 

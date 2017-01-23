@@ -33,10 +33,10 @@ export class ConsumerappListComponent implements OnInit {
 
 
     editDetails(consumerId) {
-        this.router.navigate([this.stringConstant.consumerappEdit, consumerId]);
+        this.router.navigate(['/consumerapp/edit', consumerId]);
     }
 
     addNewApp() {
-        this.router.navigate([this.stringConstant.consumerappAdd]);
+        this.router.navigate(['/consumerapp/add']);
     }
 } 
