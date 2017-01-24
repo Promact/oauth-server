@@ -17,8 +17,8 @@ export class ConsumerappEditComponent implements OnInit {
         this.consumerModel = new ConsumerAppModel();
         this.scopes = [];
         this.clientSecretIndicator = false;
-        for (var scope in consumerappallowedscopes) {
-            var scopeIntegerValue: any = parseInt(scope);
+        for (let scope in consumerappallowedscopes) {
+            let scopeIntegerValue: any = parseInt(scope);
             if (!isNaN(parseFloat(scope)) && isFinite(scopeIntegerValue)) {
                 this.scopes.push({ value: scopeIntegerValue, name: consumerappallowedscopes[scopeIntegerValue] });
             }

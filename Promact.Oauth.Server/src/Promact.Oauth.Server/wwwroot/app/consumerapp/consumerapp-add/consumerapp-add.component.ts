@@ -15,8 +15,8 @@ export class ConsumerappAddComponent {
     constructor(private consumerAppService: ConsumerAppService, private router: Router, private toast: Md2Toast, private loader: LoaderService) {
         this.consumerModel = new ConsumerAppModel();
         this.scopes = [];
-        for (var scope in consumerappallowedscopes) {
-            var scopeIntegerValue: any = parseInt(scope);
+        for (let scope in consumerappallowedscopes) {
+            let scopeIntegerValue: any = parseInt(scope);
             if (!isNaN(parseFloat(scope)) && isFinite(scopeIntegerValue)) {
                 this.scopes.push({ value: scopeIntegerValue, name: consumerappallowedscopes[scopeIntegerValue] });
             }
