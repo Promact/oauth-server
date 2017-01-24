@@ -146,7 +146,6 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
             if (client != null)
             {
                 var scopesAllowed = await _scopes.FetchAsync(x => x.Client.ClientId == clientId);
-                List<AllowedScope> allowedScope = new List<AllowedScope>();
                 app.Scopes = new List<AllowedScope>();
                 foreach (var scopes in scopesAllowed)
                 {
@@ -209,7 +208,6 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
             List<string> allowedScope = new List<string>();
             foreach (var item in scopes)
             {
-                var value = item.ToString();
                 allowedScope.Add(item.ToString());
             }
             return allowedScope;
