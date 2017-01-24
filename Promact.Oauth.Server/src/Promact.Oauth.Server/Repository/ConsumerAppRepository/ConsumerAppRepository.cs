@@ -84,10 +84,9 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         {
             var listOfClient = await _clientDataRepository.GetAll().ToListAsync();
             List<ConsumerApps> listOfConsumerApp = new List<ConsumerApps>();
-            ConsumerApps app;
             foreach (var client in listOfClient)
             {
-                app = await GetConsumerByClientIdOfIdentityServerClient(client.ClientId);
+                var app = await GetConsumerByClientIdOfIdentityServerClient(client.ClientId);
                 listOfConsumerApp.Add(app);
             }
             return listOfConsumerApp;
@@ -221,10 +220,10 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         private async Task UpdateClientScope(int clientIdPrimaryKey, List<string> newScopes)
         {
             var client = await _clientDataRepository.FirstOrDefaultAsync(x => x.Id == clientIdPrimaryKey);
-            var existingScopes = await _scopes.FetchAsync(x => x.Client.Id == clientIdPrimaryKey);
+            var existingScopes = (await _scopes.FetchAsync(x => x.Client.Id == clientIdPrimaryKey)).ToList();
             foreach (var scope in newScopes)
             {
-                if (!(existingScopes.FirstOrDefault(x => x.Scope == scope) != null))
+                if (existingScopes.FirstOrDefault(x => x.Scope == scope) == null)
                 {
                     _scopes.Add(new ClientScope { Scope = scope, Client = client });
                     await _scopes.SaveChangesAsync();
@@ -246,7 +245,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         private async Task UpdateClientRedirectUri(int clientIdPrimaryKey, string redirectUri)
         {
             var existingRedirectUri = await _redirectUri.FirstOrDefaultAsync(x => x.Client.Id == clientIdPrimaryKey);
-            if (!(existingRedirectUri.RedirectUri == redirectUri))
+            if (existingRedirectUri.RedirectUri != redirectUri)
             {
                 existingRedirectUri.RedirectUri = redirectUri;
                 _redirectUri.Update(existingRedirectUri);
@@ -261,7 +260,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         private async Task UpdateClientLogoutRedirectUri(int clientIdPrimaryKey, string redirectUri)
         {
             var existingRedirectUri = await _logoutRedirectUri.FirstOrDefaultAsync(x => x.Client.Id == clientIdPrimaryKey);
-            if (!(existingRedirectUri.PostLogoutRedirectUri == redirectUri))
+            if (existingRedirectUri.PostLogoutRedirectUri != redirectUri)
             {
                 existingRedirectUri.PostLogoutRedirectUri = redirectUri;
                 _logoutRedirectUri.Update(existingRedirectUri);
@@ -276,7 +275,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         private async Task UpdateClientSecret(int clientIdPrimaryKey, string secret)
         {
             var existingSecret = await _secret.FirstOrDefaultAsync(x => x.Client.Id == clientIdPrimaryKey);
-            if (!(existingSecret.Value == secret))
+            if (existingSecret.Value != secret)
             {
                 existingSecret.Value = secret.Sha256();
                 _secret.Update(existingSecret);
