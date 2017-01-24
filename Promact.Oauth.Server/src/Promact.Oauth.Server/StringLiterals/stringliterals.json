@@ -1,8 +1,8 @@
 ﻿{
   "StringLiterals": {
     "ConsumerApp": {
-      "ATOZaTOz0TO9": "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
-      "ATOZ0TO9": "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+      "AlphaNumericString": "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
+      "CapitalAlphaNumericString": "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
     },
     "Account": {
