@@ -84,10 +84,9 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         {
             var listOfClient = await _clientDataRepository.GetAll().ToListAsync();
             List<ConsumerApps> listOfConsumerApp = new List<ConsumerApps>();
-            ConsumerApps app;
             foreach (var client in listOfClient)
             {
-                app = await GetConsumerByClientIdOfIdentityServerClient(client.ClientId);
+                var app = await GetConsumerByClientIdOfIdentityServerClient(client.ClientId);
                 listOfConsumerApp.Add(app);
             }
             return listOfConsumerApp;
