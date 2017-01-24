@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
 {
     public interface IConsumerAppRepository 
-    {
+    { 
         /// <summary>
         /// This method used for added consumer app and return primary key. -An
         /// </summary>
