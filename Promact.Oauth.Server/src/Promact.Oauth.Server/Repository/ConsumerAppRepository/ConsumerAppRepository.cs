@@ -42,7 +42,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// <returns>Consumer App object</returns>
         public async Task<ConsumerApps> GetAppDetailsAsync(string clientId)
         {
-            return await _appsDataRepository.FirstAsync(x => x.AuthId == clientId);
+            return await _appsDataRepository.FirstOrDefaultAsync(x => x.AuthId == clientId);
         }
 
         /// <summary>
