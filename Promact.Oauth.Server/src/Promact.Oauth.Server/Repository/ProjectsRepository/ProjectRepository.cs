@@ -10,11 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
-using Promact.Oauth.Server.Constants;
 using Microsoft.Extensions.Logging;
-using Promact.Oauth.Server.ExceptionHandler;
 using Promact.Oauth.Server.Data;
 
 namespace Promact.Oauth.Server.Repository.ProjectsRepository
