@@ -65,7 +65,7 @@ export class ConsumerappEditComponent implements OnInit {
 
     getRandomNumber(isAuthId: boolean) {
         this.consumerAppService.getRandomNumber(isAuthId).subscribe((result) => {
-            if (isAuthId == true) {
+            if (isAuthId === true) {
                 this.consumerModel.AuthId = result;
             }
             else {
