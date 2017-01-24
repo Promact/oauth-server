@@ -1,177 +1,195 @@
-﻿//using Promact.Oauth.Server.Repository.ConsumerAppRepository;
-//using Microsoft.Extensions.DependencyInjection;
-//using Promact.Oauth.Server.Models;
-//using System;
-//using Promact.Oauth.Server.Data_Repository;
-//using Xunit;
-//using System.Collections.Generic;
-//using Promact.Oauth.Server.Models.ApplicationClasses;
-//using System.Threading.Tasks;
-//using Promact.Oauth.Server.Constants;
-//using Promact.Oauth.Server.ExceptionHandler;
+﻿using Promact.Oauth.Server.Repository.ConsumerAppRepository;
+using Microsoft.Extensions.DependencyInjection;
+using Promact.Oauth.Server.Models;
+using Promact.Oauth.Server.Data_Repository;
+using Xunit;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Promact.Oauth.Server.Constants;
+using Promact.Oauth.Server.ExceptionHandler;
+using IdentityServer4.EntityFramework.DbContexts;
+using IdentityServer4.Models;
 
-//namespace Promact.Oauth.Server.Tests
-//{
-//    public class ConsumerAppRepositoryTest : BaseProvider
-//    {
-//        private readonly IConsumerAppRepository _consumerAppRespository;
-//        private readonly IDataRepository<ConsumerApps> _consumerAppsContext;
-//        private readonly IStringConstant _stringConstant;
-//        public ConsumerAppRepositoryTest() : base()
-//        {
-//            _consumerAppRespository = serviceProvider.GetService<IConsumerAppRepository>();
-//            _consumerAppsContext = serviceProvider.GetService<IDataRepository<ConsumerApps>>();
-//            _stringConstant = serviceProvider.GetService<IStringConstant>();
-//        }
+namespace Promact.Oauth.Server.Tests
+{
+    public class ConsumerAppRepositoryTest : BaseProvider
+    {
+        #region Private Variables
+        private readonly IConsumerAppRepository _consumerAppRespository;
+        private readonly IDataRepository<IdentityServer4.EntityFramework.Entities.Client, ConfigurationDbContext> _clientContext;
+        private readonly IStringConstant _stringConstant;
+        #endregion
 
-//        #region Test Case
+        #region Construtor
+        public ConsumerAppRepositoryTest() : base()
+        {
+            _consumerAppRespository = serviceProvider.GetService<IConsumerAppRepository>();
+            _clientContext = serviceProvider.GetService<IDataRepository<IdentityServer4.EntityFramework.Entities.Client, ConfigurationDbContext>>();
+            _stringConstant = serviceProvider.GetService<IStringConstant>();
+        }
+        #endregion
 
-//        /// <summary>
-//        /// This test case for add Consumer Apps. -An
-//        /// </summary>
-//        [Fact, Trait("Category", "Required")]
-//        public async Task AddConsumerApps()
-//        {
-//            ConsumerAppsAc consumerApp = GetConsumerApp();
-//            consumerApp.Name = _stringConstant.ConsumerAppNameDemo;
-//            int id = await _consumerAppRespository.AddConsumerAppsAsync(consumerApp);
-//            var consumerApps = await _consumerAppsContext.FirstOrDefaultAsync(x => x.Id == id);
-//            Assert.NotNull(consumerApps);
-//        }
+        #region Test Case
 
-//        /// <summary>
-//        /// This test case used for check consumer name is unique or not. -An
-//        /// </summary>
-//        [Fact, Trait("Category", "Required")]
-//        public async Task ConsumerAppNameUnique()
-//        {
-//            ConsumerAppsAc consumerApp = GetConsumerApp();
-//            consumerApp.Name = _stringConstant.ConsumerAppNameDemo1;
-//            int id = await _consumerAppRespository.AddConsumerAppsAsync(consumerApp);
-//            Assert.Throws<AggregateException>(() => _consumerAppRespository.AddConsumerAppsAsync(consumerApp).Result);
-//        }
+        /// <summary>
+        /// This test case for add Consumer Apps
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task AddConsumerAppsAsync()
+        {
+            ConsumerApps consumerApp = GetConsumerApp();
+            var app = await _consumerAppRespository.AddConsumerAppsAsync(consumerApp);
+            var clientApp = await _clientContext.FirstOrDefaultAsync(x => x.ClientId == app.ClientId);
+            Assert.Equal(clientApp.AllowAccessTokensViaBrowser, true);
+        }
 
-//        /// <summary>
-//        /// This test case used for check app details fetch by valid client id.-An
-//        /// </summary>
-//        [Fact, Trait("Category", "Required")]
-//        public async Task GetAppDetailsByClientId()
-//        {
-//            ConsumerAppsAc consumerApp = GetConsumerApp();
-//            consumerApp.Name = _stringConstant.ConsumerAppNameDemo2;
-//            int id = await _consumerAppRespository.AddConsumerAppsAsync(consumerApp);
-//            var consumerApps = await _consumerAppsContext.FirstOrDefaultAsync(x => x.Id == id);
-//            var getApplication = await _consumerAppRespository.GetAppDetailsAsync(consumerApps.AuthId);
-//            Assert.NotNull(getApplication);
-//        }
+        /// <summary>
+        /// This test case used for check client Id is unique or not.
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task AddConsumerAppsExceptionAsync()
+        {
+            ConsumerApps consumerApp = GetConsumerApp();
+            var app = await _consumerAppRespository.AddConsumerAppsAsync(consumerApp);
+            consumerApp.Id = 0;
+            var result = await Assert.ThrowsAsync<ConsumerAppNameIsAlreadyExists>(() => 
+            _consumerAppRespository.AddConsumerAppsAsync(consumerApp));
+            Assert.Equal(_stringConstant.ExceptionMessageConsumerAppNameIsAlreadyExists, result.Message);
+        }
 
-//        /// <summary>
-//        /// This test case used for check app details not fetch by invalid client id.
-//        /// </summary>
-//        [Fact, Trait("Category", "Required")]
-//        public async Task ApplicationDetailsFetchOnlyValidClientId()
-//        {
-//            ConsumerAppsAc consumerApp = GetConsumerApp();
-//            consumerApp.Name = _stringConstant.ConsumerAppNameDemo3;
-//            int id = await _consumerAppRespository.AddConsumerAppsAsync(consumerApp);
-//            ConsumerApps getApplication = await _consumerAppRespository.GetAppDetailsAsync("ABEDNGdeMR1234568F");
-//            Assert.Null(getApplication);
-//        }
+        /// <summary>
+        /// This test case used for check app details fetch by valid client clientId.-An
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task GetAppDetailsByClientIdAsync()
+        {
+            ConsumerApps consumerApp = GetConsumerApp();
+            var app = await _consumerAppRespository.AddConsumerAppsAsync(consumerApp);
+            var consumerApps = await _consumerAppRespository.GetAppDetailsByClientIdAsync(_stringConstant.RandomClientId);
+            Assert.Equal(consumerApps.Name,_stringConstant.Name);
+        }
 
+        /// <summary>
+        /// This test case used for check GetAppDetailsByClientIdAsync with invalid clientId
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task GetAppDetailsByClientIdForExceptionAsync()
+        {
+            ConsumerApps consumerApp = GetConsumerApp();
+            var app = await _consumerAppRespository.AddConsumerAppsAsync(consumerApp);
+            var result = await Assert.ThrowsAsync<ConsumerAppNotFound>(() => 
+            _consumerAppRespository.GetAppDetailsByClientIdAsync(_stringConstant.RandomClientSecret));
+            Assert.Equal(result.Message, _stringConstant.ExceptionMessageConsumerAppNotFound);
+        }
 
-//        /// <summary>
-//        /// This test case used for check consumer app details not fetch by primary key id.-An
-//        /// </summary>
-//        /// 
-//        [Fact, Trait("Category", "Required")]
-//        public async Task GetConsumerAppsById()
-//        {
-//            ConsumerAppsAc consumerApp = GetConsumerApp();
-//            consumerApp.Name = _stringConstant.ConsumerAppNameDemo4;
-//            int id = await _consumerAppRespository.AddConsumerAppsAsync(consumerApp);
-//            Task<ConsumerApps> getApplication = _consumerAppRespository.GetConsumerAppByIdAsync(id);
-//            Assert.NotNull(getApplication.Result);
-//        }
+        /// <summary>
+        /// This test case used for getting list of app
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task GetListOfConsumerAppsAsync()
+        {
+            ConsumerApps consumerApp = GetConsumerApp();
+            var app = await _consumerAppRespository.AddConsumerAppsAsync(consumerApp);
+            var result = await _consumerAppRespository.GetListOfConsumerAppsAsync();
+            Assert.Equal(result.Count, 1);
+        }
 
+        /// <summary>
+        /// This test case used for generating random number in Upper case
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public void GetRandomNumberForTrue()
+        {
+            var result = _consumerAppRespository.GetRandomNumber(true);
+            Assert.NotNull(result);
+        }
 
-//        /// <summary>
-//        /// This test case used for check consumer app details not fetch by invalid primary key id. -An
-//        /// </summary>
-//        ///  
-//        [Fact, Trait("Category", "Required")]
-//        public async Task ConsumerAppGetByWrongId()
-//        {
-//            ConsumerAppsAc consumerApp = GetConsumerApp();
-//            consumerApp.Name = _stringConstant.ConsumerAppNameDemo5;
-//            await _consumerAppRespository.AddConsumerAppsAsync(consumerApp);
-//            Assert.Throws<AggregateException>(() => _consumerAppRespository.GetConsumerAppByIdAsync(23213).Result);
-//        }
+        /// <summary>
+        /// This test case used for generating random number in mix case
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public void GetRandomNumberForFalse()
+        {
+            var result = _consumerAppRespository.GetRandomNumber(false);
+            Assert.NotNull(result);
+        }
 
+        /// <summary>
+        /// This test case used updating consumerApp
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task UpdateConsumerAllDetailsAsync()
+        {
+            ConsumerApps consumerApp = GetConsumerApp();
+            var app = await _consumerAppRespository.AddConsumerAppsAsync(consumerApp);
+            var previousAppDetails = await _consumerAppRespository.GetAppDetailsByClientIdAsync(app.ClientId);
+            consumerApp.AuthSecret = _stringConstant.AccessToken;
+            consumerApp.CallbackUrl = _stringConstant.CallbackUrl;
+            consumerApp.LogoutUrl = _stringConstant.CallbackUrl;
+            consumerApp.Scopes = new List<AllowedScope>() { AllowedScope.email, AllowedScope.openid, AllowedScope.profile, AllowedScope.project_read, AllowedScope.user_read };
+            consumerApp.AuthId = _stringConstant.SlackUserId;
+            consumerApp.Name = _stringConstant.ProjectName;
+            consumerApp.Id = previousAppDetails.Id;
+            await _consumerAppRespository.UpdateConsumerAppsAsync(consumerApp);
+            var updateApp = await _consumerAppRespository.GetAppDetailsByClientIdAsync(_stringConstant.SlackUserId);
+            #region AuthId Assert
+            Assert.Equal(previousAppDetails.AuthId, _stringConstant.RandomClientId);
+            Assert.Equal(updateApp.AuthId, _stringConstant.SlackUserId);
+            Assert.NotEqual(updateApp.AuthId, previousAppDetails.AuthId);
+            #endregion
+            #region AuthSecret Assert
+            var encodedSecret = _stringConstant.RandomClientSecret.Sha256();
+            Assert.Equal(previousAppDetails.AuthSecret, encodedSecret);
+            encodedSecret = _stringConstant.AccessToken.Sha256();
+            Assert.Equal(updateApp.AuthSecret, encodedSecret);
+            Assert.NotEqual(updateApp.AuthSecret, previousAppDetails.AuthSecret);
+            #endregion
+            #region CallbackUrl Assert
+            Assert.Equal(previousAppDetails.CallbackUrl, _stringConstant.PromactErpUrlForTest);
+            Assert.Equal(updateApp.CallbackUrl, _stringConstant.CallbackUrl);
+            Assert.NotEqual(updateApp.CallbackUrl, previousAppDetails.CallbackUrl);
+            #endregion
+            #region LogoutUrl Assert
+            Assert.Equal(previousAppDetails.LogoutUrl, _stringConstant.PromactErpUrlForTest);
+            Assert.Equal(updateApp.LogoutUrl, _stringConstant.CallbackUrl);
+            Assert.NotEqual(updateApp.LogoutUrl, previousAppDetails.LogoutUrl);
+            #endregion
+            #region Scope Assert
+            Assert.Equal(previousAppDetails.Scopes.Count, 4);
+            Assert.Equal(updateApp.Scopes.Count, 5);
+            Assert.NotEqual(updateApp.Scopes.Count, previousAppDetails.Scopes.Count);
+            #endregion
+            #region Name Assert
+            Assert.Equal(previousAppDetails.Name, _stringConstant.Name);
+            Assert.Equal(updateApp.Name, _stringConstant.ProjectName);
+            Assert.NotEqual(updateApp.Name, previousAppDetails.Name);
+            #endregion
+        }
+        #endregion
 
-//        /// <summary>
-//        /// This test case used for check get list of apps. -An 
-//        /// </summary>
-//        [Fact, Trait("Category", "Required")]
-//        public async Task GetListOfApps()
-//        {
-//            ConsumerAppsAc consumerApp = GetConsumerApp();
-//            consumerApp.Name = _stringConstant.ConsumerAppNameDemo6;
-//            int id = await _consumerAppRespository.AddConsumerAppsAsync(consumerApp);
-//            List<ConsumerApps> listOfApps = await _consumerAppRespository.GetListOfConsumerAppsAsync();
-//            Assert.NotEmpty(listOfApps);
-//        }
+        #region "Private Method(s)"
 
-//        /// <summary>
-//        /// This test case used for update consumer app. -An
-//        /// </summary>
-//        [Fact, Trait("Category", "Required")]
-//        public async Task UpdateConsumerApps()
-//        {
-//            ConsumerAppsAc consumerApp = GetConsumerApp();
-//            consumerApp.Name = _stringConstant.ConsumerAppNameDemo7;
-//            int id = await _consumerAppRespository.AddConsumerAppsAsync(consumerApp);
-//            ConsumerApps consumerApps = await _consumerAppRespository.GetConsumerAppByIdAsync(id);
-//            consumerApps.Description = _stringConstant.ConsumerDescription;
-//            consumerApps.UpdatedDateTime = DateTime.Now;
-//            consumerApps.UpdatedBy = _stringConstant.UpdateBy;
-//            int newId = await _consumerAppRespository.UpdateConsumerAppsAsync(consumerApps);
-//            Assert.NotEqual(0, newId);
-//        }
-
-//        /// <summary>
-//        /// This test case used for check consumer name is unique or not when update consumer app. -An
-//        /// </summary>
-//        [Fact, Trait("Category", "Required")]
-//        public async Task CheckConsumerAppNameUnique()
-//        {
-//            ConsumerAppsAc consumerApp = GetConsumerApp();
-//            consumerApp.Name = _stringConstant.TwitterName;
-//            await _consumerAppRespository.AddConsumerAppsAsync(consumerApp);
-//            ConsumerAppsAc newConsumerApp = GetConsumerApp();
-//            newConsumerApp.Name = _stringConstant.FaceBookName;
-//            int id = await _consumerAppRespository.AddConsumerAppsAsync(newConsumerApp);
-//            ConsumerApps oldConsumerApp = await _consumerAppRespository.GetConsumerAppByIdAsync(id);
-//            oldConsumerApp.Name = _stringConstant.TwitterName;
-//            Assert.Throws<AggregateException>(() => _consumerAppRespository.UpdateConsumerAppsAsync(oldConsumerApp).Result);
-//        }
-
-
-//        #endregion
-
-//        #region "Private Method(s)"
-
-//        /// <summary>
-//        /// This method used for get valid object with data. -An
-//        /// </summary>
-//        /// <returns></returns>
-//        private ConsumerAppsAc GetConsumerApp()
-//        {
-//            ConsumerAppsAc comnsumerApp = new ConsumerAppsAc();
-//            comnsumerApp.CallbackUrl = _stringConstant.CallbackUrl;
-//            comnsumerApp.CreatedBy = _stringConstant.CreatedBy;
-//            comnsumerApp.Description = _stringConstant.ConsumerDescription;
-//            return comnsumerApp;
-//        }
-//        #endregion
-//    }
-//}
+        /// <summary>
+        /// This method used for get valid object with data.
+        /// </summary>
+        /// <returns></returns>
+        private ConsumerApps GetConsumerApp()
+        {
+            ConsumerApps comnsumerApp = new ConsumerApps();
+            comnsumerApp.CallbackUrl = _stringConstant.PromactErpUrlForTest;
+            comnsumerApp.AuthId = _stringConstant.RandomClientId;
+            comnsumerApp.AuthSecret = _stringConstant.RandomClientSecret;
+            comnsumerApp.LogoutUrl = _stringConstant.PromactErpUrlForTest;
+            comnsumerApp.Name = _stringConstant.Name;
+            comnsumerApp.Scopes = new List<AllowedScope>()
+            {
+                AllowedScope.email,
+                AllowedScope.openid,
+                AllowedScope.profile,
+                AllowedScope.slack_user_id,
+            };
+            return comnsumerApp;
+        }
+        #endregion
+    }
+}
