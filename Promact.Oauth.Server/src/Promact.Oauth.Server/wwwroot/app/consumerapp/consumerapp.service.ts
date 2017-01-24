@@ -46,6 +46,6 @@ export class ConsumerAppService {
     * @param isAuthId
     */
     getRandomNumber(isAuthId: boolean) {
-        return this.httpService.getWithoutReturnObject(this.consumerAppUrl + "/generaterandomnumber/" + isAuthId);
+        return this.httpService.getWithoutReturnObject(this.consumerAppUrl + "/" + isAuthId);
     }
 }

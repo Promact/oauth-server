@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Repository.ConsumerAppRepository;
-using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Promact.Oauth.Server.ExceptionHandler;
@@ -14,16 +13,14 @@ namespace Promact.Oauth.Server.Controllers
     {
         #region "Private Variable(s)"
         private readonly IConsumerAppRepository _consumerAppRepository;
-        private readonly UserManager<ApplicationUser> _userManager;
         public const string Admin = "Admin";
         public const string BaseUrl = "api/[controller]";
         #endregion
 
         #region "Constructor"
-        public ConsumerAppController(IConsumerAppRepository iConsumerAppRepository, UserManager<ApplicationUser> userManager)
+        public ConsumerAppController(IConsumerAppRepository consumerAppRepository)
         {
-            _consumerAppRepository = iConsumerAppRepository;
-            _userManager = userManager;
+            _consumerAppRepository = consumerAppRepository;
         }
 
         #endregion
@@ -231,7 +228,7 @@ namespace Promact.Oauth.Server.Controllers
         * }
         */
         [HttpGet]
-        [Route("generaterandomnumber/{isAuthId:bool}")]
+        [Route("{isAuthId:bool}")]
         public IActionResult GetRandomNumber(bool isAuthId)
         {
             return Ok(_consumerAppRepository.GetRandomNumber(isAuthId));

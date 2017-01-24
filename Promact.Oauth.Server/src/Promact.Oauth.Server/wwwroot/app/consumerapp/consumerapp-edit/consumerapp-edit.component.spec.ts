@@ -1,6 +1,5 @@
 ﻿declare var describe, it, beforeEach, expect;
-import { async, inject, TestBed, ComponentFixture } from '@angular/core/testing';
-import { Provider } from "@angular/core";
+import { async, TestBed } from '@angular/core/testing';
 import { ConsumerAppModel } from "../consumerapp-model";
 import { ConsumerappEditComponent } from "../consumerapp-edit/consumer-edit.component";
 import { ConsumerAppService } from "../consumerapp.service";
@@ -8,7 +7,6 @@ import { Router, ActivatedRoute, RouterModule, Routes } from '@angular/router';
 import { Md2Toast } from 'md2';
 import { MockToast } from "../../shared/mocks/mock.toast";
 import { MockConsumerappService } from "../../shared/mocks/consumerapp/mock.consumerapp.service";
-import { MockRouter } from '../../shared/mocks/mock.router';
 import { Observable } from 'rxjs/Observable';
 import { ConsumerAppModule } from '../consumerapp.module';
 import { LoaderService } from '../../shared/loader.service';

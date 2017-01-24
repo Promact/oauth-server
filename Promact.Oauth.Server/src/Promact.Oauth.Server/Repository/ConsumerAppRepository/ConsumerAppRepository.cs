@@ -19,7 +19,6 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
     {
         #region "Private Variable(s)"
         private readonly IDataRepository<IdentityServer4.EntityFramework.Entities.Client, ConfigurationDbContext> _clientDataRepository;
-        private readonly IMapper _mapperContext;
         private readonly IStringConstant _stringConstant;
         private readonly IDataRepository<ClientScope, ConfigurationDbContext> _scopes;
         private readonly IDataRepository<ClientSecret, ConfigurationDbContext> _secret;
@@ -28,11 +27,10 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         #endregion
 
         #region "Constructor"
-        public ConsumerAppRepository(IMapper mapperContext, IStringConstant stringConstant, IDataRepository<IdentityServer4.EntityFramework.Entities.Client, ConfigurationDbContext> clientDataRepository,
+        public ConsumerAppRepository(IStringConstant stringConstant, IDataRepository<IdentityServer4.EntityFramework.Entities.Client, ConfigurationDbContext> clientDataRepository,
             IDataRepository<ClientScope, ConfigurationDbContext> scopes, IDataRepository<ClientSecret, ConfigurationDbContext> secret, IDataRepository<ClientRedirectUri, ConfigurationDbContext> redirectUri,
             IDataRepository<ClientPostLogoutRedirectUri, ConfigurationDbContext> logoutRedirectUri)
         {
-            _mapperContext = mapperContext;
             _stringConstant = stringConstant;
             _clientDataRepository = clientDataRepository;
             _scopes = scopes;
