@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Promact.Oauth.Server.Constants;
 using Promact.Oauth.Server.ExceptionHandler;
 using IdentityServer4.EntityFramework.Entities;
 using IdentityServer4.Models;
@@ -62,7 +61,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         }
 
         /// <summary>
-        /// This method used for added consumer app and return primary key. -An
+        /// This method used for added consumer app and return consumerApps Id. -An
         /// </summary>
         /// <param name="consumerApp">App details as object</param>
         /// <returns>App details after saving changes as object</returns>

@@ -71,8 +71,8 @@ namespace Promact.Oauth.Server.Tests
                 y.Account.EmailNotExists = "Email does not exist";
                 y.Account.SuccessfullySendMail = "We have sent you a link on {{emailaddress}} to reset password.Please check your email.";
                 y.ConsumerApp = new ConsumerApp();
-                y.ConsumerApp.ATOZ0TO9 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-                y.ConsumerApp.ATOZaTOz0TO9 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                y.ConsumerApp.CapitalAlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+                y.ConsumerApp.AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
             });
 
             
