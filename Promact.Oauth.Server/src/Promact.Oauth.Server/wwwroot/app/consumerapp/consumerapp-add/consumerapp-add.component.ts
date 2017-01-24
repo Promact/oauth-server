@@ -21,7 +21,7 @@ export class ConsumerappAddComponent {
                 this.scopes.push({ value: scopeIntegerValue, name: consumerappallowedscopes[scopeIntegerValue] });
             }
         }
-    }
+    };
 
     submitApps(consumerModel) {
         this.loader.loader = true;
@@ -32,11 +32,11 @@ export class ConsumerappAddComponent {
             this.toast.show('Consumer App Name is already exists.');
             this.loader.loader = false;
         });
-    }
+    };
 
     cancel() {
         this.router.navigate(['/consumerapp']);
-    }
+    };
     getRandomNumber(isAuthId: boolean) {
         this.consumerAppService.getRandomNumber(isAuthId).subscribe((result) => {
             if (isAuthId === true) {
@@ -48,9 +48,8 @@ export class ConsumerappAddComponent {
             }
         }), err => {
             this.toast.show('Error generating random number');
-        }
+        };
         
 
-    }
-
+    };
 }

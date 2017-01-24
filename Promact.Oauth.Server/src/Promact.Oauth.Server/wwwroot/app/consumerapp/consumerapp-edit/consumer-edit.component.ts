@@ -74,6 +74,6 @@ export class ConsumerappEditComponent implements OnInit {
             }
         }), err => {
             this.toast.show('Error generating random number');
-        }
+        };
     }
 }
