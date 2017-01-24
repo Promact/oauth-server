@@ -1,8 +1,5 @@
-using System;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Promact.Oauth.Server.Models;
-using Promact.Oauth.Server.Models.ApplicationClasses;
 using Promact.Oauth.Server.Repository.ConsumerAppRepository;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
@@ -11,14 +8,15 @@ using Promact.Oauth.Server.ExceptionHandler;
 
 namespace Promact.Oauth.Server.Controllers
 {
-    [Authorize(Roles = "Admin")]
-    [Route("api/[controller]")]
+    [Authorize(Roles = Admin)]
+    [Route(BaseUrl)]
     public class ConsumerAppController : Controller
     {
         #region "Private Variable(s)"
         private readonly IConsumerAppRepository _consumerAppRepository;
         private readonly UserManager<ApplicationUser> _userManager;
-
+        public const string Admin = "Admin";
+        public const string BaseUrl = "api/[controller]";
         #endregion
 
         #region "Constructor"
@@ -31,8 +29,6 @@ namespace Promact.Oauth.Server.Controllers
         #endregion
 
         #region Public Methods
-
-
         /**
         * @api {post} api/consumerapp 
         * @apiVersion 1.0.0
@@ -41,6 +37,7 @@ namespace Promact.Oauth.Server.Controllers
         * @apiParam {object} consumerAppsAc  object
         * @apiParamExample {json} Request-Example:  
         *  {
+        *     "Id":"0",
         *     "Name":"ProjectName",
         *     "CallbackUrl":"http://www.example.com/signin-oidc",
         *     "AuthId" : "ASFSGHTRDHX",
