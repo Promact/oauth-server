@@ -55,14 +55,35 @@ describe('Consumer Edit Test', () => {
             let consumerAppModel = new ConsumerAppModel();
             let expectedconsumerappname = "slack";
             consumerAppModel.Name = expectedconsumerappname;
-            //consumerAppModel.Description = "slack description";
             consumerAppModel.CallbackUrl = "www.google.com";
             consumerAppModel.AuthSecret = "dsdsdsdsdsdsd";
             consumerAppModel.AuthId = "ASASs5454545455";
+            consumerAppModel.Id = 1;
+            consumerAppModel.LogoutUrl = "www.google.com";
+            consumerAppModel.Scopes = [];
             consumerappEditComponent.updateApps(consumerAppModel);
-            expect(consumerAppModel.Name).toBe(expectedconsumerappname);
+            expect(consumerappEditComponent.consumerModel.Scopes.length).toBe(0);
     });
 
+    it("Random number Edit consumer app AuthId", () => {
+        let fixture = TestBed.createComponent(ConsumerappEditComponent); //Create instance of component            
+        let consumerappEditComponent = fixture.componentInstance;
+        let toast = fixture.debugElement.injector.get(Md2Toast);
+        let expectedValue = "SFDASFADSFSAD";
+        let consumerAppModel = new ConsumerAppModel();
+        consumerappEditComponent.getRandomNumber(true);
+        expect(consumerappEditComponent.consumerModel.AuthId).toBe(expectedValue);
+    });
+
+    it("Random number Edit consumer app AuthSecret", () => {
+        let fixture = TestBed.createComponent(ConsumerappEditComponent); //Create instance of component            
+        let consumerappEditComponent = fixture.componentInstance;
+        let toast = fixture.debugElement.injector.get(Md2Toast);
+        let expectedValue = "SFDASFADSFSAD";
+        let consumerAppModel = new ConsumerAppModel();
+        consumerappEditComponent.getRandomNumber(false);
+        expect(consumerappEditComponent.consumerModel.AuthSecret).toBe(expectedValue);
+    });
 });
 
 

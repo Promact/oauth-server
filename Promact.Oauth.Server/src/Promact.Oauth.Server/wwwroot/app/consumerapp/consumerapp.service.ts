@@ -43,7 +43,7 @@ export class ConsumerAppService {
     }
 
     /*This method used for get consumer apps list*
-    * 
+    * @param isAuthId
     */
     getRandomNumber(isAuthId: boolean) {
         return this.httpService.getWithoutReturnObject(this.consumerAppUrl + "/generaterandomnumber/" + isAuthId);
