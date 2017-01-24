@@ -67,6 +67,8 @@
       "version": "1.1.0-preview4-final",
       "type": "build"
     },
+    "coveralls.net": "0.7.0",
+    "OpenCover": "4.6.519"
     "coveralls.net": "0.7.0"
     "System.Linq": "4.3.0",
     "System.Linq.Parallel": "4.3.0"
