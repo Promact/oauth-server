@@ -53,7 +53,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         public async Task<ConsumerApps> GetAppDetailsByClientIdAsync(string clientId)
         {
             var consumerApps = await GetConsumerByClientIdOfIdentityServerClient(clientId);
-            if (consumerApps != null)
+            if (consumerApps.Id != 0)
                 return consumerApps;
             else
                 throw new ConsumerAppNotFound();
@@ -66,7 +66,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// <returns>App details after saving changes as object</returns>
         public async Task<IdentityServer4.Models.Client> AddConsumerAppsAsync(ConsumerApps consumerApp)
         {
-            if (await _clientDataRepository.FirstOrDefaultAsync(x => x.ClientName == consumerApp.Name && x.ClientId != consumerApp.AuthId) == null)
+            if (await _clientDataRepository.FirstOrDefaultAsync(x => x.ClientId == consumerApp.AuthId) == null)
             {
                 var clientApp = ReturnIdentityServerClientFromConsumerApp(consumerApp, ReturnListOfScopesInStringFromEnumAllowedScope(consumerApp.Scopes));
                 _clientDataRepository.Add(clientApp.ToEntity());
