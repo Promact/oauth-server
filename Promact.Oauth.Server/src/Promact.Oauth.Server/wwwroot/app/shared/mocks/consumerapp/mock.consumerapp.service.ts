@@ -16,6 +16,7 @@ export class MockConsumerappService {
     * @param consumerAppsAc
     */
     addConsumerApps(consumerAppModel: ConsumerAppModel) {
+        consumerAppModel.Id = 1;
         return new BehaviorSubject(consumerAppModel).asObservable();
     }
 
@@ -52,6 +53,14 @@ export class MockConsumerappService {
      */
     updateConsumerApps(consumerAppModel: ConsumerAppModel) {
         return new BehaviorSubject(consumerAppModel).asObservable();
+    }
+
+    /*This method used for get consumer apps list*
+    * @param isAuthId
+    */
+    getRandomNumber(isAuthId: boolean) {
+
+        return new BehaviorSubject("SFDASFADSFSAD").asObservable();
     }
 }
 

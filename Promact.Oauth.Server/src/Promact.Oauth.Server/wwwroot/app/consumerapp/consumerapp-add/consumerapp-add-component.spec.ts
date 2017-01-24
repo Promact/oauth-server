@@ -1,7 +1,7 @@
 ﻿declare var describe, it, beforeEach, expect;
 import { async, inject, TestBed, ComponentFixture } from '@angular/core/testing';
 import { Provider } from "@angular/core";
-import { ConsumerAppModel } from "../consumerapp-model";
+import { ConsumerAppModel, consumerappallowedscopes } from "../consumerapp-model";
 import { ConsumerappAddComponent } from "../consumerapp-add/consumerapp-add.component";
 import { ConsumerAppService } from "../consumerapp.service";
 import { Router, ActivatedRoute, RouterModule, Routes } from '@angular/router';
@@ -28,7 +28,8 @@ describe('Consumer Add Test', () => {
                 { provide: ConsumerAppService, useClass: MockConsumerappService },
                 { provide: Md2Toast, useClass: MockToast },
                 { provide: ConsumerAppModel, useClass: ConsumerAppModel },
-                { provide: LoaderService, useClass: MockLoaderService }
+                { provide: LoaderService, useClass: MockLoaderService },
+                { provide: consumerappallowedscopes, useClas: consumerappallowedscopes }
             ]
         }).compileComponents();
     }));
@@ -38,13 +39,33 @@ describe('Consumer Add Test', () => {
         let consumerappAddComponent = fixture.componentInstance;
         let toast = fixture.debugElement.injector.get(Md2Toast);
         let consumerAppModel = new ConsumerAppModel();
-        let expectedconsumerappname = "slack";
-        consumerAppModel.Name = expectedconsumerappname;
-        //consumerAppModel.Description = "slack description";
+        consumerAppModel.Name = "slack";
+        consumerAppModel.LogoutUrl = "www.google.com";
         consumerAppModel.CallbackUrl = "www.google.com";
         consumerAppModel.AuthSecret = "dsdsdsdsdsdsd";
         consumerAppModel.AuthId = "ASASs5454545455";
+        consumerAppModel.Scopes = [consumerappallowedscopes.email, consumerappallowedscopes.openid];
         consumerappAddComponent.submitApps(consumerAppModel);
-        expect(consumerAppModel.Name).toBe(expectedconsumerappname);
+        expect(consumerAppModel.Id).toBe(1);
+    });
+
+    it("Random number consumer app AuthId", () => {
+        let fixture = TestBed.createComponent(ConsumerappAddComponent); //Create instance of component            
+        let consumerappAddComponent = fixture.componentInstance;
+        let toast = fixture.debugElement.injector.get(Md2Toast);
+        let expectedValue = "SFDASFADSFSAD";
+        let consumerAppModel = new ConsumerAppModel();
+        consumerappAddComponent.getRandomNumber(true);
+        expect(consumerappAddComponent.consumerModel.AuthId).toBe(expectedValue);
+    });
+
+    it("Random number consumer app AuthSecret", () => {
+        let fixture = TestBed.createComponent(ConsumerappAddComponent); //Create instance of component            
+        let consumerappAddComponent = fixture.componentInstance;
+        let toast = fixture.debugElement.injector.get(Md2Toast);
+        let expectedValue = "SFDASFADSFSAD";
+        let consumerAppModel = new ConsumerAppModel();
+        consumerappAddComponent.getRandomNumber(false);
+        expect(consumerappAddComponent.consumerModel.AuthSecret).toBe(expectedValue);
     });
 });
