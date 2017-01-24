@@ -16,7 +16,7 @@ export class ProjectAddComponent implements OnInit {
     projects: Array<ProjectModel>;
     item: Array<string> = [];
     project: ProjectModel;
-    Userlist: Array<UserModel>;
+    listUsers: Array<UserModel>;
     constructor(private route: ActivatedRoute,private router: Router,private toast: Md2Toast,private proService: ProjectService,
         private loader: LoaderService) {
         this.projects = new Array<ProjectModel>();

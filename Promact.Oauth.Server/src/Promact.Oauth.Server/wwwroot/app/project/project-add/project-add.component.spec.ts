@@ -47,7 +47,7 @@ describe('Project Add Test', () => {
         let projectAddComponent = fixture.componentInstance;
         let toast = fixture.debugElement.injector.get(Md2Toast);
         projectAddComponent.ngOnInit();
-        expect(projectAddComponent.Userlist).not.toBeNull();
+        expect(projectAddComponent.listUsers).not.toBeNull();
     });
 
     it("should be add new project", () => {
