@@ -8,8 +8,8 @@ namespace Promact.Oauth.Server.StringLiterals
     
     public class ConsumerApp
     {
-        public string ATOZaTOz0TO9 { get; set; }
-        public string ATOZ0TO9 { get; set; }
+        public string AlphaNumericString { get; set; }
+        public string CapitalAlphaNumericString { get; set; }
     }
     public class Account
     {
