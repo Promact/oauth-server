@@ -87,7 +87,8 @@
         public string TeamLeaderNotAssign { get { return "Not Assigned"; } }
         public string DomainAddress { get { return "@promactinfo.com"; } }
         public string SlackUserId { get { return "U0HJ49KJ4"; } }
-        public string GetAppDetailsFromClientAsyncResponse {
+        public string GetAppDetailsFromClientAsyncResponse
+        {
             get
             {
                 return "{\"ClientId\":\"adasfs21gv1drv1gd1sd\",\"ClientSecret\":\"dsjfhsijhfaJjJKDakjka521\",\"RefreshToken\":\"22719b46-e0d5-4ef2-ad63-6a5a9fe9842e\",\"ReturnUrl\":\"http://localhost:28182/Home/ExtrenalLoginCallBack\",\"UserId\":\"U0HJ49KJ4\"}";
@@ -178,7 +179,7 @@
         {
             get
             {
-                return "user.read";
+                return "user_read";
             }
         }
 
@@ -186,7 +187,7 @@
         {
             get
             {
-                return "project.read";
+                return "project_read";
             }
         }
 
@@ -318,6 +319,40 @@
         }
         #endregion
 
+        #endregion
+
+        #region Test cases
+        public string RandomClientId
+        {
+            get
+            {
+                return "ADFDASJASAJS";
+            }
+        }
+
+        public string RandomClientSecret
+        {
+            get
+            {
+                return "ADFDASJASAJS12d5fsdf1dsf1sd5";
+            }
+        }
+
+        public string ExceptionMessageConsumerAppNameIsAlreadyExists
+        {
+            get
+            {
+                return "Exception of type 'Promact.Oauth.Server.ExceptionHandler.ConsumerAppNameIsAlreadyExists' was thrown.";
+            }
+        }
+
+        public string ExceptionMessageConsumerAppNotFound
+        {
+            get
+            {
+                return "Exception of type 'Promact.Oauth.Server.ExceptionHandler.ConsumerAppNotFound' was thrown.";
+            }
+        }
         #endregion
     }
 }

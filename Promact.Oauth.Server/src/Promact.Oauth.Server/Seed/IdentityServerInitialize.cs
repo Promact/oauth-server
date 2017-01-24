@@ -19,32 +19,32 @@ namespace Promact.Oauth.Server.Seed
         /// <param name="app">IApplicationBuilder</param>
         /// <param name="defaultApiResource">IDefaultApiResources</param>
         /// <param name="defaultIdentityResource">IDefaultIdentityResources</param>
-        public void InitializeDatabase(IApplicationBuilder app, IDefaultApiResources defaultApiResource, IDefaultIdentityResources defaultIdentityResource)
+        public void InitializeDatabaseForPreDefinedAPIResourceAndIdentityResources(IApplicationBuilder app, IDefaultApiResources defaultApiResource, IDefaultIdentityResources defaultIdentityResource)
         {
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
-                // Migrating PersistedGrantDbContext and ConfigurationDbContext of IdentityServer
                 serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
-                var context = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
-                context.Database.Migrate();
 
-                // Adding Predefined value of API Resource
-                if (!context.ApiResources.Any())
+                var configurationDbContext = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
+                configurationDbContext.Database.Migrate();
+
+                //Adding Predefined value of API Resource
+                if (!configurationDbContext.ApiResources.Any())
                 {
                     foreach (var resource in defaultApiResource.GetDefaultApiResource())
                     {
-                        context.ApiResources.Add(resource.ToEntity());
+                        configurationDbContext.ApiResources.Add(resource.ToEntity());
                     }
-                    context.SaveChanges();
+                    configurationDbContext.SaveChanges();
                 }
                 // Adding Predefined value of Identity Resource
-                if (!context.IdentityResources.Any())
+                if (!configurationDbContext.IdentityResources.Any())
                 {
                     foreach (var resource in defaultIdentityResource.GetIdentityResources())
                     {
-                        context.IdentityResources.Add(resource.ToEntity());
+                        configurationDbContext.IdentityResources.Add(resource.ToEntity());
                     }
-                    context.SaveChanges();
+                    configurationDbContext.SaveChanges();
                 }
             }
         }

@@ -127,5 +127,12 @@
         #endregion
 
         #endregion
+
+        #region Test cases
+        string RandomClientId { get; }
+        string RandomClientSecret { get; }
+        string ExceptionMessageConsumerAppNameIsAlreadyExists { get; }
+        string ExceptionMessageConsumerAppNotFound { get; }
+        #endregion
     }
 }

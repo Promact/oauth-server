@@ -11,28 +11,43 @@
 
 
     <form #consumerAppForm="ngForm">
+
+        <div class="half-width mr-25">
+            <md-input class="full-width" placeholder="Auth Id" [(ngModel)]="consumerModel.AuthId" [disabled]="true" name="AuthId"></md-input>
+            <button md-raised-button type="submit" class="btn-back btn-green" (click)="getRandomNumber(true)">Generate</button>
+        </div>
+
+        <div class="half-width">
+            <md-input class="full-width" placeholder="Auth Secret" [(ngModel)]="consumerModel.AuthSecret" [disabled]="true" name="AuthSecret"></md-input>
+            <button md-raised-button type="submit" class="btn-back btn-green" (click)="getRandomNumber(false)">Generate</button>
+            <div [hidden]="!clientSecretIndicator" class="error">Please copy the client secret. It will be encoded after saving.</div>
+        </div>
+
         <div class="form-group">
             <div class="half-width">
                 <md-input placeholder="Name" class="full-width" type="text" name="consumerName" [(ngModel)]="consumerModel.Name" maxlength="255" required #consumerName="ngModel"></md-input>
                 <div [hidden]="!(consumerName.touched && !consumerName.valid && consumerName.errors.required)" class="error">Name is required</div>
             </div>
         </div>
-
-
-        <div class="form-group">
-            <div class="half-width">
-                <md-input placeholder="Description" class="full-width" name="consumerDescription" [(ngModel)]="consumerModel.Description" maxlength="1000" required #consumerDescription="ngModel"></md-input>
-                <div [hidden]="!(consumerDescription.touched && !consumerDescription.valid && consumerDescription.errors.required)" class="error">Description is required</div>
-            </div>
-        </div>
-
-
         <div class="form-group">
             <div class="half-width">
                 <md-input placeholder="Call Back Url" class="full-width" type="text" name="consumerCallBackUrl" [(ngModel)]="consumerModel.CallbackUrl" maxlength="255" required #consumerCallBackUrl="ngModel"></md-input>
                 <div [hidden]="!(consumerCallBackUrl.touched && !consumerCallBackUrl.valid && consumerCallBackUrl.errors.required)" class="error">Call Back Url is required</div>
             </div>
-
+        </div>
+        <div class="form-group">
+            <div class="half-width" style="position:relative;">
+                <md2-multiselect name="select" [items]="scopes"
+                                 item-text="name"
+                                 item-value="value"
+                                 [(ngModel)]="consumerModel.Scopes"
+                                 placeholder="Select Scopes">
+                </md2-multiselect>
+            </div>
+        </div>
+        <div class="form-group">
+            <md-input class="full-width" placeholder="LogoutUrl" name="logoutUrl" [(ngModel)]="consumerModel.LogoutUrl" maxlength="255" required #logoutUrl="ngModel"></md-input>
+            <div [hidden]="!(logoutUrl.touched && !logoutUrl.valid && logoutUrl.errors.required)" class="error">LogoutUrl is required</div>
         </div>
 
 
