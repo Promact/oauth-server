@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Promact.Oauth.Server.StringLiterals
+﻿namespace Promact.Oauth.Server.StringLiterals
 {
-    
+
     public class ConsumerApp
     {
         public string AlphaNumericString { get; set; }
