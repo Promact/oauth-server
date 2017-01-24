@@ -47,7 +47,8 @@
       "version": "1.1.0-preview4-final",
       "type": "build"
     },
-    "coveralls.net": "0.7.0"
+    "coveralls.net": "0.7.0",
+    "OpenCover": "4.6.519"
   },
 
   "tools": {
