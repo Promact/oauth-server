@@ -60,7 +60,7 @@ describe('Consumer Edit Test', () => {
             consumerAppModel.LogoutUrl = "www.google.com";
             consumerAppModel.Scopes = [];
             consumerappEditComponent.updateApps(consumerAppModel);
-            expect(consumerappEditComponent.consumerModel.Scopes.length).toBe(0);
+            expect(consumerAppModel.Scopes.length).toBe(0);
     });
 
     it("Random number Edit consumer app AuthId", () => {
