@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Promact.Oauth.Server.Data_Repository;
+﻿using Promact.Oauth.Server.Data_Repository;
 using Promact.Oauth.Server.Models;
 using System;
 using System.Collections.Generic;
@@ -12,7 +11,6 @@ using IdentityServer4.Models;
 using IdentityServer4.EntityFramework.Mappers;
 using IdentityServer4.EntityFramework.DbContexts;
 using Promact.Oauth.Server.StringLiterals;
-using Promact.Oauth.Server.Constants;
 using Microsoft.Extensions.Options;
 
 namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
@@ -21,7 +19,6 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
     {
         #region "Private Variable(s)"
         private readonly IDataRepository<IdentityServer4.EntityFramework.Entities.Client, ConfigurationDbContext> _clientDataRepository;
-        private readonly IStringConstant _stringConstant;
         private readonly IDataRepository<ClientScope, ConfigurationDbContext> _scopes;
         private readonly IDataRepository<ClientSecret, ConfigurationDbContext> _secret;
         private readonly IDataRepository<ClientRedirectUri, ConfigurationDbContext> _redirectUri;
@@ -30,11 +27,10 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         #endregion
 
         #region "Constructor"
-        public ConsumerAppRepository(IStringConstant stringConstant, IDataRepository<IdentityServer4.EntityFramework.Entities.Client, ConfigurationDbContext> clientDataRepository,
+        public ConsumerAppRepository(IDataRepository<IdentityServer4.EntityFramework.Entities.Client, ConfigurationDbContext> clientDataRepository,
             IDataRepository<ClientScope, ConfigurationDbContext> scopes, IDataRepository<ClientSecret, ConfigurationDbContext> secret, IDataRepository<ClientRedirectUri, ConfigurationDbContext> redirectUri,
             IDataRepository<ClientPostLogoutRedirectUri, ConfigurationDbContext> logoutRedirectUri, IOptionsMonitor<StringLiteral> stringLiterals)
         {
-            _stringConstant = stringConstant;
             _clientDataRepository = clientDataRepository;
             _scopes = scopes;
             _secret = secret;
