@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Promact.Oauth.Server.Constants;
+using Promact.Oauth.Server.ExceptionHandler;
 using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Models.ApplicationClasses;
 using Promact.Oauth.Server.Repository;
@@ -153,7 +154,7 @@ namespace Promact.Oauth.Server.Tests
             var editedUser = _userManager.FindByIdAsync(id).Result;
             Assert.Equal(_stringConstant.FirstName, editedUser.FirstName);
         }
-      
+
 
         /// <summary>
         /// Test case is used to get user details by id
@@ -173,7 +174,7 @@ namespace Promact.Oauth.Server.Tests
         public async Task TeamLeaderByUserSlackId()
         {
             await CreateMockAndUserAsync();
-            var user = await _userRepository.TeamLeaderByUserSlackIdAsync(_stringConstant.SlackUserId);
+            var user = await _userRepository.ListOfTeamLeaderByUsersSlackIdAsync(_stringConstant.SlackUserId);
             Assert.Equal(0, user.Count);
         }
 
@@ -196,7 +197,7 @@ namespace Promact.Oauth.Server.Tests
                 RoleName = _stringConstant.Admin
             };
             string id = await _userRepository.AddUserAsync(userLocal, _stringConstant.RawFirstNameForTest);
-            var user = await _userRepository.ManagementDetailsAsync();
+            var user = await _userRepository.ListOfManagementDetailsAsync();
             Assert.Equal(1, user.Count);
         }
 
@@ -404,45 +405,163 @@ namespace Promact.Oauth.Server.Tests
         }
 
         /// <summary>
-        /// This test case used to resend mail
+        /// Test case to check UserDetialByUserSlackIdAsync method of user repository 
         /// </summary>
-        /// <returns></returns>
-        //[Fact, Trait("Category", "Required")]
-        //public async Task ReSendMail()
-        //{
-        //    var path = PathCreator();
-        //    _mockHostingEnvironment.Setup(x => x.ContentRootPath).Returns(path);
-        //    _mockEmailService.Setup(x => x.SendEmail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
-        //    UserAc _testUser = new UserAc()
-        //    {
-        //        Email = _stringConstant.RawEmailIdForTest,
-        //        FirstName = _stringConstant.RawFirstNameForTest,
-        //        LastName = _stringConstant.RawLastNameForTest,
-        //        IsActive = true,
-        //        UserName = _stringConstant.RawEmailIdForTest,
-        //        SlackUserName = _stringConstant.RawFirstNameForTest,
-        //        JoiningDate = DateTime.UtcNow,
-        //        RoleName = _stringConstant.Employee
-        //    };
-        //    var id = await _userRepository.AddUser(_testUser, _stringConstant.RawFirstNameForTest);
-        //    var result = await _userRepository.ReSendMail(id);
-        //    Assert.Equal(true, result);
-        //}
+        [Fact, Trait("Category", "Required")]
+        public async Task UserDetialByUserSlackIdAsync()
+        {
+            string id = await CreateMockAndUserAsync();
+            var user = await _userRepository.UserDetialByUserSlackIdAsync(_stringConstant.SlackUserId);
+            Assert.Equal(user.Email, _stringConstant.UserName);
+        }
 
         /// <summary>
-        /// Method used to get current folder address and create a file "UserDetial.html".
+        /// Test case to throw Exception UserDetialByUserSlackIdAsync method of user repository 
         /// </summary>
-        /// <returns></returns>
-        //private string PathCreator()
-        //{
-        //    var directory = Path.GetTempPath();
-        //    var path = "Template";
-        //    var createNewDirectory = directory + path;
-        //    Directory.CreateDirectory(createNewDirectory);
-        //    var newPath = string.Format("{0}\\UserDetial.html", createNewDirectory);
-        //    File.Create(newPath);
-        //    return directory;
-        //}
+        [Fact, Trait("Category", "Required")]
+        public async Task UserDetialByUserSlackIdForExceptionAsync()
+        {
+            var result = await Assert.ThrowsAsync<SlackUserNotFound>(() =>
+            _userRepository.UserDetialByUserSlackIdAsync(_stringConstant.SlackUserId));
+            Assert.Equal(result.Message, _stringConstant.ExceptionMessageSlackUserNotFound);
+        }
+
+        /// <summary>
+        /// Test case to check ListOfTeamLeaderByUsersSlackIdAsync method of user repository 
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task ListOfTeamLeaderByUsersSlackIdAsync()
+        {
+            string id = await CreateMockAndUserAsync();
+            var project = ProjectDetails();
+            project.TeamLeaderId = id;
+            var projectId = await _projectRepository.AddProjectAsync(project, _stringConstant.Name);
+            ProjectUser projectUser = new ProjectUser()
+            {
+                UserId = id,
+                ProjectId = projectId,
+                CreatedBy = _stringConstant.UserId,
+                CreatedDateTime = DateTime.UtcNow,
+            };
+            await _projectRepository.AddUserProjectAsync(projectUser);
+            var user = await _userRepository.ListOfTeamLeaderByUsersSlackIdAsync(_stringConstant.SlackUserId);
+            Assert.Equal(user.Count, 1);
+        }
+
+        /// <summary>
+        /// Test case to throw Exception ListOfTeamLeaderByUsersSlackIdAsync method of user repository 
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task ListOfTeamLeaderByUsersSlackIdForExceptionAsync()
+        {
+            var result = await Assert.ThrowsAsync<SlackUserNotFound>(() =>
+            _userRepository.ListOfTeamLeaderByUsersSlackIdAsync(_stringConstant.SlackUserId));
+            Assert.Equal(result.Message, _stringConstant.ExceptionMessageSlackUserNotFound);
+        }
+
+        /// <summary>
+        /// Test case to check ListOfManagementDetailsAsync method of user repository 
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task ListOfManagementDetailsAsync()
+        {
+            var userId = await _userRepository.AddUserAsync(UserDetails(), _stringConstant.UserId);
+            var user = await _userRepository.ListOfManagementDetailsAsync();
+            Assert.Equal(user.Count, 1);
+        }
+
+        /// <summary>
+        /// Test case to throw Exception ListOfManagementDetailsAsync method of user repository 
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task ListOfManagementDetailsForExceptionAsync()
+        {
+            var result = await Assert.ThrowsAsync<FailedToFetchDataException>(() =>
+            _userRepository.ListOfManagementDetailsAsync());
+            Assert.Equal(result.Message, _stringConstant.ExceptionMessageFailedToFetchDataException);
+        }
+
+        /// <summary>
+        /// Test case to check GetUserAllowedLeaveBySlackIdAsync method of user repository 
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task GetUserAllowedLeaveBySlackIdAsync()
+        {
+            await CreateMockAndUserAsync();
+            var leaveAllowed = await _userRepository.GetUserAllowedLeaveBySlackIdAsync(_stringConstant.SlackUserId);
+            Assert.NotNull(leaveAllowed.CasualLeave);
+        }
+
+        /// <summary>
+        /// Test case to throw Exception GetUserAllowedLeaveBySlackIdAsync method of user repository 
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task GetUserAllowedLeaveBySlackIdForExceptionAsync()
+        {
+            var result = await Assert.ThrowsAsync<SlackUserNotFound>(() =>
+            _userRepository.GetUserAllowedLeaveBySlackIdAsync(_stringConstant.SlackUserId));
+            Assert.Equal(result.Message, _stringConstant.ExceptionMessageSlackUserNotFound);
+        }
+
+        /// <summary>
+        /// Test case to check IsAdminAsync method of user repository 
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task IsAdminAsync()
+        {
+            var userId = await _userRepository.AddUserAsync(UserDetails(), _stringConstant.UserId);
+            var result = await _userRepository.IsAdminAsync(_stringConstant.SlackUserId);
+            Assert.Equal(result, true);
+        }
+
+        /// <summary>
+        /// Test case to throw Exception IsAdminAsync method of user repository 
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task IsAdminForExceptionAsync()
+        {
+            var result = await Assert.ThrowsAsync<SlackUserNotFound>(() =>
+            _userRepository.IsAdminAsync(_stringConstant.SlackUserId));
+            Assert.Equal(result.Message, _stringConstant.ExceptionMessageSlackUserNotFound);
+        }
+        #endregion
+
+        #region Initialization
+        private UserAc UserDetails()
+        {
+            return new UserAc()
+            {
+                Email = _stringConstant.UserName,
+                FirstName = _stringConstant.FirstName,
+                LastName = _stringConstant.LastName,
+                IsActive = true,
+                SlackUserId = _stringConstant.SlackUserId,
+                UserName = _stringConstant.UserName,
+                SlackUserName = _stringConstant.SlackUserName,
+                JoiningDate = DateTime.UtcNow,
+                RoleName = _stringConstant.Admin
+            };
+        }
+
+        private ProjectAc ProjectDetails()
+        {
+            return new ProjectAc()
+            {
+                ApplicationUsers = new System.Collections.Generic.List<UserAc>()
+                {
+                    UserDetails()
+                },
+                CreatedDate = DateTime.UtcNow,
+                IsActive = true,
+                SlackChannelName = _stringConstant.SlackChannelName,
+                TeamLeader = UserDetails(),
+                CreatedBy = _stringConstant.UserId,
+                Name = _stringConstant.ProjectName,
+                TeamLeaderId = _stringConstant.UserId,
+                UpdatedBy = _stringConstant.UserId,
+                UpdatedDate = DateTime.UtcNow
+            };
+        }
         #endregion
     }
 }

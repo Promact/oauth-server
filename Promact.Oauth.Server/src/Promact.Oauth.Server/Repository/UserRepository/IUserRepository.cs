@@ -91,7 +91,7 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        Task<List<ApplicationUser>> TeamLeaderByUserSlackIdAsync(string userSlackId);
+        Task<List<ApplicationUser>> ListOfTeamLeaderByUsersSlackIdAsync(string userSlackId);
 
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        Task<List<ApplicationUser>> ManagementDetailsAsync();
+        Task<List<ApplicationUser>> ListOfManagementDetailsAsync();
 
 
         /// <summary>
