@@ -14,12 +14,12 @@
 
         <div class="half-width mr-25">
             <md-input class="full-width" placeholder="Auth Id" [(ngModel)]="consumerModel.AuthId" [disabled]="true" name="AuthId"></md-input>
-            <button md-raised-button type="submit" class="btn-back btn-green" (click)="getRandomNumber(true)">Generate</button>
+            <button md-raised-button type="button" class="btn-back btn-green" (click)="getRandomNumber(true)">Generate</button>
         </div>
 
         <div class="half-width">
             <md-input class="full-width" placeholder="Auth Secret" [(ngModel)]="consumerModel.AuthSecret" [disabled]="true" name="AuthSecret"></md-input>
-            <button md-raised-button type="submit" class="btn-back btn-green" (click)="getRandomNumber(false)">Generate</button>
+            <button md-raised-button type="button" class="btn-back btn-green" (click)="getRandomNumber(false)">Generate</button>
             <div [hidden]="!clientSecretIndicator" class="error">Please copy the client secret. It will be encoded after saving.</div>
         </div>
 
