@@ -150,6 +150,27 @@
                 return "?refreshToken={0}&slackUserName={1}";
             }
         }
+        public string OAuthAfterLoginResponse
+        {
+            get
+            {
+                return "{0}?accessToken={1}&email={2}&slackUserId={3}&userId={4}";
+            }
+        }
+        public string HttpRequestExceptionErrorMessage
+        {
+            get
+            {
+                return "An error occurred while sending the request to other server";
+            }
+        }
+        public string GetAppDetailsFromClientAsyncUrl
+        {
+            get
+            {
+                return "?refreshToken={0}&slackUserName={1}";
+            }
+        }
         public string UserIdForTest { get { return "asder12346eewsee5s"; } }
         public string EmailForTest { get { return "abc@promactinfo.com"; } }
         public string UserNameForTest { get { return "XyzTest"; } }
