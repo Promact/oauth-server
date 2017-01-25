@@ -59,8 +59,8 @@ namespace Promact.Oauth.Server.Tests
             services.Configure<AppSettingUtil>(x =>
             {
                 x.CasualLeave = 14;
-                x.PromactErpUrl = _stringConstant.PromactErpUrlForTest;
-                x.PromactOAuthUrl = _stringConstant.PromactErpUrlForTest;
+                x.PromactErpUrl = "http://www.example.com";
+                x.PromactOAuthUrl = "http://www.example.com";
                 x.SickLeave = 7;
             });
 

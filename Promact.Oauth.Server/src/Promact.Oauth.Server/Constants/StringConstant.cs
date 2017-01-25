@@ -374,6 +374,22 @@
                 return "Exception of type 'Promact.Oauth.Server.ExceptionHandler.ConsumerAppNotFound' was thrown.";
             }
         }
+
+        public string ExceptionMessageSlackUserNotFound
+        {
+            get
+            {
+                return "Exception of type 'Promact.Oauth.Server.ExceptionHandler.SlackUserNotFound' was thrown.";
+            }
+        }
+
+        public string ExceptionMessageFailedToFetchDataException
+        {
+            get
+            {
+                return "Exception of type 'Promact.Oauth.Server.ExceptionHandler.FailedToFetchDataException' was thrown.";
+            }
+        }
         #endregion
     }
 }

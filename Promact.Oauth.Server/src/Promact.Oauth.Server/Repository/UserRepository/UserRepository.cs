@@ -236,10 +236,11 @@ namespace Promact.Oauth.Server.Repository
             SendEmail(user.FirstName, user.Email, newPassword);
         }
 
+        #region External Call Methods
         /// <summary>
         /// Method to get user details by slackUserId -SD
         /// </summary>
-        /// <param name="slackUserId"></param>
+        /// <param name="slackUserId">User's slack userId</param>
         /// <returns>user details</returns>
         public async Task<ApplicationUser> UserDetialByUserSlackIdAsync(string slackUserId)
         {
@@ -261,39 +262,44 @@ namespace Promact.Oauth.Server.Repository
         }
 
         /// <summary>
-        /// Method to get team leader's details by userSlackId -SD
+        /// Method to get list of team leader's details by userSlackId -SD
         /// </summary>
-        /// <param name="userSlackId"></param>
+        /// <param name="userSlackId">User's slack userId</param>
         /// <returns>list of team leader</returns>
-        public async Task<List<ApplicationUser>> TeamLeaderByUserSlackIdAsync(string userSlackId)
+        public async Task<List<ApplicationUser>> ListOfTeamLeaderByUsersSlackIdAsync(string userSlackId)
         {
-            var user = _userManager.Users.First(x => x.SlackUserId == userSlackId);            
-            var projects = _projectUserRepository.Fetch(x => x.UserId == user.Id);
-            List<ApplicationUser> teamLeaders = new List<ApplicationUser>();
-            foreach (var project in projects)
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.SlackUserId == userSlackId);
+            if (user != null)
             {
-                var teamLeaderId = await _projectRepository.GetProjectByIdAsync(project.ProjectId);
-                var teamLeader = teamLeaderId.TeamLeaderId;
-                user = await _userManager.FindByIdAsync(teamLeader);
-                var newUser = new ApplicationUser
+                var projects = _projectUserRepository.Fetch(x => x.UserId == user.Id);
+                List<ApplicationUser> teamLeaders = new List<ApplicationUser>();
+                foreach (var project in projects)
                 {
-                    UserName = user.UserName,
-                    Email = user.Email,
-                    SlackUserId = user.SlackUserId
-                };
-                teamLeaders.Add(newUser);
+                    var teamLeaderId = await _projectRepository.GetProjectByIdAsync(project.ProjectId);
+                    var teamLeader = teamLeaderId.TeamLeaderId;
+                    user = await _userManager.FindByIdAsync(teamLeader);
+                    var newUser = new ApplicationUser
+                    {
+                        UserName = user.UserName,
+                        Email = user.Email,
+                        SlackUserId = user.SlackUserId
+                    };
+                    teamLeaders.Add(newUser);
+                }
+                return teamLeaders;
             }
-            return teamLeaders;
+            else
+                throw new SlackUserNotFound();
         }
 
         /// <summary>
         /// Method to get management people details - SD
         /// </summary>
         /// <returns>list of management</returns>
-        public async Task<List<ApplicationUser>> ManagementDetailsAsync()
+        public async Task<List<ApplicationUser>> ListOfManagementDetailsAsync()
         {
             var management = await _userManager.GetUsersInRoleAsync(_stringConstant.Admin);
-            if (management != null)
+            if (management.Any())
             {
                 List<ApplicationUser> managementUser = new List<ApplicationUser>();
                 foreach (var user in management)
@@ -316,7 +322,7 @@ namespace Promact.Oauth.Server.Repository
         /// <summary>
         /// Method to get the number of casual leave allowed to a user by slack user name -SD
         /// </summary>
-        /// <param name="slackUserId"></param>
+        /// <param name="slackUserId">User's slack userId</param>
         /// <returns>number of casual leave</returns>
         public async Task<LeaveAllowed> GetUserAllowedLeaveBySlackIdAsync(string slackUserId)
         {
@@ -335,8 +341,8 @@ namespace Promact.Oauth.Server.Repository
         /// <summary>
         /// Method to check whether user is admin or not - SD
         /// </summary>
-        /// <param name="slackUserId"></param>
-        /// <returns>true or false</returns>
+        /// <param name="slackUserId">User's slack userId</param>
+        /// <returns>true if user is admin else false</returns>
         public async Task<bool> IsAdminAsync(string slackUserId)
         {
             var user = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.SlackUserId == slackUserId);
@@ -347,6 +353,7 @@ namespace Promact.Oauth.Server.Repository
             else
                 throw new SlackUserNotFound();
         }
+        #endregion
 
         /// <summary>
         /// This method is used to Get User details by Id  - GA
