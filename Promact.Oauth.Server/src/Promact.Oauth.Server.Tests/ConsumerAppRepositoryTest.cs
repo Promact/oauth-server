@@ -9,8 +9,7 @@ using Promact.Oauth.Server.Constants;
 using Promact.Oauth.Server.ExceptionHandler;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.Models;
-using Promact.Oauth.Server.StringLliterals;
-using Microsoft.Extensions.Options;
+
 
 namespace Promact.Oauth.Server.Tests
 {

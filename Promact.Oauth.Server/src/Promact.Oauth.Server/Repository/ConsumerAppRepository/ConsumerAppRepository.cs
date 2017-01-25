@@ -11,7 +11,8 @@ using IdentityServer4.EntityFramework.Entities;
 using IdentityServer4.Models;
 using IdentityServer4.EntityFramework.Mappers;
 using IdentityServer4.EntityFramework.DbContexts;
-using Promact.Oauth.Server.StringLliterals;
+using Promact.Oauth.Server.StringLiterals;
+using Promact.Oauth.Server.Constants;
 using Microsoft.Extensions.Options;
 
 namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
@@ -25,7 +26,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         private readonly IDataRepository<ClientSecret, ConfigurationDbContext> _secret;
         private readonly IDataRepository<ClientRedirectUri, ConfigurationDbContext> _redirectUri;
         private readonly IDataRepository<ClientPostLogoutRedirectUri, ConfigurationDbContext> _logoutRedirectUri;
-        private readonly StringLiterals _stringLiterals;
+        private readonly StringLiteral _stringLiterals;
         #endregion
 
         #region "Constructor"
@@ -124,12 +125,12 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
             var random = new Random();
             if (isAuthId)
             {
-                return new string(Enumerable.Repeat(_stringLiterals.CapitalAlphaNumericString, 15)
+                return new string(Enumerable.Repeat(_stringLiterals.ConsumerApp.CapitalAlphaNumericString, 15)
                   .Select(s => s[random.Next(s.Length)]).ToArray());
             }
             else
             {
-                return new string(Enumerable.Repeat(_stringLiterals.AlphaNumericString, 30)
+                return new string(Enumerable.Repeat(_stringLiterals.ConsumerApp.AlphaNumericString, 30)
                   .Select(s => s[random.Next(s.Length)]).ToArray());
             }
         }
