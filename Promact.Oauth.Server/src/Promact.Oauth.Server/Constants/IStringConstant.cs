@@ -95,8 +95,6 @@
         string HttpRequestExceptionErrorMessage { get; }
         string GetAppDetailsFromClientAsyncUrl { get; }
         string OAuthAfterLoginResponse { get; }
-        string HttpRequestExceptionErrorMessage { get; }
-        string GetAppDetailsFromClientAsyncUrl { get; }
         string UserIdForTest { get; }
         string UserNameForTest { get; }
         string EmailForTest { get; }
