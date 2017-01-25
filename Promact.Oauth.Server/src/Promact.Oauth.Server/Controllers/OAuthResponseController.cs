@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace Promact.Oauth.Server.Controllers
 {
-    [ServiceFilter(typeof(CustomAttribute))]
     [Route("api/[controller]")]
     public class OAuthResponseController : BaseController
     {

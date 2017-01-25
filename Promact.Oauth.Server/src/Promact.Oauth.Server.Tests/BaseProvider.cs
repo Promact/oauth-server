@@ -105,11 +105,7 @@ namespace Promact.Oauth.Server.Tests
             services.AddScoped(x => httpContextMockObject);
             services.AddScoped(x => httpClientMockObject);
 
-            var iHostingEnvironmentMock = new Mock<IHostingEnvironment>();
-            var iHostingEnvironmentMockObject = iHostingEnvironmentMock.Object;
-            services.AddScoped(x => iHostingEnvironmentMock);
-            services.AddScoped(x => iHostingEnvironmentMockObject);
-
+            //Register email service mock
             var emailServiceMock = new Mock<IEmailSender>();
             var emailServiceMockObject = emailServiceMock.Object;
             services.AddScoped(x => emailServiceMock);
@@ -122,11 +118,6 @@ namespace Promact.Oauth.Server.Tests
             services.AddScoped(x => emailUtilMock);
             services.AddScoped(x => emailUtilMockObject);
 
-            //Register email service mock
-            var emailServiceMock = new Mock<IEmailSender>();
-            var emailServiceMockObject = emailServiceMock.Object;
-            services.AddScoped(x => emailServiceMock);
-            services.AddScoped(x => emailServiceMockObject);
             serviceProvider = services.BuildServiceProvider();
             RoleSeedFake(serviceProvider);
 

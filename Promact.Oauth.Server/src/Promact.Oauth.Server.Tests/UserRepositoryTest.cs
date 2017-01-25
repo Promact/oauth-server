@@ -407,42 +407,42 @@ namespace Promact.Oauth.Server.Tests
         /// This test case used to resend mail
         /// </summary>
         /// <returns></returns>
-        [Fact, Trait("Category", "Required")]
-        public async Task ReSendMail()
-        {
-            var path = PathCreator();
-            _mockHostingEnvironment.Setup(x => x.ContentRootPath).Returns(path);
-            _mockEmailService.Setup(x => x.SendEmail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
-            UserAc _testUser = new UserAc()
-            {
-                Email = _stringConstant.RawEmailIdForTest,
-                FirstName = _stringConstant.RawFirstNameForTest,
-                LastName = _stringConstant.RawLastNameForTest,
-                IsActive = true,
-                UserName = _stringConstant.RawEmailIdForTest,
-                SlackUserName = _stringConstant.RawFirstNameForTest,
-                JoiningDate = DateTime.UtcNow,
-                RoleName = _stringConstant.Employee
-            };
-            var id = await _userRepository.AddUser(_testUser, _stringConstant.RawFirstNameForTest);
-            var result = await _userRepository.ReSendMail(id);
-            Assert.Equal(true, result);
-        }
+        //[Fact, Trait("Category", "Required")]
+        //public async Task ReSendMail()
+        //{
+        //    var path = PathCreator();
+        //    _mockHostingEnvironment.Setup(x => x.ContentRootPath).Returns(path);
+        //    _mockEmailService.Setup(x => x.SendEmail(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+        //    UserAc _testUser = new UserAc()
+        //    {
+        //        Email = _stringConstant.RawEmailIdForTest,
+        //        FirstName = _stringConstant.RawFirstNameForTest,
+        //        LastName = _stringConstant.RawLastNameForTest,
+        //        IsActive = true,
+        //        UserName = _stringConstant.RawEmailIdForTest,
+        //        SlackUserName = _stringConstant.RawFirstNameForTest,
+        //        JoiningDate = DateTime.UtcNow,
+        //        RoleName = _stringConstant.Employee
+        //    };
+        //    var id = await _userRepository.AddUser(_testUser, _stringConstant.RawFirstNameForTest);
+        //    var result = await _userRepository.ReSendMail(id);
+        //    Assert.Equal(true, result);
+        //}
 
         /// <summary>
         /// Method used to get current folder address and create a file "UserDetial.html".
         /// </summary>
         /// <returns></returns>
-        private string PathCreator()
-        {
-            var directory = Path.GetTempPath();
-            var path = "Template";
-            var createNewDirectory = directory + path;
-            Directory.CreateDirectory(createNewDirectory);
-            var newPath = string.Format("{0}\\UserDetial.html", createNewDirectory);
-            File.Create(newPath);
-            return directory;
-        }
+        //private string PathCreator()
+        //{
+        //    var directory = Path.GetTempPath();
+        //    var path = "Template";
+        //    var createNewDirectory = directory + path;
+        //    Directory.CreateDirectory(createNewDirectory);
+        //    var newPath = string.Format("{0}\\UserDetial.html", createNewDirectory);
+        //    File.Create(newPath);
+        //    return directory;
+        //}
         #endregion
     }
 }
