@@ -50,7 +50,6 @@ export class ConsumerappEditComponent implements OnInit {
         this.loader.loader = true;
         this.consumerAppService.updateConsumerApps(consumerModel).subscribe((result) => {
             this.toast.show('Consumer App is updated successfully.');
-            this.consumerModel = result;
             this.cancel();
             this.loader.loader = false;
         }, err => {
