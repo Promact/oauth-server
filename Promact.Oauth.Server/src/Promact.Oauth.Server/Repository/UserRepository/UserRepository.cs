@@ -149,9 +149,9 @@ namespace Promact.Oauth.Server.Repository
                 //get user roles
                 IList<string> listofUserRole = await _userManager.GetRolesAsync(user);
                 //remove user role 
-                var removeFromRole = await _userManager.RemoveFromRoleAsync(user, listofUserRole.First());
+                await _userManager.RemoveFromRoleAsync(user, listofUserRole.First());
                 //add new role of user.
-                var addNewRole = await _userManager.AddToRoleAsync(user, editedUser.RoleName);
+                await _userManager.AddToRoleAsync(user, editedUser.RoleName);
                 return user.Id;
             }
             throw new SlackUserNotFound();
@@ -232,7 +232,7 @@ namespace Promact.Oauth.Server.Repository
             var user = await _userManager.FindByIdAsync(id);
             string newPassword = GetRandomString();
             var token = await _userManager.GeneratePasswordResetTokenAsync(user); //genrate passsword reset token
-            IdentityResult result = await _userManager.ResetPasswordAsync(user, token, newPassword);
+            await _userManager.ResetPasswordAsync(user, token, newPassword);
             SendEmail(user.FirstName, user.Email, newPassword);
         }
 
