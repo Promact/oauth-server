@@ -23,7 +23,6 @@ namespace Promact.Oauth.Server.Repository
 {
     public class UserRepository : IUserRepository
     {
-
         #region "Private Variable(s)"
 
 
