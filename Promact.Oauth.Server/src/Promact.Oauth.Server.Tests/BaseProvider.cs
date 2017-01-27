@@ -59,8 +59,8 @@ namespace Promact.Oauth.Server.Tests
             services.Configure<AppSettingUtil>(x =>
             {
                 x.CasualLeave = 14;
-                x.PromactErpUrl = _stringConstant.PromactErpUrlForTest;
-                x.PromactOAuthUrl = _stringConstant.PromactErpUrlForTest;
+                x.PromactErpUrl = "http://www.example.com";
+                x.PromactOAuthUrl = "http://www.example.com";
                 x.SickLeave = 7;
             });
 
@@ -105,17 +105,19 @@ namespace Promact.Oauth.Server.Tests
             services.AddScoped(x => httpContextMockObject);
             services.AddScoped(x => httpClientMockObject);
 
+            //Register email service mock
+            var emailServiceMock = new Mock<IEmailSender>();
+            var emailServiceMockObject = emailServiceMock.Object;
+            services.AddScoped(x => emailServiceMock);
+            services.AddScoped(x => emailServiceMockObject);
+
+
             //Register email util mock
             var emailUtilMock = new Mock<IEmailUtil>();
             var emailUtilMockObject = emailUtilMock.Object;
             services.AddScoped(x => emailUtilMock);
             services.AddScoped(x => emailUtilMockObject);
 
-            //Register email service mock
-            var emailServiceMock = new Mock<IEmailSender>();
-            var emailServiceMockObject = emailServiceMock.Object;
-            services.AddScoped(x => emailServiceMock);
-            services.AddScoped(x => emailServiceMockObject);
             serviceProvider = services.BuildServiceProvider();
             RoleSeedFake(serviceProvider);
 

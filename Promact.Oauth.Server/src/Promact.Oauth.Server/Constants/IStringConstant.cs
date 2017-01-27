@@ -89,9 +89,12 @@
         string PromactAppNotFoundClientId { get; }
         string PromactAppNotFoundClientSecret { get; }
         string GetAppDetailsFromClientAsyncResponseInCorrectSlackName { get; }
-        string OAuthAfterLoginResponse { get; }
+        string OAuthAfterLoginResponseUrl { get; }
         string SetSmtpUnSecure { get; }
         string SetSmtpSSL { get; }
+        string HttpRequestExceptionErrorMessage { get; }
+        string GetAppDetailsFromClientAsyncUrl { get; }
+        string OAuthAfterLoginResponse { get; }
         string UserIdForTest { get; }
         string UserNameForTest { get; }
         string EmailForTest { get; }
@@ -133,6 +136,8 @@
         string RandomClientSecret { get; }
         string ExceptionMessageConsumerAppNameIsAlreadyExists { get; }
         string ExceptionMessageConsumerAppNotFound { get; }
+        string ExceptionMessageSlackUserNotFound { get; }
+        string ExceptionMessageFailedToFetchDataException { get; }
         #endregion
     }
 }
