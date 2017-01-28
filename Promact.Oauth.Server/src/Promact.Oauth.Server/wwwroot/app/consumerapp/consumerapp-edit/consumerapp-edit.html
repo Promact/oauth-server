@@ -15,11 +15,11 @@
         <div class="form-group d-flex">
             <div class="half-width mr-25">
                 <md-input class="full-width" placeholder="Auth Id" [(ngModel)]="consumerModel.AuthId" [disabled]="true" name="AuthId"></md-input>
-                <button md-raised-button type="submit" class="btn-back btn-green" (click)="getRandomNumber(true)">Generate New</button>
+                <button md-raised-button type="submit" class="btn-back btn-green" (click)="getRandomNumber(true)">Re-Generate</button>
             </div>
             <div class="half-width">
                 <md-input [type]="clientSecretIndicator ? 'text':'password'" class="full-width" placeholder="Auth Secret" [(ngModel)]="consumerModel.AuthSecret" [disabled]="true" name="AuthSecret"></md-input>
-                <button md-raised-button type="submit" class="btn-back btn-green" (click)="getRandomNumber(false)">Generate New</button>
+                <button md-raised-button type="submit" class="btn-back btn-green" (click)="getRandomNumber(false)">Re-Generate</button>
                 <div [hidden]="!clientSecretIndicator" class="error">Please copy the client secret. It will be encoded after saving.</div>
             </div>
 
@@ -32,10 +32,10 @@
                 <div [hidden]="!(name.touched && !name.valid && name.errors.required)" class="error">Name is required</div>
 
             </div>
-            <div class="half-width ">
-                <md-input class="full-width" placeholder="Call Back Url" type="text" name="callbackUrl" [(ngModel)]="consumerModel.CallbackUrl" maxlength="255" required #callbackUrl="ngModel"></md-input>
-                <div [hidden]="!(callbackUrl.touched && !callbackUrl.valid && callbackUrl.errors.required)" class="error">Call Back Url is required</div>
-            </div>
+                <div class="half-width mr-25">
+                    <md-input placeholder="Call Back Url" class="full-width" type="text" name="consumerCallBackUrl" [(ngModel)]="consumerModel.CallbackUrl" maxlength="255" required #consumerCallBackUrl="ngModel" validateUrl></md-input>
+                    <div [hidden]="!(consumerCallBackUrl.touched && consumerCallBackUrl.errors.url)" class="error">Call Back Url is not valid</div>
+                </div>
         </div>
 
         <div class="form-group">
@@ -49,8 +49,8 @@
             </div>
         </div>
         <div class="form-group">
-            <md-input class="full-width" placeholder="LogoutUrl" name="logoutUrl" [(ngModel)]="consumerModel.LogoutUrl" maxlength="255" required #logoutUrl="ngModel"></md-input>
-            <div [hidden]="!(logoutUrl.touched && !logoutUrl.valid && logoutUrl.errors.required)" class="error">LogoutUrl is required</div>
+            <md-input class="full-width" placeholder="LogoutUrl" type="text" name="logoutUrl" [(ngModel)]="consumerModel.LogoutUrl" maxlength="255" required #logoutUrl="ngModel" validateUrl></md-input>
+            <div [hidden]="!(logoutUrl.touched && logoutUrl.errors.url)" class="error">Call Back Url is not valid</div>
         </div>
 
         <div class="form-group" id="group-btn">
