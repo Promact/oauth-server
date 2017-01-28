@@ -7,6 +7,7 @@ import { CommonModule } from "@angular/common";
 import { ConsumerAppService } from "./consumerapp.service";
 import { consumerRoute } from "./consumerapp-routes";
 import { SharedModule } from '../shared/shared.module';
+import { URLValidatorDirective } from "../shared/url.validator";
 
 @NgModule({
     imports: [
@@ -17,8 +18,10 @@ import { SharedModule } from '../shared/shared.module';
         ConsumerAppComponent,
         ConsumerappListComponent,
         ConsumerappAddComponent,
-        ConsumerappEditComponent
+        ConsumerappEditComponent,
+        URLValidatorDirective
     ],
+    exports: [URLValidatorDirective],
     providers: [
         ConsumerAppService
     ]

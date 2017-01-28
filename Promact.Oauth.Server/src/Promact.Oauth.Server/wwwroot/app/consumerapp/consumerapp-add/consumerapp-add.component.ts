@@ -1,4 +1,4 @@
-﻿import { Component } from "@angular/core";
+﻿import { Component, OnInit } from "@angular/core";
 import { ConsumerAppModel, consumerappallowedscopes } from "../consumerapp-model";
 import { Router } from "@angular/router";
 import { ConsumerAppService } from "../consumerapp.service";
@@ -8,7 +8,7 @@ import { LoaderService } from '../../shared/loader.service';
 @Component({ 
     templateUrl: "app/consumerapp/consumerapp-add/consumerapp-add.html",
 })
-export class ConsumerappAddComponent {
+export class ConsumerappAddComponent implements OnInit {
     scopes: any;
     consumerModel: ConsumerAppModel;
     clientSecretIndicator: boolean = false;
@@ -23,7 +23,15 @@ export class ConsumerappAddComponent {
         }
     };
 
+    ngOnInit() {
+        this.loader.loader = true;
+        this.getRandomNumber(true);
+        this.getRandomNumber(false);
+        this.loader.loader = false;
+    }
+
     submitApps(consumerModel) {
+
         this.loader.loader = true;
         this.consumerAppService.addConsumerApps(consumerModel).subscribe((result) => {
             this.toast.show('Consumer App is added successfully.');
