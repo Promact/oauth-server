@@ -64,4 +64,14 @@ describe('Consumer Add Test', () => {
         consumerappAddComponent.getRandomNumber(false);
         expect(consumerappAddComponent.consumerModel.AuthSecret).toBe(expectedValue);
     });
+
+    it("Consumer app OnInit", () => {
+        let fixture = TestBed.createComponent(ConsumerappAddComponent); //Create instance of component            
+        let consumerappAddComponent = fixture.componentInstance;
+        let toast = fixture.debugElement.injector.get(Md2Toast);
+        let expectedValue = "SFDASFADSFSAD";
+        let consumerAppModel = new ConsumerAppModel();
+        consumerappAddComponent.ngOnInit();
+        expect(consumerappAddComponent.consumerModel.AuthSecret).toBe(expectedValue);
+    });
 });
