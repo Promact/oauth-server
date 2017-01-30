@@ -9,12 +9,9 @@ import { MockUserService } from "../shared/mocks/user/mock.user.service";
 import { Md2Toast } from 'md2';
 import { MockToast } from "../shared/mocks/mock.toast";
 import { LoaderService } from "../shared/loader.service";
-import { MockRouter } from '../shared/mocks/mock.router';
 import { StringConstant } from '../shared/stringconstant';
 
-
 let stringConstant = new StringConstant();
-
 describe('Change Password', () => {
     const routes: Routes = [];
     beforeEach(async(() => {
@@ -35,16 +32,16 @@ describe('Change Password', () => {
     });
 
     it("Change Password", () => {
-            let fixture = TestBed.createComponent(ChangePasswordComponent); //Create instance of component            
-            let changePasswordComponent = fixture.componentInstance;
-            let passwordModel = new PasswordModel();
-            let expectedNewPassword = stringConstant.newPassword;
-            passwordModel.NewPassword = stringConstant.newPassword;
-            passwordModel.OldPassword = stringConstant.oldPassword;
-            passwordModel.ConfirmPassword = stringConstant.newPassword;
-            passwordModel.Email = stringConstant.email;
-            let result = changePasswordComponent.changePassword(passwordModel);
-            expect(expectedNewPassword).toBe(passwordModel.NewPassword);
+        let fixture = TestBed.createComponent(ChangePasswordComponent); //Create instance of component            
+        let changePasswordComponent = fixture.componentInstance;
+        let passwordModel = new PasswordModel();
+        let expectedNewPassword = stringConstant.newPassword;
+        passwordModel.NewPassword = expectedNewPassword;
+        passwordModel.OldPassword = stringConstant.oldPassword;
+        passwordModel.ConfirmPassword = stringConstant.newPassword;
+        passwordModel.Email = stringConstant.email;
+        let result = changePasswordComponent.changePassword(passwordModel);
+        expect(expectedNewPassword).toBe(passwordModel.NewPassword);
     });
 
     it("Check Old Password", () => {

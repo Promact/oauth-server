@@ -7,15 +7,12 @@ import { ActivatedRoute, RouterModule, Routes } from '@angular/router';
 import { Md2Toast } from 'md2';
 import { MockToast } from "../../shared/mocks/mock.toast";
 import { MockConsumerappService } from "../../shared/mocks/consumerapp/mock.consumerapp.service";
-import { Observable } from 'rxjs/Observable';
 import { ConsumerAppModule } from '../consumerapp.module';
 import { LoaderService } from '../../shared/loader.service';
 import { ActivatedRouteStub } from "../../shared/mocks/mock.activatedroute";
 import { StringConstant } from '../../shared/stringconstant';
 
-
 let stringConstant = new StringConstant();
-
 describe('Consumer Edit Test', () => {
     const routes: Routes = [];
     beforeEach(async(() => {
@@ -49,9 +46,9 @@ describe('Consumer Edit Test', () => {
             let consumerAppModel = new ConsumerAppModel();
             let expectedconsumerappname = stringConstant.consumerappname;
             consumerAppModel.Name = expectedconsumerappname;
-            consumerAppModel.CallbackUrl = "www.google.com";
-            consumerAppModel.AuthSecret = "dsdsdsdsdsdsd";
-            consumerAppModel.AuthId = "ASASs5454545455";
+            consumerAppModel.CallbackUrl = stringConstant.callbackUrl;
+            consumerAppModel.AuthSecret = stringConstant.authSecret;
+            consumerAppModel.AuthId = stringConstant.authId;
             consumerAppModel.Id = 1;
             consumerAppModel.LogoutUrl = "www.google.com";
             consumerAppModel.Scopes = [];

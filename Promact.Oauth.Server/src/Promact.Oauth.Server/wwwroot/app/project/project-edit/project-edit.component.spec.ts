@@ -15,8 +15,6 @@ import { ActivatedRouteStub } from "../../shared/mocks/mock.activatedroute";
 
 let stringConstant = new StringConstant();
 
-
-
 let mockUser = new UserModel();
 mockUser.FirstName = stringConstant.firstName;
 mockUser.LastName = stringConstant.lastName;
@@ -25,6 +23,9 @@ mockUser.IsActive = true;
 mockUser.Id = stringConstant.id;
 let mockList = new Array<UserModel>();
 mockList.push(mockUser);
+
+
+
 
 
 describe('Project Edit Test', () => {

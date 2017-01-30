@@ -36,11 +36,12 @@ describe('Consumer Add Test', () => {
         let consumerappAddComponent = fixture.componentInstance;
         let toast = fixture.debugElement.injector.get(Md2Toast);
         let consumerAppModel = new ConsumerAppModel();
-        consumerAppModel.Name = "slack";
-        consumerAppModel.LogoutUrl = "www.google.com";
-        consumerAppModel.CallbackUrl = "www.google.com";
-        consumerAppModel.AuthSecret = "dsdsdsdsdsdsd";
-        consumerAppModel.AuthId = "ASASs5454545455";
+        let expectedconsumerappname = stringConstant.consumerappname;
+        consumerAppModel.Name = expectedconsumerappname;
+        consumerAppModel.Description = stringConstant.description;
+        consumerAppModel.CallbackUrl = stringConstant.callbackUrl;
+        consumerAppModel.AuthSecret = stringConstant.authSecret;
+        consumerAppModel.AuthId = stringConstant.authId;
         consumerAppModel.Scopes = [consumerappallowedscopes.email, consumerappallowedscopes.openid];
         consumerappAddComponent.submitApps(consumerAppModel);
         expect(consumerAppModel.Id).toBe(1);

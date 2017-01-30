@@ -5,7 +5,7 @@ import { UserRoleModel } from '../userrole.model';
 import { Router } from '@angular/router';
 import { Md2Toast } from 'md2';
 import { LoaderService } from '../../shared/loader.service';
-
+import { StringConstant } from '../../shared/stringconstant';
 
 @Component({
     templateUrl: 'app/users/user-add/user-add.html'
