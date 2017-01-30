@@ -38,14 +38,11 @@ describe("Project List Test", () => {
         expect(projectListComponent).toBeDefined();
     });
  
-    it("should get Projects for company", done => {
-        this.promise.then(() => {
+    it("should get Projects for company", () => {
             let fixture = TestBed.createComponent(ProjectListComponent); //Create instance of component            
             let projectListComponent = fixture.componentInstance;
             projectListComponent.getProjects();
             expect(projectListComponent.projects.length).toBe(1);
-            done();
-        });
     });
 });
 

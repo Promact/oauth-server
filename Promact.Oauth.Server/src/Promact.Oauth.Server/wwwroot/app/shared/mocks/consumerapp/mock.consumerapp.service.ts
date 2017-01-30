@@ -37,8 +37,8 @@ export class MockConsumerappService {
      */
     getConsumerAppById(id: string) {
         let mockConsumerApp = new MockConsumer(id);
-        if (id === 1) {
-            mockConsumerApp.Name = this.stringConstant.consumerapp;
+        if (id === "slack") {
+            mockConsumerApp.Name = this.stringConstant.consumerappname;
             //mockConsumerApp.Description = this.stringConstant.description;
             mockConsumerApp.CallbackUrl = this.stringConstant.callbackUrl;
         }

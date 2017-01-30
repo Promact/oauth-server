@@ -11,7 +11,7 @@ import { MockRouter } from '../../shared/mocks/mock.router';
 import { ConsumerAppModule } from '../consumerapp.module';
 import { LoaderService } from '../../shared/loader.service';
 import { StringConstant } from '../../shared/stringconstant';
-import { MockRouter } from '../../shared/mocks/mock.router';
+
 
 
 let stringConstant = new StringConstant();

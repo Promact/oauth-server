@@ -38,6 +38,7 @@ describe('Change Password', () => {
             let fixture = TestBed.createComponent(ChangePasswordComponent); //Create instance of component            
             let changePasswordComponent = fixture.componentInstance;
             let passwordModel = new PasswordModel();
+            let expectedNewPassword = stringConstant.newPassword;
             passwordModel.NewPassword = stringConstant.newPassword;
             passwordModel.OldPassword = stringConstant.oldPassword;
             passwordModel.ConfirmPassword = stringConstant.newPassword;

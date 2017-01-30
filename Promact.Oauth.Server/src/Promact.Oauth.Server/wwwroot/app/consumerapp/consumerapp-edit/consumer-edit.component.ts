@@ -14,7 +14,8 @@ export class ConsumerappEditComponent implements OnInit {
     consumerModel: ConsumerAppModel;
     scopes: any;
     clientSecretIndicator: boolean;
-    constructor(private router: Router, private consumerAppService: ConsumerAppService, private route: ActivatedRoute, private toast: Md2Toast, private location: Location, private loader: LoaderService) {
+    constructor(private router: Router, private consumerAppService: ConsumerAppService, private route: ActivatedRoute, private toast: Md2Toast, private location: Location,
+        private loader: LoaderService, private stringConstant: StringConstant) {
         this.consumerModel = new ConsumerAppModel();
         this.scopes = [];
         this.clientSecretIndicator = false;

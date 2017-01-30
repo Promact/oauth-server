@@ -11,7 +11,7 @@ import { MockRouter } from '../../shared/mocks/mock.router';
 import { UserModule } from '../user.module';
 import { LoaderService } from '../../shared/loader.service';
 import { StringConstant } from '../../shared/stringconstant';
-import { ActivatedRouteStub } from "../../shared/mocks/mock.activatedroute";
+
 
 
 let stringConstant = new StringConstant();
@@ -26,7 +26,6 @@ describe('User Add Test', () => {
             imports: [UserModule, RouterModule.forRoot(routes, { useHash: true }) //Set LocationStrategy for component. 
             ],
             providers: [
-                { provide: ActivatedRoute, useClass: ActivatedRouteStub },
                 { provide: Router, useClass: MockRouter },
                 { provide: UserService, useClass: MockUserService },
                 { provide: Md2Toast, useClass: MockToast },

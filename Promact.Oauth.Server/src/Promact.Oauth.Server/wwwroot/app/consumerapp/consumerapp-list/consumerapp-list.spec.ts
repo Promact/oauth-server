@@ -9,6 +9,7 @@ import { MockConsumerappService } from "../../shared/mocks/consumerapp/mock.cons
 import { ConsumerAppModule } from '../consumerapp.module';
 import { LoaderService } from '../../shared/loader.service';
 import { Md2Toast } from 'md2';
+import { MockRouter } from '../../shared/mocks/mock.router';
 
 describe('Consumer List Test', () => {
     
