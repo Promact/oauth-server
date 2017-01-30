@@ -6,7 +6,6 @@ import { Md2Toast } from 'md2';
 import { LoaderService } from '../../shared/loader.service';
 
 
-
 @Component({
     templateUrl: "app/users/user-list/user-list.html"
 })
@@ -28,7 +27,7 @@ export class UserListComponent implements OnInit {
     }
 
     userDetails(id) {
-        this.router.navigate(['/user/details', id]);
+        this.router.navigate(['/user/details/', id]);
     }
 
     userEdit(id) {

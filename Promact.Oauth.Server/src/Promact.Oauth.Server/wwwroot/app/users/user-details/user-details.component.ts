@@ -1,10 +1,10 @@
 ﻿import {Component , OnInit} from "@angular/core";
-import { LoginService } from '../../login.service';
 import {UserModel} from '../user.model';
 import {UserService} from '../user.service';
 import { Router, ActivatedRoute }from '@angular/router';
 import { UserRole } from "../../shared/userrole.model";
 import { LoaderService } from '../../shared/loader.service';
+import { StringConstant } from '../../shared/stringconstant';
 
 @Component({
     templateUrl: './app/users/user-details/user-details.html'   
@@ -16,14 +16,14 @@ export class UserDetailsComponent implements OnInit {
     admin: boolean;
     
 
-    constructor(private userService: UserService, private route: ActivatedRoute, private redirectRoute: Router, private loginService: LoginService,
-        private loader: LoaderService, private userRole: UserRole) {
+    constructor(private userService: UserService, private route: ActivatedRoute, private redirectRoute: Router,
+        private loader: LoaderService, private userRole: UserRole, private stringConstant: StringConstant) {
         this.user = new UserModel();
         this.admin = true;
     }
     ngOnInit() {
-        
-        if (this.userRole.Role === "Admin") {
+
+        if (this.userRole.Role === this.stringConstant.admin) {
             this.admin = true;
         }
         else {
@@ -32,7 +32,7 @@ export class UserDetailsComponent implements OnInit {
         this.loader.loader = true;
 
         this.route.params.subscribe(params => {
-            let id = this.route.snapshot.params['id'];
+            let id = this.route.snapshot.params[this.stringConstant.paramsId];
             this.userService.getUserById(id)
                 .subscribe((user) => {
                     this.user = user,
@@ -47,11 +47,11 @@ export class UserDetailsComponent implements OnInit {
     }
 
     goBack() {
-        this.redirectRoute.navigate(['/user/list']);
+        this.redirectRoute.navigate(['user/list']);
     }
 
     edit(id: number) {
-        this.redirectRoute.navigate(['/user/edit/' + id]);
+        this.redirectRoute.navigate(['/user/edit' + id]);
     }
 
     

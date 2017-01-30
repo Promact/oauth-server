@@ -5,8 +5,7 @@ import { UserRoleModel } from '../userrole.model';
 import { Router } from '@angular/router';
 import { Md2Toast } from 'md2';
 import { LoaderService } from '../../shared/loader.service';
-
-
+import { StringConstant } from '../../shared/stringconstant';
 
 @Component({
     templateUrl: 'app/users/user-add/user-add.html'
@@ -72,7 +71,7 @@ export class UserAddComponent implements OnInit {
 
     checkEmail(email) {
         this.isEmailExist = false;
-        if (email !== "" && email !== undefined) {
+        if (email !== '' && email !== undefined) {
             this.userService.checkEmailIsExists(email).subscribe((result) => {
                 this.isEmailExist = result;
             });
@@ -81,7 +80,7 @@ export class UserAddComponent implements OnInit {
 
     checkSlackUserName(slackUserName) {
         this.isSlackUserNameExist = false;
-        if (slackUserName !== "" && slackUserName !== undefined) {
+        if (slackUserName !== '' && slackUserName !== undefined) {
             this.userService.checkUserIsExistsBySlackUserName(slackUserName).subscribe((result) => {
                 this.isSlackUserNameExist = true;
             }, err => {

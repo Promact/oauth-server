@@ -6,6 +6,7 @@ import { UserModel } from '../../users/user.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Md2Toast } from 'md2';
 import { LoaderService } from '../../shared/loader.service';
+import { StringConstant } from '../../shared/stringconstant';
 
 @Component({
     templateUrl: "app/project/project-edit/project-edit.html",
@@ -22,7 +23,8 @@ export class ProjectEditComponent implements OnInit {
         private toast: Md2Toast,
         private service: ProjectService,
         private location: Location,
-        private loader: LoaderService) { }
+        private loader: LoaderService,
+        private stringConstant: StringConstant) { }
     /**
      * Get Project details and user details 
      */
@@ -31,7 +33,7 @@ export class ProjectEditComponent implements OnInit {
         this.project.listUsers = new Array<UserModel>();
         this.project.applicationUsers = new Array<UserModel>();
         this.route.params.subscribe(params => {
-            let id = +params['id']; // (+) converts string 'id' to a number
+            let id = +params[this.stringConstant.paramsId]; // (+) converts string 'id' to a number
             this.service.getProject(id).subscribe(project => {
                 this.project = project;
                 this.service.getUsers().subscribe(listUsers => {
@@ -85,7 +87,7 @@ export class ProjectEditComponent implements OnInit {
                     }
                     else {
                         this.toast.show("Project Successfully Updated.");
-                        this.router.navigate(['/project/list']);
+                        this.router.navigate(['project/list']);
                     }
 
                     this.loader.loader = false;

@@ -3,11 +3,10 @@ import { ProjectService } from '../project.service';
 import { ProjectModel } from '../project.model';
 import { Router } from '@angular/router';
 import { Md2Toast } from 'md2';
-import { LoginService } from '../../login.service';
 import { LoaderService } from '../../shared/loader.service';
 import { UserRole } from "../../shared/userrole.model";
+import { StringConstant } from '../../shared/stringconstant';
 import { DatePipe } from '@angular/common';
-
 
 @Component({
     templateUrl: 'app/project/project-list/project-list.html',
@@ -18,8 +17,8 @@ export class ProjectListComponent implements OnInit {
     projects: Array<ProjectModel>;
     project: ProjectModel;
     admin: boolean;
-    constructor(private router: Router, private projectService: ProjectService, private toast: Md2Toast, private loginService: LoginService,
-        private loader: LoaderService, private userRole: UserRole) {
+    constructor(private router: Router, private projectService: ProjectService, private toast: Md2Toast, 
+        private loader: LoaderService, private userRole: UserRole, private stringConstant: StringConstant) {
         this.projects = new Array<ProjectModel>();
         this.project = new ProjectModel();
     }
@@ -27,10 +26,10 @@ export class ProjectListComponent implements OnInit {
         this.loader.loader = true;
         this.projectService.getProjects().subscribe((projects) => {
             this.projects = projects;
-            let datePipe = new DatePipe("medium");
+            let datePipe = new DatePipe(this.stringConstant.medium);
             this.projects.forEach(project => {
-                project.createdOns = datePipe.transform(project.createdDate, "dd-MM-yyyy");
-                project.updatedOns = datePipe.transform(project.updatedDate, "dd-MM-yyyy");
+                project.createdOns = datePipe.transform(project.createdDate, this.stringConstant.dateFormat);
+                project.updatedOns = datePipe.transform(project.updatedDate, this.stringConstant.dateFormat);
             });
             this.loader.loader = false;
         }, err => {
@@ -39,12 +38,10 @@ export class ProjectListComponent implements OnInit {
         });
     }
     ngOnInit() {
-        if (this.userRole.Role === "Admin") {
+        if (this.userRole.Role === this.stringConstant.admin) {
             this.admin = true;}
         else {this.admin = false;}
         this.getProjects();
-       
-        
     }
     editProject(Id) {
         this.router.navigate(['/project/edit', Id]);
@@ -52,6 +49,4 @@ export class ProjectListComponent implements OnInit {
     viewProject(Id) {
         this.router.navigate(['/project/view', Id]);
     }
-
-    
 }

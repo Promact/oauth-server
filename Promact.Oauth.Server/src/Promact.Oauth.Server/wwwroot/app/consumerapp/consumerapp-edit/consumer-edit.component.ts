@@ -5,6 +5,7 @@ import { ConsumerAppService } from '../consumerapp.service';
 import { Md2Toast } from 'md2';
 import { Location } from "@angular/common";
 import { LoaderService } from '../../shared/loader.service';
+import { StringConstant } from '../../shared/stringconstant';
 
 @Component({
     templateUrl: "app/consumerapp/consumerapp-edit/consumerapp-edit.html",
@@ -13,7 +14,8 @@ export class ConsumerappEditComponent implements OnInit {
     consumerModel: ConsumerAppModel;
     scopes: any;
     clientSecretIndicator: boolean;
-    constructor(private router: Router, private consumerAppService: ConsumerAppService, private route: ActivatedRoute, private toast: Md2Toast, private location: Location, private loader: LoaderService) {
+    constructor(private router: Router, private consumerAppService: ConsumerAppService, private route: ActivatedRoute, private toast: Md2Toast, private location: Location,
+        private loader: LoaderService, private stringConstant: StringConstant) {
         this.consumerModel = new ConsumerAppModel();
         this.scopes = [];
         this.clientSecretIndicator = false;
@@ -28,7 +30,7 @@ export class ConsumerappEditComponent implements OnInit {
     ngOnInit() {
         this.loader.loader = true;
         this.route.params.subscribe(params => {
-            let id = params['id'];
+            let id = +params[this.stringConstant.paramsId]; // (+) converts string 'id' to a number
             this.consumerAppService.getConsumerAppById(id).subscribe((result) => {
                 this.consumerModel.Name = result.name;
                 this.consumerModel.CallbackUrl = result.callbackUrl;

@@ -5,12 +5,13 @@ import { LoaderService } from '../../shared/loader.service';
 import { Md2Toast } from 'md2';
 import { ConsumerAppModel } from "../consumerapp-model";
 
+
 @Component({
     templateUrl: "app/consumerapp/consumerapp-list/consumerapp-list.html"
 })
 export class ConsumerappListComponent implements OnInit {
     listOfConsumerApps: Array<ConsumerAppModel>;
-    constructor(private router: Router, private consumerAppService: ConsumerAppService, private toast: Md2Toast, private loader :LoaderService) {
+    constructor(private router: Router, private consumerAppService: ConsumerAppService, private toast: Md2Toast, private loader: LoaderService) {
         this.listOfConsumerApps = new Array<ConsumerAppModel>();
     }
     
