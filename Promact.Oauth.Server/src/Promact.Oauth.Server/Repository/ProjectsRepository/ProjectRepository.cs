@@ -227,8 +227,8 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             Project project = await _projectDataRepository.FirstOrDefaultAsync(x => x.SlackChannelName == slackChannelName);
             if (project != null && !string.IsNullOrEmpty(project.TeamLeaderId))
             {
-                var user = await _userDataRepository.FirstAsync(x => x.Id.Equals(project.TeamLeaderId));
-                if (user.IsActive)
+                var user = await _userDataRepository.FirstOrDefaultAsync(x => x.Id.Equals(project.TeamLeaderId));
+                if (user!= null && user.IsActive)
                 {
                     ProjectAc projectAc = _mapperContext.Map<Project, ProjectAc>(project);
                     return projectAc;
