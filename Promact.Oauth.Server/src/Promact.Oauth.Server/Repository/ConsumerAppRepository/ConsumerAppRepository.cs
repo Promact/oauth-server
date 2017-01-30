@@ -29,7 +29,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         #region "Constructor"
         public ConsumerAppRepository(IDataRepository<IdentityServer4.EntityFramework.Entities.Client, ConfigurationDbContext> clientDataRepository,
             IDataRepository<ClientScope, ConfigurationDbContext> scopes, IDataRepository<ClientSecret, ConfigurationDbContext> secret, IDataRepository<ClientRedirectUri, ConfigurationDbContext> redirectUri,
-            IDataRepository<ClientPostLogoutRedirectUri, ConfigurationDbContext> logoutRedirectUri, IOptionsMonitor<StringLiterals> stringLiterals)
+            IDataRepository<ClientPostLogoutRedirectUri, ConfigurationDbContext> logoutRedirectUri, IOptionsMonitor<StringLiteral> stringLiterals)
         {
             _clientDataRepository = clientDataRepository;
             _scopes = scopes;
