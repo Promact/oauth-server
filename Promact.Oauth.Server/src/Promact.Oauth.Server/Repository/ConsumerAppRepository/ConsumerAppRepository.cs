@@ -13,7 +13,7 @@ using IdentityServer4.EntityFramework.DbContexts;
 using Promact.Oauth.Server.StringLiterals;
 using Microsoft.Extensions.Options;
 
-namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
+namespace Promact.Oauth.Server.Repository.ConsumerAppRepository 
 {
     public class ConsumerAppRepository : IConsumerAppRepository
     { 
