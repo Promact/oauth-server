@@ -340,6 +340,7 @@ namespace Promact.Oauth.Server.Tests
             return await _userRepository.AddUserAsync(user, _stringConstant.RawFirstNameForTest);
         }
 
+
         #endregion
     }
 }
