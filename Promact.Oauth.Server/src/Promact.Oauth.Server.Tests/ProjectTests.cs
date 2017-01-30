@@ -167,6 +167,7 @@ namespace Promact.Oauth.Server.Tests
             Assert.Null(project.SlackChannelName);
         }
 
+
         /// <summary>
         /// This test case for the get all projects
         /// </summary>
