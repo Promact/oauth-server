@@ -165,7 +165,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         }
 
         /// <summary>
-        /// Method to convert ConsumerApp object to IdentityServer4 Client
+        /// Method to convert ConsumerApp object to IdentityServer4 Client 
         /// </summary>
         /// <param name="consumerApp">App details as object of ConsumerApp</param>
         /// <param name="allowedScopes">list of allowed scopes</param>
