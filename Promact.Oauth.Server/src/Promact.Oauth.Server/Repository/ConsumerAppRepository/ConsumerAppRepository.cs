@@ -16,7 +16,7 @@ using Microsoft.Extensions.Options;
 namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
 {
     public class ConsumerAppRepository : IConsumerAppRepository
-    {
+    { 
         #region "Private Variable(s)"
         private readonly IDataRepository<IdentityServer4.EntityFramework.Entities.Client, ConfigurationDbContext> _clientDataRepository;
         private readonly IDataRepository<ClientScope, ConfigurationDbContext> _scopes;
