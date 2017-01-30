@@ -14,6 +14,8 @@ using Promact.Oauth.Server.Constants;
 using Microsoft.AspNetCore.Hosting;
 using System;
 using Exceptions;
+using Promact.Oauth.Server.StringLiterals;
+using Microsoft.Extensions.Options;
 
 namespace Promact.Oauth.Server.Controllers
 {
@@ -26,6 +28,7 @@ namespace Promact.Oauth.Server.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
         private readonly IStringConstant _stringConstant;
+        private readonly StringLiteral _stringLiterals;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
@@ -33,7 +36,8 @@ namespace Promact.Oauth.Server.Controllers
             IEmailSender emailSender,
             ILoggerFactory loggerFactory,
             IHostingEnvironment hostingEnvironment,
-            IStringConstant stringConstant)
+            IStringConstant stringConstant,
+            IOptionsMonitor<StringLiteral> stringLiterals)
         {
             _userManager = userManager;
             _hostingEnvironment = hostingEnvironment;
@@ -41,6 +45,7 @@ namespace Promact.Oauth.Server.Controllers
             _emailSender = emailSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
             _stringConstant = stringConstant;
+            _stringLiterals = stringLiterals.CurrentValue;
         }
 
         //
@@ -117,10 +122,6 @@ namespace Promact.Oauth.Server.Controllers
                 {
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
                     // Send an email with this link
-                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                    //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
-                    //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation(3, "User created a new account with password.");
                     return RedirectToLocal(returnUrl);
@@ -273,7 +274,7 @@ namespace Promact.Oauth.Server.Controllers
                     var user = await _userManager.FindByNameAsync(model.Email);
                     if (user == null)
                     {
-                        @ViewData["EmailNotExist"] = _stringConstant.EmailNotExists;
+                        @ViewData["EmailNotExist"] = _stringLiterals.Account .EmailNotExists;
                         return View();
                     }
 
@@ -286,7 +287,7 @@ namespace Promact.Oauth.Server.Controllers
                         string finaleTemplate = System.IO.File.ReadAllText(path);
                         finaleTemplate = finaleTemplate.Replace(_stringConstant.ResetPasswordLink, resetPasswordLink).Replace(_stringConstant.ResertPasswordUserName, user.FirstName);
                         _emailSender.SendEmail(model.Email, _stringConstant.ForgotPassword, finaleTemplate);
-                        @ViewData["MailSentSuccessfully"] = _stringConstant.SuccessfullySendMail.Replace("{{emailaddress}}", "'" + model.Email + "'");
+                        @ViewData["MailSentSuccessfully"] = _stringLiterals.Account.SuccessfullySendMail.Replace("{{emailaddress}}", "'" + model.Email + "'");
                     }
                 }
                 // If we got this far, something failed, redisplay form

@@ -1,42 +1,42 @@
-﻿using AutoMapper;
-using Promact.Oauth.Server.Data_Repository;
+﻿using Promact.Oauth.Server.Data_Repository;
 using Promact.Oauth.Server.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Promact.Oauth.Server.Constants;
 using Promact.Oauth.Server.ExceptionHandler;
 using IdentityServer4.EntityFramework.Entities;
 using IdentityServer4.Models;
 using IdentityServer4.EntityFramework.Mappers;
 using IdentityServer4.EntityFramework.DbContexts;
+using Promact.Oauth.Server.StringLiterals;
+using Microsoft.Extensions.Options;
 
-namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
+namespace Promact.Oauth.Server.Repository.ConsumerAppRepository 
 {
     public class ConsumerAppRepository : IConsumerAppRepository
-    {
+    { 
         #region "Private Variable(s)"
         private readonly IDataRepository<IdentityServer4.EntityFramework.Entities.Client, ConfigurationDbContext> _clientDataRepository;
-        private readonly IStringConstant _stringConstant;
         private readonly IDataRepository<ClientScope, ConfigurationDbContext> _scopes;
         private readonly IDataRepository<ClientSecret, ConfigurationDbContext> _secret;
         private readonly IDataRepository<ClientRedirectUri, ConfigurationDbContext> _redirectUri;
         private readonly IDataRepository<ClientPostLogoutRedirectUri, ConfigurationDbContext> _logoutRedirectUri;
+        private readonly StringLiteral _stringLiterals;
         #endregion
 
         #region "Constructor"
-        public ConsumerAppRepository(IStringConstant stringConstant, IDataRepository<IdentityServer4.EntityFramework.Entities.Client, ConfigurationDbContext> clientDataRepository,
+        public ConsumerAppRepository(IDataRepository<IdentityServer4.EntityFramework.Entities.Client, ConfigurationDbContext> clientDataRepository,
             IDataRepository<ClientScope, ConfigurationDbContext> scopes, IDataRepository<ClientSecret, ConfigurationDbContext> secret, IDataRepository<ClientRedirectUri, ConfigurationDbContext> redirectUri,
-            IDataRepository<ClientPostLogoutRedirectUri, ConfigurationDbContext> logoutRedirectUri)
+            IDataRepository<ClientPostLogoutRedirectUri, ConfigurationDbContext> logoutRedirectUri, IOptionsMonitor<StringLiteral> stringLiterals)
         {
-            _stringConstant = stringConstant;
             _clientDataRepository = clientDataRepository;
             _scopes = scopes;
             _secret = secret;
             _redirectUri = redirectUri;
             _logoutRedirectUri = logoutRedirectUri;
+            _stringLiterals = stringLiterals.CurrentValue;
         }
 
         #endregion
@@ -58,7 +58,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         }
 
         /// <summary>
-        /// This method used for added consumer app and return primary key. -An
+        /// This method used for added consumer app and return consumerApps Id. -An
         /// </summary>
         /// <param name="consumerApp">App details as object</param>
         /// <returns>App details after saving changes as object</returns>
@@ -121,12 +121,12 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
             var random = new Random();
             if (isAuthId)
             {
-                return new string(Enumerable.Repeat(_stringConstant.CapitalAlphaNumericString, 15)
+                return new string(Enumerable.Repeat(_stringLiterals.ConsumerApp.CapitalAlphaNumericString, 15)
                   .Select(s => s[random.Next(s.Length)]).ToArray());
             }
             else
             {
-                return new string(Enumerable.Repeat(_stringConstant.AlphaNumericString, 30)
+                return new string(Enumerable.Repeat(_stringLiterals.ConsumerApp.AlphaNumericString, 30)
                   .Select(s => s[random.Next(s.Length)]).ToArray());
             }
         }
@@ -165,7 +165,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         }
 
         /// <summary>
-        /// Method to convert ConsumerApp object to IdentityServer4 Client
+        /// Method to convert ConsumerApp object to IdentityServer4 Client 
         /// </summary>
         /// <param name="consumerApp">App details as object of ConsumerApp</param>
         /// <param name="allowedScopes">list of allowed scopes</param>
