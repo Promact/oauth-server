@@ -21,7 +21,7 @@ namespace Promact.Oauth.Server.Tests
         private readonly IDataRepository<ProjectUser, PromactOauthDbContext> _dataRepositoryProjectUser;
         private readonly IStringConstant _stringConstant;
         private readonly IUserRepository _userRepository;
-        
+
         public ProjectTests() : base()
         {
             _projectRepository = serviceProvider.GetService<IProjectRepository>();
@@ -30,7 +30,7 @@ namespace Promact.Oauth.Server.Tests
             _stringConstant = serviceProvider.GetService<IStringConstant>();
             _userRepository = serviceProvider.GetService<IUserRepository>();
         }
-      
+
         #region Test Case
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public async Task EditProject()
         {
-            List<UserAc> userlist= GetUserListMockData();
+            List<UserAc> userlist = GetUserListMockData();
             var id = await GetProjectMockData();
             await GetProjectUserMockData();
             ProjectAc projectacSecound = new ProjectAc()
@@ -139,7 +139,7 @@ namespace Promact.Oauth.Server.Tests
         {
             ProjectAc projectAc = MockOfProjectAc();
             await _projectRepository.AddProjectAsync(projectAc, _stringConstant.CreatedBy);
-            var project =await _projectRepository.CheckDuplicateProjectAsync(projectAc);
+            var project = await _projectRepository.CheckDuplicateProjectAsync(projectAc);
             Assert.Null(project.Name);
         }
 
@@ -163,7 +163,7 @@ namespace Promact.Oauth.Server.Tests
                 CreatedDate = DateTime.UtcNow,
                 ApplicationUsers = userlist
             };
-            var project =await _projectRepository.CheckDuplicateProjectAsync(projectacSecound);
+            var project = await _projectRepository.CheckDuplicateProjectAsync(projectacSecound);
             Assert.Null(project.SlackChannelName);
         }
 
@@ -173,29 +173,18 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public async Task GetAllProject()
         {
-            UserAc _testUser = new UserAc()
-            {
-                Email = _stringConstant.RawEmailIdForTest,
-                FirstName = _stringConstant.RawFirstNameForTest,
-                LastName = _stringConstant.RawLastNameForTest,
-                IsActive = true,
-                UserName = _stringConstant.RawEmailIdForTest,
-                SlackUserName = _stringConstant.RawFirstNameForTest,
-                JoiningDate = DateTime.UtcNow,
-                RoleName = _stringConstant.Employee
-            };
-            var id = await _userRepository.AddUserAsync(_testUser, _stringConstant.RawFirstNameForTest);
+            var id = await MockOfUserAc();
 
-            ProjectAc projectac=new ProjectAc();
+            ProjectAc projectac = new ProjectAc();
             projectac.Name = _stringConstant.Name;
             projectac.SlackChannelName = _stringConstant.SlackChannelName;
             projectac.IsActive = _stringConstant.IsActive;
             projectac.TeamLeader = new UserAc { FirstName = _stringConstant.FirstName };
             projectac.TeamLeaderId = id;
             projectac.CreatedBy = id;
-            var projectId=await _projectRepository.AddProjectAsync(projectac, id);
-            
-            IEnumerable<ProjectAc> projects =await _projectRepository.GetAllProjectsAsync();
+            var projectId = await _projectRepository.AddProjectAsync(projectac, id);
+
+            IEnumerable<ProjectAc> projects = await _projectRepository.GetAllProjectsAsync();
             Assert.NotNull(projects);
         }
 
@@ -205,9 +194,11 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "A")]
         public async Task GetProjectByGroupName()
         {
+            var userId = await MockOfUserAc();
             ProjectAc projectAc = MockOfProjectAc();
+            projectAc.TeamLeaderId = userId;
             await _projectRepository.AddProjectAsync(projectAc, _stringConstant.CreatedBy);
-            var project =await _projectRepository.GetProjectBySlackChannelNameAsync(projectAc.SlackChannelName);
+            var project = await _projectRepository.GetProjectBySlackChannelNameAsync(projectAc.SlackChannelName);
             Assert.Equal(projectAc.Name, project.Name);
         }
 
@@ -222,7 +213,7 @@ namespace Promact.Oauth.Server.Tests
             Assert.Throws<AggregateException>(() => _projectRepository.GetProjectBySlackChannelNameAsync("test").Result);
         }
 
-         /// <summary>
+        /// <summary>
         /// Test case to check GetProjectsWithUsers 
         /// </summary>
         [Fact, Trait("Category", "Required")]
@@ -238,7 +229,7 @@ namespace Promact.Oauth.Server.Tests
                 CreatedBy = _stringConstant.CreatedBy,
             };
             await _projectRepository.AddProjectAsync(project, _stringConstant.CreatedBy);
-            var projectUsers =await  _projectRepository.GetProjectsWithUsersAsync();
+            var projectUsers = await _projectRepository.GetProjectsWithUsersAsync();
             Assert.NotNull(projectUsers);
         }
 
@@ -331,6 +322,24 @@ namespace Promact.Oauth.Server.Tests
             projectAc.CreatedBy = _stringConstant.CreatedBy;
             return projectAc;
         }
+
+
+        /// <summary>
+        /// Creates mock user
+        /// </summary>
+        /// <returns>id of user created</returns>
+        private async Task<string> MockOfUserAc()
+        {
+            UserAc user = new UserAc()
+            {
+                Email = _stringConstant.RawEmailIdForTest,
+                JoiningDate = DateTime.UtcNow,
+                IsActive = true,
+                RoleName = _stringConstant.Employee
+            };
+            return await _userRepository.AddUserAsync(user, _stringConstant.RawFirstNameForTest);
+        }
+
         #endregion
     }
 }
