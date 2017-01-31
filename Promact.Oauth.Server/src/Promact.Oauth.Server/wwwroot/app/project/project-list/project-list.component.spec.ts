@@ -27,7 +27,7 @@ describe("Project List Test", () => {
                 { provide: ProjectService, useClass: MockProjectService },
                 { provide: Md2Toast, useClass: Md2Toast },
                 { provide: LoaderService, useClass: LoaderService },
-                { provide: UserRole, useClass: UserRole }
+                { provide: UserRole, useClass: UserRole },
                 { provide: StringConstant, useClass: StringConstant }
 
             ]
