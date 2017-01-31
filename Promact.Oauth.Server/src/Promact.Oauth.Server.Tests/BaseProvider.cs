@@ -15,6 +15,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using Promact.Oauth.Server.Constants;
+using Promact.Oauth.Server.StringLiterals;
 using Moq;
 using Promact.Oauth.Server.Models.ApplicationClasses;
 using System.Threading.Tasks;
@@ -59,10 +60,21 @@ namespace Promact.Oauth.Server.Tests
             services.Configure<AppSettingUtil>(x =>
             {
                 x.CasualLeave = 14;
-                x.PromactErpUrl = _stringConstant.PromactErpUrlForTest;
-                x.PromactOAuthUrl = _stringConstant.PromactErpUrlForTest;
+                x.PromactErpUrl = "http://www.example.com";
+                x.PromactOAuthUrl = "http://www.example.com";
                 x.SickLeave = 7;
             });
+
+            services.Configure<StringLiteral>(y =>
+            {
+                y.Account = new Account();
+                y.Account.EmailNotExists = "Email does not exist";
+                y.Account.SuccessfullySendMail = "We have sent you a link on {{emailaddress}} to reset password.Please check your email.";
+                y.ConsumerApp = new ConsumerApp();
+                y.ConsumerApp.CapitalAlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+                y.ConsumerApp.AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            });
+            
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<PromactOauthDbContext>()
@@ -105,17 +117,19 @@ namespace Promact.Oauth.Server.Tests
             services.AddScoped(x => httpContextMockObject);
             services.AddScoped(x => httpClientMockObject);
 
+            //Register email service mock
+            var emailServiceMock = new Mock<IEmailSender>();
+            var emailServiceMockObject = emailServiceMock.Object;
+            services.AddScoped(x => emailServiceMock);
+            services.AddScoped(x => emailServiceMockObject);
+
+
             //Register email util mock
             var emailUtilMock = new Mock<IEmailUtil>();
             var emailUtilMockObject = emailUtilMock.Object;
             services.AddScoped(x => emailUtilMock);
             services.AddScoped(x => emailUtilMockObject);
 
-            //Register email service mock
-            var emailServiceMock = new Mock<IEmailSender>();
-            var emailServiceMockObject = emailServiceMock.Object;
-            services.AddScoped(x => emailServiceMock);
-            services.AddScoped(x => emailServiceMockObject);
             serviceProvider = services.BuildServiceProvider();
             RoleSeedFake(serviceProvider);
 

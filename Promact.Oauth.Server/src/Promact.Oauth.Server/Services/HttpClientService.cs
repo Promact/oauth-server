@@ -21,18 +21,29 @@ namespace Promact.Oauth.Server.Services
         /// <param name="contentUrl"></param>
         /// <returns>response</returns>
         public async Task<string> GetAsync(string baseUrl, string contentUrl)
-        {  
-            _client = new HttpClient();
-            _client.BaseAddress = new Uri(baseUrl);
-            var response = await _client.GetAsync(contentUrl);
-            _client.Dispose();
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+        {
+            try
             {
+                _client = new HttpClient();
+                _client.BaseAddress = new Uri(baseUrl);
+                var response = await _client.GetAsync(contentUrl);
+                _client.Dispose();
                 var responseContent = response.Content.ReadAsStringAsync().Result;
-                return responseContent;
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    return responseContent;
+                }
+                else
+                    throw new Exception(responseContent);
             }
-            else
-                return _stringConstant.EmptyString;
+            catch (HttpRequestException)
+            {
+                throw new HttpRequestException(_stringConstant.HttpRequestExceptionErrorMessage);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

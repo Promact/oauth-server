@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Promact.Oauth.Server.Data;
 
+
 namespace Promact.Oauth.Server.Repository.ProjectsRepository
 {
     public class ProjectRepository : IProjectRepository
@@ -56,6 +57,19 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                     var user = await _userDataRepository.FirstAsync(x => x.Id.Equals(project.TeamLeaderId));
                     userAc = _mapperContext.Map<ApplicationUser, UserAc>(user);
                 }
+                else
+                {
+                    userAc.FirstName = _stringConstant.TeamLeaderNotAssign;
+                    userAc.LastName = _stringConstant.TeamLeaderNotAssign;
+                    userAc.Email = _stringConstant.TeamLeaderNotAssign;
+                }
+                var CreatedBy =(await _userDataRepository.FirstOrDefaultAsync(x => x.Id == project.CreatedBy))?.FirstName;
+                var UpdatedBy =(await _userDataRepository.FirstOrDefaultAsync(x => x.Id == project.UpdatedBy))?.FirstName;
+                DateTime? UpdatedDate;
+                if (project.UpdatedDateTime == null)
+                { UpdatedDate = null; }
+                else
+                { UpdatedDate = Convert.ToDateTime(project.UpdatedDateTime); }
                 var projectAc = _mapperContext.Map<Project, ProjectAc>(project);
                 projectAc.TeamLeader = userAc;
                 projectAc.CreatedBy = (await _userDataRepository.FirstAsync(x => x.Id == project.CreatedBy)).FirstName;

@@ -1,6 +1,5 @@
 ﻿declare let describe, it, beforeEach, expect;
-import { async, inject, TestBed, ComponentFixture } from '@angular/core/testing';
-import { Provider } from "@angular/core";
+import { async, TestBed } from '@angular/core/testing';
 import { UserModel } from '../../users/user.model';
 import { UserEditComponent } from "../user-edit/user-edit.component";
 import { UserService } from "../user.service";
@@ -13,6 +12,10 @@ import { MockRouter } from '../../shared/mocks/mock.router';
 import { LoaderService } from '../../shared/loader.service';
 import { ActivatedRouteStub } from "../../shared/mocks/mock.activatedroute";
 import { UserRole } from "../../shared/userrole.model";
+import { StringConstant } from '../../shared/stringconstant';
+
+let stringConstant = new StringConstant();
+
 
 describe("User Edit Test", () => {
     let userService: UserService;
@@ -28,18 +31,21 @@ describe("User Edit Test", () => {
                 { provide: Md2Toast, useClass: MockToast },
                 { provide: UserModel, useClass: UserModel },
                 { provide: LoaderService, useClass: LoaderService },
-                { provide: UserRole, useClass: UserRole }
+                { provide: UserRole, useClass: UserRole },
+                { provide: StringConstant, useClass: StringConstant }
             ]
         }).compileComponents();
 
     }));
 
+    
+
     it("should get particular user details", () => {
         let fixture = TestBed.createComponent(UserEditComponent); //Create instance of component     
         let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
-        activatedRoute.testParams = { id: "1" };
+        activatedRoute.testParams = { id: stringConstant.id };
         let userEditComponent = fixture.componentInstance;
-        let expectedFirstName = "First Name";
+        let expectedFirstName = stringConstant.testfirstName;
         userEditComponent.ngOnInit();
         expect(userEditComponent.user.FirstName).toBe(expectedFirstName);
     });
@@ -48,7 +54,7 @@ describe("User Edit Test", () => {
     it("should check User first name before update", () => {
         let fixture = TestBed.createComponent(UserEditComponent); //Create instance of component            
         let userEditComponent = fixture.componentInstance;
-        let expectedFirstName = "First Name";
+        let expectedFirstName = stringConstant.testfirstName;
         let userModel = new UserModel();
         userModel.FirstName = expectedFirstName;
         userEditComponent.editUser(userModel);

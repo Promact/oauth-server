@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using IdentityServer4;
 using Promact.Oauth.Server.Configuration.DefaultAPIResource;
 using Promact.Oauth.Server.Configuration.DefaultIdentityResource;
+using Promact.Oauth.Server.StringLiterals;
 
 namespace Promact.Oauth.Server
 {
@@ -43,6 +44,7 @@ namespace Promact.Oauth.Server
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile("StringLiterals/stringliterals.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 
             if (env.IsDevelopment())
@@ -91,7 +93,6 @@ namespace Promact.Oauth.Server
             services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<IConsumerAppRepository, ConsumerAppRepository>();
             services.AddScoped(typeof(IDataRepository<,>), typeof(DataRepository<,>));
-            //services.AddScoped<IOAuthRepository, OAuthRepository>();
             services.AddScoped<IStringConstant, StringConstant>();
             services.AddScoped<HttpClient>();
 
@@ -102,6 +103,7 @@ namespace Promact.Oauth.Server
             services.AddScoped<ICustomConsentService, CustomConsentService>();
             services.AddScoped<SecurityHeadersAttribute>();
 
+            services.Configure<StringLiteral>(Configuration.GetSection("StringLiterals"));
             services.AddMvc();
 
             // Add application services.
