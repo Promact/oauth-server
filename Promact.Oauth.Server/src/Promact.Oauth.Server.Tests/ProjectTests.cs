@@ -175,7 +175,6 @@ namespace Promact.Oauth.Server.Tests
         public async Task GetAllProject()
         {
             var id = await MockOfUserAc();
-
             ProjectAc projectac = new ProjectAc();
             projectac.Name = _stringConstant.Name;
             projectac.SlackChannelName = _stringConstant.SlackChannelName;
