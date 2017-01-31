@@ -1,17 +1,16 @@
 ﻿declare var describe, it, beforeEach, expect;
-import { async, inject, TestBed, ComponentFixture } from '@angular/core/testing';
+import { async, TestBed } from '@angular/core/testing';
 import { Provider } from "@angular/core";
-import { Router, ActivatedRoute, RouterModule, Routes } from '@angular/router';
-import { Md2Toast } from 'md2';
+import { Router, RouterModule, Routes } from '@angular/router';
 import { MockRouter } from './shared/mocks/mock.router';
 import { UserRole } from "./shared/userrole.model";
 import { LoaderService } from './shared/loader.service';
 import { RouterLinkStubDirective } from './shared/mocks/mock.routerLink';
 import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
+import { StringConstant } from './shared/stringconstant';
 
-describe('User Add Test', () => {
-    class MockLoaderService { }
+describe('App Component Test', () => {
     const routes: Routes = [];
 
     beforeEach(async(() => {
@@ -21,7 +20,8 @@ describe('User Add Test', () => {
             providers: [
                 { provide: Router, useClass: MockRouter },
                 { provide: UserRole, useClass: UserRole },
-                { provide: LoaderService, useClass: MockLoaderService }]
+                { provide: LoaderService, useClass: LoaderService  },
+                 { provide: StringConstant, useClass: StringConstant }]
         }).compileComponents();
     }));
 
