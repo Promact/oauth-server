@@ -1,0 +1,30 @@
+version: 1.0.{build}
+os: Visual Studio 2015
+skip_tags: true
+configuration: Release
+environment:
+ nodejs_version: "0.12"
+ COVERALLS_REPO_TOKEN:
+   secure: kNnGcrn1RXPd+QHyAS+I2B40ROUcC8UkxZ5LL/8gRWCYRW758QO/nbvx7iXGXm4r
+cache:
+- "%LOCALAPPDATA%\\Yarn"
+install:
+- npm i -g yarn
+- npm i -g typescript typings
+- yarn global add typescript typings
+- cd ".\Promact.Oauth.Server\src\Promact.Oauth.Server\"
+- yarn
+- cd..
+build_script:
+- ps: dotnet restore
+- ps: dotnet build ./Promact.Oauth.Server.Tests -c Release
+- ps: dotnet test ./Promact.Oauth.Server.Tests/project.json -c Release 
+build:
+  project: .\Promact.Oauth.Server\Promact.Oauth.Server.sln
+  verbosity: minimal
+test_script:
+- ps: >-
+   C:\Users\appveyor\.nuget\packages\OpenCover\4.6.519\tools\OpenCover.Console.exe -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test .\Promact.Oauth.Server.Tests\project.json" -register:user -filter:"+[Promact.Oauth.Server]* -[Promact.Oauth.Server.Tests*]*" -output:opencover.xml -oldStyle
+- ps: >-
+   C:\Users\appveyor\.nuget\packages\coveralls.net\0.7.0\tools\csmacnz.coveralls.exe --opencover -i opencover.xml --repoToken $env:COVERALLS_REPO_TOKEN --commitId $env:APPVEYOR_REPO_COMMIT --commitBranch $env:APPVEYOR_REPO_BRANCH --commitAuthor $env:APPVEYOR_REPO_COMMIT_AUTHOR --commitEmail $env:APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL --commitMessage $env:APPVEYOR_REPO_COMMIT_MESSAGE --jobId $env:APPVEYOR_JOB_ID
+   

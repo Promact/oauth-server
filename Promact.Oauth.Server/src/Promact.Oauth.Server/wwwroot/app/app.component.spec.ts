@@ -20,8 +20,8 @@ describe('App Component Test', () => {
             providers: [
                 { provide: Router, useClass: MockRouter },
                 { provide: UserRole, useClass: UserRole },
-                { provide: LoaderService, useClass: LoaderService  },
-                 { provide: StringConstant, useClass: StringConstant }]
+                { provide: LoaderService, useClass: LoaderService },
+                { provide: StringConstant, useClass: StringConstant }]
         }).compileComponents();
     }));
 
@@ -30,4 +30,3 @@ describe('App Component Test', () => {
         let comp = fixture.componentInstance;
     });
 });
-
