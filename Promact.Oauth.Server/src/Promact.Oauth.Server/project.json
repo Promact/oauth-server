@@ -51,27 +51,10 @@
     "Microsoft.Extensions.Options.ConfigurationExtensions": "1.1.0",
     "Exceptionless.AspNetCore": "4.0.1927",
     "Microsoft.IdentityModel.Protocols": "2.1.2",
-    "Microsoft.AspNetCore.Razor.Tools": {
-      "version": "1.1.0-preview4-final",
-      "type": "build"
-    },
-    "Microsoft.EntityFrameworkCore.Tools": {
-      "version": "1.1.0-preview4-final",
-      "type": "build"
-    },
-    "Microsoft.VisualStudio.Web.CodeGeneration.Tools": {
-      "version": "1.1.0-preview4-final",
-      "type": "build"
-    },
-    "Microsoft.VisualStudio.Web.CodeGenerators.Mvc": {
-      "version": "1.1.0-preview4-final",
-      "type": "build"
-    },
-    "coveralls.net": "0.7.0",
-    "OpenCover": "4.6.519"
-    "coveralls.net": "0.7.0"
     "System.Linq": "4.3.0",
-    "System.Linq.Parallel": "4.3.0"
+    "System.Linq.Parallel": "4.3.0",
+    "OpenCover": "4.6.519",
+    "coveralls.net": "0.7.0"
   },
 
   "tools": {
