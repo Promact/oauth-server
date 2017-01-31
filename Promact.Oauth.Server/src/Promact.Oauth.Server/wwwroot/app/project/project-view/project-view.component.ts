@@ -5,6 +5,7 @@ import { UserModel } from '../../users/user.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from "@angular/common";
 import { Md2Toast } from 'md2';
+import { StringConstant } from '../../shared/stringconstant';
 
 @Component({
     templateUrl: "app/project/project-view/project-view.html",
@@ -19,13 +20,14 @@ export class ProjectViewComponent implements OnInit {
         private router: Router,
         private service: ProjectService,
         private location: Location,
-        private toast: Md2Toast) { }
+        private toast: Md2Toast,
+        private stringConstant: StringConstant) { }
     /**
      * getporject feching the list of projects and getUser feching list of Users
      */
     ngOnInit() {
         this.route.params.subscribe(params => {
-            let id = +params['id']; // (+) converts string 'id' to a number
+            let id = +params[this.stringConstant.paramsId]; // (+) converts string 'id' to a number
             this.service.getProject(id).subscribe(project => {
                 this.project = project;
 

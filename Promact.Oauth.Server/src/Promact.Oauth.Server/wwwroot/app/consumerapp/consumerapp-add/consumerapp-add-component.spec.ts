@@ -10,9 +10,11 @@ import { MockConsumerappService } from "../../shared/mocks/consumerapp/mock.cons
 import { MockRouter } from '../../shared/mocks/mock.router';
 import { ConsumerAppModule } from '../consumerapp.module';
 import { LoaderService } from '../../shared/loader.service';
+import { StringConstant } from '../../shared/stringconstant';
+
+let stringConstant = new StringConstant();
 
 describe('Consumer Add Test', () => {
-    class MockLoaderService { }
     const routes: Routes = [];
 
     beforeEach(async(() => {
@@ -24,7 +26,7 @@ describe('Consumer Add Test', () => {
                 { provide: ConsumerAppService, useClass: MockConsumerappService },
                 { provide: Md2Toast, useClass: MockToast },
                 { provide: ConsumerAppModel, useClass: ConsumerAppModel },
-                { provide: LoaderService, useClass: MockLoaderService },
+                { provide: LoaderService, useClass: LoaderService },
                 { provide: consumerappallowedscopes, useClas: consumerappallowedscopes }
             ]
         }).compileComponents();
@@ -35,11 +37,11 @@ describe('Consumer Add Test', () => {
         let consumerappAddComponent = fixture.componentInstance;
         let toast = fixture.debugElement.injector.get(Md2Toast);
         let consumerAppModel = new ConsumerAppModel();
-        consumerAppModel.Name = "slack";
-        consumerAppModel.LogoutUrl = "www.google.com";
-        consumerAppModel.CallbackUrl = "www.google.com";
-        consumerAppModel.AuthSecret = "dsdsdsdsdsdsd";
-        consumerAppModel.AuthId = "ASASs5454545455";
+        consumerAppModel.Name = stringConstant.consumerappname;
+        consumerAppModel.LogoutUrl = stringConstant.callbackUrl;
+        consumerAppModel.CallbackUrl = stringConstant.callbackUrl;
+        consumerAppModel.AuthSecret = stringConstant.authSecret;
+        consumerAppModel.AuthId = stringConstant.authId;
         consumerAppModel.Scopes = [consumerappallowedscopes.email, consumerappallowedscopes.openid];
         consumerappAddComponent.submitApps(consumerAppModel);
         expect(consumerAppModel.Id).toBe(1);
@@ -49,7 +51,7 @@ describe('Consumer Add Test', () => {
         let fixture = TestBed.createComponent(ConsumerappAddComponent); //Create instance of component            
         let consumerappAddComponent = fixture.componentInstance;
         let toast = fixture.debugElement.injector.get(Md2Toast);
-        let expectedValue = "SFDASFADSFSAD";
+        let expectedValue = stringConstant.consumerAppExpectedValue;
         let consumerAppModel = new ConsumerAppModel();
         consumerappAddComponent.getRandomNumber(true);
         expect(consumerappAddComponent.consumerModel.AuthId).toBe(expectedValue);
@@ -59,7 +61,7 @@ describe('Consumer Add Test', () => {
         let fixture = TestBed.createComponent(ConsumerappAddComponent); //Create instance of component            
         let consumerappAddComponent = fixture.componentInstance;
         let toast = fixture.debugElement.injector.get(Md2Toast);
-        let expectedValue = "SFDASFADSFSAD";
+        let expectedValue = stringConstant.consumerAppExpectedValue;
         let consumerAppModel = new ConsumerAppModel();
         consumerappAddComponent.getRandomNumber(false);
         expect(consumerappAddComponent.consumerModel.AuthSecret).toBe(expectedValue);
