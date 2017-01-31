@@ -5,7 +5,6 @@ import { Router, RouterModule, Routes } from '@angular/router';
 import { MockRouter } from './shared/mocks/mock.router';
 import { UserRole } from "./shared/userrole.model";
 import { LoaderService } from './shared/loader.service';
-import { RouterLinkStubDirective } from './shared/mocks/mock.routerLink';
 import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
 import { StringConstant } from './shared/stringconstant';
@@ -25,8 +24,8 @@ describe('App Component Test', () => {
         }).compileComponents();
     }));
 
-    it("Load app Component", () => {
-        let fixture = TestBed.createComponent(AppComponent);
-        let comp = fixture.componentInstance;
-    });
+    //it("Load app Component", () => {
+    //    let fixture = TestBed.createComponent(AppComponent);
+    //    let comp = fixture.componentInstance;
+    //});
 });
