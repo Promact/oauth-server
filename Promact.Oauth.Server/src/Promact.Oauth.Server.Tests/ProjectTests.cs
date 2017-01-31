@@ -175,15 +175,10 @@ namespace Promact.Oauth.Server.Tests
         public async Task GetAllProject()
         {
             var id = await MockOfUserAc();
-            ProjectAc projectac = new ProjectAc();
-            projectac.Name = _stringConstant.Name;
-            projectac.SlackChannelName = _stringConstant.SlackChannelName;
-            projectac.IsActive = _stringConstant.IsActive;
-            projectac.TeamLeader = new UserAc { FirstName = _stringConstant.FirstName };
-            projectac.TeamLeaderId = id;
-            projectac.CreatedBy = id;
-            var projectId = await _projectRepository.AddProjectAsync(projectac, id);
-
+            ProjectAc projectAc = MockOfProjectAc();
+            projectAc.TeamLeaderId = id;
+            projectAc.CreatedBy = id;
+            var projectId = await _projectRepository.AddProjectAsync(projectAc, id);
             IEnumerable<ProjectAc> projects = await _projectRepository.GetAllProjectsAsync();
             Assert.NotNull(projects);
         }
