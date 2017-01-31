@@ -248,6 +248,7 @@ namespace Promact.Oauth.Server.Tests
             Assert.Equal(projectDetails.Name, _stringConstant.Name);
         }
 
+
         #endregion
 
         #region private methods
