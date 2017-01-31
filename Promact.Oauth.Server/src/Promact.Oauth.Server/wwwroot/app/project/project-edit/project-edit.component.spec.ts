@@ -1,76 +1,67 @@
 ﻿declare var describe, it, beforeEach, expect;
-import { async, inject, TestBed, ComponentFixture } from '@angular/core/testing';
-import { Provider } from "@angular/core";
+import { async, TestBed } from '@angular/core/testing';
 import { ProjectModel } from "../project.model";
 import { ProjectEditComponent } from "../project-edit/project-edit.component";
 import { ProjectService } from "../project.service";
 import { UserModel } from '../../users/user.model';
-import { Router, ActivatedRoute, RouterModule, Routes } from '@angular/router';
+import { ActivatedRoute, RouterModule, Routes } from '@angular/router';
 import { Md2Toast } from 'md2';
 import { MockToast } from "../../shared/mocks/mock.toast";
-import { Md2Multiselect } from 'md2/multiselect';
 import { MockProjectService } from "../../shared/mocks/project/mock.project.service";
-import { MockRouter } from '../../shared/mocks/mock.router';
-import { Observable } from 'rxjs/Observable';
 import { ProjectModule } from '../project.module';
 import { LoaderService } from '../../shared/loader.service';
+import { StringConstant } from '../../shared/stringconstant';
+import { ActivatedRouteStub } from "../../shared/mocks/mock.activatedroute";
 
+let stringConstant = new StringConstant();
 
+let mockUser = new UserModel();
+mockUser.FirstName = stringConstant.firstName;
+mockUser.LastName = stringConstant.lastName;
+mockUser.Email = stringConstant.email;
+mockUser.IsActive = true;
+mockUser.Id = stringConstant.id;
+let mockList = new Array<UserModel>();
+mockList.push(mockUser);
 
 describe('Project Edit Test', () => {
-    class MockRouter { }
-    class MockLocation { }
-    class MockLoaderService { }
+   
     const routes: Routes = [];
-    class MockActivatedRoute extends ActivatedRoute {
-        constructor() {
-            super();
-            this.params = Observable.of({ id: "1"});
-        }
-    }
-
     beforeEach(async(() => {
       TestBed.configureTestingModule({
             imports: [ProjectModule, RouterModule.forRoot(routes, { useHash: true }) //Set LocationStrategy for component. 
             ],
             providers: [
-                { provide: ActivatedRoute, useClass: MockActivatedRoute },
-                { provide: Router, useClass: MockRouter },
+                { provide: ActivatedRoute, useClass: ActivatedRouteStub },
                 { provide: ProjectService, useClass: MockProjectService },
                 { provide: Md2Toast, useClass: MockToast },
                 { provide: UserModel, useClass: UserModel },
                 { provide: ProjectModel, useClass: ProjectModel },
-                { provide: LoaderService, useClass: MockLoaderService },
-                { provide: Location, useClass: MockLocation }
+                { provide: LoaderService, useClass: LoaderService },
+                { provide: StringConstant, useClass: StringConstant }
             ]
         }).compileComponents();
     }));
 
     it("should get selected Project", () => {
-            let fixture = TestBed.createComponent(ProjectEditComponent); //Create instance of component            
-            let projectEditComponent = fixture.componentInstance;
-            projectEditComponent.ngOnInit();
-            expect(projectEditComponent.Userlist).not.toBeNull();
+        let fixture = TestBed.createComponent(ProjectEditComponent); //Create instance of component            
+        let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
+        activatedRoute.testParams = { id: stringConstant.id };
+        let projectEditComponent = fixture.componentInstance;
+        projectEditComponent.ngOnInit();
+        expect(projectEditComponent.Userlist).not.toBeNull();
     });
 
     it("should check Project name and Slack Channel Name before update", () => {
             let fixture = TestBed.createComponent(ProjectEditComponent); //Create instance of component            
             let projectEditComponent = fixture.componentInstance;
             let projectModels = new ProjectModel();
-            let expectedProjecteName = "Test Page2";
+            let expectedProjecteName = stringConstant.projectName;
             projectModels.name = expectedProjecteName;
-            let expectedSlackChannelName = "Test Slack Name";
+            let expectedSlackChannelName = stringConstant.slackChannelName;
             projectModels.slackChannelName = expectedSlackChannelName;
-            let mockUser = new UserModel();
-            mockUser.FirstName = "Ronak";
-            mockUser.LastName = "Shah";
-            mockUser.Email = "rshah@Promactinfo.com";
-            mockUser.IsActive = true;
-            mockUser.Id = "1";
-            let mockList = new Array<UserModel>();
-            mockList.push(mockUser);
             projectModels.applicationUsers = mockList;
-            projectModels.teamLeaderId = "2";
+            projectModels.teamLeaderId = stringConstant.teamLeaderId;
             projectEditComponent.editProject(projectModels);
             expect(projectModels.name).toBe(expectedProjecteName);
     });
@@ -81,18 +72,10 @@ describe('Project Edit Test', () => {
             let projectModels = new ProjectModel();
             let expectedProjecteName = null;
             projectModels.name = expectedProjecteName;
-            let expectedSlackChannelName = "Test Slack Name";
+            let expectedSlackChannelName = stringConstant.slackChannelName;
             projectModels.slackChannelName = expectedSlackChannelName;
-            let mockUser = new UserModel();
-            mockUser.FirstName = "Ronak";
-            mockUser.LastName = "Shah";
-            mockUser.Email = "rshah@Promactinfo.com";
-            mockUser.IsActive = true;
-            mockUser.Id = "1";
-            let mockList = new Array<UserModel>();
-            mockList.push(mockUser);
             projectModels.applicationUsers = mockList;
-            projectModels.teamLeaderId = "2";
+            projectModels.teamLeaderId = stringConstant.teamLeaderId;
             projectEditComponent.editProject(projectModels);
             expect(projectModels.name).toBe(null);
     });

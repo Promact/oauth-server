@@ -13,7 +13,8 @@
     "tsc": "tsc",
     "tsc:w": "tsc -w",
     "typings": "typings",
-    "tslint": "gulp tslint"
+    "tslint": "gulp tslint",
+    "ci": "codecov < coverage/cobertura/cobertura-coverage.xml"
   },
   "license": "ISC",
   "dependencies": {
@@ -75,6 +76,7 @@
     "typescript": "2.1.5",
     "typings": "2.1.0",
     "tslint": "3.15.1",
-    "codelyzer": "1.0.0-beta.3"
+    "codelyzer": "1.0.0-beta.3",
+    "codecov.io": "0.1.6"
   }
 }

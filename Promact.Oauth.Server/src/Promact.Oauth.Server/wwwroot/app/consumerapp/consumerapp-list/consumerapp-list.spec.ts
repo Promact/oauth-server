@@ -1,22 +1,19 @@
 ﻿declare var describe, it, beforeEach, expect;
-import { async, inject, TestBed, ComponentFixture } from '@angular/core/testing';
-import { Provider } from "@angular/core";
+import { async, TestBed } from '@angular/core/testing';
 import { ConsumerAppModel } from "../consumerapp-model";
 import { ConsumerappListComponent } from "../consumerapp-list/consumerapp-list.component";
 import { ConsumerAppService } from "../consumerapp.service";
-import { Router, ActivatedRoute, RouterModule, Routes } from '@angular/router';
+import { Router, RouterModule, Routes } from '@angular/router';
 import { MockToast } from "../../shared/mocks/mock.toast";
 import { MockConsumerappService } from "../../shared/mocks/consumerapp/mock.consumerapp.service";
-import { MockRouter } from '../../shared/mocks/mock.router';
-import { Observable } from 'rxjs/Observable';
 import { ConsumerAppModule } from '../consumerapp.module';
 import { LoaderService } from '../../shared/loader.service';
 import { Md2Toast } from 'md2';
+import { MockRouter } from '../../shared/mocks/mock.router';
+
 
 describe('Consumer List Test', () => {
-    class MockRouter { }
-    class MockLoaderService { }
-    const routes: Routes = [];
+   const routes: Routes = [];
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -27,7 +24,7 @@ describe('Consumer List Test', () => {
                 { provide: ConsumerAppService, useClass: MockConsumerappService },
                 { provide: Md2Toast, useClass: MockToast },
                 { provide: ConsumerAppModel, useClass: ConsumerAppModel },
-                { provide: LoaderService, useClass: MockLoaderService }
+                { provide: LoaderService, useClass: LoaderService }
             ]
         }).compileComponents();
     }));

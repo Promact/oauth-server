@@ -8,8 +8,14 @@
     "dotnet-test-xunit": "2.2.0-preview2-build1029",
     "AutoMapper": "5.2.0",
     "Microsoft.DotNet.InternalAbstractions": "1.0.500-preview2-1-003177",
-    "xunit": "2.2.0-beta5-build3474"
+    "xunit": "2.2.0-beta5-build3474",
+    "IdentityServer4.EntityFramework": "1.0.0",
+    "IdentityServer4": "1.0.2",
+    "IdentityServer4.AspNetIdentity": "1.0.0",
+    "IdentityServer4.AccessTokenValidation": "1.0.2",
+    "xunit.runner.console":"2.2.0-beta5-build3474"
   },
+
   "frameworks": {
     "netcoreapp1.1": {
       "imports": [

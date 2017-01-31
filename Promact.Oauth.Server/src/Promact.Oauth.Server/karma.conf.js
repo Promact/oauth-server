@@ -14,14 +14,14 @@ module.exports = function (config) {
 
         // list of files / patterns to load in the browser
         files: [// Polyfills.
-                 
+
                //'node_modules/traceur/bin/traceur-runtime.js',
                 'node_modules/es6-shim/es6-shim.js',
                 'node_modules/reflect-metadata/Reflect.js',
                 { pattern: 'node_modules/reflect-metadata/Reflect.js.map', included: false, watched: false },
 
                 'node_modules/systemjs/dist/system-polyfills.js',
-                 { pattern:  'node_modules/systemjs/dist/system-polyfills.js', included: false, watched: false },
+                 { pattern: 'node_modules/systemjs/dist/system-polyfills.js', included: false, watched: false },
                 'node_modules/systemjs/dist/system.src.js',
                 'node_modules/core-js/client/shim.js',
 
@@ -81,11 +81,13 @@ module.exports = function (config) {
         // test results reporter to use
         // possible values: 'dots', 'progress'
         // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-        reporters: ['progress', 'dots','coverage'],
+        reporters: ['progress', 'dots', 'coverage'],
 
         coverageReporter: {
-            reporters:[
-                { type: 'lcov', subdir: '.', file: 'lcov.info' }]
+            reporters: [
+                { type: 'html', subdir: 'html' },
+            { type: 'lcovonly', subdir: 'lcov' },
+            { type: 'cobertura', subdir: 'cobertura' }]
         },
 
         // web server port

@@ -3,7 +3,7 @@
 
   "dependencies": {
     "Microsoft.AspNetCore.Razor.Tools": {
-      "version": "1.0.0-preview2-final",
+      "version": "1.0.0-preview4-final",
       "type": "build"
     },
     "IdentityServer4.EntityFramework": "1.0.0",
@@ -11,15 +11,15 @@
     "IdentityServer4.AspNetIdentity": "1.0.0",
     "IdentityServer4.AccessTokenValidation": "1.0.2",
     "Microsoft.EntityFrameworkCore.Tools": {
-      "version": "1.0.0-preview2-final",
+      "version": "1.0.0-preview4-final",
       "type": "build"
     },
     "Microsoft.VisualStudio.Web.CodeGeneration.Tools": {
-      "version": "1.0.0-preview2-final",
+      "version": "1.0.0-preview4-final",
       "type": "build"
     },
     "Microsoft.VisualStudio.Web.CodeGenerators.Mvc": {
-      "version": "1.0.0-preview2-final",
+      "version": "1.0.0-preview4-final",
       "type": "build"
     },
     "System.Net.Mail": "1.0.0-rtm-00002",
@@ -51,22 +51,10 @@
     "Microsoft.Extensions.Options.ConfigurationExtensions": "1.1.0",
     "Exceptionless.AspNetCore": "4.0.1927",
     "Microsoft.IdentityModel.Protocols": "2.1.2",
-    "Microsoft.AspNetCore.Razor.Tools": {
-      "version": "1.1.0-preview4-final",
-      "type": "build"
-    },
-    "Microsoft.EntityFrameworkCore.Tools": {
-      "version": "1.1.0-preview4-final",
-      "type": "build"
-    },
-    "Microsoft.VisualStudio.Web.CodeGeneration.Tools": {
-      "version": "1.1.0-preview4-final",
-      "type": "build"
-    },
-    "Microsoft.VisualStudio.Web.CodeGenerators.Mvc": {
-      "version": "1.1.0-preview4-final",
-      "type": "build"
-    }
+    "coveralls.net": "0.7.0",
+    "OpenCover": "4.6.519",
+    "System.Linq": "4.3.0",
+    "System.Linq.Parallel": "4.3.0"
   },
 
   "tools": {

@@ -14,7 +14,6 @@ using Promact.Oauth.Server.Repository;
 using Promact.Oauth.Server.Data_Repository;
 using Promact.Oauth.Server.Repository.ProjectsRepository;
 using Promact.Oauth.Server.Repository.ConsumerAppRepository;
-using Promact.Oauth.Server.Repository.OAuthRepository;
 using System.Net.Http;
 using Promact.Oauth.Server.AutoMapper;
 using AutoMapper;
@@ -30,6 +29,7 @@ using System.Collections.Generic;
 using IdentityServer4;
 using Promact.Oauth.Server.Configuration.DefaultAPIResource;
 using Promact.Oauth.Server.Configuration.DefaultIdentityResource;
+using Promact.Oauth.Server.StringLiterals;
 
 namespace Promact.Oauth.Server
 {
@@ -44,6 +44,7 @@ namespace Promact.Oauth.Server
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile("StringLiterals/stringliterals.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 
             if (env.IsDevelopment())
@@ -91,8 +92,7 @@ namespace Promact.Oauth.Server
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<IConsumerAppRepository, ConsumerAppRepository>();
-            services.AddScoped(typeof(IDataRepository<>), typeof(DataRepository<>));
-            services.AddScoped<IOAuthRepository, OAuthRepository>();
+            services.AddScoped(typeof(IDataRepository<,>), typeof(DataRepository<,>));
             services.AddScoped<IStringConstant, StringConstant>();
             services.AddScoped<HttpClient>();
 
@@ -103,6 +103,7 @@ namespace Promact.Oauth.Server
             services.AddScoped<ICustomConsentService, CustomConsentService>();
             services.AddScoped<SecurityHeadersAttribute>();
 
+            services.Configure<StringLiteral>(Configuration.GetSection("StringLiterals"));
             services.AddMvc();
 
             // Add application services.
@@ -141,9 +142,9 @@ namespace Promact.Oauth.Server
 
             // Custom Policy Claim based
             services.AddAuthorization(option => option.AddPolicy("ReadUser",
-                policy => policy.RequireClaim("scope", "user.read")));
+                policy => policy.RequireClaim("scope", "user_read")));
             services.AddAuthorization(option =>option.AddPolicy("ReadProject",
-                policy => policy.RequireClaim("scope", "project.read")));
+                policy => policy.RequireClaim("scope", "project_read")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -153,10 +154,11 @@ namespace Promact.Oauth.Server
             var appSetting = serviceProvider.GetService<IOptions<AppSettingUtil>>().Value;
             var defaultApiResource = serviceProvider.GetService<IDefaultApiResources>();
             var defaultIdentityResource = serviceProvider.GetService<IDefaultIdentityResources>();
+            var stringConstant = serviceProvider.GetService<IStringConstant>();
 
             // Initializing default APIResource and IdentityResources
             IdentityServerInitialize databaseInitialize = new IdentityServerInitialize();
-            databaseInitialize.InitializeDatabase(app,defaultApiResource,defaultIdentityResource);
+            databaseInitialize.InitializeDatabaseForPreDefinedAPIResourceAndIdentityResources(app,defaultApiResource,defaultIdentityResource);
 
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -190,17 +192,17 @@ namespace Promact.Oauth.Server
             {
                 Authority = appSetting.PromactOAuthUrl ?? "https://oauth.promactinfo.com",
                 RequireHttpsMetadata = false,
-                ApiName = "read-only",
+                ApiName = stringConstant.APIResourceName,
                 AllowedScopes = new List<string>()
                         {
                             IdentityServerConstants.StandardScopes.Email,
                             IdentityServerConstants.StandardScopes.OpenId,
                             IdentityServerConstants.StandardScopes.Profile,
-                            "slack_user_id",
-                            "user.read",
-                            "project.read"
+                            stringConstant.APIResourceSlackUserIdScope,
+                            stringConstant.APIResourceUserReadScope,
+                            stringConstant.APIResourceProjectReadScope
                         },
-                ApiSecret = "promactUserInfo",
+                ApiSecret = appSetting.AuthenticationAPISecret,
             });
 
             //If staging or production then only use exceptionless
