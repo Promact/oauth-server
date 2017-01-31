@@ -62,14 +62,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                     userAc.FirstName = _stringConstant.TeamLeaderNotAssign;
                     userAc.LastName = _stringConstant.TeamLeaderNotAssign;
                     userAc.Email = _stringConstant.TeamLeaderNotAssign;
-                }
-                var CreatedBy = (await _userDataRepository.FirstOrDefaultAsync(x => x.Id == project.CreatedBy))?.FirstName;
-                var UpdatedBy = (await _userDataRepository.FirstOrDefaultAsync(x => x.Id == project.UpdatedBy))?.FirstName;
-                DateTime? UpdatedDate;
-                if (project.UpdatedDateTime == null)
-                { UpdatedDate = null; }
-                else
-                { UpdatedDate = Convert.ToDateTime(project.UpdatedDateTime); }
+                }                               
                 var projectAc = _mapperContext.Map<Project, ProjectAc>(project);
                 projectAc.TeamLeader = userAc;
                 projectAc.CreatedBy = (await _userDataRepository.FirstAsync(x => x.Id == project.CreatedBy)).FirstName;
@@ -207,14 +200,13 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             if (string.IsNullOrEmpty(projectName) && string.IsNullOrEmpty(slackChannelName))
             { return project; }
             //if project name already exists then return project name as null
-            else if (!string.IsNullOrEmpty(projectName) && string.IsNullOrEmpty(slackChannelName))
+            if (!string.IsNullOrEmpty(projectName) && string.IsNullOrEmpty(slackChannelName))
             { project.Name = null; return project; }
             //if slack channel name already exists then return slack channel name as null
-            else if (string.IsNullOrEmpty(projectName) && !string.IsNullOrEmpty(slackChannelName))
+            if (string.IsNullOrEmpty(projectName) && !string.IsNullOrEmpty(slackChannelName))
             { project.SlackChannelName = null; return project; }
             //if project name and slack channel name both are exists then return both as null.
-            else
-            { project.Name = null; project.SlackChannelName = null; return project; }
+            project.Name = null; project.SlackChannelName = null; return project;
         }
 
         /// <summary>
@@ -225,7 +217,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         public async Task<ProjectAc> GetProjectBySlackChannelNameAsync(string slackChannelName)
         {
             Project project = await _projectDataRepository.FirstOrDefaultAsync(x => x.SlackChannelName == slackChannelName);
-            if (project != null && !string.IsNullOrEmpty(project.TeamLeaderId))
+            if (!string.IsNullOrEmpty(project?.TeamLeaderId))
             {
                 var user = await _userDataRepository.FirstOrDefaultAsync(x => x.Id.Equals(project.TeamLeaderId));
                 if (user!= null && user.IsActive)
