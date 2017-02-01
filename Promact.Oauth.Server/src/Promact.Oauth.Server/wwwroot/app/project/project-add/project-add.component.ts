@@ -48,11 +48,11 @@ export class ProjectAddComponent implements OnInit {
         else {
             if (bool === 0) {
                 this.loader.loader = true;
-                this.proService.addProject(project).subscribe((project) => {
+                this.proService.addProject(project).then((project) => {
                     this.project = project;
                     if (project.name === null && project.slackChannelName === null) {
                         this.toast.show("Project and slackChannelName already exists");
-                        this.proService.getUsers().subscribe(listUsers => {
+                        this.proService.getUsers().then(listUsers => {
                             this.project.listUsers = listUsers;
                             this.project.applicationUsers = new Array<UserModel>();
 
@@ -60,7 +60,7 @@ export class ProjectAddComponent implements OnInit {
                     }
                     else if (project.name !== null && project.slackChannelName === null) {
                         this.toast.show("slackChannelName already exists");
-                        this.proService.getUsers().subscribe(listUsers => {
+                        this.proService.getUsers().then(listUsers => {
                             this.project.listUsers = listUsers;
                             this.project.applicationUsers = new Array<UserModel>();
 
@@ -69,7 +69,7 @@ export class ProjectAddComponent implements OnInit {
                     }
                     else if (project.name === null && project.slackChannelName !== null) {
                         this.toast.show("Project already exists");
-                        this.proService.getUsers().subscribe(listUsers => {
+                        this.proService.getUsers().then(listUsers => {
                             this.project.listUsers = listUsers;
                             this.project.applicationUsers = new Array<UserModel>();
 
@@ -93,7 +93,7 @@ export class ProjectAddComponent implements OnInit {
     ngOnInit() {
         this.project = new ProjectModel();
         this.route.params.subscribe(params => {
-            this.proService.getUsers().subscribe(listUsers => {
+            this.proService.getUsers().then(listUsers => {
                 this.project.listUsers = listUsers;
                 this.project.applicationUsers = new Array<UserModel>();
 

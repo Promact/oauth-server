@@ -34,7 +34,7 @@ export class UserDetailsComponent implements OnInit {
         this.route.params.subscribe(params => {
             let id = this.route.snapshot.params[this.stringConstant.paramsId];
             this.userService.getUserById(id)
-                .subscribe((user) => {
+                .then((user) => {
                     this.user = user,
                         this.loader.loader = false;
                 }, err => {

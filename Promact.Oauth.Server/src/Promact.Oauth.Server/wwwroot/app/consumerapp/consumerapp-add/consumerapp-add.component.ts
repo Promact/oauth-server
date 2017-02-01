@@ -31,9 +31,8 @@ export class ConsumerappAddComponent implements OnInit {
     }
 
     submitApps(consumerModel) {
-
         this.loader.loader = true;
-        this.consumerAppService.addConsumerApps(consumerModel).subscribe((result) => {
+        this.consumerAppService.addConsumerApps(consumerModel).then((result) => {
             this.toast.show('Consumer App is added successfully.');
             this.cancel();
         }, err => {
@@ -46,7 +45,7 @@ export class ConsumerappAddComponent implements OnInit {
         this.router.navigate(['/consumerapp']);
     };
     getRandomNumber(isAuthId: boolean) {
-        this.consumerAppService.getRandomNumber(isAuthId).subscribe((result) => {
+        this.consumerAppService.getRandomNumber(isAuthId).then((result) => {
             if (isAuthId === true) {
                 this.consumerModel.AuthId = result;
             }

@@ -34,7 +34,7 @@ export class UserAddComponent implements OnInit {
     }
 
     getRoles() {
-        this.userService.getRoles().subscribe((result) => {
+        this.userService.getRoles().then((result) => {
             if (result !== null) {
                 for (let i = 0; i < result.length; i++) {
                     this.listOfRoles.push(result[i]);
@@ -49,7 +49,7 @@ export class UserAddComponent implements OnInit {
         if (!this.isSlackUserNameExist) {
             if (!this.isEmailExist) {
                 userModel.FirstName = userModel.FirstName.trim();
-                this.userService.registerUser(userModel).subscribe((result) => {
+                this.userService.registerUser(userModel).then((result) => {
                     this.toast.show('User added successfully.');
                     this.redirectionRoute.navigate(['user/list']);
                     this.loader.loader = false;
@@ -73,7 +73,7 @@ export class UserAddComponent implements OnInit {
     checkEmail(email) {
         this.isEmailExist = false;
         if (email !== "" && email !== undefined) {
-            this.userService.checkEmailIsExists(email).subscribe((result) => {
+            this.userService.checkEmailIsExists(email).then((result) => {
                 this.isEmailExist = result;
             });
         }
@@ -82,7 +82,7 @@ export class UserAddComponent implements OnInit {
     checkSlackUserName(slackUserName) {
         this.isSlackUserNameExist = false;
         if (slackUserName !== "" && slackUserName !== undefined) {
-            this.userService.checkUserIsExistsBySlackUserName(slackUserName).subscribe((result) => {
+            this.userService.checkUserIsExistsBySlackUserName(slackUserName).then((result) => {
                 this.isSlackUserNameExist = true;
             }, err => {
                 console.log(err.statusText);

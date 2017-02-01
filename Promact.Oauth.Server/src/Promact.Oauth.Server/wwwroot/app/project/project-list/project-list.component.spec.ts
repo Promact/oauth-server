@@ -1,4 +1,4 @@
-﻿import { async, TestBed, ComponentFixture } from '@angular/core/testing';
+﻿import { async, TestBed, ComponentFixture ,fakeAsync , tick} from '@angular/core/testing';
 import { ProjectService } from '../project.service';
 import { ProjectModel } from '../project.model';
 import { RouterModule, Routes } from '@angular/router';
@@ -40,11 +40,12 @@ describe("Project List Test", () => {
         expect(projectListComponent).toBeDefined();
     });
 
-    it("should get Projects for company", () => {
+    it("should get Projects for company", fakeAsync(() => {
         let fixture = TestBed.createComponent(ProjectListComponent); //Create instance of component            
         let projectListComponent = fixture.componentInstance;
         projectListComponent.getProjects();
+        tick();
         expect(projectListComponent.projects.length).toBe(1);
-    });
+    }));
 });
 
