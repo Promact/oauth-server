@@ -11,6 +11,7 @@ import { ConsumerAppModule } from '../consumerapp.module';
 import { LoaderService } from '../../shared/loader.service';
 import { ActivatedRouteStub } from "../../shared/mocks/mock.activatedroute";
 import { StringConstant } from '../../shared/stringconstant';
+import { MockRouter } from '../../shared/mocks/mock.router';
 
 let stringConstant = new StringConstant();
 
@@ -21,6 +22,7 @@ describe('Consumer Edit Test', () => {
             imports: [ConsumerAppModule, RouterModule.forRoot(routes, { useHash: true }) //Set LocationStrategy for component. 
             ],
             providers: [
+                { provide: Router, useClass: MockRouter },
                 { provide: ActivatedRoute, useClass: ActivatedRouteStub },
                 { provide: ConsumerAppService, useClass: MockConsumerappService },
                 { provide: Md2Toast, useClass: MockToast },
@@ -44,7 +46,6 @@ describe('Consumer Edit Test', () => {
     it("Edit consumer app", fakeAsync(() => {
         let fixture = TestBed.createComponent(ConsumerappEditComponent); //Create instance of component            
         let consumerappEditComponent = fixture.componentInstance;
-        let toast = fixture.debugElement.injector.get(Md2Toast);
         let consumerAppModel = new ConsumerAppModel();
         let expectedconsumerappname = stringConstant.consumerappname;
         consumerAppModel.Name = expectedconsumerappname;

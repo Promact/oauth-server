@@ -49,7 +49,7 @@ export class UserService {
     * @param editedUser
     */
     editUser(editedUser: UserModel) {
-        return this.http.put(this.UserUrl + "/", JSON.stringify(editedUser), { headers: this.headers })
+        return this.http.put(this.UserUrl + "/" + editedUser.Id, JSON.stringify(editedUser), { headers: this.headers })
             .map(res => res.json())
             .toPromise();
     }
