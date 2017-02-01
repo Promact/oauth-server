@@ -58,8 +58,7 @@ export class ConsumerAppService {
     * @param isAuthId
     */
     getRandomNumber(isAuthId: boolean) {
-        return this.http.get(this.consumerAppUrl + "/" + isAuthId)
-            .map(res => res.json())
+        return this.http.get(this.consumerAppUrl + "/" + isAuthId).map(res => res.text())
             .toPromise();
     }
 }
