@@ -1,12 +1,12 @@
 ﻿declare var describe, it, beforeEach, expect;
-import {async,  TestBed, ComponentFixture} from '@angular/core/testing';
-import { UserService }   from '../user.service';
-import {UserModel} from '../user.model';
+import { async, TestBed, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
+import { UserService } from '../user.service';
+import { UserModel } from '../user.model';
 import { RouterModule, Routes } from '@angular/router';
 import { Md2Toast } from 'md2';
-import {UserListComponent} from '../user-list/user-list.component';
-import {MockToast} from "../../shared/mocks/mock.toast";
-import {MockUserService} from "../../shared/mocks/user/mock.user.service";
+import { UserListComponent } from '../user-list/user-list.component';
+import { MockToast } from "../../shared/mocks/mock.toast";
+import { MockUserService } from "../../shared/mocks/user/mock.user.service";
 import { UserModule } from '../user.module';
 import { LoaderService } from '../../shared/loader.service';
 
@@ -36,11 +36,12 @@ describe("User List Test", () => {
     });
 
 
-    it("should get default Users for company", () => {
-            let fixture = TestBed.createComponent(UserListComponent); //Create instance of component            
-            let userListComponent = fixture.componentInstance;
-            expect(userListComponent.getUsers());
-      });
+    it("should get default Users for company", fakeAsync(() => {
+        let fixture = TestBed.createComponent(UserListComponent); //Create instance of component            
+        let userListComponent = fixture.componentInstance;
+        tick();
+        expect(userListComponent.getUsers());
+    }));
 });
 
 

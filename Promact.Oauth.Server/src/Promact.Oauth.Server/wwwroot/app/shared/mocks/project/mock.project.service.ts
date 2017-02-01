@@ -1,6 +1,5 @@
 ﻿import { Injectable } from '@angular/core';
 import { ProjectModel } from "../../../project/project.model";
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { UserModel } from "../../../users/user.model";
 
 @Injectable()
@@ -13,15 +12,15 @@ export class MockProjectService {
         this.projects.push(mockProject);
     }
     getProjects() {
-        return new BehaviorSubject(this.projects).asObservable();
+        return Promise.resolve(this.projects);
     }
     addProject(projectModel: ProjectModel) {
         projectModel.slackChannelName = null;
-        return new BehaviorSubject(projectModel).asObservable();
+        return Promise.resolve(projectModel);
     }
     editProject(projectModel: ProjectModel) {
         projectModel.slackChannelName = null;
-        return new BehaviorSubject(projectModel).asObservable();
+        return Promise.resolve(projectModel);
     }
     getUsers() {
         let mockUser = new UserModel();
@@ -30,14 +29,14 @@ export class MockProjectService {
         mockUser.Email = "rshah@Promactinfo.com";
         mockUser.IsActive = true;
         let mockList = new Array<UserModel>();
-        return new BehaviorSubject(mockUser).asObservable();
+        return Promise.resolve(mockUser);
     }
 
-        getProject(Id: number) {
+    getProject(Id: number) {
         let mockProject = new MockProjects(Id);
         if (Id === 1) {
-           mockProject.name = "Project";
-           mockProject.slackChannelName = "Slack Channel";
+            mockProject.name = "Project";
+            mockProject.slackChannelName = "Slack Channel";
             let mockUser = new UserModel();
             mockUser.FirstName = "Ronakfdfas";
             mockUser.LastName = "Shahfdsaf";
@@ -49,28 +48,25 @@ export class MockProjectService {
             mockProject.applicationUsers = mockList;
             mockProject.teamLeaderId = "2";
             mockProject.teamLeader = mockUser;
-            return new BehaviorSubject(mockProject).asObservable();
+            return Promise.resolve(mockProject);
         }
-   }
+    }
 
 }
 
 
+class MockProjects extends ProjectModel {
 
-
-    class MockProjects extends ProjectModel {
-        
     constructor(id: number) {
         super();
         this.id = id;
-        }
-        
+    }
+
 }
 class MockProject extends ProjectModel {
 
     constructor() {
         super();
-        
+
     }
 }
-

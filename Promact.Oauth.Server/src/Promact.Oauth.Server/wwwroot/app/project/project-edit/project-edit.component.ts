@@ -34,9 +34,9 @@ export class ProjectEditComponent implements OnInit {
         this.project.applicationUsers = new Array<UserModel>();
         this.route.params.subscribe(params => {
             let id = +params[this.stringConstant.paramsId]; // (+) converts string 'id' to a number
-            this.service.getProject(id).subscribe(project => {
+            this.service.getProject(id).then(project => {
                 this.project = project;
-                this.service.getUsers().subscribe(listUsers => {
+                this.service.getUsers().then(listUsers => {
                     this.project.listUsers = listUsers;
                 });
             }, err => {
@@ -75,7 +75,7 @@ export class ProjectEditComponent implements OnInit {
         else {
             if (bool === 0) {
                 this.loader.loader = true;
-                this.service.editProject(project).subscribe((project) => {
+                this.service.editProject(project).then((project) => {
                     if (project.name === null && project.slackChannelName === null) {
                         this.toast.show("Project Name and slackChannelName already exists");
                     }

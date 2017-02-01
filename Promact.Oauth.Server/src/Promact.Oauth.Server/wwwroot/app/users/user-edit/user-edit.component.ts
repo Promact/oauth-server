@@ -35,14 +35,14 @@ export class UserEditComponent implements OnInit {
         this.route.params.subscribe(params => {
             let id = this.route.snapshot.params[this.stringConstant.paramsId];
             this.userService.getUserById(id)
-                .subscribe(
+                .then(
                 user => this.user = user,
                 error => { console.log(error.statusText); });
         });
     }
 
     getRoles() {
-        this.userService.getRoles().subscribe((result) => {
+        this.userService.getRoles().then((result) => {
             if (result !== null) {
                 for (let i = 0; i < result.length; i++) {
                     this.listOfRoles.push(result[i]);
@@ -54,7 +54,7 @@ export class UserEditComponent implements OnInit {
     editUser(user: UserModel) {
         this.loader.loader = true;
         user.FirstName = user.FirstName.trim();
-        this.userService.editUser(user).subscribe((result) => {
+        this.userService.editUser(user).then((result) => {
             this.toast.show('User updated successfully.');
             this.redirectionRoute.navigate(['']);
             this.loader.loader = false;

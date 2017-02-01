@@ -1,5 +1,5 @@
 ﻿declare var describe, it, beforeEach, expect;
-import { async, TestBed } from '@angular/core/testing';
+import { async, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ConsumerAppModel, consumerappallowedscopes } from "../consumerapp-model";
 import { ConsumerappAddComponent } from "../consumerapp-add/consumerapp-add.component";
 import { ConsumerAppService } from "../consumerapp.service";
@@ -32,7 +32,7 @@ describe('Consumer Add Test', () => {
         }).compileComponents();
     }));
 
-    it("Added consumer app", () => {
+    it("Added consumer app", fakeAsync(() => {
         let fixture = TestBed.createComponent(ConsumerappAddComponent); //Create instance of component            
         let consumerappAddComponent = fixture.componentInstance;
         let toast = fixture.debugElement.injector.get(Md2Toast);
@@ -44,36 +44,40 @@ describe('Consumer Add Test', () => {
         consumerAppModel.AuthId = stringConstant.authId;
         consumerAppModel.Scopes = [consumerappallowedscopes.email, consumerappallowedscopes.openid];
         consumerappAddComponent.submitApps(consumerAppModel);
+        tick();
         expect(consumerAppModel.Id).toBe(1);
-    });
+    }));
 
-    it("Random number consumer app AuthId", () => {
+    it("Random number consumer app AuthId", fakeAsync(() => {
         let fixture = TestBed.createComponent(ConsumerappAddComponent); //Create instance of component            
         let consumerappAddComponent = fixture.componentInstance;
         let toast = fixture.debugElement.injector.get(Md2Toast);
         let expectedValue = stringConstant.consumerAppExpectedValue;
         let consumerAppModel = new ConsumerAppModel();
         consumerappAddComponent.getRandomNumber(true);
+        tick();
         expect(consumerappAddComponent.consumerModel.AuthId).toBe(expectedValue);
-    });
+    }));
 
-    it("Random number consumer app AuthSecret", () => {
+    it("Random number consumer app AuthSecret", fakeAsync(() => {
         let fixture = TestBed.createComponent(ConsumerappAddComponent); //Create instance of component            
         let consumerappAddComponent = fixture.componentInstance;
         let toast = fixture.debugElement.injector.get(Md2Toast);
         let expectedValue = stringConstant.consumerAppExpectedValue;
         let consumerAppModel = new ConsumerAppModel();
         consumerappAddComponent.getRandomNumber(false);
+        tick();
         expect(consumerappAddComponent.consumerModel.AuthSecret).toBe(expectedValue);
-    });
+    }));
 
-    it("Consumer app OnInit", () => {
+    it("Consumer app OnInit", fakeAsync(() => {
         let fixture = TestBed.createComponent(ConsumerappAddComponent); //Create instance of component            
         let consumerappAddComponent = fixture.componentInstance;
         let toast = fixture.debugElement.injector.get(Md2Toast);
         let expectedValue = "SFDASFADSFSAD";
         let consumerAppModel = new ConsumerAppModel();
         consumerappAddComponent.ngOnInit();
+        tick();
         expect(consumerappAddComponent.consumerModel.AuthSecret).toBe(expectedValue);
-    });
+    }));
 });

@@ -1,5 +1,5 @@
 ﻿declare var describe, it, beforeEach, expect;
-import { async, TestBed } from '@angular/core/testing';
+import { async, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ConsumerAppModel } from "../consumerapp-model";
 import { ConsumerappListComponent } from "../consumerapp-list/consumerapp-list.component";
 import { ConsumerAppService } from "../consumerapp.service";
@@ -13,7 +13,7 @@ import { MockRouter } from '../../shared/mocks/mock.router';
 
 
 describe('Consumer List Test', () => {
-   const routes: Routes = [];
+    const routes: Routes = [];
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -33,12 +33,13 @@ describe('Consumer List Test', () => {
         expect(ConsumerappListComponent).toBeDefined();
     });
 
-    it("Get Consumer Apps", () => {
-            let fixture = TestBed.createComponent(ConsumerappListComponent); //Create instance of component            
-            let consumerappListComponent = fixture.componentInstance;
-            consumerappListComponent.getConsumerApps();
-            expect(consumerappListComponent.listOfConsumerApps.length).toEqual(1);
-    });
+    it("Get Consumer Apps", fakeAsync(() => {
+        let fixture = TestBed.createComponent(ConsumerappListComponent); //Create instance of component            
+        let consumerappListComponent = fixture.componentInstance;
+        consumerappListComponent.getConsumerApps();
+        tick();
+        expect(consumerappListComponent.listOfConsumerApps.length).toEqual(1);
+    }));
 });
 
 

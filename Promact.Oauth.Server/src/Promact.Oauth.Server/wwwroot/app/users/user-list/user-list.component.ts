@@ -21,7 +21,7 @@ export class UserListComponent implements OnInit {
 
     getUsers() {
         this.loader.loader = true;
-        this.userService.getUsers().subscribe((users) => {
+        this.userService.getUsers().then((users) => {
             this.users = users;
             this.loader.loader = false;
         });
@@ -41,7 +41,7 @@ export class UserListComponent implements OnInit {
 
     reSendMail(user) {
         this.loader.loader = true;
-        this.userService.reSendMail(user.Id).subscribe((response) => {
+        this.userService.reSendMail(user.Id).then((response) => {
             this.toast.show('Credentials re-send succesfully');
             this.loader.loader = false;
         }, err => {

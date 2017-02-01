@@ -1,5 +1,5 @@
 ﻿declare var describe, it, beforeEach, expect;
-import { async,  TestBed } from '@angular/core/testing';
+import { async,  TestBed , fakeAsync , tick} from '@angular/core/testing';
 import { UserModel } from '../../users/user.model';
 import { UserDetailsComponent } from "../user-details/user-details.component";
 import { UserService } from "../user.service";
@@ -46,13 +46,14 @@ describe("User Details Test", () => {
         expect(userDetailsComponent).toBeDefined();
     });
 
-    it("should get default Project for company", () => {
+    it("should get default Project for company", fakeAsync(() => {
         let fixture = TestBed.createComponent(UserDetailsComponent); //Create instance of component
         let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
         activatedRoute.testParams = { id: stringConstant.id  };
         let userDetailsComponent: UserDetailsComponent = fixture.componentInstance;
         let expectedFirstName = stringConstant.testfirstName;
         fixture.detectChanges();
+        tick();
         expect(userDetailsComponent.user.FirstName).toBe(expectedFirstName);
-    });
+    }));
 });

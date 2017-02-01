@@ -1,5 +1,5 @@
 ﻿declare let describe, it, beforeEach, expect;
-import { async, TestBed } from '@angular/core/testing';
+import { async, TestBed , fakeAsync , tick } from '@angular/core/testing';
 import { UserModel } from '../../users/user.model';
 import { UserEditComponent } from "../user-edit/user-edit.component";
 import { UserService } from "../user.service";
@@ -40,32 +40,35 @@ describe("User Edit Test", () => {
 
     
 
-    it("should get particular user details", () => {
+    it("should get particular user details", fakeAsync(() => {
         let fixture = TestBed.createComponent(UserEditComponent); //Create instance of component     
         let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
         activatedRoute.testParams = { id: stringConstant.id };
         let userEditComponent = fixture.componentInstance;
         let expectedFirstName = stringConstant.testfirstName;
         userEditComponent.ngOnInit();
+        tick();
         expect(userEditComponent.user.FirstName).toBe(expectedFirstName);
-    });
+    }));
 
 
-    it("should check User first name before update", () => {
+    it("should check User first name before update", fakeAsync(() => {
         let fixture = TestBed.createComponent(UserEditComponent); //Create instance of component            
         let userEditComponent = fixture.componentInstance;
         let expectedFirstName = stringConstant.testfirstName;
         let userModel = new UserModel();
         userModel.FirstName = expectedFirstName;
         userEditComponent.editUser(userModel);
+        tick();
         expect(userModel.FirstName).toBe(expectedFirstName);
-    });
+    }));
 
-    it("should check total role", () => {
+    it("should check total role", fakeAsync(() => {
         let fixture = TestBed.createComponent(UserEditComponent); //Create instance of component            
         let userEditComponent = fixture.componentInstance;
         userEditComponent.getRoles();
+        tick();
         expect(userEditComponent.listOfRoles.length).toBe(1);
-    });
+    }));
   
 });
