@@ -43,6 +43,13 @@ describe('Project Edit Test', () => {
         }).compileComponents();
     }));
 
+    it("should be defined ProjectEditComponent", () => {
+        let fixture = TestBed.createComponent(ProjectEditComponent);
+        let projectEditComponent = fixture.componentInstance;
+        expect(projectEditComponent).toBeDefined();
+    });
+
+    
     it("should get selected Project", fakeAsync(() => {
         let fixture = TestBed.createComponent(ProjectEditComponent); //Create instance of component            
         let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);

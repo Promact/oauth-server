@@ -43,6 +43,11 @@ describe('Project Add Test', () => {
 
     }));
 
+    it("should be defined ProjectAddComponent", () => {
+        let fixture = TestBed.createComponent(ProjectAddComponent);
+        let projectAddComponent = fixture.componentInstance;
+        expect(projectAddComponent).toBeDefined();
+    });
     it("should get user list for project", fakeAsync(() => {
         let fixture = TestBed.createComponent(ProjectAddComponent); //Create instance of component            
         let projectAddComponent = fixture.componentInstance;
