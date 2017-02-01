@@ -33,6 +33,12 @@ describe('Project View Test', () => {
 
     }));
 
+    it("should be defined ProjectViewComponent", () => {
+        let fixture = TestBed.createComponent(ProjectViewComponent);
+        let projectViewComponent = fixture.componentInstance;
+        expect(projectViewComponent).toBeDefined();
+    });
+
     it("should get default Project for company", () => {
         let fixture = TestBed.createComponent(ProjectViewComponent); //Create instance of component  
         let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
