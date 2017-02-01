@@ -58,14 +58,14 @@ describe('Project Add Test', () => {
         let toast = fixture.debugElement.injector.get(Md2Toast);
         let expectedProjectName = stringConstant.projectName;
         let projectModels = new ProjectModel();
-        projectModels.name = expectedProjectName;
+        projectModels.Name = expectedProjectName;
         let expectedSlackChannelName = stringConstant.slackChannelName;
-        projectModels.slackChannelName = expectedSlackChannelName;
-        projectModels.applicationUsers = mockList;
-        projectModels.teamLeaderId = stringConstant.teamLeaderId;
+        projectModels.SlackChannelName = expectedSlackChannelName;
+        projectModels.ApplicationUsers = mockList;
+        projectModels.TeamLeaderId = stringConstant.teamLeaderId;
         projectAddComponent.addProject(projectModels);
         tick();
-        expect(projectModels.name).toBe(expectedProjectName);
+        expect(projectModels.Name).toBe(expectedProjectName);
     }));
 
 
@@ -75,14 +75,14 @@ describe('Project Add Test', () => {
         let toast = fixture.debugElement.injector.get(Md2Toast);
         let expectedProjectName = null;
         let projectModels = new ProjectModel();
-        projectModels.name = expectedProjectName;
+        projectModels.Name = expectedProjectName;
         let expectedSlackChannelName = stringConstant.slackChannelName;
-        projectModels.slackChannelName = expectedSlackChannelName;
-        projectModels.applicationUsers = mockList;
-        projectModels.teamLeaderId = stringConstant.teamLeaderId;
+        projectModels.SlackChannelName = expectedSlackChannelName;
+        projectModels.ApplicationUsers = mockList;
+        projectModels.TeamLeaderId = stringConstant.teamLeaderId;
         projectAddComponent.addProject(projectModels);
         tick();
-        expect(projectModels.name).toBe(null);
+        expect(projectModels.Name).toBe(null);
     }));
 
     it("should be check Slack Channel Name before Added", fakeAsync(() => {
@@ -91,14 +91,14 @@ describe('Project Add Test', () => {
         let toast = fixture.debugElement.injector.get(Md2Toast);
         let expectedProjectName = stringConstant.projectName;
         let projectModels = new ProjectModel();
-        projectModels.name = expectedProjectName;
+        projectModels.Name = expectedProjectName;
         let expectedSlackChannelName = null;
-        projectModels.slackChannelName = expectedSlackChannelName;
-        projectModels.applicationUsers = mockList;
-        projectModels.teamLeaderId = stringConstant.teamLeaderId;
+        projectModels.SlackChannelName = expectedSlackChannelName;
+        projectModels.ApplicationUsers = mockList;
+        projectModels.TeamLeaderId = stringConstant.teamLeaderId;
         projectAddComponent.addProject(projectModels);
         tick();
-        expect(projectModels.slackChannelName).toBe(null);
+        expect(projectModels.SlackChannelName).toBe(null);
     }));
 });
 
