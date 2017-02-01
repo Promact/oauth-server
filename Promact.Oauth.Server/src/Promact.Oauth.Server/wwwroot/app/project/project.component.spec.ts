@@ -27,7 +27,7 @@ describe('Project Component Test', () => {
         let projectComponent = fixture.componentInstance;
         expect(projectComponent).toBeDefined();
     });
-
+     
     it("test ngOnInit method", () => {
         let fixture = TestBed.createComponent(ProjectComponent); //Create instance of component     
         let projectComponent = fixture.componentInstance;
