@@ -12,7 +12,7 @@ import { StringConstant } from '../shared/stringconstant';
 
 })
 export class ProjectComponent implements OnInit {
-    admin: boolean;
+    admin: boolean; 
     constructor(private router: Router, private userRole: UserRole, private stringconstant: StringConstant) { }
     ngOnInit() {
         if (this.userRole.Role === this.stringconstant.admin) {
