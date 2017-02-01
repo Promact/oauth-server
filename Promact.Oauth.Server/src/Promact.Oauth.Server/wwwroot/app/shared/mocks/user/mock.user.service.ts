@@ -2,10 +2,6 @@
 import { ResponseOptions, Response } from "@angular/http";
 import { UserModel } from "../../../users/user.model";
 import { PasswordModel } from "../../../users/user-password.model";
-import { Subject } from 'rxjs/Rx';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-
-
 
 @Injectable()
 export class MockUserService {

@@ -1,5 +1,4 @@
 ﻿import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ConsumerAppModel } from "../../../consumerapp/consumerapp-model";
 
 

@@ -1,6 +1,5 @@
 ﻿import { Injectable } from '@angular/core';
 import { ProjectModel } from "../../../project/project.model";
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { UserModel } from "../../../users/user.model";
 
 @Injectable()
