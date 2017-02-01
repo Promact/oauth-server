@@ -57,13 +57,13 @@ describe('Project Edit Test', () => {
             let projectEditComponent = fixture.componentInstance;
             let projectModels = new ProjectModel();
             let expectedProjecteName = stringConstant.projectName;
-            projectModels.name = expectedProjecteName;
+            projectModels.Name = expectedProjecteName;
             let expectedSlackChannelName = stringConstant.slackChannelName;
-            projectModels.slackChannelName = expectedSlackChannelName;
-            projectModels.applicationUsers = mockList;
-            projectModels.teamLeaderId = stringConstant.teamLeaderId;
+            projectModels.SlackChannelName = expectedSlackChannelName;
+            projectModels.ApplicationUsers = mockList;
+            projectModels.TeamLeaderId = stringConstant.teamLeaderId;
             projectEditComponent.editProject(projectModels);
-            expect(projectModels.name).toBe(expectedProjecteName);
+            expect(projectModels.Name).toBe(expectedProjecteName);
     });
     
     it("should check Project name before update", () => {
@@ -71,13 +71,13 @@ describe('Project Edit Test', () => {
             let projectEditComponent = fixture.componentInstance;
             let projectModels = new ProjectModel();
             let expectedProjecteName = null;
-            projectModels.name = expectedProjecteName;
+            projectModels.Name = expectedProjecteName;
             let expectedSlackChannelName = stringConstant.slackChannelName;
-            projectModels.slackChannelName = expectedSlackChannelName;
-            projectModels.applicationUsers = mockList;
-            projectModels.teamLeaderId = stringConstant.teamLeaderId;
+            projectModels.SlackChannelName = expectedSlackChannelName;
+            projectModels.ApplicationUsers = mockList;
+            projectModels.TeamLeaderId = stringConstant.teamLeaderId;
             projectEditComponent.editProject(projectModels);
-            expect(projectModels.name).toBe(null);
+            expect(projectModels.Name).toBe(null);
     });
     
 });    

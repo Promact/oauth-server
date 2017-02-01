@@ -30,13 +30,13 @@ namespace Promact.Oauth.Server.Models.ApplicationClasses
         public string CreatedBy { get; set;}
 
         [JsonProperty("CreatedDate")]
-        public string CreatedDate { get; set; }
+        public DateTime CreatedDate { get; set; }
 
         [JsonProperty("UpdatedBy")]
         public string UpdatedBy { get; set;}
 
         [JsonProperty("UpdatedDate")]
-        public string UpdatedDate { get; set; }
+        public DateTime? UpdatedDate { get; set; }
 
         [JsonProperty("TeamLeader")]
         public UserAc TeamLeader { get; set; }
