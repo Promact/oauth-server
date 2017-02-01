@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Promact.Oauth.Server.Models.ApplicationClasses
-{
+{ 
     public class ProjectAc
     {
         [JsonProperty("Id")]
