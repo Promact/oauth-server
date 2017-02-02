@@ -610,7 +610,7 @@ namespace Promact.Oauth.Server.Controllers
         */
         [Authorize(Policy = ReadUser)]
         [HttpGet]
-        [Route("{userid}/teammebers")]
+        [Route("{userid}/teammembers")]
         public async Task<IActionResult> GetTeamMembersAsync(string userid)
         {
             try
