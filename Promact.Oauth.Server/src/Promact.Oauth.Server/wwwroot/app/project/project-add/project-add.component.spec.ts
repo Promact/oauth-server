@@ -73,7 +73,6 @@ describe('Project Add Test', () => {
         expect(projectModels.Name).toBe(expectedProjectName);
     }));
 
-
     it("should be check project name before Added", fakeAsync(() => {
         let fixture = TestBed.createComponent(ProjectAddComponent); //Create instance of component            
         let projectAddComponent = fixture.componentInstance;
