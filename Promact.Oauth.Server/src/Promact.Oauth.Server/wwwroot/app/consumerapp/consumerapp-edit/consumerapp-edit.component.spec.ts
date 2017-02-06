@@ -1,6 +1,6 @@
 ﻿declare var describe, it, beforeEach, expect;
 import { async, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { ConsumerAppModel } from "../consumerapp-model";
+import { ConsumerAppModel, consumerappallowedscopes } from "../consumerapp-model";
 import { ConsumerappEditComponent } from "../consumerapp-edit/consumer-edit.component";
 import { ConsumerAppService } from "../consumerapp.service";
 import { Router, ActivatedRoute, RouterModule, Routes } from '@angular/router';
@@ -80,6 +80,31 @@ describe('Consumer Edit Test', () => {
         consumerappEditComponent.getRandomNumber(false);
         tick();
         expect(consumerappEditComponent.consumerModel.AuthSecret).toBe(expectedValue);
+    }));
+
+    it("Consumer app Edit ScopeRequiredValidator", fakeAsync(() => {
+        let fixture = TestBed.createComponent(ConsumerappEditComponent); //Create instance of component            
+        let consumerappAddComponent = fixture.componentInstance;
+        let toast = fixture.debugElement.injector.get(Md2Toast);
+        let expectedValue = "SFDASFADSFSAD";
+        let consumerAppModel = new ConsumerAppModel();
+        let scopes = new Array<consumerappallowedscopes>();
+        scopes.push(consumerappallowedscopes.email);
+        consumerappAddComponent.scopeOnChange(scopes);
+        tick();
+        expect(consumerappAddComponent.clientScopeIndicator).toBe(false);
+    }));
+
+    it("Consumer app Edit ScopeRequiredValidatorForEmptyScope", fakeAsync(() => {
+        let fixture = TestBed.createComponent(ConsumerappEditComponent); //Create instance of component            
+        let consumerappAddComponent = fixture.componentInstance;
+        let toast = fixture.debugElement.injector.get(Md2Toast);
+        let expectedValue = "SFDASFADSFSAD";
+        let consumerAppModel = new ConsumerAppModel();
+        let scopes = new Array<consumerappallowedscopes>();
+        consumerappAddComponent.scopeOnChange(scopes);
+        tick();
+        expect(consumerappAddComponent.clientScopeIndicator).toBe(true);
     }));
 });
 
