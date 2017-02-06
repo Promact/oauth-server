@@ -8,7 +8,8 @@ import { LoaderService } from '../../shared/loader.service';
 
 
 @Component({
-    templateUrl: "app/users/user-list/user-list.html"
+    moduleId: module.id,
+    templateUrl: "user-list.html"
 })
 
 export class UserListComponent implements OnInit {

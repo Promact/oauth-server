@@ -6,6 +6,7 @@ import { StringConstant } from '../shared/stringconstant';
 
 
 @Component({
+    moduleId: module.id,
     template: `
     <router-outlet></router-outlet>`,
     providers: [UserService]

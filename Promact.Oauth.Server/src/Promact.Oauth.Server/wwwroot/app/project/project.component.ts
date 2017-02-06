@@ -5,6 +5,7 @@ import { UserRole } from "../shared/userrole.model";
 import { StringConstant } from '../shared/stringconstant';
  
 @Component({
+    moduleId: module.id,
     template: `
     <router-outlet></router-outlet>
     `,

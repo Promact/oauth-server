@@ -8,7 +8,7 @@
         'app': 'app', // 'dist',
         '@angular': 'lib/@angular',
         'angular2-in-memory-web-api': 'lib/angular2-in-memory-web-api',
-        '@angular2-material': 'lib/@angular2-material',
+        '@angular/material': 'lib/@angular/material/material.umd.js',
         'rxjs': 'lib/rxjs',
         'md2': 'lib/md2'
     };

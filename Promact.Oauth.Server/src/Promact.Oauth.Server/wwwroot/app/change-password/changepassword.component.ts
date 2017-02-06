@@ -3,6 +3,7 @@ import { Router}from '@angular/router';
 import { UserService }   from '../users/user.service';
 
 @Component({
+    moduleId: module.id,
     template: `
     <router-outlet></router-outlet>
 `,

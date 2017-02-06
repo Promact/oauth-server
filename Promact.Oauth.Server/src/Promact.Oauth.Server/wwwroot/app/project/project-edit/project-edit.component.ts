@@ -9,7 +9,8 @@ import { LoaderService } from '../../shared/loader.service';
 import { StringConstant } from '../../shared/stringconstant';
 
 @Component({
-    templateUrl: "app/project/project-edit/project-edit.html",
+    moduleId: module.id,
+    templateUrl: "project-edit.html",
     
 })
 export class ProjectEditComponent implements OnInit {

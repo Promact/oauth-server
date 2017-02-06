@@ -8,7 +8,8 @@ import { Md2Toast } from 'md2';
 import { StringConstant } from '../../shared/stringconstant';
 
 @Component({
-    templateUrl: "app/project/project-view/project-view.html",
+    moduleId: module.id,
+    templateUrl: "project-view.html",
 })
 export class ProjectViewComponent implements OnInit {
     project: ProjectModel;

@@ -6,7 +6,8 @@ import { Md2Toast } from 'md2';
 import { ConsumerAppModel } from "../consumerapp-model";
 
 @Component({
-    templateUrl: "app/consumerapp/consumerapp-list/consumerapp-list.html"
+    moduleId: module.id,
+    templateUrl: "consumerapp-list.html"
 })
 export class ConsumerappListComponent implements OnInit {
     listOfConsumerApps: Array<ConsumerAppModel>;
