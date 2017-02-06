@@ -79,7 +79,7 @@ export class ConsumerappEditComponent implements OnInit {
     }
 
     scopeOnChange(scopes: Array<consumerappallowedscopes>) {
-        if (scopes.length == 0) {
+        if (scopes.length === 0) {
             this.clientScopeIndicator = true;
         }
         else {
