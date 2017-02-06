@@ -47,7 +47,7 @@ export class ConsumerAppService {
     * @param consumerAppsAc
     */
     updateConsumerApps(consumerAppsAc: ConsumerAppModel) {
-        return this.http.put(this.consumerAppUrl + "/" + consumerAppsAc.Id, JSON.stringify(consumerAppsAc), { headers: this.headers })
+        return this.http.put(this.consumerAppUrl, JSON.stringify(consumerAppsAc), { headers: this.headers })
             .map(res => res.json())
             .toPromise();
 

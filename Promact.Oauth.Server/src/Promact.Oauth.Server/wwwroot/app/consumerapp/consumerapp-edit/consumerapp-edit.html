@@ -1,5 +1,4 @@
 ﻿<div class="consumer-edit">
-
     <div class="card-title-block">
         <div class="title in_block items">
             <h3>Edit Consumer App</h3>
@@ -8,10 +7,8 @@
             <button md-raised-button type="submit" class="btn-back btn-green" (click)="cancel()"> <i class="material-icons">arrow_back</i>Back</button>
         </div>
     </div>
-
     <form #consumerappEditForm="ngForm">
         <md-input type="hidden" [(ngModel)]="consumerModel.Id" name="id"></md-input>
-        <!--<input type="hidden" [(ngModel)]="consumerModel.Id" />-->
         <div class="form-group d-flex">
             <div class="half-width mr-25">
                 <md-input class="full-width" placeholder="Auth Id" [(ngModel)]="consumerModel.AuthId" [disabled]="true" name="AuthId"></md-input>
@@ -22,40 +19,36 @@
                 <button md-raised-button type="submit" class="btn-back btn-green" (click)="getRandomNumber(false)">Re-Generate</button>
                 <div [hidden]="!clientSecretIndicator" class="error">Please copy the client secret. It will be encoded after saving.</div>
             </div>
-
         </div>
-
 
         <div class="form-group d-flex">
             <div class="half-width mr-25">
                 <md-input class="full-width" name="name" placeholder="Name" [(ngModel)]="consumerModel.Name" maxlength="255" required #name="ngModel"></md-input>
                 <div [hidden]="!(name.touched && !name.valid && name.errors.required)" class="error">Name is required</div>
-
             </div>
-                <div class="half-width mr-25">
-                    <md-input placeholder="Call Back Url" class="full-width" type="text" name="consumerCallBackUrl" [(ngModel)]="consumerModel.CallbackUrl" maxlength="255" required #consumerCallBackUrl="ngModel" validateUrl></md-input>
-                    <div [hidden]="!(consumerCallBackUrl.touched && consumerCallBackUrl.errors.url)" class="error">Call Back Url is not valid</div>
-                </div>
+            <div class="half-width mr-25">
+                <md-input placeholder="Call Back Url" class="full-width" type="text" name="consumerCallBackUrl" [(ngModel)]="consumerModel.CallbackUrl" maxlength="255" required #consumerCallBackUrl="ngModel" validateUrl></md-input>
+                <div [hidden]="!(consumerCallBackUrl.touched && !consumerCallBackUrl.valid && consumerCallBackUrl.errors.required)" class="error">Call Back Url is required</div>
+                <div [hidden]="!(consumerCallBackUrl.touched && !consumerCallBackUrl.valid && !consumerCallBackUrl.errors.required && consumerCallBackUrl.errors.url)" class="error">Call Back Url is not valid</div>
+            </div>
         </div>
-
         <div class="form-group">
             <div class="half-width" style="position:relative;">
                 <md2-multiselect name="select" [items]="scopes"
                                  item-text="name"
                                  item-value="value"
                                  [(ngModel)]="consumerModel.Scopes"
-                                 placeholder="Select Scopes">
+                                 placeholder="Select Scopes" required>
                 </md2-multiselect>
             </div>
         </div>
         <div class="form-group">
             <md-input class="full-width" placeholder="LogoutUrl" type="text" name="logoutUrl" [(ngModel)]="consumerModel.LogoutUrl" maxlength="255" required #logoutUrl="ngModel" validateUrl></md-input>
-            <div [hidden]="!(logoutUrl.touched && logoutUrl.errors.url)" class="error">Call Back Url is not valid</div>
+            <div [hidden]="!(logoutUrl.touched && !logoutUrl.valid && logoutUrl.errors.required)" class="error">Log-Out Url is required</div>
+            <div [hidden]="!(logoutUrl.touched && !logoutUrl.valid && !logoutUrl.errors.required && logoutUrl.errors.url)" class="error">Log-Out Url is not valid</div>
         </div>
-
         <div class="form-group" id="group-btn">
-            <button md-raised-button class="btn-green mr-15"  type="submit" (click)="updateApps(consumerModel)" [disabled]="!consumerappEditForm.form.valid">Update</button>
-            <!--<button  md-raised-button (click)="cancel()">Cancel</button>-->
+            <button md-raised-button class="btn-green mr-15" type="submit" (click)="updateApps(consumerModel)" [disabled]="!consumerappEditForm.form.valid">Update</button>
         </div>
     </form>
 </div>
