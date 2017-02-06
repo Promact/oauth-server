@@ -37,9 +37,10 @@
                                  item-text="name"
                                  item-value="value"
                                  [(ngModel)]="consumerModel.Scopes"
-                                 placeholder="Select Scopes" required>
+                                 placeholder="Select Scopes" required (change)="scopeOnChange(consumerModel.Scopes)">
                 </md2-multiselect>
             </div>
+            <div [hidden]="!clientScopeIndicator" class="error">Scope Required</div>
         </div>
         <div class="form-group">
             <md-input class="full-width" placeholder="LogoutUrl" type="text" name="logoutUrl" [(ngModel)]="consumerModel.LogoutUrl" maxlength="255" required #logoutUrl="ngModel" validateUrl></md-input>
@@ -48,7 +49,7 @@
         </div>
 
         <div class="form-group" id="group-btn">
-            <button md-raised-button class="btn-green" type="submit" (click)="submitApps(consumerModel)" [disabled]="!consumerAppForm.form.valid">Submit</button>
+            <button md-raised-button class="btn-green" type="submit" (click)="submitApps(consumerModel)" [disabled]="!(consumerAppForm.form.valid && !clientScopeIndicator)">Submit</button>
         </div>
     </form>
 </div>
