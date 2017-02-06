@@ -21,11 +21,6 @@
             </div>
         </div>
        
-        <div class="form-group">
-            <md-input placeholder="Slack User Name" type="text" name="SlackUserName" [(ngModel)]="user.SlackUserName" maxlength="255" required #SlackUserName="ngModel"></md-input>
-            <div [hidden]="!(SlackUserName.touched && !SlackUserName.valid && SlackUserName.errors.required)" class="error">Slack User Name is required</div>
-        </div>
-
         <div class="form-group" *ngIf="admin==true">
             <div class="half-width" style="position:relative">
                 <md2-select class="field" name="UserRole" [(ngModel)]="user.RoleName" placeholder="User Role" required #UserRole="ngModel">

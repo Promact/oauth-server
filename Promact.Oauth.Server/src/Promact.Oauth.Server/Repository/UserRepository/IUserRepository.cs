@@ -33,6 +33,12 @@ namespace Promact.Oauth.Server.Repository
         /// <returns>Updated user id.</returns>
         Task<string> UpdateUserDetailsAsync(UserAc editedUser, string updatedBy);
 
+        /// <summary>
+        /// This method is used to delete the user.
+        /// </summary>
+        /// <param name="id">passed userId</param>
+        /// <returns></returns>
+        Task<bool> DeleteUserAsync(string id);
 
         /// <summary>
         /// This method is used for fetching the list of all users
@@ -68,15 +74,6 @@ namespace Promact.Oauth.Server.Repository
         /// <param name="email">Passed user email address</param>
         /// <returns> boolean: true if the email exists, false if does not exist</returns>
         Task<bool> CheckEmailIsExistsAsync(string email);
-
-
-        /// <summary>
-        /// Fetch user with given slack user name
-        /// </summary>
-        /// <param name="slackUserName">Passed slack user name</param>
-        /// <returns>If user is exists return user otherwise throw SlackUserNotFound exception.</returns>
-        Task<ApplicationUser> FindUserBySlackUserNameAsync(string slackUserName);
-
 
         /// <summary>
         /// Method is used to Get User details by slack user id - SD

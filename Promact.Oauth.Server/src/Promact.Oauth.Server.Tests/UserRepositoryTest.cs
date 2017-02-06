@@ -107,7 +107,6 @@ namespace Promact.Oauth.Server.Tests
                 LastName = _stringConstant.RawLastNameForTest,
                 IsActive = true,
                 UserName = _stringConstant.RawEmailIdForTest,
-                SlackUserName = _stringConstant.RawFirstNameForTest,
                 JoiningDate = DateTime.UtcNow.AddYears(-1),
                 RoleName = _stringConstant.Employee
             };
@@ -129,7 +128,6 @@ namespace Promact.Oauth.Server.Tests
                 LastName = _stringConstant.RawLastNameForTest,
                 IsActive = true,
                 UserName = _stringConstant.RawEmailIdForTest,
-                SlackUserName = _stringConstant.RawFirstNameForTest,
                 JoiningDate = DateTime.UtcNow.AddYears(+1),
                 RoleName = _stringConstant.Employee
             };
@@ -149,7 +147,6 @@ namespace Promact.Oauth.Server.Tests
             var newUser = _mapper.Map<ApplicationUser, UserAc>(user);
             newUser.RoleName = _stringConstant.Employee;
             newUser.FirstName = _stringConstant.FirstName;
-            newUser.SlackUserName = _stringConstant.FirstName;
             string id = await _userRepository.UpdateUserDetailsAsync(newUser, _stringConstant.RawFirstNameForTest);
             var editedUser = _userManager.FindByIdAsync(id).Result;
             Assert.Equal(_stringConstant.FirstName, editedUser.FirstName);
@@ -192,7 +189,6 @@ namespace Promact.Oauth.Server.Tests
                 LastName = _stringConstant.RawLastNameForTest,
                 IsActive = true,
                 UserName = _stringConstant.Email,
-                SlackUserName = _stringConstant.RawFirstNameForTest,
                 JoiningDate = DateTime.UtcNow,
                 RoleName = _stringConstant.Admin
             };
@@ -209,29 +205,6 @@ namespace Promact.Oauth.Server.Tests
         {
             var roles = await _userRepository.GetRolesAsync();
             Assert.Equal(2, roles.Count);
-        }
-
-
-        /// <summary>
-        /// Test case used to find user by slack user name
-        /// </summary>
-        [Fact, Trait("Category", "Required")]
-        public async Task FindUserBySlackUserName()
-        {
-            await CreateMockAndUserAsync();
-            var result = _userRepository.FindUserBySlackUserNameAsync(_stringConstant.RawFirstNameForTest);
-            Assert.NotNull(result);
-        }
-
-        /// <summary>
-        /// This test case is used to check exception condition 
-        /// </summary>
-        /// <returns></returns>
-        [Fact, Trait("Category", "Required")]
-        public async Task FindUserBySlackUserNameException()
-        {
-            await CreateMockAndUserAsync();
-            Assert.Throws<AggregateException>(() => _userRepository.FindUserBySlackUserNameAsync(_stringConstant.SlackUserNameForTest).Result);
         }
 
         /// <summary>
@@ -292,7 +265,6 @@ namespace Promact.Oauth.Server.Tests
                 LastName = _stringConstant.RawLastNameForTest,
                 IsActive = true,
                 UserName = _stringConstant.RawEmailIdForTest,
-                SlackUserName = _stringConstant.RawFirstNameForTest,
                 JoiningDate = DateTime.UtcNow,
                 RoleName = _stringConstant.Admin
             };

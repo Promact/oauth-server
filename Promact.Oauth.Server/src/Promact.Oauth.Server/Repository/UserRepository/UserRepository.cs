@@ -131,31 +131,36 @@ namespace Promact.Oauth.Server.Repository
         /// <returns>Updated user id.</returns>
         public async Task<string> UpdateUserDetailsAsync(UserAc editedUser, string updatedBy)
         {
-            var user = _userManager.Users.FirstOrDefault(x => x.SlackUserName == editedUser.SlackUserName && x.Id != editedUser.Id);
-            if (user == null)
-            {
-                user = await _userManager.FindByIdAsync(editedUser.Id);
-                user.FirstName = editedUser.FirstName;
-                user.LastName = editedUser.LastName;
-                user.Email = editedUser.Email;
-                user.IsActive = editedUser.IsActive;
-                user.UpdatedBy = updatedBy;
-                user.UpdatedDateTime = DateTime.UtcNow;
-                user.NumberOfCasualLeave = editedUser.NumberOfCasualLeave;
-                user.NumberOfSickLeave = editedUser.NumberOfSickLeave;
-                user.SlackUserName = editedUser.SlackUserName;
-                await _userManager.UpdateAsync(user);
-                //get user roles
-                IList<string> listofUserRole = await _userManager.GetRolesAsync(user);
-                //remove user role 
-                await _userManager.RemoveFromRoleAsync(user, listofUserRole.First());
-                //add new role of user.
-                await _userManager.AddToRoleAsync(user, editedUser.RoleName);
-                return user.Id;
-            }
-            throw new SlackUserNotFound();
+            var user = await _userManager.FindByIdAsync(editedUser.Id);
+            user.FirstName = editedUser.FirstName;
+            user.LastName = editedUser.LastName;
+            user.Email = editedUser.Email;
+            user.IsActive = editedUser.IsActive;
+            user.UpdatedBy = updatedBy;
+            user.UpdatedDateTime = DateTime.UtcNow;
+            user.NumberOfCasualLeave = editedUser.NumberOfCasualLeave;
+            user.NumberOfSickLeave = editedUser.NumberOfSickLeave;
+            await _userManager.UpdateAsync(user);
+            //get user roles
+            IList<string> listofUserRole = await _userManager.GetRolesAsync(user);
+            //remove user role 
+            await _userManager.RemoveFromRoleAsync(user, listofUserRole.First());
+            //add new role of user.
+            await _userManager.AddToRoleAsync(user, editedUser.RoleName);
+            return user.Id;
         }
 
+        /// <summary>
+        /// This method is used to delete the user.
+        /// </summary>
+        /// <param name="id">passed userId</param>
+        /// <returns></returns>
+        public async Task<bool> DeleteUserAsync(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            await _userManager.DeleteAsync(user);
+            return true;
+        }
         /// <summary>
         ///  This method used for get user detail by user id 
         /// </summary>
@@ -205,21 +210,6 @@ namespace Promact.Oauth.Server.Repository
             var user = await _userManager.FindByEmailAsync(email);
             return user != null;
         }
-
-
-        /// <summary>
-        /// Fetch user with given slack user name
-        /// </summary>
-        /// <param name="slackUserName">Passed slack user name</param>
-        /// <returns>If user is exists return user otherwise throw SlackUserNotFound exception.</returns>
-        public async Task<ApplicationUser> FindUserBySlackUserNameAsync(string slackUserName)
-        {
-            var user = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.SlackUserName == slackUserName);
-            if (user == null)
-                throw new SlackUserNotFound();
-            return user;
-        }
-
 
         /// <summary>
         /// This method used for re-send mail for user credentials. -An

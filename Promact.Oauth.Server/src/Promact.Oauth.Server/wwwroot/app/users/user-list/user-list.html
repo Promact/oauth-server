@@ -14,7 +14,6 @@
                 <th md2-sort-field="lastname">Last Name</th>
                 <th md2-sort-field="email">Email</th>
                 <th md2-sort-field="status">Status</th>
-                <th md2-sort-field="slackusername">Slack User Name</th>
                 <th md2-sort-field="numberofcasualleave">Number Of Casual Leave</th>
                 <th md2-sort-field="numberofsickleave">Number Of Sick Leave</th>
                 <th md2-sort-field="joiningdate">Joining Date</th>
@@ -28,12 +27,12 @@
                 <td>{{user.Email}}</td>
                 <td *ngIf="user.IsActive">Active</td>
                 <td *ngIf="!user.IsActive">Inactive</td>
-                <td>{{user.SlackUserName}}</td>
                 <td>{{user.NumberOfCasualLeave}}</td>
                 <td>{{user.NumberOfSickLeave}}</td>
                 <td>{{user.JoiningDate |date:"dd/MM/yyyy"}}</td>
                 <td>
                     <button md-raised-button class="btn-green custom-btn mr-5" (click)="userDetails(user.Id)">Details</button>
+                    <button md-raised-button class="btn-green custom-btn mr-5" (click)="userDelete(user.Id)">Delete</button>
                     <button md-raised-button class="custom-btn" (click)="userEdit(user.Id)">Edit</button>
                     <button md-raised-button class="btn-green custom-btn mr-5" (click)="reSendMail(user)">ReSendMail</button>
                 </td>

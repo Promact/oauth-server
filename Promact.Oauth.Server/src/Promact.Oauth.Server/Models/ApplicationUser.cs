@@ -33,7 +33,6 @@ namespace Promact.Oauth.Server.Models
         public string SlackUserId { get; set; }
 
 
-        [Required]
         [StringLength(255)]
         public string SlackUserName { get; set; }
 
