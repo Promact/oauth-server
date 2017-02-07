@@ -43,6 +43,13 @@ describe('Project Edit Test', () => {
         }).compileComponents();
     }));
 
+    it("should be defined ProjectEditComponent", () => {
+        let fixture = TestBed.createComponent(ProjectEditComponent);
+        let projectEditComponent = fixture.componentInstance;
+        expect(projectEditComponent).toBeDefined();
+    });
+
+    
     it("should get selected Project", fakeAsync(() => {
         let fixture = TestBed.createComponent(ProjectEditComponent); //Create instance of component            
         let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
@@ -58,14 +65,14 @@ describe('Project Edit Test', () => {
         let projectEditComponent = fixture.componentInstance;
         let projectModels = new ProjectModel();
         let expectedProjecteName = stringConstant.projectName;
-        projectModels.name = expectedProjecteName;
+        projectModels.Name = expectedProjecteName;
         let expectedSlackChannelName = stringConstant.slackChannelName;
-        projectModels.slackChannelName = expectedSlackChannelName;
-        projectModels.applicationUsers = mockList;
-        projectModels.teamLeaderId = stringConstant.teamLeaderId;
+        projectModels.SlackChannelName = expectedSlackChannelName;
+        projectModels.ApplicationUsers = mockList;
+        projectModels.TeamLeaderId = stringConstant.teamLeaderId;
         projectEditComponent.editProject(projectModels);
         tick();
-        expect(projectModels.name).toBe(expectedProjecteName);
+        expect(projectModels.Name).toBe(expectedProjecteName);
     }));
 
     it("should check Project name before update", fakeAsync(() => {
@@ -73,14 +80,14 @@ describe('Project Edit Test', () => {
         let projectEditComponent = fixture.componentInstance;
         let projectModels = new ProjectModel();
         let expectedProjecteName = null;
-        projectModels.name = expectedProjecteName;
+        projectModels.Name = expectedProjecteName;
         let expectedSlackChannelName = stringConstant.slackChannelName;
-        projectModels.slackChannelName = expectedSlackChannelName;
-        projectModels.applicationUsers = mockList;
-        projectModels.teamLeaderId = stringConstant.teamLeaderId;
+        projectModels.SlackChannelName = expectedSlackChannelName;
+        projectModels.ApplicationUsers = mockList;
+        projectModels.TeamLeaderId = stringConstant.teamLeaderId;
         projectEditComponent.editProject(projectModels);
         tick();
-        expect(projectModels.name).toBe(null);
+        expect(projectModels.Name).toBe(null);
     }));
 
 });

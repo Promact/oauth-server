@@ -14,7 +14,7 @@
         <div class="form-group">
             <label>Name:</label>
 
-            {{project.name}}
+            {{project.Name}}
         </div>
 
 
@@ -23,7 +23,7 @@
                 Slack Channel Name:
             </label>
 
-            {{project.slackChannelName}}
+            {{project.SlackChannelName}}
         </div>
 
 
@@ -34,7 +34,7 @@
                 IsActive:
             </label>
 
-            <md-checkbox type="checkbox" id="chckbox" name="IsActive" [(ngModel)]="project.isActive" disabled="true"></md-checkbox>
+            <md-checkbox type="checkbox" id="chckbox" name="IsActive" [(ngModel)]="project.IsActive" disabled="true"></md-checkbox>
 
         </div>
 
@@ -69,7 +69,7 @@
         </div>
         <div class="half-width">
             <table>
-                <tr *ngFor="let teamMember of project.applicationUsers">
+                <tr *ngFor="let teamMember of project.ApplicationUsers">
                     <td>{{teamMember.UniqueName}}</td>
                 </tr>
             </table>

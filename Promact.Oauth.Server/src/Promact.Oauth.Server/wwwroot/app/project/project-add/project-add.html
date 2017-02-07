@@ -12,14 +12,14 @@
 
         <div class="form-group">
             <div class="half-width">
-                <md-input class="full-width" placeholder="Name" type="text" name="name" [(ngModel)]="project.name" maxlength="255" required #name="ngModel"></md-input>
+                <md-input class="full-width" placeholder="Name" type="text" name="name" [(ngModel)]="project.Name" maxlength="255" required #name="ngModel"></md-input>
                 <div [hidden]="!(name.touched && !name.valid && name.errors.required)" class="error">Name is required</div>
             </div>
         </div>
 
         <div class="form-group">
             <div class="half-width">
-                <md-input type="text" class="full-width" placeholder="Slack Channel Name" name="SlackChannelName" [(ngModel)]="project.slackChannelName" maxlength="255" required #SlackChannelName="ngModel"></md-input>
+                <md-input type="text" class="full-width" placeholder="Slack Channel Name" name="SlackChannelName" [(ngModel)]="project.SlackChannelName" maxlength="255" required #SlackChannelName="ngModel"></md-input>
                 <div class="errors"><div [hidden]="!(SlackChannelName.touched && !SlackChannelName.valid && SlackChannelName.errors.required)" class="error">Slack Channel Name is required</div></div>
 
             </div>
@@ -28,22 +28,22 @@
 
         <div class="form-group">
             <label class="lb-label">Status</label>
-            <md-checkbox type="checkbox" id="chckbox" name="IsActive" [(ngModel)]="project.isActive"></md-checkbox>
+            <md-checkbox type="checkbox" id="chckbox" name="IsActive" [(ngModel)]="project.IsActive"></md-checkbox>
         </div>
 
 
         <div class="form-group">
             <div class="half-width" style="position:relative">
-                <md2-select class="field" name="temleader" [(ngModel)]="project.teamLeaderId" placeholder="Teamleader">
-                    <md2-option [value]="i.Id" *ngFor="let i of project.listUsers">{{i.FirstName}}-{{i.Email}}</md2-option>
+                <md2-select class="field" name="temleader" [(ngModel)]="project.TeamLeaderId" placeholder="Teamleader">
+                    <md2-option [value]="i.Id" *ngFor="let i of project.ListUsers">{{i.FirstName}}-{{i.Email}}</md2-option>
                 </md2-select>
             </div>
         </div>
         <div class="form-group">
             <div class="half-width" style="position:relative;">
-                <md2-multiselect name="select" [items]="project.listUsers"
+                <md2-multiselect name="select" [items]="project.ListUsers"
                                  item-text="UniqueName"
-                                 [(ngModel)]="project.applicationUsers"
+                                 [(ngModel)]="project.ApplicationUsers"
                                  placeholder="Select Team Members">
                 </md2-multiselect>
             </div>
