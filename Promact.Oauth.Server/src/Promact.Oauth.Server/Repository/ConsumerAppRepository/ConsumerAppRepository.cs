@@ -12,6 +12,7 @@ using IdentityServer4.EntityFramework.Mappers;
 using IdentityServer4.EntityFramework.DbContexts;
 using Promact.Oauth.Server.StringLiterals;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Logging;
 
 namespace Promact.Oauth.Server.Repository.ConsumerAppRepository 
 {
@@ -24,12 +25,14 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         private readonly IDataRepository<ClientRedirectUri, ConfigurationDbContext> _redirectUri;
         private readonly IDataRepository<ClientPostLogoutRedirectUri, ConfigurationDbContext> _logoutRedirectUri;
         private readonly StringLiteral _stringLiterals;
+        private readonly ILogger _logger;
         #endregion
 
         #region "Constructor"
         public ConsumerAppRepository(IDataRepository<IdentityServer4.EntityFramework.Entities.Client, ConfigurationDbContext> clientDataRepository,
             IDataRepository<ClientScope, ConfigurationDbContext> scopes, IDataRepository<ClientSecret, ConfigurationDbContext> secret, IDataRepository<ClientRedirectUri, ConfigurationDbContext> redirectUri,
-            IDataRepository<ClientPostLogoutRedirectUri, ConfigurationDbContext> logoutRedirectUri, IOptionsMonitor<StringLiteral> stringLiterals)
+            IDataRepository<ClientPostLogoutRedirectUri, ConfigurationDbContext> logoutRedirectUri, 
+            IOptionsMonitor<StringLiteral> stringLiterals, ILoggerFactory loggerFactory)
         {
             _clientDataRepository = clientDataRepository;
             _scopes = scopes;
@@ -37,6 +40,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
             _redirectUri = redirectUri;
             _logoutRedirectUri = logoutRedirectUri;
             _stringLiterals = stringLiterals.CurrentValue;
+            _logger = loggerFactory.CreateLogger<ConsumerAppRepository>();
         }
 
         #endregion
@@ -121,11 +125,13 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
             var random = new Random();
             if (isAuthId)
             {
+                _logger.LogInformation("CapitalAlphaNumericString : " + _stringLiterals.ConsumerApp.CapitalAlphaNumericString);
                 return new string(Enumerable.Repeat(_stringLiterals.ConsumerApp.CapitalAlphaNumericString, 15)
                   .Select(s => s[random.Next(s.Length)]).ToArray());
             }
             else
             {
+                _logger.LogInformation("AlphaNumericString : " + _stringLiterals.ConsumerApp.AlphaNumericString);
                 return new string(Enumerable.Repeat(_stringLiterals.ConsumerApp.AlphaNumericString, 30)
                   .Select(s => s[random.Next(s.Length)]).ToArray());
             }
