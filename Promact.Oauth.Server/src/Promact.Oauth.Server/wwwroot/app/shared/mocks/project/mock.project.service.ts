@@ -7,19 +7,19 @@ export class MockProjectService {
     projects: Array<ProjectModel> = new Array<ProjectModel>();
     constructor() {
         let mockProject = new ProjectModel();
-        mockProject.name = "slack1";
-        mockProject.slackChannelName = "slack.test";
+        mockProject.Name = "slack1";
+        mockProject.SlackChannelName = "slack.test";
         this.projects.push(mockProject);
     }
     getProjects() {
         return Promise.resolve(this.projects);
     }
     addProject(projectModel: ProjectModel) {
-        projectModel.slackChannelName = null;
+        projectModel.SlackChannelName = null;
         return Promise.resolve(projectModel);
     }
     editProject(projectModel: ProjectModel) {
-        projectModel.slackChannelName = null;
+        projectModel.SlackChannelName = null;
         return Promise.resolve(projectModel);
     }
     getUsers() {
@@ -35,8 +35,8 @@ export class MockProjectService {
     getProject(Id: number) {
         let mockProject = new MockProjects(Id);
         if (Id === 1) {
-            mockProject.name = "Project";
-            mockProject.slackChannelName = "Slack Channel";
+            mockProject.Name = "Project";
+            mockProject.SlackChannelName = "Slack Channel";
             let mockUser = new UserModel();
             mockUser.FirstName = "Ronakfdfas";
             mockUser.LastName = "Shahfdsaf";
@@ -45,9 +45,9 @@ export class MockProjectService {
             mockUser.Id = "3";
             let mockList = new Array<UserModel>();
             mockList.push(mockUser);
-            mockProject.applicationUsers = mockList;
-            mockProject.teamLeaderId = "2";
-            mockProject.teamLeader = mockUser;
+            mockProject.ApplicationUsers = mockList;
+            mockProject.TeamLeaderId = "2";
+            mockProject.TeamLeader = mockUser;
             return Promise.resolve(mockProject);
         }
     }
@@ -59,7 +59,7 @@ class MockProjects extends ProjectModel {
 
     constructor(id: number) {
         super();
-        this.id = id;
+        this.Id = id;
     }
 
 }

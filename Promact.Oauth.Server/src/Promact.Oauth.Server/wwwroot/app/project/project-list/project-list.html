@@ -24,18 +24,18 @@
             </thead>
             <tbody>
                 <tr *ngFor="let project of projects">
-                    <td>{{project.name}}</td>
-                    <td>{{project.slackChannelName}}</td>
-                    <td *ngIf="project.isActive">Active</td>
-                    <td *ngIf="!project.isActive">Inactive</td>
-                    <td>{{project.teamLeader.FirstName}}</td>
-                    <td *ngIf="admin==true">{{project.createdBy}}</td>
-                    <td *ngIf="admin==true">{{project.createdOns}}</td>
-                    <td *ngIf="admin==true">{{project.updatedBy}}</td>
-                    <td *ngIf="admin==true">{{project.updatedOns}}</td>
+                    <td>{{project.Name}}</td>
+                    <td>{{project.SlackChannelName}}</td>
+                    <td *ngIf="project.IsActive">Active</td>
+                    <td *ngIf="!project.IsActive">Inactive</td>
+                    <td>{{project.TeamLeader.FirstName}}</td>
+                    <td *ngIf="admin==true">{{project.CreatedBy}}</td>
+                    <td *ngIf="admin==true">{{project.CreatedOns}}</td>
+                    <td *ngIf="admin==true">{{project.UpdatedBy}}</td>
+                    <td *ngIf="admin==true">{{project.UpdatedOns}}</td>
                     <td *ngIf="admin==true">
-                        <button md-raised-button class="btn-green custom-btn mr-5" (click)="editProject(project.id)">Edit</button>
-                        <button md-raised-button class="custom-btn" (click)="viewProject(project.id)">View</button>
+                        <button md-raised-button class="btn-green custom-btn mr-5" (click)="editProject(project.Id)">Edit</button>
+                        <button md-raised-button class="custom-btn" (click)="viewProject(project.Id)">View</button>
                     </td>
 
                 </tr>

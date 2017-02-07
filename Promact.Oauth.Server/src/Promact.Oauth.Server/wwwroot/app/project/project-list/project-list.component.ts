@@ -28,8 +28,8 @@ export class ProjectListComponent implements OnInit {
             this.projects = projects;
             let datePipe = new DatePipe(this.stringConstant.medium);
             this.projects.forEach(project => {
-                project.createdOns = datePipe.transform(project.createdDate, this.stringConstant.dateFormat);
-                project.updatedOns = datePipe.transform(project.updatedDate, this.stringConstant.dateFormat);
+                project.CreatedOns = datePipe.transform(project.CreatedDate, this.stringConstant.dateFormat);
+                project.UpdatedOns = datePipe.transform(project.UpdatedDate, this.stringConstant.dateFormat);
             });
             this.loader.loader = false;
         }, err => {
