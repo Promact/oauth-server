@@ -8,7 +8,7 @@ import { ProjectModel } from './project.model';
 export class ProjectService {
     private headers = new Headers({ 'Content-Type': 'application/json' });
     private ProjectUrl = 'api/project';  // URL to web api
-    private UserUrl = 'api/user';
+    private UserUrl = 'api/users';
     constructor(private http: Http) { }
 
     /*This service used for get users*

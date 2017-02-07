@@ -280,7 +280,7 @@ namespace Promact.Oauth.Server.Controllers
        * @apiSuccessExample {json} Success-Response:
        * HTTP/1.1 200 OK 
        * {
-       *     true
+       *     ''
        * }
        */
         [HttpDelete]
@@ -288,8 +288,7 @@ namespace Promact.Oauth.Server.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteUserAsync(string id)
         {
-            await _userRepository.DeleteUserAsync(id);
-            return Ok(true);
+            return Ok(await _userRepository.DeleteUserAsync(id));
         }
 
         /**

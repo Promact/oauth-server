@@ -38,7 +38,7 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="id">passed userId</param>
         /// <returns></returns>
-        Task<bool> DeleteUserAsync(string id);
+        Task<string> DeleteUserAsync(string id);
 
         /// <summary>
         /// This method is used for fetching the list of all users

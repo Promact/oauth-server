@@ -57,9 +57,9 @@ export class UserService {
      * 
      * @param userId
      */
-    userDelete(userId: string) {
-        return this.http.delete(this.UserUrl +"/"+ userId)
-            .map(res => res.json())
+   userDelete(userId: string) {
+       return this.http.delete(this.UserUrl + "/" + userId)
+           .map(res => res.text())
             .toPromise();
     }
 

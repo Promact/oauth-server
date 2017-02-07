@@ -155,11 +155,19 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="id">passed userId</param>
         /// <returns></returns>
-        public async Task<bool> DeleteUserAsync(string id)
+        public async Task<string> DeleteUserAsync(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
-            await _userManager.DeleteAsync(user);
-            return true;
+            var projects = await _projectDataRepository.Fetch(x => x.TeamLeaderId == id).ToListAsync();
+            var projectUsers = await _projectUserDataRepository.Fetch(x => x.UserId == id).ToListAsync();
+            var projectList=await _projectDataRepository.Fetch(x => projectUsers.Select(y => y.ProjectId).Contains(x.Id)).ToListAsync();
+            projects=projects.Union(projectList).ToList();
+            if (!projects.Any())
+            {
+                await _userManager.DeleteAsync(user);
+                return String.Empty;
+            }
+            return String.Join(",", projects.Select(x=>x.Name));
         }
         /// <summary>
         ///  This method used for get user detail by user id 
