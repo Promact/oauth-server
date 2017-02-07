@@ -13,6 +13,7 @@ export class ConsumerappEditComponent implements OnInit {
     consumerModel: ConsumerAppModel;
     scopes: any;
     clientSecretIndicator: boolean;
+    clientScopeIndicator: boolean = false;
     constructor(private router: Router, private consumerAppService: ConsumerAppService, private route: ActivatedRoute,
         private toast: Md2Toast,private loader: LoaderService, private stringConstant: StringConstant) {
         this.consumerModel = new ConsumerAppModel();
@@ -75,5 +76,14 @@ export class ConsumerappEditComponent implements OnInit {
         }), err => {
             this.toast.show('Error generating random number');
         };
+    }
+
+    scopeOnChange(scopes: Array<consumerappallowedscopes>) {
+        if (scopes.length === 0) {
+            this.clientScopeIndicator = true;
+        }
+        else {
+            this.clientScopeIndicator = false;
+        }
     }
 }

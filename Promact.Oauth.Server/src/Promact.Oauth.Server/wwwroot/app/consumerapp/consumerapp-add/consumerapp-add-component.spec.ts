@@ -80,4 +80,29 @@ describe('Consumer Add Test', () => {
         tick();
         expect(consumerappAddComponent.consumerModel.AuthSecret).toBe(expectedValue);
     }));
+
+    it("Consumer app ScopeRequiredValidator", fakeAsync(() => {
+        let fixture = TestBed.createComponent(ConsumerappAddComponent); //Create instance of component            
+        let consumerappAddComponent = fixture.componentInstance;
+        let toast = fixture.debugElement.injector.get(Md2Toast);
+        let expectedValue = "SFDASFADSFSAD";
+        let consumerAppModel = new ConsumerAppModel();
+        let scopes = new Array<consumerappallowedscopes>();
+        scopes.push(consumerappallowedscopes.email);
+        consumerappAddComponent.scopeOnChange(scopes);
+        tick();
+        expect(consumerappAddComponent.clientScopeIndicator).toBe(false);
+    }));
+
+    it("Consumer app ScopeRequiredValidatorForEmptyScope", fakeAsync(() => {
+        let fixture = TestBed.createComponent(ConsumerappAddComponent); //Create instance of component            
+        let consumerappAddComponent = fixture.componentInstance;
+        let toast = fixture.debugElement.injector.get(Md2Toast);
+        let expectedValue = "SFDASFADSFSAD";
+        let consumerAppModel = new ConsumerAppModel();
+        let scopes = new Array<consumerappallowedscopes>();
+        consumerappAddComponent.scopeOnChange(scopes);
+        tick();
+        expect(consumerappAddComponent.clientScopeIndicator).toBe(true);
+    }));
 });
