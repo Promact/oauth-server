@@ -1,6 +1,6 @@
 declare var describe, it, beforeEach, expect;
-import { async, TestBed} from '@angular/core/testing';
-import {  RouterModule, Routes } from '@angular/router';
+import { async, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { RouterModule, Routes } from '@angular/router';
 import { PasswordModel } from "../users/user-password.model";
 import { ChangePasswordModule } from "../change-password/change-password.module";
 import { ChangePasswordComponent } from "../change-password/change-password.component";
@@ -35,45 +35,47 @@ describe('Change Password', () => {
         let comp = fixture.componentInstance;
     });
 
-    it("Change Password", () => {
-            let fixture = TestBed.createComponent(ChangePasswordComponent); //Create instance of component            
-            let changePasswordComponent = fixture.componentInstance;
-            let passwordModel = new PasswordModel();
-            let expectedNewPassword = stringConstant.newPassword;
-            passwordModel.NewPassword = expectedNewPassword;
-            passwordModel.OldPassword = stringConstant.oldPassword;
-            passwordModel.ConfirmPassword = stringConstant.newPassword;
-            passwordModel.Email = stringConstant.email;
-            let result = changePasswordComponent.changePassword(passwordModel);
-            expect(expectedNewPassword).toBe(passwordModel.NewPassword);
-    });
+    it("Change Password", fakeAsync(() => {
+        let fixture = TestBed.createComponent(ChangePasswordComponent); //Create instance of component            
+        let changePasswordComponent = fixture.componentInstance;
+        let passwordModel = new PasswordModel();
+        let expectedNewPassword = stringConstant.newPassword;
+        passwordModel.NewPassword = expectedNewPassword;
+        passwordModel.OldPassword = stringConstant.oldPassword;
+        passwordModel.ConfirmPassword = stringConstant.newPassword;
+        passwordModel.Email = stringConstant.email;
+        let result = changePasswordComponent.changePassword(passwordModel);
+        tick();
+        expect(expectedNewPassword).toBe(passwordModel.NewPassword);
+    }));
 
-    it("Check Old Password", () => {
-            let fixture = TestBed.createComponent(ChangePasswordComponent); //Create instance of component            
-            let changePasswordComponent = fixture.componentInstance;
-            let passwordModel = new PasswordModel();
-            let result = changePasswordComponent.checkOldPasswordIsValid();
-            expect(changePasswordComponent.isInCorrect).toBe(true);
-    });
+    it("Check Old Password", fakeAsync(() => {
+        let fixture = TestBed.createComponent(ChangePasswordComponent); //Create instance of component            
+        let changePasswordComponent = fixture.componentInstance;
+        let passwordModel = new PasswordModel();
+        let result = changePasswordComponent.checkOldPasswordIsValid();
+        tick();
+        expect(changePasswordComponent.isInCorrect).toBe(true);
+    }));
 
     it("Match Password", () => {
-            let fixture = TestBed.createComponent(ChangePasswordComponent); //Create instance of component            
-            let changePasswordComponent = fixture.componentInstance;
-            let passwordModel = new PasswordModel();
-            passwordModel.NewPassword = stringConstant.newPassword;
-            passwordModel.ConfirmPassword = stringConstant.newPassword;
-            let result = changePasswordComponent.matchPassword(passwordModel.ConfirmPassword, passwordModel.NewPassword);
-            expect(changePasswordComponent.isNotMatch).toBe(false);
+        let fixture = TestBed.createComponent(ChangePasswordComponent); //Create instance of component            
+        let changePasswordComponent = fixture.componentInstance;
+        let passwordModel = new PasswordModel();
+        passwordModel.NewPassword = stringConstant.newPassword;
+        passwordModel.ConfirmPassword = stringConstant.newPassword;
+        let result = changePasswordComponent.matchPassword(passwordModel.ConfirmPassword, passwordModel.NewPassword);
+        expect(changePasswordComponent.isNotMatch).toBe(false);
     });
 
     it("Password Does Not Match", () => {
-            let fixture = TestBed.createComponent(ChangePasswordComponent); //Create instance of component            
-            let changePasswordComponent = fixture.componentInstance;
-            let passwordModel = new PasswordModel();
-            passwordModel.NewPassword = stringConstant.newPassword;
-            passwordModel.ConfirmPassword = stringConstant.confirmPassword;
-            let result = changePasswordComponent.matchPassword(passwordModel.ConfirmPassword, passwordModel.NewPassword);
-            expect(changePasswordComponent.isNotMatch).toBe(true);
+        let fixture = TestBed.createComponent(ChangePasswordComponent); //Create instance of component            
+        let changePasswordComponent = fixture.componentInstance;
+        let passwordModel = new PasswordModel();
+        passwordModel.NewPassword = stringConstant.newPassword;
+        passwordModel.ConfirmPassword = stringConstant.confirmPassword;
+        let result = changePasswordComponent.matchPassword(passwordModel.ConfirmPassword, passwordModel.NewPassword);
+        expect(changePasswordComponent.isNotMatch).toBe(true);
     });
 });
 

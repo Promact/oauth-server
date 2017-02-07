@@ -1,5 +1,5 @@
 ﻿declare var describe, it, beforeEach, expect;
-import { async, TestBed} from '@angular/core/testing';
+import { async, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ProjectModel } from "../project.model";
 import { ProjectViewComponent } from "../project-view/project-view.component";
 import { ProjectService } from "../project.service";
@@ -33,43 +33,53 @@ describe('Project View Test', () => {
 
     }));
 
-    it("should get default Project for company", () => {
-        let fixture = TestBed.createComponent(ProjectViewComponent); //Create instance of component  
-        let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
-        activatedRoute.testParams = { id: stringConstant.id  };
+    it("should be defined ProjectViewComponent", () => {
+        let fixture = TestBed.createComponent(ProjectViewComponent);
         let projectViewComponent = fixture.componentInstance;
-        projectViewComponent.ngOnInit();
-        expect(projectViewComponent.Userlist).not.toBeNull();
+        expect(projectViewComponent).toBeDefined();
     });
 
-    it("should get default Project for company", () => {
-
-        let fixture = TestBed.createComponent(ProjectViewComponent); //Create instance of component  
-        let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
-        activatedRoute.testParams = { id: stringConstant.id  };
-        let projectViewComponent = fixture.componentInstance;
-        projectViewComponent.ngOnInit();
-        expect(projectViewComponent.project).not.toBeNull();
-    });
-
-    it("should check Team Leader Name", () => {
+  
+    it("should get default Project for company", fakeAsync(() => {
         let fixture = TestBed.createComponent(ProjectViewComponent); //Create instance of component  
         let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
         activatedRoute.testParams = { id: stringConstant.id };
         let projectViewComponent = fixture.componentInstance;
         projectViewComponent.ngOnInit();
-        expect(projectViewComponent.teamLeaderFirstName).not.toBeNull();
-    });
+        tick();
+        expect(projectViewComponent.Userlist).not.toBeNull();
+    }));
 
-    it("should check Team Leader Email", () => {
+    it("should get default Project for company", fakeAsync(() => {
 
         let fixture = TestBed.createComponent(ProjectViewComponent); //Create instance of component  
         let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
-        activatedRoute.testParams = { id: stringConstant.id  };
+        activatedRoute.testParams = { id: stringConstant.id };
         let projectViewComponent = fixture.componentInstance;
         projectViewComponent.ngOnInit();
-        expect(projectViewComponent.teamLeaderEmail).not.toBeNull();
+        tick();
+        expect(projectViewComponent.project).not.toBeNull();
+    }));
 
-    });
+    it("should check Team Leader Name", fakeAsync(() => {
+        let fixture = TestBed.createComponent(ProjectViewComponent); //Create instance of component  
+        let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
+        activatedRoute.testParams = { id: stringConstant.id };
+        let projectViewComponent = fixture.componentInstance;
+        projectViewComponent.ngOnInit();
+        tick();
+        expect(projectViewComponent.teamLeaderFirstName).not.toBeNull();
+    }));
+
+    it("should check Team Leader Email", fakeAsync(() => {
+
+        let fixture = TestBed.createComponent(ProjectViewComponent); //Create instance of component  
+        let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
+        activatedRoute.testParams = { id: stringConstant.id };
+        let projectViewComponent = fixture.componentInstance;
+        projectViewComponent.ngOnInit();
+        tick();
+        expect(projectViewComponent.teamLeaderEmail).not.toBeNull();
+    }));
 
 });

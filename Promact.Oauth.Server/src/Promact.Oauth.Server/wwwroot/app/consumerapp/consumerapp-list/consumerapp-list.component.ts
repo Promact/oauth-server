@@ -20,7 +20,7 @@ export class ConsumerappListComponent implements OnInit {
 
     getConsumerApps() {
         this.loader.loader = true;
-        this.consumerAppService.getConsumerApps().subscribe((result) => {
+        this.consumerAppService.getConsumerApps().then((result) => {
             this.listOfConsumerApps = result;
             this.loader.loader = false;
         }, err => {

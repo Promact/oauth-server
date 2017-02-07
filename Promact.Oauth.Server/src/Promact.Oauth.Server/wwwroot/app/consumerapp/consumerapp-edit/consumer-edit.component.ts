@@ -3,7 +3,6 @@ import { ConsumerAppModel, consumerappallowedscopes } from '../consumerapp-model
 import { Router, ActivatedRoute } from '@angular/router';
 import { ConsumerAppService } from '../consumerapp.service';
 import { Md2Toast } from 'md2';
-import { Location } from "@angular/common";
 import { LoaderService } from '../../shared/loader.service';
 import { StringConstant } from '../../shared/stringconstant';
 
@@ -14,8 +13,9 @@ export class ConsumerappEditComponent implements OnInit {
     consumerModel: ConsumerAppModel;
     scopes: any;
     clientSecretIndicator: boolean;
+    clientScopeIndicator: boolean = false;
     constructor(private router: Router, private consumerAppService: ConsumerAppService, private route: ActivatedRoute,
-        private toast: Md2Toast, private location: Location, private loader: LoaderService, private stringConstant: StringConstant) {
+        private toast: Md2Toast,private loader: LoaderService, private stringConstant: StringConstant) {
         this.consumerModel = new ConsumerAppModel();
         this.scopes = [];
         this.clientSecretIndicator = false;
@@ -31,7 +31,7 @@ export class ConsumerappEditComponent implements OnInit {
         this.loader.loader = true;
         this.route.params.subscribe(params => {
             let id = params[this.stringConstant.paramsId];
-            this.consumerAppService.getConsumerAppById(id).subscribe((result) => {
+            this.consumerAppService.getConsumerAppById(id).then((result) => {
                 this.consumerModel.Name = result.name;
                 this.consumerModel.CallbackUrl = result.callbackUrl;
                 this.consumerModel.Scopes = result.scopes;
@@ -50,7 +50,7 @@ export class ConsumerappEditComponent implements OnInit {
 
     updateApps(consumerModel) {
         this.loader.loader = true;
-        this.consumerAppService.updateConsumerApps(consumerModel).subscribe((result) => {
+        this.consumerAppService.updateConsumerApps(consumerModel).then((result) => {
             this.toast.show('Consumer App is updated successfully.');
             this.cancel();
             this.loader.loader = false;
@@ -61,11 +61,11 @@ export class ConsumerappEditComponent implements OnInit {
     }
 
     cancel() {
-        this.location.back();
+        this.router.navigate(['/consumerapp']);
     }
 
     getRandomNumber(isAuthId: boolean) {
-        this.consumerAppService.getRandomNumber(isAuthId).subscribe((result) => {
+        this.consumerAppService.getRandomNumber(isAuthId).then((result) => {
             if (isAuthId === true) {
                 this.consumerModel.AuthId = result;
             }
@@ -76,5 +76,14 @@ export class ConsumerappEditComponent implements OnInit {
         }), err => {
             this.toast.show('Error generating random number');
         };
+    }
+
+    scopeOnChange(scopes: Array<consumerappallowedscopes>) {
+        if (scopes.length === 0) {
+            this.clientScopeIndicator = true;
+        }
+        else {
+            this.clientScopeIndicator = false;
+        }
     }
 }

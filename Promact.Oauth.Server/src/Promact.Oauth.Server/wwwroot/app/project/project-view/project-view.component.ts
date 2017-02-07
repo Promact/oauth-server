@@ -28,24 +28,24 @@ export class ProjectViewComponent implements OnInit {
     ngOnInit() {
         this.route.params.subscribe(params => {
             let id = +params[this.stringConstant.paramsId]; // (+) converts string 'id' to a number
-            this.service.getProject(id).subscribe(project => {
+            this.service.getProject(id).then(project => {
                 this.project = project;
 
-                if (this.project.teamLeaderId === null) {
+                if (this.project.TeamLeaderId === null) {
                     this.teamLeaderFirstName = "";
                     this.teamLeaderEmail = "";
                 }
                 else {
-                    this.teamLeaderFirstName = this.project.teamLeader.FirstName;
-                    this.teamLeaderEmail = this.project.teamLeader.Email;
+                    this.teamLeaderFirstName = this.project.TeamLeader.FirstName;
+                    this.teamLeaderEmail = this.project.TeamLeader.Email;
 
                 }
-                this.service.getUsers().subscribe(ListUsers => {
-                    this.project.listUsers = ListUsers;
-                    if (this.project.applicationUsers.length === 0) {
+                this.service.getUsers().then(ListUsers => {
+                    this.project.ListUsers = ListUsers;
+                    if (this.project.ApplicationUsers.length === 0) {
                         let user = new UserModel();
                         user.UniqueName = "-";
-                        this.project.applicationUsers.push(user);
+                        this.project.ApplicationUsers.push(user);
                     }
                 });
             }, err => {

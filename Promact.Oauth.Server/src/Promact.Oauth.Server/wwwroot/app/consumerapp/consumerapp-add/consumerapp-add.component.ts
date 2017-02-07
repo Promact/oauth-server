@@ -1,17 +1,18 @@
-﻿import { Component } from "@angular/core";
+﻿import { Component, OnInit } from "@angular/core";
 import { ConsumerAppModel, consumerappallowedscopes } from "../consumerapp-model";
 import { Router } from "@angular/router";
 import { ConsumerAppService } from "../consumerapp.service";
 import { Md2Toast } from 'md2';
 import { LoaderService } from '../../shared/loader.service';
 
-@Component({ 
+@Component({
     templateUrl: "app/consumerapp/consumerapp-add/consumerapp-add.html",
 })
-export class ConsumerappAddComponent {
+export class ConsumerappAddComponent implements OnInit {
     scopes: any;
     consumerModel: ConsumerAppModel;
     clientSecretIndicator: boolean = false;
+    clientScopeIndicator: boolean = false;
     constructor(private consumerAppService: ConsumerAppService, private router: Router, private toast: Md2Toast, private loader: LoaderService) {
         this.consumerModel = new ConsumerAppModel();
         this.scopes = [];
@@ -23,9 +24,16 @@ export class ConsumerappAddComponent {
         }
     };
 
-    submitApps(consumerModel) {
+    ngOnInit() {
         this.loader.loader = true;
-        this.consumerAppService.addConsumerApps(consumerModel).subscribe((result) => {
+        this.getRandomNumber(true);
+        this.getRandomNumber(false);
+        this.loader.loader = false;
+    }
+
+    submitApps(consumerModel: ConsumerAppModel) {
+        this.loader.loader = true;
+        this.consumerAppService.addConsumerApps(consumerModel).then((result) => {
             this.toast.show('Consumer App is added successfully.');
             this.cancel();
         }, err => {
@@ -38,7 +46,7 @@ export class ConsumerappAddComponent {
         this.router.navigate(['/consumerapp']);
     };
     getRandomNumber(isAuthId: boolean) {
-        this.consumerAppService.getRandomNumber(isAuthId).subscribe((result) => {
+        this.consumerAppService.getRandomNumber(isAuthId).then((result) => {
             if (isAuthId === true) {
                 this.consumerModel.AuthId = result;
             }
@@ -49,7 +57,14 @@ export class ConsumerappAddComponent {
         }), err => {
             this.toast.show('Error generating random number');
         };
-        
-
     };
+
+    scopeOnChange(scopes: Array<consumerappallowedscopes>) {
+        if (scopes.length === 0) {
+            this.clientScopeIndicator = true;
+        }
+        else {
+            this.clientScopeIndicator = false;
+        }
+    }
 }

@@ -7,7 +7,7 @@ import { ProjectAddComponent } from "./project-add/project-add.component";
 import { ProjectEditComponent } from "./project-edit/project-edit.component";
 import { ProjectViewComponent } from "./project-view/project-view.component";
 import { ProjectService } from "./project.service";
-import { LoginService } from '../login.service';
+
 import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
@@ -23,8 +23,7 @@ import { SharedModule } from '../shared/shared.module';
         ProjectViewComponent
     ],
     providers: [
-        ProjectService,
-        LoginService
+        ProjectService
     ]
 })
 export class ProjectModule { }

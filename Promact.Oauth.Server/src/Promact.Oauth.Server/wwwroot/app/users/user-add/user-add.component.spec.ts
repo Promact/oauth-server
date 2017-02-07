@@ -1,5 +1,5 @@
 ﻿declare var describe, it, beforeEach, expect;
-import { async, TestBed } from '@angular/core/testing';
+import { async, TestBed ,fakeAsync, tick} from '@angular/core/testing';
 import { UserAddComponent } from "../user-add/user-add.component";
 import { UserService } from "../user.service";
 import { UserModel } from '../../users/user.model';
@@ -32,17 +32,18 @@ describe('User Add Test', () => {
 
     }));
 
-    it("should check user added successfully", () => {
+    it("should check user added successfully", fakeAsync(() => {
         let fixture = TestBed.createComponent(UserAddComponent); //Create instance of component            
         let userAddComponent = fixture.componentInstance;
         let userModel = new UserModel();
         let expected = stringConstant.firstName;
         userModel.FirstName = expected;
         userAddComponent.addUser(userModel);
+        tick();
         expect(userModel.FirstName).toBe(expected);
-    });
+    }));
 
-    it("should check user not added successfully", () => {
+    it("should check user not added successfully", fakeAsync(() => {
         let fixture = TestBed.createComponent(UserAddComponent); //Create instance of component            
         let userAddComponent = fixture.componentInstance;
         let userModel = new UserModel();
@@ -50,27 +51,30 @@ describe('User Add Test', () => {
         userModel.FirstName = stringConstant.firstName;
         userModel.Email = expected;
         userAddComponent.addUser(userModel);
+        tick();
         expect(userModel.Email).toBe(expected);
-    });
+    }));
 
-    it("should check user email", () => {
+    it("should check user email", fakeAsync(() => {
         let fixture = TestBed.createComponent(UserAddComponent); //Create instance of component            
         let userAddComponent = fixture.componentInstance;
         let email = "";
         let expected = "";
         userAddComponent.checkEmail(expected);
+        tick();
         expect(email).toBe(expected);
-    });
+    }));
 
 
-    it("should check user Slack User Name", () => {
+    it("should check user Slack User Name", fakeAsync(() => {
         let fixture = TestBed.createComponent(UserAddComponent); //Create instance of component            
         let userAddComponent = fixture.componentInstance;
         let SlackUserName = "";
         let expected = "";
         userAddComponent.checkSlackUserName(expected);
+        tick();
         expect(SlackUserName).toBe(expected);
-    });
+    }));
 
 });
 
