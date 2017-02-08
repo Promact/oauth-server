@@ -36,6 +36,10 @@ export class MockUserService {
         return Promise.resolve(mockUser);
     }
 
+    userDelete(userId: string) {
+        return Promise.resolve("");
+    }
+
     editUser(editedUser: UserModel) {
         return Promise.resolve(editedUser);
     }
@@ -59,6 +63,7 @@ export class MockUserService {
         return Promise.resolve(true);
     }
 
+    
 }
 
 

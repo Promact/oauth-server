@@ -39,8 +39,19 @@ describe("User List Test", () => {
     it("should get default Users for company", fakeAsync(() => {
         let fixture = TestBed.createComponent(UserListComponent); //Create instance of component            
         let userListComponent = fixture.componentInstance;
+        userListComponent.getUsers()
         tick();
-        expect(userListComponent.getUsers());
+        expect(userListComponent.users.length).not.toBeNull();
+    }));
+
+    it("should delete user", fakeAsync(() => {
+        let fixture = TestBed.createComponent(UserListComponent); //Create instance of component            
+        let userListComponent = fixture.componentInstance;
+        let userModel = new UserModel();
+        userModel.Id = "1";
+        userListComponent.userDelete(userModel.Id);
+        tick();
+        expect(userListComponent.users.length).not.toBeNull();
     }));
 });
 
