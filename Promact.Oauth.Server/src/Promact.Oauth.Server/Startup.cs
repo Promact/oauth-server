@@ -32,7 +32,7 @@ using Promact.Oauth.Server.Configuration.DefaultIdentityResource;
 using Promact.Oauth.Server.StringLiterals;
 
 namespace Promact.Oauth.Server
-{
+{ 
     public class Startup
     {
         private readonly ILoggerFactory _loggerFactory;
