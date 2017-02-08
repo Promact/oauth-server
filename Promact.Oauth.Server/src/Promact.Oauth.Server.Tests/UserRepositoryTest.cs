@@ -97,6 +97,8 @@ namespace Promact.Oauth.Server.Tests
             Assert.NotNull(user);
         }
 
+
+
         /// <summary>
         /// This test case is used to calculate allowed leaves for past years
         /// </summary>
@@ -155,6 +157,40 @@ namespace Promact.Oauth.Server.Tests
             Assert.Equal(_stringConstant.FirstName, editedUser.FirstName);
         }
 
+        /// <summary>
+        /// This test case is used for deleteing user details
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task DeleteUser()
+        {
+            string userId = await CreateMockAndUserAsync();
+            await _userRepository.DeleteUserAsync(userId);
+            var user = await _userManager.FindByIdAsync(userId);
+            Assert.Null(user);
+        }
+
+        /// <summary>
+        /// This test case is used for deleteing user details
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task DeleteUserNegative()
+        {
+            string userId = await CreateMockAndUserAsync();
+            ProjectAc projectac = new ProjectAc()
+            {
+                Name = _stringConstant.Name,
+                SlackChannelName = _stringConstant.SlackChannelName,
+                IsActive = _stringConstant.IsActive,
+                TeamLeader = new UserAc { FirstName = _stringConstant.FirstName },
+                TeamLeaderId = userId,
+                CreatedBy = _stringConstant.CreatedBy
+
+            };
+            await _projectRepository.AddProjectAsync(projectac, _stringConstant.CreatedBy);
+            await _userRepository.DeleteUserAsync(userId);
+            var user = await _userManager.FindByIdAsync(userId);
+            Assert.NotNull(user);
+        }
 
         /// <summary>
         /// Test case is used to get user details by id
