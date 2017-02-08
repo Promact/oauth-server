@@ -45,7 +45,7 @@ namespace Promact.Oauth.Server
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile("Seed/seeddata.json", optional: true, reloadOnChange: true)
+                .AddJsonFile("Seed/seeddata.json", optional: false, reloadOnChange: true)
                 .AddJsonFile("StringLiterals/stringliterals.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 
