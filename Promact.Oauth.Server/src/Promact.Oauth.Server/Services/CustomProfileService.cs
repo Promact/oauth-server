@@ -41,7 +41,6 @@ namespace Promact.Oauth.Server.Services
             var claim = principal.Claims.ToList();
             claim = claim.Where(x => context.RequestedClaimTypes.Contains(x.Type)).ToList();
             claim.Add(new System.Security.Claims.Claim(IdentityServerConstants.StandardScopes.Email, user.Email));
-            claim.Add(new System.Security.Claims.Claim(_stringConstant.APIResourceSlackUserIdScope, user.SlackUserId));
             context.IssuedClaims = claim;
         }
 

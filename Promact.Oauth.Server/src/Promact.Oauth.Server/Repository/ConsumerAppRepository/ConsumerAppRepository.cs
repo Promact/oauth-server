@@ -13,10 +13,10 @@ using IdentityServer4.EntityFramework.DbContexts;
 using Promact.Oauth.Server.StringLiterals;
 using Microsoft.Extensions.Options;
 
-namespace Promact.Oauth.Server.Repository.ConsumerAppRepository 
+namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
 {
     public class ConsumerAppRepository : IConsumerAppRepository
-    { 
+    {
         #region "Private Variable(s)"
         private readonly IDataRepository<IdentityServer4.EntityFramework.Entities.Client, ConfigurationDbContext> _clientDataRepository;
         private readonly IDataRepository<ClientScope, ConfigurationDbContext> _scopes;
@@ -146,10 +146,12 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
             {
                 var scopesAllowed = await _scopes.FetchAsync(x => x.Client.ClientId == clientId);
                 app.Scopes = new List<AllowedScope>();
+                AllowedScope scope;
                 foreach (var scopes in scopesAllowed)
                 {
-                    var value = (AllowedScope)Enum.Parse(typeof(AllowedScope), scopes.Scope);
-                    app.Scopes.Add(value);
+                    var result = Enum.TryParse<AllowedScope>(scopes.Scope, out scope);
+                    if (result)
+                        app.Scopes.Add(scope);
                 }
                 app.Id = client.Id;
                 app.AuthId = client.ClientId;

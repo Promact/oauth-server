@@ -44,7 +44,6 @@ namespace Promact.Oauth.Server.Configuration.DefaultAPIResource
                         new Scope(IdentityServerConstants.StandardScopes.Email),
                         new Scope(IdentityServerConstants.StandardScopes.OpenId),
                         new Scope(IdentityServerConstants.StandardScopes.Profile),
-                        new Scope(_stringConstant.APIResourceSlackUserIdScope),
                         new Scope(_stringConstant.APIResourceUserReadScope),
                         new Scope(_stringConstant.APIResourceProjectReadScope)
                     }

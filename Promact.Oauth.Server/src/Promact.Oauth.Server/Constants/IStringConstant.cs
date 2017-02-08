@@ -102,7 +102,6 @@
         string APIResourceName { get; }
         string APIResourceDisplayName { get; }
         string APIResourceApiSecrets { get; }
-        string APIResourceSlackUserIdScope { get; }
         string APIResourceUserReadScope { get; }
         string APIResourceProjectReadScope { get; }
         string XContentTypeOptions { get; }
