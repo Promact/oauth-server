@@ -184,14 +184,6 @@
             }
         }
 
-        public string APIResourceSlackUserIdScope
-        {
-            get
-            {
-                return "slack_user_id";
-            }
-        }
-
         public string APIResourceUserReadScope
         {
             get

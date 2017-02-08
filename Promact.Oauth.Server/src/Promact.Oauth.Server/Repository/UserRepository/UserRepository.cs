@@ -239,20 +239,13 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="slackUserId">User's slack userId</param>
         /// <returns>user details</returns>
-        public async Task<ApplicationUser> UserDetialByUserSlackIdAsync(string slackUserId)
+        public async Task<UserAc> UserBasicDetialByUserIdAsync(string userId)
         {
-            var user = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.SlackUserId == slackUserId);
+            var user = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.Id == userId);
             if (user != null)
             {
-                var newUser = new ApplicationUser
-                {
-                    Id = user.Id,
-                    Email = user.Email,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    SlackUserId = user.SlackUserId
-                };
-                return newUser;
+                var userAc = _mapperContext.Map<ApplicationUser, UserAc>(user);
+                return userAc;
             }
             else
                 throw new SlackUserNotFound();
@@ -263,25 +256,20 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="userSlackId">User's slack userId</param>
         /// <returns>list of team leader</returns>
-        public async Task<List<ApplicationUser>> ListOfTeamLeaderByUsersSlackIdAsync(string userSlackId)
+        public async Task<List<UserAc>> ListOfTeamLeaderByUserIdAsync(string userId)
         {
-            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.SlackUserId == userSlackId);
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == userId);
             if (user != null)
             {
                 var projects = _projectUserRepository.Fetch(x => x.UserId == user.Id);
-                List<ApplicationUser> teamLeaders = new List<ApplicationUser>();
+                List<UserAc> teamLeaders = new List<UserAc>();
                 foreach (var project in projects)
                 {
                     var teamLeaderId = await _projectRepository.GetProjectByIdAsync(project.ProjectId);
                     var teamLeader = teamLeaderId.TeamLeaderId;
                     user = await _userManager.FindByIdAsync(teamLeader);
-                    var newUser = new ApplicationUser
-                    {
-                        UserName = user.UserName,
-                        Email = user.Email,
-                        SlackUserId = user.SlackUserId
-                    };
-                    teamLeaders.Add(newUser);
+                    var userAc = _mapperContext.Map<ApplicationUser, UserAc>(user);
+                    teamLeaders.Add(userAc);
                 }
                 return teamLeaders;
             }
@@ -293,21 +281,16 @@ namespace Promact.Oauth.Server.Repository
         /// Method to get management people details - SD
         /// </summary>
         /// <returns>list of management</returns>
-        public async Task<List<ApplicationUser>> ListOfManagementDetailsAsync()
+        public async Task<List<UserAc>> ListOfManagementDetailsAsync()
         {
             var management = await _userManager.GetUsersInRoleAsync(_stringConstant.Admin);
             if (management.Any())
             {
-                List<ApplicationUser> managementUser = new List<ApplicationUser>();
+                List<UserAc> managementUser = new List<UserAc>();
                 foreach (var user in management)
                 {
-                    var newUser = new ApplicationUser
-                    {
-                        FirstName = user.FirstName,
-                        Email = user.Email,
-                        SlackUserId = user.SlackUserId
-                    };
-                    managementUser.Add(newUser);
+                    var userAc = _mapperContext.Map<ApplicationUser, UserAc>(user);
+                    managementUser.Add(userAc);
                 }
                 return managementUser;
             }
@@ -321,9 +304,9 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="slackUserId">User's slack userId</param>
         /// <returns>number of casual leave</returns>
-        public async Task<LeaveAllowed> GetUserAllowedLeaveBySlackIdAsync(string slackUserId)
+        public async Task<LeaveAllowed> GetUserAllowedLeaveByUserIdAsync(string userId)
         {
-            var user = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.SlackUserId == slackUserId);
+            var user = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.Id == userId);
             if (user != null)
             {
                 LeaveAllowed leaveAllowed = new LeaveAllowed();
@@ -340,9 +323,9 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="slackUserId">User's slack userId</param>
         /// <returns>true if user is admin else false</returns>
-        public async Task<bool> IsAdminAsync(string slackUserId)
+        public async Task<bool> IsAdminAsync(string userId)
         {
-            var user = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.SlackUserId == slackUserId);
+            var user = await _applicationUserDataRepository.FirstOrDefaultAsync(x => x.Id == userId);
             if (user != null)
             {
                 return await _userManager.IsInRoleAsync(user, _stringConstant.Admin);

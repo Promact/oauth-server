@@ -661,11 +661,11 @@ namespace Promact.Oauth.Server.Controllers
         [Authorize(Policy = ReadUser)]
         [HttpGet]
         [Route("user/{slackUserId}")]
-        public async Task<IActionResult> UserDetialBySlackUserIdAsync(string slackUserId)
+        public async Task<IActionResult> UserDetialBySlackUserIdAsync(string userId)
         {
             try
             {
-                return Ok(await _userRepository.UserDetialByUserSlackIdAsync(slackUserId));
+                return Ok(await _userRepository.UserBasicDetialByUserIdAsync(userId));
             }
             catch (SlackUserNotFound ex)
             {
@@ -704,11 +704,11 @@ namespace Promact.Oauth.Server.Controllers
         [Authorize(Policy = ReadUser)]
         [HttpGet]
         [Route("teamLeaders/{slackUserId}")]
-        public async Task<IActionResult> ListOfTeamLeaderByUsersSlackIdAsync(string slackUserId)
+        public async Task<IActionResult> ListOfTeamLeaderByUsersSlackIdAsync(string userId)
         {
             try
             {
-                return Ok(await _userRepository.ListOfTeamLeaderByUsersSlackIdAsync(slackUserId));
+                return Ok(await _userRepository.ListOfTeamLeaderByUserIdAsync(userId));
             }
             catch (SlackUserNotFound ex)
             {
@@ -780,11 +780,11 @@ namespace Promact.Oauth.Server.Controllers
         [Authorize(Policy = ReadUser)]
         [HttpGet]
         [Route("leaveAllowed/{slackUserId}")]
-        public async Task<IActionResult> GetUserAllowedLeaveBySlackIdAsync(string slackUserId)
+        public async Task<IActionResult> GetUserAllowedLeaveBySlackIdAsync(string userId)
         {
             try
             {
-                return Ok(await _userRepository.GetUserAllowedLeaveBySlackIdAsync(slackUserId));
+                return Ok(await _userRepository.GetUserAllowedLeaveByUserIdAsync(userId));
             }
             catch (SlackUserNotFound ex)
             {
@@ -817,11 +817,11 @@ namespace Promact.Oauth.Server.Controllers
         [Authorize(Policy = ReadUser)]
         [HttpGet]
         [Route("userIsAdmin/{slackUserId}")]
-        public async Task<IActionResult> UserIsAdminAsync(string slackUserId)
+        public async Task<IActionResult> UserIsAdminAsync(string userId)
         {
             try
             {
-                return Ok(await _userRepository.IsAdminAsync(slackUserId));
+                return Ok(await _userRepository.IsAdminAsync(userId));
             }
             catch (SlackUserNotFound ex)
             {
