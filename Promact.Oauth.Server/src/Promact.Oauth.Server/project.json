@@ -102,6 +102,7 @@
       "Views",
       "Areas/**/Views",
       "appsettings.json",
+      "Seed/seeddata.json",
       "web.config",
       "nlog.config",
       "Template",
