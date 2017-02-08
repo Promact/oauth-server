@@ -23,6 +23,7 @@ namespace Promact.Oauth.Server.Controllers
         public const string ReadUser = "ReadUser";
         public const string BaseUrl = "api/users";
         public const string Admin = "Admin";
+        public const string ReadProject = "ReadProject";
         #endregion
 
         #region "Constructor"
@@ -448,7 +449,7 @@ namespace Promact.Oauth.Server.Controllers
         *  "error": "UserNotFound"
         * }
         */
-        [Authorize(Policy = "ReadUser, ReadProject")]
+        [Authorize(Policy = ReadProject)]
         [HttpGet]
         [Route("slackChannel/{name}")]
         public async Task<IActionResult> GetProjectUserByGroupNameAsync(string name)
