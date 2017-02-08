@@ -441,27 +441,14 @@ namespace Promact.Oauth.Server.Controllers
         *         "JoiningDate" :"18-02-2016",
         *         "Password" : null
         *     }
-        *   ]   
-        * @apiError UserNotFound The User not found.
-        * @apiErrorExample {json} Error-Response:
-        * HTTP/1.1 404 Not Found
-        * {
-        *  "error": "UserNotFound"
-        * }
+        *]   
         */
         [Authorize(Policy = ReadProject)]
         [HttpGet]
         [Route("slackChannel/{name}")]
         public async Task<IActionResult> GetProjectUserByGroupNameAsync(string name)
         {
-            try
-            {
-                return Ok(await _userRepository.GetProjectUserBySlackChannelNameAsync(name));
-            }
-            catch (UserNotFound)
-            {
-                return NotFound();
-            }
+          return Ok(await _userRepository.GetProjectUserBySlackChannelNameAsync(name));
         }
 
         /**
@@ -527,15 +514,7 @@ namespace Promact.Oauth.Server.Controllers
         [Route("{userId}/role")]
         public async Task<IActionResult> GetUserRoleAsync(string userId)
         {
-            try
-            {
-
-                return Ok(await _userRepository.GetUserRoleAsync(userId));
-            }
-            catch (UserRoleNotFound)
-            {
-                return NotFound();
-            }
+            return Ok(await _userRepository.GetUserRoleAsync(userId)); 
         }
 
 
@@ -571,14 +550,7 @@ namespace Promact.Oauth.Server.Controllers
         [Route("{userid}/teammembers")]
         public async Task<IActionResult> GetTeamMembersAsync(string userid)
         {
-            try
-            {
-                return Ok(await _userRepository.GetTeamMembersAsync(userid));
-            }
-            catch (UserRoleNotFound)
-            {
-                return NotFound();
-            }
+           return Ok(await _userRepository.GetTeamMembersAsync(userid));
         }
 
         /**
