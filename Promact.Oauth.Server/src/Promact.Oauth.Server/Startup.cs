@@ -34,7 +34,7 @@ using Promact.Oauth.Server.StringLiterals;
 namespace Promact.Oauth.Server
 { 
     public class Startup
-    {
+    { 
         private readonly ILoggerFactory _loggerFactory;
         private readonly IHostingEnvironment _currentEnvironment;
         public IConfigurationRoot Configuration { get; }
