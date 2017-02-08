@@ -156,7 +156,7 @@ namespace Promact.Oauth.Server.Tests
             Assert.NotEqual(updateApp.LogoutUrl, previousAppDetails.LogoutUrl);
             #endregion
             #region Scope Assert
-            Assert.Equal(previousAppDetails.Scopes.Count, 4);
+            Assert.Equal(previousAppDetails.Scopes.Count, 3);
             Assert.Equal(updateApp.Scopes.Count, 5);
             Assert.NotEqual(updateApp.Scopes.Count, previousAppDetails.Scopes.Count);
             #endregion
@@ -187,7 +187,6 @@ namespace Promact.Oauth.Server.Tests
                 AllowedScope.email,
                 AllowedScope.openid,
                 AllowedScope.profile,
-                AllowedScope.slack_user_id,
             };
             return comnsumerApp;
         }
