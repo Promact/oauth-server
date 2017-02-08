@@ -499,9 +499,41 @@ namespace Promact.Oauth.Server.Tests
             _userRepository.IsAdminAsync(_stringConstant.SlackUserId));
             Assert.Equal(result.Message, _stringConstant.ExceptionMessageSlackUserNotFound);
         }
+
+        /// <summary>
+        /// This test case is used for deleteing user details
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task DeleteUser()
+        {
+            string userId = await CreateMockAndUserAsync();
+            await _userRepository.DeleteUserAsync(userId);
+            var user = await _userManager.FindByIdAsync(userId);
+            Assert.Null(user);
+        }
+
+        /// <summary>
+        /// This test case is used for deleteing user details
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task DeleteUserNegative()
+        {
+            string userId = await CreateMockAndUserAsync();
+            ProjectAc projectac = new ProjectAc()
+            {
+                Name = _stringConstant.Name,
+                SlackChannelName = _stringConstant.SlackChannelName,
+                IsActive = _stringConstant.IsActive,
+                TeamLeader = new UserAc { FirstName = _stringConstant.FirstName },
+                TeamLeaderId = userId,
+                CreatedBy = _stringConstant.CreatedBy
+
+            };
+            await _projectRepository.AddProjectAsync(projectac, _stringConstant.CreatedBy);
+        }
         #endregion
 
-        #region Initialization
+            #region Initialization
         private UserAc UserDetails()
         {
             return new UserAc()
