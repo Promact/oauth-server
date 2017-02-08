@@ -662,7 +662,7 @@ namespace Promact.Oauth.Server.Controllers
         */
         [Authorize(Policy = ReadUser)]
         [HttpGet]
-        [Route("user/{slackUserId}")]
+        [Route("user/{userId}")]
         public async Task<IActionResult> UserDetialBySlackUserIdAsync(string userId)
         {
             try
@@ -705,7 +705,7 @@ namespace Promact.Oauth.Server.Controllers
         */
         [Authorize(Policy = ReadUser)]
         [HttpGet]
-        [Route("teamLeaders/{slackUserId}")]
+        [Route("teamLeaders/{userId}")]
         public async Task<IActionResult> ListOfTeamLeaderByUsersSlackIdAsync(string userId)
         {
             try
@@ -781,7 +781,7 @@ namespace Promact.Oauth.Server.Controllers
         */
         [Authorize(Policy = ReadUser)]
         [HttpGet]
-        [Route("leaveAllowed/{slackUserId}")]
+        [Route("leaveAllowed/{userId}")]
         public async Task<IActionResult> GetUserAllowedLeaveBySlackIdAsync(string userId)
         {
             try
@@ -818,7 +818,7 @@ namespace Promact.Oauth.Server.Controllers
         */
         [Authorize(Policy = ReadUser)]
         [HttpGet]
-        [Route("userIsAdmin/{slackUserId}")]
+        [Route("userIsAdmin/{userId}")]
         public async Task<IActionResult> UserIsAdminAsync(string userId)
         {
             try
