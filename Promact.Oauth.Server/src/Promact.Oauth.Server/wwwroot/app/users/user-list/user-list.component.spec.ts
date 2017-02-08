@@ -39,7 +39,7 @@ describe("User List Test", () => {
     it("should get default Users for company", fakeAsync(() => {
         let fixture = TestBed.createComponent(UserListComponent); //Create instance of component            
         let userListComponent = fixture.componentInstance;
-        userListComponent.getUsers()
+        userListComponent.getUsers();
         tick();
         expect(userListComponent.users.length).not.toBeNull();
     }));
