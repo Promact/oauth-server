@@ -104,7 +104,8 @@
       "appsettings.json",
       "web.config",
       "nlog.config",
-      "Template"
+      "Template",
+      "StringLiterals/stringliterals.json"
     ]
   },
 
