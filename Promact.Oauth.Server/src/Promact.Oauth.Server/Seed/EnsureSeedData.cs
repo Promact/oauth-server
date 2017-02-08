@@ -6,6 +6,7 @@ using Promact.Oauth.Server.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 //Seeds tha database with the initial user Admin
 namespace Promact.Oauth.Server.Seed
@@ -23,16 +24,12 @@ namespace Promact.Oauth.Server.Seed
         {
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-
+            var seedData = serviceProvider.GetService<IOptions<SeedData>>();
+           
             //Add Roles
             if (!roleManager.Roles.Any())
             {
-                List<IdentityRole> roles = new List<IdentityRole>();
-                roles.Add(new IdentityRole { Name = "Employee", NormalizedName = "EMPLOYEE" });
-                roles.Add(new IdentityRole { Name = "Admin", NormalizedName = "ADMIN" });
-                roles.Add(new IdentityRole { Name = "Management", NormalizedName = "Management" });
-
-                foreach (var role in roles)
+                foreach (var role in seedData.Value.Roles)
                 {
                     var roleExit = roleManager.RoleExistsAsync(role.Name).Result;
                     if (!roleExit)
@@ -45,26 +42,23 @@ namespace Promact.Oauth.Server.Seed
 
 
             //Add Admin
-
-            var adminUser = userManager.FindByEmailAsync("roshni@promactinfo.com").Result;
+            var adminUser = userManager.FindByEmailAsync(seedData.Value.Email).Result;
             if (adminUser == null)
             {
                 var newAdmin = new ApplicationUser()
                 {
-                    UserName = "roshni@promactinfo.com",
-                    Email = "roshni@promactinfo.com",
-                    FirstName = "Admin",
-                    LastName = "Promact",
+                    UserName = seedData.Value.UserName,
+                    Email = seedData.Value.Email,
+                    FirstName = seedData.Value.FirstName,
+                    LastName = seedData.Value.LastName,
                     IsActive = true,
-                    CreatedDateTime = DateTime.UtcNow,
-                    SlackUserId = "U7800454",
-                    SlackUserName = "roshni"
+                    CreatedDateTime = DateTime.UtcNow
                 };
-                userManager.CreateAsync(newAdmin, "Admin@123").Wait();
+                userManager.CreateAsync(newAdmin, seedData.Value.Password).Wait();
 
                 //Assign role to Admin
                 //var role = roleManager.FindByNameAsync("Admin").Result;
-                userManager.AddToRoleAsync(newAdmin, "Admin").Wait();
+                userManager.AddToRoleAsync(newAdmin, seedData.Value.Role).Wait();
             }
         }
     }

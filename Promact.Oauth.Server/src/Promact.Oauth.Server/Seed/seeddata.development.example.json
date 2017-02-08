@@ -1,0 +1,21 @@
+﻿{
+  "SeedData": {
+    "UserName": "SET_EMAIL_ADDRESS_HERE",
+    "Email": "SET_EMAIL_ADDRESS_HERE",
+    "FirstName": "SET_FIREST_HERE",
+    "LastName": "SET_LASTNAME_HERE",
+    "Password": "SET_PASSWORD_HERE",
+    "IsActive": "SET_USER_ISACTIVE_HERE",
+    "Role": "SET_USER_ROLE",
+    "Roles": [
+      {
+        "Name": "SET_ROLE_NAME",
+        "NormalizedName": "SET_NORMALIZED_NAME"
+      },
+      {
+        "Name": "SET_ROLE_NAME",
+        "NormalizedName": "SET_ROLE_NAME"
+      }
+    ]
+  }
+}
