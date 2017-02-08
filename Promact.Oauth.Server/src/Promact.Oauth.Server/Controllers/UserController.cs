@@ -408,6 +408,7 @@ namespace Promact.Oauth.Server.Controllers
             return Ok(true);
         }
 
+        #region External Call APIs
         /**
         * @api {get} api/users/slackChannel/:name 
         * @apiVersion 1.0.0
@@ -447,6 +448,7 @@ namespace Promact.Oauth.Server.Controllers
         *  "error": "UserNotFound"
         * }
         */
+        [Authorize(Policy = "ReadUser, ReadProject")]
         [HttpGet]
         [Route("slackChannel/{name}")]
         public async Task<IActionResult> GetProjectUserByGroupNameAsync(string name)
@@ -461,7 +463,6 @@ namespace Promact.Oauth.Server.Controllers
             }
         }
 
-        #region External Call APIs
         /**
         * @api {get} api/users/:userId/detail 
         * @apiVersion 1.0.0
