@@ -22,8 +22,8 @@
         public string LoginCredentials { get { return "Login Credentials"; } }
         public string ResetPasswordLink { get { return "${{RestPassWordLink}}$"; } }
         public string ResertPasswordUserName { get { return "${{Username}}$"; } }
-        public string ForgotPasswordTemplateFolderPath { get { return "\\Template\\ForgotPassword.html"; } }
-        public string UserDetialTemplateFolderPath { get { return "\\Template\\UserDetial.html"; } }
+        public string ForgotPasswordTemplateFolderPath { get { return "Template\\ForgotPassword.html"; } }
+        public string UserDetialTemplateFolderPath { get { return "Template\\UserDetial.html"; } }
         public string From { get { return "From"; } }
         public string Password { get { return "Password"; } }
         public string Host { get { return "Host"; } }
