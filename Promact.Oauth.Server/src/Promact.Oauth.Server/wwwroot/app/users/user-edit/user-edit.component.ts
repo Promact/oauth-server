@@ -60,7 +60,7 @@ export class UserEditComponent implements OnInit {
             this.loader.loader = false;
         }, err => {
             if (err.status === 404) {//Not Found 
-                this.toast.show('User Name or Slack User Name already exists.');
+                this.toast.show('User Name already exists.');
             }
             this.loader.loader = false;
         });

@@ -64,17 +64,5 @@ describe('User Add Test', () => {
         tick();
         expect(email).toBe(expected);
     }));
-
-
-    it("should check user Slack User Name", fakeAsync(() => {
-        let fixture = TestBed.createComponent(UserAddComponent); //Create instance of component            
-        let userAddComponent = fixture.componentInstance;
-        let SlackUserName = "";
-        let expected = "";
-        userAddComponent.checkSlackUserName(expected);
-        tick();
-        expect(SlackUserName).toBe(expected);
-    }));
-
 });
 

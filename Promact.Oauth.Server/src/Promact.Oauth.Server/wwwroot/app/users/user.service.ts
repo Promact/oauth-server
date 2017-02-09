@@ -53,7 +53,15 @@ export class UserService {
             .map(res => res.json())
             .toPromise();
     }
-
+    /*This service used for delete uesr*
+     * 
+     * @param userId
+     */
+   userDelete(userId: string) {
+       return this.http.delete(this.UserUrl + "/" + userId)
+           .map(res => res.text())
+            .toPromise();
+    }
 
     /*this service used for change password*
     *
@@ -75,16 +83,7 @@ export class UserService {
             .toPromise();
     }
 
-    /*This service used for check user is exists by slack username*
-     *
-     * @param slackUserName
-     */
-    checkUserIsExistsBySlackUserName(slackUserName: string) {
-        return this.http.get(this.UserUrl + "/available/" + slackUserName)
-            .map(res => res.json())
-            .toPromise();
-    }
-
+  
     /*This service used for get user roles*
       *
       */
@@ -113,4 +112,7 @@ export class UserService {
             .map(res => res.json())
             .toPromise();
     }
+
+
+    
 }
