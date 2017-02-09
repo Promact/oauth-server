@@ -229,5 +229,6 @@ namespace Promact.Oauth.Server
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
+
     }
 }
