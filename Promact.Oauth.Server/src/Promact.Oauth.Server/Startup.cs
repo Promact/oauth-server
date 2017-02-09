@@ -198,7 +198,6 @@ namespace Promact.Oauth.Server
                             IdentityServerConstants.StandardScopes.Email,
                             IdentityServerConstants.StandardScopes.OpenId,
                             IdentityServerConstants.StandardScopes.Profile,
-                            stringConstant.APIResourceSlackUserIdScope,
                             stringConstant.APIResourceUserReadScope,
                             stringConstant.APIResourceProjectReadScope
                         },

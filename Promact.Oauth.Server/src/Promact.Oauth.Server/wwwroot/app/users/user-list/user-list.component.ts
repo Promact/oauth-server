@@ -27,6 +27,22 @@ export class UserListComponent implements OnInit {
         });
     }
 
+    userDelete(userId) {
+        this.loader.loader = true;
+        this.userService.userDelete(userId).then((result) => {
+            if (result === "") {
+                this.toast.show('user succesfully deleted');
+                this.getUsers();
+                this.loader.loader = false;
+            }
+            else {
+                this.toast.show('Remove the user from these project(s) ' + result +' and proceed to delete');
+                this.loader.loader = false;
+            }
+            
+        });
+    }
+
     userDetails(id) {
         this.router.navigate(['/user/details', id]);
     }

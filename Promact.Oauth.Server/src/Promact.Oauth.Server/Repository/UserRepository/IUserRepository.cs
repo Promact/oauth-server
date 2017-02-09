@@ -33,6 +33,12 @@ namespace Promact.Oauth.Server.Repository
         /// <returns>Updated user id.</returns>
         Task<string> UpdateUserDetailsAsync(UserAc editedUser, string updatedBy);
 
+        /// <summary>
+        /// This method is used to delete the user.
+        /// </summary>
+        /// <param name="id">passed userId</param>
+        /// <returns></returns>
+        Task<string> DeleteUserAsync(string id);
 
         /// <summary>
         /// This method is used for fetching the list of all users
@@ -69,21 +75,12 @@ namespace Promact.Oauth.Server.Repository
         /// <returns> boolean: true if the email exists, false if does not exist</returns>
         Task<bool> CheckEmailIsExistsAsync(string email);
 
-
-        /// <summary>
-        /// Fetch user with given slack user name
-        /// </summary>
-        /// <param name="slackUserName">Passed slack user name</param>
-        /// <returns>If user is exists return user otherwise throw SlackUserNotFound exception.</returns>
-        Task<ApplicationUser> FindUserBySlackUserNameAsync(string slackUserName);
-
-
         /// <summary>
         /// Method is used to Get User details by slack user id - SD
         /// </summary>
         /// <param name="userSlackId"></param>
         /// <returns></returns>
-        Task<ApplicationUser> UserDetialByUserSlackIdAsync(string userSlackId);
+        Task<UserAc> UserBasicDetialByUserIdAsync(string userId);
 
 
         /// <summary>
@@ -91,7 +88,7 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        Task<List<ApplicationUser>> ListOfTeamLeaderByUsersSlackIdAsync(string userSlackId);
+        Task<List<UserAc>> ListOfTeamLeaderByUserIdAsync(string userId);
 
 
         /// <summary>
@@ -99,7 +96,7 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        Task<List<ApplicationUser>> ListOfManagementDetailsAsync();
+        Task<List<UserAc>> ListOfManagementDetailsAsync();
 
 
         /// <summary>
@@ -115,7 +112,7 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="slackUserId"></param>
         /// <returns>number of casual leave</returns>
-        Task<LeaveAllowed> GetUserAllowedLeaveBySlackIdAsync(string slackUserId);
+        Task<LeaveAllowed> GetUserAllowedLeaveByUserIdAsync(string userId);
 
 
         /// <summary>
@@ -123,7 +120,7 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="slackUserId"></param>
         /// <returns>true or false</returns>
-        Task<bool> IsAdminAsync(string slackUserId);
+        Task<bool> IsAdminAsync(string userId);
 
 
         /// <summary>
