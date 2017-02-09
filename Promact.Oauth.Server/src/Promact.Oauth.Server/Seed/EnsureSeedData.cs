@@ -51,7 +51,7 @@ namespace Promact.Oauth.Server.Seed
                     Email = seedData.Value.Email,
                     FirstName = seedData.Value.FirstName,
                     LastName = seedData.Value.LastName,
-                    IsActive = true,
+                    IsActive = seedData.Value.IsActive,
                     CreatedDateTime = DateTime.UtcNow
                 };
                 userManager.CreateAsync(newAdmin, seedData.Value.Password).Wait();
