@@ -16,6 +16,7 @@ using System;
 using Exceptions;
 using Promact.Oauth.Server.StringLiterals;
 using Microsoft.Extensions.Options;
+using System.IO;
 
 namespace Promact.Oauth.Server.Controllers
 {
@@ -281,7 +282,7 @@ namespace Promact.Oauth.Server.Controllers
                     // Send an email with this link
                     var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                     var resetPasswordLink = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                    string path = _hostingEnvironment.ContentRootPath + _stringConstant.ForgotPasswordTemplateFolderPath;
+                    string path = Path.Combine(_hostingEnvironment.ContentRootPath , _stringConstant.ForgotPasswordTemplateFolderPath);
                     if (System.IO.File.Exists(path))
                     {
                         string finaleTemplate = System.IO.File.ReadAllText(path);
