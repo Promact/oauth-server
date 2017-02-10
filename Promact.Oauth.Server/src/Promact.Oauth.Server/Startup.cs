@@ -31,6 +31,7 @@ using Promact.Oauth.Server.Configuration.DefaultAPIResource;
 using Promact.Oauth.Server.Configuration.DefaultIdentityResource;
 using Promact.Oauth.Server.StringLiterals;
 using Promact.Oauth.Server.Models.ApplicationClasses;
+using NLog.LayoutRenderers;
 
 namespace Promact.Oauth.Server
 { 
@@ -169,8 +170,9 @@ namespace Promact.Oauth.Server
             //add NLog to ASP.NET Core
             loggerFactory.AddNLog();
             //needed for non-NETSTANDARD platforms: configure nlog.config in your project root
-            loggerFactory.ConfigureNLog("nlog.config");            
+            loggerFactory.ConfigureNLog("nlog.config");
 
+            LayoutRenderer.Register("basedir", (logEvent) => env.ContentRootPath);
             //Call the Seed method in (Seed.EnsureSeedData) to create initial Admin
             seeder.Seed(serviceProvider);
 
