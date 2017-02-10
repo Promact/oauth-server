@@ -608,7 +608,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-        * @api {get} api/users/user/{slackUserId}
+        * @api {get} api/users/user/{userId}
         * @apiVersion 1.0.0
         * @apiName UserDetialBySlackUserIdAsync
         * @apiGroup User
@@ -649,7 +649,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-        * @api {get} api/users/teamLeaders/{slackUserId}
+        * @api {get} api/users/teamLeaders/{userId}
         * @apiVersion 1.0.0
         * @apiName TeamLeaderByUsersSlackIdAsync
         * @apiGroup User
@@ -730,7 +730,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-        * @api {get} api/users/leaveAllowed/{slackUserId}
+        * @api {get} api/users/leaveAllowed/{userId}
         * @apiVersion 1.0.0
         * @apiName GetUserCasualLeaveBySlackIdAsync
         * @apiGroup User    
@@ -768,7 +768,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-        * @api {get} api/users/userIsAdmin/{slackUserId}
+        * @api {get} api/users/userIsAdmin/{userId}
         * @apiVersion 1.0.0
         * @apiName UserIsAdminAsync
         * @apiGroup User    
