@@ -9,7 +9,8 @@ import { LoaderService } from '../../shared/loader.service';
 
 
 @Component({
-    templateUrl: 'app/users/user-add/user-add.html'
+    moduleId: module.id,
+    templateUrl: 'user-add.html'
 
 })
 

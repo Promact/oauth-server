@@ -9,7 +9,8 @@ import { DatePipe } from '@angular/common';
 import { StringConstant } from '../../shared/stringconstant';
 
 @Component({
-    templateUrl: 'app/project/project-list/project-list.html',
+    moduleId: module.id,
+    templateUrl: 'project-list.html',
     
 
 })

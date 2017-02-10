@@ -5,8 +5,9 @@ import { UserRole } from "./shared/userrole.model";
 import { StringConstant } from './shared/stringconstant';
 
 @Component({
+    moduleId: module.id,
     selector: 'my-app',
-    templateUrl: './app/index.html'
+    templateUrl: 'index.html'
 })
 export class AppComponent implements OnInit {
 
