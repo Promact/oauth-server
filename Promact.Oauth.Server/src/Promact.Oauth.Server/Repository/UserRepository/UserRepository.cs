@@ -261,13 +261,13 @@ namespace Promact.Oauth.Server.Repository
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == userId);
             if (user != null)
             {
-                var projects = _projectUserRepository.Fetch(x => x.UserId == user.Id);
+                var projectIds = _projectUserRepository.Fetch(x => x.UserId == user.Id).Select(x => x.ProjectId).ToList();
                 List<UserAc> teamLeaders = new List<UserAc>();
-                foreach (var project in projects)
+                foreach (var projectId in projectIds)
                 {
-                    var teamLeaderId = await _projectRepository.GetProjectByIdAsync(project.ProjectId);
-                    var teamLeader = teamLeaderId.TeamLeaderId;
-                    user = await _userManager.FindByIdAsync(teamLeader);
+                    var projectDetails = await _projectRepository.GetProjectByIdAsync(projectId);
+                    var teamLeaderId = projectDetails.TeamLeaderId;
+                    user = await _userManager.FindByIdAsync(teamLeaderId);
                     var userAc = _mapperContext.Map<ApplicationUser, UserAc>(user);
                     teamLeaders.Add(userAc);
                 }
