@@ -10,7 +10,6 @@
     NumberOfCasualLeave: number;
     NumberOfSickLeave: number;
     JoiningDate: Date;
-    SlackUserName: string;
     RoleName: string;
     SlackUserId: string;
 }

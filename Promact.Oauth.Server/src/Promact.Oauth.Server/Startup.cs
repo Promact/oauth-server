@@ -30,9 +30,10 @@ using IdentityServer4;
 using Promact.Oauth.Server.Configuration.DefaultAPIResource;
 using Promact.Oauth.Server.Configuration.DefaultIdentityResource;
 using Promact.Oauth.Server.StringLiterals;
+using Promact.Oauth.Server.Models.ApplicationClasses;
 
 namespace Promact.Oauth.Server
-{
+{ 
     public class Startup
     {
         private readonly ILoggerFactory _loggerFactory;
@@ -44,6 +45,7 @@ namespace Promact.Oauth.Server
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile("Seed/seeddata.json", optional: false, reloadOnChange: true)
                 .AddJsonFile("StringLiterals/stringliterals.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 
@@ -66,14 +68,15 @@ namespace Promact.Oauth.Server
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Configure AppSettings using config by installing Microsoft.Extensions.Options.ConfigurationExtensions
-            //services.Configure<AppSettings>(Configuration);
-
+          
             //Configure EmailCrednetials using config by installing Microsoft.Extensions.Options.ConfigurationExtensions
             services.Configure<EmailCrednetials>(Configuration.GetSection("EmailCrednetials"));
 
             //Configure SendGridAPI
             services.Configure<SendGridAPI>(Configuration.GetSection("SendGridAPI"));
+            
+            //Configure Seed data for admin user and roles
+            services.Configure<SeedData>(Configuration.GetSection("SeedData"));
 
             //Configure AppSettingUtil
             services.Configure<AppSettingUtil>(Configuration.GetSection("AppSettingUtil"));
@@ -198,7 +201,6 @@ namespace Promact.Oauth.Server
                             IdentityServerConstants.StandardScopes.Email,
                             IdentityServerConstants.StandardScopes.OpenId,
                             IdentityServerConstants.StandardScopes.Profile,
-                            stringConstant.APIResourceSlackUserIdScope,
                             stringConstant.APIResourceUserReadScope,
                             stringConstant.APIResourceProjectReadScope
                         },
@@ -229,5 +231,6 @@ namespace Promact.Oauth.Server
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
+
     }
 }

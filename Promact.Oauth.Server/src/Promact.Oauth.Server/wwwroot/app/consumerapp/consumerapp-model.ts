@@ -12,7 +12,6 @@ export enum consumerappallowedscopes {
     email,
     openid,
     profile,
-    slack_user_id,
     user_read,
     project_read
 }

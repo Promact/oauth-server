@@ -23,6 +23,7 @@ namespace Promact.Oauth.Server.Controllers
         public const string ReadUser = "ReadUser";
         public const string BaseUrl = "api/users";
         public const string Admin = "Admin";
+        public const string ReadProject = "ReadProject";
         #endregion
 
         #region "Constructor"
@@ -50,7 +51,6 @@ namespace Promact.Oauth.Server.Controllers
         *       "FirstName" : "John",
         *       "Email" : "jone@promactinfo.com",
         *       "LastName" : "Doe",
-        *       "SlackUserName" :"John",
         *       "IsActive" : "True",
         *       "JoiningDate" :"10-02-2016",
         *       "NumberOfCasualLeave":0,
@@ -82,7 +82,6 @@ namespace Promact.Oauth.Server.Controllers
         *       "FirstName" : "John",
         *       "Email" : "jone@promactinfo.com",
         *       "LastName" : "Doe",
-        *       "SlackUserName" :"John",
         *       "IsActive" : "True",
         *       "JoiningDate" :"10-02-2016",
         *       "NumberOfCasualLeave":0,
@@ -142,7 +141,6 @@ namespace Promact.Oauth.Server.Controllers
         *   "FirstName" : "John",
         *   "Email" : "jone@promactinfo.com",
         *   "LastName" : "Doe",
-        *   "SlackUserName" :"John",
         *   "IsActive" : "True",
         *   "JoiningDate" :"10-02-2016",
         *   "NumberOfCasualLeave":0,
@@ -185,7 +183,6 @@ namespace Promact.Oauth.Server.Controllers
         *    "FirstName" : "John",
         *    "Email" : "jone@promactinfo.com",
         *    "LastName" : "Doe",
-        *    "SlackUserName" :"John",
         *    "IsActive" : "True",
         *    "JoiningDate" :"10-02-2016",
         *    "NumberOfCasualLeave":0,
@@ -235,7 +232,6 @@ namespace Promact.Oauth.Server.Controllers
         *    "FirstName" : "John",
         *    "Email" : "jone@promactinfo.com",
         *    "LastName" : "Doe",
-        *    "SlackUserName" :"John",
         *    "IsActive" : "True",
         *    "JoiningDate" :"10-02-2016",
         *    "NumberOfCasualLeave":0,
@@ -256,34 +252,45 @@ namespace Promact.Oauth.Server.Controllers
         * {
         *   "error": "Problems parsing JSON object"
         * }
-        * @apiErrorExample {json} Error-Response:
-        * HTTP/1.1 404 Not Found
-        * {
-        *   "error": "SlackUserNotFound"
-        * }
         */
         [HttpPut]
         [Route("{id}")]
         [Authorize(Roles = "Admin, Employee")]
         public async Task<IActionResult> UpdateUserAsync(string id, [FromBody] UserAc editedUser)
         {
-            try
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
-                {
-                    string updatedBy = _userManager.GetUserId(User);
-                    editedUser.Id = id;
-                    await _userRepository.UpdateUserDetailsAsync(editedUser, updatedBy);
-                    return Ok(true);
-                }
-                return BadRequest();
+                string updatedBy = _userManager.GetUserId(User);
+                editedUser.Id = id;
+                await _userRepository.UpdateUserDetailsAsync(editedUser, updatedBy);
+                return Ok(true);
             }
-            catch (SlackUserNotFound)
-            {
-                return NotFound();
-            }
+            return BadRequest();
         }
 
+        /**
+       * @api {delete} api/users/:id 
+       * @apiVersion 1.0.0
+       * @apiName DeleteUserAsync
+       * @apiGroup User
+       * @apiParam {string} id
+       * @apiParamExample {json} Request-Example:
+       *   {
+       *    "id":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
+       *   }
+       * @apiSuccessExample {json} Success-Response:
+       * HTTP/1.1 200 OK 
+       * {
+       *     ''
+       * }
+       */
+        [HttpDelete]
+        [Route("{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteUserAsync(string id)
+        {
+            return Ok(await _userRepository.DeleteUserAsync(id));
+        }
 
         /**
         * @api {post} api/users/password 
@@ -376,53 +383,7 @@ namespace Promact.Oauth.Server.Controllers
             return Ok(await _userRepository.CheckEmailIsExistsAsync(email + _stringConstant.DomainAddress));
         }
 
-        /**
-         * @api {get} api/users/available/:slackUserName 
-         * @apiVersion 1.0.0
-         * @apiName CheckUserIsExistsBySlackUserNameAsync
-         * @apiGroup User
-         * @apiParam {string} slackUserName  user slack name
-         * @apiParamExample {json} Request-Example:
-         * {
-         *     "slackUserName" :"John"
-         * }      
-         * @apiSuccessExample {json} Success-Response:
-         * HTTP/1.1 200 OK 
-         * {
-         *   "Id":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
-         *   "FirstName" : "John",
-         *   "Email" : "jone@promactinfo.com",
-         *   "LastName" : "Doe",
-         *   "SlackUserName" :"John",
-         *   "IsActive" : "True",
-         *   "JoiningDate" :"10-02-2016",
-         *   "NumberOfCasualLeave":0,
-         *   "NumberOfSickLeave":0,
-         *   "UniqueName":null,
-         *   "Role":null,
-         *   "UserName": null
-         * }
-         * @apiError SlackUserNotFound the slack user was not found.
-         * @apiErrorExample {json} Error-Response:
-         * HTTP/1.1 404 Not Found
-         * {
-         *   "error": "SlackUserNotFound"
-         * }
-         */
-        [HttpGet]
-        [Route("available/{slackUserName}")]
-        [Authorize(Roles = Admin)]
-        public async Task<IActionResult> CheckUserIsExistsBySlackUserNameAsync(string slackUserName)
-        {
-            try
-            {
-                return Ok(await _userRepository.FindUserBySlackUserNameAsync(slackUserName));
-            }
-            catch (SlackUserNotFound)
-            {
-                return NotFound();
-            }
-        }
+        
 
         /**
           * @api {get} api/users/email/:id/send 
@@ -448,6 +409,7 @@ namespace Promact.Oauth.Server.Controllers
             return Ok(true);
         }
 
+        #region External Call APIs
         /**
         * @api {get} api/users/slackChannel/:name 
         * @apiVersion 1.0.0
@@ -466,7 +428,6 @@ namespace Promact.Oauth.Server.Controllers
         *         "FirstName" : "Smith",
         *         "Email" : "Smith@promactinfo.com",
         *         "LastName" : "Doe",
-        *         "SlackUserName" :"Smith",
         *         "IsActive" : "True",
         *         "JoiningDate" :"10-02-2016",
         *         "Password" : null
@@ -476,34 +437,20 @@ namespace Promact.Oauth.Server.Controllers
         *         "FirstName" : "White",
         *         "Email" : "White@promactinfo.com",
         *         "LastName" : "Doe",
-        *         "SlackUserName" :"White",
         *         "IsActive" : "True",
         *         "JoiningDate" :"18-02-2016",
         *         "Password" : null
         *     }
-        *   ]   
-        * @apiError UserNotFound The User not found.
-        * @apiErrorExample {json} Error-Response:
-        * HTTP/1.1 404 Not Found
-        * {
-        *  "error": "UserNotFound"
-        * }
+        *]   
         */
+        [Authorize(Policy = ReadProject)]
         [HttpGet]
         [Route("slackChannel/{name}")]
         public async Task<IActionResult> GetProjectUserByGroupNameAsync(string name)
         {
-            try
-            {
-                return Ok(await _userRepository.GetProjectUserBySlackChannelNameAsync(name));
-            }
-            catch (UserNotFound)
-            {
-                return NotFound();
-            }
+          return Ok(await _userRepository.GetProjectUserBySlackChannelNameAsync(name));
         }
 
-        #region External Call APIs
         /**
         * @api {get} api/users/:userId/detail 
         * @apiVersion 1.0.0
@@ -527,8 +474,6 @@ namespace Promact.Oauth.Server.Controllers
         *         "NumberOfCasualLeave": 14,
         *         "NumberOfSickLeave": 7,
         *         "JoiningDate": "0001-01-01T00:00:00",
-        *         "SlackUserName": "roshni",
-        *         "SlackUserId": "U70787887",
         *         "Email": "roshni@promactinfo.com",
         *         "UserName": "roshni@promactinfo.com",
         *         "UniqueName": "Admin-roshni@promactinfo.com",
@@ -569,15 +514,7 @@ namespace Promact.Oauth.Server.Controllers
         [Route("{userId}/role")]
         public async Task<IActionResult> GetUserRoleAsync(string userId)
         {
-            try
-            {
-
-                return Ok(await _userRepository.GetUserRoleAsync(userId));
-            }
-            catch (UserRoleNotFound)
-            {
-                return NotFound();
-            }
+            return Ok(await _userRepository.GetUserRoleAsync(userId)); 
         }
 
 
@@ -613,14 +550,7 @@ namespace Promact.Oauth.Server.Controllers
         [Route("{userid}/teammembers")]
         public async Task<IActionResult> GetTeamMembersAsync(string userid)
         {
-            try
-            {
-                return Ok(await _userRepository.GetTeamMembersAsync(userid));
-            }
-            catch (UserRoleNotFound)
-            {
-                return NotFound();
-            }
+           return Ok(await _userRepository.GetTeamMembersAsync(userid));
         }
 
         /**
@@ -648,8 +578,6 @@ namespace Promact.Oauth.Server.Controllers
         *           "NumberOfCasualLeave": 14,
         *           "NumberOfSickLeave": 7,
         *           "JoiningDate": "0001-01-01T00:00:00",
-        *           "SlackUserName": "roshni",
-        *           "SlackUserId": "U70787887",
         *           "Email": "roshni@promactinfo.com",
         *           "UserName": "roshni@promactinfo.com",
         *           "UniqueName": "Admin-roshni@promactinfo.com",
@@ -663,7 +591,6 @@ namespace Promact.Oauth.Server.Controllers
         *           "NumberOfCasualLeave": 14,
         *           "NumberOfSickLeave": 7,
         *           "JoiningDate": "2016-07-20T18:30:00",
-        *           "SlackUserName": "gourav",
         *           "Email": "gourav@promactinfo.com",
         *           "UserName": "gourav@promactinfo.com",
         *           "UniqueName": "gourav-gourav@promactinfo.com",
@@ -681,7 +608,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-        * @api {get} api/users/user/{slackUserId}
+        * @api {get} api/users/user/{userId}
         * @apiVersion 1.0.0
         * @apiName UserDetialBySlackUserIdAsync
         * @apiGroup User
@@ -707,12 +634,12 @@ namespace Promact.Oauth.Server.Controllers
         */
         [Authorize(Policy = ReadUser)]
         [HttpGet]
-        [Route("user/{slackUserId}")]
-        public async Task<IActionResult> UserDetialBySlackUserIdAsync(string slackUserId)
+        [Route("user/{userId}")]
+        public async Task<IActionResult> UserDetialBySlackUserIdAsync(string userId)
         {
             try
             {
-                return Ok(await _userRepository.UserDetialByUserSlackIdAsync(slackUserId));
+                return Ok(await _userRepository.UserBasicDetialByUserIdAsync(userId));
             }
             catch (SlackUserNotFound ex)
             {
@@ -722,7 +649,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-        * @api {get} api/users/teamLeaders/{slackUserId}
+        * @api {get} api/users/teamLeaders/{userId}
         * @apiVersion 1.0.0
         * @apiName TeamLeaderByUsersSlackIdAsync
         * @apiGroup User
@@ -750,12 +677,12 @@ namespace Promact.Oauth.Server.Controllers
         */
         [Authorize(Policy = ReadUser)]
         [HttpGet]
-        [Route("teamLeaders/{slackUserId}")]
-        public async Task<IActionResult> ListOfTeamLeaderByUsersSlackIdAsync(string slackUserId)
+        [Route("teamLeaders/{userId}")]
+        public async Task<IActionResult> ListOfTeamLeaderByUsersSlackIdAsync(string userId)
         {
             try
             {
-                return Ok(await _userRepository.ListOfTeamLeaderByUsersSlackIdAsync(slackUserId));
+                return Ok(await _userRepository.ListOfTeamLeaderByUserIdAsync(userId));
             }
             catch (SlackUserNotFound ex)
             {
@@ -803,7 +730,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-        * @api {get} api/users/leaveAllowed/{slackUserId}
+        * @api {get} api/users/leaveAllowed/{userId}
         * @apiVersion 1.0.0
         * @apiName GetUserCasualLeaveBySlackIdAsync
         * @apiGroup User    
@@ -826,12 +753,12 @@ namespace Promact.Oauth.Server.Controllers
         */
         [Authorize(Policy = ReadUser)]
         [HttpGet]
-        [Route("leaveAllowed/{slackUserId}")]
-        public async Task<IActionResult> GetUserAllowedLeaveBySlackIdAsync(string slackUserId)
+        [Route("leaveAllowed/{userId}")]
+        public async Task<IActionResult> GetUserAllowedLeaveBySlackIdAsync(string userId)
         {
             try
             {
-                return Ok(await _userRepository.GetUserAllowedLeaveBySlackIdAsync(slackUserId));
+                return Ok(await _userRepository.GetUserAllowedLeaveByUserIdAsync(userId));
             }
             catch (SlackUserNotFound ex)
             {
@@ -841,7 +768,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-        * @api {get} api/users/userIsAdmin/{slackUserId}
+        * @api {get} api/users/userIsAdmin/{userId}
         * @apiVersion 1.0.0
         * @apiName UserIsAdminAsync
         * @apiGroup User    
@@ -863,12 +790,12 @@ namespace Promact.Oauth.Server.Controllers
         */
         [Authorize(Policy = ReadUser)]
         [HttpGet]
-        [Route("userIsAdmin/{slackUserId}")]
-        public async Task<IActionResult> UserIsAdminAsync(string slackUserId)
+        [Route("userIsAdmin/{userId}")]
+        public async Task<IActionResult> UserIsAdminAsync(string userId)
         {
             try
             {
-                return Ok(await _userRepository.IsAdminAsync(slackUserId));
+                return Ok(await _userRepository.IsAdminAsync(userId));
             }
             catch (SlackUserNotFound ex)
             {

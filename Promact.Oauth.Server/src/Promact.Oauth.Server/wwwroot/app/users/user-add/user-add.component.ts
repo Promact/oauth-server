@@ -46,7 +46,6 @@ export class UserAddComponent implements OnInit {
     addUser(userModel) {
         this.loader.loader = true;
         userModel.JoiningDate = new Date(userModel.JoiningDate);
-        if (!this.isSlackUserNameExist) {
             if (!this.isEmailExist) {
                 userModel.FirstName = userModel.FirstName.trim();
                 this.userService.registerUser(userModel).then((result) => {
@@ -63,11 +62,6 @@ export class UserAddComponent implements OnInit {
                 this.loader.loader = false;
                 this.toast.show('Email already exists.');
             }
-        }
-        else {
-            this.loader.loader = false;
-            this.toast.show('Slack User Name  already exists.');
-        }
     }
 
     checkEmail(email) {
@@ -75,17 +69,6 @@ export class UserAddComponent implements OnInit {
         if (email !== "" && email !== undefined) {
             this.userService.checkEmailIsExists(email).then((result) => {
                 this.isEmailExist = result;
-            });
-        }
-    }
-
-    checkSlackUserName(slackUserName) {
-        this.isSlackUserNameExist = false;
-        if (slackUserName !== "" && slackUserName !== undefined) {
-            this.userService.checkUserIsExistsBySlackUserName(slackUserName).then((result) => {
-                this.isSlackUserNameExist = true;
-            }, err => {
-                console.log(err.statusText);
             });
         }
     }
