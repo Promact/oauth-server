@@ -30,11 +30,11 @@ using IdentityServer4;
 using Promact.Oauth.Server.Configuration.DefaultAPIResource;
 using Promact.Oauth.Server.Configuration.DefaultIdentityResource;
 using Promact.Oauth.Server.StringLiterals;
-using Promact.Oauth.Server.Models.ApplicationClasses;
 using NLog.LayoutRenderers;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace Promact.Oauth.Server
-{ 
+{
     public class Startup
     {
         private readonly ILoggerFactory _loggerFactory;
@@ -188,6 +188,11 @@ namespace Promact.Oauth.Server
             }
 
             app.UseStaticFiles();
+
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
 
             app.UseIdentity();
             app.UseIdentityServer();
