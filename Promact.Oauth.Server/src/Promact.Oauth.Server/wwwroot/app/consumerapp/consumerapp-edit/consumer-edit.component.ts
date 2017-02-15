@@ -49,7 +49,7 @@ export class ConsumerappEditComponent implements OnInit {
         });
     }
 
-    updateApps(consumerModel) {
+    updateApps(consumerModel:ConsumerAppModel) {
         this.loader.loader = true;
         this.consumerAppService.updateConsumerApps(consumerModel).then((result) => {
             this.toast.show('Consumer App is updated successfully.');
@@ -74,9 +74,9 @@ export class ConsumerappEditComponent implements OnInit {
                 this.clientSecretIndicator = true;
                 this.consumerModel.AuthSecret = result;
             }
-        }), err => {
+        }, err => {
             this.toast.show('Error generating random number');
-        };
+        });
     }
 
     scopeOnChange(scopes: Array<consumerappallowedscopes>) {

@@ -44,7 +44,7 @@ export class UserAddComponent implements OnInit {
         });
     }
 
-    addUser(userModel) {
+    addUser(userModel: UserModel) {
         this.loader.loader = true;
         userModel.JoiningDate = new Date(userModel.JoiningDate);
             if (!this.isEmailExist) {
@@ -65,7 +65,7 @@ export class UserAddComponent implements OnInit {
             }
     }
 
-    checkEmail(email) {
+    checkEmail(email: string) {
         this.isEmailExist = false;
         if (email !== "" && email !== undefined) {
             this.userService.checkEmailIsExists(email).then((result) => {

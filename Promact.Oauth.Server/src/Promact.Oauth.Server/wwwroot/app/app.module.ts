@@ -12,7 +12,7 @@ import { ChangePasswordModule } from "./change-password/change-password.module";
 import { LoaderService } from "./shared/loader.service";
 import { UserRole } from "./shared/userrole.model";
 import { StringConstant } from './shared/stringconstant';
-
+import {MaterialModule } from "@angular/material";
 
 
 
@@ -23,6 +23,7 @@ import { StringConstant } from './shared/stringconstant';
         HttpModule,
         routing,
         ProjectModule,
+        MaterialModule,
         ConsumerAppModule,
         UserModule,
         ChangePasswordModule

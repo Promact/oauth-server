@@ -1,4 +1,4 @@
-﻿/// <reference path="../../typings/index.d.ts" />
+﻿/// <reference path="../../typings/globals/node/index.d.ts" />
 
 import { enableProdMode } from '@angular/core';
 import { AppComponent } from "./app.component";

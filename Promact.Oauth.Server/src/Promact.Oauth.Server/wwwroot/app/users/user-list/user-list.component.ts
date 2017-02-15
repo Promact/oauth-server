@@ -28,7 +28,7 @@ export class UserListComponent implements OnInit {
         });
     }
 
-    userDelete(userId) {
+    userDelete(userId: string) {
         this.loader.loader = true;
         this.userService.userDelete(userId).then((result) => {
             if (result === "") {
@@ -44,11 +44,11 @@ export class UserListComponent implements OnInit {
         });
     }
 
-    userDetails(id) {
+    userDetails(id: string) {
         this.router.navigate(['/user/details', id]);
     }
 
-    userEdit(id) {
+    userEdit(id: string) {
         this.router.navigate(['/user/edit', id]);
     }
 
@@ -56,7 +56,7 @@ export class UserListComponent implements OnInit {
         this.getUsers();
     }
 
-    reSendMail(user) {
+    reSendMail(user: UserModel) {
         this.loader.loader = true;
         this.userService.reSendMail(user.Id).then((response) => {
             this.toast.show('Credentials re-send succesfully');
