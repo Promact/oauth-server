@@ -32,6 +32,7 @@ using Promact.Oauth.Server.Configuration.DefaultIdentityResource;
 using Promact.Oauth.Server.StringLiterals;
 using NLog.LayoutRenderers;
 using Microsoft.AspNetCore.HttpOverrides;
+using Promact.Oauth.Server.Middleware;
 
 namespace Promact.Oauth.Server
 {
@@ -188,6 +189,8 @@ namespace Promact.Oauth.Server
             }
 
             app.UseStaticFiles();
+
+            app.UseMiddleware<OAuthMiddleware>();
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
