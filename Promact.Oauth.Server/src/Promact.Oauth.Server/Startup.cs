@@ -31,8 +31,8 @@ using Promact.Oauth.Server.Configuration.DefaultAPIResource;
 using Promact.Oauth.Server.Configuration.DefaultIdentityResource;
 using Promact.Oauth.Server.StringLiterals;
 using NLog.LayoutRenderers;
-using Microsoft.AspNetCore.HttpOverrides;
 using Promact.Oauth.Server.Middleware;
+using Microsoft.Extensions.Primitives;
 
 namespace Promact.Oauth.Server
 {
@@ -70,13 +70,13 @@ namespace Promact.Oauth.Server
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-          
+
             //Configure EmailCrednetials using config by installing Microsoft.Extensions.Options.ConfigurationExtensions
             services.Configure<EmailCrednetials>(Configuration.GetSection("EmailCrednetials"));
 
             //Configure SendGridAPI
             services.Configure<SendGridAPI>(Configuration.GetSection("SendGridAPI"));
-            
+
             //Configure Seed data for admin user and roles
             services.Configure<SeedData>(Configuration.GetSection("SeedData"));
 
@@ -116,7 +116,7 @@ namespace Promact.Oauth.Server
                 services.AddTransient<IEmailSender, AuthMessageSender>();
             else if (_currentEnvironment.IsProduction())
                 services.AddTransient<IEmailSender, SendGridEmailSender>();
-            
+
 
             services.AddOptions();
 
@@ -148,13 +148,20 @@ namespace Promact.Oauth.Server
             // Custom Policy Claim based
             services.AddAuthorization(option => option.AddPolicy("ReadUser",
                 policy => policy.RequireClaim("scope", "user_read")));
-            services.AddAuthorization(option =>option.AddPolicy("ReadProject",
+            services.AddAuthorization(option => option.AddPolicy("ReadProject",
                 policy => policy.RequireClaim("scope", "project_read")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IEnsureSeedData seeder, IServiceProvider serviceProvider)
         {
+            app.Use(async (context, next) =>
+            {
+                if (!StringValues.IsNullOrEmpty(context.Request.Headers["X-Forwarded-Proto"]))
+                    context.Request.Scheme = "https";
+                await next.Invoke();
+            });
+
             // Resolve dependency
             var appSetting = serviceProvider.GetService<IOptions<AppSettingUtil>>().Value;
             var defaultApiResource = serviceProvider.GetService<IDefaultApiResources>();
@@ -163,7 +170,7 @@ namespace Promact.Oauth.Server
 
             // Initializing default APIResource and IdentityResources
             IdentityServerInitialize databaseInitialize = new IdentityServerInitialize();
-            databaseInitialize.InitializeDatabaseForPreDefinedAPIResourceAndIdentityResources(app,defaultApiResource,defaultIdentityResource);
+            databaseInitialize.InitializeDatabaseForPreDefinedAPIResourceAndIdentityResources(app, defaultApiResource, defaultIdentityResource);
 
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -191,11 +198,6 @@ namespace Promact.Oauth.Server
             app.UseStaticFiles();
 
             app.UseMiddleware<OAuthMiddleware>();
-
-            app.UseForwardedHeaders(new ForwardedHeadersOptions
-            {
-                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-            });
 
             app.UseIdentity();
             app.UseIdentityServer();
