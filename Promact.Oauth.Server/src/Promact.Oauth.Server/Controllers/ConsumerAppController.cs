@@ -123,7 +123,7 @@ namespace Promact.Oauth.Server.Controllers
             return Ok(listOfApps);
         }
 
-
+         
         /**
        * @api {get} api/consumerapp/:id 
        * @apiVersion 1.0.0
