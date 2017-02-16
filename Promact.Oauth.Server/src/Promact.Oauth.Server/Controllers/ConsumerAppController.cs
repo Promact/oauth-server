@@ -17,11 +17,11 @@ namespace Promact.Oauth.Server.Controllers
         private readonly IConsumerAppRepository _consumerAppRepository;
         public const string Admin = "Admin";
         public const string BaseUrl = "api/[controller]";
-        private readonly ILogger _logger;
+        private readonly ILogger<ConsumerAppController> _logger;
         #endregion
 
         #region "Constructor"
-        public ConsumerAppController(IConsumerAppRepository consumerAppRepository, ILogger logger)
+        public ConsumerAppController(IConsumerAppRepository consumerAppRepository, ILogger<ConsumerAppController> logger)
         {
             _consumerAppRepository = consumerAppRepository;
             _logger = logger;
