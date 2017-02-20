@@ -5,7 +5,7 @@ import { StringConstant } from './shared/stringconstant';
 import { Md2Toast } from 'md2';
 
 @Injectable()
-export class authenticationService implements CanActivate {
+export class AuthenticationService implements CanActivate {
     constructor(private userRole: UserRole, private stringconstant: StringConstant, private toast : Md2Toast) {
 
     }
