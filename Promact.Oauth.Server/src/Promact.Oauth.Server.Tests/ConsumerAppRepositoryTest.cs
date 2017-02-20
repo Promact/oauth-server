@@ -39,8 +39,8 @@ namespace Promact.Oauth.Server.Tests
         public async Task AddConsumerAppsAsync()
         {
             ConsumerApps consumerApp = GetConsumerApp();
-            var app = await _consumerAppRespository.AddConsumerAppsAsync(consumerApp);
-            var clientApp = await _clientContext.FirstOrDefaultAsync(x => x.ClientId == app.ClientId);
+            await _consumerAppRespository.AddConsumerAppsAsync(consumerApp);
+            var clientApp = await _clientContext.FirstOrDefaultAsync(x => x.ClientId == consumerApp.AuthId);
             Assert.Equal(clientApp.AllowAccessTokensViaBrowser, true);
         }
 
@@ -51,7 +51,7 @@ namespace Promact.Oauth.Server.Tests
         public async Task AddConsumerAppsExceptionAsync()
         {
             ConsumerApps consumerApp = GetConsumerApp();
-            var app = await _consumerAppRespository.AddConsumerAppsAsync(consumerApp);
+            await _consumerAppRespository.AddConsumerAppsAsync(consumerApp);
             consumerApp.Id = 0;
             var result = await Assert.ThrowsAsync<ConsumerAppNameIsAlreadyExists>(() => 
             _consumerAppRespository.AddConsumerAppsAsync(consumerApp));
@@ -65,7 +65,7 @@ namespace Promact.Oauth.Server.Tests
         public async Task GetAppDetailsByClientIdAsync()
         {
             ConsumerApps consumerApp = GetConsumerApp();
-            var app = await _consumerAppRespository.AddConsumerAppsAsync(consumerApp);
+            await _consumerAppRespository.AddConsumerAppsAsync(consumerApp);
             var consumerApps = await _consumerAppRespository.GetAppDetailsByClientIdAsync(_stringConstant.RandomClientId);
             Assert.Equal(consumerApps.Name,_stringConstant.Name);
         }
@@ -77,7 +77,7 @@ namespace Promact.Oauth.Server.Tests
         public async Task GetAppDetailsByClientIdForExceptionAsync()
         {
             ConsumerApps consumerApp = GetConsumerApp();
-            var app = await _consumerAppRespository.AddConsumerAppsAsync(consumerApp);
+            await _consumerAppRespository.AddConsumerAppsAsync(consumerApp);
             var result = await Assert.ThrowsAsync<ConsumerAppNotFound>(() => 
             _consumerAppRespository.GetAppDetailsByClientIdAsync(_stringConstant.RandomClientSecret));
             Assert.Equal(result.Message, _stringConstant.ExceptionMessageConsumerAppNotFound);
@@ -90,7 +90,7 @@ namespace Promact.Oauth.Server.Tests
         public async Task GetListOfConsumerAppsAsync()
         {
             ConsumerApps consumerApp = GetConsumerApp();
-            var app = await _consumerAppRespository.AddConsumerAppsAsync(consumerApp);
+            await _consumerAppRespository.AddConsumerAppsAsync(consumerApp);
             var result = await _consumerAppRespository.GetListOfConsumerAppsAsync();
             Assert.Equal(result.Count, 1);
         }
@@ -122,8 +122,8 @@ namespace Promact.Oauth.Server.Tests
         public async Task UpdateConsumerAllDetailsAsync()
         {
             ConsumerApps consumerApp = GetConsumerApp();
-            var app = await _consumerAppRespository.AddConsumerAppsAsync(consumerApp);
-            var previousAppDetails = await _consumerAppRespository.GetAppDetailsByClientIdAsync(app.ClientId);
+            await _consumerAppRespository.AddConsumerAppsAsync(consumerApp);
+            var previousAppDetails = await _consumerAppRespository.GetAppDetailsByClientIdAsync(consumerApp.AuthId);
             consumerApp.AuthSecret = _stringConstant.AccessToken;
             consumerApp.CallbackUrl = _stringConstant.CallbackUrl;
             consumerApp.LogoutUrl = _stringConstant.CallbackUrl;

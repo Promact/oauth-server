@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Promact.Oauth.Server.ExceptionHandler;
 using Microsoft.Extensions.Logging;
-using System;
 
 namespace Promact.Oauth.Server.Controllers
 {
@@ -82,7 +81,8 @@ namespace Promact.Oauth.Server.Controllers
         {
             try
             {
-                return Ok(await _consumerAppRepository.AddConsumerAppsAsync(consumerApps));
+                await _consumerAppRepository.AddConsumerAppsAsync(consumerApps);
+                return Ok();
             }
             catch (ConsumerAppNameIsAlreadyExists)
             {
@@ -123,7 +123,7 @@ namespace Promact.Oauth.Server.Controllers
             return Ok(listOfApps);
         }
 
-         
+
         /**
        * @api {get} api/consumerapp/:id 
        * @apiVersion 1.0.0
@@ -211,18 +211,10 @@ namespace Promact.Oauth.Server.Controllers
         [Route("")]
         public async Task<IActionResult> UpdateConsumerAppAsync([FromBody]ConsumerApps consumerApp)
         {
-            try
-            {
-                _logger.LogDebug("consumerApp request to update");
-                var result = await _consumerAppRepository.UpdateConsumerAppsAsync(consumerApp);
-                _logger.LogDebug("consumerApp successfully updated");
-                return Ok(result);
-            }
-            catch(Exception ex)
-            {
-                _logger.LogError("Error in consumerApp : " + ex.Message + Environment.NewLine + ex.StackTrace);
-                return BadRequest();
-            }
+            _logger.LogDebug("consumerApp request to update");
+            await _consumerAppRepository.UpdateConsumerAppsAsync(consumerApp);
+            _logger.LogDebug("consumerApp successfully updated");
+            return Ok();
         }
 
 
