@@ -4,10 +4,10 @@ import {ConsumerAppComponent } from "./consumerapp.component";
 import {ConsumerappListComponent} from "./consumerapp-list/consumerapp-list.component";
 import {ConsumerappAddComponent} from "./consumerapp-add/consumerapp-add.component";
 import { ConsumerappEditComponent } from "./consumerapp-edit/consumer-edit.component";
-import { authenticationService } from "../authentication.service";
+import { AuthenticationService } from "../authentication.service";
 
 const consumerRoutes: Routes = [{
-    path: "consumerapp", canActivate: [authenticationService],
+    path: "consumerapp", canActivate: [AuthenticationService],
     component: ConsumerAppComponent,
     children: [{ path: '', component: ConsumerappListComponent},
         { path: 'add', component: ConsumerappAddComponent },

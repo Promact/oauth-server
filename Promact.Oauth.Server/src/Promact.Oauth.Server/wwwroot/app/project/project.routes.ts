@@ -5,7 +5,7 @@ import { ProjectListComponent } from "./project-list/project-list.component";
 import { ProjectAddComponent } from "./project-add/project-add.component";
 import { ProjectEditComponent } from "./project-edit/project-edit.component";
 import { ProjectViewComponent } from "./project-view/project-view.component";
-import { authenticationService } from "../authentication.service";
+import { AuthenticationService } from "../authentication.service";
 
 const projectRoutes: Routes =
     [{
@@ -13,9 +13,9 @@ const projectRoutes: Routes =
         component: ProjectComponent,
         children: [
             { path: '', component: ProjectListComponent },
-            { path: 'list', component: ProjectListComponent, canActivate: [authenticationService] },
-            { path: 'add', component: ProjectAddComponent, canActivate: [authenticationService] },
-            { path: 'edit/:id', component: ProjectEditComponent, canActivate: [authenticationService] },
+            { path: 'list', component: ProjectListComponent, canActivate: [AuthenticationService] },
+            { path: 'add', component: ProjectAddComponent, canActivate: [AuthenticationService] },
+            { path: 'edit/:id', component: ProjectEditComponent, canActivate: [AuthenticationService] },
             { path: 'view/:id', component: ProjectViewComponent}
         ]
     }
