@@ -18,7 +18,6 @@ export class ConsumerAppService {
     addConsumerApps(consumerAppsAc: ConsumerAppModel) {
         return this.http
             .post(this.consumerAppUrl, JSON.stringify(consumerAppsAc), { headers: this.headers })
-            .map(res => res.json())
             .toPromise();
     }
 
@@ -48,9 +47,7 @@ export class ConsumerAppService {
     */
     updateConsumerApps(consumerAppsAc: ConsumerAppModel) {
         return this.http.put(this.consumerAppUrl, JSON.stringify(consumerAppsAc), { headers: this.headers })
-            .map(res => res.json())
             .toPromise();
-
     }
 
 

@@ -11,8 +11,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// This method used for added consumer app and return primary key. -An
         /// </summary>
         /// <param name="consumerApp">App details as object</param>
-        /// <returns>App details after saving changes as object</returns>
-        Task<IdentityServer4.Models.Client> AddConsumerAppsAsync(ConsumerApps aaps);
+        Task AddConsumerAppsAsync(ConsumerApps aaps);
 
 
         /// <summary>
@@ -32,8 +31,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// This method used for update consumer app and return primary key. -An
         /// </summary>
         /// <param name="consumerApps">App details as object</param>
-        /// <returns>updated app details</returns>
-        Task<Client> UpdateConsumerAppsAsync(ConsumerApps consumerApp);
+        Task UpdateConsumerAppsAsync(ConsumerApps consumerApp);
 
         /// <summary>
         /// This method used for get random number For AuthId and Auth Secreate. -An

@@ -61,15 +61,13 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// This method used for added consumer app and return consumerApps Id. -An
         /// </summary>
         /// <param name="consumerApp">App details as object</param>
-        /// <returns>App details after saving changes as object</returns>
-        public async Task<IdentityServer4.Models.Client> AddConsumerAppsAsync(ConsumerApps consumerApp)
+        public async Task AddConsumerAppsAsync(ConsumerApps consumerApp)
         {
             if (await _clientDataRepository.FirstOrDefaultAsync(x => x.ClientId == consumerApp.AuthId) == null)
             {
                 var clientApp = ReturnIdentityServerClientFromConsumerApp(consumerApp, ReturnListOfScopesInStringFromEnumAllowedScope(consumerApp.Scopes));
                 _clientDataRepository.Add(clientApp.ToEntity());
                 await _clientDataRepository.SaveChangesAsync();
-                return clientApp;
             }
             else
                 throw new ConsumerAppNameIsAlreadyExists();
@@ -97,7 +95,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// </summary>
         /// <param name="consumerApps">App details as object</param>
         /// <returns>updated app details</returns>
-        public async Task<IdentityServer4.EntityFramework.Entities.Client> UpdateConsumerAppsAsync(ConsumerApps consumerApps)
+        public async Task UpdateConsumerAppsAsync(ConsumerApps consumerApps)
         {
             var client = await _clientDataRepository.FirstOrDefaultAsync(x => x.Id == consumerApps.Id);
             client.ClientName = consumerApps.Name;
@@ -108,7 +106,6 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
             await UpdateClientScope(client.Id, ReturnListOfScopesInStringFromEnumAllowedScope(consumerApps.Scopes));
             await UpdateClientRedirectUri(client.Id, consumerApps.CallbackUrl);
             await UpdateClientLogoutRedirectUri(client.Id, consumerApps.LogoutUrl);
-            return client;
         }
 
         /// <summary>
