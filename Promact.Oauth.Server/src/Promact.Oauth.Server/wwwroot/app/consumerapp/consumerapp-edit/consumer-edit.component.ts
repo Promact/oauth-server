@@ -25,6 +25,7 @@ export class ConsumerappEditComponent implements OnInit {
                 this.scopes.push({ value: scopeIntegerValue, name: consumerappallowedscopes[scopeIntegerValue] });
             }
         }
+        this.clientScopeIndicator = false;
     }
 
     ngOnInit() {
@@ -39,12 +40,8 @@ export class ConsumerappEditComponent implements OnInit {
                 this.consumerModel.AuthId = result.authId;
                 this.consumerModel.AuthSecret = result.authSecret;
                 this.consumerModel.Id = result.id;
-                this.loader.loader = false;
-            }
-                , err => {
-                    this.toast.show('Consumer App dose not exists.');
-                    this.loader.loader = false;
-                });
+            });
+            this.loader.loader = false;
         });
     }
 
@@ -53,11 +50,8 @@ export class ConsumerappEditComponent implements OnInit {
         this.consumerAppService.updateConsumerApps(consumerModel).then((result) => {
             this.toast.show('Consumer App is updated successfully.');
             this.cancel();
-            this.loader.loader = false;
-        }, err => {
-            this.toast.show('Consumer App Name is already exists.');
-            this.loader.loader = false;
         });
+        this.loader.loader = false;
     }
 
     cancel() {
@@ -81,9 +75,6 @@ export class ConsumerappEditComponent implements OnInit {
     scopeOnChange(scopes: Array<consumerappallowedscopes>) {
         if (scopes.length === 0) {
             this.clientScopeIndicator = true;
-        }
-        else {
-            this.clientScopeIndicator = false;
         }
     }
 }
