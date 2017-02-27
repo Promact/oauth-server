@@ -62,7 +62,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                     userAc.FirstName = _stringConstant.TeamLeaderNotAssign;
                     userAc.LastName = _stringConstant.TeamLeaderNotAssign;
                     userAc.Email = _stringConstant.TeamLeaderNotAssign;
-                }                               
+                }
                 var projectAc = _mapperContext.Map<Project, ProjectAc>(project);
                 projectAc.TeamLeader = userAc;
                 projectAc.CreatedBy = (await _userDataRepository.FirstAsync(x => x.Id == project.CreatedBy)).FirstName;
@@ -217,16 +217,16 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         public async Task<ProjectAc> GetProjectBySlackChannelNameAsync(string slackChannelName)
         {
             Project project = await _projectDataRepository.FirstOrDefaultAsync(x => x.SlackChannelName == slackChannelName);
+            ProjectAc projectAc = new ProjectAc();
             if (!string.IsNullOrEmpty(project?.TeamLeaderId))
             {
-                var user = await _userDataRepository.FirstOrDefaultAsync(x => x.Id.Equals(project.TeamLeaderId));
-                if (user!= null && user.IsActive)
+                ApplicationUser teamLeader = await _userManager.FindByIdAsync(project.TeamLeaderId);
+                if (teamLeader != null && teamLeader.IsActive)
                 {
-                    ProjectAc projectAc = _mapperContext.Map<Project, ProjectAc>(project);
-                    return projectAc;
+                    projectAc = _mapperContext.Map<Project, ProjectAc>(project);
                 }
             }
-            throw new ProjectNotFound();
+            return projectAc;
         }
 
         /// <summary>
