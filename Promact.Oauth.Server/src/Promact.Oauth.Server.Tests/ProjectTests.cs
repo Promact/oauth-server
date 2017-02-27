@@ -197,17 +197,7 @@ namespace Promact.Oauth.Server.Tests
             Assert.Equal(projectAc.Name, project.Name);
         }
 
-        /// <summary>
-        /// This test case used to check exception condition 
-        /// </summary>
-        [Fact, Trait("Category", "A")]
-        public async Task GetProjectByGroupNameException()
-        {
-            ProjectAc projectAc = MockOfProjectAc();
-            await _projectRepository.AddProjectAsync(projectAc, _stringConstant.CreatedBy);
-            Assert.Throws<AggregateException>(() => _projectRepository.GetProjectBySlackChannelNameAsync("test").Result);
-        }
-
+       
         /// <summary>
         /// Test case to check GetProjectsWithUsers 
         /// </summary>
