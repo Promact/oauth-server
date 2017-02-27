@@ -40,6 +40,20 @@ describe('Consumer List Test', () => {
         tick();
         expect(consumerappListComponent.listOfConsumerApps.length).toEqual(1);
     }));
+
+    it("Edit page call Details", fakeAsync(() => {
+        let fixture = TestBed.createComponent(ConsumerappListComponent); //Create instance of component            
+        let consumerappListComponent = fixture.componentInstance;
+        consumerappListComponent.editDetails(1);
+        tick();
+    }));
+
+    it("Add New App page call", fakeAsync(() => {
+        let fixture = TestBed.createComponent(ConsumerappListComponent); //Create instance of component            
+        let consumerappListComponent = fixture.componentInstance;
+        consumerappListComponent.addNewApp();
+        tick();
+    }));
 });
 
 
