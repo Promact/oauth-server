@@ -67,9 +67,7 @@ export class ConsumerappEditComponent implements OnInit {
                 this.clientSecretIndicator = true;
                 this.consumerModel.AuthSecret = result;
             }
-        }), err => {
-            this.toast.show('Error generating random number');
-        };
+        });
     }
 
     scopeOnChange(scopes: Array<consumerappallowedscopes>) {
