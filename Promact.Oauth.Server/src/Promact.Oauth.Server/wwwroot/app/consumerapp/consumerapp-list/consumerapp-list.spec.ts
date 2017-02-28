@@ -54,6 +54,14 @@ describe('Consumer List Test', () => {
         consumerappListComponent.addNewApp();
         tick();
     }));
+
+    it("OnInit", fakeAsync(() => {
+        let fixture = TestBed.createComponent(ConsumerappListComponent); //Create instance of component            
+        let consumerappListComponent = fixture.componentInstance;
+        consumerappListComponent.ngOnInit();
+        tick();
+        expect(consumerappListComponent.listOfConsumerApps.length).toEqual(1);
+    }));
 });
 
 

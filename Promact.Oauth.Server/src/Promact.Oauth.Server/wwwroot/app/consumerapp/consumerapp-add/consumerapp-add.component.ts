@@ -34,10 +34,8 @@ export class ConsumerappAddComponent implements OnInit {
         this.consumerAppService.addConsumerApps(consumerModel).then((result) => {
             this.toast.show('Consumer App is added successfully.');
             this.cancel();
-        }, err => {
-            this.toast.show('Consumer App Name is already exists.');
-            this.loader.loader = false;
         });
+        this.loader.loader = false;
     };
     cancel() {
         this.router.navigate(['/consumerapp']);
