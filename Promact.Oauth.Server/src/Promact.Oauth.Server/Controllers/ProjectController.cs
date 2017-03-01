@@ -489,6 +489,35 @@ namespace Promact.Oauth.Server.Controllers
         {
             return Ok(await _projectRepository.GetProjectDetailsAsync(projectId));
         }
+
+        /**
+        * @api {get} api/project/user/userId
+        * @apiVersion 1.0.0
+        * @apiName GetListOfProjectsEnrollmentOfUserByUserId
+        * @apiGroup Project
+        * @apiParam {string} userId  userId
+        * @apiParamExample {json} Request-Example:
+        *        {
+        *             "userId": "skgnskdgfsdssdvsdj"
+        *        }      
+        * @apiSuccessExample {json} Success-Response:
+        * HTTP/1.1 200 OK 
+        *  [{
+        *   "Id":"1"
+        *   "Name":"ProjectName",
+        *   "SlackChannelName":"SlackChannelName",
+        *   "IsActive":"True",
+        *   "TeamLeaderId":"1",
+        *   "ApplicationUsers":null
+        *  }]
+        */
+        [Authorize(Policy = ReadProject)]
+        [HttpGet]
+        [Route("user/{userId}")]
+        public async Task<IActionResult> GetListOfProjectsEnrollmentOfUserByUserId(string userId)
+        {
+            return Ok(await _projectRepository.GetListOfProjectsEnrollmentOfUserByUserId(userId));
+        }
         #endregion
     }
 }
