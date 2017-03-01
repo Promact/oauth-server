@@ -23,7 +23,7 @@ namespace Promact.Oauth.Server.Controllers
         #endregion
 
         #region "Constructor"
-        public ProjectController(IProjectRepository projectRepository,UserManager<ApplicationUser> userManager,IStringConstant stringConstant)
+        public ProjectController(IProjectRepository projectRepository, UserManager<ApplicationUser> userManager, IStringConstant stringConstant)
         {
             _projectRepository = projectRepository;
             _userManager = userManager;
@@ -77,7 +77,7 @@ namespace Promact.Oauth.Server.Controllers
         public async Task<IActionResult> GetProjectsAsync()
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            var isRoleExists = await _userManager.IsInRoleAsync(user,_stringConstant.Employee );
+            var isRoleExists = await _userManager.IsInRoleAsync(user, _stringConstant.Employee);
             if (isRoleExists)
             {
                 return Ok(await _projectRepository.GetAllProjectForUserAsync(user.Id));
@@ -421,26 +421,13 @@ namespace Promact.Oauth.Server.Controllers
         *   "TeamLeaderId":"1",
         *   "ApplicationUsers":null
         * }
-        * @apiError ProjectNotFound The id of the Project was not found.
-        * @apiErrorExample {json} Error-Response:
-        * HTTP/1.1 404 Not Found
-        * {
-        *   "error": "ProjectNotFound"
-        * }
         */
         [Authorize(Policy = ReadProject)]
         [HttpGet]
         [Route("{slackChannelName}")]
         public async Task<IActionResult> GetProjectBySlackChannelNameAsync(string slackChannelName)
         {
-            try
-            {
-                return Ok(await _projectRepository.GetProjectBySlackChannelNameAsync(slackChannelName));
-            }
-            catch (ProjectNotFound)
-            {
-                return NotFound();
-            }
+            return Ok(await _projectRepository.GetProjectBySlackChannelNameAsync(slackChannelName));
         }
 
         /**
