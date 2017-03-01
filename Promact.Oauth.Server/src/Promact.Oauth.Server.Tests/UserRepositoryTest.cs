@@ -735,6 +735,7 @@ namespace Promact.Oauth.Server.Tests
             Assert.Equal(result.Message, _stringConstant.ExceptionMessageSlackUserNotFound);
         }
 
+
         #endregion
 
         #region Initialization
