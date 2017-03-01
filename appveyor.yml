@@ -5,7 +5,7 @@ configuration: Release
 environment:
  nodejs_version: "0.12"
  COVERALLS_REPO_TOKEN:
-   secure: oI8JLO5/25+ZMrrWdVckNz5zqUysVlU+VVMBpPxZlEXaQ/A/6z544OcIs8rVhk49
+   secure: oI8JLO5/25+ZMrrWdVckNz5zqUysVlU+VVMBpPxZlEXaQ/A/6z544OcIs8rVhk49As
 cache:
 - "%LOCALAPPDATA%\\Yarn"
 install:
