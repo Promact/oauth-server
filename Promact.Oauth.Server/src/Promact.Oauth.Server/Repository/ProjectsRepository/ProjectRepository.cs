@@ -294,6 +294,25 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         }
 
         /// <summary>
+        /// Method to get list of project for an user
+        /// </summary>
+        /// <param name="userId">user's user Id</param>
+        /// <returns>list of project</returns>
+        public async Task<List<ProjectAc>> GetListOfProjectsEnrollmentOfUserByUserId(string userId)
+        {
+            List<ProjectAc> projects = new List<ProjectAc>();
+            var projectIds = (await _projectUserDataRepository.FetchAsync(x => x.UserId == userId)).Select(x => x.ProjectId).ToList();
+            projectIds.AddRange((await _projectDataRepository.FetchAsync(x => x.TeamLeaderId == userId)).Select(x => x.Id));
+            foreach (var projectId in projectIds)
+            {
+                var project = await _projectDataRepository.FirstAsync(x => x.Id == projectId);
+                var projectAC = _mapperContext.Map<Project, ProjectAc>(project);
+                projects.Add(projectAC);
+            }
+            return projects;
+        }
+
+        /// <summary>
         /// Method to assign teamleader and users in a project -GA
         /// </summary>
         /// <param name="project"></param>
