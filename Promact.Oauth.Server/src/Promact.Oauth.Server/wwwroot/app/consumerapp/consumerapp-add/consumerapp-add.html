@@ -7,47 +7,51 @@
             <button md-raised-button type="submit" class="btn-back btn-green" (click)="cancel()"> <i class="material-icons">arrow_back</i>Back</button>
         </div>
     </div>
-
     <form #consumerAppForm="ngForm">
-        <div class="half-width mr-25">
-            <md-input class="full-width" placeholder="Auth Id" [(ngModel)]="consumerModel.AuthId" [disabled]="true" name="AuthId" #AuthId="ngModel"></md-input>
-            <button md-raised-button type="button" class="btn-back btn-green" (click)="getRandomNumber(true)">Re-Generate</button>
-        </div>
-        <div class="half-width">
-            <md-input class="full-width" placeholder="Auth Secret" [(ngModel)]="consumerModel.AuthSecret" [disabled]="true" name="AuthSecret" #AuthSecret="ngModel"></md-input>
-            <div [hidden]="!clientSecretIndicator" class="error">Please copy the client secret. It will be encoded after saving.</div>
-            <button md-raised-button type="button" class="btn-back btn-green" (click)="getRandomNumber(false)">Re-Generate</button>
-        </div>
         <div class="form-group">
-            <div class="half-width">
+            <div class="half-width align-left">
+                <md-input class="full-width" placeholder="Auth Id" [(ngModel)]="consumerModel.AuthId" [disabled]="true" name="AuthId" #AuthId="ngModel"></md-input>
+                <button md-raised-button type="button" class="btn-back btn-green btn-reg" (click)="getRandomNumber(true)">Re-Generate</button>
+            </div>
+            <div class="half-width align-left">
+                <md-input class="full-width" placeholder="Auth Secret" [(ngModel)]="consumerModel.AuthSecret" [disabled]="true" name="AuthSecret" #AuthSecret="ngModel"></md-input>
+                <div [hidden]="!clientSecretIndicator" class="error">Please copy the client secret. It will be encoded after saving.</div>
+                <button md-raised-button type="button" class="btn-back btn-green" (click)="getRandomNumber(false)">Re-Generate</button>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="form-group">
+            <div class="half-width align-left">
                 <md-input placeholder="Name" class="full-width" type="text" name="consumerName" [(ngModel)]="consumerModel.Name" maxlength="255" required #consumerName="ngModel"></md-input>
                 <div [hidden]="!(consumerName.touched && !consumerName.valid && consumerName.errors.required)" class="error">Name is required</div>
             </div>
-        </div>
-        <div class="form-group">
-            <div class="half-width">
+
+            <div class="half-width align-left">
                 <md-input placeholder="Call Back Url" class="full-width" type="text" name="consumerCallBackUrl" [(ngModel)]="consumerModel.CallbackUrl" maxlength="255" required #consumerCallBackUrl="ngModel" validateUrl></md-input>
                 <div [hidden]="!(consumerCallBackUrl.touched && !consumerCallBackUrl.valid && consumerCallBackUrl.errors.required)" class="error">Call Back Url is required</div>
                 <div [hidden]="!(consumerCallBackUrl.touched && !consumerCallBackUrl.valid && !consumerCallBackUrl.errors.required && consumerCallBackUrl.errors.url)" class="error">Call Back Url is not valid</div>
             </div>
         </div>
+        <div class="clearfix"></div>
         <div class="form-group">
-            <div class="half-width" style="position:relative;">
-                <md2-multiselect name="select" [items]="scopes"
+            <div class="half-width align-left" style="position:relative;">
+                <md2-multiselect class="full-width" name="select" [items]="scopes"
                                  item-text="name"
                                  item-value="value"
                                  [(ngModel)]="consumerModel.Scopes"
                                  placeholder="Select Scopes" required (change)="scopeOnChange(consumerModel.Scopes)">
                 </md2-multiselect>
+                <div [hidden]="!clientScopeIndicator" class="error">Scope Required</div>
             </div>
-            <div [hidden]="!clientScopeIndicator" class="error">Scope Required</div>
-        </div>
-        <div class="form-group">
-            <md-input class="full-width" placeholder="LogoutUrl" type="text" name="logoutUrl" [(ngModel)]="consumerModel.LogoutUrl" maxlength="255" required #logoutUrl="ngModel" validateUrl></md-input>
-            <div [hidden]="!(logoutUrl.touched && !logoutUrl.valid && logoutUrl.errors.required)" class="error">Log-Out Url is required</div>
-            <div [hidden]="!(logoutUrl.touched && !logoutUrl.valid && !logoutUrl.errors.required && logoutUrl.errors.url)" class="error">Log-Out Url is not valid</div>
-        </div>
 
+
+            <div class="half-width align-left">
+                <md-input class="full-width" placeholder="LogoutUrl" type="text" name="logoutUrl" [(ngModel)]="consumerModel.LogoutUrl" maxlength="255" required #logoutUrl="ngModel" validateUrl></md-input>
+                <div [hidden]="!(logoutUrl.touched && !logoutUrl.valid && logoutUrl.errors.required)" class="error">Log-Out Url is required</div>
+                <div [hidden]="!(logoutUrl.touched && !logoutUrl.valid && !logoutUrl.errors.required && logoutUrl.errors.url)" class="error">Log-Out Url is not valid</div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
         <div class="form-group" id="group-btn">
             <button md-raised-button class="btn-green" type="submit" (click)="submitApps(consumerModel)" [disabled]="!(consumerAppForm.form.valid && !clientScopeIndicator)">Submit</button>
         </div>
