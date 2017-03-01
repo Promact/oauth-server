@@ -14,7 +14,7 @@ import { MdToolbarModule } from "@angular2-material/toolbar";
 import { LoaderService } from "./shared/loader.service";
 import { UserRole } from "./shared/userrole.model";
 import { StringConstant } from './shared/stringconstant';
-
+import { AuthenticationService } from "./authentication.service";
 
 
 
@@ -32,6 +32,6 @@ import { StringConstant } from './shared/stringconstant';
         ChangePasswordModule
     ],
     bootstrap: [AppComponent],
-    providers: [StringConstant, LoaderService, { provide: LocationStrategy, useClass: HashLocationStrategy }, UserRole],
+    providers: [StringConstant, LoaderService, AuthenticationService, { provide: LocationStrategy, useClass: HashLocationStrategy }, UserRole],
 })
 export class AppModule { }
