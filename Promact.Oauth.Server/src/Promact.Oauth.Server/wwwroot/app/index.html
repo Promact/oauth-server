@@ -2,23 +2,23 @@
 <div class="main-wrapper">
     <md-sidenav-layout class="demo-sidenav-layout">
         <md-sidenav #start mode="side" opened="true" class="sm-side-menu">
-            <div class="brand">Promact Oauth</div>
+            <div class="brand"><span>Promact Oauth</span></div>
             <ul>
                 <li>
-                    <a routerLink="user" routerLinkActive="active" *ngIf="admin==true"><i class="fa fa-users" aria-hidden="true"></i>Users</a>
+                    <a routerLink="user" routerLinkActive="active" *ngIf="admin==true"><i class="icon-users side-nav-icons"></i>Users</a>
                 </li>
                
                 <li>
-                    <a routerLink="/user/details/{{userId}}" routerLinkActive="active" *ngIf="admin==false"><i class="fa fa-users" aria-hidden="true"></i>User Details</a>
+                    <a routerLink="/user/details/{{userId}}" routerLinkActive="active" *ngIf="admin==false"><i class="icon-users"></i>User Details</a>
                 </li>
                 <li>
-                    <a routerLink="project" routerLinkActive="active"><i class="fa fa-file-text" aria-hidden="true"></i>Projects</a>
+                    <a routerLink="project" routerLinkActive="active"><i class="icon-social-buffer side-nav-icons"></i>Projects</a>
                 </li>
                 <li>
-                    <a routerLink="consumerapp" routerLinkActive="active" *ngIf="admin==true">Consumer App</a>
+                    <a routerLink="consumerapp" routerLinkActive="active" *ngIf="admin==true"><i class="icon-th-list side-nav-icons"></i>Consumer App</a>
                 </li>
                 <li>
-                    <a routerLink="changepassword" routerLinkActive="active">Change Password</a>
+                    <a routerLink="changepassword" routerLinkActive="active"><i class="icon-key side-nav-icons"></i>Change Password</a>
                 </li>
             </ul>
         </md-sidenav>
