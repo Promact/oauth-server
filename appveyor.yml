@@ -17,8 +17,6 @@ install:
 - cd..
 build_script:
 - ps: dotnet restore
-- ps: dotnet build ./Promact.Oauth.Server.Tests -c Release
-- ps: dotnet test ./Promact.Oauth.Server.Tests/project.json -c Release 
 build:
   project: .\Promact.Oauth.Server\Promact.Oauth.Server.sln
   verbosity: minimal
