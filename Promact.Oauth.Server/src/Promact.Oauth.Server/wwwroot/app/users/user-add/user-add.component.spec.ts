@@ -1,5 +1,5 @@
-﻿declare var describe, it, beforeEach, expect;
-import { async, TestBed ,fakeAsync, tick} from '@angular/core/testing';
+﻿declare var describe, it, beforeEach, expect, spyOn;
+import { async, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { UserAddComponent } from "../user-add/user-add.component";
 import { UserService } from "../user.service";
 import { UserModel } from '../../users/user.model';
@@ -42,27 +42,46 @@ describe('User Add Test', () => {
         tick();
         expect(userModel.FirstName).toBe(expected);
     }));
+            
 
-    it("should check user not added successfully", fakeAsync(() => {
+    it("should check that user is not added successfully", fakeAsync(() => {
         let fixture = TestBed.createComponent(UserAddComponent); //Create instance of component            
         let userAddComponent = fixture.componentInstance;
         let userModel = new UserModel();
-        let expected = stringConstant.email;
-        userModel.FirstName = stringConstant.firstName;
-        userModel.Email = expected;
+        userModel.FirstName = "";
         userAddComponent.addUser(userModel);
         tick();
-        expect(userModel.Email).toBe(expected);
+        expect(userAddComponent.userModel.FirstName).toBe(undefined);
     }));
 
+        
     it("should check user email", fakeAsync(() => {
         let fixture = TestBed.createComponent(UserAddComponent); //Create instance of component            
         let userAddComponent = fixture.componentInstance;
-        let email = "";
-        let expected = "";
-        userAddComponent.checkEmail(expected);
+        userAddComponent.checkEmail(stringConstant.email);
         tick();
-        expect(email).toBe(expected);
+        expect(userAddComponent.isEmailExist).toBe(true);
     }));
-});
 
+
+    it("should get list of roles", fakeAsync(() => {
+        let fixture = TestBed.createComponent(UserAddComponent); //Create instance of component 
+        let userAddComponent = fixture.componentInstance;
+        userAddComponent.ngOnInit();
+        tick();
+        expect(userAddComponent.listOfRoles.length).toBe(1);
+    }));
+
+
+    it('Calls goBack', fakeAsync(() => {
+        let fixture = TestBed.createComponent(UserAddComponent); //Create instance of component            
+        let userAddComponent = fixture.componentInstance;
+        let userListService = fixture.debugElement.injector.get(UserService);
+        let router = fixture.debugElement.injector.get(Router);
+        spyOn(router, stringConstant.navigate);
+        userAddComponent.goBack();
+        tick();
+        expect(router.navigate).toHaveBeenCalled();
+    }));
+
+});
