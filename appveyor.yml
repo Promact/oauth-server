@@ -22,7 +22,7 @@ build:
   verbosity: minimal
 test_script:
 - ps: >-
-   C:\Users\appveyor\.nuget\packages\OpenCover\4.6.519\tools\OpenCover.Console.exe -register:user -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test .\Promact.Oauth.Server.Tests\project.json" -appveyor -noshadow -filter:"+[Promact.Oauth.Server/Repository]* -[Promact.Oauth.Server.Tests*]*" -output:opencover.xml
+   C:\Users\appveyor\.nuget\packages\OpenCover\4.6.519\tools\OpenCover.Console.exe -register:user -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test .\Promact.Oauth.Server.Tests\project.json" -filter:"+[Promact.Oauth.Server/Repository]* -[Promact.Oauth.Server.Tests*]*" -output:opencover.xml
 
    if(![string]::IsNullOrEmpty($env:COVERALLS_REPO_TOKEN)){
 
