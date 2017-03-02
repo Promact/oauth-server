@@ -22,7 +22,7 @@ build:
   verbosity: minimal
 test_script:
 - ps: >-
-   C:\Users\appveyor\.nuget\packages\OpenCover\4.6.519\tools\OpenCover.Console.exe -register:user -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test -f netcoreapp1.1 -c Release Promact.Oauth.Server.Tests" -filter:"+[Promact.Oauth.Server*]* -[Promact.Oauth.Server.Tests*]*" -mergeoutput -hideskipped:File -output:opencover.xml -oldStyle
+   C:\Users\appveyor\.nuget\packages\OpenCover\4.6.519\tools\OpenCover.Console.exe -register:user -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test -f netcoreapp1.1 -c Release Promact.Oauth.Server.Tests" -filter:"+[Promact.Oauth.Server]Repository* -[Promact.Oauth.Server.Tests*]*" -mergeoutput -hideskipped:File -output:opencover.xml -oldStyle
 
    if(![string]::IsNullOrEmpty($env:COVERALLS_REPO_TOKEN)){
 
@@ -30,8 +30,3 @@ test_script:
 
    & $coveralls --opencover -i opencover.xml --repoToken $env:COVERALLS_REPO_TOKEN --commitId $env:APPVEYOR_REPO_COMMIT --commitBranch $env:APPVEYOR_REPO_BRANCH --commitAuthor $env:APPVEYOR_REPO_COMMIT_AUTHOR --commitEmail $env:APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL --commitMessage $env:APPVEYOR_REPO_COMMIT_MESSAGE --jobId $env:APPVEYOR_JOB_ID
    }   
-after_test:
-  - cd .\Promact.Oauth.Server\src\Promact.Oauth.Server.Tests\
-  - dir
-  - cd .\Promact.Oauth.Server\src\Promact.Oauth.Server.Tests\Repository
-  - dir
