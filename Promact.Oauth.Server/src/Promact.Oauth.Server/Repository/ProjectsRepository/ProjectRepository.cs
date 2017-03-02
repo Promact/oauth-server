@@ -17,7 +17,7 @@ using Promact.Oauth.Server.Data;
 namespace Promact.Oauth.Server.Repository.ProjectsRepository
 {
     public class ProjectRepository : IProjectRepository
-    {
+    { 
         #region "Private Variable(s)"
         private readonly IDataRepository<Project, PromactOauthDbContext> _projectDataRepository;
         private readonly IDataRepository<ProjectUser, PromactOauthDbContext> _projectUserDataRepository;
