@@ -2,29 +2,32 @@
 import { ResponseOptions, Response } from "@angular/http";
 import { UserModel } from "../../../users/user.model";
 import { PasswordModel } from "../../../users/user-password.model";
+import { ErrorModel } from "../../../shared/error.model";
 
 @Injectable()
 export class MockUserService {
     //private UserUrl = 'api/user';
     constructor() { }
 
+
     getUsers() {
         let mockUser = new MockUser();
         mockUser.FirstName = "First Name";
         mockUser.LastName = "Last Name";
         mockUser.Email = "test@promactinfo.com";
-
         return Promise.resolve(mockUser);
-
     }
+
 
     registerUser(newUser: UserModel) {
-        if (newUser.Email === "ankit@promactinfo.com")
-            return Promise.resolve(newUser.Email);
-        else
-            return Promise.resolve(newUser.FirstName);
+        if (newUser.FirstName === "") {
+            let error = new MockError(400);
+            return Promise.reject(error);
+        }
+        else {
+            return Promise.resolve(newUser);
+        }
     }
-
 
     getUserById(userId: string) {
         let mockUser = new MockUsers(userId);
@@ -32,9 +35,13 @@ export class MockUserService {
             mockUser.FirstName = "First Name";
             mockUser.LastName = "Last Name";
             mockUser.Email = "test@promactinfo.com";
+            return Promise.resolve(mockUser);
         }
-        return Promise.resolve(mockUser);
+        else {
+            return Promise.reject(mockUser)
+        };
     }
+
 
     userDelete(userId: string) {
         if (userId === "1") {
@@ -45,13 +52,21 @@ export class MockUserService {
         }
     }
 
+
     reSendMail(user: UserModel) {
         return Promise.resolve();
     }
 
 
     editUser(editedUser: UserModel) {
-        return Promise.resolve(editedUser);
+
+        if (editedUser.FirstName === "") {
+            let error = new MockError(404);
+            return Promise.reject(error);
+        }
+        else {
+            return Promise.resolve(editedUser);
+        }
     }
 
 
@@ -59,6 +74,7 @@ export class MockUserService {
         let result = newPassword.NewPassword;
         return Promise.resolve(result);
     }
+
 
     getRoles() {
         let listOfRole = new Array<MockRole>();
@@ -69,13 +85,18 @@ export class MockUserService {
         return Promise.resolve(listOfRole);
     }
 
+
     checkOldPasswordIsValid() {
         return Promise.resolve(true);
     }
 
-    
-}
 
+    checkEmailIsExists() {
+        return Promise.resolve(true);
+    }
+
+
+}
 
 
 class MockRole extends UserModel {
@@ -85,6 +106,7 @@ class MockRole extends UserModel {
     }
 }
 
+
 class MockUser extends UserModel {
 
     constructor() {
@@ -92,11 +114,20 @@ class MockUser extends UserModel {
     }
 }
 
+
 class MockUsers extends UserModel {
 
     constructor(id: string) {
         super();
         this.Id = id;
     }
+}
 
+
+class MockError extends ErrorModel {
+
+    constructor(status: number) {
+        super();
+        this.status = status;
+    }
 }
