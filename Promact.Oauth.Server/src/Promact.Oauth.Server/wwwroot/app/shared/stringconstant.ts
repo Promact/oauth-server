@@ -29,5 +29,6 @@ export class StringConstant {
     oldPassword = 'test';
     confirmPassword = 'test1234';
     medium = "medium";
+    navigate = "navigate";
     dateFormat = "dd-MM-yyyy";
 }
