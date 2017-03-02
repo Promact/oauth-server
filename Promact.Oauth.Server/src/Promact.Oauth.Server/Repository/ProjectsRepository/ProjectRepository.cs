@@ -303,6 +303,20 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         #region Private Method(s)
 
         /// <summary>
+        /// This methos used for get user email list based on roles.
+        /// </summary>
+        /// <returns>list of email based on roles</returns>
+        public async Task<UserDetailAc> GetUserEmailListBasedOnRole()
+        {
+            return null;
+
+        }
+
+        #endregion
+
+        #region Private Method(s)
+
+        /// <summary>
         /// Method to get list of project for an user
         /// </summary>
         /// <param name="userId">user's user Id</param>
