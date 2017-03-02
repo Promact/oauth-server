@@ -68,6 +68,26 @@ namespace Promact.Oauth.Server.Tests
         }
 
         /// <summary>
+        /// This test case for gets project By Id without team leader
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task GetProjectByProjectId()
+        {
+            string userId = await MockOfUserAc();
+            ProjectAc projectac = new ProjectAc();
+            projectac.Name = _stringConstant.Name;
+            projectac.SlackChannelName = _stringConstant.SlackChannelName;
+            projectac.IsActive = _stringConstant.IsActive;
+            projectac.CreatedBy = _stringConstant.CreatedBy;
+            projectac.TeamLeader = new UserAc { FirstName = _stringConstant.FirstName };
+            projectac.TeamLeaderId = userId;
+            var id=await _projectRepository.AddProjectAsync(projectac, _stringConstant.CreatedBy);
+            await GetProjectUserMockData();
+            ProjectAc project = await _projectRepository.GetProjectByIdAsync(id);
+            Assert.NotNull(project);
+        }
+
+        /// <summary>
         /// This test case used to check exception condition 
         /// </summary>
         /// <returns></returns>
@@ -169,6 +189,55 @@ namespace Promact.Oauth.Server.Tests
 
 
         /// <summary>
+        /// This test case for the check duplicate where project name and slack channel name both are already in database.
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task CheckDuplicateProject()
+        {
+            List<UserAc> userlist = GetUserListMockData();
+            await GetProjectMockData();
+            ProjectAc projectacSecound = new ProjectAc()
+            {
+                Id = 5,
+                Name = _stringConstant.Name,
+                SlackChannelName = _stringConstant.SlackChannelName,
+                IsActive = true,
+                TeamLeader = new UserAc { FirstName = _stringConstant.FirstName },
+                TeamLeaderId = _stringConstant.TeamLeaderId,
+                CreatedBy = _stringConstant.CreatedBy,
+                CreatedDate = DateTime.UtcNow,
+                ApplicationUsers = userlist
+            };
+            var project = await _projectRepository.CheckDuplicateProjectAsync(projectacSecound);
+            Assert.Null(project.SlackChannelName);
+        }
+
+        /// <summary>
+        /// This test case for the check duplicate where project name and slack channel name both not in database.
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task TestCheckDuplicateNegative()
+        {
+            List<UserAc> userlist = GetUserListMockData();
+            await GetProjectMockData();
+            ProjectAc projectacSecound = new ProjectAc()
+            {
+                Id = 5,
+                Name =_stringConstant.LastName,
+                SlackChannelName = _stringConstant.LastName,
+                IsActive = true,
+                TeamLeader = new UserAc { FirstName = _stringConstant.FirstName },
+                TeamLeaderId = _stringConstant.TeamLeaderId,
+                CreatedBy = _stringConstant.CreatedBy,
+                CreatedDate = DateTime.UtcNow,
+                ApplicationUsers = userlist
+            };
+            var project = await _projectRepository.CheckDuplicateProjectAsync(projectacSecound);
+            Assert.NotNull(project.SlackChannelName);
+        }
+
+
+        /// <summary>
         /// This test case for the get all projects
         /// </summary>
         [Fact, Trait("Category", "Required")]
@@ -177,6 +246,21 @@ namespace Promact.Oauth.Server.Tests
             var id = await MockOfUserAc();
             ProjectAc projectAc = MockOfProjectAc();
             projectAc.TeamLeaderId = id;
+            projectAc.CreatedBy = id;
+            var projectId = await _projectRepository.AddProjectAsync(projectAc, id);
+            IEnumerable<ProjectAc> projects = await _projectRepository.GetAllProjectsAsync();
+            Assert.NotNull(projects);
+        }
+
+        /// <summary>
+        /// This test case for the get all projects without Team leader
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task GetAllProjects()
+        {
+            var id = await MockOfUserAc();
+            ProjectAc projectAc = MockOfProjectAc();
+            projectAc.TeamLeaderId = "";
             projectAc.CreatedBy = id;
             var projectId = await _projectRepository.AddProjectAsync(projectAc, id);
             IEnumerable<ProjectAc> projects = await _projectRepository.GetAllProjectsAsync();
@@ -197,7 +281,47 @@ namespace Promact.Oauth.Server.Tests
             Assert.Equal(projectAc.Name, project.Name);
         }
 
-       
+        /// <summary>
+        /// Fetch the project of the given slack channel name  with out teamleader
+        /// </summary>
+        [Fact, Trait("Category", "A")]
+        public async Task GetProjectByGroupNameWithoutTeamLeader()
+        {
+            var userId = await MockOfUserAc();
+            ProjectAc projectAc = MockOfProjectAc();
+            projectAc.TeamLeaderId = "";
+            await _projectRepository.AddProjectAsync(projectAc, _stringConstant.CreatedBy);
+            var project = await _projectRepository.GetProjectBySlackChannelNameAsync(projectAc.SlackChannelName);
+            Assert.Null(project.Name);
+        }
+
+        /// <summary>
+        /// Fetch the project of the given Team leader
+        /// </summary>
+        /// <returns></returns>
+        [Fact, Trait("Category", "A")]
+        public async Task GetAllProjectForUserAsync()
+        {
+            var userId = await MockOfUserAc();
+            ProjectAc projectAc = MockOfProjectAc();
+            projectAc.TeamLeaderId = userId;
+            await _projectRepository.AddProjectAsync(projectAc, _stringConstant.CreatedBy);
+            var project = await _projectRepository.GetAllProjectForUserAsync(userId);
+            Assert.NotNull(projectAc);
+        }
+
+        /// <summary>
+        /// Fetch the project of the given user
+        /// </summary>
+        /// <returns></returns>
+        [Fact, Trait("Category", "A")]
+        public async Task GetAllProjectForUserAsyncForUser()
+        {
+            await GetProjectUserMockData();
+            var project = await _projectRepository.GetAllProjectForUserAsync(_stringConstant.UserId);
+            Assert.NotNull(project);
+        }
+
         /// <summary>
         /// Test case to check GetProjectsWithUsers 
         /// </summary>

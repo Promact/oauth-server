@@ -30,4 +30,6 @@ export class StringConstant {
     confirmPassword = 'test1234';
     medium = "medium";
     dateFormat = "dd-MM-yyyy";
+    userRole = "employee";
+    testString = "test";
 }
