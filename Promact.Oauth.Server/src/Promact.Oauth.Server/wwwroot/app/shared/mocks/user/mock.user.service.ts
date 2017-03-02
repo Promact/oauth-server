@@ -38,7 +38,7 @@ export class MockUserService {
             return Promise.resolve(mockUser);
         }
         else {
-            return Promise.reject(mockUser)
+            return Promise.reject(mockUser);
         };
     }
 
