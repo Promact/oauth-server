@@ -4,7 +4,6 @@ import { Router } from "@angular/router";
 import { ConsumerAppService } from "../consumerapp.service";
 import { Md2Toast } from 'md2';
 import { LoaderService } from '../../shared/loader.service';
-
 @Component({
     templateUrl: "app/consumerapp/consumerapp-add/consumerapp-add.html",
 })
@@ -22,26 +21,22 @@ export class ConsumerappAddComponent implements OnInit {
                 this.scopes.push({ value: scopeIntegerValue, name: consumerappallowedscopes[scopeIntegerValue] });
             }
         }
+        this.clientScopeIndicator = false;
     };
-
     ngOnInit() {
         this.loader.loader = true;
         this.getRandomNumber(true);
         this.getRandomNumber(false);
         this.loader.loader = false;
-    }
-
+    };
     submitApps(consumerModel: ConsumerAppModel) {
         this.loader.loader = true;
         this.consumerAppService.addConsumerApps(consumerModel).then((result) => {
             this.toast.show('Consumer App is added successfully.');
             this.cancel();
-        }, err => {
-            this.toast.show('Consumer App Name is already exists.');
-            this.loader.loader = false;
         });
+        this.loader.loader = false;
     };
-
     cancel() {
         this.router.navigate(['/consumerapp']);
     };
@@ -54,17 +49,11 @@ export class ConsumerappAddComponent implements OnInit {
                 this.clientSecretIndicator = true;
                 this.consumerModel.AuthSecret = result;
             }
-        }), err => {
-            this.toast.show('Error generating random number');
-        };
+        });
     };
-
     scopeOnChange(scopes: Array<consumerappallowedscopes>) {
         if (scopes.length === 0) {
             this.clientScopeIndicator = true;
-        }
-        else {
-            this.clientScopeIndicator = false;
         }
     }
 }
