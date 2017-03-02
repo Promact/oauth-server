@@ -17,7 +17,7 @@ using Promact.Oauth.Server.Data;
 namespace Promact.Oauth.Server.Repository.ProjectsRepository
 {
     public class ProjectRepository : IProjectRepository
-    {
+    { 
         #region "Private Variable(s)"
         private readonly IDataRepository<Project, PromactOauthDbContext> _projectDataRepository;
         private readonly IDataRepository<ProjectUser, PromactOauthDbContext> _projectUserDataRepository;
@@ -27,7 +27,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         private readonly IStringConstant _stringConstant;
         private readonly IMapper _mapperContext;
         #endregion
-
+         
         #region "Constructor"
         public ProjectRepository(IDataRepository<Project, PromactOauthDbContext> projectDataRepository, IDataRepository<ProjectUser, PromactOauthDbContext> projectUserDataRepository, IDataRepository<ApplicationUser, PromactOauthDbContext> userDataRepository, UserManager<ApplicationUser> userManager,
             IMapper mapperContext, IStringConstant stringConstant, ILogger<ProjectRepository> logger)
@@ -291,6 +291,25 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             Project project = await _projectDataRepository.FirstOrDefaultAsync(x => x.Id == projectId);
             ProjectAc projectAc = await AssignTeamMembers(project);
             return projectAc;
+        }
+
+        /// <summary>
+        /// Method to get list of project for an user
+        /// </summary>
+        /// <param name="userId">user's user Id</param>
+        /// <returns>list of project</returns>
+        public async Task<List<ProjectAc>> GetListOfProjectsEnrollmentOfUserByUserId(string userId)
+        {
+            List<ProjectAc> projects = new List<ProjectAc>();
+            var projectIds = (await _projectUserDataRepository.FetchAsync(x => x.UserId == userId)).Select(x => x.ProjectId).ToList();
+            projectIds.AddRange((await _projectDataRepository.FetchAsync(x => x.TeamLeaderId == userId)).Select(x => x.Id));
+            foreach (var projectId in projectIds)
+            {
+                var project = await _projectDataRepository.FirstAsync(x => x.Id == projectId);
+                var projectAC = _mapperContext.Map<Project, ProjectAc>(project);
+                projects.Add(projectAC);
+            }
+            return projects;
         }
 
         /// <summary>
