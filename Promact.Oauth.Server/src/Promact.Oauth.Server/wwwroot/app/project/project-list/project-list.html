@@ -34,8 +34,8 @@
                     <td *ngIf="admin==true">{{project.UpdatedBy}}</td>
                     <td *ngIf="admin==true">{{project.UpdatedOns}}</td>
                     <td *ngIf="admin==true">
-                        <button md-raised-button class="btn-green custom-btn mr-5" (click)="editProject(project.Id)">Edit</button>
-                        <button md-raised-button class="custom-btn" (click)="viewProject(project.Id)">View</button>
+                        <i class="icon-pencil oauth-icon" title="Edit" (click)="editProject(project.Id)"></i>
+                        <i class="icon-android-document oauth-icon" title="View" (click)="viewProject(project.Id)"></i>
                     </td>
 
                 </tr>
