@@ -100,6 +100,17 @@ describe("User List Test", () => {
         userModel.Id = "2";
         userListComponent.userDelete(userModel.Id);
         tick();
+        expect(userListComponent.users.length).not.toBe(0);
+    }));
+
+
+    it("should not delete user", fakeAsync(() => {
+        let fixture = TestBed.createComponent(UserListComponent); //Create instance of component            
+        let userListComponent = fixture.componentInstance;
+        let userModel = new UserModel();
+        userModel.Id = "2";
+        userListComponent.userDelete(userModel.Id);
+        tick();
         expect(userListComponent.users.length).toBe(0);
     }));
 
