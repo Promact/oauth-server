@@ -28,5 +28,6 @@ describe('App Component Test', () => {
     it("Load app Component", () => {
         let fixture = TestBed.createComponent(AppComponent);
         let comp = fixture.componentInstance;
+        expect(comp).toBeDefined();
     });
 });
