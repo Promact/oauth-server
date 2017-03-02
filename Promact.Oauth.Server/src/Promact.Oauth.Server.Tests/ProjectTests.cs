@@ -164,31 +164,6 @@ namespace Promact.Oauth.Server.Tests
         }
 
         /// <summary>
-        /// This test case for the check duplicate project
-        /// </summary>
-        [Fact, Trait("Category", "Required")]
-        public async Task CheckDuplicatePositive()
-        {
-            List<UserAc> userlist = GetUserListMockData();
-            await GetProjectMockData();
-            ProjectAc projectacSecound = new ProjectAc()
-            {
-                Id = 4,
-                Name = _stringConstant.ProjectName,
-                SlackChannelName = _stringConstant.SlackChannelName,
-                IsActive = true,
-                TeamLeader = new UserAc { FirstName = _stringConstant.FirstName },
-                TeamLeaderId = _stringConstant.TeamLeaderId,
-                CreatedBy = _stringConstant.CreatedBy,
-                CreatedDate = DateTime.UtcNow,
-                ApplicationUsers = userlist
-            };
-            var project = await _projectRepository.CheckDuplicateProjectAsync(projectacSecound);
-            Assert.Null(project.SlackChannelName);
-        }
-
-
-        /// <summary>
         /// This test case for the check duplicate where project name and slack channel name both are already in database.
         /// </summary>
         [Fact, Trait("Category", "Required")]
