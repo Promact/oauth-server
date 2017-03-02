@@ -27,7 +27,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         private readonly IStringConstant _stringConstant;
         private readonly IMapper _mapperContext;
         #endregion
-
+         
         #region "Constructor"
         public ProjectRepository(IDataRepository<Project, PromactOauthDbContext> projectDataRepository, IDataRepository<ProjectUser, PromactOauthDbContext> projectUserDataRepository, IDataRepository<ApplicationUser, PromactOauthDbContext> userDataRepository, UserManager<ApplicationUser> userManager,
             IMapper mapperContext, IStringConstant stringConstant, ILogger<ProjectRepository> logger)
