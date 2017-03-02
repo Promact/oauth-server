@@ -31,4 +31,6 @@ export class StringConstant {
     medium = "medium";
     navigate = "navigate";
     dateFormat = "dd-MM-yyyy";
+    userRole = "employee";
+    testString = "test";
 }
