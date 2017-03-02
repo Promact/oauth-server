@@ -41,6 +41,8 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         }
         #endregion
 
+        #region Public Method(s)
+
         /// <summary>
         /// This method getting the list of all projects
         /// </summary>
@@ -294,6 +296,20 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         }
 
         /// <summary>
+        /// This methos used for get user email list based on roles.
+        /// </summary>
+        /// <returns>list of email based on roles</returns>
+        public async Task<UserDetailAc> GetUserEmailListBasedOnRole()
+        {
+            return null;
+
+        }
+
+        #endregion
+
+        #region Private Method(s)
+
+        /// <summary>
         /// Method to assign teamleader and users in a project -GA
         /// </summary>
         /// <param name="project"></param>
@@ -319,6 +335,8 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             }
             return projectAc;
         }
+
+        #endregion
     }
 }
 
