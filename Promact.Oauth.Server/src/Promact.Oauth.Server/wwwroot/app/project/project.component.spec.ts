@@ -8,6 +8,7 @@ import { ProjectComponent } from './project.component';
 import { StringConstant } from '../shared/stringconstant';
 import { ProjectModule } from './project.module';
 
+let stringConstant = new StringConstant();
 describe('Project Component Test', () => {
     const routes: Routes = [];
 
@@ -27,9 +28,17 @@ describe('Project Component Test', () => {
         let projectComponent = fixture.componentInstance;
         expect(projectComponent).toBeDefined();
     });
-     
     it("test ngOnInit method", () => {
         let fixture = TestBed.createComponent(ProjectComponent); //Create instance of component     
+        let projectComponent = fixture.componentInstance;
+        projectComponent.ngOnInit();
+        expect(projectComponent.admin).not.toBeNull();
+    });
+    it("test ngOnInit method user role not Admin", () => {
+        let fixture = TestBed.createComponent(ProjectComponent); //Create instance of component     
+        let user: UserRole = fixture.debugElement.injector.get(UserRole);
+        user.Role = stringConstant.userRole;
+        fixture.detectChanges();
         let projectComponent = fixture.componentInstance;
         projectComponent.ngOnInit();
         expect(projectComponent.admin).not.toBeNull();
