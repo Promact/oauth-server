@@ -37,8 +37,18 @@ export class MockUserService {
     }
 
     userDelete(userId: string) {
-        return Promise.resolve("");
+        if (userId === "1") {
+            return Promise.resolve("");
+        }
+        else {
+            return Promise.resolve("User could not be deleted");
+        }
     }
+
+    reSendMail(user: UserModel) {
+        return Promise.resolve();
+    }
+
 
     editUser(editedUser: UserModel) {
         return Promise.resolve(editedUser);
