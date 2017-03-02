@@ -17,7 +17,7 @@ export class ProjectAddComponent implements OnInit {
     item: Array<string> = [];
     project: ProjectModel;
     Userlist: Array<UserModel>;
-    constructor(private route: ActivatedRoute,private router: Router,private toast: Md2Toast,private proService: ProjectService,
+    constructor(private route: ActivatedRoute, private router: Router, private toast: Md2Toast, private projectService: ProjectService,
         private loader: LoaderService) {
         this.projects = new Array<ProjectModel>();
         this.project = new ProjectModel();
@@ -48,11 +48,11 @@ export class ProjectAddComponent implements OnInit {
         else {
             if (bool === 0) {
                 this.loader.loader = true;
-                this.proService.addProject(project).then((project) => {
+                this.projectService.addProject(project).then((project) => {
                     this.project = project;
                     if (project.Name === null && project.SlackChannelName === null) {
                         this.toast.show("Project and slackChannelName already exists");
-                        this.proService.getUsers().then(listUsers => {
+                        this.projectService.getUsers().then(listUsers => {
                             this.project.ListUsers = listUsers;
                             this.project.ApplicationUsers = new Array<UserModel>();
 
@@ -60,7 +60,7 @@ export class ProjectAddComponent implements OnInit {
                     }
                     else if (project.Name !== null && project.SlackChannelName === null) {
                         this.toast.show("slackChannelName already exists");
-                        this.proService.getUsers().then(listUsers => {
+                        this.projectService.getUsers().then(listUsers => {
                             this.project.ListUsers = listUsers;
                             this.project.ApplicationUsers = new Array<UserModel>();
 
@@ -69,7 +69,7 @@ export class ProjectAddComponent implements OnInit {
                     }
                     else if (project.Name === null && project.SlackChannelName !== null) {
                         this.toast.show("Project already exists");
-                        this.proService.getUsers().then(listUsers => {
+                        this.projectService.getUsers().then(listUsers => {
                             this.project.ListUsers = listUsers;
                             this.project.ApplicationUsers = new Array<UserModel>();
 
@@ -93,7 +93,7 @@ export class ProjectAddComponent implements OnInit {
     ngOnInit() {
         this.project = new ProjectModel();
         this.route.params.subscribe(params => {
-            this.proService.getUsers().then(listUsers => {
+            this.projectService.getUsers().then(listUsers => {
                 this.project.ListUsers = listUsers;
                 this.project.ApplicationUsers = new Array<UserModel>();
 
