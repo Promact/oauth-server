@@ -32,9 +32,6 @@ export class ProjectListComponent implements OnInit {
                 project.UpdatedOns = datePipe.transform(project.UpdatedDate, this.stringConstant.dateFormat);
             });
             this.loader.loader = false;
-        }, err => {
-            this.toast.show('Project list is empty.');
-            this.loader.loader = false;
         });
     }
     ngOnInit() {

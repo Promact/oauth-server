@@ -254,6 +254,21 @@ describe('Project Add Test', () => {
         tick();
         expect(router.navigate).toHaveBeenCalled();
     }));
+
+    it("should get error on add Project", fakeAsync(() => {
+        let fixture = TestBed.createComponent(ProjectAddComponent); //Create instance of component            
+        let projectAddComponent = fixture.componentInstance;
+        let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
+        activatedRoute.testParams = { id: stringConstant.id };
+        let projectModel = new ProjectModel();
+        projectModel.Name = "test";
+        projectModel.ApplicationUsers = mockList;
+        let projectService = fixture.debugElement.injector.get(ProjectService);
+        spyOn(projectService, "addProject").and.returnValue(Promise.reject(""));
+        projectAddComponent.addProject(projectModel);
+        tick();
+        expect(projectModel).not.toBeNull();
+    }));
 }); 
 
 
