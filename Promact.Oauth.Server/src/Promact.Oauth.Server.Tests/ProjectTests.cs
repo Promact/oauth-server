@@ -10,18 +10,22 @@ using System.Threading.Tasks;
 using Promact.Oauth.Server.Constants;
 using Promact.Oauth.Server.Repository;
 using Promact.Oauth.Server.Data;
+using Microsoft.AspNetCore.Identity;
 
 namespace Promact.Oauth.Server.Tests
 {
     public class ProjectTests : BaseProvider
     {
+        #region Private Variables
         private readonly IProjectRepository _projectRepository;
-
         private readonly IDataRepository<Project, PromactOauthDbContext> _dataRepository;
         private readonly IDataRepository<ProjectUser, PromactOauthDbContext> _dataRepositoryProjectUser;
         private readonly IStringConstant _stringConstant;
         private readonly IUserRepository _userRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
+        #endregion
 
+        #region Constructor
         public ProjectTests() : base()
         {
             _projectRepository = serviceProvider.GetService<IProjectRepository>();
@@ -29,7 +33,9 @@ namespace Promact.Oauth.Server.Tests
             _dataRepositoryProjectUser = serviceProvider.GetService<IDataRepository<ProjectUser, PromactOauthDbContext>>();
             _stringConstant = serviceProvider.GetService<IStringConstant>();
             _userRepository = serviceProvider.GetService<IUserRepository>();
+            _userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
         }
+        #endregion
 
         #region Test Case
 
@@ -337,7 +343,29 @@ namespace Promact.Oauth.Server.Tests
             Assert.Equal(projectDetails.Name, _stringConstant.Name);
         }
 
+        /// <summary>
+        /// Test cases to check the functionality of GetListOfProjectsEnrollmentOfUserByUserIdAsync
+        /// </summary>
+        /// <returns></returns>
+        [Fact, Trait("Category", "Required")]
+        public async Task GetListOfProjectsEnrollmentOfUserByUserIdAsync()
+        {
+            var userId = await AddUserAndProjectAsync();
+            var result = await _projectRepository.GetListOfProjectsEnrollmentOfUserByUserIdAsync(userId);
+            Assert.Equal(result.Count, 1);
+        }
 
+        /// <summary>
+        /// Test cases to check the functionality of GetListOfProjectsEnrollmentOfUserByUserIdAsync
+        /// </summary>
+        /// <returns></returns>
+        [Fact, Trait("Category", "Required")]
+        public async Task GetListOfTeamMemberByProjectIdAsync()
+        {
+            var userId = await AddUserAndProjectAsync();
+            var result = await _projectRepository.GetListOfTeamMemberByProjectIdAsync(1);
+            Assert.Equal(result.Count, 1);
+        }
         #endregion
 
         #region private methods
@@ -425,7 +453,36 @@ namespace Promact.Oauth.Server.Tests
             return await _userRepository.AddUserAsync(user, _stringConstant.RawFirstNameForTest);
         }
 
-
+        /// <summary>
+        /// Method to add user and project
+        /// </summary>
+        /// <returns>userId</returns>
+        private async Task<string> AddUserAndProjectAsync()
+        {
+            ApplicationUser user = new ApplicationUser() { Email = _stringConstant.EmailForTest, UserName = _stringConstant.EmailForTest };
+            await _userManager.CreateAsync(user);
+            Project project = new Project()
+            {
+                CreatedBy = _stringConstant.UserId,
+                CreatedDateTime = DateTime.UtcNow,
+                IsActive = true,
+                Name = _stringConstant.Name,
+                TeamLeaderId = _stringConstant.UserId,
+                SlackChannelName = _stringConstant.SlackChannelName,
+            };
+            _dataRepository.Add(project);
+            await _dataRepository.SaveChangesAsync();
+            ProjectUser projectUser = new ProjectUser()
+            {
+                CreatedBy = _stringConstant.CreatedBy,
+                CreatedDateTime = DateTime.UtcNow,
+                ProjectId = project.Id,
+                UserId = user.Id
+            };
+            _dataRepositoryProjectUser.Add(projectUser);
+            await _dataRepositoryProjectUser.SaveChangesAsync();
+            return user.Id;
+        }
         #endregion
     }
 }
