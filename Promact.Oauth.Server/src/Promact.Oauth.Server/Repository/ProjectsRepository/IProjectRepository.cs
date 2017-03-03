@@ -83,6 +83,13 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// </summary>
         /// <param name="userId">user's user Id</param>
         /// <returns>list of project</returns>
-        Task<List<ProjectAc>> GetListOfProjectsEnrollmentOfUserByUserId(string userId);
+        Task<List<ProjectAc>> GetListOfProjectsEnrollmentOfUserByUserIdAsync(string userId);
+
+        /// <summary>
+        /// Method to get list of team member by project Id
+        /// </summary>
+        /// <param name="projectId">project Id</param>
+        /// <returns>list of team members</returns>
+        Task<List<UserAc>> GetListOfTeamMemberByProjectIdAsync(int projectId);
     }
 }
