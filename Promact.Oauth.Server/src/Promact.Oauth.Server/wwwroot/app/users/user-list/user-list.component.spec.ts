@@ -66,7 +66,6 @@ describe("User List Test", () => {
         let userListComponent = fixture.componentInstance;
         let router = fixture.debugElement.injector.get(Router);
         spyOn(router, stringConstant.navigate);
-
         userListComponent.userEdit(stringConstant.id);
         tick();
         expect(router.navigate).toHaveBeenCalled();
