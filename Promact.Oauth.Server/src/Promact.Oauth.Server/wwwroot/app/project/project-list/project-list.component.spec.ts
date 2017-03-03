@@ -68,7 +68,7 @@ describe("Project List Test", () => {
     }));
 
 
-        it('should be rediration to project eidt', fakeAsync(() => {
+        it('should be rediration to project edit', fakeAsync(() => {
         let fixture = TestBed.createComponent(ProjectListComponent);
         let projectListComponent = fixture.componentInstance;
         let router = fixture.debugElement.injector.get(Router);
@@ -86,7 +86,9 @@ describe("Project List Test", () => {
         projectListComponent.viewProject(1);
         tick();
         expect(router.navigate).toHaveBeenCalled();
-    }));
+        }));
 
+
+       
 });
 
