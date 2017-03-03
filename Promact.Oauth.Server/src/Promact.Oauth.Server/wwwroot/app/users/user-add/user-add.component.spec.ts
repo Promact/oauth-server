@@ -29,7 +29,6 @@ describe('User Add Test', () => {
                 { provide: LoaderService, useClass: LoaderService },
                 { provide: StringConstant, useClass: StringConstant }]
         }).compileComponents();
-
     }));
 
     it("should check user added successfully", fakeAsync(() => {
@@ -42,7 +41,7 @@ describe('User Add Test', () => {
         tick();
         expect(userModel.FirstName).toBe(expected);
     }));
-            
+
 
     it("should check that user is not added successfully", fakeAsync(() => {
         let fixture = TestBed.createComponent(UserAddComponent); //Create instance of component            
@@ -54,7 +53,19 @@ describe('User Add Test', () => {
         expect(userAddComponent.userModel.FirstName).toBe(undefined);
     }));
 
-        
+
+    it("Email already exists so user not added", fakeAsync(() => {
+        let fixture = TestBed.createComponent(UserAddComponent); //Create instance of component            
+        let userAddComponent = fixture.componentInstance;
+        userAddComponent.isEmailExist = true;
+        let userModel = new UserModel();
+        userModel.FirstName = "";
+        userAddComponent.addUser(userModel);
+        tick();
+        expect(userAddComponent.userModel.FirstName).toBe(undefined);
+    }));
+
+
     it("should check user email", fakeAsync(() => {
         let fixture = TestBed.createComponent(UserAddComponent); //Create instance of component            
         let userAddComponent = fixture.componentInstance;

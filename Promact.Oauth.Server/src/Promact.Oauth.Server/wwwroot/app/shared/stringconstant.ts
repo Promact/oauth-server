@@ -33,4 +33,6 @@ export class StringConstant {
     dateFormat = "dd-MM-yyyy";
     userRole = "employee";
     testString = "test";
+    changePassword = "changePassword";
+    checkOldPasswordIsValid = "checkOldPasswordIsValid";
 }
