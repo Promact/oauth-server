@@ -117,7 +117,7 @@ describe("User Edit Test", () => {
     it('Calls goBack', fakeAsync(() => {
         let fixture = TestBed.createComponent(UserEditComponent); //Create instance of component            
         let userEditComponent = fixture.componentInstance;
-        let router = fixture.debugElement.injector.get(Router);
+        let router = fixture.debugEl277ement.injector.get(Router);
         spyOn(router, stringConstant.navigate);
         userEditComponent.goBack();
         tick();
