@@ -162,5 +162,11 @@ namespace Promact.Oauth.Server.Repository
         /// <returns>list of projects with users for a specific teamleader</returns>
         Task<List<UserAc>> GetProjectUsersByTeamLeaderIdAsync(string teamLeaderId);
 
+        /// <summary>
+        /// This method used for get list of user emails based on role. -an
+        /// </summary>
+        /// <returns>list of teamleader ,managment and employee email</returns>
+        Task<UserEmailListAc> GetUserEmailListBasedOnRoleAsync();
+
     }
 }
