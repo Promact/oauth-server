@@ -803,6 +803,32 @@ namespace Promact.Oauth.Server.Controllers
                 return BadRequest(ex.StackTrace);
             }
         }
+
+        /**
+        * @api {get} api/users/email
+        * @apiVersion 1.0.0
+        * @apiName GetUserEmailListBasedOnRoleAsync
+        * @apiGroup User   
+        * @apiSuccessExample {json} Success-Response:
+        * HTTP/1.1 200 OK 
+        *   {
+        *       [
+        *           {
+        *               "TeamLeader" : "[abc@promactinfo.com,test@gmail.com]",
+        *               "TamMemeber" : "[abc@promactinfo.com,xyz@gmail.com]",
+        *               "Management" : "[obc@promactinfo.com,mnc@gmail.com]",
+        *           }
+        *       ]
+        *   }
+        */
+        [Authorize(Policy = ReadUser)]
+        [HttpGet]
+        [Route("email")]
+        public async Task<IActionResult> GetUserEmailListBasedOnRoleAsync()
+        {
+             return Ok(await _userRepository.GetUserEmailListBasedOnRoleAsync());
+        }
+
         #endregion
 
         #endregion
