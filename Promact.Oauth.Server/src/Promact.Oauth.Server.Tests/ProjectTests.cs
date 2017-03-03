@@ -23,6 +23,9 @@ namespace Promact.Oauth.Server.Tests
         private readonly IStringConstant _stringConstant;
         private readonly IUserRepository _userRepository;
         private readonly UserManager<ApplicationUser> _userManager;
+        ApplicationUser user = new ApplicationUser();
+        Project project = new Project();
+        ProjectUser projectUser = new ProjectUser();
         #endregion
 
         #region Constructor
@@ -34,6 +37,7 @@ namespace Promact.Oauth.Server.Tests
             _stringConstant = serviceProvider.GetService<IStringConstant>();
             _userRepository = serviceProvider.GetService<IUserRepository>();
             _userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
+            Initialize();
         }
         #endregion
 
@@ -87,7 +91,7 @@ namespace Promact.Oauth.Server.Tests
             projectac.CreatedBy = _stringConstant.CreatedBy;
             projectac.TeamLeader = new UserAc { FirstName = _stringConstant.FirstName };
             projectac.TeamLeaderId = userId;
-            var id=await _projectRepository.AddProjectAsync(projectac, _stringConstant.CreatedBy);
+            var id = await _projectRepository.AddProjectAsync(projectac, _stringConstant.CreatedBy);
             await GetProjectUserMockData();
             ProjectAc project = await _projectRepository.GetProjectByIdAsync(id);
             Assert.NotNull(project);
@@ -204,7 +208,7 @@ namespace Promact.Oauth.Server.Tests
             ProjectAc projectacSecound = new ProjectAc()
             {
                 Id = 5,
-                Name =_stringConstant.LastName,
+                Name = _stringConstant.LastName,
                 SlackChannelName = _stringConstant.LastName,
                 IsActive = true,
                 TeamLeader = new UserAc { FirstName = _stringConstant.FirstName },
@@ -350,7 +354,8 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public async Task GetListOfProjectsEnrollmentOfUserByUserIdAsync()
         {
-            var userId = await AddUserAndProjectAsync();
+            var userId = await AddUser();
+            await AddProjectAndProjectUserAsync();
             var result = await _projectRepository.GetListOfProjectsEnrollmentOfUserByUserIdAsync(userId);
             Assert.Equal(result.Count, 1);
         }
@@ -362,13 +367,28 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public async Task GetListOfTeamMemberByProjectIdAsync()
         {
-            var userId = await AddUserAndProjectAsync();
-            var result = await _projectRepository.GetListOfTeamMemberByProjectIdAsync(1);
+            await AddUser();
+            var projectId = await AddProjectAndProjectUserAsync();
+            var result = await _projectRepository.GetListOfTeamMemberByProjectIdAsync(projectId);
             Assert.Equal(result.Count, 1);
         }
         #endregion
 
         #region private methods
+        private void Initialize()
+        {
+            user.Email = _stringConstant.EmailForTest;
+            user.UserName = _stringConstant.EmailForTest;
+            project.CreatedBy = _stringConstant.UserId;
+            project.CreatedDateTime = DateTime.UtcNow;
+            project.IsActive = true;
+            project.Name = _stringConstant.Name;
+            project.TeamLeaderId = _stringConstant.UserId;
+            project.SlackChannelName = _stringConstant.SlackChannelName;
+            projectUser.CreatedBy = _stringConstant.CreatedBy;
+            projectUser.CreatedDateTime = DateTime.UtcNow;
+        }
+
         /// <summary>
         /// mock data of project
         /// </summary>
@@ -454,33 +474,27 @@ namespace Promact.Oauth.Server.Tests
         }
 
         /// <summary>
-        /// Method to add user and project
+        /// Method to add project
         /// </summary>
-        /// <returns>userId</returns>
-        private async Task<string> AddUserAndProjectAsync()
+        /// <returns>projectId</returns>
+        private async Task<int> AddProjectAndProjectUserAsync()
         {
-            ApplicationUser user = new ApplicationUser() { Email = _stringConstant.EmailForTest, UserName = _stringConstant.EmailForTest };
-            await _userManager.CreateAsync(user);
-            Project project = new Project()
-            {
-                CreatedBy = _stringConstant.UserId,
-                CreatedDateTime = DateTime.UtcNow,
-                IsActive = true,
-                Name = _stringConstant.Name,
-                TeamLeaderId = _stringConstant.UserId,
-                SlackChannelName = _stringConstant.SlackChannelName,
-            };
             _dataRepository.Add(project);
             await _dataRepository.SaveChangesAsync();
-            ProjectUser projectUser = new ProjectUser()
-            {
-                CreatedBy = _stringConstant.CreatedBy,
-                CreatedDateTime = DateTime.UtcNow,
-                ProjectId = project.Id,
-                UserId = user.Id
-            };
+            projectUser.ProjectId = project.Id;
+            projectUser.UserId = user.Id;
             _dataRepositoryProjectUser.Add(projectUser);
             await _dataRepositoryProjectUser.SaveChangesAsync();
+            return project.Id;
+        }
+
+        /// <summary>
+        /// Method to add user
+        /// </summary>
+        /// <returns>userId</returns>
+        private async Task<string> AddUser()
+        {
+            await _userManager.CreateAsync(user);
             return user.Id;
         }
         #endregion
