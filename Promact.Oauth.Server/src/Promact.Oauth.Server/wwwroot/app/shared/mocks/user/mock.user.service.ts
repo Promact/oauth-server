@@ -59,7 +59,6 @@ export class MockUserService {
 
 
     editUser(editedUser: UserModel) {
-
         if (editedUser.FirstName === "") {
             let error = new MockError(404);
             return Promise.reject(error);
@@ -70,8 +69,8 @@ export class MockUserService {
     }
 
 
-    changePassword(newPassword: PasswordModel) {
-        let result = newPassword.NewPassword;
+    changePassword(passwordModel: PasswordModel) {
+        let result = passwordModel.NewPassword;
         return Promise.resolve(result);
     }
 
@@ -87,7 +86,7 @@ export class MockUserService {
 
 
     checkOldPasswordIsValid() {
-        return Promise.resolve(true);
+        return Promise.resolve(false);
     }
 
 

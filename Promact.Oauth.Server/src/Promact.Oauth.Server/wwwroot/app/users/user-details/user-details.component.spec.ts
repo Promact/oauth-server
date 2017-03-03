@@ -1,5 +1,5 @@
-﻿declare var describe, it, beforeEach, expect,spyOn;
-import { async,  TestBed , fakeAsync , tick} from '@angular/core/testing';
+﻿declare var describe, it, beforeEach, expect, spyOn;
+import { async, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { UserModel } from '../../users/user.model';
 import { UserDetailsComponent } from "../user-details/user-details.component";
 import { UserService } from "../user.service";
@@ -49,7 +49,7 @@ describe("User Details Test", () => {
     it("should get default Project for company", fakeAsync(() => {
         let fixture = TestBed.createComponent(UserDetailsComponent); //Create instance of component
         let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
-        activatedRoute.testParams = { id: stringConstant.id  };
+        activatedRoute.testParams = { id: stringConstant.id };
         let userDetailsComponent: UserDetailsComponent = fixture.componentInstance;
         let expectedFirstName = stringConstant.testfirstName;
         fixture.detectChanges();
@@ -71,28 +71,22 @@ describe("User Details Test", () => {
 
 
     it("Get user details but user is Not Admin", fakeAsync(() => {
-
         let fixture = TestBed.createComponent(UserDetailsComponent); //Create instance of component
         let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
         activatedRoute.testParams = { id: stringConstant.testfirstName };
         let user = fixture.debugElement.injector.get(UserRole);
         user.Role = stringConstant.employee;
         fixture.detectChanges();
-
         let userDetailsComponent = fixture.componentInstance;
-        let expectedFirstName = stringConstant.testfirstName;
         userDetailsComponent.ngOnInit();
         tick();
         expect(userDetailsComponent.admin).toBe(false);
-
- }));
-
+    }));
 
 
     it('Calls goBack', fakeAsync(() => {
         let fixture = TestBed.createComponent(UserDetailsComponent); //Create instance of component          
         let userDetailsComponent = fixture.componentInstance;
-        let userListService = fixture.debugElement.injector.get(UserService);
         let router = fixture.debugElement.injector.get(Router);
         spyOn(router, stringConstant.navigate);
         userDetailsComponent.goBack();
@@ -104,7 +98,6 @@ describe("User Details Test", () => {
     it('Calls edit', fakeAsync(() => {
         let fixture = TestBed.createComponent(UserDetailsComponent); //Create instance of component          
         let userDetailsComponent = fixture.componentInstance;
-        let userListService = fixture.debugElement.injector.get(UserService);
         let router = fixture.debugElement.injector.get(Router);
         spyOn(router, stringConstant.navigate);
         userDetailsComponent.edit(parseInt(stringConstant.id));
