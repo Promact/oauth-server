@@ -294,16 +294,9 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             ProjectAc projectAc = await AssignTeamMembers(project);
             return projectAc;
         }
+        
 
-        /// <summary>
-        /// This methos used for get user email list based on roles.
-        /// </summary>
-        /// <returns>list of email based on roles</returns>
-        public async Task<UserDetailAc> GetUserEmailListBasedOnRole()
-        {
-            return null;
 
-        }
 
         #endregion
 

@@ -489,13 +489,7 @@ namespace Promact.Oauth.Server.Controllers
         {
             return Ok(await _projectRepository.GetProjectDetailsAsync(projectId));
         }
-
-        public async Task<IActionResult> GetUserDetailsBasedOnRole()
-        {
-            
-
-        }
-
+        
         #endregion
     }
 }

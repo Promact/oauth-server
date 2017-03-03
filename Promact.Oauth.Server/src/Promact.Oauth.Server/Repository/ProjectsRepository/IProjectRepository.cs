@@ -77,12 +77,6 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// <param name="projectId">passed project Id</param>
         /// <returns>project details along with users</returns>
         Task<ProjectAc> GetProjectDetailsAsync(int projectId);
-
-        /// <summary>
-        /// This methos used for get user email list based on roles.
-        /// </summary>
-        /// <returns>list of email based on roles</returns>
-        Task<UserDetailAc> GetUserEmailListBasedOnRole();
-
+        
     }
 }
