@@ -298,7 +298,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// </summary>
         /// <param name="userId">user's user Id</param>
         /// <returns>list of project</returns>
-        public async Task<List<ProjectAc>> GetListOfProjectsEnrollmentOfUserByUserId(string userId)
+        public async Task<List<ProjectAc>> GetListOfProjectsEnrollmentOfUserByUserIdAsync(string userId)
         {
             List<ProjectAc> projects = new List<ProjectAc>();
             var projectIds = (await _projectUserDataRepository.FetchAsync(x => x.UserId == userId)).Select(x => x.ProjectId).ToList();
@@ -310,6 +310,22 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                 projects.Add(projectAC);
             }
             return projects;
+        }
+
+        /// <summary>
+        /// Method to get list of team member by project Id
+        /// </summary>
+        /// <param name="projectId">project Id</param>
+        /// <returns></returns>
+        public async Task<List<UserAc>> GetListOfTeamMemberByProjectIdAsync(int projectId)
+        {
+            List<UserAc> teamMembers = new List<UserAc>();
+            var teamMemberIds = (await _projectUserDataRepository.FetchAsync(x => x.ProjectId == projectId)).Select(x => x.UserId).ToList();
+            foreach (var teamMemberId in teamMemberIds)
+            {
+                teamMembers.Add(_mapperContext.Map<ApplicationUser, UserAc>(await _userManager.FindByIdAsync(teamMemberId)));
+            }
+            return teamMembers;
         }
 
         /// <summary>
