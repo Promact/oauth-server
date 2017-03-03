@@ -50,6 +50,7 @@ describe("User Edit Test", () => {
         expect(userEditComponent.user.FirstName).toBe(expectedFirstName);
     }));
 
+
     it("Get roles but user is Not Admin", fakeAsync(() => {
         let fixture = TestBed.createComponent(UserEditComponent); //Create instance of component     
         let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
@@ -58,7 +59,6 @@ describe("User Edit Test", () => {
         user.Role = stringConstant.employee;
         fixture.detectChanges();
         let userEditComponent = fixture.componentInstance;
-        let expectedFirstName = stringConstant.testfirstName;
         userEditComponent.ngOnInit();
         tick();
         expect(userEditComponent.admin).toBe(false);
