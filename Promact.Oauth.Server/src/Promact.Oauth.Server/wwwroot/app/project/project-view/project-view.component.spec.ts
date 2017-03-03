@@ -4,7 +4,7 @@ import { ProjectModel } from "../project.model";
 import { ProjectViewComponent } from "../project-view/project-view.component";
 import { ProjectService } from "../project.service";
 import { UserModel } from '../../users/user.model';
-import { ActivatedRoute, RouterModule, Routes } from '@angular/router';
+import { ActivatedRoute, RouterModule, Routes, Router} from '@angular/router';
 import { Md2Toast } from 'md2';
 import { MockToast } from "../../shared/mocks/mock.toast";
 import { MockProjectService } from "../../shared/mocks/project/mock.project.service";
@@ -13,6 +13,9 @@ import { LoaderService } from '../../shared/loader.service';
 import { ActivatedRouteStub } from "../../shared/mocks/mock.activatedroute";
 import { StringConstant } from '../../shared/stringconstant';
 import { MockLocation } from '../../shared/mocks/mock.location';
+import { MockRouter } from '../../shared/mocks/mock.router';
+import { Location } from "@angular/common";
+
 let stringConstant = new StringConstant();
 
 let mockUser = new UserModel();
@@ -38,7 +41,9 @@ describe('Project View Test', () => {
                 { provide: ProjectModel, useClass: ProjectModel },
                 { provide: Md2Toast, useClass: MockToast },
                 { provide: StringConstant, useClass: StringConstant },
+                { provide: Router, useClass: MockRouter },
                 { provide: Location, useClass: MockLocation }
+                 
             ]
         }).compileComponents();
 
@@ -127,6 +132,18 @@ describe('Project View Test', () => {
         expect(projectModel.TeamLeaderId).toBeNull();
     }));
 
+    it("should get error on selected Project Id", fakeAsync(() => {
+        let fixture = TestBed.createComponent(ProjectViewComponent); //Create instance of component            
+        let projectViewComponent = fixture.componentInstance;
+        let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
+        activatedRoute.testParams = { id: stringConstant.id };
+        let projectService = fixture.debugElement.injector.get(ProjectService);
+        spyOn(projectService, "getProject").and.returnValue(Promise.reject(""));
+        projectViewComponent.ngOnInit();
+        tick();
+        expect(projectViewComponent.Userlist).not.toBeNull();
+    }));
+
     it('should be Team Leader not null', fakeAsync(() => {
         let fixture = TestBed.createComponent(ProjectViewComponent);
         let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
@@ -146,4 +163,14 @@ describe('Project View Test', () => {
         expect(projectModel.TeamLeaderId).toBe(stringConstant.id);
     }));
 
+    it('should be rediration to project list', fakeAsync(() => {
+        let fixture = TestBed.createComponent(ProjectViewComponent);
+        let projectViewComponent = fixture.componentInstance;
+        let location = fixture.debugElement.injector.get(Location);
+        spyOn(location, "back");
+        projectViewComponent.gotoProjects();
+        tick();
+        expect(location.back).toHaveBeenCalled();
+    }));
+   
 });

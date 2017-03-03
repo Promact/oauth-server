@@ -64,6 +64,46 @@ describe('Project Edit Test', () => {
         expect(projectEditComponent.Userlist).not.toBeNull();
     }));
 
+    it("should get erro on selected Project Id", fakeAsync(() => {
+        let fixture = TestBed.createComponent(ProjectEditComponent); //Create instance of component            
+        let projectEditComponent = fixture.componentInstance;
+        let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
+        activatedRoute.testParams = { id: stringConstant.id };
+        let projectService = fixture.debugElement.injector.get(ProjectService);
+        spyOn(projectService, "getProject").and.returnValue(Promise.reject(""));
+        projectEditComponent.ngOnInit();
+        tick();
+        expect(projectEditComponent.Userlist).not.toBeNull();
+    }));
+
+    it("should get error on selected Project", fakeAsync(() => {
+        let fixture = TestBed.createComponent(ProjectEditComponent); //Create instance of component            
+        let projectEditComponent = fixture.componentInstance;
+        let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
+        activatedRoute.testParams = { id: stringConstant.id };
+        let projectModel = new ProjectModel();
+        projectModel.Name = "test";
+        projectModel.ApplicationUsers = mockList;
+        let projectService = fixture.debugElement.injector.get(ProjectService);
+        spyOn(projectService, "editProject").and.returnValue(Promise.reject(""));
+        projectEditComponent.editProject(projectModel);
+        tick();
+        expect(projectModel).not.toBeNull();
+    }));
+
+    it("should get selected Project", fakeAsync(() => {
+        let fixture = TestBed.createComponent(ProjectEditComponent); //Create instance of component            
+        let projectEditComponent = fixture.componentInstance;
+        let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
+        activatedRoute.testParams = { id: stringConstant.id };
+        let projectService = fixture.debugElement.injector.get(ProjectService);
+        spyOn(projectService, "getProject").and.returnValue(Promise.reject(""));
+        projectEditComponent.ngOnInit();
+        tick();
+        expect(projectEditComponent.Userlist).not.toBeNull();
+    }));
+
+
     it("should check Project name and Slack Channel Name before update", fakeAsync(() => {
         let fixture = TestBed.createComponent(ProjectEditComponent); //Create instance of component            
         let projectEditComponent = fixture.componentInstance;
@@ -194,13 +234,15 @@ describe('Project Edit Test', () => {
 
         it('should be rediration to project list', fakeAsync(() => {
             let fixture = TestBed.createComponent(ProjectEditComponent);
-            let projectAddComponent = fixture.componentInstance;
+            let projectEditComponent = fixture.componentInstance;
             let location = fixture.debugElement.injector.get(Location);
             spyOn(location, "back");
-        projectAddComponent.gotoProjects();
-        tick();
-        expect(location.back).toHaveBeenCalled();
-    }));
+            projectEditComponent.gotoProjects();
+            tick();
+            expect(location.back).toHaveBeenCalled();
+        }));
+
+
 });
 
 
