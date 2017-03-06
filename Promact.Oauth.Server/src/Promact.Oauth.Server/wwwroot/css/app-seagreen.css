@@ -4,21 +4,25 @@ body{padding:0;margin:0;font-family:roboto-regular}
 
 @font-face {
     font-family: 'roboto-regular';
-    src: url('../fonts/roboto-regular.ttf') format('truetype');
+    src: url('../fonts/Roboto-Regular.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'roboto-black';
+    src: url('../fonts/Roboto-Black.ttf') format('truetype');
 }
 
 @font-face {
     font-family: 'roboto-thin';
-    src: url('../fonts/roboto-thin.ttf') format('truetype');
+    src: url('../fonts/Roboto-Thin.ttf') format('truetype');
 }
 
 @font-face {
     font-family: 'roboto-medium';
-    src: url('../fonts/roboto-medium.ttf') format('truetype');
+    src: url('../fonts/Roboto-Medium.ttf') format('truetype');
 }
 @font-face {
     font-family: 'roboto-bold';
-    src: url('../fonts/roboto-bold.ttf') format('truetype');
+    src: url('../fonts/Roboto-Bold.ttf') format('truetype');
 }
 
 .oauth-icon{font-size: 22px;color: #4bcf99;cursor: pointer;margin-right:10px;}
