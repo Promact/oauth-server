@@ -59,7 +59,6 @@ namespace Promact.Oauth.Server
 
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
-
             _loggerFactory = loggerFactory;
 
         }
