@@ -491,7 +491,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-        * @api {get} api/project/user/userId
+        * @api {get} api/project/detail/:userId
         * @apiVersion 1.0.0
         * @apiName GetListOfProjectsEnrollmentOfUserByUserIdAsync
         * @apiGroup Project
@@ -513,46 +513,10 @@ namespace Promact.Oauth.Server.Controllers
         */
         [Authorize(Policy = ReadProject)]
         [HttpGet]
-        [Route("user/{userId}")]
+        [Route("detail/{userId}")]
         public async Task<IActionResult> GetListOfProjectsEnrollmentOfUserByUserIdAsync(string userId)
         {
             return Ok(await _projectRepository.GetListOfProjectsEnrollmentOfUserByUserIdAsync(userId));
-        }
-
-
-        /**
-        * @api {get} api/project/user/projectId
-        * @apiVersion 1.0.0
-        * @apiName GetListOfTeamMemberByProjectIdAsync
-        * @apiGroup Project
-        * @apiParam {int} projectId  projectId
-        * @apiParamExample {json} Request-Example:
-        *        {
-        *             "projectId": "1"
-        *        }      
-        * @apiSuccessExample {json} Success-Response:
-        * HTTP/1.1 200 OK 
-        *  [{
-        *         "Id":"abcd1af3d-062f-4bcd-b6f9-b8fd5165e367",
-        *         "FirstName" : "Smith",
-        *         "Email" : "Smith@promactinfo.com",
-        *         "LastName" : "Doe",
-        *         "IsActive" : "True",
-        *         "JoiningDate" :"10-02-2016",
-        *         "NumberOfCasualLeave":0,
-        *         "NumberOfSickLeave":0,
-        *         "UniqueName":null,
-        *         "Role":null,
-        *         "UserName": null,
-        *         "RoleName": null
-        *     }]
-        */
-        [Authorize(Policy = ReadProject)]
-        [HttpGet]
-        [Route("user/{projectId:int}")]
-        public async Task<IActionResult> GetListOfTeamMemberByProjectIdAsync(int projectId)
-        {
-            return Ok(await _projectRepository.GetListOfTeamMemberByProjectIdAsync(projectId));
         }
         #endregion
     }

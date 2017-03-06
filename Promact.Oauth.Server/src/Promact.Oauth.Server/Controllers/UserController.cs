@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using Promact.Oauth.Server.Constants;
 using Promact.Oauth.Server.ExceptionHandler;
 using Exceptionless;
+using Promact.Oauth.Server.Repository.ProjectsRepository;
 
 namespace Promact.Oauth.Server.Controllers
 {
@@ -20,6 +21,7 @@ namespace Promact.Oauth.Server.Controllers
         private readonly IUserRepository _userRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IStringConstant _stringConstant;
+        private readonly IProjectRepository _projectRepository;
         public const string ReadUser = "ReadUser";
         public const string BaseUrl = "api/users";
         public const string Admin = "Admin";
@@ -27,11 +29,12 @@ namespace Promact.Oauth.Server.Controllers
         #endregion
 
         #region "Constructor"
-        public UserController(IUserRepository userRepository, UserManager<ApplicationUser> userManager, IStringConstant stringConstant)
+        public UserController(IUserRepository userRepository, UserManager<ApplicationUser> userManager, IStringConstant stringConstant, IProjectRepository projectRepository)
         {
             _userRepository = userRepository;
             _userManager = userManager;
             _stringConstant = stringConstant;
+            _projectRepository = projectRepository;
         }
 
         #endregion
@@ -383,7 +386,7 @@ namespace Promact.Oauth.Server.Controllers
             return Ok(await _userRepository.CheckEmailIsExistsAsync(email + _stringConstant.DomainAddress));
         }
 
-        
+
 
         /**
           * @api {get} api/users/email/:id/send 
@@ -448,7 +451,7 @@ namespace Promact.Oauth.Server.Controllers
         [Route("slackChannel/{name}")]
         public async Task<IActionResult> GetProjectUserByGroupNameAsync(string name)
         {
-          return Ok(await _userRepository.GetProjectUserBySlackChannelNameAsync(name));
+            return Ok(await _userRepository.GetProjectUserBySlackChannelNameAsync(name));
         }
 
         /**
@@ -514,7 +517,7 @@ namespace Promact.Oauth.Server.Controllers
         [Route("{userId}/role")]
         public async Task<IActionResult> GetUserRoleAsync(string userId)
         {
-            return Ok(await _userRepository.GetUserRoleAsync(userId)); 
+            return Ok(await _userRepository.GetUserRoleAsync(userId));
         }
 
 
@@ -550,7 +553,7 @@ namespace Promact.Oauth.Server.Controllers
         [Route("{userid}/teammembers")]
         public async Task<IActionResult> GetTeamMembersAsync(string userid)
         {
-           return Ok(await _userRepository.GetTeamMembersAsync(userid));
+            return Ok(await _userRepository.GetTeamMembersAsync(userid));
         }
 
         /**
@@ -610,7 +613,7 @@ namespace Promact.Oauth.Server.Controllers
         /**
         * @api {get} api/users/user/{userId}
         * @apiVersion 1.0.0
-        * @apiName UserDetialBySlackUserIdAsync
+        * @apiName UserDetialByUserIdAsync
         * @apiGroup User
         * @apiParam {string} Name  slackUserId
         * @apiParamExample {json} Request-Example:
@@ -635,7 +638,7 @@ namespace Promact.Oauth.Server.Controllers
         [Authorize(Policy = ReadUser)]
         [HttpGet]
         [Route("user/{userId}")]
-        public async Task<IActionResult> UserDetialBySlackUserIdAsync(string userId)
+        public async Task<IActionResult> UserDetialByUserIdAsync(string userId)
         {
             try
             {
@@ -651,7 +654,7 @@ namespace Promact.Oauth.Server.Controllers
         /**
         * @api {get} api/users/teamLeaders/{userId}
         * @apiVersion 1.0.0
-        * @apiName TeamLeaderByUsersSlackIdAsync
+        * @apiName ListOfTeamLeaderByUserIdAsync
         * @apiGroup User
         * @apiParam {string} Name  slackUserId
         * @apiParamExample {json} Request-Example:
@@ -678,7 +681,7 @@ namespace Promact.Oauth.Server.Controllers
         [Authorize(Policy = ReadUser)]
         [HttpGet]
         [Route("teamLeaders/{userId}")]
-        public async Task<IActionResult> ListOfTeamLeaderByUsersSlackIdAsync(string userId)
+        public async Task<IActionResult> ListOfTeamLeaderByUserIdAsync(string userId)
         {
             try
             {
@@ -732,7 +735,7 @@ namespace Promact.Oauth.Server.Controllers
         /**
         * @api {get} api/users/leaveAllowed/{userId}
         * @apiVersion 1.0.0
-        * @apiName GetUserCasualLeaveBySlackIdAsync
+        * @apiName GetUserAllowedLeaveByUserIdAsync
         * @apiGroup User    
         * @apiParam {string} Name  slackUserId
         * @apiParamExample {json} Request-Example:
@@ -754,7 +757,7 @@ namespace Promact.Oauth.Server.Controllers
         [Authorize(Policy = ReadUser)]
         [HttpGet]
         [Route("leaveAllowed/{userId}")]
-        public async Task<IActionResult> GetUserAllowedLeaveBySlackIdAsync(string userId)
+        public async Task<IActionResult> GetUserAllowedLeaveByUserIdAsync(string userId)
         {
             try
             {
@@ -826,11 +829,44 @@ namespace Promact.Oauth.Server.Controllers
         [Route("email")]
         public async Task<IActionResult> GetUserEmailListBasedOnRoleAsync()
         {
-             return Ok(await _userRepository.GetUserEmailListBasedOnRoleAsync());
+            return Ok(await _userRepository.GetUserEmailListBasedOnRoleAsync());
         }
 
+        /**
+        * @api {get} api/user/detail/:projectId
+        * @apiVersion 1.0.0
+        * @apiName GetListOfTeamMemberByProjectIdAsync
+        * @apiGroup Project
+        * @apiParam {int} projectId  projectId
+        * @apiParamExample {json} Request-Example:
+        *        {
+        *             "projectId": "1"
+        *        }      
+        * @apiSuccessExample {json} Success-Response:
+        * HTTP/1.1 200 OK 
+        *  [{
+        *         "Id":"abcd1af3d-062f-4bcd-b6f9-b8fd5165e367",
+        *         "FirstName" : "Smith",
+        *         "Email" : "Smith@promactinfo.com",
+        *         "LastName" : "Doe",
+        *         "IsActive" : "True",
+        *         "JoiningDate" :"10-02-2016",
+        *         "NumberOfCasualLeave":0,
+        *         "NumberOfSickLeave":0,
+        *         "UniqueName":null,
+        *         "Role":null,
+        *         "UserName": null,
+        *         "RoleName": null
+        *     }]
+        */
+        [Authorize(Policy = ReadProject)]
+        [HttpGet]
+        [Route("detail/{projectId:int}")]
+        public async Task<IActionResult> GetListOfTeamMemberByProjectIdAsync(int projectId)
+        {
+            return Ok(await _projectRepository.GetListOfTeamMemberByProjectIdAsync(projectId));
+        }
         #endregion
-
         #endregion
     }
 }
