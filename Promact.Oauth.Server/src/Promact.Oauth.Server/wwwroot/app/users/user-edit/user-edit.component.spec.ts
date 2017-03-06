@@ -80,18 +80,22 @@ describe("User Edit Test", () => {
     it("should check User first name before update", fakeAsync(() => {
         let fixture = TestBed.createComponent(UserEditComponent); //Create instance of component            
         let userEditComponent = fixture.componentInstance;
+        let toast = fixture.debugElement.injector.get(Md2Toast);
+        let router = fixture.debugElement.injector.get(Router);
+        spyOn(router, stringConstant.navigate);
         let expectedFirstName = stringConstant.testfirstName;
         let userModel = new UserModel();
         userModel.FirstName = expectedFirstName;
         userEditComponent.editUser(userModel);
         tick();
-        expect(userModel.FirstName).toBe(expectedFirstName);
+        expect(router.navigate).toHaveBeenCalled();
     }));
 
 
     it("should not check User first name before update", fakeAsync(() => {
         let fixture = TestBed.createComponent(UserEditComponent); //Create instance of component            
         let userEditComponent = fixture.componentInstance;
+        let toast = fixture.debugElement.injector.get(Md2Toast);
         let expectedFirstName = stringConstant.testfirstName;
         let userModel = new UserModel();
         userModel.FirstName = "";

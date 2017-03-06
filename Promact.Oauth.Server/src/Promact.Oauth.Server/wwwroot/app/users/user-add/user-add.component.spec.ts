@@ -34,18 +34,22 @@ describe('User Add Test', () => {
     it("should check user added successfully", fakeAsync(() => {
         let fixture = TestBed.createComponent(UserAddComponent); //Create instance of component            
         let userAddComponent = fixture.componentInstance;
+        let toast = fixture.debugElement.injector.get(Md2Toast);
         let userModel = new UserModel();
         let expected = stringConstant.firstName;
         userModel.FirstName = expected;
+        let router = fixture.debugElement.injector.get(Router);
+        spyOn(router, stringConstant.navigate);
         userAddComponent.addUser(userModel);
         tick();
-        expect(userModel.FirstName).toBe(expected);
+        expect(router.navigate).toHaveBeenCalled();
     }));
 
 
     it("should check that user is not added successfully", fakeAsync(() => {
         let fixture = TestBed.createComponent(UserAddComponent); //Create instance of component            
         let userAddComponent = fixture.componentInstance;
+        let toast = fixture.debugElement.injector.get(Md2Toast);
         let userModel = new UserModel();
         userModel.FirstName = "";
         userAddComponent.addUser(userModel);
@@ -57,6 +61,7 @@ describe('User Add Test', () => {
     it("Email already exists so user not added", fakeAsync(() => {
         let fixture = TestBed.createComponent(UserAddComponent); //Create instance of component            
         let userAddComponent = fixture.componentInstance;
+        let toast = fixture.debugElement.injector.get(Md2Toast);
         userAddComponent.isEmailExist = true;
         let userModel = new UserModel();
         userModel.FirstName = "";
