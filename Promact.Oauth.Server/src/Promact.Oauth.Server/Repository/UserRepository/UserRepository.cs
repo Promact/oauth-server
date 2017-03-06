@@ -78,7 +78,7 @@ namespace Promact.Oauth.Server.Repository
         /// <param name="createdBy">Passed id of user who has created this user.</param>
         /// <returns>Added user id</returns>
         public async Task<string> AddUserAsync(UserAc newUser, string createdBy)
-        {             
+        {
             LeaveAllowed leaveAllowed = CalculateAllowedLeaves(Convert.ToDateTime(newUser.JoiningDate));
             newUser.NumberOfCasualLeave = leaveAllowed.CasualLeave;
             newUser.NumberOfSickLeave = leaveAllowed.SickLeave;
@@ -160,14 +160,14 @@ namespace Promact.Oauth.Server.Repository
             var user = await _userManager.FindByIdAsync(id);
             var projects = await _projectDataRepository.Fetch(x => x.TeamLeaderId == id).ToListAsync();
             var projectUsers = await _projectUserDataRepository.Fetch(x => x.UserId == id).ToListAsync();
-            var projectList=await _projectDataRepository.Fetch(x => projectUsers.Select(y => y.ProjectId).Contains(x.Id)).ToListAsync();
-            projects=projects.Union(projectList).ToList();
+            var projectList = await _projectDataRepository.Fetch(x => projectUsers.Select(y => y.ProjectId).Contains(x.Id)).ToListAsync();
+            projects = projects.Union(projectList).ToList();
             if (!projects.Any())
             {
                 await _userManager.DeleteAsync(user);
                 return String.Empty;
             }
-            return String.Join(",", projects.Select(x=>x.Name));
+            return String.Join(",", projects.Select(x => x.Name));
         }
         /// <summary>
         ///  This method used for get user detail by user id 
@@ -358,7 +358,7 @@ namespace Promact.Oauth.Server.Repository
             ApplicationUser applicationUser = await _userManager.FindByIdAsync(userId);
             var employeeRole = (await _userManager.GetRolesAsync(applicationUser)).First();
             List<UserRoleAc> userRoleAcList = new List<UserRoleAc>();
-            
+
             if (employeeRole == _stringConstant.Admin) //If login user is admin then return all active users with role.
             {
                 //getting the all user infromation. 
@@ -460,6 +460,25 @@ namespace Promact.Oauth.Server.Repository
             }
             return userAcList;
         }
+
+        /// <summary>
+        /// This method used for get list of user emails based on role.
+        /// </summary>
+        /// <returns>list of teamleader ,managment and employee email</returns>
+        public async Task<UserEmailListAc> GetUserEmailListBasedOnRoleAsync()
+        {
+            UserEmailListAc userEmailListAC = new UserEmailListAc();
+            //Get all managment email list 
+            var roleIds = await _roleManager.Roles.Where(x => !x.Name.Equals(_stringConstant.Employee)).Select(x => x.Id).ToListAsync();
+            userEmailListAC.Management = await _userManager.Users.Where(x => x.Roles.Any(y => roleIds.Contains(y.RoleId)) && x.IsActive).Select(x => x.Email).Distinct().ToListAsync();
+            //Get all teamLeader list 
+            var teamLeadersIds = await _projectDataRepository.GetAll().Select(x => x.TeamLeaderId).Distinct().ToListAsync();
+            userEmailListAC.TeamLeader = await _userManager.Users.Where(x => teamLeadersIds.Contains(x.Id) && x.IsActive).Select(x => x.Email).Distinct().ToListAsync();
+            //Get all teamMember list
+            userEmailListAC.TamMemeber = await _projectUserDataRepository.Fetch(x => x.User.IsActive).Select(x => x.User.Email).Distinct().ToListAsync();
+            return userEmailListAC;
+        }
+
         #endregion
 
         #region Private Methods
@@ -491,7 +510,7 @@ namespace Promact.Oauth.Server.Repository
             {
                 newUser.Role = roles;
             }
-            else 
+            else
             {
                 Project project = await _projectDataRepository.FirstOrDefaultAsync(x => x.TeamLeaderId.Equals(user.Id));
                 newUser.Role = (project != null) ? _stringConstant.TeamLeader : _stringConstant.Employee;
@@ -524,12 +543,12 @@ namespace Promact.Oauth.Server.Repository
         /// <returns>LeaveAllowed</returns>
         private LeaveAllowed CalculateAllowedLeaves(DateTime dateTime)
         {
-            double casualAllowed; 
+            double casualAllowed;
             double sickAllowed;
             var month = dateTime.Month;
             //if joining year are more then current year or difference of current year and joining year is 1 then calculate casual Allow and sick Allow
             //other wise no need to be calculation directly set default value CasualLeave(14) and SickLeave(7).  
-            if (dateTime.Year >= DateTime.Now.Year || (DateTime.Now.Year-dateTime.Year)==1)
+            if (dateTime.Year >= DateTime.Now.Year || (DateTime.Now.Year - dateTime.Year) == 1)
             {
                 double casualAllow = _appSettingUtil.Value.CasualLeave;
                 double sickAllow = _appSettingUtil.Value.SickLeave;
@@ -571,7 +590,7 @@ namespace Promact.Oauth.Server.Repository
                             sickAllowed = (sickAllow / 12) * (12 - (month + 9));
                         }
                     }
-                    else 
+                    else
                     {
                         casualAllowed = casualAllow;
                         sickAllowed = sickAllow;
@@ -590,10 +609,10 @@ namespace Promact.Oauth.Server.Repository
                     // If calculated sickAllowed decimal value is exact 0.5 then it's considered half day sick leave 
                     // If calculated sickAllowed decimal value is more than  0.90 then add one leave in sick leave 
                     if (sickAlloweddecimal > 0.90) { sickAllowed = Convert.ToInt32(Math.Ceiling(sickAllowed)); }
-                    else if(Math.Abs(sickAlloweddecimal - 0.5) > tolerance) { sickAllowed = Convert.ToInt32(Math.Floor(sickAllowed)); }
+                    else if (Math.Abs(sickAlloweddecimal - 0.5) > tolerance) { sickAllowed = Convert.ToInt32(Math.Floor(sickAllowed)); }
                 }
             }
-            else 
+            else
             {
                 casualAllowed = _appSettingUtil.Value.CasualLeave;
                 sickAllowed = _appSettingUtil.Value.SickLeave;

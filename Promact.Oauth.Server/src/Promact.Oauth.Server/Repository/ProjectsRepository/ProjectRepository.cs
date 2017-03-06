@@ -41,6 +41,8 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         }
         #endregion
 
+        #region Public Method(s)
+
         /// <summary>
         /// This method getting the list of all projects
         /// </summary>
@@ -292,6 +294,13 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             ProjectAc projectAc = await AssignTeamMembers(project);
             return projectAc;
         }
+        
+
+
+
+        #endregion
+
+        #region Private Method(s)
 
         /// <summary>
         /// Method to get list of project for an user
@@ -354,6 +363,8 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             }
             return projectAc;
         }
+
+        #endregion
     }
 }
 
