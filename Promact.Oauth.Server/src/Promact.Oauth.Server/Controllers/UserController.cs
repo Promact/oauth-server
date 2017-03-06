@@ -16,7 +16,7 @@ namespace Promact.Oauth.Server.Controllers
 {
     [Route(BaseUrl)]
     public class UserController : BaseController
-    {
+    { 
         #region "Private Variable(s)"
         private readonly IUserRepository _userRepository;
         private readonly UserManager<ApplicationUser> _userManager;
