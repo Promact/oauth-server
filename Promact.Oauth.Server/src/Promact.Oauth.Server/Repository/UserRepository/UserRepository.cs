@@ -470,12 +470,12 @@ namespace Promact.Oauth.Server.Repository
             UserEmailListAc userEmailListAC = new UserEmailListAc();
             //Get all managment email list 
             var roleIds = await _roleManager.Roles.Where(x => !x.Name.Equals(_stringConstant.Employee)).Select(x => x.Id).ToListAsync();
-            userEmailListAC.Management = await _userManager.Users.Where(x => x.Roles.Any(y => roleIds.Contains(y.RoleId))).Select(x => x.Email).Distinct().ToListAsync();
+            userEmailListAC.Management = await _userManager.Users.Where(x => x.Roles.Any(y => roleIds.Contains(y.RoleId)) && x.IsActive).Select(x => x.Email).Distinct().ToListAsync();
             //Get all teamLeader list 
             var teamLeadersIds = await _projectDataRepository.GetAll().Select(x => x.TeamLeaderId).Distinct().ToListAsync();
-            userEmailListAC.TeamLeader = await _userManager.Users.Where(x => teamLeadersIds.Contains(x.Id)).Select(x => x.Email).Distinct().ToListAsync();
+            userEmailListAC.TeamLeader = await _userManager.Users.Where(x => teamLeadersIds.Contains(x.Id) && x.IsActive).Select(x => x.Email).Distinct().ToListAsync();
             //Get all teamMember list
-            userEmailListAC.TamMemeber = await _projectUserDataRepository.GetAll().Select(x => x.User.Email).Distinct().ToListAsync();
+            userEmailListAC.TamMemeber = await _projectUserDataRepository.Fetch(x => x.User.IsActive).Select(x => x.User.Email).Distinct().ToListAsync();
             return userEmailListAC;
         }
 

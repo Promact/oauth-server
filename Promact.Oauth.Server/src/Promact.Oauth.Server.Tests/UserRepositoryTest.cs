@@ -165,7 +165,7 @@ namespace Promact.Oauth.Server.Tests
             Assert.NotEmpty(returnMessage.ErrorMessage);
         }
 
-                
+
         /// <summary>
         /// This test case is used to add new user with joining date after April
         /// </summary>
@@ -215,7 +215,7 @@ namespace Promact.Oauth.Server.Tests
             Assert.NotNull(user);
         }
 
-        
+
         /// <summary>
         /// This test case is used to calculate allowed leaves for past years
         /// </summary>
@@ -572,7 +572,7 @@ namespace Promact.Oauth.Server.Tests
             var projectUsers = await _userRepository.GetProjectUserBySlackChannelNameAsync(projectac.SlackChannelName);
             Assert.Equal(projectUsers.Count, 1);
         }
-                      
+
 
         /// <summary>
         /// Test case to check GetProjectUsersByTeamLeaderId method of user repository 
@@ -733,6 +733,28 @@ namespace Promact.Oauth.Server.Tests
             var result = await Assert.ThrowsAsync<SlackUserNotFound>(() =>
             _userRepository.IsAdminAsync(_stringConstant.SlackUserId));
             Assert.Equal(result.Message, _stringConstant.ExceptionMessageSlackUserNotFound);
+        }
+
+
+        /// <summary>
+        /// Test case to get user email list based on role.
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task GetUserEmailListBasedOnRoleAsync()
+        {
+            var userId = await _userRepository.AddUserAsync(UserDetails(), _stringConstant.UserId);
+            var emailList = await _userRepository.GetUserEmailListBasedOnRoleAsync();
+            Assert.NotEqual(emailList.Management.Count, 0);
+        }
+
+        /// <summary>
+        /// Test case to check when user is null then email list count is zero.
+        /// </summary>
+        [Fact, Trait("Category", "Required")]
+        public async Task GetEmailListBasedOnRoleAsync()
+        {
+            var emailList = await _userRepository.GetUserEmailListBasedOnRoleAsync();
+            Assert.Equal(emailList.Management.Count, 0);
         }
 
 
