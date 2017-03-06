@@ -11,9 +11,7 @@ cache:
 install:
 - npm i -g yarn
 - npm i -g typescript typings
-- yarn global add typescript typings
 - cd ".\Promact.Oauth.Server\src\Promact.Oauth.Server\"
-- yarn
 - cd..
 build_script:
 - ps: dotnet restore
