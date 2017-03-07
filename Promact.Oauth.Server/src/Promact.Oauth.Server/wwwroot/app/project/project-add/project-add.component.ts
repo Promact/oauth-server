@@ -38,38 +38,16 @@ export class ProjectAddComponent implements OnInit {
             }
         }
 
-        if (project.Name === null && project.SlackChannelName === null) {
-            this.toast.show("Project Name and Slack Channel Name can not be blank");
-        }
-        else if (project.Name === null && project.SlackChannelName !== null) {
+        if (project.Name === null) {
             this.toast.show("Project Name can not be blank ");
         }
-        else if (project.Name !== null && project.SlackChannelName === null) {
-            this.toast.show("Slack Channel Name can not be blank");
-        }
+        
         else {
             if (this.isTeamLeader) {
                 this.loader.loader = true;
                 this.projectService.addProject(project).then((project) => {
                     this.project = project;
-                    if (project.Name === null && project.SlackChannelName === null) {
-                        this.toast.show("Project and slackChannelName already exists");
-                        this.projectService.getUsers().then(listUsers => {
-                            this.project.ListUsers = listUsers;
-                            this.project.ApplicationUsers = new Array<UserModel>();
-
-                        });
-                    }
-                    else if (project.Name !== null && project.SlackChannelName === null) {
-                        this.toast.show("slackChannelName already exists");
-                        this.projectService.getUsers().then(listUsers => {
-                            this.project.ListUsers = listUsers;
-                            this.project.ApplicationUsers = new Array<UserModel>();
-
-                        });
-
-                    }
-                    else if (project.Name === null && project.SlackChannelName !== null) {
+                    if (project.Name === null) {
                         this.toast.show("Project already exists");
                         this.projectService.getUsers().then(listUsers => {
                             this.project.ListUsers = listUsers;

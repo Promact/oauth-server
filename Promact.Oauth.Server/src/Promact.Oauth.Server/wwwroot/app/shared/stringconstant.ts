@@ -12,7 +12,6 @@ export class StringConstant {
     id = '1';
     emailExtension = '@promactinfo.com';
     projectName = 'test project';
-    slackChannelName = 'Test Slack Name';
     firstName = 'test';
     testfirstName = "First Name";
     lastName = 'shah';

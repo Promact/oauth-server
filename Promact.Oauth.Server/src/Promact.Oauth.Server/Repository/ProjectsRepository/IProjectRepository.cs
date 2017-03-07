@@ -45,18 +45,11 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         Task<int> EditProjectAsync(int id,ProjectAc editProject,string updatedBy);
 
         /// <summary>
-        /// this method to check Project and SlackChannelName is already exists or not 
+        /// this method to check Project is already exists or not 
         /// </summary>
         /// <param name="project">projectAc object</param> 
         /// <returns>projectAc object</returns>
         Task<ProjectAc> CheckDuplicateProjectAsync(ProjectAc project);
-
-        /// <summary>
-        /// Method to return the project details of the given slack channel name - JJ
-        /// </summary>
-        /// <param name="slackChannelName">passed slack channel name</param>
-        /// <returns>object of project</returns>
-        Task<ProjectAc> GetProjectBySlackChannelNameAsync(string slackChannelName);
 
         /// <summary>
         /// This method to return all project for specific user

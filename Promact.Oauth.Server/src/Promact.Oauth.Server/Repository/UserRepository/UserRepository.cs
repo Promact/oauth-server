@@ -410,29 +410,6 @@ namespace Promact.Oauth.Server.Repository
             return userRoleAcList;
         }
 
-
-        /// <summary>
-        /// Method to return list of users/employees of the given slack channel name. - JJ
-        /// </summary>
-        /// <param name="slackChannelName">Passed slack channel name</param>
-        /// <returns>list of object of UserAc</returns>
-        public async Task<List<UserAc>> GetProjectUserBySlackChannelNameAsync(string slackChannelName)
-        {
-            Project project = await _projectDataRepository.FirstOrDefaultAsync(x => x.SlackChannelName == slackChannelName);
-            List<UserAc> userAcList = new List<UserAc>();
-            if (project != null)
-            {
-                //fetches the ids of users of the project
-                IEnumerable<string> userIdList = (await _projectUserDataRepository.Fetch(x => x.ProjectId == project.Id).Select(y => y.UserId).ToListAsync());
-                //fetches the application users of the above obtained ids.
-                List<ApplicationUser> applicationUsers = await _applicationUserDataRepository.Fetch(x => userIdList.Contains(x.Id)).ToListAsync();
-                //perform mapping
-                userAcList = _mapperContext.Map<List<ApplicationUser>, List<UserAc>>(applicationUsers);
-            }
-            return userAcList;
-        }
-
-
         /// <summary>
         /// The method is used to get list of projects along with its users for a specific teamleader  - GA
         /// </summary>
