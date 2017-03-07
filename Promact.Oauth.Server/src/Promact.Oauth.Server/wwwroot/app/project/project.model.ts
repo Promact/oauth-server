@@ -2,7 +2,6 @@
 export class ProjectModel {
     Id: number;
     Name: string;
-    SlackChannelName: string;
     IsActive: boolean;
     TeamLeaderId: string;
     CreatedBy: string;

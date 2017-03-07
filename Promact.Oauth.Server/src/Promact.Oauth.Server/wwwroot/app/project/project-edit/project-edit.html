@@ -11,19 +11,11 @@
         <div *ngIf="project">
             <div class="form-group">
                 <div class="half-width">
-                    <!--<md-input  type="text" class="full-width" placeholder="Name"  [(ngModel)]="project.name" name="name" maxlength="255" required #names="ngModel"></md-input>
-                    <div [hidden]="!(name.touched && !name.valid && name.errors.required)" style="color:red">Name is required</div>-->
                     <md-input class="full-width" placeholder="Name" type="text" name="name" [(ngModel)]="project.Name" maxlength="255" required #name="ngModel"></md-input>
                     <div [hidden]="!(name.touched && !name.valid && name.errors.required)" class="error">Name is required</div>
                 </div>
             </div>
-            <div class="form-group">
-                <div class="half-width">
-
-                    <md-input type="text" class="full-width" placeholder="Slack Channel Name" name="SlackChannelName" [(ngModel)]="project.SlackChannelName" maxlength="255" required #SlackChannelName="ngModel"></md-input>
-                    <div class="errors"><div [hidden]="!(SlackChannelName.touched && !SlackChannelName.valid && SlackChannelName.errors.required)" class="error">Slack Channel Name is required</div></div>
-                </div>
-            </div>
+           
             <div class="form-group">
                 <label class="lb-label">IsActive:</label>
                 <md-checkbox type="checkbox" id="chckbox" name="IsActive" [(ngModel)]="project.IsActive"></md-checkbox>

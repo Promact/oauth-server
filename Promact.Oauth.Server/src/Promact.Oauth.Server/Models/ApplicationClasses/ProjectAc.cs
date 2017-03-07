@@ -15,11 +15,6 @@ namespace Promact.Oauth.Server.Models.ApplicationClasses
         [JsonProperty("Name")]
         public string Name { get; set; }
 
-        [Required]
-        [StringLength(25)]
-        [JsonProperty("SlackChannelName")]
-        public string SlackChannelName { get; set; }
-
         [JsonProperty("IsActive")]
         public bool IsActive { get; set; }
 

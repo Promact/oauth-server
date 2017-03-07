@@ -12,10 +12,6 @@ namespace Promact.Oauth.Server.Models
         public string Name { get; set; }
 
         [Required]
-        [StringLength(25)]
-        public string SlackChannelName { get; set; }
-
-        [Required]
         public bool IsActive { get; set; }
 
         

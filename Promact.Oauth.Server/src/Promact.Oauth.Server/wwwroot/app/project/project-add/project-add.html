@@ -18,15 +18,6 @@
         </div>
 
         <div class="form-group">
-            <div class="half-width">
-                <md-input type="text" class="full-width" placeholder="Slack Channel Name" name="SlackChannelName" [(ngModel)]="project.SlackChannelName" maxlength="255" required #SlackChannelName="ngModel"></md-input>
-                <div class="errors"><div [hidden]="!(SlackChannelName.touched && !SlackChannelName.valid && SlackChannelName.errors.required)" class="error">Slack Channel Name is required</div></div>
-
-            </div>
-        </div>
-
-
-        <div class="form-group">
             <label class="lb-label">Status</label>
             <md-checkbox type="checkbox" id="chckbox" name="IsActive" [(ngModel)]="project.IsActive"></md-checkbox>
         </div>
