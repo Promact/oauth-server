@@ -8,18 +8,15 @@ export class MockProjectService {
     constructor() {
         let mockProject = new ProjectModel();
         mockProject.Name = "slack1";
-        mockProject.SlackChannelName = "slack.test";
         this.projects.push(mockProject);
     }
     getProjects() {
         return Promise.resolve(this.projects);
     }
     addProject(projectModel: ProjectModel) {
-        projectModel.SlackChannelName = null;
         return Promise.resolve(projectModel);
     }
     editProject(projectModel: ProjectModel) {
-        projectModel.SlackChannelName = null;
         return Promise.resolve(projectModel);
     }
     getUsers() {
@@ -36,7 +33,6 @@ export class MockProjectService {
         let mockProject = new MockProjects(Id);
         if (Id === 1) {
             mockProject.Name = "Project";
-            mockProject.SlackChannelName = "Slack Channel";
             let mockUser = new UserModel();
             mockUser.FirstName = "Ronakfdfas";
             mockUser.LastName = "Shahfdsaf";

@@ -12,7 +12,6 @@
             <thead>
                 <tr>
                     <th>Project Name</th>
-                    <th>Slack Channel Name</th>
                     <th>Is Active</th>
                     <th>TeamLeader Name</th>
                     <th *ngIf="admin==true">Created By</th>
@@ -25,7 +24,6 @@
             <tbody>
                 <tr *ngFor="let project of projects">
                     <td>{{project.Name}}</td>
-                    <td>{{project.SlackChannelName}}</td>
                     <td *ngIf="project.IsActive">Active</td>
                     <td *ngIf="!project.IsActive">Inactive</td>
                     <td>{{project.TeamLeader.FirstName}}</td>

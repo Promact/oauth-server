@@ -64,7 +64,7 @@ describe('Project Edit Test', () => {
         expect(projectEditComponent.Userlist).not.toBeNull();
     }));
 
-    it("should get erro on selected Project Id", fakeAsync(() => {
+    it("should get error on selected Project Id", fakeAsync(() => {
         let fixture = TestBed.createComponent(ProjectEditComponent); //Create instance of component            
         let projectEditComponent = fixture.componentInstance;
         let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
@@ -103,30 +103,12 @@ describe('Project Edit Test', () => {
         expect(projectEditComponent.Userlist).not.toBeNull();
     }));
 
-
-    it("should check Project name and Slack Channel Name before update", fakeAsync(() => {
-        let fixture = TestBed.createComponent(ProjectEditComponent); //Create instance of component            
-        let projectEditComponent = fixture.componentInstance;
-        let projectModels = new ProjectModel();
-        let expectedProjecteName = stringConstant.projectName;
-        projectModels.Name = expectedProjecteName;
-        let expectedSlackChannelName = stringConstant.slackChannelName;
-        projectModels.SlackChannelName = expectedSlackChannelName;
-        projectModels.ApplicationUsers = mockList;
-        projectModels.TeamLeaderId = stringConstant.teamLeaderId;
-        projectEditComponent.editProject(projectModels);
-        tick();
-        expect(projectModels.Name).toBe(expectedProjecteName);
-    }));
-
     it("should check Project name before update", fakeAsync(() => {
         let fixture = TestBed.createComponent(ProjectEditComponent); //Create instance of component            
         let projectEditComponent = fixture.componentInstance;
         let projectModels = new ProjectModel();
         let expectedProjecteName = null;
         projectModels.Name = expectedProjecteName;
-        let expectedSlackChannelName = stringConstant.slackChannelName;
-        projectModels.SlackChannelName = expectedSlackChannelName;
         projectModels.ApplicationUsers = mockList;
         projectModels.TeamLeaderId = stringConstant.teamLeaderId;
         projectEditComponent.editProject(projectModels);
@@ -140,8 +122,6 @@ describe('Project Edit Test', () => {
         let projectModels = new ProjectModel();
         let expectedProjecteName = null;
         projectModels.Name = stringConstant.projectName;
-        let expectedSlackChannelName = stringConstant.slackChannelName;
-        projectModels.SlackChannelName = expectedSlackChannelName;
         projectModels.ApplicationUsers = mockList;
         projectModels.TeamLeaderId = stringConstant.id;
         projectEditComponent.editProject(projectModels);
@@ -149,26 +129,7 @@ describe('Project Edit Test', () => {
         expect(projectModels.Name).not.toBeNull();
     }));
 
-        it("should be check Slcak Channel Name is not duplicate ", fakeAsync(() => {
-        let fixture = TestBed.createComponent(ProjectEditComponent); //Create instance of component            
-        let projectEditComponent = fixture.componentInstance;
-        let toast = fixture.debugElement.injector.get(Md2Toast);
-        let expectedProjectName = stringConstant.projectName;
-        let projectModels = new ProjectModel();
-        projectModels.Name = expectedProjectName;
-        projectModels.SlackChannelName = stringConstant.slackChannelName;
-        projectModels.ApplicationUsers = mockList;
-        projectModels.TeamLeaderId = stringConstant.teamLeaderId;
-        let projectModel = new ProjectModel();
-        projectModel.Name = null;
-        projectModel.SlackChannelName = stringConstant.slackChannelName;
-        let projectService = fixture.debugElement.injector.get(ProjectService);
-        spyOn(projectService, "editProject").and.returnValue((Promise.resolve(projectModel)));
-        projectEditComponent.editProject(projectModels);
-        tick();
-        expect(projectModels.SlackChannelName).not.toBeNull();
-    }));
-
+  
 
         it("should be check Project Name is not duplicate ", fakeAsync(() => {
             let fixture = TestBed.createComponent(ProjectEditComponent); //Create instance of component            
@@ -177,59 +138,33 @@ describe('Project Edit Test', () => {
             let expectedProjectName = stringConstant.projectName;
             let projectModels = new ProjectModel();
             projectModels.Name = expectedProjectName;
-            projectModels.SlackChannelName = stringConstant.slackChannelName;
             projectModels.ApplicationUsers = mockList;
             projectModels.TeamLeaderId = stringConstant.teamLeaderId;
             let projectModel = new ProjectModel();
             projectModel.Name = expectedProjectName;
-            projectModel.SlackChannelName = null;
             let projectService = fixture.debugElement.injector.get(ProjectService);
             spyOn(projectService, "editProject").and.returnValue((Promise.resolve(projectModel)));
             projectEditComponent.editProject(projectModels);
             tick();
-            expect(projectModels.SlackChannelName).not.toBeNull();
+            expect(projectModels.Name).not.toBeNull();
         }));
 
-        it("should be check Project Name and slack channel is duplicate ", fakeAsync(() => {
+        it("should be check Project Name is duplicate ", fakeAsync(() => {
             let fixture = TestBed.createComponent(ProjectEditComponent); //Create instance of component            
             let projectEditComponent = fixture.componentInstance;
             let toast = fixture.debugElement.injector.get(Md2Toast);
             let expectedProjectName = stringConstant.projectName;
             let projectModels = new ProjectModel();
             projectModels.Name = expectedProjectName;
-            projectModels.SlackChannelName = stringConstant.slackChannelName;
             projectModels.ApplicationUsers = mockList;
             projectModels.TeamLeaderId = stringConstant.teamLeaderId;
             let projectModel = new ProjectModel();
             projectModel.Name = null;
-            projectModel.SlackChannelName = null;
             let projectService = fixture.debugElement.injector.get(ProjectService);
             spyOn(projectService, "editProject").and.returnValue((Promise.resolve(projectModel)));
             projectEditComponent.editProject(projectModels);
             tick();
-            expect(projectModels.SlackChannelName).not.toBeNull();
-        }));
-
-        it("should be check Project Name and slack channel is not duplicate ", fakeAsync(() => {
-            let fixture = TestBed.createComponent(ProjectEditComponent); //Create instance of component            
-            let projectEditComponent = fixture.componentInstance;
-            let toast = fixture.debugElement.injector.get(Md2Toast);
-            let expectedProjectName = stringConstant.projectName;
-            let projectModels = new ProjectModel();
-            projectModels.Name = expectedProjectName;
-            projectModels.SlackChannelName = stringConstant.slackChannelName;
-            projectModels.ApplicationUsers = mockList;
-            projectModels.TeamLeaderId = stringConstant.teamLeaderId;
-            let projectModel = new ProjectModel();
-            projectModel.Name = expectedProjectName;
-            projectModel.SlackChannelName = stringConstant.slackChannelName;
-            let projectService = fixture.debugElement.injector.get(ProjectService);
-            let router = fixture.debugElement.injector.get(Router);
-            spyOn(projectService, "editProject").and.returnValue((Promise.resolve(projectModel)));
-            spyOn(router, "navigate");
-            projectEditComponent.editProject(projectModels);
-            tick();
-            expect(projectModels.SlackChannelName).not.toBeNull();
+            expect(projectModels.Name).not.toBeNull();
         }));
 
         it('should be rediration to project list', fakeAsync(() => {
