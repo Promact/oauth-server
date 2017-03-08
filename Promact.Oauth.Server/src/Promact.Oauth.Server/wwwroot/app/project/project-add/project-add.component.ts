@@ -82,7 +82,7 @@ export class ProjectAddComponent implements OnInit {
 
     }
 
-    gotoProjects() {
+    gotoProjects() { 
         this.router.navigate(['project/list']);
     }
 
