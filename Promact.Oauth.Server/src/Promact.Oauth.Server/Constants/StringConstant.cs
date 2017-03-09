@@ -365,11 +365,11 @@ namespace Promact.Oauth.Server.Constants
             }
         }
 
-        public string ExceptionMessageSlackUserNotFound
+        public string ExceptionMessageUserNotFound
         {
             get
             {
-                return "Exception of type 'Promact.Oauth.Server.ExceptionHandler.SlackUserNotFound' was thrown.";
+                return "Exception of type 'Promact.Oauth.Server.ExceptionHandler.UserNotFound' was thrown.";
             }
         }
 
