@@ -413,47 +413,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         #region External Call APIs
-        /**
-        * @api {get} api/users/slackChannel/:name 
-        * @apiVersion 1.0.0
-        * @apiName GetProjectUserByGroupNameAsync
-        * @apiGroup User
-        * @apiParam {string} name as a SlackChannelName
-        * @apiParamExample {json} Request-Example:
-        * {
-        *   "name":"SlackChannelName"
-        * }      
-        * @apiSuccessExample {json} Success-Response:
-        * HTTP/1.1 200 OK 
-        * [
-        *     {
-        *         "Id:"abcd1af3d-062f-4bcd-b6f9-b8fd5165e367",
-        *         "FirstName" : "Smith",
-        *         "Email" : "Smith@promactinfo.com",
-        *         "LastName" : "Doe",
-        *         "IsActive" : "True",
-        *         "JoiningDate" :"10-02-2016",
-        *         "Password" : null
-        *     },
-        *     {
-        *         "Id":"abcd1af3d-062f-4bcd-b6f9-b8fd5165e367",
-        *         "FirstName" : "White",
-        *         "Email" : "White@promactinfo.com",
-        *         "LastName" : "Doe",
-        *         "IsActive" : "True",
-        *         "JoiningDate" :"18-02-2016",
-        *         "Password" : null
-        *     }
-        *]   
-        */
-        [Authorize(Policy = ReadProject)]
-        [HttpGet]
-        [Route("slackChannel/{name}")]
-        public async Task<IActionResult> GetProjectUserByGroupNameAsync(string name)
-        {
-            return Ok(await _userRepository.GetProjectUserBySlackChannelNameAsync(name));
-        }
-
+        
         /**
         * @api {get} api/users/:userId/detail 
         * @apiVersion 1.0.0
