@@ -17,7 +17,7 @@ using Promact.Oauth.Server.Data;
 namespace Promact.Oauth.Server.Repository.ProjectsRepository
 {
     public class ProjectRepository : IProjectRepository
-    { 
+    {
         #region "Private Variable(s)"
         private readonly IDataRepository<Project, PromactOauthDbContext> _projectDataRepository;
         private readonly IDataRepository<ProjectUser, PromactOauthDbContext> _projectUserDataRepository;
@@ -27,7 +27,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         private readonly IStringConstant _stringConstant;
         private readonly IMapper _mapperContext;
         #endregion
-         
+
         #region "Constructor"
         public ProjectRepository(IDataRepository<Project, PromactOauthDbContext> projectDataRepository, IDataRepository<ProjectUser, PromactOauthDbContext> projectUserDataRepository, IDataRepository<ApplicationUser, PromactOauthDbContext> userDataRepository, UserManager<ApplicationUser> userManager,
             IMapper mapperContext, IStringConstant stringConstant, ILogger<ProjectRepository> logger)
@@ -263,8 +263,52 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             ProjectAc projectAc = await AssignTeamMembers(project);
             return projectAc;
         }
-        
 
+
+        /// <summary>
+        /// Method to return active project details of the given projectId - JJ
+        /// </summary>
+        /// <param name="projectId">project Id</param>
+        /// <returns>object of ProjectAc</returns>
+        public async Task<ProjectAc> GetProjectByProjectIdAsync(int projectId)
+        {
+            Project project = await _projectDataRepository.FirstOrDefaultAsync(x => x.Id == projectId);
+            ProjectAc projectAc = new ProjectAc();
+            if (!string.IsNullOrEmpty(project?.TeamLeaderId))
+            {
+                ApplicationUser teamLeader = await _userManager.FindByIdAsync(project.TeamLeaderId);
+                if (teamLeader != null && teamLeader.IsActive)
+                {
+                    projectAc = _mapperContext.Map<Project, ProjectAc>(project);
+                    //fetches the ids of users of the project
+                    List<string> userIdList = await _projectUserDataRepository.Fetch(x => x.ProjectId == project.Id).Select(y => y.UserId).ToListAsync();
+                    //fetches the application users of the above obtained ids.
+                    List<ApplicationUser> userList = await _userDataRepository.Fetch(y => userIdList.Contains(y.Id)).ToListAsync();
+                    projectAc.ApplicationUsers = _mapperContext.Map<List<ApplicationUser>, List<UserAc>>(userList);
+                }
+            }
+            return projectAc;
+        }
+
+
+        /// <summary>
+        /// Method to return the list of project details - JJ
+        /// </summary>
+        /// <returns>list of object of ProjectAc</returns>
+        public async Task<List<ProjectAc>> GetProjectListAsync()
+        {
+            List<Project> projectList = _projectDataRepository.FetchAsync(x => x.IsActive && !string.IsNullOrEmpty(x.TeamLeaderId)).Result.ToList();
+            List<ProjectAc> projectAcList = new List<ProjectAc>();
+            foreach (var project in projectList)
+            {
+                ApplicationUser teamLeader = await _userManager.FindByIdAsync(project.TeamLeaderId);
+                if (teamLeader != null && teamLeader.IsActive)
+                {
+                    projectAcList.Add(_mapperContext.Map<Project, ProjectAc>(project));
+                }
+            }
+            return projectAcList;
+        }
 
 
         #endregion
@@ -298,6 +342,11 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             {
                 var project = await _projectDataRepository.FirstAsync(x => x.Id == projectId);
                 var projectAC = _mapperContext.Map<Project, ProjectAc>(project);
+                if (!string.IsNullOrEmpty(projectAC.TeamLeaderId) && projectAC.TeamLeaderId == userId)
+                {
+                    ApplicationUser appUser = await _userDataRepository.FirstOrDefaultAsync(x => x.Id == userId);
+                    projectAC.TeamLeader = _mapperContext.Map<ApplicationUser, UserAc>(appUser);
+                }
                 projects.Add(projectAC);
             }
             return projects;

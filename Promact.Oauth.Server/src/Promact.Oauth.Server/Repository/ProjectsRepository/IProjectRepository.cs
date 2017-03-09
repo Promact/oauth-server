@@ -84,5 +84,20 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// <param name="projectId">project Id</param>
         /// <returns>list of team members</returns>
         Task<List<UserAc>> GetListOfTeamMemberByProjectIdAsync(int projectId);
+
+
+        /// <summary>
+        /// Method to return active project details of the given projectId - JJ
+        /// </summary>
+        /// <param name="projectId">project Id</param>
+        /// <returns>object of ProjectAc</returns>
+        Task<ProjectAc> GetProjectByProjectIdAsync(int projectId);
+
+
+        /// <summary>
+        /// Method to return the list of project details - JJ
+        /// </summary>
+        /// <returns>list of object of ProjectAc</returns>
+        Task<List<ProjectAc>> GetProjectListAsync();
     }
 }
