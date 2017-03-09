@@ -248,7 +248,7 @@ namespace Promact.Oauth.Server.Repository
                 return userAc;
             }
             else
-                throw new SlackUserNotFound();
+                throw new UserNotFound();
         }
 
         /// <summary>
@@ -275,7 +275,7 @@ namespace Promact.Oauth.Server.Repository
                 return teamLeaders;
             }
             else
-                throw new SlackUserNotFound();
+                throw new UserNotFound();
         }
 
         /// <summary>
@@ -316,7 +316,7 @@ namespace Promact.Oauth.Server.Repository
                 return leaveAllowed;
             }
             else
-                throw new SlackUserNotFound();
+                throw new UserNotFound();
         }
 
         /// <summary>
@@ -332,7 +332,7 @@ namespace Promact.Oauth.Server.Repository
                 return await _userManager.IsInRoleAsync(user, _stringConstant.Admin);
             }
             else
-                throw new SlackUserNotFound();
+                throw new UserNotFound();
         }
         #endregion
 
