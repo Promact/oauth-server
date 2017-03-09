@@ -131,7 +131,7 @@
         string RandomClientSecret { get; }
         string ExceptionMessageConsumerAppNameIsAlreadyExists { get; }
         string ExceptionMessageConsumerAppNotFound { get; }
-        string ExceptionMessageSlackUserNotFound { get; }
+        string ExceptionMessageUserNotFound { get; }
         string ExceptionMessageFailedToFetchDataException { get; }
         #endregion
     }
