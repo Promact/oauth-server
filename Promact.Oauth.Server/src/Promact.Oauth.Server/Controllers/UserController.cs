@@ -571,7 +571,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-        * @api {get} api/users/user/{userId}
+        * @api {get} api/users/detail/{userId}
         * @apiVersion 1.0.0
         * @apiName UserDetialByUserIdAsync
         * @apiGroup User
@@ -597,7 +597,7 @@ namespace Promact.Oauth.Server.Controllers
         */
         [Authorize(Policy = ReadUser)]
         [HttpGet]
-        [Route("user/{userId}")]
+        [Route("detail/{userId}")]
         public async Task<IActionResult> UserDetialByUserIdAsync(string userId)
         {
             try
@@ -647,9 +647,8 @@ namespace Promact.Oauth.Server.Controllers
             {
                 return Ok(await _userRepository.ListOfTeamLeaderByUserIdAsync(userId));
             }
-            catch (SlackUserNotFound ex)
+            catch (UserNotFound ex)
             {
-                ex.ToExceptionless().Submit();
                 return BadRequest(ex.StackTrace);
             }
         }
@@ -687,7 +686,6 @@ namespace Promact.Oauth.Server.Controllers
             }
             catch (FailedToFetchDataException ex)
             {
-                ex.ToExceptionless().Submit();
                 return BadRequest(ex.StackTrace);
             }
         }
@@ -711,7 +709,7 @@ namespace Promact.Oauth.Server.Controllers
         * @apiErrorExample {json} Error-Response:
         * HTTP/1.1 400 Bad Request 
         * {
-        *     "error" : "SlackUserNotFound"
+        *     "error" : "UserNotFound"
         * }
         */
         [Authorize(Policy = ReadUser)]
@@ -723,15 +721,14 @@ namespace Promact.Oauth.Server.Controllers
             {
                 return Ok(await _userRepository.GetUserAllowedLeaveByUserIdAsync(userId));
             }
-            catch (SlackUserNotFound ex)
+            catch (UserNotFound ex)
             {
-                ex.ToExceptionless().Submit();
                 return BadRequest(ex.StackTrace);
             }
         }
 
         /**
-        * @api {get} api/users/userIsAdmin/{userId}
+        * @api {get} api/users/isAdmin/{userId}
         * @apiVersion 1.0.0
         * @apiName UserIsAdminAsync
         * @apiGroup User    
@@ -748,21 +745,20 @@ namespace Promact.Oauth.Server.Controllers
         * @apiErrorExample {json} Error-Response:
         * HTTP/1.1 400 Bad Request 
         * {
-        *     "error" : "SlackUserNotFound"
+        *     "error" : "UserNotFound"
         * }
         */
         [Authorize(Policy = ReadUser)]
         [HttpGet]
-        [Route("userIsAdmin/{userId}")]
+        [Route("isAdmin/{userId}")]
         public async Task<IActionResult> UserIsAdminAsync(string userId)
         {
             try
             {
                 return Ok(await _userRepository.IsAdminAsync(userId));
             }
-            catch (SlackUserNotFound ex)
+            catch (UserNotFound ex)
             {
-                ex.ToExceptionless().Submit();
                 return BadRequest(ex.StackTrace);
             }
         }
@@ -793,7 +789,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-        * @api {get} api/user/detail/:projectId
+        * @api {get} api/users/detail/:projectId
         * @apiVersion 1.0.0
         * @apiName GetListOfTeamMemberByProjectIdAsync
         * @apiGroup Project
