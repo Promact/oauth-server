@@ -1,4 +1,5 @@
-﻿/// <binding BeforeBuild='copytowwwroot' />
+﻿/// <binding BeforeBuild='copytowwwroot, bundle' />
+
 "use strict";
 
 var gulp = require("gulp"),
@@ -10,8 +11,8 @@ var gulp = require("gulp"),
     sysBuilder = require('systemjs-builder'),
     remapIstanbul = require('remap-istanbul'),
     Server = require('karma').Server,
-    tslint = require('gulp-tslint');    
-   
+    tslint = require('gulp-tslint');
+
 
 var paths = {
     webroot: "./wwwroot/"
@@ -135,10 +136,10 @@ gulp.task('coverage', function () {
     .pipe(gulp.dest('./coverage'));
 });
 
-gulp.task("tslint", function(){
-  gulp.src("./wwwroot/app/**/*.ts")
-        .pipe(tslint({ configuration: "./tslint.json" }))
-        .pipe(tslint({formatter: "prose"}))
-		.pipe(tslint.report({emitError: true}))
+gulp.task("tslint", function () {
+    gulp.src("./wwwroot/app/**/*.ts")
+          .pipe(tslint({ configuration: "./tslint.json" }))
+          .pipe(tslint({ formatter: "prose" }))
+          .pipe(tslint.report({ emitError: true }))
 });
 
