@@ -16,7 +16,7 @@ RUN bower install --allow-root
 COPY ./Promact.Oauth.Server/src/Promact.Oauth.Server ./
 
 # copy and build everything else
-RUN npm run build && npm run bundle && gulp copytowwwroot && mkdir /out
+RUN npm run build && gulp copytowwwroot && npm run bundle && mkdir /out
 RUN dotnet restore
 RUN dotnet publish project.json -c Release -o /out && cp appsettings.development.example.json /out/appsettings.production.json && rm -rf /app 
 ENV ASPNETCORE_ENVIRONMENT Production
