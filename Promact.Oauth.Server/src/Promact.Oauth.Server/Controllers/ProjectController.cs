@@ -412,11 +412,11 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-        * @api {get} api/project/:projectId/detail
+        * @api {get} api/project/:id/detail
         * @apiVersion 1.0.0
         * @apiName GetProjectDetail
         * @apiGroup Project
-        * @apiParam {int} id  projectId
+        * @apiParam {int} id 
         * @apiParamExample {json} Request-Example:
         *      
         *        {
@@ -439,10 +439,10 @@ namespace Promact.Oauth.Server.Controllers
         */
         [Authorize(Policy = ReadProject)]
         [HttpGet]
-        [Route("{projectId:int}/detail")]
-        public async Task<IActionResult> ProjectDetailsAsync(int projectId)
+        [Route("{id:int}/detail")]
+        public async Task<IActionResult> ProjectDetailsAsync(int id)
         {
-            return Ok(await _projectRepository.GetProjectDetailsAsync(projectId));
+            return Ok(await _projectRepository.GetProjectDetailsAsync(id));
         }
 
         /**
@@ -450,7 +450,7 @@ namespace Promact.Oauth.Server.Controllers
         * @apiVersion 1.0.0
         * @apiName GetListOfProjectsEnrollmentOfUserByUserIdAsync
         * @apiGroup Project
-        * @apiParam {string} userId  userId
+        * @apiParam {string} userId
         * @apiParamExample {json} Request-Example:
         *        {
         *             "userId": "skgnskdgfsdssdvsdj"
