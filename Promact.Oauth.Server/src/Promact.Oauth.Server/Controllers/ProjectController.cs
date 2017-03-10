@@ -420,7 +420,7 @@ namespace Promact.Oauth.Server.Controllers
         * @apiParamExample {json} Request-Example:
         *      
         *        {
-        *             "projectId": "1"
+        *             "id": "1"
         *        }      
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
