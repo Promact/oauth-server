@@ -455,14 +455,14 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-        * @api {get} api/users/:userId/detail 
+        * @api {get} api/users/:id/detail 
         * @apiVersion 1.0.0
         * @apiName UserDetailByIdAsync
         * @apiGroup User
-        * @apiParam {string} userId
+        * @apiParam {string} id
         * @apiParamExample {json} Request-Example:    
         *        {
-        *             "userId": "95151b57-42c5-48d5-84b6-6d20e2fb05cd"
+        *             "id": "95151b57-42c5-48d5-84b6-6d20e2fb05cd"
         *        }      
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
@@ -485,21 +485,21 @@ namespace Promact.Oauth.Server.Controllers
         */
         [Authorize(Policy = ReadUser)]
         [HttpGet]
-        [Route("{userId}/detail")]
-        public async Task<IActionResult> UserDetailByIdAsync(string userId)
+        [Route("{id}/detail")]
+        public async Task<IActionResult> UserDetailByIdAsync(string id)
         {
-            return Ok(await _userRepository.UserDetailByIdAsync(userId));
+            return Ok(await _userRepository.UserDetailByIdAsync(id));
         }
 
         /**
-        * @api {get} api/users/:userId/role 
+        * @api {get} api/users/:id/role 
         * @apiVersion 1.0.0
         * @apiName GetUserRoleAsync
         * @apiGroup User
-        * @apiParam {string} name userId
+        * @apiParam {string} id
         * @apiParamExample {json} Request-Example:
         * {
-        *     "userId":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367"    
+        *     "id":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367"    
         * }      
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
@@ -514,22 +514,22 @@ namespace Promact.Oauth.Server.Controllers
         */
         [Authorize(Policy = ReadUser)]
         [HttpGet]
-        [Route("{userId}/role")]
-        public async Task<IActionResult> GetUserRoleAsync(string userId)
+        [Route("{id}/role")]
+        public async Task<IActionResult> GetUserRoleAsync(string id)
         {
-            return Ok(await _userRepository.GetUserRoleAsync(userId));
+            return Ok(await _userRepository.GetUserRoleAsync(id));
         }
 
 
         /**
-        * @api {get} api/users/:userId/teammembers 
+        * @api {get} api/users/:id/teammembers 
         * @apiVersion 1.0.0
         * @apiName GetTeamMembersAsync
         * @apiGroup User
-        * @apiParam {string} userId
+        * @apiParam {string} id
         * @apiParamExample {json} Request-Example:
         * {
-        *   "userId":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367"    
+        *   "id":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367"    
         * }
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
@@ -550,10 +550,10 @@ namespace Promact.Oauth.Server.Controllers
         */
         [Authorize(Policy = ReadUser)]
         [HttpGet]
-        [Route("{userid}/teammembers")]
-        public async Task<IActionResult> GetTeamMembersAsync(string userid)
+        [Route("{id}/teammembers")]
+        public async Task<IActionResult> GetTeamMembersAsync(string id)
         {
-            return Ok(await _userRepository.GetTeamMembersAsync(userid));
+            return Ok(await _userRepository.GetTeamMembersAsync(id));
         }
 
         /**
@@ -611,11 +611,11 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-        * @api {get} api/users/detail/{userId}
+        * @api {get} api/users/detail/:id
         * @apiVersion 1.0.0
         * @apiName UserDetialByUserIdAsync
         * @apiGroup User
-        * @apiParam {string} Name  slackUserId
+        * @apiParam {string} id 
         * @apiParamExample {json} Request-Example:
         *        {
         *             slackUserId : ADF4HY54H
@@ -637,29 +637,28 @@ namespace Promact.Oauth.Server.Controllers
         */
         [Authorize(Policy = ReadUser)]
         [HttpGet]
-        [Route("detail/{userId}")]
-        public async Task<IActionResult> UserDetialByUserIdAsync(string userId)
+        [Route("detail/{id}")]
+        public async Task<IActionResult> UserDetialByUserIdAsync(string id)
         {
             try
             {
-                return Ok(await _userRepository.UserBasicDetialByUserIdAsync(userId));
+                return Ok(await _userRepository.UserBasicDetialByUserIdAsync(id));
             }
             catch (SlackUserNotFound ex)
             {
-                ex.ToExceptionless().Submit();
                 return BadRequest(ex.StackTrace);
             }
         }
 
         /**
-        * @api {get} api/users/teamLeaders/{userId}
+        * @api {get} api/users/teamLeaders/:id
         * @apiVersion 1.0.0
         * @apiName ListOfTeamLeaderByUserIdAsync
         * @apiGroup User
-        * @apiParam {string} Name  slackUserId
+        * @apiParam {string} id
         * @apiParamExample {json} Request-Example:
         *        {
-        *             slackUserId : ADF4HY54H
+        *             id : ADF4HY54H
         *        }      
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
@@ -680,12 +679,12 @@ namespace Promact.Oauth.Server.Controllers
         */
         [Authorize(Policy = ReadUser)]
         [HttpGet]
-        [Route("teamLeaders/{userId}")]
-        public async Task<IActionResult> ListOfTeamLeaderByUserIdAsync(string userId)
+        [Route("teamLeaders/{id}")]
+        public async Task<IActionResult> ListOfTeamLeaderByUserIdAsync(string id)
         {
             try
             {
-                return Ok(await _userRepository.ListOfTeamLeaderByUserIdAsync(userId));
+                return Ok(await _userRepository.ListOfTeamLeaderByUserIdAsync(id));
             }
             catch (UserNotFound ex)
             {
@@ -731,14 +730,14 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-        * @api {get} api/users/leaveAllowed/{userId}
+        * @api {get} api/users/leaveAllowed/:id
         * @apiVersion 1.0.0
         * @apiName GetUserAllowedLeaveByUserIdAsync
         * @apiGroup User    
-        * @apiParam {string} Name  slackUserId
+        * @apiParam {string} id
         * @apiParamExample {json} Request-Example:
         *        {
-        *             slackUserId : ADF4HY54H
+        *             id : ADF4HY54Hscacsasccdsc
         *        } 
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
@@ -754,12 +753,12 @@ namespace Promact.Oauth.Server.Controllers
         */
         [Authorize(Policy = ReadUser)]
         [HttpGet]
-        [Route("leaveAllowed/{userId}")]
-        public async Task<IActionResult> GetUserAllowedLeaveByUserIdAsync(string userId)
+        [Route("leaveAllowed/{id}")]
+        public async Task<IActionResult> GetUserAllowedLeaveByUserIdAsync(string id)
         {
             try
             {
-                return Ok(await _userRepository.GetUserAllowedLeaveByUserIdAsync(userId));
+                return Ok(await _userRepository.GetUserAllowedLeaveByUserIdAsync(id));
             }
             catch (UserNotFound ex)
             {
@@ -768,14 +767,14 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-        * @api {get} api/users/isAdmin/{userId}
+        * @api {get} api/users/isAdmin/:id
         * @apiVersion 1.0.0
-        * @apiName UserIsAdminAsync
+        * @apiName id
         * @apiGroup User    
-        * @apiParam {string} Name  slackUserId
+        * @apiParam {string} id
         * @apiParamExample {json} Request-Example:
         *        {
-        *             slackUserId : ADF4HY54H
+        *             id : ADF4HY5dvsdvs4Hd453dsaf
         *        } 
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
@@ -790,12 +789,12 @@ namespace Promact.Oauth.Server.Controllers
         */
         [Authorize(Policy = ReadUser)]
         [HttpGet]
-        [Route("isAdmin/{userId}")]
-        public async Task<IActionResult> UserIsAdminAsync(string userId)
+        [Route("isAdmin/{id}")]
+        public async Task<IActionResult> UserIsAdminAsync(string id)
         {
             try
             {
-                return Ok(await _userRepository.IsAdminAsync(userId));
+                return Ok(await _userRepository.IsAdminAsync(id));
             }
             catch (UserNotFound ex)
             {
