@@ -550,10 +550,10 @@ namespace Promact.Oauth.Server.Controllers
         */
         [Authorize(Policy = ReadUser)]
         [HttpGet]
-        [Route("{userid}/teammembers")]
-        public async Task<IActionResult> GetTeamMembersAsync(string userid)
+        [Route("{userId}/teammembers")]
+        public async Task<IActionResult> GetTeamMembersAsync(string userId)
         {
-            return Ok(await _userRepository.GetTeamMembersAsync(userid));
+            return Ok(await _userRepository.GetTeamMembersAsync(userId));
         }
 
         /**
@@ -646,7 +646,6 @@ namespace Promact.Oauth.Server.Controllers
             }
             catch (SlackUserNotFound ex)
             {
-                ex.ToExceptionless().Submit();
                 return BadRequest(ex.StackTrace);
             }
         }

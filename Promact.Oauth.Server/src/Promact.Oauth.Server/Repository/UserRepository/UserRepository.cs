@@ -506,15 +506,7 @@ namespace Promact.Oauth.Server.Repository
             string roles = (await _userManager.GetRolesAsync(user)).First();
             UserAc newUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
             //assign role
-            if (roles.Equals(_stringConstant.Admin))
-            {
-                newUser.Role = roles;
-            }
-            else
-            {
-                Project project = await _projectDataRepository.FirstOrDefaultAsync(x => x.TeamLeaderId.Equals(user.Id));
-                newUser.Role = (project != null) ? _stringConstant.TeamLeader : _stringConstant.Employee;
-            }
+            newUser.Role = roles;
             return newUser;
         }
 
