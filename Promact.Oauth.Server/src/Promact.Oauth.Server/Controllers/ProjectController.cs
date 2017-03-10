@@ -490,12 +490,11 @@ namespace Promact.Oauth.Server.Controllers
 
 
         /**
-        * @api {put} api/project/projectDetail
+        * @api {put} api/project/projectDetail/:id
         * @apiVersion 1.0.0
         * @apiName EditProjectAsync
         * @apiGroup Project
-        * @apiParam {id} project Id.
-        * @apiParam {object} ProjectAc object 
+        * @apiParam {int} id.
         * @apiParamExample {json} Request-Example:
         * "id":"1",
         * {
