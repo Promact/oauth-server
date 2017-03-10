@@ -15,7 +15,7 @@
     "typings": "typings",
     "tslint": "gulp tslint",
     "bundle": "gulp bundle",
-    "ci": "codecov < coverage/cobertura/cobertura-coverage.xml"
+    "codecov": "codecov < coverage/cobertura/cobertura-coverage.xml"
   },
   "license": "ISC",
   "dependencies": {
