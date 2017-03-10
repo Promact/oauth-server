@@ -456,11 +456,11 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-        * @api {get} api/project/:projectId/detail
+        * @api {get} api/project/:id/detail
         * @apiVersion 1.0.0
         * @apiName GetProjectDetail
         * @apiGroup Project
-        * @apiParam {int} id  projectId
+        * @apiParam {int} id 
         * @apiParamExample {json} Request-Example:
         *      
         *        {
@@ -484,10 +484,10 @@ namespace Promact.Oauth.Server.Controllers
         */
         [Authorize(Policy = ReadProject)]
         [HttpGet]
-        [Route("{projectId:int}/detail")]
-        public async Task<IActionResult> ProjectDetailsAsync(int projectId)
+        [Route("{id:int}/detail")]
+        public async Task<IActionResult> ProjectDetailsAsync(int id)
         {
-            return Ok(await _projectRepository.GetProjectDetailsAsync(projectId));
+            return Ok(await _projectRepository.GetProjectDetailsAsync(id));
         }
 
         /**
@@ -495,7 +495,7 @@ namespace Promact.Oauth.Server.Controllers
         * @apiVersion 1.0.0
         * @apiName GetListOfProjectsEnrollmentOfUserByUserIdAsync
         * @apiGroup Project
-        * @apiParam {string} userId  userId
+        * @apiParam {string} userId
         * @apiParamExample {json} Request-Example:
         *        {
         *             "userId": "skgnskdgfsdssdvsdj"
@@ -521,7 +521,7 @@ namespace Promact.Oauth.Server.Controllers
 
 
         /**
-        * @api {get} api/project/user/projectId
+        * @api {get} api/project/user/:id
         * @apiVersion 1.0.0
         * @apiName GetListOfTeamMemberByProjectIdAsync
         * @apiGroup Project
@@ -549,20 +549,19 @@ namespace Promact.Oauth.Server.Controllers
         */
         [Authorize(Policy = ReadProject)]
         [HttpGet]
-        [Route("user/{projectId:int}")]
-        public async Task<IActionResult> GetListOfTeamMemberByProjectIdAsync(int projectId)
+        [Route("user/{id:int}")]
+        public async Task<IActionResult> GetListOfTeamMemberByProjectIdAsync(int id)
         {
-            return Ok(await _projectRepository.GetListOfTeamMemberByProjectIdAsync(projectId));
+            return Ok(await _projectRepository.GetListOfTeamMemberByProjectIdAsync(id));
         }
 
 
         /**
-        * @api {put} api/project/projectDetail
+        * @api {put} api/project/projectDetail/:id
         * @apiVersion 1.0.0
         * @apiName EditProjectAsync
         * @apiGroup Project
-        * @apiParam {id} project Id.
-        * @apiParam {object} ProjectAc object 
+        * @apiParam {int} id.
         * @apiParamExample {json} Request-Example:
         * "Id":"1",
         * {
@@ -618,25 +617,28 @@ namespace Promact.Oauth.Server.Controllers
         */
         [Authorize(Policy = ReadProject)]
         [HttpGet]
-        [Route("projectDetail/{projectId}")]
-        public async Task<IActionResult> GetProjectByProjectIdAsync(int projectId)
+        [Route("projectDetail/{id:int}")]
+        public async Task<IActionResult> GetProjectByProjectIdAsync(int id)
         {
-            return Ok(await _projectRepository.GetProjectByProjectIdAsync(projectId));
+            return Ok(await _projectRepository.GetProjectByProjectIdAsync(id));
         }
 
-        
+
         /**
-        * @api {get} api/project/:slackChannelName 
+        * @api {get} api/project/all 
         * @apiVersion 1.0.0
-        * @apiName GetProjectBySlackChannelNameAsync
+        * @apiName GetProjectListAsync
         * @apiGroup Project
-        * @apiParam {string} SlackChannelName Slack Channel Name
-        * @apiParamExample {json} Request-Example:
-        * {
-        *   "projectName":"projectName"
-        * }      
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
+        * [{
+        *    
+        *   "Name":"ProjectName",
+        *   "SlackChannelName":"SlackChannelName",
+        *   "IsActive":"True",
+        *   "TeamLeaderId":"1",
+        *   "ApplicationUsers":null
+        * },
         * {
         *    
         *   "Name":"ProjectName",
@@ -644,12 +646,12 @@ namespace Promact.Oauth.Server.Controllers
         *   "IsActive":"True",
         *   "TeamLeaderId":"1",
         *   "ApplicationUsers":null
-        * }
+        * }]
         */
         [Authorize(Policy = ReadProject)]
         [HttpGet]
         [Route("{all}")]
-        public async Task<IActionResult> GetProjectByProjectNameAsync()
+        public async Task<IActionResult> GetProjectListAsync()
         {
             return Ok(await _projectRepository.GetProjectListAsync());
         }
