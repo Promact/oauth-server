@@ -462,6 +462,21 @@ namespace Promact.Oauth.Server.Controllers
         *   "Name":"ProjectName",
         *   "IsActive":"True",
         *   "TeamLeaderId":"1",
+        *   "TeamLeader":
+        *   {
+        *         "Id":"1",
+        *         "FirstName" : "Smith",
+        *         "Email" : "Smith@promactinfo.com",
+        *         "LastName" : "Doe",
+        *         "IsActive" : "True",
+        *         "JoiningDate" :"10-02-2016",
+        *         "NumberOfCasualLeave":0,
+        *         "NumberOfSickLeave":0,
+        *         "UniqueName":null,
+        *         "Role":null,
+        *         "UserName": null,
+        *         "RoleName": null
+        *         }
         *   "ApplicationUsers":null
         *  }]
         */
@@ -518,12 +533,11 @@ namespace Promact.Oauth.Server.Controllers
         * @apiParam {id} project Id.
         * @apiParam {object} ProjectAc object 
         * @apiParamExample {json} Request-Example:
-        * "Id":"1",
+        * "projectId":"1",
         * {
         *   "Id":"1",
         *   "Name":"ProjectName",
         *   "TeamLeaderId":"1",
-        *   "SlackChannelName":"SlackChannelName",
         *   "IsActive":"True",
         *   "TeamLeader":null,
         *   "ApplicationUsers" : [
@@ -532,7 +546,6 @@ namespace Promact.Oauth.Server.Controllers
         *         "FirstName" : "Smith",
         *         "Email" : "Smith@promactinfo.com",
         *         "LastName" : "Doe",
-        *         "SlackUserName" :"Smith",
         *         "IsActive" : "True",
         *         "JoiningDate" :"10-02-2016",
         *         "NumberOfCasualLeave":0,
@@ -576,36 +589,6 @@ namespace Promact.Oauth.Server.Controllers
         public async Task<IActionResult> GetProjectByProjectIdAsync(int projectId)
         {
             return Ok(await _projectRepository.GetProjectByProjectIdAsync(projectId));
-        }
-
-        
-        /**
-        * @api {get} api/project/:slackChannelName 
-        * @apiVersion 1.0.0
-        * @apiName GetProjectBySlackChannelNameAsync
-        * @apiGroup Project
-        * @apiParam {string} SlackChannelName Slack Channel Name
-        * @apiParamExample {json} Request-Example:
-        * {
-        *   "projectName":"projectName"
-        * }      
-        * @apiSuccessExample {json} Success-Response:
-        * HTTP/1.1 200 OK 
-        * {
-        *    
-        *   "Name":"ProjectName",
-        *   "SlackChannelName":"SlackChannelName",
-        *   "IsActive":"True",
-        *   "TeamLeaderId":"1",
-        *   "ApplicationUsers":null
-        * }
-        */
-        [Authorize(Policy = ReadProject)]
-        [HttpGet]
-        [Route("{all}")]
-        public async Task<IActionResult> GetProjectByProjectNameAsync()
-        {
-            return Ok(await _projectRepository.GetProjectListAsync());
         }
 
 
