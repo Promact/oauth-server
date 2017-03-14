@@ -589,9 +589,9 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public async Task UserBasicDetialByUserIdAsyncForExceptionAsync()
         {
-            var result = await Assert.ThrowsAsync<SlackUserNotFound>(() =>
+            var result = await Assert.ThrowsAsync<UserNotFound>(() =>
             _userRepository.UserBasicDetialByUserIdAsync(_stringConstant.UserId));
-            Assert.Equal(result.Message, _stringConstant.ExceptionMessageSlackUserNotFound);
+            Assert.Equal(result.Message, _stringConstant.ExceptionMessageUserNotFound);
         }
 
 
@@ -624,9 +624,9 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public async Task ListOfTeamLeaderByUserIdAsyncForExceptionAsync()
         {
-            var result = await Assert.ThrowsAsync<SlackUserNotFound>(() =>
+            var result = await Assert.ThrowsAsync<UserNotFound>(() =>
             _userRepository.ListOfTeamLeaderByUserIdAsync(_stringConstant.UserId));
-            Assert.Equal(result.Message, _stringConstant.ExceptionMessageSlackUserNotFound);
+            Assert.Equal(result.Message, _stringConstant.ExceptionMessageUserNotFound);
         }
 
 
@@ -672,9 +672,9 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public async Task GetUserAllowedLeaveByUserIdAsyncForExceptionAsync()
         {
-            var result = await Assert.ThrowsAsync<SlackUserNotFound>(() =>
+            var result = await Assert.ThrowsAsync<UserNotFound>(() =>
             _userRepository.GetUserAllowedLeaveByUserIdAsync(_stringConstant.UserId));
-            Assert.Equal(result.Message, _stringConstant.ExceptionMessageSlackUserNotFound);
+            Assert.Equal(result.Message, _stringConstant.ExceptionMessageUserNotFound);
         }
 
 
@@ -696,9 +696,9 @@ namespace Promact.Oauth.Server.Tests
         [Fact, Trait("Category", "Required")]
         public async Task IsAdminForExceptionAsync()
         {
-            var result = await Assert.ThrowsAsync<SlackUserNotFound>(() =>
+            var result = await Assert.ThrowsAsync<UserNotFound>(() =>
             _userRepository.IsAdminAsync(_stringConstant.SlackUserId));
-            Assert.Equal(result.Message, _stringConstant.ExceptionMessageSlackUserNotFound);
+            Assert.Equal(result.Message, _stringConstant.ExceptionMessageUserNotFound);
         }
 
 

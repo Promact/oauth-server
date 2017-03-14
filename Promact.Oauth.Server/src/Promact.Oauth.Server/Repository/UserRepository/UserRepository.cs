@@ -248,7 +248,7 @@ namespace Promact.Oauth.Server.Repository
                 return userAc;
             }
             else
-                throw new SlackUserNotFound();
+                throw new UserNotFound();
         }
 
         /// <summary>
@@ -275,7 +275,7 @@ namespace Promact.Oauth.Server.Repository
                 return teamLeaders;
             }
             else
-                throw new SlackUserNotFound();
+                throw new UserNotFound();
         }
 
         /// <summary>
@@ -316,7 +316,7 @@ namespace Promact.Oauth.Server.Repository
                 return leaveAllowed;
             }
             else
-                throw new SlackUserNotFound();
+                throw new UserNotFound();
         }
 
         /// <summary>
@@ -332,7 +332,7 @@ namespace Promact.Oauth.Server.Repository
                 return await _userManager.IsInRoleAsync(user, _stringConstant.Admin);
             }
             else
-                throw new SlackUserNotFound();
+                throw new UserNotFound();
         }
         #endregion
 
@@ -483,15 +483,7 @@ namespace Promact.Oauth.Server.Repository
             string roles = (await _userManager.GetRolesAsync(user)).First();
             UserAc newUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
             //assign role
-            if (roles.Equals(_stringConstant.Admin))
-            {
-                newUser.Role = roles;
-            }
-            else
-            {
-                Project project = await _projectDataRepository.FirstOrDefaultAsync(x => x.TeamLeaderId.Equals(user.Id));
-                newUser.Role = (project != null) ? _stringConstant.TeamLeader : _stringConstant.Employee;
-            }
+            newUser.Role = roles;
             return newUser;
         }
 
