@@ -524,7 +524,7 @@ namespace Promact.Oauth.Server.Controllers
         * @apiParam {id} project Id.
         * @apiParam {object} ProjectAc object 
         * @apiParamExample {json} Request-Example:
-        * "projectId":"1",
+        * "id":"1",
         * {
         *   "Id":"1",
         *   "Name":"ProjectName",
@@ -576,10 +576,10 @@ namespace Promact.Oauth.Server.Controllers
         */
         [Authorize(Policy = ReadProject)]
         [HttpGet]
-        [Route("projectDetail/{projectId}")]
-        public async Task<IActionResult> GetProjectByProjectIdAsync(int projectId)
+        [Route("projectDetail/{id}")]
+        public async Task<IActionResult> GetProjectByProjectIdAsync(int id)
         {
-            return Ok(await _projectRepository.GetProjectByProjectIdAsync(projectId));
+            return Ok(await _projectRepository.GetProjectByProjectIdAsync(id));
         }
 
 
