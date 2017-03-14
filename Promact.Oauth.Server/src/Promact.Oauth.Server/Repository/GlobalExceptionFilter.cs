@@ -21,35 +21,8 @@ namespace Promact.Oauth.Server.Repository
 
         public void OnException(ExceptionContext context)
         {
-            var response = GetResponse(context);
-
-            context.Result = new ObjectResult(response)
-            {
-                StatusCode = 500,
-                DeclaredType = typeof(ErrorResponse)
-            };
-
-            _logger.LogError("GlobalExceptionFilter: "+ context.Exception);
-        }
-
-        private ErrorResponse GetResponse(ExceptionContext context)
-        {
-            return new ErrorResponse()
-            {
-                Message = context.Exception.Message,
-                StackTrace = context.Exception.StackTrace
-            };
+            _logger.LogError("GlobalExceptionFilter: "+ context.Exception.Message);
+            _logger.LogError("GlobalExceptionFilter: " + context.Exception.StackTrace);
         }
     }
-
-    public class ErrorResponse
-    {
-        public ErrorResponse()
-        {
-        }
-
-        public string Message { get; set; }
-        public string StackTrace { get; set; }
-    }
-
 }

@@ -7,14 +7,14 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
 {
     public interface IProjectRepository
     {
-       
+
         /// <summary>
         /// Adds new project in the database
         /// </summary>
         /// <param name="newProject">project that need to be added</param>
         /// <param name="createdBy">Login User Id</param>
         /// <returns>project id of newly created project</returns>
-        Task<int> AddProjectAsync(ProjectAc newProject,string createdBy);
+        Task<int> AddProjectAsync(ProjectAc newProject, string createdBy);
 
         /// <summary>
         ///This method to add user id and project id in userproject table
@@ -42,7 +42,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// <param name="editProject">updated project object</param> 
         /// <param name="updatedBy">passed id of user who has update this project</param>
         /// <returns>project id</returns>
-        Task<int> EditProjectAsync(int id,ProjectAc editProject,string updatedBy);
+        Task<int> EditProjectAsync(int id, ProjectAc editProject, string updatedBy);
 
         /// <summary>
         /// this method to check Project is already exists or not 
@@ -84,5 +84,15 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         /// <param name="projectId">project Id</param>
         /// <returns>list of team members</returns>
         Task<List<UserAc>> GetListOfTeamMemberByProjectIdAsync(int projectId);
+
+
+        /// <summary>
+        /// Method to return active project details of the given projectId - JJ
+        /// </summary>
+        /// <param name="projectId">project Id</param>
+        /// <returns>object of ProjectAc</returns>
+        Task<ProjectAc> GetProjectByProjectIdAsync(int projectId);
+
+
     }
 }
