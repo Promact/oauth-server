@@ -86,7 +86,6 @@ namespace Promact.Oauth.Server.Tests
             string userId = await MockOfUserAc();
             ProjectAc projectac = new ProjectAc();
             projectac.Name = _stringConstant.Name;
-            projectac.SlackChannelName = _stringConstant.SlackChannelName;
             projectac.IsActive = _stringConstant.IsActive;
             projectac.CreatedBy = _stringConstant.CreatedBy;
             projectac.TeamLeader = new UserAc { FirstName = _stringConstant.FirstName };
@@ -122,7 +121,6 @@ namespace Promact.Oauth.Server.Tests
             {
                 Id = id,
                 Name = _stringConstant.EditName,
-                SlackChannelName = _stringConstant.SlackChannelName,
                 IsActive = _stringConstant.IsActive,
                 TeamLeader = new UserAc { FirstName = _stringConstant.FirstName },
                 TeamLeaderId = _stringConstant.TeamLeaderId,
@@ -149,7 +147,6 @@ namespace Promact.Oauth.Server.Tests
             {
                 Id = id,
                 Name = _stringConstant.EditName,
-                SlackChannelName = _stringConstant.SlackChannelName,
                 IsActive = _stringConstant.IsActive,
                 TeamLeader = new UserAc { FirstName = _stringConstant.FirstName },
                 TeamLeaderId = _stringConstant.TeamLeaderId,
@@ -185,7 +182,6 @@ namespace Promact.Oauth.Server.Tests
             {
                 Id = 5,
                 Name = _stringConstant.Name,
-                SlackChannelName = _stringConstant.SlackChannelName,
                 IsActive = true,
                 TeamLeader = new UserAc { FirstName = _stringConstant.FirstName },
                 TeamLeaderId = _stringConstant.TeamLeaderId,
@@ -194,7 +190,7 @@ namespace Promact.Oauth.Server.Tests
                 ApplicationUsers = userlist
             };
             var project = await _projectRepository.CheckDuplicateProjectAsync(projectacSecound);
-            Assert.Null(project.SlackChannelName);
+            Assert.Null(project.Name);
         }
 
         /// <summary>
@@ -209,7 +205,7 @@ namespace Promact.Oauth.Server.Tests
             {
                 Id = 5,
                 Name = _stringConstant.LastName,
-                SlackChannelName = _stringConstant.LastName,
+               
                 IsActive = true,
                 TeamLeader = new UserAc { FirstName = _stringConstant.FirstName },
                 TeamLeaderId = _stringConstant.TeamLeaderId,
@@ -218,7 +214,7 @@ namespace Promact.Oauth.Server.Tests
                 ApplicationUsers = userlist
             };
             var project = await _projectRepository.CheckDuplicateProjectAsync(projectacSecound);
-            Assert.NotNull(project.SlackChannelName);
+            Assert.NotNull(project.Name);
         }
 
 
@@ -250,34 +246,6 @@ namespace Promact.Oauth.Server.Tests
             var projectId = await _projectRepository.AddProjectAsync(projectAc, id);
             IEnumerable<ProjectAc> projects = await _projectRepository.GetAllProjectsAsync();
             Assert.NotNull(projects);
-        }
-
-        /// <summary>
-        /// Fetch the project of the given slack channel name 
-        /// </summary>
-        [Fact, Trait("Category", "A")]
-        public async Task GetProjectByGroupName()
-        {
-            var userId = await MockOfUserAc();
-            ProjectAc projectAc = MockOfProjectAc();
-            projectAc.TeamLeaderId = userId;
-            await _projectRepository.AddProjectAsync(projectAc, _stringConstant.CreatedBy);
-            var project = await _projectRepository.GetProjectBySlackChannelNameAsync(projectAc.SlackChannelName);
-            Assert.Equal(projectAc.Name, project.Name);
-        }
-
-        /// <summary>
-        /// Fetch the project of the given slack channel name  with out teamleader
-        /// </summary>
-        [Fact, Trait("Category", "A")]
-        public async Task GetProjectByGroupNameWithoutTeamLeader()
-        {
-            var userId = await MockOfUserAc();
-            ProjectAc projectAc = MockOfProjectAc();
-            projectAc.TeamLeaderId = "";
-            await _projectRepository.AddProjectAsync(projectAc, _stringConstant.CreatedBy);
-            var project = await _projectRepository.GetProjectBySlackChannelNameAsync(projectAc.SlackChannelName);
-            Assert.Null(project.Name);
         }
 
         /// <summary>
@@ -317,7 +285,6 @@ namespace Promact.Oauth.Server.Tests
             ProjectAc project = new ProjectAc()
             {
                 Name = _stringConstant.Name,
-                SlackChannelName = _stringConstant.SlackChannelName,
                 IsActive = _stringConstant.IsActive,
                 TeamLeaderId = id,
                 CreatedBy = _stringConstant.CreatedBy,
@@ -337,7 +304,6 @@ namespace Promact.Oauth.Server.Tests
             ProjectAc project = new ProjectAc()
             {
                 Name = _stringConstant.Name,
-                SlackChannelName = _stringConstant.SlackChannelName,
                 IsActive = _stringConstant.IsActive,
                 TeamLeaderId = id,
                 CreatedBy = _stringConstant.CreatedBy,
@@ -384,7 +350,6 @@ namespace Promact.Oauth.Server.Tests
             project.IsActive = true;
             project.Name = _stringConstant.Name;
             project.TeamLeaderId = _stringConstant.UserId;
-            project.SlackChannelName = _stringConstant.SlackChannelName;
             projectUser.CreatedBy = _stringConstant.CreatedBy;
             projectUser.CreatedDateTime = DateTime.UtcNow;
         }
@@ -397,7 +362,6 @@ namespace Promact.Oauth.Server.Tests
         {
             ProjectAc projectac = new ProjectAc();
             projectac.Name = _stringConstant.Name;
-            projectac.SlackChannelName = _stringConstant.SlackChannelName;
             projectac.IsActive = _stringConstant.IsActive;
             projectac.CreatedBy = _stringConstant.CreatedBy;
             return await _projectRepository.AddProjectAsync(projectac, _stringConstant.CreatedBy);
@@ -448,7 +412,6 @@ namespace Promact.Oauth.Server.Tests
         {
             ProjectAc projectAc = new ProjectAc();
             projectAc.Name = _stringConstant.Name;
-            projectAc.SlackChannelName = _stringConstant.SlackChannelName;
             projectAc.IsActive = _stringConstant.IsActive;
             projectAc.TeamLeader = new UserAc { FirstName = _stringConstant.FirstName };
             projectAc.TeamLeaderId = _stringConstant.TeamLeaderId;

@@ -66,17 +66,6 @@ describe('Project View Test', () => {
         expect(projectViewComponent.Userlist).not.toBeNull();
     }));
 
-    it("should get default Project for company", fakeAsync(() => {
-
-        let fixture = TestBed.createComponent(ProjectViewComponent); //Create instance of component  
-        let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
-        activatedRoute.testParams = { id: stringConstant.id };
-        let projectViewComponent = fixture.componentInstance;
-        projectViewComponent.ngOnInit();
-        tick();
-        expect(projectViewComponent.project).not.toBeNull();
-    }));
-
     it("should check Team Leader Name", fakeAsync(() => {
         let fixture = TestBed.createComponent(ProjectViewComponent); //Create instance of component  
         let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);

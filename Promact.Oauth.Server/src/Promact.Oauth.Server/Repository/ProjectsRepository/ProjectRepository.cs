@@ -147,7 +147,6 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
                 project.IsActive = editProject.IsActive;
                 project.Name = editProject.Name;
                 project.TeamLeaderId = editProject.TeamLeaderId;
-                project.SlackChannelName = editProject.SlackChannelName;
                 project.UpdatedDateTime = DateTime.UtcNow;
                 project.UpdatedBy = updatedBy;
                 _projectDataRepository.UpdateAsync(project);
@@ -180,55 +179,25 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
         }
 
         /// <summary>
-        /// this method to check Project and SlackChannelName is already exists or not 
+        /// this method to check Project is already exists or not 
         /// </summary>
         /// <param name="project">projectAc object</param> 
         /// <returns>projectAc object</returns>
         public async Task<ProjectAc> CheckDuplicateProjectAsync(ProjectAc project)
         {
             string projectName;
-            string slackChannelName;
             if (project.Id == 0) // for new project
             {
                 projectName = (await _projectDataRepository.FirstOrDefaultAsync(x => x.Name == project.Name))?.Name;
-                slackChannelName = (await _projectDataRepository.FirstOrDefaultAsync(x => x.SlackChannelName == project.SlackChannelName))?.SlackChannelName;
             }
             else // for edit project
             {
                 projectName = (await _projectDataRepository.FirstOrDefaultAsync(x => x.Id != project.Id && x.Name == project.Name))?.Name;
-                slackChannelName = (await _projectDataRepository.FirstOrDefaultAsync(x => x.Id != project.Id && x.SlackChannelName == project.SlackChannelName))?.SlackChannelName;
-
             }
-            if (string.IsNullOrEmpty(projectName) && string.IsNullOrEmpty(slackChannelName))
-            { return project; }
             //if project name already exists then return project name as null
-            if (!string.IsNullOrEmpty(projectName) && string.IsNullOrEmpty(slackChannelName))
+            if (!string.IsNullOrEmpty(projectName))
             { project.Name = null; return project; }
-            //if slack channel name already exists then return slack channel name as null
-            if (string.IsNullOrEmpty(projectName) && !string.IsNullOrEmpty(slackChannelName))
-            { project.SlackChannelName = null; return project; }
-            //if project name and slack channel name both are exists then return both as null.
-            project.Name = null; project.SlackChannelName = null; return project;
-        }
-
-        /// <summary>
-        /// Method to return the project details of the given slack channel name - JJ
-        /// </summary>
-        /// <param name="slackChannelName">passed slack channel name</param>
-        /// <returns>object of ProjectAc</returns>
-        public async Task<ProjectAc> GetProjectBySlackChannelNameAsync(string slackChannelName)
-        {
-            Project project = await _projectDataRepository.FirstOrDefaultAsync(x => x.SlackChannelName == slackChannelName);
-            ProjectAc projectAc = new ProjectAc();
-            if (!string.IsNullOrEmpty(project?.TeamLeaderId))
-            {
-                ApplicationUser teamLeader = await _userManager.FindByIdAsync(project.TeamLeaderId);
-                if (teamLeader != null && teamLeader.IsActive)
-                {
-                    projectAc = _mapperContext.Map<Project, ProjectAc>(project);
-                }
-            }
-            return projectAc;
+            return project;
         }
 
         /// <summary>

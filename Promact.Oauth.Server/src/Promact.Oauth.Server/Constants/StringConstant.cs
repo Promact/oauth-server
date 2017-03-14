@@ -38,7 +38,6 @@ namespace Promact.Oauth.Server.Constants
         public string UserPassword { get { return "${{Password}}$"; } }
         public string Name { get { return "Project Name"; } }
         public string EditName { get { return "Project Name Edit"; } }
-        public string SlackChannelName { get { return "Slack Channel Name"; } }
         public bool IsActive { get { return true; } }
         public string TeamLeaderId { get { return "1"; } }
         public string UserIdSecond { get { return "2"; } }

@@ -36,7 +36,6 @@
         string UserPassword { get; }
         string Name { get; }
         string EditName { get; }
-        string SlackChannelName { get; }
         string ErpAuthorizeUrl { get; }
         string InCorrectSlackName { get; }
         bool IsActive { get; }

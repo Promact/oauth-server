@@ -296,7 +296,6 @@ namespace Promact.Oauth.Server.Tests
             ProjectAc projectac = new ProjectAc()
             {
                 Name = _stringConstant.Name,
-                SlackChannelName = _stringConstant.SlackChannelName,
                 IsActive = _stringConstant.IsActive,
                 TeamLeader = new UserAc { FirstName = _stringConstant.FirstName },
                 TeamLeaderId = userId,
@@ -462,7 +461,6 @@ namespace Promact.Oauth.Server.Tests
             ProjectAc projectac = new ProjectAc()
             {
                 Name = _stringConstant.Name,
-                SlackChannelName = _stringConstant.SlackChannelName,
                 IsActive = _stringConstant.IsActive,
                 TeamLeader = new UserAc { FirstName = _stringConstant.FirstName },
                 TeamLeaderId = userId,
@@ -503,7 +501,6 @@ namespace Promact.Oauth.Server.Tests
             ProjectAc projectac = new ProjectAc()
             {
                 Name = _stringConstant.Name,
-                SlackChannelName = _stringConstant.SlackChannelName,
                 IsActive = _stringConstant.IsActive,
                 TeamLeader = new UserAc { FirstName = _stringConstant.FirstName },
                 TeamLeaderId = id,
@@ -525,7 +522,6 @@ namespace Promact.Oauth.Server.Tests
             ProjectAc projectac = new ProjectAc()
             {
                 Name = _stringConstant.Name,
-                SlackChannelName = _stringConstant.SlackChannelName,
                 IsActive = _stringConstant.IsActive,
                 TeamLeader = new UserAc { FirstName = _stringConstant.FirstName },
                 TeamLeaderId = userId,
@@ -545,35 +541,6 @@ namespace Promact.Oauth.Server.Tests
             Assert.Equal(2, userRole.Count());
         }
 
-
-        /// <summary>
-        /// Fetches Users of the given project name(slack channel name)
-        /// </summary>
-        [Fact, Trait("Category", "A")]
-        public async Task GetProjectUserBySlackChannelNameAsync()
-        {
-            string userId = await CreateMockAndUserAsync();
-            ProjectAc projectac = new ProjectAc();
-            projectac.Name = _stringConstant.Name;
-            projectac.SlackChannelName = _stringConstant.SlackChannelName;
-            projectac.IsActive = _stringConstant.IsActive;
-            projectac.TeamLeader = new UserAc { FirstName = _stringConstant.FirstName };
-            projectac.TeamLeaderId = _stringConstant.TeamLeaderId;
-            projectac.CreatedBy = _stringConstant.CreatedBy;
-            int projectId = await _projectRepository.AddProjectAsync(projectac, _stringConstant.CreatedBy);
-            ProjectUser projectUser = new ProjectUser()
-            {
-                ProjectId = projectId,
-                UserId = userId,
-                CreatedBy = userId,
-                CreatedDateTime = DateTime.UtcNow,
-            };
-            await _projectRepository.AddUserProjectAsync(projectUser);
-            var projectUsers = await _userRepository.GetProjectUserBySlackChannelNameAsync(projectac.SlackChannelName);
-            Assert.Equal(projectUsers.Count, 1);
-        }
-
-
         /// <summary>
         /// Test case to check GetProjectUsersByTeamLeaderId method of user repository 
         /// </summary>
@@ -584,7 +551,6 @@ namespace Promact.Oauth.Server.Tests
             ProjectAc projectac = new ProjectAc()
             {
                 Name = _stringConstant.Name,
-                SlackChannelName = _stringConstant.SlackChannelName,
                 IsActive = _stringConstant.IsActive,
                 TeamLeader = new UserAc { FirstName = _stringConstant.FirstName },
                 TeamLeaderId = userId,
@@ -787,7 +753,6 @@ namespace Promact.Oauth.Server.Tests
                 },
                 CreatedDate = DateTime.UtcNow,
                 IsActive = true,
-                SlackChannelName = _stringConstant.SlackChannelName,
                 TeamLeader = UserDetails(),
                 CreatedBy = _stringConstant.UserId,
                 Name = _stringConstant.ProjectName,
