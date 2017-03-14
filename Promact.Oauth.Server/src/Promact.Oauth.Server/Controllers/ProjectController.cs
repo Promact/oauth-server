@@ -477,7 +477,7 @@ namespace Promact.Oauth.Server.Controllers
         * @apiVersion 1.0.0
         * @apiName GetListOfProjectsEnrollmentOfUserByUserIdAsync
         * @apiGroup Project
-        * @apiParam {string} userId  userId
+        * @apiParam {string} userId
         * @apiParamExample {json} Request-Example:
         *        {
         *             "userId": "skgnskdgfsdssdvsdj"
