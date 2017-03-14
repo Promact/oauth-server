@@ -532,7 +532,7 @@ namespace Promact.Oauth.Server.Controllers
         * @apiGroup Project
         * @apiParam {int} id.
         * @apiParamExample {json} Request-Example:
-        * "projectId":"1",
+        * "id":"1",
         * {
         *   "Id":"1",
         *   "Name":"ProjectName",
