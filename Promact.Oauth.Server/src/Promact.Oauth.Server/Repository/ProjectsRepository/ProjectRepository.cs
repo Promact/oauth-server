@@ -320,27 +320,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             }
             return projectAc;
         }
-
-
-        /// <summary>
-        /// Method to return the list of project details - JJ
-        /// </summary>
-        /// <returns>list of object of ProjectAc</returns>
-        public async Task<List<ProjectAc>> GetProjectListAsync()
-        {
-            List<Project> projectList = _projectDataRepository.FetchAsync(x => x.IsActive && !string.IsNullOrEmpty(x.TeamLeaderId)).Result.ToList();
-            List<ProjectAc> projectAcList = new List<ProjectAc>();
-            foreach (var project in projectList)
-            {
-                ApplicationUser teamLeader = await _userManager.FindByIdAsync(project.TeamLeaderId);
-                if (teamLeader != null && teamLeader.IsActive)
-                {
-                    projectAcList.Add(_mapperContext.Map<Project, ProjectAc>(project));
-                }
-            }
-            return projectAcList;
-        }
-
+                    
 
         #endregion
 
