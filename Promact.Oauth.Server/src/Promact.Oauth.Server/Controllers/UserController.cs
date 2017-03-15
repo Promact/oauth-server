@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Promact.Oauth.Server.Constants;
 using Promact.Oauth.Server.ExceptionHandler;
-using Exceptionless;
 using Promact.Oauth.Server.Repository.ProjectsRepository;
 
 namespace Promact.Oauth.Server.Controllers
@@ -825,7 +824,7 @@ namespace Promact.Oauth.Server.Controllers
         /**
        * @api {get} api/users/details/:id
        * @apiVersion 1.0.0
-       * @apiName GetUserDetailWithProjectListByUserId
+       * @apiName GetUserDetailWithProjectListByUserIdAsync
        * @apiGroup User
        * @apiParam {string} id 
        * @apiParamExample {json} Request-Example:
@@ -875,9 +874,9 @@ namespace Promact.Oauth.Server.Controllers
         [Authorize(Policy = ReadUser)]
         [HttpGet]
         [Route("details/{id}")]
-        public async Task<IActionResult> GetUserDetailWithProjectListByUserId(string id)
+        public async Task<IActionResult> GetUserDetailWithProjectListByUserIdAsync(string id)
         {
-            return Ok(await _userRepository.GetUserDetailWithProjectListByUserId(id));
+            return Ok(await _userRepository.GetUserDetailWithProjectListByUserIdAsync(id));
         }
 
         #endregion
