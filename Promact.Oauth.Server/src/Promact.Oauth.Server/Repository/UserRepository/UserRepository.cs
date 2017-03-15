@@ -461,9 +461,9 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="userId">pass user id</param>
         /// <returns>user detail with assign projects</returns>
-        public async Task<UserDetailWithProjectList> GetUserDetailWithProjectListByUserIdAsync(string userId)
+        public async Task<UserDetailWithProjectListAc> GetUserDetailWithProjectListByUserIdAsync(string userId)
         {
-            UserDetailWithProjectList userDetailWithProjectList = new UserDetailWithProjectList();
+            UserDetailWithProjectListAc userDetailWithProjectList = new UserDetailWithProjectListAc();
             var user = await _userManager.FindByIdAsync(userId);
             userDetailWithProjectList.UserAc = _mapperContext.Map<ApplicationUser, UserAc>(user);
             //get all projects which user assigned as team member  
