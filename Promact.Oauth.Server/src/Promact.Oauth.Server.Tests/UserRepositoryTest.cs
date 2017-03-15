@@ -723,6 +723,29 @@ namespace Promact.Oauth.Server.Tests
             Assert.Equal(emailList.Management.Count, 0);
         }
 
+        /// <summary>
+        /// test case for getting user detail with which projects he is assigned as team leader and team member.
+        /// </summary>
+        /// <returns></returns>
+        [Fact, Trait("Category", "Required")]
+        public async Task GetUserDetailWithProjectListByUserIdAsync()
+        {
+            string userId = await CreateMockAndUserAsync();
+            var project = ProjectDetails();
+            project.TeamLeaderId = userId;
+            var projectId = await _projectRepository.AddProjectAsync(project, _stringConstant.Name);
+            ProjectUser projectUser = new ProjectUser()
+            {
+                UserId = userId,
+                ProjectId = projectId,
+                CreatedBy = _stringConstant.UserId,
+                CreatedDateTime = DateTime.UtcNow,
+            };
+            await _projectRepository.AddUserProjectAsync(projectUser);
+            var userDetailWithProjectList = await _userRepository.GetUserDetailWithProjectListByUserIdAsync(userId);
+            Assert.NotNull(userDetailWithProjectList.UserAc);
+        }
+
 
         #endregion
 
