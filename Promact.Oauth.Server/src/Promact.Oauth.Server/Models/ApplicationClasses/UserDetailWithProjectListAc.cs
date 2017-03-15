@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Promact.Oauth.Server.Models.ApplicationClasses
 {
-    public class UserDetailWithProjectList
+    public class UserDetailWithProjectListAc
     {
         public UserAc UserAc { get; set; }
 

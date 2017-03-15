@@ -163,6 +163,6 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="userId">pass user id</param>
         /// <returns>user detail with assign projects</returns>
-        Task<UserDetailWithProjectList> GetUserDetailWithProjectListByUserIdAsync(string userId);
+        Task<UserDetailWithProjectListAc> GetUserDetailWithProjectListByUserIdAsync(string userId);
     }
 }
