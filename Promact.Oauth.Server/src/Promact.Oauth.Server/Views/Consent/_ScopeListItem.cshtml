@@ -15,20 +15,20 @@
                    name="ScopesConsented"
                    value="@Model.Name" />
         }
-        <strong>@Model.DisplayName</strong>
+        <span>@Model.DisplayName</span>
         @if (Model.Emphasize)
         {
-            <span class="glyphicon glyphicon-exclamation-sign"></span>
+            <span></span>
         }
     </label>
     @if (Model.Required)
     {
-        <span><em>(required)</em></span>
+        <span>(required)</span>
     }
     @if (Model.Description != null)
     {
-        <div class="consent-description">
-            <label for="scopes_@Model.Name">@Model.Description</label>
-        </div>
+        
+            <span class="desc-style" for="scopes_@Model.Name">(@Model.Description)  </span>
+      
     }
 </li>
