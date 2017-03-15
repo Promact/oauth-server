@@ -456,6 +456,29 @@ namespace Promact.Oauth.Server.Repository
             return userEmailListAC;
         }
 
+        /// <summary>
+        ///This method used for getting user detail with which projects he is assign as team leader and team member.
+        /// </summary>
+        /// <param name="userId">pass user id</param>
+        /// <returns>user detail with assign projects</returns>
+        public async Task<UserDetailWithProjectList> GetUserDetailWithProjectListByUserId(string userId)
+        {
+            UserDetailWithProjectList userDetailWithProjectList = new UserDetailWithProjectList();
+            var user = await _userManager.FindByIdAsync(userId);
+            userDetailWithProjectList.UserAc = _mapperContext.Map<ApplicationUser, UserAc>(user);
+            var projectIds = (await _projectUserDataRepository.FetchAsync(x => x.UserId == userId)).Select(x => x.ProjectId).ToList();
+            projectIds.AddRange((await _projectDataRepository.FetchAsync(x => x.TeamLeaderId == userId)).Select(x => x.Id));
+            List<ProjectAc> listOfProject = new List<ProjectAc>();
+            foreach (var projectId in projectIds)
+            {
+                var project = await _projectDataRepository.FirstAsync(x => x.Id == projectId);
+                var projectAC = _mapperContext.Map<Project, ProjectAc>(project);
+                listOfProject.Add(projectAC);
+            }
+            userDetailWithProjectList.ListOfProject = listOfProject;
+            return userDetailWithProjectList;
+        }
+
         #endregion
 
         #region Private Methods

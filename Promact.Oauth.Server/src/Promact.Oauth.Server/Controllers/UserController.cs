@@ -16,7 +16,7 @@ namespace Promact.Oauth.Server.Controllers
 {
     [Route(BaseUrl)]
     public class UserController : BaseController
-    { 
+    {
         #region "Private Variable(s)"
         private readonly IUserRepository _userRepository;
         private readonly UserManager<ApplicationUser> _userManager;
@@ -413,7 +413,7 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         #region External Call APIs
-        
+
         /**
         * @api {get} api/users/:id/detail 
         * @apiVersion 1.0.0
@@ -791,7 +791,7 @@ namespace Promact.Oauth.Server.Controllers
         * @api {get} api/users/detail/:projectId
         * @apiVersion 1.0.0
         * @apiName GetListOfTeamMemberByProjectIdAsync
-        * @apiGroup Project
+        * @apiGroup User
         * @apiParam {int} projectId  projectId
         * @apiParamExample {json} Request-Example:
         *        {
@@ -821,6 +821,65 @@ namespace Promact.Oauth.Server.Controllers
         {
             return Ok(await _projectRepository.GetListOfTeamMemberByProjectIdAsync(projectId));
         }
+
+        /**
+       * @api {get} api/users/details/:id
+       * @apiVersion 1.0.0
+       * @apiName GetUserDetailWithProjectListByUserId
+       * @apiGroup User
+       * @apiParam {string} id 
+       * @apiParamExample {json} Request-Example:
+       *        {
+       *             "id": "dsadu4521fsfdsfr1"
+       *        }      
+       * @apiSuccessExample {json} Success-Response:
+       * HTTP/1.1 200 OK 
+       *  {
+       *    "UserAc" : {
+       *                 "Id":"abcd1af3d-062f-4bcd-b6f9-b8fd5165e367",
+       *                 "FirstName" : "Smith",
+       *                 "Email" : "Smith@promactinfo.com",
+       *                 "LastName" : "Doe",
+       *                 "IsActive" : "True",
+       *                 "JoiningDate" :"10-02-2016",
+       *                 "NumberOfCasualLeave":0,
+       *                 "NumberOfSickLeave":0,
+       *                 "UniqueName":null,
+       *                 "Role":null,
+       *                 "UserName": null,
+       *                 "RoleName": null
+       *                },
+       *    "UserDetailWithProjectList" : 
+       *                [{
+       *                    "Id": "1"
+       *                    "Name": "slack"
+       *                    "IsActive":"true"
+       *                    "TeamLeaderId":"Null"
+       *                    "CreatedBy":"Test"
+       *                    "CreatedDate":"10-02-2017"
+       *                    "UpdatedBy":"Null"
+       *                    "UpdatedDate":"Null"
+       *                },
+       *                {
+       *                    "Id": "2"
+       *                    "Name": "slack"
+       *                    "IsActive":"true"
+       *                    "TeamLeaderId":"dsadu4521fsfdsfr1"
+       *                    "CreatedBy":"Test"
+       *                    "CreatedDate":"10-02-2017"
+       *                    "UpdatedBy":"Null"
+       *                    "UpdatedDate":"Null"
+       *                }]            
+       *  }
+       */
+        [Authorize(Policy = ReadUser)]
+        [HttpGet]
+        [Route("details/{id}")]
+        public async Task<IActionResult> GetUserDetailWithProjectListByUserId(string id)
+        {
+            return Ok(await _userRepository.GetUserDetailWithProjectListByUserId(id));
+        }
+
         #endregion
         #endregion
     }
