@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Models.ApplicationClasses;
 using Promact.Oauth.Server.Models.ManageViewModels;
 
@@ -164,6 +163,6 @@ namespace Promact.Oauth.Server.Repository
         /// </summary>
         /// <param name="userId">pass user id</param>
         /// <returns>user detail with assign projects</returns>
-        Task<UserDetailWithProjectList> GetUserDetailWithProjectListByUserId(string userId);
+        Task<UserDetailWithProjectList> GetUserDetailWithProjectListByUserIdAsync(string userId);
     }
 }
