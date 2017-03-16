@@ -1,12 +1,11 @@
 **I'm submitting a ...**  (check one with "x")
 ```
 [ ] bug report => search github for a similar issue or PR before submitting
-[ ] feature request
-[ ] support request => Please do not submit support request here, instead see
+[ ] feature request => 
 
 
-**Current behavior**
-<!-- Describe how the bug manifests. -->
+**Step/s to reproduce issue**
+<!-- Describe steps how to produce the bug produce. -->
 
-**Expected behavior**
-<!-- Describe what the behavior would be without the bug. -->
+**Screen shot**
+<!-- added screen shot. -->
