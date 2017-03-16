@@ -8,4 +8,4 @@
 <!-- Describe steps how to produce the bug produce. -->
 
 **Screen shot**
-<!-- added screen shot. -->
+<!-- add screen shot. -->
