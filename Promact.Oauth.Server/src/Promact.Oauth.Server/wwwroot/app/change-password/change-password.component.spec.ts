@@ -134,16 +134,13 @@ describe('Change Password', () => {
     }));
 
 
-    it('Calls goBack', fakeAsync(() => {
+    it('cancel', fakeAsync(() => {
         let fixture = TestBed.createComponent(ChangePasswordComponent); //Create instance of component            
         let changePasswordComponent = fixture.componentInstance;
-        let router = fixture.debugElement.injector.get(Router);
-        spyOn(router, stringConstant.navigate);
-        changePasswordComponent.goBack();
+        changePasswordComponent.cancel();
         tick();
-        expect(router.navigate).toHaveBeenCalled();
+        expect(changePasswordComponent.showForm).toBe(true);
     }));
-
 });
 
 
