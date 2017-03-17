@@ -14,7 +14,7 @@ const userRoutes: Routes = [{
         { path: '', component: UserListComponent, canActivate: [AuthenticationService] },
         { path: 'list', component: UserListComponent, canActivate: [AuthenticationService]},
         { path: 'add', component: UserAddComponent, canActivate: [AuthenticationService]},
-        { path: 'edit/:id', component: UserEditComponent, canActivate: [AuthenticationService] },
+        { path: 'edit/:id', component: UserEditComponent },
         { path: 'details/:id', component: UserDetailsComponent }
     ]
 }];
