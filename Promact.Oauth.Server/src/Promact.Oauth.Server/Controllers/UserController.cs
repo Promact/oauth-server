@@ -211,9 +211,9 @@ namespace Promact.Oauth.Server.Controllers
         [Authorize(Roles = Admin)]
         public async Task<IActionResult> RegisterUserAsync([FromBody] UserAc newUser)
         {
-            newUser.JoiningDate = Convert.ToDateTime(newUser.JoinDate);
             if (ModelState.IsValid)
             {
+                newUser.JoiningDate = Convert.ToDateTime(newUser.JoinDate);
                 string createdBy = _userManager.GetUserId(User);
                 await _userRepository.AddUserAsync(newUser, createdBy);
                 return Ok(true);
