@@ -11,6 +11,7 @@ import { MockRouter } from '../../shared/mocks/mock.router';
 import { UserModule } from '../user.module';
 import { LoaderService } from '../../shared/loader.service';
 import { StringConstant } from '../../shared/stringconstant';
+import { DatePipe } from '@angular/common';
 
 let stringConstant = new StringConstant();
 
@@ -27,6 +28,7 @@ describe('User Add Test', () => {
                 { provide: Md2Toast, useClass: MockToast },
                 { provide: UserModel, useClass: UserModel },
                 { provide: LoaderService, useClass: LoaderService },
+                { provide: DatePipe, useClass: DatePipe },
                 { provide: StringConstant, useClass: StringConstant }]
         }).compileComponents();
     }));
@@ -38,6 +40,7 @@ describe('User Add Test', () => {
         let userModel = new UserModel();
         let expected = stringConstant.firstName;
         userModel.FirstName = expected;
+        userModel.JoiningDate = new Date();
         let router = fixture.debugElement.injector.get(Router);
         spyOn(router, stringConstant.navigate);
         userAddComponent.addUser(userModel);
@@ -52,6 +55,7 @@ describe('User Add Test', () => {
         let toast = fixture.debugElement.injector.get(Md2Toast);
         let userModel = new UserModel();
         userModel.FirstName = "";
+        userModel.JoiningDate = new Date();
         userAddComponent.addUser(userModel);
         tick();
         expect(userAddComponent.userModel.FirstName).toBe(undefined);
@@ -65,6 +69,7 @@ describe('User Add Test', () => {
         userAddComponent.isEmailExist = true;
         let userModel = new UserModel();
         userModel.FirstName = "";
+        userModel.JoiningDate = new Date();
         userAddComponent.addUser(userModel);
         tick();
         expect(userAddComponent.userModel.FirstName).toBe(undefined);
