@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using Promact.Oauth.Server.Constants;
 using Promact.Oauth.Server.ExceptionHandler;
 using Promact.Oauth.Server.Repository.ProjectsRepository;
+using System;
 
 namespace Promact.Oauth.Server.Controllers
 {
@@ -210,6 +211,7 @@ namespace Promact.Oauth.Server.Controllers
         [Authorize(Roles = Admin)]
         public async Task<IActionResult> RegisterUserAsync([FromBody] UserAc newUser)
         {
+            newUser.JoiningDate = Convert.ToDateTime(newUser.JoinDate);
             if (ModelState.IsValid)
             {
                 string createdBy = _userManager.GetUserId(User);
