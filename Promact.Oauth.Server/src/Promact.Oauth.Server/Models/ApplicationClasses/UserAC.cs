@@ -34,6 +34,9 @@ namespace Promact.Oauth.Server.Models.ApplicationClasses
         [JsonProperty("JoiningDate")]
         public DateTime JoiningDate { get; set; }
 
+        [JsonProperty("JoinDate")]
+        public string JoinDate { get; set; }
+
         [JsonProperty("SlackUserName")]
         public string SlackUserName { get; set; }
 
