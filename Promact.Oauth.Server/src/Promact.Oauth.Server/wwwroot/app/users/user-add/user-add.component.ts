@@ -5,7 +5,7 @@ import { UserRoleModel } from '../userrole.model';
 import { Router } from '@angular/router';
 import { Md2Toast } from 'md2';
 import { LoaderService } from '../../shared/loader.service';
-
+import { DatePipe } from '@angular/common';
 
 
 @Component({
@@ -46,6 +46,9 @@ export class UserAddComponent implements OnInit {
     addUser(userModel) {
         this.loader.loader = true;
         userModel.JoiningDate = new Date(userModel.JoiningDate);
+        let datePipeMinDate = new DatePipe("medium");
+        userModel.JoinDate = datePipeMinDate.transform(userModel.JoiningDate, "dd/MM/yyyy");
+        
             if (!this.isEmailExist) {
                 userModel.FirstName = userModel.FirstName.trim();
                 this.userService.registerUser(userModel).then((result) => {
