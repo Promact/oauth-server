@@ -159,6 +159,7 @@ namespace Promact.Oauth.Server.Constants
         public string UserNameForTest { get { return "XyzTest"; } }
         public string RandomString { get { return "abcdefghijklmnopqrstuvwxyz|ABCDEFGHIJKLMNOPQRSTUVWXYZ|012345789|@#$%^!&*()"; } }
         public string PromactErpUrlForTest { get { return "http://www.example.com"; } }
+        public string DateFormatForJoinnigDate { get { return "dd/MM/yyyy"; } }
 
         #region IdentityServer4
         public string APIResourceName
