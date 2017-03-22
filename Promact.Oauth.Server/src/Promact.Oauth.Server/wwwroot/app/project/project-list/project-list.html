@@ -35,7 +35,11 @@
                         <i class="icon-pencil oauth-icon" title="Edit" (click)="editProject(project.Id)"></i>
                         <i class="icon-android-document oauth-icon" title="View" (click)="viewProject(project.Id)"></i>
                     </td>
-
+                    
+                </tr>
+                <tr *ngIf="projects.length==0">
+                    <td *ngIf="admin==false" colspan="3">No records to display</td>
+                    <td *ngIf="admin==true" colspan="9">No records to display</td>
                 </tr>
             </tbody>
         </table>
