@@ -12,6 +12,8 @@
         <ul *ngFor="let consumerApps of listOfConsumerApps">
             <li (click)="editDetails(consumerApps.authId)" class="list-left">{{consumerApps.name}}</li>
         </ul>
-
+        <div class="alert-msg" *ngIf="listOfConsumerApps.length == 0">
+            <p>No Record Found</p>
+        </div>
     </div>
 </div>
