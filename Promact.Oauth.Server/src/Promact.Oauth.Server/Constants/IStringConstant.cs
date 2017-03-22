@@ -96,6 +96,7 @@
         string SlackUserNameForTest { get; }
         string RandomString { get; }
         string PromactErpUrlForTest { get; }
+        string DateFormatForJoinnigDate { get; }
 
         #region IdentityServer4
         string APIResourceName { get; }

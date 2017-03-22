@@ -11,6 +11,7 @@ using Promact.Oauth.Server.Constants;
 using Promact.Oauth.Server.ExceptionHandler;
 using Promact.Oauth.Server.Repository.ProjectsRepository;
 using System;
+using System.Globalization;
 
 namespace Promact.Oauth.Server.Controllers
 {
@@ -213,7 +214,7 @@ namespace Promact.Oauth.Server.Controllers
         {
             if (ModelState.IsValid)
             {
-                newUser.JoiningDate = Convert.ToDateTime(newUser.JoinDate);
+                newUser.JoiningDate = DateTime.ParseExact(newUser.JoinDate, _stringConstant.DateFormatForJoinnigDate, CultureInfo.InvariantCulture);
                 string createdBy = _userManager.GetUserId(User);
                 await _userRepository.AddUserAsync(newUser, createdBy);
                 return Ok(true);
