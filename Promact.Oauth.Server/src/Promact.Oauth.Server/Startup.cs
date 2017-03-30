@@ -17,7 +17,7 @@ using Promact.Oauth.Server.Repository.ConsumerAppRepository;
 using System.Net.Http;
 using Promact.Oauth.Server.AutoMapper;
 using AutoMapper;
-using Exceptionless;
+using Exceptionless; 
 using NLog.Extensions.Logging;
 using Promact.Oauth.Server.Constants;
 using Promact.Oauth.Server.Utility;
@@ -33,6 +33,7 @@ using Promact.Oauth.Server.StringLiterals;
 using NLog.LayoutRenderers;
 using Microsoft.AspNetCore.HttpOverrides;
 using Promact.Oauth.Server.Middleware;
+using IdentityServer4.Services;
 
 namespace Promact.Oauth.Server
 {
@@ -106,6 +107,7 @@ namespace Promact.Oauth.Server
             services.AddScoped<IDefaultIdentityResources, DefaultIdentityResources>();
             services.AddScoped<ICustomConsentService, CustomConsentService>();
             services.AddScoped<SecurityHeadersAttribute>();
+            services.AddScoped<IConsentService, CustomDefaultConsentService>();
 
             services.Configure<StringLiteral>(Configuration.GetSection("StringLiterals"));
             services.AddMvc();
