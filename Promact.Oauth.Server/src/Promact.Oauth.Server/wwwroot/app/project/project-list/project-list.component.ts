@@ -42,10 +42,10 @@ export class ProjectListComponent implements OnInit {
        
         
     }
-    editProject(Id) {
+    editProject(Id: number) {
         this.router.navigate(['/project/edit', Id]);
     }
-    viewProject(Id) {
+    viewProject(Id: number) {
         this.router.navigate(['/project/view', Id]);
     }
 

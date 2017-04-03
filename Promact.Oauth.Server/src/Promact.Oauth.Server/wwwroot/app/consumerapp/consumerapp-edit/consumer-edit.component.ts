@@ -45,7 +45,7 @@ export class ConsumerappEditComponent implements OnInit {
         });
     }
 
-    updateApps(consumerModel) {
+    updateApps(consumerModel: ConsumerAppModel) {
         this.loader.loader = true;
         this.consumerAppService.updateConsumerApps(consumerModel).then((result) => {
             this.toast.show('Consumer App is updated successfully.');
