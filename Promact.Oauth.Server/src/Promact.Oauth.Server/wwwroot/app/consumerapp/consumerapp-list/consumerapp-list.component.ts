@@ -23,9 +23,6 @@ export class ConsumerappListComponent implements OnInit {
         this.consumerAppService.getConsumerApps().then((result) => {
             this.listOfConsumerApps = result;
             this.loader.loader = false;
-        }, err => {
-            this.toast.show('Consumer App list empty.');
-            this.loader.loader = false;
         });
     }
 

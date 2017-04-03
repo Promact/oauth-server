@@ -23,7 +23,7 @@ namespace Promact.Oauth.Server.Controllers
         #endregion
 
         #region "Constructor"
-        public ProjectController(IProjectRepository projectRepository,UserManager<ApplicationUser> userManager,IStringConstant stringConstant)
+        public ProjectController(IProjectRepository projectRepository, UserManager<ApplicationUser> userManager, IStringConstant stringConstant)
         {
             _projectRepository = projectRepository;
             _userManager = userManager;
@@ -44,7 +44,6 @@ namespace Promact.Oauth.Server.Controllers
          * [
           * {
           *   "Name":"Slack",
-          *   "SlackChannelName":"SlackChannelName",
           *   "IsActive":"True",
           *   "TeamLeaderId":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
           *   "CreatedBy" : "Smith",
@@ -57,7 +56,6 @@ namespace Promact.Oauth.Server.Controllers
           *         "FirstName" : "John",
           *         "Email" : "jone@promactinfo.com",
           *         "LastName" : "Doe",
-          *         "SlackUserName" :"John",
           *         "IsActive" : "True",
           *         "JoiningDate" :"10-02-2016",
           *         "NumberOfCasualLeave":0,
@@ -77,7 +75,7 @@ namespace Promact.Oauth.Server.Controllers
         public async Task<IActionResult> GetProjectsAsync()
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            var isRoleExists = await _userManager.IsInRoleAsync(user,_stringConstant.Employee );
+            var isRoleExists = await _userManager.IsInRoleAsync(user, _stringConstant.Employee);
             if (isRoleExists)
             {
                 return Ok(await _projectRepository.GetAllProjectForUserAsync(user.Id));
@@ -102,7 +100,6 @@ namespace Promact.Oauth.Server.Controllers
         * HTTP/1.1 200 OK 
         * {
         *   "Name":"Slack",
-        *   "SlackChannelName":"SlackChannelName",
         *   "IsActive":"True",
         *   "TeamLeaderId":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
         *   "CreatedBy" : "Smith",
@@ -115,7 +112,6 @@ namespace Promact.Oauth.Server.Controllers
         *         "FirstName" : "John",
         *         "Email" : "jone@promactinfo.com",
         *         "LastName" : "Doe",
-        *         "SlackUserName" :"John",
         *         "IsActive" : "True",
         *         "JoiningDate" :"10-02-2016",
         *         "NumberOfCasualLeave":0,
@@ -130,7 +126,6 @@ namespace Promact.Oauth.Server.Controllers
         *         "FirstName" : "Smith",
         *         "Email" : "Smith@promactinfo.com",
         *         "LastName" : "Doe",
-        *         "SlackUserName" :"Smith",
         *         "IsActive" : "True",
         *         "JoiningDate" :"10-02-2016",
         *         "NumberOfCasualLeave":0,
@@ -145,7 +140,6 @@ namespace Promact.Oauth.Server.Controllers
         *         "FirstName" : "White",
         *         "Email" : "White@promactinfo.com",
         *         "LastName" : "Doe",
-        *         "SlackUserName" :"White",
         *         "IsActive" : "True",
         *         "JoiningDate" :"18-02-2016",
         *         "NumberOfCasualLeave":0,
@@ -189,7 +183,6 @@ namespace Promact.Oauth.Server.Controllers
           * {
           *   "Name":"ProjectName",
           *   "TeamLeaderId":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
-          *   "SlackChannelName":"SlackChannelName",
           *   "IsActive":"True",
           *   "TeamLeader": null,
           *   "ApplicationUsers" :[
@@ -198,7 +191,6 @@ namespace Promact.Oauth.Server.Controllers
           *         "FirstName" : "Smith",
           *         "Email" : "Smith@promactinfo.com",
           *         "LastName" : "Doe",
-          *         "SlackUserName" :"Smith",
           *         "IsActive" : "True",
           *         "JoiningDate" :"10-02-2016",
           *         "NumberOfCasualLeave":0,
@@ -213,7 +205,6 @@ namespace Promact.Oauth.Server.Controllers
           *         "FirstName" : "White",
           *         "Email" : "White@promactinfo.com",
           *         "LastName" : "Doe",
-          *         "SlackUserName" :"White",
           *         "IsActive" : "True",
           *         "JoiningDate" :"18-02-2016",
           *         "NumberOfCasualLeave":"0",
@@ -229,7 +220,6 @@ namespace Promact.Oauth.Server.Controllers
           * HTTP/1.1 200 OK 
           * {
           *   "Name":"ProjectName",
-          *   "SlackChannelName":"SlackChannelName",
           *   "TeamLeaderId":"34d1af3d-062f-4bcd-b6f9-b8fd5165e367",
           *   "IsActive":"True",
           *   "TeamLeaderId":"1",
@@ -240,7 +230,6 @@ namespace Promact.Oauth.Server.Controllers
           *         "FirstName" : "Smith",
           *         "Email" : "Smith@promactinfo.com",
           *         "LastName" : "Doe",
-          *         "SlackUserName" :"Smith",
           *         "IsActive" : "True",
           *         "JoiningDate" :"10-02-2016",
           *         "NumberOfCasualLeave":0,
@@ -255,7 +244,6 @@ namespace Promact.Oauth.Server.Controllers
           *         "FirstName" : "White",
           *         "Email" : "White@promactinfo.com",
           *         "LastName" : "Doe",
-          *         "SlackUserName" :"White",
           *         "IsActive" : "True",
           *         "JoiningDate" :"18-02-2016",
           *         "NumberOfCasualLeave":0,
@@ -284,7 +272,7 @@ namespace Promact.Oauth.Server.Controllers
                 var createdBy = _userManager.GetUserId(User);
                 ProjectAc projectAc = await _projectRepository.CheckDuplicateProjectAsync(project);
 
-                if (!string.IsNullOrEmpty(projectAc.Name) && !string.IsNullOrEmpty(projectAc.SlackChannelName))
+                if (!string.IsNullOrEmpty(projectAc.Name))
                 {
                     int projectId = await _projectRepository.AddProjectAsync(project, createdBy);
                     foreach (var applicationUser in project.ApplicationUsers)
@@ -320,7 +308,6 @@ namespace Promact.Oauth.Server.Controllers
         *   "Id":"1",
         *   "Name":"ProjectName",
         *   "TeamLeaderId":"1",
-        *   "SlackChannelName":"SlackChannelName",
         *   "IsActive":"True",
         *   "TeamLeader":null,
         *   "ApplicationUsers" : [
@@ -329,7 +316,6 @@ namespace Promact.Oauth.Server.Controllers
         *         "FirstName" : "Smith",
         *         "Email" : "Smith@promactinfo.com",
         *         "LastName" : "Doe",
-        *         "SlackUserName" :"Smith",
         *         "IsActive" : "True",
         *         "JoiningDate" :"10-02-2016",
         *         "NumberOfCasualLeave":0,
@@ -347,7 +333,6 @@ namespace Promact.Oauth.Server.Controllers
         *   "Id":"1",
         *   "Name":"ProjectName",
         *   "TeamLeaderId":"1",
-        *   "SlackChannelName":"SlackChannelName",
         *   "IsActive":"True",
         *   "TeamLeader": null,
         *   "ApplicationUsers" : [
@@ -356,7 +341,6 @@ namespace Promact.Oauth.Server.Controllers
         *         "FirstName" : "Smith",
         *         "Email" : "Smith@promactinfo.com",
         *         "LastName" : "Doe",
-        *         "SlackUserName" :"Smith",
         *         "IsActive" : "True",
         *         "JoiningDate" :"10-02-2016",
         *         "NumberOfCasualLeave":0,
@@ -386,7 +370,7 @@ namespace Promact.Oauth.Server.Controllers
                 {
                     var updatedBy = _userManager.GetUserId(User);
                     ProjectAc projectAc = await _projectRepository.CheckDuplicateProjectAsync(project);
-                    if (!string.IsNullOrEmpty(projectAc.Name) && !string.IsNullOrEmpty(projectAc.SlackChannelName))
+                    if (!string.IsNullOrEmpty(projectAc.Name))
                     {
                         await _projectRepository.EditProjectAsync(id, project, updatedBy);
                     }
@@ -401,47 +385,7 @@ namespace Promact.Oauth.Server.Controllers
 
         }
 
-        /**
-        * @api {get} api/project/:slackChannelName 
-        * @apiVersion 1.0.0
-        * @apiName GetProjectBySlackChannelNameAsync
-        * @apiGroup Project
-        * @apiParam {string} SlackChannelName Slack Channel Name
-        * @apiParamExample {json} Request-Example:
-        * {
-        *   "slackChannelName":"SlackChannelName"
-        * }      
-        * @apiSuccessExample {json} Success-Response:
-        * HTTP/1.1 200 OK 
-        * {
-        *    
-        *   "Name":"ProjectName",
-        *   "SlackChannelName":"SlackChannelName",
-        *   "IsActive":"True",
-        *   "TeamLeaderId":"1",
-        *   "ApplicationUsers":null
-        * }
-        * @apiError ProjectNotFound The id of the Project was not found.
-        * @apiErrorExample {json} Error-Response:
-        * HTTP/1.1 404 Not Found
-        * {
-        *   "error": "ProjectNotFound"
-        * }
-        */
-        [Authorize(Policy = ReadProject)]
-        [HttpGet]
-        [Route("{slackChannelName}")]
-        public async Task<IActionResult> GetProjectBySlackChannelNameAsync(string slackChannelName)
-        {
-            try
-            {
-                return Ok(await _projectRepository.GetProjectBySlackChannelNameAsync(slackChannelName));
-            }
-            catch (ProjectNotFound)
-            {
-                return NotFound();
-            }
-        }
+
 
         /**
       * @api {get} api/project/list 
@@ -453,7 +397,6 @@ namespace Promact.Oauth.Server.Controllers
       * [
       *  {
       *   "Name":"ProjectName",
-      *   "SlackChannelName":"SlackChannelName",
       *   "IsActive":"True",
       *   "TeamLeaderId":"1",
       *   "ApplicationUsers":null
@@ -469,21 +412,20 @@ namespace Promact.Oauth.Server.Controllers
         }
 
         /**
-        * @api {get} api/project/:projectId/detail
+        * @api {get} api/project/:id/detail
         * @apiVersion 1.0.0
         * @apiName GetProjectDetail
         * @apiGroup Project
-        * @apiParam {int} id  projectId
+        * @apiParam {int} id 
         * @apiParamExample {json} Request-Example:
         *      
         *        {
-        *             "projectId": "1"
+        *             "id": "1"
         *        }      
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
         *  {
         *   "Name":"ProjectName",
-        *   "SlackChannelName":"SlackChannelName",
         *   "IsActive":"True",
         *   "TeamLeaderId":"1",
         *   "ApplicationUsers":null
@@ -497,11 +439,102 @@ namespace Promact.Oauth.Server.Controllers
         */
         [Authorize(Policy = ReadProject)]
         [HttpGet]
-        [Route("{projectId:int}/detail")]
-        public async Task<IActionResult> ProjectDetailsAsync(int projectId)
+        [Route("{id:int}/detail")]
+        public async Task<IActionResult> ProjectDetailsAsync(int id)
         {
-            return Ok(await _projectRepository.GetProjectDetailsAsync(projectId));
+            return Ok(await _projectRepository.GetProjectDetailsAsync(id));
         }
+
+        /**
+        * @api {get} api/project/detail/:userId
+        * @apiVersion 1.0.0
+        * @apiName GetListOfProjectsEnrollmentOfUserByUserIdAsync
+        * @apiGroup Project
+        * @apiParam {string} userId
+        * @apiParamExample {json} Request-Example:
+        *        {
+        *             "userId": "skgnskdgfsdssdvsdj"
+        *        }      
+        * @apiSuccessExample {json} Success-Response:
+        * HTTP/1.1 200 OK 
+        *  [{
+        *   "Id":"1"
+        *   "Name":"ProjectName",
+        *   "IsActive":"True",
+        *   "TeamLeaderId":"1",
+        *   "TeamLeader":
+        *   {
+        *         "Id":"1",
+        *         "FirstName" : "Smith",
+        *         "Email" : "Smith@promactinfo.com",
+        *         "LastName" : "Doe",
+        *         "IsActive" : "True",
+        *         "JoiningDate" :"10-02-2016",
+        *         "NumberOfCasualLeave":0,
+        *         "NumberOfSickLeave":0,
+        *         "UniqueName":null,
+        *         "Role":null,
+        *         "UserName": null,
+        *         "RoleName": null
+        *         }
+        *   "ApplicationUsers":null
+        *  }]
+        */
+        [Authorize(Policy = ReadProject)]
+        [HttpGet]
+        [Route("detail/{userId}")]
+        public async Task<IActionResult> GetListOfProjectsEnrollmentOfUserByUserIdAsync(string userId)
+        {
+            return Ok(await _projectRepository.GetListOfProjectsEnrollmentOfUserByUserIdAsync(userId));
+        }
+
+
+
+        /**
+        * @api {get} api/project/projectDetail/:id
+        * @apiVersion 1.0.0
+        * @apiName GetProjectByProjectIdAsync
+        * @apiGroup Project
+        * @apiParam {int} id.
+        * @apiParamExample {json} Request-Example:
+        * {
+        *   "id":"1",
+        * }      
+        * @apiSuccessExample {json} Success-Response:
+        * HTTP/1.1 200 OK 
+        * {
+        *   "Id":"1",
+        *   "Name":"ProjectName",
+        *   "TeamLeaderId":"1",
+        *   "IsActive":"True",
+        *   "TeamLeader": null,
+        *   "ApplicationUsers" : [
+        *     {
+        *         "Id":"abcd1af3d-062f-4bcd-b6f9-b8fd5165e367",
+        *         "FirstName" : "Smith",
+        *         "Email" : "Smith@promactinfo.com",
+        *         "LastName" : "Doe",
+        *         "IsActive" : "True",
+        *         "JoiningDate" :"10-02-2016",
+        *         "NumberOfCasualLeave":0,
+        *         "NumberOfSickLeave":0,
+        *         "UniqueName":null,
+        *         "Role":null,
+        *         "UserName": null,
+        *         "RoleName": null
+        *     }
+        *  ]
+        * }       
+        */
+        [Authorize(Policy = ReadProject)]
+        [HttpGet]
+        [Route("projectDetail/{id:int}")]
+        public async Task<IActionResult> GetProjectByProjectIdAsync(int id)
+        {
+            return Ok(await _projectRepository.GetProjectByProjectIdAsync(id));
+        }
+
+
         #endregion
     }
 }

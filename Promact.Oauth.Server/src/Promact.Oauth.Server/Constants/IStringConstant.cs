@@ -36,7 +36,6 @@
         string UserPassword { get; }
         string Name { get; }
         string EditName { get; }
-        string SlackChannelName { get; }
         string ErpAuthorizeUrl { get; }
         string InCorrectSlackName { get; }
         bool IsActive { get; }
@@ -97,6 +96,7 @@
         string SlackUserNameForTest { get; }
         string RandomString { get; }
         string PromactErpUrlForTest { get; }
+        string DateFormatForJoinnigDate { get; }
 
         #region IdentityServer4
         string APIResourceName { get; }
@@ -131,7 +131,7 @@
         string RandomClientSecret { get; }
         string ExceptionMessageConsumerAppNameIsAlreadyExists { get; }
         string ExceptionMessageConsumerAppNotFound { get; }
-        string ExceptionMessageSlackUserNotFound { get; }
+        string ExceptionMessageUserNotFound { get; }
         string ExceptionMessageFailedToFetchDataException { get; }
         #endregion
     }

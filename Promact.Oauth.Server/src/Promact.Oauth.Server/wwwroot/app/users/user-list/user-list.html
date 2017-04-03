@@ -22,8 +22,8 @@
         </thead>
         <tbody>
             <tr *ngFor="let user of md2.data">
-                <td>{{user.FirstName}}</td>
-                <td>{{user.LastName}}</td>
+                <td class="wd-name">{{user.FirstName}}</td>
+                <td class="wd-name">{{user.LastName}}</td>
                 <td>{{user.Email}}</td>
                 <td *ngIf="user.IsActive">Active</td>
                 <td *ngIf="!user.IsActive">Inactive</td>
@@ -31,11 +31,11 @@
                 <td>{{user.NumberOfSickLeave}}</td>
                 <td>{{user.JoiningDate |date:"dd/MM/yyyy"}}</td>
                 <td>
-                    <button md-raised-button class="btn-green custom-btn mr-5" (click)="userDetails(user.Id)">Details</button>
-                    <button md-raised-button class="btn-green custom-btn mr-5" (click)="userDelete(user.Id)">Delete</button>
-                    <button md-raised-button class="custom-btn" (click)="userEdit(user.Id)">Edit</button>
-                    <button md-raised-button class="btn-green custom-btn mr-5" (click)="reSendMail(user)">ReSendMail</button>
-                </td>
+                    <i title="Details" class="icon-android-document oauth-icon" (click)="userDetails(user.Id)"></i>
+                    <i class="icon-trash-b oauth-icon"  title="Delete" (click)="userDelete(user.Id)"></i>
+                    <i class="icon-pencil oauth-icon"  title="Edit" (click)="userEdit(user.Id)"></i> 
+                    <i class="icon-paper-plane oauth-icon" title="Resend mail" (click)="reSendMail(user)"></i>
+               </td>
             </tr>
         </tbody>
         <tfoot>

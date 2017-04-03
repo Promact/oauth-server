@@ -16,11 +16,13 @@ export class ProjectAddComponent implements OnInit {
     projects: Array<ProjectModel>;
     item: Array<string> = [];
     project: ProjectModel;
+    isTeamLeader: boolean;
     Userlist: Array<UserModel>;
-    constructor(private route: ActivatedRoute,private router: Router,private toast: Md2Toast,private proService: ProjectService,
+    constructor(private route: ActivatedRoute, private router: Router, private toast: Md2Toast, private projectService: ProjectService,
         private loader: LoaderService) {
         this.projects = new Array<ProjectModel>();
         this.project = new ProjectModel();
+        this.isTeamLeader = true;
 
     }
     /**
@@ -28,48 +30,26 @@ export class ProjectAddComponent implements OnInit {
      * @param project project table information pass
      */
     addProject(project: ProjectModel) {
-        let bool = 0;
+        
         for (let i = 0; i < project.ApplicationUsers.length; i++) {
             if (project.TeamLeaderId === project.ApplicationUsers[i].Id) {
                 this.toast.show("Teamleader is selected as team member,Please select another team leader");
-                bool = 1;
+                this.isTeamLeader = false;
             }
         }
 
-        if (project.Name === null && project.SlackChannelName === null) {
-            this.toast.show("Project Name and Slack Channel Name can not be blank");
-        }
-        else if (project.Name === null && project.SlackChannelName !== null) {
+        if (project.Name === null) {
             this.toast.show("Project Name can not be blank ");
         }
-        else if (project.Name !== null && project.SlackChannelName === null) {
-            this.toast.show("Slack Channel Name can not be blank");
-        }
+        
         else {
-            if (bool === 0) {
+            if (this.isTeamLeader) {
                 this.loader.loader = true;
-                this.proService.addProject(project).then((project) => {
+                this.projectService.addProject(project).then((project) => {
                     this.project = project;
-                    if (project.Name === null && project.SlackChannelName === null) {
-                        this.toast.show("Project and slackChannelName already exists");
-                        this.proService.getUsers().then(listUsers => {
-                            this.project.ListUsers = listUsers;
-                            this.project.ApplicationUsers = new Array<UserModel>();
-
-                        });
-                    }
-                    else if (project.Name !== null && project.SlackChannelName === null) {
-                        this.toast.show("slackChannelName already exists");
-                        this.proService.getUsers().then(listUsers => {
-                            this.project.ListUsers = listUsers;
-                            this.project.ApplicationUsers = new Array<UserModel>();
-
-                        });
-
-                    }
-                    else if (project.Name === null && project.SlackChannelName !== null) {
+                    if (project.Name === null) {
                         this.toast.show("Project already exists");
-                        this.proService.getUsers().then(listUsers => {
+                        this.projectService.getUsers().then(listUsers => {
                             this.project.ListUsers = listUsers;
                             this.project.ApplicationUsers = new Array<UserModel>();
 
@@ -93,7 +73,7 @@ export class ProjectAddComponent implements OnInit {
     ngOnInit() {
         this.project = new ProjectModel();
         this.route.params.subscribe(params => {
-            this.proService.getUsers().then(listUsers => {
+            this.projectService.getUsers().then(listUsers => {
                 this.project.ListUsers = listUsers;
                 this.project.ApplicationUsers = new Array<UserModel>();
 
@@ -102,7 +82,7 @@ export class ProjectAddComponent implements OnInit {
 
     }
 
-    gotoProjects() {
+    gotoProjects() { 
         this.router.navigate(['project/list']);
     }
 

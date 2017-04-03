@@ -61,15 +61,13 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// This method used for added consumer app and return consumerApps Id. -An
         /// </summary>
         /// <param name="consumerApp">App details as object</param>
-        /// <returns>App details after saving changes as object</returns>
-        public async Task<IdentityServer4.Models.Client> AddConsumerAppsAsync(ConsumerApps consumerApp)
+        public async Task AddConsumerAppsAsync(ConsumerApps consumerApp)
         {
             if (await _clientDataRepository.FirstOrDefaultAsync(x => x.ClientId == consumerApp.AuthId) == null)
             {
                 var clientApp = ReturnIdentityServerClientFromConsumerApp(consumerApp, ReturnListOfScopesInStringFromEnumAllowedScope(consumerApp.Scopes));
                 _clientDataRepository.Add(clientApp.ToEntity());
                 await _clientDataRepository.SaveChangesAsync();
-                return clientApp;
             }
             else
                 throw new ConsumerAppNameIsAlreadyExists();
@@ -97,17 +95,17 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         /// </summary>
         /// <param name="consumerApps">App details as object</param>
         /// <returns>updated app details</returns>
-        public async Task<IdentityServer4.EntityFramework.Entities.Client> UpdateConsumerAppsAsync(ConsumerApps consumerApps)
+        public async Task UpdateConsumerAppsAsync(ConsumerApps consumerApps)
         {
             var client = await _clientDataRepository.FirstOrDefaultAsync(x => x.Id == consumerApps.Id);
             client.ClientName = consumerApps.Name;
             client.ClientId = consumerApps.AuthId;
-            _clientDataRepository.Update(client);
+            _clientDataRepository.UpdateAsync(client);
+            await _clientDataRepository.SaveChangesAsync();
             await UpdateClientSecret(client.Id, consumerApps.AuthSecret);
             await UpdateClientScope(client.Id, ReturnListOfScopesInStringFromEnumAllowedScope(consumerApps.Scopes));
             await UpdateClientRedirectUri(client.Id, consumerApps.CallbackUrl);
             await UpdateClientLogoutRedirectUri(client.Id, consumerApps.LogoutUrl);
-            return client;
         }
 
         /// <summary>
@@ -237,6 +235,7 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
                 _scopes.Delete(scope);
                 await _scopes.SaveChangesAsync();
             }
+            await _scopes.SaveChangesAsync();
         }
 
         /// <summary>
@@ -250,8 +249,9 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
             if (existingRedirectUri.RedirectUri != redirectUri)
             {
                 existingRedirectUri.RedirectUri = redirectUri;
-                _redirectUri.Update(existingRedirectUri);
+                _redirectUri.UpdateAsync(existingRedirectUri);
             }
+            await _redirectUri.SaveChangesAsync();
         }
 
         /// <summary>
@@ -265,8 +265,9 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
             if (existingRedirectUri.PostLogoutRedirectUri != redirectUri)
             {
                 existingRedirectUri.PostLogoutRedirectUri = redirectUri;
-                _logoutRedirectUri.Update(existingRedirectUri);
+                _logoutRedirectUri.UpdateAsync(existingRedirectUri);
             }
+            await _logoutRedirectUri.SaveChangesAsync();
         }
 
         /// <summary>
@@ -280,8 +281,9 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
             if (existingSecret.Value != secret)
             {
                 existingSecret.Value = secret.Sha256();
-                _secret.Update(existingSecret);
+                _secret.UpdateAsync(existingSecret);
             }
+            await _secret.SaveChangesAsync();
         }
         #endregion
     }

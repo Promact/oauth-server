@@ -18,28 +18,19 @@
         </div>
 
         <div class="form-group">
-            <div class="half-width">
-                <md-input type="text" class="full-width" placeholder="Slack Channel Name" name="SlackChannelName" [(ngModel)]="project.SlackChannelName" maxlength="255" required #SlackChannelName="ngModel"></md-input>
-                <div class="errors"><div [hidden]="!(SlackChannelName.touched && !SlackChannelName.valid && SlackChannelName.errors.required)" class="error">Slack Channel Name is required</div></div>
-
-            </div>
-        </div>
-
-
-        <div class="form-group">
             <label class="lb-label">Status</label>
             <md-checkbox type="checkbox" id="chckbox" name="IsActive" [(ngModel)]="project.IsActive"></md-checkbox>
         </div>
 
 
-        <div class="form-group">
+        <div class="form-group mtb-30">
             <div class="half-width" style="position:relative">
                 <md2-select class="field" name="temleader" [(ngModel)]="project.TeamLeaderId" placeholder="Teamleader">
                     <md2-option [value]="i.Id" *ngFor="let i of project.ListUsers">{{i.FirstName}}-{{i.Email}}</md2-option>
                 </md2-select>
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group mtb-30">
             <div class="half-width" style="position:relative;">
                 <md2-multiselect name="select" [items]="project.ListUsers"
                                  item-text="UniqueName"

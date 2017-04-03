@@ -7,7 +7,4 @@ import { ConsumerAppService }   from './consumerapp.service';
     providers: [ConsumerAppService]
 
 })
-export class ConsumerAppComponent {
-
-
-}
+export class ConsumerAppComponent {}

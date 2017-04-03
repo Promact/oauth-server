@@ -12,7 +12,6 @@ export class StringConstant {
     id = '1';
     emailExtension = '@promactinfo.com';
     projectName = 'test project';
-    slackChannelName = 'Test Slack Name';
     firstName = 'test';
     testfirstName = "First Name";
     lastName = 'shah';
@@ -29,5 +28,10 @@ export class StringConstant {
     oldPassword = 'test';
     confirmPassword = 'test1234';
     medium = "medium";
+    navigate = "navigate";
     dateFormat = "dd-MM-yyyy";
+    userRole = "employee";
+    testString = "test";
+    changePassword = "changePassword";
+    checkOldPasswordIsValid = "checkOldPasswordIsValid";
 }

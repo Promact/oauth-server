@@ -38,7 +38,6 @@ namespace Promact.Oauth.Server.Constants
         public string UserPassword { get { return "${{Password}}$"; } }
         public string Name { get { return "Project Name"; } }
         public string EditName { get { return "Project Name Edit"; } }
-        public string SlackChannelName { get { return "Slack Channel Name"; } }
         public bool IsActive { get { return true; } }
         public string TeamLeaderId { get { return "1"; } }
         public string UserIdSecond { get { return "2"; } }
@@ -160,6 +159,7 @@ namespace Promact.Oauth.Server.Constants
         public string UserNameForTest { get { return "XyzTest"; } }
         public string RandomString { get { return "abcdefghijklmnopqrstuvwxyz|ABCDEFGHIJKLMNOPQRSTUVWXYZ|012345789|@#$%^!&*()"; } }
         public string PromactErpUrlForTest { get { return "http://www.example.com"; } }
+        public string DateFormatForJoinnigDate { get { return "dd/MM/yyyy"; } }
 
         #region IdentityServer4
         public string APIResourceName
@@ -365,11 +365,11 @@ namespace Promact.Oauth.Server.Constants
             }
         }
 
-        public string ExceptionMessageSlackUserNotFound
+        public string ExceptionMessageUserNotFound
         {
             get
             {
-                return "Exception of type 'Promact.Oauth.Server.ExceptionHandler.SlackUserNotFound' was thrown.";
+                return "Exception of type 'Promact.Oauth.Server.ExceptionHandler.UserNotFound' was thrown.";
             }
         }
 

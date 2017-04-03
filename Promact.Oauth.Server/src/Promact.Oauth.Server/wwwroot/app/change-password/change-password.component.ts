@@ -1,10 +1,11 @@
 ﻿import { Component, Input } from '@angular/core';
 import { UserService } from '../users/user.service';
 import { PasswordModel } from '../users/user-password.model';
-import { Router} from '@angular/router';
+import { Router } from '@angular/router';
 import { Md2Toast } from 'md2';
 import { Location } from "@angular/common";
 import { LoaderService } from '../shared/loader.service';
+
 
 @Component({
     templateUrl: './app/change-password/change-password.html',
@@ -13,6 +14,7 @@ import { LoaderService } from '../shared/loader.service';
 export class ChangePasswordComponent {
     isNotMatch: boolean;
     isInCorrect: boolean;
+    showForm: boolean;
 
     @Input()
     passwordModel: PasswordModel;
@@ -21,6 +23,7 @@ export class ChangePasswordComponent {
         this.passwordModel = new PasswordModel();
         this.isNotMatch = false;
         this.isInCorrect = true;
+        this.showForm = true;
     }
 
     checkOldPasswordIsValid() {
@@ -34,7 +37,7 @@ export class ChangePasswordComponent {
         }
 
     }
-    
+
     changePassword(passwordModel) {
         if (!this.isNotMatch) {
             this.loader.loader = true;
@@ -63,7 +66,16 @@ export class ChangePasswordComponent {
         }
     }
 
-    goBack() {
-        this.redirectionRoute.navigate(['user/list']);
+    cancel() {
+        this.loader.loader = true;
+        this.showForm = false;
+        setTimeout(() => {
+            this.isInCorrect = true;
+            this.isNotMatch = false;
+            this.passwordModel = new PasswordModel();
+            this.showForm = true;
+            this.loader.loader = false;
+        }, 0);
+
     }
 }

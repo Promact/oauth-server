@@ -4,6 +4,7 @@ using Promact.Oauth.Server.Repository.ConsumerAppRepository;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Promact.Oauth.Server.ExceptionHandler;
+using Microsoft.Extensions.Logging;
 
 namespace Promact.Oauth.Server.Controllers
 {
@@ -15,12 +16,14 @@ namespace Promact.Oauth.Server.Controllers
         private readonly IConsumerAppRepository _consumerAppRepository;
         public const string Admin = "Admin";
         public const string BaseUrl = "api/[controller]";
+        private readonly ILogger<ConsumerAppController> _logger;
         #endregion
 
         #region "Constructor"
-        public ConsumerAppController(IConsumerAppRepository consumerAppRepository)
+        public ConsumerAppController(IConsumerAppRepository consumerAppRepository, ILogger<ConsumerAppController> logger)
         {
             _consumerAppRepository = consumerAppRepository;
+            _logger = logger;
         }
 
         #endregion
@@ -78,7 +81,8 @@ namespace Promact.Oauth.Server.Controllers
         {
             try
             {
-                return Ok(await _consumerAppRepository.AddConsumerAppsAsync(consumerApps));
+                await _consumerAppRepository.AddConsumerAppsAsync(consumerApps);
+                return Ok();
             }
             catch (ConsumerAppNameIsAlreadyExists)
             {
@@ -207,7 +211,10 @@ namespace Promact.Oauth.Server.Controllers
         [Route("")]
         public async Task<IActionResult> UpdateConsumerAppAsync([FromBody]ConsumerApps consumerApp)
         {
-            return Ok(await _consumerAppRepository.UpdateConsumerAppsAsync(consumerApp));
+            _logger.LogDebug("consumerApp request to update");
+            await _consumerAppRepository.UpdateConsumerAppsAsync(consumerApp);
+            _logger.LogDebug("consumerApp successfully updated");
+            return Ok();
         }
 
 

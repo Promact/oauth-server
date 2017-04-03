@@ -17,7 +17,7 @@ using Promact.Oauth.Server.Repository.ConsumerAppRepository;
 using System.Net.Http;
 using Promact.Oauth.Server.AutoMapper;
 using AutoMapper;
-using Exceptionless;
+using Exceptionless; 
 using NLog.Extensions.Logging;
 using Promact.Oauth.Server.Constants;
 using Promact.Oauth.Server.Utility;
@@ -30,10 +30,13 @@ using IdentityServer4;
 using Promact.Oauth.Server.Configuration.DefaultAPIResource;
 using Promact.Oauth.Server.Configuration.DefaultIdentityResource;
 using Promact.Oauth.Server.StringLiterals;
-using Promact.Oauth.Server.Models.ApplicationClasses;
+using NLog.LayoutRenderers;
+using Microsoft.AspNetCore.HttpOverrides;
+using Promact.Oauth.Server.Middleware;
+using IdentityServer4.Services;
 
 namespace Promact.Oauth.Server
-{ 
+{
     public class Startup
     {
         private readonly ILoggerFactory _loggerFactory;
@@ -57,7 +60,6 @@ namespace Promact.Oauth.Server
 
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
-
             _loggerFactory = loggerFactory;
 
         }
@@ -105,6 +107,7 @@ namespace Promact.Oauth.Server
             services.AddScoped<IDefaultIdentityResources, DefaultIdentityResources>();
             services.AddScoped<ICustomConsentService, CustomConsentService>();
             services.AddScoped<SecurityHeadersAttribute>();
+            services.AddScoped<IConsentService, CustomDefaultConsentService>();
 
             services.Configure<StringLiteral>(Configuration.GetSection("StringLiterals"));
             services.AddMvc();
@@ -169,8 +172,9 @@ namespace Promact.Oauth.Server
             //add NLog to ASP.NET Core
             loggerFactory.AddNLog();
             //needed for non-NETSTANDARD platforms: configure nlog.config in your project root
-            loggerFactory.ConfigureNLog("nlog.config");            
+            loggerFactory.ConfigureNLog("nlog.config");
 
+            LayoutRenderer.Register("basedir", (logEvent) => env.ContentRootPath);
             //Call the Seed method in (Seed.EnsureSeedData) to create initial Admin
             seeder.Seed(serviceProvider);
 
@@ -186,6 +190,13 @@ namespace Promact.Oauth.Server
             }
 
             app.UseStaticFiles();
+
+            app.UseMiddleware<OAuthMiddleware>();
+
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
 
             app.UseIdentity();
             app.UseIdentityServer();

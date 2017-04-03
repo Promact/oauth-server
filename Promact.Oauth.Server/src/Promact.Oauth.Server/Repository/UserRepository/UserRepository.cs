@@ -78,7 +78,7 @@ namespace Promact.Oauth.Server.Repository
         /// <param name="createdBy">Passed id of user who has created this user.</param>
         /// <returns>Added user id</returns>
         public async Task<string> AddUserAsync(UserAc newUser, string createdBy)
-        {             
+        {
             LeaveAllowed leaveAllowed = CalculateAllowedLeaves(Convert.ToDateTime(newUser.JoiningDate));
             newUser.NumberOfCasualLeave = leaveAllowed.CasualLeave;
             newUser.NumberOfSickLeave = leaveAllowed.SickLeave;
@@ -160,14 +160,14 @@ namespace Promact.Oauth.Server.Repository
             var user = await _userManager.FindByIdAsync(id);
             var projects = await _projectDataRepository.Fetch(x => x.TeamLeaderId == id).ToListAsync();
             var projectUsers = await _projectUserDataRepository.Fetch(x => x.UserId == id).ToListAsync();
-            var projectList=await _projectDataRepository.Fetch(x => projectUsers.Select(y => y.ProjectId).Contains(x.Id)).ToListAsync();
-            projects=projects.Union(projectList).ToList();
+            var projectList = await _projectDataRepository.Fetch(x => projectUsers.Select(y => y.ProjectId).Contains(x.Id)).ToListAsync();
+            projects = projects.Union(projectList).ToList();
             if (!projects.Any())
             {
                 await _userManager.DeleteAsync(user);
                 return String.Empty;
             }
-            return String.Join(",", projects.Select(x=>x.Name));
+            return String.Join(",", projects.Select(x => x.Name));
         }
         /// <summary>
         ///  This method used for get user detail by user id 
@@ -248,7 +248,7 @@ namespace Promact.Oauth.Server.Repository
                 return userAc;
             }
             else
-                throw new SlackUserNotFound();
+                throw new UserNotFound();
         }
 
         /// <summary>
@@ -275,7 +275,7 @@ namespace Promact.Oauth.Server.Repository
                 return teamLeaders;
             }
             else
-                throw new SlackUserNotFound();
+                throw new UserNotFound();
         }
 
         /// <summary>
@@ -316,7 +316,7 @@ namespace Promact.Oauth.Server.Repository
                 return leaveAllowed;
             }
             else
-                throw new SlackUserNotFound();
+                throw new UserNotFound();
         }
 
         /// <summary>
@@ -332,7 +332,7 @@ namespace Promact.Oauth.Server.Repository
                 return await _userManager.IsInRoleAsync(user, _stringConstant.Admin);
             }
             else
-                throw new SlackUserNotFound();
+                throw new UserNotFound();
         }
         #endregion
 
@@ -358,7 +358,7 @@ namespace Promact.Oauth.Server.Repository
             ApplicationUser applicationUser = await _userManager.FindByIdAsync(userId);
             var employeeRole = (await _userManager.GetRolesAsync(applicationUser)).First();
             List<UserRoleAc> userRoleAcList = new List<UserRoleAc>();
-            
+
             if (employeeRole == _stringConstant.Admin) //If login user is admin then return all active users with role.
             {
                 //getting the all user infromation. 
@@ -410,29 +410,6 @@ namespace Promact.Oauth.Server.Repository
             return userRoleAcList;
         }
 
-
-        /// <summary>
-        /// Method to return list of users/employees of the given slack channel name. - JJ
-        /// </summary>
-        /// <param name="slackChannelName">Passed slack channel name</param>
-        /// <returns>list of object of UserAc</returns>
-        public async Task<List<UserAc>> GetProjectUserBySlackChannelNameAsync(string slackChannelName)
-        {
-            Project project = await _projectDataRepository.FirstOrDefaultAsync(x => x.SlackChannelName == slackChannelName);
-            List<UserAc> userAcList = new List<UserAc>();
-            if (project != null)
-            {
-                //fetches the ids of users of the project
-                IEnumerable<string> userIdList = (await _projectUserDataRepository.Fetch(x => x.ProjectId == project.Id).Select(y => y.UserId).ToListAsync());
-                //fetches the application users of the above obtained ids.
-                List<ApplicationUser> applicationUsers = await _applicationUserDataRepository.Fetch(x => userIdList.Contains(x.Id)).ToListAsync();
-                //perform mapping
-                userAcList = _mapperContext.Map<List<ApplicationUser>, List<UserAc>>(applicationUsers);
-            }
-            return userAcList;
-        }
-
-
         /// <summary>
         /// The method is used to get list of projects along with its users for a specific teamleader  - GA
         /// </summary>
@@ -460,6 +437,50 @@ namespace Promact.Oauth.Server.Repository
             }
             return userAcList;
         }
+
+        /// <summary>
+        /// This method used for get list of user emails based on role.
+        /// </summary>
+        /// <returns>list of teamleader ,managment and employee email</returns>
+        public async Task<UserEmailListAc> GetUserEmailListBasedOnRoleAsync()
+        {
+            UserEmailListAc userEmailListAC = new UserEmailListAc();
+            //Get all managment email list 
+            var roleIds = await _roleManager.Roles.Where(x => !x.Name.Equals(_stringConstant.Employee)).Select(x => x.Id).ToListAsync();
+            userEmailListAC.Management = await _userManager.Users.Where(x => x.Roles.Any(y => roleIds.Contains(y.RoleId)) && x.IsActive).Select(x => x.Email).Distinct().ToListAsync();
+            //Get all teamLeader list 
+            var teamLeadersIds = await _projectDataRepository.GetAll().Select(x => x.TeamLeaderId).Distinct().ToListAsync();
+            userEmailListAC.TeamLeader = await _userManager.Users.Where(x => teamLeadersIds.Contains(x.Id) && x.IsActive).Select(x => x.Email).Distinct().ToListAsync();
+            //Get all teamMember list
+            userEmailListAC.TamMemeber = await _projectUserDataRepository.Fetch(x => x.User.IsActive).Select(x => x.User.Email).Distinct().ToListAsync();
+            return userEmailListAC;
+        }
+
+        /// <summary>
+        ///This method used for getting user detail with which projects he is assigned as team leader and team member.
+        /// </summary>
+        /// <param name="userId">pass user id</param>
+        /// <returns>user detail with assign projects</returns>
+        public async Task<UserDetailWithProjectListAc> GetUserDetailWithProjectListByUserIdAsync(string userId)
+        {
+            UserDetailWithProjectListAc userDetailWithProjectList = new UserDetailWithProjectListAc();
+            var user = await _userManager.FindByIdAsync(userId);
+            userDetailWithProjectList.UserAc = _mapperContext.Map<ApplicationUser, UserAc>(user);
+            //get all projects which user assigned as team member  
+            var projectIds = (await _projectUserDataRepository.FetchAsync(x => x.UserId == userId)).Select(x => x.ProjectId).ToList();
+            //get all projects which user assigned as team leader  
+            projectIds.AddRange((await _projectDataRepository.FetchAsync(x => x.TeamLeaderId == userId)).Select(x => x.Id));
+            List<ProjectAc> listOfProject = new List<ProjectAc>();
+            foreach (var projectId in projectIds)
+            {
+                var project = await _projectDataRepository.FirstAsync(x => x.Id == projectId);
+                var projectAC = _mapperContext.Map<Project, ProjectAc>(project);
+                listOfProject.Add(projectAC);
+            }
+            userDetailWithProjectList.ListOfProject = listOfProject;
+            return userDetailWithProjectList;
+        }
+
         #endregion
 
         #region Private Methods
@@ -487,15 +508,7 @@ namespace Promact.Oauth.Server.Repository
             string roles = (await _userManager.GetRolesAsync(user)).First();
             UserAc newUser = _mapperContext.Map<ApplicationUser, UserAc>(user);
             //assign role
-            if (roles.Equals(_stringConstant.Admin))
-            {
-                newUser.Role = roles;
-            }
-            else 
-            {
-                Project project = await _projectDataRepository.FirstOrDefaultAsync(x => x.TeamLeaderId.Equals(user.Id));
-                newUser.Role = (project != null) ? _stringConstant.TeamLeader : _stringConstant.Employee;
-            }
+            newUser.Role = roles;
             return newUser;
         }
 
@@ -524,12 +537,12 @@ namespace Promact.Oauth.Server.Repository
         /// <returns>LeaveAllowed</returns>
         private LeaveAllowed CalculateAllowedLeaves(DateTime dateTime)
         {
-            double casualAllowed; 
+            double casualAllowed;
             double sickAllowed;
             var month = dateTime.Month;
             //if joining year are more then current year or difference of current year and joining year is 1 then calculate casual Allow and sick Allow
             //other wise no need to be calculation directly set default value CasualLeave(14) and SickLeave(7).  
-            if (dateTime.Year >= DateTime.Now.Year || (DateTime.Now.Year-dateTime.Year)==1)
+            if (dateTime.Year >= DateTime.Now.Year || (DateTime.Now.Year - dateTime.Year) == 1)
             {
                 double casualAllow = _appSettingUtil.Value.CasualLeave;
                 double sickAllow = _appSettingUtil.Value.SickLeave;
@@ -571,7 +584,7 @@ namespace Promact.Oauth.Server.Repository
                             sickAllowed = (sickAllow / 12) * (12 - (month + 9));
                         }
                     }
-                    else 
+                    else
                     {
                         casualAllowed = casualAllow;
                         sickAllowed = sickAllow;
@@ -590,10 +603,10 @@ namespace Promact.Oauth.Server.Repository
                     // If calculated sickAllowed decimal value is exact 0.5 then it's considered half day sick leave 
                     // If calculated sickAllowed decimal value is more than  0.90 then add one leave in sick leave 
                     if (sickAlloweddecimal > 0.90) { sickAllowed = Convert.ToInt32(Math.Ceiling(sickAllowed)); }
-                    else if(Math.Abs(sickAlloweddecimal - 0.5) > tolerance) { sickAllowed = Convert.ToInt32(Math.Floor(sickAllowed)); }
+                    else if (Math.Abs(sickAlloweddecimal - 0.5) > tolerance) { sickAllowed = Convert.ToInt32(Math.Floor(sickAllowed)); }
                 }
             }
-            else 
+            else
             {
                 casualAllowed = _appSettingUtil.Value.CasualLeave;
                 sickAllowed = _appSettingUtil.Value.SickLeave;

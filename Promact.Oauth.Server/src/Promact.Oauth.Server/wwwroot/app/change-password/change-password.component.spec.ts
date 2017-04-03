@@ -1,6 +1,6 @@
-declare var describe, it, beforeEach, expect;
+declare var describe, it, beforeEach, expect, spyOn;
 import { async, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { RouterModule, Routes } from '@angular/router';
+import { Router, RouterModule, Routes } from '@angular/router';
 import { PasswordModel } from "../users/user-password.model";
 import { ChangePasswordModule } from "../change-password/change-password.module";
 import { ChangePasswordComponent } from "../change-password/change-password.component";
@@ -30,14 +30,18 @@ describe('Change Password', () => {
         }).compileComponents();
     }));
 
+
     it("Load Change-password Component", () => {
         let fixture = TestBed.createComponent(ChangePasswordComponent);
-        let comp = fixture.componentInstance;
+        let changePasswordComponent = fixture.componentInstance;
+        expect(changePasswordComponent).toBeDefined();
     });
 
-    it("Change Password", fakeAsync(() => {
+
+    it("Did not Change Password ", fakeAsync(() => {
         let fixture = TestBed.createComponent(ChangePasswordComponent); //Create instance of component            
         let changePasswordComponent = fixture.componentInstance;
+        let toast = fixture.debugElement.injector.get(Md2Toast);
         let passwordModel = new PasswordModel();
         let expectedNewPassword = stringConstant.newPassword;
         passwordModel.NewPassword = expectedNewPassword;
@@ -49,16 +53,66 @@ describe('Change Password', () => {
         expect(expectedNewPassword).toBe(passwordModel.NewPassword);
     }));
 
+
+    it("Change Password", fakeAsync(() => {
+        let fixture = TestBed.createComponent(ChangePasswordComponent); //Create instance of component            
+        let changePasswordComponent = fixture.componentInstance;
+        let toast = fixture.debugElement.injector.get(Md2Toast);
+        let userService = fixture.debugElement.injector.get(UserService);
+        let mockPasswordModel = new MockPasswordModel();
+        mockPasswordModel.errorMessage = null;
+        spyOn(userService, stringConstant.changePassword).and.returnValue((Promise.resolve(mockPasswordModel)));
+        let router = fixture.debugElement.injector.get(Router);
+        spyOn(router, stringConstant.navigate);
+        let passwordModel = new PasswordModel();
+        passwordModel.NewPassword = stringConstant.newPassword;
+        passwordModel.OldPassword = "";
+        passwordModel.ConfirmPassword = stringConstant.email;
+        passwordModel.Email = stringConstant.email;
+        let result = changePasswordComponent.changePassword(passwordModel);
+        tick();
+        expect(router.navigate).toHaveBeenCalled();
+    }));
+
+
+    it("Password could not be changed", fakeAsync(() => {
+        let fixture = TestBed.createComponent(ChangePasswordComponent); //Create instance of component            
+        let changePasswordComponent = fixture.componentInstance;
+        let userService = fixture.debugElement.injector.get(UserService);
+        spyOn(userService, stringConstant.changePassword).and.returnValue(Promise.reject(""));
+        let passwordModel = new PasswordModel();
+        passwordModel.NewPassword = stringConstant.newPassword;
+        passwordModel.OldPassword = "";
+        passwordModel.ConfirmPassword = stringConstant.email;
+        passwordModel.Email = stringConstant.email;
+        let result = changePasswordComponent.changePassword(passwordModel);
+        tick();
+        expect(stringConstant.newPassword).toBe(passwordModel.NewPassword);
+    }));
+
+
     it("Check Old Password", fakeAsync(() => {
         let fixture = TestBed.createComponent(ChangePasswordComponent); //Create instance of component            
         let changePasswordComponent = fixture.componentInstance;
         let passwordModel = new PasswordModel();
         let result = changePasswordComponent.checkOldPasswordIsValid();
         tick();
-        expect(changePasswordComponent.isInCorrect).toBe(true);
+        expect(changePasswordComponent.isInCorrect).toBe(false);
     }));
 
-    it("Match Password", () => {
+
+    it("Old Password is empty", fakeAsync(() => {
+        let fixture = TestBed.createComponent(ChangePasswordComponent); //Create instance of component     
+        let changePasswordComponent = fixture.componentInstance;
+        let userService = fixture.debugElement.injector.get(UserService);
+        spyOn(userService, stringConstant.checkOldPasswordIsValid).and.returnValue(Promise.reject(""));
+        changePasswordComponent.checkOldPasswordIsValid();
+        tick();
+        expect(changePasswordComponent).toBeDefined();
+    }));
+
+
+    it("Match Password", fakeAsync(() => {
         let fixture = TestBed.createComponent(ChangePasswordComponent); //Create instance of component            
         let changePasswordComponent = fixture.componentInstance;
         let passwordModel = new PasswordModel();
@@ -66,9 +120,10 @@ describe('Change Password', () => {
         passwordModel.ConfirmPassword = stringConstant.newPassword;
         let result = changePasswordComponent.matchPassword(passwordModel.ConfirmPassword, passwordModel.NewPassword);
         expect(changePasswordComponent.isNotMatch).toBe(false);
-    });
+    }));
 
-    it("Password Does Not Match", () => {
+
+    it("Password Does Not Match", fakeAsync(() => {
         let fixture = TestBed.createComponent(ChangePasswordComponent); //Create instance of component            
         let changePasswordComponent = fixture.componentInstance;
         let passwordModel = new PasswordModel();
@@ -76,8 +131,26 @@ describe('Change Password', () => {
         passwordModel.ConfirmPassword = stringConstant.confirmPassword;
         let result = changePasswordComponent.matchPassword(passwordModel.ConfirmPassword, passwordModel.NewPassword);
         expect(changePasswordComponent.isNotMatch).toBe(true);
-    });
+    }));
+
+
+    it('cancel', fakeAsync(() => {
+        let fixture = TestBed.createComponent(ChangePasswordComponent); //Create instance of component            
+        let changePasswordComponent = fixture.componentInstance;
+        changePasswordComponent.cancel();
+        tick();
+        expect(changePasswordComponent.showForm).toBe(true);
+    }));
 });
 
 
 
+
+
+class MockPasswordModel extends PasswordModel {
+
+    constructor() {
+        super();
+    }
+    errorMessage: string;
+}

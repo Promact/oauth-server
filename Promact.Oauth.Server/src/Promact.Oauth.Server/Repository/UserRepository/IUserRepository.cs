@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Promact.Oauth.Server.Models;
 using Promact.Oauth.Server.Models.ApplicationClasses;
 using Promact.Oauth.Server.Models.ManageViewModels;
 
@@ -146,15 +145,6 @@ namespace Promact.Oauth.Server.Repository
         /// <returns>teamMembers information</returns>
         Task<List<UserRoleAc>> GetTeamMembersAsync(string userId);
 
-
-        /// <summary>
-        /// This method is used to fetch list of users/employees of the given group name. - JJ
-        /// </summary>
-        /// <param name="slackChannelName">Passed slack channel name</param>
-        /// <returns>object of UserAc</returns>
-        Task<List<UserAc>> GetProjectUserBySlackChannelNameAsync(string slackChannelName);
-
-
         /// <summary>
         /// The method is used to get list of projects along with its users for a specific teamleader - GA
         /// </summary>
@@ -162,5 +152,17 @@ namespace Promact.Oauth.Server.Repository
         /// <returns>list of projects with users for a specific teamleader</returns>
         Task<List<UserAc>> GetProjectUsersByTeamLeaderIdAsync(string teamLeaderId);
 
+        /// <summary>
+        /// This method used for get list of user emails based on role. -an
+        /// </summary>
+        /// <returns>list of teamleader ,managment and employee email</returns>
+        Task<UserEmailListAc> GetUserEmailListBasedOnRoleAsync();
+
+        /// <summary>
+        ///This method used for getting user detail with which projects he is assigned as team leader and team member.
+        /// </summary>
+        /// <param name="userId">pass user id</param>
+        /// <returns>user detail with assign projects</returns>
+        Task<UserDetailWithProjectListAc> GetUserDetailWithProjectListByUserIdAsync(string userId);
     }
 }

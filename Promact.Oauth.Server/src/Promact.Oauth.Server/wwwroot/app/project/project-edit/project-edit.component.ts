@@ -70,19 +70,11 @@ export class ProjectEditComponent implements OnInit {
         if (project.Name === null) {
             this.toast.show("Project Name can not be blank");
         }
-
-
         else {
             if (bool === 0) {
                 this.loader.loader = true;
                 this.service.editProject(project).then((project) => {
-                    if (project.Name === null && project.SlackChannelName === null) {
-                        this.toast.show("Project Name and slackChannelName already exists");
-                    }
-                    else if (project.Name !== null && project.SlackChannelName === null) {
-                        this.toast.show("slack Channel Name already exists");
-                    }
-                    else if (project.Name === null && project.SlackChannelName !== null) {
+                    if (project.Name === null) {
                         this.toast.show("Project Name already exists");
                     }
                     else {
@@ -97,8 +89,5 @@ export class ProjectEditComponent implements OnInit {
                 });
             }
         }
-
-
     }
-
 }
