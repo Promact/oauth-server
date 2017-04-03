@@ -61,17 +61,6 @@ describe("User List Test", () => {
     }));
 
 
-    it('Calls userDetails', fakeAsync(() => {
-        let fixture = TestBed.createComponent(UserListComponent); //Create instance of component            
-        let userListComponent = fixture.componentInstance;
-        let router = fixture.debugElement.injector.get(Router);
-        spyOn(router, stringConstant.navigate);
-        userListComponent.userDetails(stringConstant.id);
-        tick();
-        expect(router.navigate).toHaveBeenCalled();
-    }));
-
-
     it('Calls userEdit', fakeAsync(() => {
         let fixture = TestBed.createComponent(UserListComponent); //Create instance of component            
         let userListComponent = fixture.componentInstance;
@@ -87,28 +76,6 @@ describe("User List Test", () => {
         let fixture = TestBed.createComponent(UserListComponent); //Create instance of component            
         let userListComponent = fixture.componentInstance;
         userListComponent.userDelete(stringConstant.id);
-        tick();
-        expect(userListComponent.users.length).not.toBe(0);
-    }));
-
-
-    it("should not delete user", fakeAsync(() => {
-        let fixture = TestBed.createComponent(UserListComponent); //Create instance of component            
-        let userListComponent = fixture.componentInstance;
-        let userModel = new UserModel();
-        userModel.Id = "2";
-        userListComponent.userDelete(userModel.Id);
-        tick();
-        expect(userListComponent.users.length).not.toBe(0);
-    }));
-
-
-    it("should not delete user", fakeAsync(() => {
-        let fixture = TestBed.createComponent(UserListComponent); //Create instance of component            
-        let userListComponent = fixture.componentInstance;
-        let userModel = new UserModel();
-        userModel.Id = "2";
-        userListComponent.userDelete(userModel.Id);
         tick();
         expect(userListComponent.users.length).not.toBe(0);
     }));
