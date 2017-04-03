@@ -385,7 +385,7 @@ namespace Promact.Oauth.Server.Controllers
 
         }
 
-        
+
 
         /**
       * @api {get} api/project/list 
@@ -489,36 +489,16 @@ namespace Promact.Oauth.Server.Controllers
         }
 
 
+
         /**
-        * @api {put} api/project/projectDetail/:id
+        * @api {get} api/project/projectDetail/:id
         * @apiVersion 1.0.0
-        * @apiName EditProjectAsync
+        * @apiName GetProjectByProjectIdAsync
         * @apiGroup Project
         * @apiParam {int} id.
         * @apiParamExample {json} Request-Example:
-        * "id":"1",
         * {
-        *   "Id":"1",
-        *   "Name":"ProjectName",
-        *   "TeamLeaderId":"1",
-        *   "IsActive":"True",
-        *   "TeamLeader":null,
-        *   "ApplicationUsers" : [
-        *     {
-        *         "Id":"abcd1af3d-062f-4bcd-b6f9-b8fd5165e367",
-        *         "FirstName" : "Smith",
-        *         "Email" : "Smith@promactinfo.com",
-        *         "LastName" : "Doe",
-        *         "IsActive" : "True",
-        *         "JoiningDate" :"10-02-2016",
-        *         "NumberOfCasualLeave":0,
-        *         "NumberOfSickLeave":0,
-        *         "UniqueName":null,
-        *         "Role":null,
-        *         "UserName": null,
-        *         "RoleName": null
-        *     }
-        *  ]
+        *   "id":"1",
         * }      
         * @apiSuccessExample {json} Success-Response:
         * HTTP/1.1 200 OK 
@@ -548,7 +528,7 @@ namespace Promact.Oauth.Server.Controllers
         */
         [Authorize(Policy = ReadProject)]
         [HttpGet]
-        [Route("projectDetail/{id}")]
+        [Route("projectDetail/{id:int}")]
         public async Task<IActionResult> GetProjectByProjectIdAsync(int id)
         {
             return Ok(await _projectRepository.GetProjectByProjectIdAsync(id));
