@@ -38,7 +38,7 @@ export class ChangePasswordComponent {
 
     }
 
-    changePassword(passwordModel) {
+    changePassword(passwordModel: PasswordModel) {
         if (!this.isNotMatch) {
             this.loader.loader = true;
             this.userService.changePassword(passwordModel).then((result) => {
@@ -57,7 +57,7 @@ export class ChangePasswordComponent {
         }
     }
 
-    matchPassword(confirmPassword, newPassword) {
+    matchPassword(confirmPassword: string, newPassword: string) {
         if (confirmPassword !== "" && newPassword !== "") {
             if (confirmPassword === newPassword)
                 this.isNotMatch = false;

@@ -27,7 +27,7 @@ export class ConsumerappListComponent implements OnInit {
     }
 
 
-    editDetails(consumerId) {
+    editDetails(consumerId: number) {
         this.router.navigate(['/consumerapp/edit', consumerId]);
     }
 

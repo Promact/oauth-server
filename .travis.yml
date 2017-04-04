@@ -1,7 +1,6 @@
 language: csharp
 node_js:
-- 6
-- stable
+- 6.3.1
 os: linux		
 dist: trusty		
 sudo: required
