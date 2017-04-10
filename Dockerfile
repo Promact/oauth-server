@@ -1,9 +1,8 @@
-FROM promact/docker-dotnet-nodejs:latest
+FROM promact/docker-dotnet-nodejs:1.1.0-sdk-msbuild
 MAINTAINER Promact Infotech<info@promactinfo.com>
 
 WORKDIR /app
 
-COPY ./Promact.Oauth.Server/src/Promact.Oauth.Server/project.json .
 COPY ./Promact.Oauth.Server/src/Promact.Oauth.Server/package.json .
 COPY ./Promact.Oauth.Server/src/Promact.Oauth.Server/typings.json .
 RUN npm install
@@ -18,7 +17,7 @@ COPY ./Promact.Oauth.Server/src/Promact.Oauth.Server ./
 # copy and build everything else
 RUN npm run build && gulp copytowwwroot && npm run aot && npm run rollup && mkdir /out
 RUN dotnet restore
-RUN dotnet publish project.json -c Release -o /out && cp appsettings.development.example.json /out/appsettings.production.json && rm -rf /app 
+RUN dotnet publish -c Release -o /out && cp appsettings.development.example.json /out/appsettings.production.json && rm -rf /app 
 ENV ASPNETCORE_ENVIRONMENT Production
 COPY entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/entrypoint.sh
