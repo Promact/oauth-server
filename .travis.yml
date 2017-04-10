@@ -4,7 +4,7 @@ node_js:
 os: linux		
 dist: trusty		
 sudo: required
-dotnet: 1.0.0-preview2-1-003177
+dotnet: 1.0.0
 cache:
   yarn: true
   directories:
@@ -25,6 +25,6 @@ notifications:
     on_failure: always
 script:
 - dotnet build ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests -c Release
-- dotnet test ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests/project.json -c Release 
+- dotnet test ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests -c Release 
 - cd ./Promact.Oauth.Server/src/Promact.Oauth.Server && npm install && npm run tslint && npm run test && npm run codecov
  
