@@ -1,4 +1,4 @@
-FROM promact/docker-dotnet-nodejs:1.1.0-sdk-msbuild
+FROM promact/docker-dotnet-nodejs:latest
 MAINTAINER Promact Infotech<info@promactinfo.com>
 
 WORKDIR /app
