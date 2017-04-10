@@ -7,17 +7,17 @@
             <button md-raised-button routerLink="/user/add" routerLinkActive="active" class="add-link btn-green"><i class="material-icons">add</i>Add User</button>
         </div>
     </div>
-    <table class="table-bordered table-user" [md2-data]="users" #md2="Md2DataTable" [md2-page-length]="10">
+    <table class="table-bordered table-user" [md2Data]="users" #md2="md2DataTable" [rowsPerPage]="10">
         <thead>
             <tr>
-                <th md2-sort-field="firstname">First Name</th>
-                <th md2-sort-field="lastname">Last Name</th>
-                <th md2-sort-field="email">Email</th>
-                <th md2-sort-field="status">Status</th>
-                <th md2-sort-field="numberofcasualleave">Number Of Casual Leave</th>
-                <th md2-sort-field="numberofsickleave">Number Of Sick Leave</th>
-                <th md2-sort-field="joiningdate">Joining Date</th>
-                <th md2-sort-field="action">Action</th>
+                <th md2SortBy="firstname">First Name</th>
+                <th md2SortBy="lastname">Last Name</th>
+                <th md2SortBy="email">Email</th>
+                <th md2SortBy="status">Status</th>
+                <th md2SortBy="numberofcasualleave">Number Of Casual Leave</th>
+                <th md2SortBy="numberofsickleave">Number Of Sick Leave</th>
+                <th md2SortBy="joiningdate">Joining Date</th>
+                <th md2SortBy="action">Action</th>
             </tr>
         </thead>
         <tbody>
@@ -41,7 +41,7 @@
         <tfoot>
             <tr>
                 <td colspan="9">
-                    <md2-pagination [md2-rows]="[5,10,15]"></md2-pagination>
+                    <md2-pagination [rowsPerPageSet]="[5,10,15]"></md2-pagination>
                 </td>
             </tr>
         </tfoot>

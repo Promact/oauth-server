@@ -1,13 +1,13 @@
 ﻿
 <div class="main-wrapper">
-    <md-sidenav-layout class="demo-sidenav-layout">
+    <md-sidenav-container class="demo-sidenav-layout">
         <md-sidenav #start mode="side" opened="true" class="sm-side-menu">
             <div class="brand"><span>Promact Oauth</span></div>
             <ul>
                 <li>
                     <a routerLink="user" routerLinkActive="active" *ngIf="admin==true"><i class="icon-users side-nav-icons"></i>Users</a>
                 </li>
-               
+
                 <li>
                     <a routerLink="/user/details/{{userId}}" routerLinkActive="active" *ngIf="admin==false"><i class="icon-users"></i>User Details</a>
                 </li>
@@ -33,8 +33,7 @@
                 <router-outlet></router-outlet>
             </div>
         </div>
-    </md-sidenav-layout>
-    
+    </md-sidenav-container>
     <div *ngIf="loader.loader">
         <div class="overlay">
         </div>

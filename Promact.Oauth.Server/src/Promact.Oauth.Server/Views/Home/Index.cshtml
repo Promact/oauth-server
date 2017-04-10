@@ -10,17 +10,7 @@
     <link href="~/css/app-seagreen.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://file.myfontastic.com/kEAHyvNaNwAyb2gXCKvLFk/icons.css" rel="stylesheet">
-    <script>
-        var user = @Html.Raw(Json.Serialize(@ViewData["UserRole"]));
-    </script>
-</head>
-<!-- 3. Display the application -->
-<body>
-    <my-app>
-        <div class="loader">
-            <svg width="1em" height="1em"><circle cx="0.5em" cy="0.5em" r="0.45em" /></svg>
-        </div>
-    </my-app>
+
     <environment names="Staging,Production">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.9/es5-shim.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/zone.js/0.7.6/zone.min.js"></script>
@@ -36,7 +26,21 @@
         <script src="~/lib/system.src.js"></script>
     </environment>
     <!-- 2. Configure SystemJS -->
-    <script src="~/app/build.js"></script>
+    <script src="~/systemjs.config.js"></script>
+    <script>
+        System.import('app').catch(function (err) { console.error(err); });
+        var user = @Html.Raw(Json.Serialize(@ViewData["UserRole"]));
+    </script>
+</head>
+<!-- 3. Display the application -->
+<body>
+    <my-app>
+        <div class="loader">
+            <svg width="1em" height="1em"><circle cx="0.5em" cy="0.5em" r="0.45em" /></svg>
+        </div>
+    </my-app>
 </body>
 </html>
+
+
 
