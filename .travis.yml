@@ -15,7 +15,7 @@ before_install:
 - if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
 install:
 - npm i -g typescript typings
-- dotnet restore
+- dotnet restore ./Promact.Oauth.Server/src/Promact.Oauth.Server
 before_script:
 - sh -e /etc/init.d/xvfb start
 solution: "./Promact.Oauth.Server/Promact.Oauth.Server.sln"
@@ -24,7 +24,7 @@ notifications:
     on_success: change
     on_failure: always
 script:
-- dotnet build ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests -c Release
-- dotnet test ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests -c Release 
+- dotnet build ./Promact.Oauth.Server/src/Promact.Oauth.Server 
+- dotnet test ./Promact.Oauth.Server/src/Promact.Oauth.Server.Tests 
 - cd ./Promact.Oauth.Server/src/Promact.Oauth.Server && npm install && npm run tslint && npm run test && npm run codecov
  
