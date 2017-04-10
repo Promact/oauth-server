@@ -27,4 +27,4 @@ notifications:
 script:
 - dotnet build 
 - cd ./src/Promact.Oauth.Server.Tests && dotnet test  
-- cd.. && cd ./Promact.Oauth.Server && npm install && npm run tslint && npm run test && npm run codecov
+- cd .. && cd ./Promact.Oauth.Server && npm install && npm run tslint && npm run test && npm run codecov

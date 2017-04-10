@@ -15,6 +15,7 @@ install:
 - cd ".\Promact.Oauth.Server\src\Promact.Oauth.Server\"
 - yarn
 - cd..
+- cd..
 build_script:
 - ps: dotnet restore
 build:
