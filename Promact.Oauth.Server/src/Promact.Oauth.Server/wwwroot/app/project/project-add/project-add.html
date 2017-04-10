@@ -6,23 +6,20 @@
         <div class="text-right items">
             <button md-raised-button type="submit" class="btn-back btn-green" (click)="gotoProjects()"> <i class="material-icons">arrow_back</i>Back</button>
         </div>
-
     </div>
     <form #projectAdd="ngForm">
-
         <div class="form-group">
             <div class="half-width">
-                <md-input class="full-width" placeholder="Name" type="text" name="name" [(ngModel)]="project.Name" maxlength="255" required #name="ngModel"></md-input>
+                <md-input-container class="full-width">
+                    <input mdInput placeholder="Name" type="text" name="name" [(ngModel)]="project.Name" maxlength="255" required #name="ngModel">
+                </md-input-container>
                 <div [hidden]="!(name.touched && !name.valid && name.errors.required)" class="error">Name is required</div>
             </div>
         </div>
-
         <div class="form-group">
             <label class="lb-label">Status</label>
             <md-checkbox type="checkbox" id="chckbox" name="IsActive" [(ngModel)]="project.IsActive"></md-checkbox>
         </div>
-
-
         <div class="form-group mtb-30">
             <div class="half-width" style="position:relative">
                 <md2-select class="field" name="temleader" [(ngModel)]="project.TeamLeaderId" placeholder="Teamleader">

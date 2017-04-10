@@ -10,11 +10,15 @@
     <form #consumerAppForm="ngForm">
         <div class="form-group">
             <div class="half-width align-left">
-                <md-input class="full-width" placeholder="Auth Id" [(ngModel)]="consumerModel.AuthId" [disabled]="true" name="AuthId" #AuthId="ngModel"></md-input>
+                <md-input-container class="full-width">
+                    <input mdInput placeholder="Auth Id" [(ngModel)]="consumerModel.AuthId" [disabled]="true" name="AuthId" #AuthId="ngModel">
+                </md-input-container>
                 <button md-raised-button type="button" class="btn-back btn-green btn-reg" (click)="getRandomNumber(true)">Re-Generate</button>
             </div>
             <div class="half-width align-left">
-                <md-input class="full-width" placeholder="Auth Secret" [(ngModel)]="consumerModel.AuthSecret" [disabled]="true" name="AuthSecret" #AuthSecret="ngModel"></md-input>
+                <md-input-container class="full-width">
+                    <input mdInput placeholder="Auth Secret" [(ngModel)]="consumerModel.AuthSecret" [disabled]="true" name="AuthSecret" #AuthSecret="ngModel">
+                </md-input-container>
                 <div [hidden]="!clientSecretIndicator" class="error">Please copy the client secret. It will be encoded after saving.</div>
                 <button md-raised-button type="button" class="btn-back btn-green" (click)="getRandomNumber(false)">Re-Generate</button>
             </div>
@@ -22,12 +26,15 @@
         <div class="clearfix"></div>
         <div class="form-group">
             <div class="half-width align-left">
-                <md-input placeholder="Name" class="full-width" type="text" name="consumerName" [(ngModel)]="consumerModel.Name" maxlength="255" required #consumerName="ngModel"></md-input>
+                <md-input-container class="full-width">
+                    <input mdInput placeholder="Name" type="text" name="consumerName" [(ngModel)]="consumerModel.Name" maxlength="255" required #consumerName="ngModel">
+                </md-input-container>
                 <div [hidden]="!(consumerName.touched && !consumerName.valid && consumerName.errors.required)" class="error">Name is required</div>
             </div>
-
             <div class="half-width align-left">
-                <md-input placeholder="Call Back Url" class="full-width" type="text" name="consumerCallBackUrl" [(ngModel)]="consumerModel.CallbackUrl" maxlength="255" required #consumerCallBackUrl="ngModel" validateUrl></md-input>
+                <md-input-container class="full-width">
+                    <input mdInput placeholder="Call Back Url" type="text" name="consumerCallBackUrl" [(ngModel)]="consumerModel.CallbackUrl" maxlength="255" required #consumerCallBackUrl="ngModel" validateUrl>
+                </md-input-container>
                 <div [hidden]="!(consumerCallBackUrl.touched && !consumerCallBackUrl.valid && consumerCallBackUrl.errors.required)" class="error">Call Back Url is required</div>
                 <div [hidden]="!(consumerCallBackUrl.touched && !consumerCallBackUrl.valid && !consumerCallBackUrl.errors.required && consumerCallBackUrl.errors.url)" class="error">Call Back Url is not valid</div>
             </div>
@@ -43,10 +50,10 @@
                 </md2-multiselect>
                 <div [hidden]="!clientScopeIndicator" class="error">Scope Required</div>
             </div>
-
-
             <div class="half-width align-left">
-                <md-input class="full-width" placeholder="LogoutUrl" type="text" name="logoutUrl" [(ngModel)]="consumerModel.LogoutUrl" maxlength="255" required #logoutUrl="ngModel" validateUrl></md-input>
+                <md-input-container class="full-width">
+                    <input mdInput placeholder="LogoutUrl" type="text" name="logoutUrl" [(ngModel)]="consumerModel.LogoutUrl" maxlength="255" required #logoutUrl="ngModel" validateUrl>
+                </md-input-container>
                 <div [hidden]="!(logoutUrl.touched && !logoutUrl.valid && logoutUrl.errors.required)" class="error">Log-Out Url is required</div>
                 <div [hidden]="!(logoutUrl.touched && !logoutUrl.valid && !logoutUrl.errors.required && logoutUrl.errors.url)" class="error">Log-Out Url is not valid</div>
             </div>
