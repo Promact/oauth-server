@@ -1,5 +1,5 @@
 version: 1.0.{build}
-os: Visual Studio 2015
+os: Visual Studio 2017
 skip_tags: true
 configuration: Release
 environment:
@@ -23,7 +23,7 @@ build:
   verbosity: minimal
 test_script:
 - ps: >-
-   C:\Users\appveyor\.nuget\packages\OpenCover\4.6.519\tools\OpenCover.Console.exe -register:user -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test -f netcoreapp1.1 -c Release .\Promact.Oauth.Server\src\Promact.Oauth.Server.Tests" -filter:"+[Promact.Oauth.Server]*Repository -[Promact.Oauth.Server.Tests*]*" -mergeoutput -hideskipped:File -output:opencover.xml -oldStyle
+   C:\Users\appveyor\.nuget\packages\OpenCover\4.6.519\tools\OpenCover.Console.exe -register:user -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test -f netcoreapp1.1 -c Release Promact.Oauth.Server.Tests" -filter:"+[Promact.Oauth.Server]*Repository -[Promact.Oauth.Server.Tests*]*" -mergeoutput -hideskipped:File -output:opencover.xml -oldStyle
 
    if(![string]::IsNullOrEmpty($env:COVERALLS_REPO_TOKEN)){
 
