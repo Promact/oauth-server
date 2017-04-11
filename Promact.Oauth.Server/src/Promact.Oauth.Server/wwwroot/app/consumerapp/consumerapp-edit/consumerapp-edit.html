@@ -41,12 +41,9 @@
         </div>
         <div class="form-group">
             <div class="half-width" style="position:relative;">
-                <md2-multiselect name="select" [items]="scopes"
-                                 item-text="name"
-                                 item-value="value"
-                                 [(ngModel)]="consumerModel.Scopes"
-                                 placeholder="Select Scopes" required (change)="scopeOnChange(consumerModel.Scopes)">
-                </md2-multiselect>
+                <md2-select multiple name="select" [(ngModel)]="consumerModel.Scopes" (change)="scopeOnChange(consumerModel.Scopes)" [disabled]="disabled" placeholder="Select Scopes" required>
+                    <md2-option *ngFor="let i of scopes" [value]="i.value" [disabled]="i.disabled">{{i.name}}</md2-option>
+                </md2-select>
             </div>
             <div [hidden]="!clientScopeIndicator" class="error">Scope Required</div>
         </div>
