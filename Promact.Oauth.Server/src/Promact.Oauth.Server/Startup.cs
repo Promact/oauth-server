@@ -124,7 +124,7 @@ namespace Promact.Oauth.Server
             //Register Mapper
             MapperConfiguration mapperConfiguration = new MapperConfiguration(cfg =>
             {
-                cfg.AddProfile(new AutoMapperProfileConfiguration());
+                cfg.AddProfile(new OrganizationProfile());
             });
             services.AddSingleton<IMapper>(sp => mapperConfiguration.CreateMapper());
 
