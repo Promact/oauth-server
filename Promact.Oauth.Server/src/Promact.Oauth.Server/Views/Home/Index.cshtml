@@ -26,7 +26,19 @@
         <script src="~/lib/system.src.js"></script>
     </environment>
     <!-- 2. Configure SystemJS -->
-    <script src="~/bundle.js"></script>
+    <script src="~/systemjs.config.js"></script>
+    <script>
+        System.import('app').catch(function (err) { console.error(err); });
+        var user = @Html.Raw(Json.Serialize(@ViewData["UserRole"]));
+    </script>
+</head>
+<!-- 3. Display the application -->
+<body>
+    <my-app>
+        <div class="loader">
+            <svg width="1em" height="1em"><circle cx="0.5em" cy="0.5em" r="0.45em" /></svg>
+        </div>
+    </my-app>
 </body>
 </html>
 
