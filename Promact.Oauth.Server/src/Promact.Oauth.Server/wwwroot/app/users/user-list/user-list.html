@@ -7,43 +7,45 @@
             <button md-raised-button routerLink="/user/add" routerLinkActive="active" class="add-link btn-green"><i class="material-icons">add</i>Add User</button>
         </div>
     </div>
-    <table class="table-bordered table-user" [md2Data]="users" #md2="md2DataTable" [rowsPerPage]="10">
-        <thead>
-            <tr>
-                <th md2SortBy="firstname">First Name</th>
-                <th md2SortBy="lastname">Last Name</th>
-                <th md2SortBy="email">Email</th>
-                <th md2SortBy="status">Status</th>
-                <th md2SortBy="numberofcasualleave">Number Of Casual Leave</th>
-                <th md2SortBy="numberofsickleave">Number Of Sick Leave</th>
-                <th md2SortBy="joiningdate">Joining Date</th>
-                <th md2SortBy="action">Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let user of md2.data">
-                <td class="wd-name">{{user.FirstName}}</td>
-                <td class="wd-name">{{user.LastName}}</td>
-                <td>{{user.Email}}</td>
-                <td *ngIf="user.IsActive">Active</td>
-                <td *ngIf="!user.IsActive">Inactive</td>
-                <td>{{user.NumberOfCasualLeave}}</td>
-                <td>{{user.NumberOfSickLeave}}</td>
-                <td>{{user.JoiningDate |date:"dd/MM/yyyy"}}</td>
-                <td>
-                    <i title="Details" class="icon-android-document oauth-icon" (click)="userDetails(user.Id)"></i>
-                    <i class="icon-trash-b oauth-icon"  title="Delete" (click)="userDelete(user.Id)"></i>
-                    <i class="icon-pencil oauth-icon"  title="Edit" (click)="userEdit(user.Id)"></i> 
-                    <i class="icon-paper-plane oauth-icon" title="Resend mail" (click)="reSendMail(user)"></i>
-               </td>
-            </tr>
-        </tbody>
-        <tfoot>
-            <tr>
-                <td colspan="9">
-                    <md2-pagination [rowsPerPageSet]="[5,10,15]"></md2-pagination>
-                </td>
-            </tr>
-        </tfoot>
-    </table>
+    <div style="width:100%;">
+        <table class="table-bordered table-user" [md2Data]="users" #md2="md2DataTable" [rowsPerPage]="10">
+            <thead>
+                <tr>
+                    <th md2SortBy="FirstName">First Name</th>
+                    <th md2SortBy="LastName">Last Name</th>
+                    <th md2SortBy="Email">Email</th>
+                    <th md2SortBy="status">Status</th>
+                    <th md2SortBy="numberofcasualleave">No Of Casual Leave</th>
+                    <th md2SortBy="numberofsickleave">No Of Sick Leave</th>
+                    <th md2SortBy="joiningdate">Joining Date</th>
+                    <th md2SortBy="action">Action</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <td colspan="8">
+                        <md2-pagination [rowsPerPageSet]="[5,10,15]"></md2-pagination>
+                    </td>
+                </tr>
+            </tfoot>
+            <tbody>
+                <tr *ngFor="let user of md2.data">
+                    <td class="wd-name">{{user.FirstName}}</td>
+                    <td class="wd-name">{{user.LastName}}</td>
+                    <td>{{user.Email}}</td>
+                    <td><span *ngIf="user.IsActive">Active</span> <span *ngIf="!user.IsActive">Inactive</span></td>
+                    <td>{{user.NumberOfCasualLeave}}</td>
+                    <td>{{user.NumberOfSickLeave}}</td>
+                    <td>{{user.JoiningDate |date:"dd/MM/yyyy"}}</td>
+                    <td>
+                        <i title="Details" class="icon-android-document oauth-icon" (click)="userDetails(user.Id)"></i>
+                        <i class="icon-trash-b oauth-icon" title="Delete" (click)="userDelete(user.Id)"></i>
+                        <i class="icon-pencil oauth-icon" title="Edit" (click)="userEdit(user.Id)"></i>
+                        <i class="icon-paper-plane oauth-icon" title="Resend mail" (click)="reSendMail(user)"></i>
+                    </td>
+                </tr>
+            </tbody>
+        
+        </table>
+    </div>
 </section>

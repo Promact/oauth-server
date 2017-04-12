@@ -31,6 +31,7 @@ body{padding:0;margin:0;font-family:roboto-regular}
 .mr-5{margin-right:5px !important;}
 .mt-15{margin-top:15px;}
 .mr-25{margin-right:25px;}
+.ml-15{margin-left:15px;}
 .mtb-30{margin:30px 0 !important;}
 ul{margin:0;padding:0;}
 .p-25{padding:25px;}
@@ -86,23 +87,25 @@ md-sidenav ul li a i.icon-social-buffer{font-size: 18px;}
 md-sidenav li a {font-size:16px; padding:15px 10px 15px 20px;  color: rgba(255, 255, 255, 0.5);text-decoration: none;display: block;}
 md-sidenav li a:hover{    color: #ffffff;background-color: #2d363f;}
 md-sidenav li a.active {background-color: #4bcf99  !important;color: #ffffff !important;}
-md-sidenav ul li a i {font-size: 14px;
-    margin-right: 5px;vertical-align:text-top}
+md-sidenav ul li a i {font-size: 14px;margin-right: 5px;vertical-align:text-top}
 
 .md-sidenav-backdrop {visibility:hidden !important;}
-table{width:100%;max-width:100%;border-collapse: collapse;border-spacing: 0;width: 100%;display: table;}
+table{width: 100%;max-width: 100%;border-collapse: collapse;border-spacing: 0;width: 100%;}
 .table-bordered{border:1px solid #ddd;}
-.table-bordered > thead > tr > th {border: 1px solid #ddd;padding: 8px;line-height: 1.42857143;text-align:left;color: #4f5f6f;}
-.table-bordered >tbody>tr>td{padding: 8px;line-height: 1.42857143;vertical-align: middle;border: 1px solid #ddd;}
+.table-bordered > thead > tr > th {border: 1px solid #ddd;padding: 8px;line-height: 1.42857143;text-align:left;color: #4f5f6f;word-wrap: break-word;white-space: normal;}
+/*.table-bordered >tbody>tr>td{padding: 8px;line-height: 1.42857143;vertical-align: middle;border: 1px solid #ddd;}*/
+.table-bordered >tbody>tr>td{padding: 8px;line-height: 1.42857143;vertical-align: middle;border: 1px solid #ddd;word-wrap: break-word;width: 5%;}
 .content-menu{background-color:#f0f3f6;}
+.table-bordered.table-user td:last-child{width:10%;}
+.table-bordered.table-user .md2-select{padding: 5px 10px;vertical-align: bottom;}
 
 
  md-input{font-size:16px;}
-.md-input-placeholder.md-float.md-focused {color: #4bcf99 !important;}
+.md-input-placeholder.md-float.md-focused  , .md2-option.md2-selected ,.md2-select:focus:not(.md2-select-disabled) .md2-select-trigger{color: #4bcf99 !important;}
 .md-input-underline .md-input-ripple { background-color:#4bcf99 !important}
 .user-list .card-title-block , .user-list .title{width:100%;}
 .user-list .card-title-block button{font-size:17px;}
-.user-list .wd-name{width:9%;}
+/*.user-list .wd-name{width:9%;}*/
 .card-title-block{padding-bottom: 0;margin-bottom: 25px;padding: 15px 0px;border-bottom:1px solid #d7dde4}
 .card-title-block h3{font-size:21px !important;color: #4f5f6f;margin:0;}
 
@@ -137,7 +140,7 @@ md-checkbox{position:relative;top:2px;}
 
 /*.project-list table td{width:18%;}
 .project-list table td:last-child {width:22%;}*/
-.table-user  td:last-child{width:15%;}
+/*.table-user  td:last-child{width:15%;}*/
 
 
 md-select + .lb-label1 {overflow: hidden;text-overflow: ellipsis;white-space: nowrap;width: 100%;-webkit-box-ordinal-group: 2;-webkit-order: 1;order: 1;pointer-events: none;-webkit-font-smoothing: antialiased;padding-left: 3px;padding-right: 0;z-index: 1;-webkit-transform: translate3d(0,28px,0) scale(1);transform: translate3d(0,28px,0) scale(1);
@@ -145,18 +148,37 @@ md-select + .lb-label1 {overflow: hidden;text-overflow: ellipsis;white-space: no
 md-select:focus + .lb-label1 {opacity:1;-webkit-transform: translateY(-100%) scale(0.75);transform: translateY(-0%) scale(0.75);color:#4bcf99;}
 md-select, md-multiselect{padding:10px 0;}
 md2-pagination .md2-pagination li{color:#3a4651}
-md2-pagination .md2-pagination li.active{background:rgb(75, 207, 153) !important}
-md2-option.md2-option-selected , md2-select:focus .md2-select-placeholder , md2-multiselect:focus .md2-multiselect-placeholder  ,   md2-option.md2-option-selected ,md2-multiselect .md2-multiselect-menu .md2-option.active ,md2-multiselect .md2-multiselect-menu .md2-option.active{color:rgb(75, 207, 153) !important}
+md2-pagination .md2-pagination li.active , .md2-datepicker-header{background:rgb(75, 207, 153) !important}
+md2-option.md2-option-selected , md2-select:focus .md2-select-placeholder , md2-multiselect:focus .md2-multiselect-placeholder  ,   md2-option.md2-option-selected ,md2-multiselect .md2-multiselect-menu .md2-option.active ,md2-multiselect .md2-multiselect-menu .md2-option.active ,.md2-datepicker-actions .md2-button ,.md2-calendar-day.today{color:rgb(75, 207, 153) !important}
 md2-multiselect .md2-option.active .md2-option-icon{border-color: rgb(75, 207, 153) !important}
 md2-select:focus .md2-select-container ,md2-multiselect:focus .md2-multiselect-container{border-bottom:2px solid rgb(75, 207, 153) !important}
+.md2-select:focus:not(.md2-select-disabled) .md2-select-underline {background-color:#4bcf99 !important}
 .md-input-underline {border-top: 1px solid rgba(0, 0, 0, 0.12) !important;}
 .md-input-underline.md-disabled{border-top:0px  !important;}
+.mat-input-placeholder-wrapper{overflow:initial !important}
+.mat-input-underline {color:rgba(0,0,0,.12)}
+.mat-input-placeholder.mat-empty{color:rgba(0,0,0,.38)}
+.mat-input-placeholder.mat-float.mat-focused{color:#4bcf99 ;}
+.mat-input-placeholder.mat-float:not(.mat-empty){color:rgba(0,0,0,.38)}
+.mat-input-wrapper{margin-bottom:2px !important;}
+.md2-datepicker-input.md2-datepicker-input-focused{color: #4bcf99 !important;border-color: #4bcf99 !important;}
+md2-datepicker.ng-invalid.ng-touched:not(.md2-datepicker-disabled) .md2-datepicker-input{color:rgba(0,0,0,.38) !important;  border-color:rgba(0,0,0,.38) !important;}
+md2-datepicker.ng-invalid.ng-touched:not(.md2-datepicker-disabled) .md2-datepicker-arrow{color:rgba(0,0,0,.38) !important}
+.mat-checkbox-checked .mat-checkbox-background{background-color:#4bcf99 !important}
+.mat-checkbox-input.cdk-visually-hidden{-webkit-appearance:none;}
+.mat-checkbox-frame{color:rgba(0,0,0,.38) !important}
+
 
 .loader {display: inline-block;font-size: 4.5rem; /* Change this to resize the loader */animation: 2s rotate infinite linear;width: 1em;height: 1em;position: absolute;top: 40%;left: 50%;margin: -50px 0px 0px -50px;}
 .loader circle {fill: transparent;stroke: #4bcf99;stroke-width: 0.1em;stroke-linecap: round;stroke-dasharray: 2.3525em 0.4705em;animation: 1.5s strokeDashArray infinite linear, 24s colorBounce infinite linear;}
 .overlay{position:absolute;top:0;left:0;right:0;bottom:0;background-color:rgba(255,255,255,0.5);}
 
 .user-add .md2-calendar-month{margin:0px !important;}
+.user-add .form-group{margin-bottom:20px;}
+.user-add .md2-select , .user-edit .md2-select , .project-add .md2-select , .project-edit .md2-select , .consumer-edit .md2-select{ width:100%;margin-top:1em;}
+.user-add md2-datepicker{width:100%;}
+.user-add .md2-datepicker-button{padding-left: 0 !important;padding-right:0 !important;}
+.user-add .md2-datepicker-trigger{padding:18px 0 4px 37px}
 
 .app-container {width:80%; margin:0 auto}
 .app-container h1{color: #4f5f6f;font-size: 28px;}
