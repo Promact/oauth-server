@@ -7,9 +7,7 @@ namespace Promact.Oauth.Server.AutoMapper
 {
     public class AutoMapperProfileConfiguration : Profile
     {
-        #pragma warning disable CS0672 // Member overrides obsolete member
-        protected override void Configure()
-        #pragma warning restore CS0672 // Member overrides obsolete member
+        public AutoMapperProfileConfiguration()
         {
             CreateMap<ConsumerAppsAc, ConsumerApps>();
             CreateMap<ProjectAc, Project>().ReverseMap();
