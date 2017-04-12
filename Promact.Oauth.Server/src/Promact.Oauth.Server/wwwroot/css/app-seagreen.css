@@ -164,9 +164,10 @@ md2-select:focus .md2-select-container ,md2-multiselect:focus .md2-multiselect-c
 .md2-datepicker-input.md2-datepicker-input-focused{color: #4bcf99 !important;border-color: #4bcf99 !important;}
 md2-datepicker.ng-invalid.ng-touched:not(.md2-datepicker-disabled) .md2-datepicker-input{color:rgba(0,0,0,.38) !important;  border-color:rgba(0,0,0,.38) !important;}
 md2-datepicker.ng-invalid.ng-touched:not(.md2-datepicker-disabled) .md2-datepicker-arrow{color:rgba(0,0,0,.38) !important}
-.mat-checkbox-checked .mat-checkbox-background{background-color:#4bcf99 !important}
+.mat-checkbox-checked .mat-checkbox-background ,.md2-calendar-day.selected, .md2-calendar-day.selected:hover{background-color:#4bcf99 !important}
 .mat-checkbox-input.cdk-visually-hidden{-webkit-appearance:none;}
 .mat-checkbox-frame{color:rgba(0,0,0,.38) !important}
+
 
 
 .loader {display: inline-block;font-size: 4.5rem; /* Change this to resize the loader */animation: 2s rotate infinite linear;width: 1em;height: 1em;position: absolute;top: 40%;left: 50%;margin: -50px 0px 0px -50px;}
