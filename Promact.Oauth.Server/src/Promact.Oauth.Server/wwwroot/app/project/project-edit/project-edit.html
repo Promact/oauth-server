@@ -24,7 +24,7 @@
             </div>
 
             <div class="form-group">
-                <label class="lb-label">TeamLeader:</label>
+                <!--<label class="lb-label">TeamLeader:</label>-->
                 <div class="half-width">
                     <md2-select [(ngModel)]="project.TeamLeaderId" placeholder="select team leader" name="teamLeaderId">
                         <md2-option [value]="user.Id" *ngFor="let user of project.ListUsers">{{user.FirstName}}-{{user.Email}}</md2-option>
@@ -32,12 +32,12 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="lb-label"> List Of Team Members:</label>
-            </div>
-            <div class="half-width">
-                <md2-select multiple name="applicationUsers" *ngIf="project.ApplicationUsers && project.ListUsers" [(ngModel)]="project.ApplicationUsers" [disabled]="disabled" placeholder="Select Team Members">
-                    <md2-option *ngFor="let i of project.ListUsers" [value]="i" [disabled]="i.disabled">{{i.UniqueName}}</md2-option>
-                </md2-select>
+                <!--<label class="lb-label"> List Of Team Members:</label>-->
+                <div class="half-width">
+                    <md2-select multiple name="applicationUsers" *ngIf="project.ApplicationUsers && project.ListUsers" [(ngModel)]="project.ApplicationUsers" [disabled]="disabled" placeholder="Select Team Members">
+                        <md2-option *ngFor="let i of project.ListUsers" [value]="i" [disabled]="i.disabled">{{i.UniqueName}}</md2-option>
+                    </md2-select>
+                </div>
             </div>
             <div class="form-group">
                 <button md-raised-button class="btn-green" (click)="editProject(project)" [disabled]="!projectEdit.form.valid">Update</button>
