@@ -51,7 +51,7 @@ namespace Promact.Oauth.Server.Tests
 
             _mapperConfiguration = new MapperConfiguration(cfg =>
             {
-                cfg.AddProfile(new AutoMapperProfileConfiguration());
+                cfg.AddProfile(new OrganizationProfile());
             });
 
 
