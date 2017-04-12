@@ -22,8 +22,8 @@ import { AuthenticationService } from "./authentication.service";
     imports: [
         BrowserModule,
         HttpModule,
-        MaterialModule.forRoot(),
         routing,
+        MaterialModule.forRoot(),
         ProjectModule,
         ConsumerAppModule,
         UserModule,

@@ -20,14 +20,14 @@
             <label class="lb-label">Status</label>
             <md-checkbox type="checkbox" id="chckbox" name="IsActive" [(ngModel)]="project.IsActive"></md-checkbox>
         </div>
-        <div class="form-group mtb-30">
+        <div class="form-group">
             <div class="half-width" style="position:relative">
                 <md2-select class="field" name="temleader" [(ngModel)]="project.TeamLeaderId" placeholder="Teamleader">
                     <md2-option [value]="i.Id" *ngFor="let i of project.ListUsers">{{i.FirstName}}-{{i.Email}}</md2-option>
                 </md2-select>
             </div>
         </div>
-        <div class="form-group mtb-30">
+        <div class="form-group">
             <div class="half-width" style="position:relative;">
                 <md2-select multiple name="select" [(ngModel)]="project.ApplicationUsers" [disabled]="disabled" placeholder="Select Team Members">
                     <md2-option *ngFor="let i of project.ListUsers" [value]="i" [disabled]="i.disabled">{{i.UniqueName}}</md2-option>
