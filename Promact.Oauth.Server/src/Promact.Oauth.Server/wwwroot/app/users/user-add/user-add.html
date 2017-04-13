@@ -9,30 +9,37 @@
         </div>
     </div>
     <form #userForm="ngForm">
+
+
         <div class="form-group">
             <div class="half-width">
-                <md-input placeholder="First Name" class="full-width" type="text" name="FirstName" [(ngModel)]="userModel.FirstName" maxlength="255" required #FirstName="ngModel"></md-input>
+                <md-input-container class="full-width">
+                    <input mdInput placeholder="First Name" name="FirstName" [(ngModel)]="userModel.FirstName" maxlength="255" required #FirstName="ngModel">
+                </md-input-container>
                 <div [hidden]="!(FirstName.touched && !FirstName.valid && FirstName.errors.required)" class="error">First Name is required</div>
             </div>
+       
         </div>
         <div class="form-group">
             <div class="half-width">
-                <md-input type="text" class="full-width" placeholder="Last Name" name="LastName" [(ngModel)]="userModel.LastName" maxlength="255" required #LastName="ngModel"></md-input>
+                <md-input-container class="full-width">
+                    <input mdInput type="text" placeholder="Last Name" name="LastName" [(ngModel)]="userModel.LastName" maxlength="255" required #LastName="ngModel">
+                </md-input-container>
                 <div [hidden]="!(LastName.touched && !LastName.valid && LastName.errors.required)" class="error">Last Name is required</div>
             </div>
         </div>
         <div class="form-group">
             <div class="half-width in_block">
-                <md-input class="full-width" type="email" placeholder="Email" name="Email" [(ngModel)]="userModel.Email"
-                          (blur)="checkEmail(userModel.Email)" maxlength="255" required #Email="ngModel"></md-input>
+                <md-input-container class="full-width">
+                    <input mdInput type="email" placeholder="Email" name="Email" [(ngModel)]="userModel.Email"
+                              (blur)="checkEmail(userModel.Email)" maxlength="255" required #Email="ngModel">
+                </md-input-container>
                 <div [hidden]="!(Email.touched && !Email.valid && Email.errors.required)" class="error">Email is required</div>
+                <div [hidden]="!isEmailExist" class="error"> Email already exists!</div>
             </div>
             @promactinfo.com
         </div>
-        <div [hidden]="!isEmailExist" class="error">
-            Email already exists!
-        </div>
-           
+     
         <div class="form-group">
             <div class="half-width" style="position:relative">
                 <md2-select class="field" name="UserRole" [(ngModel)]="userModel.RoleName" placeholder="User Role" required #UserRole="ngModel">
@@ -43,8 +50,8 @@
         </div>
         <div class="form-group">
             <div class="half-width">
-                <md2-datepicker [(ngModel)]="userModel.JoiningDate" name="JoiningDate" required #JoiningDate="ngModel" ></md2-datepicker>
-                <div [hidden]="!(JoiningDate.touched && !JoiningDate.valid && JoiningDate.errors.required)" class="error">Joining Date is required</div>
+                <md2-datepicker [(ngModel)]="userModel.JoiningDate" placeholder="Joining Date" name="JoiningDate" required #JoiningDate="ngModel"></md2-datepicker>
+                <p class="ml-15 error" [hidden]="!(JoiningDate.touched && !JoiningDate.valid && JoiningDate.errors.required)">Joining Date is required</p>
             </div>
         </div>
         <div>
@@ -52,5 +59,4 @@
         </div>
     </form>
 </div>
-
 

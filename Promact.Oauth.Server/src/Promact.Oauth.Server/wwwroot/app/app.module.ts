@@ -9,8 +9,7 @@ import { ProjectModule } from "./project/project.module";
 import { ConsumerAppModule } from "./consumerapp/consumerapp.module";
 import { UserModule } from "./users/user.module";
 import { ChangePasswordModule } from "./change-password/change-password.module";
-import { MdSidenavModule } from "@angular2-material/sidenav";
-import { MdToolbarModule } from "@angular2-material/toolbar";
+import { MaterialModule } from "@angular/material";
 import { LoaderService } from "./shared/loader.service";
 import { UserRole } from "./shared/userrole.model";
 import { StringConstant } from './shared/stringconstant';
@@ -23,9 +22,8 @@ import { AuthenticationService } from "./authentication.service";
     imports: [
         BrowserModule,
         HttpModule,
-        MdToolbarModule,
-        MdSidenavModule,
         routing,
+        MaterialModule.forRoot(),
         ProjectModule,
         ConsumerAppModule,
         UserModule,

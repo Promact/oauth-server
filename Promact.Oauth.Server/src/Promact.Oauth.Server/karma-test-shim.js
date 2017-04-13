@@ -38,75 +38,23 @@ System.config({
         'rxjs': {
             defaultExtension: 'js'
         },
-        '@angular2-material/core': {
-            format: 'cjs',
-            defaultExtension: 'js',
-            main: 'core.umd.js'
-        },
-
-        '@angular2-material/button': {
-            format: 'cjs',
-            defaultExtension: 'js',
-            main: 'button.umd.js'
-        },
-
-        '@angular2-material/toolbar': {
-            format: 'cjs',
-            defaultExtension: 'js',
-            main: 'toolbar.umd.js'
-        },
-
-        '@angular2-material/sidenav': {
-            format: 'cjs',
-            defaultExtension: 'js',
-            main: 'sidenav.umd.js'
-        },
-
-        '@angular2-material/input': {
-            format: 'cjs',
-            defaultExtension: 'js',
-            main: 'input.umd.js'
-        },
-
-        '@angular2-material/card': {
-            format: 'cjs',
-            defaultExtension: 'js',
-            main: 'card.umd.js'
-        },
-        '@angular2-material/checkbox': {
-            format: 'cjs',
-            defaultExtension: 'js',
-            main: 'checkbox.umd.js'
-        },
-        '@angular2-material/progress-bar': {
-            format: 'cjs',
-            defaultExtension: 'js',
-            main: 'progress-bar.umd.js'
-        },
-
-        '@angular2-material/progress-circle': {
-            format: 'cjs',
-            defaultExtension: 'js',
-            main: 'progress-circle.umd.js'
-        },
-        'angular2-in-memory-web-api': {
-            main: 'index.js',
-            defaultExtension: 'js'
-        },
+        
         'md2': {
             format: 'cjs',
             main: 'md2.umd.js',
             defaultExtension: 'js'
+        },
+        '@angular/material': {
+            main: 'material.umd.js', defaultExtension: 'js'
         }
     },
 
     map: {
         'rxjs': 'node_modules/rxjs',
         '@angular': 'node_modules/@angular',
-        '@angular2-material': 'node_modules/@angular2-material',
+        '@angular/material': 'node_modules/@angular/material/bundles',
         'app': 'wwwroot/app',
-        '@angular2-material': 'node_modules/@angular2-material',
-        'md2': 'node_modules/md2',
+        'md2': 'node_modules/md2/bundles',
         '@angular/core': 'node_modules/@angular/core/bundles/core.umd.js',
         '@angular/common': 'node_modules/@angular/common/bundles/common.umd.js',
         '@angular/compiler': 'node_modules/@angular/compiler/bundles/compiler.umd.js',
