@@ -9,6 +9,11 @@ environment:
 cache:
 - "%LOCALAPPDATA%\\Yarn"
 install:
+- cd ".\Promact.Oauth.Server\"
+- ps: Start-FileDownload 'https://ci.appveyor.com/api/buildjobs/xj78v6dac42uob8q/artifacts/main%2Fbin%2Fzip%2Fopencover.4.6.589.zip'
+- ps: 7z.exe x main%2Fbin%2Fzip%2Fopencover.4.6.589.zip
+- cd..
+
 - npm i -g yarn@0.16.1
 - npm i -g typescript typings
 - yarn global add typescript typings
@@ -22,13 +27,15 @@ build:
   project: .\Promact.Oauth.Server\Promact.Oauth.Server.sln
   verbosity: minimal
 test_script:
-- cd ".\src\Promact.Oauth.Server.Tests\"
+
 - ps: >-
-   C:\Users\appveyor\.nuget\packages\OpenCover\4.6.519\tools\OpenCover.Console.exe -register:user -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test -f netcoreapp1.1 -c Release Promact.Oauth.Server.Tests.csproj" -filter:"+[Promact.Oauth.Server]*Repository -[Promact.Oauth.Server.Tests*]*" -mergeoutput -hideskipped:File -output:opencover.xml -oldStyle
+   .\OpenCover.Console.exe -register:user -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test -f netcoreapp1.1 -c Release .\src\Promact.Oauth.Server.Tests\Promact.Oauth.Server.Tests.csproj" -filter:"+[Promact.Oauth.Server]*Repository -[Promact.Oauth.Server.Tests*]*" -mergeoutput -hideskipped:File -output:opencover.xml -oldStyle
 
    if(![string]::IsNullOrEmpty($env:COVERALLS_REPO_TOKEN)){
 
    $coveralls = (Resolve-Path "C:\Users\appveyor\.nuget\packages\coveralls.net\0.8.0-unstable0013\tools\csmacnz.coveralls.exe").ToString()
-
-   & $coveralls --opencover -i opencover.xml --repoToken $env:COVERALLS_REPO_TOKEN --commitId $env:APPVEYOR_REPO_COMMIT --commitBranch $env:APPVEYOR_REPO_BRANCH --commitAuthor $env:APPVEYOR_REPO_COMMIT_AUTHOR --commitEmail $env:APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL --commitMessage $env:APPVEYOR_REPO_COMMIT_MESSAGE --jobId $env:APPVEYOR_JOB_ID
+   
+   & $coveralls --opencover -i opencover.xml --repoToken $env:COVERALLS_REPO_TOKEN --commitId $env:APPVEYOR_REPO_COMMIT --commitBranch $env:APPVEYOR_REPO_BRANCH --commitAuthor $env:APPVEYOR_REPO_COMMIT_AUTHOR --commitEmail $env:APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL --commitMessage 
+   
+   $env:APPVEYOR_REPO_COMMIT_MESSAGE --jobId $env:APPVEYOR_JOB_ID
    }   
