@@ -13,8 +13,7 @@ import { MockToast } from "../../shared/mocks/mock.toast";
 import { StringConstant } from '../../shared/stringconstant';
 
 declare var describe, it, beforeEach, expect, spyOn;
-let comp: ProjectListComponent;
-let fixture: ComponentFixture<ProjectListComponent>;
+
 
 describe("Project List Test", () => {
 

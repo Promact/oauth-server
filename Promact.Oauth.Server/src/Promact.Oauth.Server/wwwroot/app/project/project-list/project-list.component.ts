@@ -10,8 +10,6 @@ import { StringConstant } from '../../shared/stringconstant';
 
 @Component({
     templateUrl: 'app/project/project-list/project-list.html',
-    
-
 })
 export class ProjectListComponent implements OnInit {
     projects: Array<ProjectModel>;
