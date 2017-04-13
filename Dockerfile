@@ -16,7 +16,7 @@ COPY ./Promact.Oauth.Server/src/Promact.Oauth.Server ./
 
 # copy and build everything else
 RUN npm run build && gulp copytowwwroot && npm run bundle && mkdir /out
-RUN cd.. && cd.. && dotnet restore
+RUN dotnet restore
 RUN dotnet publish -c Release -o /out && cp appsettings.development.example.json /out/appsettings.production.json && rm -rf /app 
 ENV ASPNETCORE_ENVIRONMENT Production
 COPY entrypoint.sh /usr/local/bin/
