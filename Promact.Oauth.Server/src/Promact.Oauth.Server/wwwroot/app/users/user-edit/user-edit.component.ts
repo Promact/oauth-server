@@ -34,7 +34,7 @@ export class UserEditComponent implements OnInit {
         }
         this.getRoles();
         this.route.params.subscribe(params => {
-            let id = this.route.snapshot.params[this.stringConstant.paramsId];
+            let id = params[this.stringConstant.paramsId];
             this.userService.getUserById(id)
                 .then(
                 user => this.user = user,

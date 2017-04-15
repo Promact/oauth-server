@@ -26,6 +26,8 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/zone.js/0.8.5/zone.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/reflect-metadata/0.1.10/Reflect.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/systemjs/0.20.12/system.js"></script>
+        <script>window.module = "aot";</script>
+        <script src="~/app/build.js"></script>
     </environment>
     <environment names="Development">
         <!-- 1. Load libraries -->
@@ -33,9 +35,8 @@
         <script src="~/lib/shim.min.js"></script>
         <script src="~/lib/zone.js"></script>
         <script src="~/lib/Reflect.js"></script>
-        <script src="~/lib/system.src.js"></script>
     </environment>
-    <!-- 2. Configure SystemJS -->
+    <script>window.module = "aot";</script>
     <script src="~/app/build.js"></script>
 </body>
 </html>

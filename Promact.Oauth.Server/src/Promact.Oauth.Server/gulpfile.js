@@ -1,4 +1,4 @@
-﻿/// <binding BeforeBuild='copytowwwroot, aot, rollup'/>
+﻿/// <binding BeforeBuild='copytowwwroot, rollup'/>
 
 "use strict";
 
@@ -46,36 +46,36 @@ gulp.task("copytowwwroot", function () {
     };
 
     gulp.src([
-         'node_modules/zone.js/dist/zone.js',
-         'node_modules/reflect-metadata/Reflect.js',
-         'node_modules/systemjs/dist/system.src.js',
-         'node_modules/core-js/client/shim.min.js'
+        'node_modules/zone.js/dist/zone.js',
+        'node_modules/reflect-metadata/Reflect.js',
+        'node_modules/systemjs/dist/system.src.js',
+        'node_modules/core-js/client/shim.min.js'
     ]).pipe(gulp.dest('./wwwroot/lib/'));
 
     gulp.src([
-         'node_modules/@angular/**/*.js'
+        'node_modules/@angular/**/*.js'
     ]).pipe(gulp.dest('./wwwroot/lib/@angular'));
 
 
     gulp.src([
-         'node_modules/@angular2-material/**/*.js'
+        'node_modules/@angular2-material/**/*.js'
     ]).pipe(gulp.dest('./wwwroot/lib/@angular2-material'));
 
 
     gulp.src([
-           'node_modules/rxjs/**/*.js'
+        'node_modules/rxjs/**/*.js'
     ]).pipe(gulp.dest('./wwwroot/lib/rxjs'));
 
 
     if (environment.isProduction()) {
         gulp.src([
-               'node_modules/md2/**/*.js'
+            'node_modules/md2/**/*.js'
         ]).pipe(gulp.dest('./wwwroot/lib/md2'));
     }
     else {
         gulp.src([
-        'node_modules/md2/**/*.js',
-        'node_modules/md2/**/*.js.map'
+            'node_modules/md2/**/*.js',
+            'node_modules/md2/**/*.js.map'
         ]).pipe(gulp.dest('./wwwroot/lib/md2'));
     }
 
@@ -85,11 +85,11 @@ gulp.task("copytowwwroot", function () {
 gulp.task('bundle', function (done) {
     var builder = new sysBuilder('./wwwroot', './wwwroot/systemjs.config.js');
     builder
-     .buildStatic('app', './wwwroot/bundle.js', {
-         runtime: false
-     }).then(function () {
-         done();
-     });
+        .buildStatic('app', './wwwroot/bundle.js', {
+            runtime: false
+        }).then(function () {
+            done();
+        });
 
 });
 
@@ -130,19 +130,19 @@ gulp.task('test', function (done) {
 //Generates coverage reports in coverage folder
 gulp.task('coverage', function () {
     return gulp.src('coverage/coverage-final.json')
-    .pipe(remapIstanbul({
-        reports: {
-            'html': 'coverage'
-        }
-    }))
-    .pipe(gulp.dest('./coverage'));
+        .pipe(remapIstanbul({
+            reports: {
+                'html': 'coverage'
+            }
+        }))
+        .pipe(gulp.dest('./coverage'));
 });
 
 gulp.task("tslint", function () {
     gulp.src("./wwwroot/app/**/*.ts")
-          .pipe(tslint({ configuration: "./tslint.json" }))
-          .pipe(tslint({ formatter: "prose" }))
-          .pipe(tslint.report({ emitError: true }))
+        .pipe(tslint({ configuration: "./tslint.json" }))
+        .pipe(tslint({ formatter: "prose" }))
+        .pipe(tslint.report({ emitError: true }))
 });
 
 gulp.task('aot', function (cb) {
