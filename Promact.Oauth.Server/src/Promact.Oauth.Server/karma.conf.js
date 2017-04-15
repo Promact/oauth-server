@@ -16,6 +16,7 @@ module.exports = function (config) {
         files: [// Polyfills.
 
                //'node_modules/traceur/bin/traceur-runtime.js',
+                'node_modules/hammerjs/hammerjs.js',
                 'node_modules/es6-shim/es6-shim.js',
                 'node_modules/reflect-metadata/Reflect.js',
                 { pattern: 'node_modules/reflect-metadata/Reflect.js.map', included: false, watched: false },
@@ -42,13 +43,16 @@ module.exports = function (config) {
                { pattern: 'node_modules/md2/**/*.js.map', included: false, watched: true },
 
                // paths loaded via module imports
-               // Angular itself
+               //    ar itself
                'karma-test-shim.js',
                { pattern: 'node_modules/@angular/**/*.js', included: false, watched: true },
                { pattern: 'node_modules/@angular/**/*.js.map', included: false, watched: false },
 
                { pattern: 'node_modules/@angular/material/**/*.js', included: false, watched: true },
                { pattern: 'node_modules/@angular/material/**/*.js.map', included: false, watched: false },
+
+               { pattern: 'node_modules/@angular/animations/**/*.js', included: false, watched: true },
+               { pattern: 'node_modules/@angular/animations/**/*.js.map', included: false, watched: false },
 
                //{ pattern: 'node_modules/lodash/*.js', included: false, watched: true },
                //{ pattern: 'node_modules/lodash/**/*.js', included: false, watched: true },
