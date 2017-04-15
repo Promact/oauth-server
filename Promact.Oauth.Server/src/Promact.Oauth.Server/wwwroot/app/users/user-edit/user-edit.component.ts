@@ -9,7 +9,8 @@ import { UserRole } from "../../shared/userrole.model";
 import { StringConstant } from '../../shared/stringconstant';
 
 @Component({
-    templateUrl: './app/users/user-edit/user-edit.html'
+    moduleId: module.id,
+    templateUrl: 'user-edit.html'
 
 })
 

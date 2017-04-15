@@ -84,12 +84,14 @@ namespace Promact.Oauth.Server.Tests
         public async Task GetProjectByProjectId()
         {
             string userId = await MockOfUserAc();
-            ProjectAc projectac = new ProjectAc();
-            projectac.Name = _stringConstant.Name;
-            projectac.IsActive = _stringConstant.IsActive;
-            projectac.CreatedBy = _stringConstant.CreatedBy;
-            projectac.TeamLeader = new UserAc { FirstName = _stringConstant.FirstName };
-            projectac.TeamLeaderId = userId;
+            ProjectAc projectac = new ProjectAc()
+            {
+                Name = _stringConstant.Name,
+                IsActive = _stringConstant.IsActive,
+                CreatedBy = _stringConstant.CreatedBy,
+                TeamLeader = new UserAc { FirstName = _stringConstant.FirstName },
+                TeamLeaderId = userId
+            };
             var id = await _projectRepository.AddProjectAsync(projectac, _stringConstant.CreatedBy);
             await GetProjectUserMockData();
             ProjectAc project = await _projectRepository.GetProjectByIdAsync(id);
@@ -360,10 +362,12 @@ namespace Promact.Oauth.Server.Tests
         /// <returns></returns>
         private async Task<int> GetProjectMockData()
         {
-            ProjectAc projectac = new ProjectAc();
-            projectac.Name = _stringConstant.Name;
-            projectac.IsActive = _stringConstant.IsActive;
-            projectac.CreatedBy = _stringConstant.CreatedBy;
+            ProjectAc projectac = new ProjectAc()
+            {
+                Name = _stringConstant.Name,
+                IsActive = _stringConstant.IsActive,
+                CreatedBy = _stringConstant.CreatedBy
+            };
             return await _projectRepository.AddProjectAsync(projectac, _stringConstant.CreatedBy);
 
         }
@@ -410,12 +414,14 @@ namespace Promact.Oauth.Server.Tests
         /// <returns></returns>
         private ProjectAc MockOfProjectAc()
         {
-            ProjectAc projectAc = new ProjectAc();
-            projectAc.Name = _stringConstant.Name;
-            projectAc.IsActive = _stringConstant.IsActive;
-            projectAc.TeamLeader = new UserAc { FirstName = _stringConstant.FirstName };
-            projectAc.TeamLeaderId = _stringConstant.TeamLeaderId;
-            projectAc.CreatedBy = _stringConstant.CreatedBy;
+            ProjectAc projectAc = new ProjectAc()
+            {
+                Name = _stringConstant.Name,
+                IsActive = _stringConstant.IsActive,
+                TeamLeader = new UserAc { FirstName = _stringConstant.FirstName },
+                TeamLeaderId = _stringConstant.TeamLeaderId,
+                CreatedBy = _stringConstant.CreatedBy
+            };
             return projectAc;
         }
 

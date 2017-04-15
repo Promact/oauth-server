@@ -11,7 +11,8 @@
     "noImplicitAny": false,
 
     "types": [
-      "hammerjs"
+      "hammerjs",
+      "node"
     ]
   }
 }

@@ -1,4 +1,4 @@
-﻿/// <binding BeforeBuild='copytowwwroot, bundle'/>
+﻿/// <binding BeforeBuild='copytowwwroot, aot, rollup'/>
 
 "use strict";
 
@@ -145,11 +145,11 @@ gulp.task("tslint", function () {
           .pipe(tslint.report({ emitError: true }))
 });
 
-//gulp.task('aot', function (cb) {
-//    exec('ngc -p tsconfig-aot.json', function (err, stdout, stderr) {
-//        cb(err);
-//    });
-//});
+gulp.task('aot', function (cb) {
+    exec('ngc -p tsconfig-aot.json', function (err, stdout, stderr) {
+        cb(err);
+    });
+});
 
 gulp.task('rollup', function (cb) {
     exec('rollup -c rollup-config.js', function (err, stdout, stderr) {

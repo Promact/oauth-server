@@ -8,11 +8,10 @@ import { LoaderService } from '../../shared/loader.service';
 
 
 @Component({
-    templateUrl: "app/project/project-add/project-add.html",
+    moduleId: module.id,
+    templateUrl: "project-add.html",
 })
 export class ProjectAddComponent implements OnInit {
-
-    private disabled: boolean = false;
     projects: Array<ProjectModel>;
     item: Array<string> = [];
     project: ProjectModel;
