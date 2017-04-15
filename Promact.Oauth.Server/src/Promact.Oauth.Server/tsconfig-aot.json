@@ -13,11 +13,11 @@
 
   "files": [
     "wwwroot/app/app.module.ts",
-    "wwwroot/app/main.ts"
+    "wwwroot/app/main-aot.ts"
   ],
 
   "angularCompilerOptions": {
-    "genDir": "wwwroot/app/AOT",
+    "genDir": "wwwroot/app/aot",
     "skipMetadataEmit": true
   }
 }

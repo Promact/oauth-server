@@ -12,6 +12,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\app\aot\**" />
+    <Content Remove="wwwroot\app\aot\**" />
+    <EmbeddedResource Remove="wwwroot\app\aot\**" />
+    <None Remove="wwwroot\app\aot\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\app\main-aot.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="wwwroot\**\*;Views\**\*;Areas\**\Views;nlog.config;Template\**\*;appsettings.json;StringLiterals\stringliterals.json;Seed\seeddata.json">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </None>

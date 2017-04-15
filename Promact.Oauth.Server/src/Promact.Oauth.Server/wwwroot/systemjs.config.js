@@ -10,7 +10,10 @@
         'angular2-in-memory-web-api': 'lib/angular2-in-memory-web-api',
         '@angular/material': 'lib/@angular/material/bundles',
         'rxjs': 'lib/rxjs',
-        'md2': 'lib/md2/bundles'
+        'md2': 'lib/md2/bundles',
+        '@angular/animations': 'lib/@angular/animations/bundles/animations.umd.js',
+        '@angular/platform-browser/animations': 'lib/@angular/platform-browser/bundles/platform-browser-animations.umd.js',
+        '@angular/animations/browser': 'lib/@angular/animations/bundles/animations-browser.umd.js'
     };
     // packages tells the System loader how to load when no filename and/or no extension
     var packages = {

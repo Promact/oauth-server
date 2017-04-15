@@ -7,7 +7,8 @@ import { LoaderService } from '../../shared/loader.service';
 import { StringConstant } from '../../shared/stringconstant';
 
 @Component({
-    templateUrl: './app/users/user-details/user-details.html'   
+    moduleId: module.id,
+    templateUrl: 'user-details.html'   
 })
 
 export class UserDetailsComponent implements OnInit {
