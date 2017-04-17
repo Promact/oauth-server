@@ -16,6 +16,7 @@ before_install:
 install:
 - npm i -g typescript typings
 - cd ./Promact.Oauth.Server/src/Promact.Oauth.Server
+- npm install
 - npm run aot
 - cd ..
 - dotnet restore
@@ -30,4 +31,4 @@ script:
 - cd ./src/Promact.Oauth.Server.Tests 
 - dotnet build Promact.Oauth.Server.Tests.csproj -c Release
 - dotnet test Promact.Oauth.Server.Tests.csproj -c Release
-- cd .. && cd ./Promact.Oauth.Server && npm install && npm run tslint && npm run test && npm run codecov
+- cd .. && cd ./Promact.Oauth.Server && npm run tslint && npm run test && npm run codecov
