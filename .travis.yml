@@ -15,8 +15,8 @@ before_install:
 - if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
 install:
 - npm i -g typescript typings
-- npm run aot && npm run rollup
 - cd ./Promact.Oauth.Server
+- npm run aot && npm run rollup
 - dotnet restore
 before_script:
 - sh -e /etc/init.d/xvfb start

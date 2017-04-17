@@ -12,7 +12,7 @@ var gulp = require("gulp"),
     remapIstanbul = require('remap-istanbul'),
     Server = require('karma').Server,
     tslint = require('gulp-tslint'),
-    rollup = require('rollup-stream')
+    rollup = require('rollup-stream');
 
 var paths = {
     webroot: "./wwwroot/"
