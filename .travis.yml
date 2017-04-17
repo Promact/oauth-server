@@ -12,7 +12,7 @@ cache:
 before_install:
 - export CHROME_BIN=chromium-browser
 - export DISPLAY=:99.0
-- if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
+- npm i -g npm@4.5.0
 install:
 - npm i -g typescript typings
 - cd ./Promact.Oauth.Server/src/Promact.Oauth.Server
