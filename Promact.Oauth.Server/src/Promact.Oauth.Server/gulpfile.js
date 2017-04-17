@@ -1,4 +1,4 @@
-﻿/// <binding BeforeBuild='copytowwwroot, rollup'/>
+﻿/// <binding BeforeBuild='copytowwwroot'/>
 
 "use strict";
 
@@ -12,9 +12,7 @@ var gulp = require("gulp"),
     remapIstanbul = require('remap-istanbul'),
     Server = require('karma').Server,
     tslint = require('gulp-tslint'),
-    ngc = require('gulp-ngc'),
-    rollup = require('rollup-stream'),
-    exec = require('child_process').exec;
+    rollup = require('rollup-stream')
 
 var paths = {
     webroot: "./wwwroot/"
@@ -143,12 +141,6 @@ gulp.task("tslint", function () {
         .pipe(tslint({ configuration: "./tslint.json" }))
         .pipe(tslint({ formatter: "prose" }))
         .pipe(tslint.report({ emitError: true }))
-});
-
-gulp.task('aot', function (cb) {
-    exec('ngc -p tsconfig-aot.json', function (err, stdout, stderr) {
-        cb(err);
-    });
 });
 
 gulp.task('rollup', function (cb) {

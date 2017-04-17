@@ -16,7 +16,7 @@
     "tslint": "gulp tslint",
     "bundle": "gulp bundle",
     "codecov": "codecov < coverage/cobertura/cobertura-coverage.xml",
-    "aot": "gulp aot",
+    "aot": "node_modules/.bin/ngc -p tsconfig-aot.json",
     "rollup": "gulp rollup"
   },
   "license": "ISC",
@@ -47,7 +47,7 @@
   },
   "devDependencies": {
     "@types/hammerjs": "^2.0.33",
-    "@types/node": "6.0.68",
+    "@types/node": "7.0.5",
     "codecov.io": "0.1.6",
     "codelyzer": "2.1.1",
     "concurrently": "3.4.0",

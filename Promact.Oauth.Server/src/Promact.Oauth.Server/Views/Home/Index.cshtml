@@ -35,9 +35,9 @@
         <script src="~/lib/shim.min.js"></script>
         <script src="~/lib/zone.js"></script>
         <script src="~/lib/Reflect.js"></script>
+        <script src="~/systemjs.config.js"></script>
+        <script>System.import('app').catch(function (err) { console.error(err); });</script>
     </environment>
-    <script>window.module = "aot";</script>
-    <script src="~/app/build.js"></script>
 </body>
 </html>
 
