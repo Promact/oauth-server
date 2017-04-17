@@ -31,10 +31,11 @@
         <div class="form-group">
             <div class="half-width in_block">
                 <md-input-container class="full-width">
-                    <input mdInput type="email" placeholder="Email" name="Email" [(ngModel)]="userModel.Email"
+                    <input mdInput type="text" placeholder="Email" name="Email" [(ngModel)]="userModel.Email" pattern="^[a-zA-Z0-9.!#$)(%&’*+/=?^_`{|}~-]*"
                               (blur)="checkEmail(userModel.Email)" maxlength="255" required #Email="ngModel">
                 </md-input-container>
                 <div [hidden]="!(Email.touched && !Email.valid && Email.errors.required)" class="error">Email is required</div>
+                <div [hidden]="!(Email.touched && !Email.valid && Email.errors.pattern)" class="error">Email is invalid</div>
                 <div [hidden]="!isEmailExist" class="error"> Email already exists!</div>
             </div>
             @promactinfo.com

@@ -87,6 +87,7 @@ namespace Promact.Oauth.Server.Repository.ProjectsRepository
             var project = _mapperContext.Map<ProjectAc, Project>(newProject);
             project.CreatedDateTime = DateTime.UtcNow;
             project.CreatedBy = createdBy;
+            project.IsActive = true;
             project.ApplicationUsers = null;
             _projectDataRepository.AddAsync(project);
             await _projectDataRepository.SaveChangesAsync();
