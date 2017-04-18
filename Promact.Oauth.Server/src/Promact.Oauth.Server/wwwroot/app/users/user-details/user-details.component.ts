@@ -7,7 +7,8 @@ import { LoaderService } from '../../shared/loader.service';
 import { StringConstant } from '../../shared/stringconstant';
 
 @Component({
-    templateUrl: './app/users/user-details/user-details.html'   
+    moduleId: module.id,
+    templateUrl: 'user-details.html'   
 })
 
 export class UserDetailsComponent implements OnInit {
@@ -32,7 +33,7 @@ export class UserDetailsComponent implements OnInit {
         this.loader.loader = true;
 
         this.route.params.subscribe(params => {
-            let id = this.route.snapshot.params[this.stringConstant.paramsId];
+            let id = params[this.stringConstant.paramsId];
             this.userService.getUserById(id)
                 .then((user) => {
                     this.user = user,

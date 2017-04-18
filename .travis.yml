@@ -12,10 +12,15 @@ cache:
 before_install:
 - export CHROME_BIN=chromium-browser
 - export DISPLAY=:99.0
-- if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
+- nvm install 6.3.1
+- nvm use 6.3.1
+- npm i -g npm@4.5.0
 install:
 - npm i -g typescript typings
-- cd ./Promact.Oauth.Server
+- cd ./Promact.Oauth.Server/src/Promact.Oauth.Server
+- npm install
+- npm run aot
+- cd .. && cd ..
 - dotnet restore
 before_script:
 - sh -e /etc/init.d/xvfb start
@@ -28,4 +33,4 @@ script:
 - cd ./src/Promact.Oauth.Server.Tests 
 - dotnet build Promact.Oauth.Server.Tests.csproj -c Release
 - dotnet test Promact.Oauth.Server.Tests.csproj -c Release
-- cd .. && cd ./Promact.Oauth.Server && npm install && npm run tslint && npm run test && npm run codecov
+- cd .. && cd ./Promact.Oauth.Server && npm run tslint && npm run test && npm run codecov

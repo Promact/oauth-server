@@ -13,6 +13,8 @@ import { LoaderService } from '../../shared/loader.service';
 import { ActivatedRouteStub } from "../../shared/mocks/mock.activatedroute";
 import { UserRole } from "../../shared/userrole.model";
 import { StringConstant } from '../../shared/stringconstant';
+import { Observable } from 'rxjs/Observable';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 let stringConstant = new StringConstant();
 let userRole = new UserRole();
@@ -22,7 +24,7 @@ describe("User Edit Test", () => {
     const routes: Routes = [];
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            imports: [UserModule, RouterModule.forRoot(routes, { useHash: true }) //Set LocationStrategy for component. 
+            imports: [UserModule, BrowserAnimationsModule, RouterModule.forRoot(routes, { useHash: true }) //Set LocationStrategy for component. 
             ],
             providers: [
                 { provide: UserService, useClass: MockUserService },
@@ -42,7 +44,7 @@ describe("User Edit Test", () => {
     it("should get particular user details", fakeAsync(() => {
         let fixture = TestBed.createComponent(UserEditComponent); //Create instance of component     
         let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
-        activatedRoute.testParams = { id: stringConstant.id };
+        activatedRoute.params = Observable.of({ id: stringConstant.id });
         let userEditComponent = fixture.componentInstance;
         let expectedFirstName = stringConstant.testfirstName;
         userEditComponent.ngOnInit();
@@ -54,7 +56,7 @@ describe("User Edit Test", () => {
     it("Get roles but user is Not Admin", fakeAsync(() => {
         let fixture = TestBed.createComponent(UserEditComponent); //Create instance of component     
         let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
-        activatedRoute.testParams = { id: stringConstant.id };
+        activatedRoute.params = Observable.of({ id: stringConstant.id });
         let user = fixture.debugElement.injector.get(UserRole);
         user.Role = stringConstant.employee;
         fixture.detectChanges();
@@ -68,12 +70,12 @@ describe("User Edit Test", () => {
     it("should not get particular user details", fakeAsync(() => {
         let fixture = TestBed.createComponent(UserEditComponent); //Create instance of component     
         let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
-        activatedRoute.testParams = { id: stringConstant.testfirstName };
+        activatedRoute.params = Observable.of({ id: stringConstant.firstName });
         let userEditComponent = fixture.componentInstance;
         let expectedFirstName = stringConstant.testfirstName;
         userEditComponent.ngOnInit();
         tick();
-        expect(userEditComponent.user.FirstName).not.toBe(expectedFirstName);
+        expect(userEditComponent.user.FirstName).not.toBe("First Name");
     }));
 
 

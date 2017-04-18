@@ -15,6 +15,7 @@ import { StringConstant } from '../../shared/stringconstant';
 import { MockLocation } from '../../shared/mocks/mock.location';
 import { MockRouter } from '../../shared/mocks/mock.router';
 import { Location } from "@angular/common";
+import { Observable } from 'rxjs/Observable';
 
 let stringConstant = new StringConstant();
 
@@ -59,7 +60,7 @@ describe('Project View Test', () => {
     it("should get default Project for company", fakeAsync(() => {
         let fixture = TestBed.createComponent(ProjectViewComponent); //Create instance of component  
         let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
-        activatedRoute.testParams = { id: stringConstant.id };
+        activatedRoute.params = Observable.of({ id: stringConstant.id });
         let projectViewComponent = fixture.componentInstance;
         projectViewComponent.ngOnInit();
         tick();
@@ -69,7 +70,7 @@ describe('Project View Test', () => {
     it("should check Team Leader Name", fakeAsync(() => {
         let fixture = TestBed.createComponent(ProjectViewComponent); //Create instance of component  
         let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
-        activatedRoute.testParams = { id: stringConstant.id };
+        activatedRoute.params = Observable.of({ id: stringConstant.id });
         let projectViewComponent = fixture.componentInstance;
         projectViewComponent.ngOnInit();
         tick();
@@ -80,7 +81,7 @@ describe('Project View Test', () => {
 
         let fixture = TestBed.createComponent(ProjectViewComponent); //Create instance of component  
         let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
-        activatedRoute.testParams = { id: stringConstant.id };
+        activatedRoute.params = Observable.of({ id: stringConstant.id });
         let projectViewComponent = fixture.componentInstance;
         projectViewComponent.ngOnInit();
         tick();
@@ -90,15 +91,15 @@ describe('Project View Test', () => {
     it('should be list of users', fakeAsync(() => {
         let fixture = TestBed.createComponent(ProjectViewComponent);
         let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
-        activatedRoute.testParams = { id: stringConstant.id };
+        activatedRoute.params = Observable.of({ id: stringConstant.id });
         let projectViewComponent = fixture.componentInstance;
         let projectService = fixture.debugElement.injector.get(ProjectService);
         let projectModel = new ProjectModel();
         projectModel.TeamLeaderId = null;
         projectModel.ApplicationUsers = mockList;
         let project = new ProjectModel();
-        spyOn(projectService, "getProject", activatedRoute.testParams).and.returnValue((Promise.resolve(projectModel)));
-        spyOn(projectService, "getUsers", activatedRoute.testParams).and.returnValue((Promise.resolve(mockList)));
+        spyOn(projectService, "getProject", activatedRoute.params).and.returnValue((Promise.resolve(projectModel)));
+        spyOn(projectService, "getUsers", activatedRoute.params).and.returnValue((Promise.resolve(mockList)));
         projectViewComponent.ngOnInit();
         tick();
         expect(projectModel.TeamLeaderId).toBeNull();
@@ -107,15 +108,15 @@ describe('Project View Test', () => {
     it('should be TeamLeader Null', fakeAsync(() => {
         let fixture = TestBed.createComponent(ProjectViewComponent);
         let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
-        activatedRoute.testParams = { id: stringConstant.id };
+        activatedRoute.params = Observable.of({ id: stringConstant.id });
         let projectViewComponent = fixture.componentInstance;
         let projectService = fixture.debugElement.injector.get(ProjectService);
         let projectModel = new ProjectModel();
         projectModel.TeamLeaderId = null;
         projectModel.ApplicationUsers = new Array<UserModel>();
         let project = new ProjectModel();
-        spyOn(projectService, "getProject", activatedRoute.testParams).and.returnValue((Promise.resolve(projectModel)));
-        spyOn(projectService, "getUsers", activatedRoute.testParams).and.returnValue((Promise.resolve(mockList)));
+        spyOn(projectService, "getProject", activatedRoute.params).and.returnValue((Promise.resolve(projectModel)));
+        spyOn(projectService, "getUsers", activatedRoute.params).and.returnValue((Promise.resolve(mockList)));
         projectViewComponent.ngOnInit();
         tick();
         expect(projectModel.TeamLeaderId).toBeNull();
@@ -125,7 +126,7 @@ describe('Project View Test', () => {
         let fixture = TestBed.createComponent(ProjectViewComponent); //Create instance of component            
         let projectViewComponent = fixture.componentInstance;
         let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
-        activatedRoute.testParams = { id: stringConstant.id };
+        activatedRoute.params = Observable.of({ id: stringConstant.id });
         let projectService = fixture.debugElement.injector.get(ProjectService);
         spyOn(projectService, "getProject").and.returnValue(Promise.reject(""));
         projectViewComponent.ngOnInit();
@@ -136,7 +137,7 @@ describe('Project View Test', () => {
     it('should be Team Leader not null', fakeAsync(() => {
         let fixture = TestBed.createComponent(ProjectViewComponent);
         let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
-        activatedRoute.testParams = { id: stringConstant.id };
+        activatedRoute.params = Observable.of({ id: stringConstant.id });
         let projectViewComponent = fixture.componentInstance;
         let projectService = fixture.debugElement.injector.get(ProjectService);
         let projectModel = new ProjectModel();
@@ -145,8 +146,8 @@ describe('Project View Test', () => {
         
         projectModel.ApplicationUsers = new Array<UserModel>();
         let project = new ProjectModel();
-        spyOn(projectService, "getProject", activatedRoute.testParams).and.returnValue((Promise.resolve(projectModel)));
-        spyOn(projectService, "getUsers", activatedRoute.testParams).and.returnValue((Promise.resolve(mockList)));
+        spyOn(projectService, "getProject", activatedRoute.params).and.returnValue((Promise.resolve(projectModel)));
+        spyOn(projectService, "getUsers", activatedRoute.params).and.returnValue((Promise.resolve(mockList)));
         projectViewComponent.ngOnInit();
         tick();
         expect(projectModel.TeamLeaderId).toBe(stringConstant.id);

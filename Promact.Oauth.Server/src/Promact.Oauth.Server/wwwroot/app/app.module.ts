@@ -14,7 +14,7 @@ import { LoaderService } from "./shared/loader.service";
 import { UserRole } from "./shared/userrole.model";
 import { StringConstant } from './shared/stringconstant';
 import { AuthenticationService } from "./authentication.service";
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -27,7 +27,8 @@ import { AuthenticationService } from "./authentication.service";
         ProjectModule,
         ConsumerAppModule,
         UserModule,
-        ChangePasswordModule
+        ChangePasswordModule,
+        BrowserAnimationsModule
     ],
     bootstrap: [AppComponent],
     providers: [StringConstant, LoaderService, AuthenticationService, { provide: LocationStrategy, useClass: HashLocationStrategy }, UserRole],

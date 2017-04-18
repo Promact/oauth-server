@@ -13,6 +13,7 @@ import { LoaderService } from '../../shared/loader.service';
 import { ActivatedRouteStub } from "../../shared/mocks/mock.activatedroute";
 import { StringConstant } from '../../shared/stringconstant';
 import { MockRouter } from '../../shared/mocks/mock.router';
+import { Observable } from 'rxjs/Observable';
 
 let stringConstant = new StringConstant();
 
@@ -139,7 +140,7 @@ describe('Project Add Test', () => {
         let fixture = TestBed.createComponent(ProjectAddComponent); //Create instance of component            
         let projectAddComponent = fixture.componentInstance;
         let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
-        activatedRoute.testParams = { id: stringConstant.id };
+        activatedRoute.params = Observable.of({ id: stringConstant.id });
         let projectModel = new ProjectModel();
         projectModel.Name = "test";
         projectModel.ApplicationUsers = mockList;

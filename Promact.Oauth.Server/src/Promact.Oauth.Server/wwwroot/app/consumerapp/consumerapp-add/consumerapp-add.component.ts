@@ -5,7 +5,8 @@ import { ConsumerAppService } from "../consumerapp.service";
 import { Md2Toast } from 'md2';
 import { LoaderService } from '../../shared/loader.service';
 @Component({
-    templateUrl: "app/consumerapp/consumerapp-add/consumerapp-add.html",
+    moduleId: module.id,
+    templateUrl: "consumerapp-add.html"
 })
 export class ConsumerappAddComponent implements OnInit {
     scopes: any;

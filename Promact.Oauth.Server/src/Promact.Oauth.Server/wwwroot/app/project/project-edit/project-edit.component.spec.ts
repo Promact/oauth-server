@@ -15,6 +15,7 @@ import { ActivatedRouteStub } from "../../shared/mocks/mock.activatedroute";
 import { MockRouter } from '../../shared/mocks/mock.router';
 import { Location } from "@angular/common";
 import { MockLocation } from '../../shared/mocks/mock.location';
+import { Observable } from 'rxjs/Observable';
 let stringConstant = new StringConstant();
 
 let mockUser = new UserModel();
@@ -57,7 +58,7 @@ describe('Project Edit Test', () => {
     it("should get selected Project", fakeAsync(() => {
         let fixture = TestBed.createComponent(ProjectEditComponent); //Create instance of component            
         let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
-        activatedRoute.testParams = { id: stringConstant.id };
+        activatedRoute.params = Observable.of({ id: stringConstant.id });
         let projectEditComponent = fixture.componentInstance;
         projectEditComponent.ngOnInit();
         tick();
@@ -68,7 +69,7 @@ describe('Project Edit Test', () => {
         let fixture = TestBed.createComponent(ProjectEditComponent); //Create instance of component            
         let projectEditComponent = fixture.componentInstance;
         let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
-        activatedRoute.testParams = { id: stringConstant.id };
+        activatedRoute.params = Observable.of({ id: stringConstant.id });
         let projectService = fixture.debugElement.injector.get(ProjectService);
         spyOn(projectService, "getProject").and.returnValue(Promise.reject(""));
         projectEditComponent.ngOnInit();
@@ -80,7 +81,7 @@ describe('Project Edit Test', () => {
         let fixture = TestBed.createComponent(ProjectEditComponent); //Create instance of component            
         let projectEditComponent = fixture.componentInstance;
         let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
-        activatedRoute.testParams = { id: stringConstant.id };
+        activatedRoute.params = Observable.of({ id: stringConstant.id });
         let projectModel = new ProjectModel();
         projectModel.Name = "test";
         projectModel.ApplicationUsers = mockList;
@@ -95,7 +96,7 @@ describe('Project Edit Test', () => {
         let fixture = TestBed.createComponent(ProjectEditComponent); //Create instance of component            
         let projectEditComponent = fixture.componentInstance;
         let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
-        activatedRoute.testParams = { id: stringConstant.id };
+        activatedRoute.params = Observable.of({ id: stringConstant.id });
         let projectService = fixture.debugElement.injector.get(ProjectService);
         spyOn(projectService, "getProject").and.returnValue(Promise.reject(""));
         projectEditComponent.ngOnInit();

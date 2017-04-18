@@ -13,6 +13,7 @@ import { ActivatedRouteStub } from "../../shared/mocks/mock.activatedroute";
 import { UserRole } from "../../shared/userrole.model";
 import { StringConstant } from '../../shared/stringconstant';
 import { MockRouter } from '../../shared/mocks/mock.router';
+import { Observable } from 'rxjs/Observable';
 
 let stringConstant = new StringConstant();
 
@@ -49,7 +50,7 @@ describe("User Details Test", () => {
     it("should get default Project for company", fakeAsync(() => {
         let fixture = TestBed.createComponent(UserDetailsComponent); //Create instance of component
         let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
-        activatedRoute.testParams = { id: stringConstant.id };
+        activatedRoute.params = Observable.of({ id: stringConstant.id });
         let userDetailsComponent: UserDetailsComponent = fixture.componentInstance;
         let expectedFirstName = stringConstant.testfirstName;
         fixture.detectChanges();
@@ -61,7 +62,7 @@ describe("User Details Test", () => {
     it("should not get particular user details", fakeAsync(() => {
         let fixture = TestBed.createComponent(UserDetailsComponent); //Create instance of component
         let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
-        activatedRoute.testParams = { id: stringConstant.testfirstName };
+        activatedRoute.params = Observable.of({ id: stringConstant.testfirstName });
         let userDetailsComponent = fixture.componentInstance;
         let expectedFirstName = stringConstant.testfirstName;
         userDetailsComponent.ngOnInit();
@@ -73,7 +74,7 @@ describe("User Details Test", () => {
     it("Get user details but user is Not Admin", fakeAsync(() => {
         let fixture = TestBed.createComponent(UserDetailsComponent); //Create instance of component
         let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
-        activatedRoute.testParams = { id: stringConstant.testfirstName };
+        activatedRoute.params = Observable.of({ id: stringConstant.testfirstName });
         let user = fixture.debugElement.injector.get(UserRole);
         user.Role = stringConstant.employee;
         fixture.detectChanges();

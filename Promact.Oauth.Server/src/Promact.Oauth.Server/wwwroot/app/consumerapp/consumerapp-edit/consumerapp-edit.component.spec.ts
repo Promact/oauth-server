@@ -12,6 +12,7 @@ import { LoaderService } from '../../shared/loader.service';
 import { ActivatedRouteStub } from "../../shared/mocks/mock.activatedroute";
 import { StringConstant } from '../../shared/stringconstant';
 import { MockRouter } from '../../shared/mocks/mock.router';
+import { Observable } from 'rxjs/Observable';
 
 let stringConstant = new StringConstant();
 
@@ -36,7 +37,7 @@ describe('Consumer Edit Test', () => {
     it("Get consumerApp by id", fakeAsync(() => {
         let fixture = TestBed.createComponent(ConsumerappEditComponent); //Create instance of component            
         let activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
-        activatedRoute.testParams = { id: stringConstant.id };
+        activatedRoute.params = Observable.of({ id: stringConstant.id });
         let projectEditComponent = fixture.componentInstance;
         projectEditComponent.ngOnInit();
         tick();

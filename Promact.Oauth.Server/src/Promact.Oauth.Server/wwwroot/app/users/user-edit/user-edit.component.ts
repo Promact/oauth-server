@@ -9,7 +9,8 @@ import { UserRole } from "../../shared/userrole.model";
 import { StringConstant } from '../../shared/stringconstant';
 
 @Component({
-    templateUrl: './app/users/user-edit/user-edit.html'
+    moduleId: module.id,
+    templateUrl: 'user-edit.html'
 
 })
 
@@ -33,7 +34,7 @@ export class UserEditComponent implements OnInit {
         }
         this.getRoles();
         this.route.params.subscribe(params => {
-            let id = this.route.snapshot.params[this.stringConstant.paramsId];
+            let id = params[this.stringConstant.paramsId];
             this.userService.getUserById(id)
                 .then(
                 user => this.user = user,

@@ -8,7 +8,8 @@ import { LoaderService } from '../shared/loader.service';
 
 
 @Component({
-    templateUrl: './app/change-password/change-password.html',
+    moduleId: module.id,
+    templateUrl: 'change-password.html'
 })
 
 export class ChangePasswordComponent {
