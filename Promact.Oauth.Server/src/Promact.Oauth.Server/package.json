@@ -17,7 +17,7 @@
     "bundle": "gulp bundle",
     "codecov": "codecov < coverage/cobertura/cobertura-coverage.xml",
     "aot": "node_modules/.bin/ngc -p tsconfig-aot.json",
-    "rollup": "gulp rollup"
+    "rollup": "node_modules/.bin/rollup -c rollup-config.js"
   },
   "license": "ISC",
   "dependencies": {
