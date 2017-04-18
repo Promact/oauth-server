@@ -11,8 +11,7 @@ var gulp = require("gulp"),
     sysBuilder = require('systemjs-builder'),
     remapIstanbul = require('remap-istanbul'),
     Server = require('karma').Server,
-    tslint = require('gulp-tslint'),
-    rollup = require('rollup-stream');
+    tslint = require('gulp-tslint');
 
 var paths = {
     webroot: "./wwwroot/"
@@ -141,10 +140,4 @@ gulp.task("tslint", function () {
         .pipe(tslint({ configuration: "./tslint.json" }))
         .pipe(tslint({ formatter: "prose" }))
         .pipe(tslint.report({ emitError: true }))
-});
-
-gulp.task('rollup', function (cb) {
-    exec('rollup -c rollup-config.js', function (err, stdout, stderr) {
-        cb(err);
-    });
 });
