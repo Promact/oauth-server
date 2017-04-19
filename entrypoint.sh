@@ -23,4 +23,4 @@ rm appsettings.new.json
 cp NLog.config nlog.config
 mkdir /public
 cp -R ./wwwroot /public
-/usr/bin/dotnet dotnet-bundle.dll
+/usr/bin/dotnet /out/Promact.Oauth.Server.dll
