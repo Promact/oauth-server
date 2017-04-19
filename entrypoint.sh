@@ -23,4 +23,4 @@ rm appsettings.new.json
 cp NLog.config nlog.config
 mkdir /public
 cp -R ./wwwroot /public
-/usr/bin/dotnet app.dll
+/usr/bin/dotnet dotnet-bundle.dll
