@@ -98,6 +98,8 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
         public async Task UpdateConsumerAppsAsync(ConsumerApps consumerApps)
         {
             var client = await _clientDataRepository.FirstOrDefaultAsync(x => x.Id == consumerApps.Id);
+            client.RefreshTokenUsage = 1;
+            client.RefreshTokenExpiration = 0;
             client.ClientName = consumerApps.Name;
             client.ClientId = consumerApps.AuthId;
             _clientDataRepository.UpdateAsync(client);
@@ -188,12 +190,13 @@ namespace Promact.Oauth.Server.Repository.ConsumerAppRepository
                             new IdentityServer4.Models.Secret(consumerApp.AuthSecret.Sha256())
                         },
                 AllowOfflineAccess = true,
-                RefreshTokenUsage = TokenUsage.ReUse,
+                RefreshTokenUsage = TokenUsage.OneTimeOnly,
                 AccessTokenLifetime = 86400,
                 AuthorizationCodeLifetime = 86400,
                 IdentityTokenLifetime = 86400,
                 AbsoluteRefreshTokenLifetime = 5184000,
-                SlidingRefreshTokenLifetime = 5184000
+                SlidingRefreshTokenLifetime = 5184000,
+                RefreshTokenExpiration = TokenExpiration.Sliding
             };
         }
 
