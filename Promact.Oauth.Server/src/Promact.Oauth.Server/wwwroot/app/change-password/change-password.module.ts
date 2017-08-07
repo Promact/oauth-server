@@ -1,4 +1,4 @@
-﻿import { NgModule } from "@angular/core";
+﻿import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 import { ChangePasswordComponent } from "./change-password.component";
 import { ChangePasswordMainComponent } from "./changepassword.component";
 import { changePasswordRoute } from "./change-password.routes";
@@ -16,6 +16,7 @@ import { SharedModule } from '../shared/shared.module';
     ],
     providers: [
         UserService
-    ]
+    ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ChangePasswordModule { }

@@ -1,16 +1,20 @@
-﻿import { NgModule } from '@angular/core';
+﻿import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MaterialModule } from "@angular/material";
 import { Md2Module } from 'md2';
+import {
+    MdSidenavModule,
+    MdInputModule
+} from '@angular/material';
 
 
 @NgModule({
     imports: [
         CommonModule,
-        MaterialModule.forRoot(),
-        Md2Module.forRoot()
+        MdSidenavModule,
+        MdInputModule
     ],
-    exports: [CommonModule, FormsModule, MaterialModule,  Md2Module]
+    exports: [CommonModule, FormsModule, Md2Module],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SharedModule { }

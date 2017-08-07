@@ -1,10 +1,10 @@
 language: csharp
 node_js:
-- 6.3.1
+- 6.11.1
 os: linux		
 dist: trusty		
 sudo: required
-dotnet: 1.0.1
+dotnet: 2.0.0-preview2-006497
 cache:
   yarn: true
   directories:
@@ -12,13 +12,11 @@ cache:
 before_install:
 - export CHROME_BIN=chromium-browser
 - export DISPLAY=:99.0
-- nvm install 6.3.1
-- nvm use 6.3.1
-- npm i -g npm@4.5.0
+- nvm install 6.11.1
+- nvm use 6.11.1
 install:
-- npm i -g typescript typings
 - cd ./Promact.Oauth.Server/src/Promact.Oauth.Server
-- npm install
+- yarn
 - npm run aot
 - cd .. && cd ..
 - dotnet restore

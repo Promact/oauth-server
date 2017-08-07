@@ -1,5 +1,5 @@
 ﻿
-import { NgModule } from "@angular/core";
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 import { projectRoute } from "./project.routes";
 import { ProjectComponent } from "./project.component";
 import { ProjectListComponent } from "./project-list/project-list.component";
@@ -24,6 +24,7 @@ import { SharedModule } from '../shared/shared.module';
     ],
     providers: [
         ProjectService
-    ]
+    ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ProjectModule { }

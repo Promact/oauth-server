@@ -1,4 +1,4 @@
-﻿import { NgModule } from "@angular/core";
+﻿import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 import { ConsumerAppComponent } from "./consumerapp.component";
 import { ConsumerappListComponent } from "./consumerapp-list/consumerapp-list.component";
 import { ConsumerappAddComponent } from "./consumerapp-add/consumerapp-add.component";
@@ -24,6 +24,7 @@ import { URLValidatorDirective } from "../shared/url.validator";
     exports: [URLValidatorDirective],
     providers: [
         ConsumerAppService
-    ]
+    ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ConsumerAppModule { }

@@ -1,4 +1,4 @@
-FROM  microsoft/aspnetcore-build:latest
+FROM  microsoft/aspnetcore-build:2
 MAINTAINER Promact Infotech<info@promactinfo.com>
 
 WORKDIR /app
@@ -11,8 +11,6 @@ RUN apt-get update -q \
           wget \
           bzip2 \
           jq
-
-RUN npm install -g typescript typings
 
 COPY ./Promact.Oauth.Server/src/Promact.Oauth.Server/package.json .
 COPY ./Promact.Oauth.Server/src/Promact.Oauth.Server/typings.json .
@@ -28,7 +26,7 @@ COPY ./Promact.Oauth.Server/src/Promact.Oauth.Server ./
 # copy and build everything else
 RUN gulp copytowwwroot && npm run aot && npm run rollup && npm run build && mkdir /out
 RUN dotnet restore
-RUN dotnet publish -c Release -f netcoreapp1.1 -o /out && cp appsettings.development.example.json /out/appsettings.production.json && rm -rf /app 
+RUN dotnet publish -c Release -f netcoreapp2.0 -o /out && cp appsettings.development.example.json /out/appsettings.production.json && rm -rf /app 
 ENV ASPNETCORE_ENVIRONMENT Production
 COPY entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/entrypoint.sh

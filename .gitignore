@@ -267,3 +267,4 @@ bundle.js
 /Promact.Oauth.Server/src/Promact.Oauth.Server/Controllers/doc
 /Promact.Oauth.Server/src/Promact.Oauth.Server/appsettings.development.json
 /Promact.Oauth.Server/src/Promact.Oauth.Server/Properties/PublishProfiles
+/Promact.Oauth.Server/src/Promact.Oauth.Server/wwwroot/app/aot

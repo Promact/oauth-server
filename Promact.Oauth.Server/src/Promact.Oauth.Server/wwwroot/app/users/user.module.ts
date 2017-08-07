@@ -1,4 +1,4 @@
-﻿import { NgModule } from "@angular/core";
+﻿import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 import { UserComponent } from "./user.component";
 import { UserListComponent } from "./user-list/user-list.component";
 import { UserAddComponent } from "./user-add/user-add.component";
@@ -24,6 +24,7 @@ import { SharedModule } from '../shared/shared.module';
     ],
     providers: [
         UserService
-    ]
+    ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class UserModule { }

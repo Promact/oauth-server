@@ -7,6 +7,5 @@ import { UserService }   from '../users/user.service';
     <router-outlet></router-outlet>
 `,
     providers: [UserService]
-
 })
 export class ChangePasswordMainComponent { }

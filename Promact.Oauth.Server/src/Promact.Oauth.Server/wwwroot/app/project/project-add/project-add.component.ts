@@ -9,7 +9,7 @@ import { LoaderService } from '../../shared/loader.service';
 
 @Component({
     moduleId: module.id,
-    templateUrl: "project-add.html",
+    templateUrl: "project-add.html",    
 })
 export class ProjectAddComponent implements OnInit {
     projects: Array<ProjectModel>;

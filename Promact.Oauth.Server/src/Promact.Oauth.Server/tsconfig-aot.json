@@ -10,12 +10,14 @@
     "noImplicitAny": true,
     "suppressImplicitAnyIndexErrors": true
   },
-
-  "files": [
-    "wwwroot/app/app.module.ts",
+  "exclude":[
+    "wwwroot/app/**/*",
+    "node_modules",
+    "wwwroot/app/aot"
+  ],
+  "include": [    
     "wwwroot/app/main-aot.ts"
   ],
-
   "angularCompilerOptions": {
     "genDir": "wwwroot/app/aot",
     "skipMetadataEmit": true

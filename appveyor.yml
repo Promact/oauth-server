@@ -3,25 +3,31 @@ os: Visual Studio 2017
 skip_tags: true
 configuration: Release
 environment:
- nodejs_version: "0.12"
+ nodejs_version: "6.11.1"
  COVERALLS_REPO_TOKEN:
    secure: oI8JLO5/25+ZMrrWdVckNz5zqUysVlU+VVMBpPxZlEXaQ/A/6z544OcIs8rVhk49
 cache:
 - "%LOCALAPPDATA%\\Yarn"
 install:
-- cd ".\Promact.Oauth.Server\"
-- ps: Start-FileDownload 'https://ci.appveyor.com/api/buildjobs/xj78v6dac42uob8q/artifacts/main%2Fbin%2Fzip%2Fopencover.4.6.589.zip'
-- ps: 7z.exe x main%2Fbin%2Fzip%2Fopencover.4.6.589.zip
-- cd..
-- npm i -g yarn@0.16.1
-- npm i -g typescript typings
-- yarn global add typescript typings
-- cd ".\Promact.Oauth.Server\src\Promact.Oauth.Server\"
-- yarn
-- cd..
-- cd..
+   # .NET Core SDK binaries
+   - ps: $urlCurrent = "https://download.microsoft.com/download/3/7/F/37F1CA21-E5EE-4309-9714-E914703ED05A/dotnet-dev-win-x64.2.0.0-preview1-005977.exe"
+   - ps: $env:DOTNET_INSTALL_DIR = "$pwd\.dotnetsdk"
+   - ps: mkdir $env:DOTNET_INSTALL_DIR -Force | Out-Null
+   - ps: $tempFileCurrent = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), [System.IO.Path]::GetRandomFileName())
+   - ps: (New-Object System.Net.WebClient).DownloadFile($urlCurrent, $tempFileCurrent)
+   - ps: Add-Type -AssemblyName System.IO.Compression.FileSystem; [System.IO.Compression.ZipFile]::ExtractToDirectory($tempFileCurrent, $env:DOTNET_INSTALL_DIR)
+   - ps: $env:Path = "$env:DOTNET_INSTALL_DIR;$env:Path"
+   - cd ".\Promact.Oauth.Server\"
+   - ps: Start-FileDownload 'https://ci.appveyor.com/api/buildjobs/xj78v6dac42uob8q/artifacts/main%2Fbin%2Fzip%2Fopencover.4.6.589.zip'
+   - ps: 7z.exe x main%2Fbin%2Fzip%2Fopencover.4.6.589.zip
+   - cd..
+   - ps: choco install yarn -y   
+   - cd ".\Promact.Oauth.Server\src\Promact.Oauth.Server\"
+   - yarn
+   - cd..
+   - cd..
 build_script:
-- ps: dotnet restore
+   - ps: dotnet restore
 build:
   project: .\Promact.Oauth.Server\Promact.Oauth.Server.sln
   verbosity: minimal

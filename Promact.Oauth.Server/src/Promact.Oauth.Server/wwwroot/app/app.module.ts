@@ -1,4 +1,4 @@
-﻿import { NgModule } from "@angular/core";
+﻿import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 // Imports for loading & configuring the in-memory web api
 import { HttpModule, XHRBackend } from "@angular/http";
@@ -9,7 +9,10 @@ import { ProjectModule } from "./project/project.module";
 import { ConsumerAppModule } from "./consumerapp/consumerapp.module";
 import { UserModule } from "./users/user.module";
 import { ChangePasswordModule } from "./change-password/change-password.module";
-import { MaterialModule } from "@angular/material";
+import { 
+    MdSidenavModule,
+    MdInputModule 
+} from "@angular/material";
 import { LoaderService } from "./shared/loader.service";
 import { UserRole } from "./shared/userrole.model";
 import { StringConstant } from './shared/stringconstant';
@@ -22,15 +25,22 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     imports: [
         BrowserModule,
         HttpModule,
-        routing,
-        MaterialModule.forRoot(),
+        routing,        
         ProjectModule,
         ConsumerAppModule,
         UserModule,
         ChangePasswordModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        MdSidenavModule,
+        MdInputModule
     ],
     bootstrap: [AppComponent],
-    providers: [StringConstant, LoaderService, AuthenticationService, { provide: LocationStrategy, useClass: HashLocationStrategy }, UserRole],
+    providers: [StringConstant, 
+        LoaderService, 
+        AuthenticationService, { 
+            provide: LocationStrategy, 
+            useClass: HashLocationStrategy 
+        }, UserRole],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule { }
